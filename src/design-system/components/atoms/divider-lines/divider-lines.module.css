@@ -1,0 +1,26 @@
+.dividerWrapper {
+    display:flex;
+    margin:0.75rem 0;
+     & div {
+     border-radius: 10px;
+     width:9px;
+     height: 3px;
+     margin:0 0.3rem;
+     @media (min-width: 64em) {
+       width:14px;
+       height: 4px;
+     }
+    }
+   }
+   
+   .divLeft {
+     background: #967540; 
+   }
+   
+   .divCenter {
+     background: #745826;
+   }
+   
+   .divRight {
+     background: #C79A48;
+   }

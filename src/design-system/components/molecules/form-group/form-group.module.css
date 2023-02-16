@@ -1,0 +1,44 @@
+.labelWrapper {
+  display: block;
+}
+
+.label {
+  margin: 0 0 0.125rem 0;
+  font-weight: 700;
+  display: flex;
+  align-content: flex-end;
+
+  &.hasHelpText {
+    margin: 0;
+  }
+
+  & span {
+    flex: 1;
+    & ~ span {
+      align-self: flex-end;
+      text-align: right;
+      font-weight: 400;
+    }
+  }
+
+  @media screen(min-width: 48em) {
+    & span {
+      flex: 3;
+      & ~ span {
+        flex: 1;
+      }
+    }
+  }
+
+  & p {
+    margin: 0;
+  }
+}
+
+.helperText {
+  margin: 0 0 0.125rem 0;
+}
+
+.errorText {
+  margin: 0.625rem 0 0 0;
+}

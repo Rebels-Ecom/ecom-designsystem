@@ -1,0 +1,112 @@
+.logoPicture {
+    display: block;
+    height: 2.25rem;
+}
+  
+.logoImg {
+    height: 2.25rem;
+    display: block;
+    @media (min-width: 64em) {
+        margin-right: 2.75rem;
+    }
+}
+
+.linkLogo {
+    position: absolute;
+    height: 3.8125rem;
+    left: 1rem;
+    cursor: pointer;
+    @media (min-width: 64em) {
+        left: 3.4375rem;
+    }
+
+    &:after {
+        left: 0;
+        bottom: 0;
+        height: 0.1875rem;
+        width: 0;
+        transform: none;
+
+        @media (min-width: 64em) {
+        left: 50%;
+        transform: translateX(-50%);
+        }
+    }
+
+    &:focus {
+        & .logoImg {
+        filter: grayscale(1);
+        }
+    }
+
+    &.active {
+        &:after {
+        background: none;
+        }
+    }
+
+    &:hover {
+        &:after {
+        width: 100%;
+        }
+    }
+}
+
+.searchNavLinksWrapper {
+    display: flex;
+    padding: 0;
+    list-style: none;
+    @media (min-width: 64rem) {
+        margin-left: 2.5rem;
+    }
+}
+
+.searchNavLink {
+    display: flex;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    background: none;
+    color: var(--navigation-text-default);
+    &:first-child {
+        margin-right: 1rem;
+    }
+    &:hover, &:focus {
+        background: none;
+        color: var(--navigation-text-hover);
+        outline: none;
+        background:none;
+    }
+
+    &.active {
+        -webkit-text-stroke: 0.03125rem;
+        color: var(--navigation-text-focus);
+        background: none;
+    }
+}
+
+.navIcon {
+    margin-right:0.5rem;
+}
+
+.searchComponent {
+    position: absolute;
+    width: 90%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto auto -1.5rem auto;
+    @media (min-width: 64em) {
+        position: relative;
+        width: 50%;
+        margin: 0;
+    }
+}
+  
+.innerSearchWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 0 0 10rem;
+}

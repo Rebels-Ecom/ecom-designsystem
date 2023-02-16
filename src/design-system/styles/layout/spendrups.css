@@ -1,0 +1,18 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+    --max-width: 120rem;
+    --content-max-width-wide: 108rem;
+    --content-max-width-narrow: 73rem;
+    --blog-card-max-width: 36rem;
+    --blog-card-fullwidth: 108rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}

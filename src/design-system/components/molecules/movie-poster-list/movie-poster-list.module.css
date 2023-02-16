@@ -1,0 +1,112 @@
+.heading {
+  margin: 0 0 1rem 0;
+
+  @media (min-width: 48em) {
+    margin: 0 0 2rem 0;
+  }
+
+  &.noMarginBottom {
+    margin-bottom: 0;
+  }
+}
+.preamble {
+  margin: 0 0 1rem 0;
+  font-size: var(--body-s-mobile-font-size);
+  line-height: var(--body-s-mobile-line-height);
+
+  @media (min-width: 48em) {
+    font-size: var(--body-desktop-font-size);
+    line-height: var(--body-desktop-line-height);
+    margin: 0 0 2rem 0;
+  }
+}
+.preambleReactNode {
+  & p,
+  & a {
+    font-size: var(--body-s-mobile-font-size);
+    line-height: var(--body-s-mobile-line-height);
+
+    @media (min-width: 48em) {
+      font-size: var(--body-desktop-font-size);
+      line-height: var(--body-desktop-line-height);
+    }
+  }
+
+  & p {
+    margin: 0 0 1rem 0;
+
+    @media (min-width: 48em) {
+      margin: 0 0 2rem 0;
+    }
+  }
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  overflow: scroll;
+  justify-content: flex-start;
+  scroll-padding: 1rem;
+  overflow: -moz-scrollbars-none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 64em) {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+}
+
+.listItem {
+  padding-right: 1rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  scroll-snap-align: start;
+  width: 47%;
+  max-width: 15rem;
+
+  @media (min-width: 64em) {
+    max-width: none;
+    width: 20%;
+    flex-wrap: wrap;
+    &:nth-child(n + 6) {
+      margin-top: 2rem;
+    }
+  }
+}
+
+.listItemHeading {
+  color: var(--color-text-default);
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.5rem 0 0 0;
+  max-height: calc(var(--body-desktop-line-height) * 2);
+}
+.listItemPreamble {
+  color: var(--color-text-subdued);
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  @media (min-width: 64em) {
+    transition: all 0.2s ease-in-out;
+    transform: scale(1);
+
+    transform-origin: center center;
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      outline: 0.125rem solid var(--focused);
+      outline-offset: 0.125rem;
+    }
+  }
+}

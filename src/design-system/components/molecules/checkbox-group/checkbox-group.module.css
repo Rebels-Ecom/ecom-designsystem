@@ -1,0 +1,49 @@
+.defaultStyleList {
+  margin: 0;
+  margin-bottom: -1.5rem;
+  padding: 0;
+  list-style: none;
+
+  &.horizontal {
+    display: flex;
+    flex-wrap: wrap;
+
+    & .defaultStyleListItem {
+      flex-basis: 100%;
+
+      @media (min-width: 48em) {
+        flex-basis: auto;
+        display: inline;
+        margin-right: 2.125rem;
+      }
+    }
+  }
+
+  &.vertical {
+    display: block;
+    & .defaultStyleListItem {
+      display: block;
+    }
+  }
+}
+
+.defaultStyleCheckboxWrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.defaultStyleCheckbox {
+  display: flex;
+}
+
+.defaultStyleLabel {
+  font-weight: normal;
+  cursor: pointer;
+  padding-left: 0.5rem;
+}
+
+.disabled {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}

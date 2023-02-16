@@ -1,0 +1,52 @@
+.topNavBar {
+    background: var(--top-nav-bar-background);
+    height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    @media (min-width: 64rem) {
+      padding: 0 3.4375rem;
+    }
+}
+  
+.topNavText {
+    display:none;
+    @media (min-width: 48rem) {
+      display: block;
+    }
+}
+
+.navLinksWrapper{
+    display: flex;
+    padding: 0;
+    list-style: none;
+}
+  
+.topNavLink {
+    display: flex;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    background: none;
+    color: var(--top-nav-text-default);
+    &:first-child {
+        margin-right: 1rem;
+    }
+    &:hover, &:focus {
+        background: none;
+        color: var(--top-nav-text-hover);
+        outline: none;
+        background:none;
+    }
+    &.active {
+        -webkit-text-stroke: 0.03125rem;
+        color: var(--top-nav-text-focus);
+        background: none;
+    }
+}
+
+.navIcon {
+    margin-right:0.5rem;
+}

@@ -1,0 +1,14 @@
+.maxWidth {
+    margin: 0 auto;
+    padding: 0 1rem;
+    width:100%;
+    max-width: var(--content-max-width-narrow);
+}
+
+.narrow {
+    max-width: var(--content-max-width-narrow);
+}
+
+.wide {
+    max-width: var(--content-max-width-wide);
+}

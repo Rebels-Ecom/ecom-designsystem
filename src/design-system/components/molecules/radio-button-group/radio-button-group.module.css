@@ -1,0 +1,49 @@
+.defaultStyleList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-bottom: -1.5rem;
+
+  &.horizontal {
+    display: flex;
+    flex-wrap: wrap;
+
+    & .defaultStyleListItem {
+      flex-basis: 100%;
+
+      @media (min-width: 48em) {
+        flex-basis: auto;
+        display: inline;
+        margin-right: 2.125rem;
+      }
+    }
+  }
+
+  &.vertical {
+    display: block;
+    & .defaultStyleListItem {
+      display: block;
+    }
+  }
+}
+
+.defaultStyleRadioWrapper {
+  display: inline-flex;
+  margin-bottom: 1.5rem;
+}
+
+.defaultStyleRadio {
+  display: flex;
+}
+
+.defaultStyleLabel {
+  font-weight: normal;
+  cursor: pointer;
+  padding-left: 0.5rem;
+  margin-top: -0.125rem;
+}
+
+.disabled {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}

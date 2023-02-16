@@ -1,0 +1,99 @@
+.link {
+  position: relative;
+  text-decoration: none;
+  border-bottom: 0.1875rem solid transparent;
+  padding-bottom: 0.125rem;
+
+  & .linkText {
+    border-bottom: 0.125rem solid;
+  }
+
+  &a:focus,
+  &a:active {
+    outline: none;
+    border-bottom: 0.1875rem solid;
+    background: var(--focused);
+    color: var(--interactive-hover);
+
+    & .linkText {
+      border-bottom: none;
+    }
+  }
+}
+
+.transparent {
+  color: var(--interactive-default);
+  &:hover {
+    color: var(--interactive-hover);
+  }
+}
+
+.decorativeOne {
+  color: var(--interactive-decorative-one);
+  &:hover {
+    color: var(--interactive-decorative-one-hover);
+  }
+}
+
+.decorativeTwo {
+  color: var(--interactive-decorative-two);
+  &:hover {
+    color: var(--interactive-decorative-two-hover);
+  }
+}
+
+.large {
+  font-size: var(--body-mobile-font-size);
+  line-height: var(--body-mobile-line-height);
+
+  &.withIconLeft {
+    padding-left: 1.6875rem;
+  }
+  &.withIconRight {
+    padding-right: 1.6875rem;
+  }
+
+  & .icon {
+    font-size: 1.6875rem;
+  }
+
+  @media (min-width: 48em) {
+    font-size: var(--body-desktop-font-size);
+    line-height: var(--body-desktop-line-height);
+  }
+}
+
+.default {
+  font-size: var(--body-mobile-font-size);
+  line-height: var(--body-mobile-line-height);
+
+  &.withIconLeft {
+    padding-left: 1.5rem;
+  }
+  &.withIconRight {
+    padding-right: 1.5rem;
+  }
+
+  @media (min-width: 48em) {
+    font-size: var(--body-desktop-font-size);
+    line-height: var(--body-desktop-line-height);
+  }
+}
+
+.iconLeft {
+  margin-right: 0.375rem;
+  & .icon {
+    left: 0;
+  }
+}
+
+.iconRight {
+  margin-left: 0.375rem;
+}
+
+.icon {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  position: absolute;
+}

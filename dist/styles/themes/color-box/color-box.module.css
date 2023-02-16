@@ -1,0 +1,22 @@
+.colorBox {
+  width: 9.375rem;
+  height: 9.375rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.small {
+  width: 3rem;
+  height: 3rem;
+}
+
+.label {
+  background: var(--background);
+  color: var(--color-text-default);
+  padding: 0.2rem;
+  width: 100%;
+  min-height: 3.125rem;
+}

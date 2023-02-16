@@ -1,0 +1,8 @@
+.value {
+  margin-left: 0.625rem;
+}
+
+.inputFile {
+  visibility: hidden;
+  position: absolute;
+}

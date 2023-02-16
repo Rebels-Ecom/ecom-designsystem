@@ -1,0 +1,16 @@
+.productCard {
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+    height: 34.813rem;
+}
+
+.productCardInput {
+    margin-top:0.813rem;
+}
+
+.productCardBtn{
+    margin-top:1rem;
+}
+
