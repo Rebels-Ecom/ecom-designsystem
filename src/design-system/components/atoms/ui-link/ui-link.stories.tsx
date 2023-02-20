@@ -25,7 +25,7 @@ export const UILinkStory = Template.bind({})
 
 UILinkStory.storyName = 'UILink'
 UILinkStory.args = {
-  text: 'Våra reklamplatser',
+  children: 'Våra reklamplatser',
   href: '',
   isExternal: true,
   target: null,
@@ -37,7 +37,7 @@ UILinkStory.args = {
 export const UILinkBlogStory = Template.bind({})
 UILinkBlogStory.storyName = 'UILink Blog'
 UILinkBlogStory.args = {
-  text: 'Läs mer',
+  children: 'Läs mer',
   href: '',
   isExternal: true,
   target: null,
@@ -45,4 +45,3 @@ UILinkBlogStory.args = {
   size: 'default',
   onSurface: 'transparent',
 }
-

@@ -1,0 +1,36 @@
+.loginForm {
+  padding: 20px;
+  width: 100%;
+  max-width: 830px;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+  @media (min-width: 768px) {
+   padding: 50px;
+  }
+}
+
+.loginForm input[type="text"], input[type="password"] {
+  margin: 5px 0 22px 0;
+}
+
+.loginForm button {
+  margin: 24px 0;
+}
+
+.loginForm h1, p {
+  margin: 0 0 10px 0;
+}
+
+.loginForm p {
+  margin: 0 0 30px 0;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  left: auto;
+  font-size: 20px;
+  cursor: pointer;
+}

@@ -11,13 +11,14 @@ export interface IUILink extends ILink {
   iconRight?: TIcon
   size: TSize
   onSurface: TSurface
+  children: React.ReactNode
 }
 
 export const LinkComponent = ({ children, ...props }: any) => <div {...props}>{children}</div>
 
 const UILink = ({
   linkComponent: Link = LinkComponent,
-  text,
+  children,
   href,
   target,
   isExternal,
@@ -42,7 +43,7 @@ const UILink = ({
           <Icon icon={IconLeft} className={styles.icon} />
         </span>
       )}
-      <span className={styles.linkText}>{text}</span>
+      <span className={styles.linkText}>{children}</span>
       {IconRight && (
         <span className={styles.iconRight}>
           <Icon icon={IconRight} className={styles.icon} />

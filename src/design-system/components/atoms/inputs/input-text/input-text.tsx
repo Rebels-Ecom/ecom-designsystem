@@ -13,17 +13,17 @@ export interface IInputText {
   value?: string
   defaultValue?: string
   onChange?: CallableFunction
-  onFocus?: CallableFunction
   onBlur?: CallableFunction
   placeholder?: string
   disabled?: boolean
   isErroneous?: boolean
   required?: boolean
   other?: TOther
+  autocomplete?: string
 }
 
 const InputText = forwardRef<HTMLInputElement, IInputText>(
-  ({ id, className, type = 'text', value, defaultValue, isErroneous, required, onChange, onBlur, onFocus, disabled, placeholder, other }, ref) => {
+  ({ id, className, type = 'text', value, defaultValue, isErroneous, required, onChange, onBlur, disabled, placeholder, other, autocomplete }, ref) => {
     function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
       if (onChange) {
         onChange(e)
@@ -36,12 +36,6 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
       }
     }
 
-    function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
-      if (onFocus) {
-        onFocus(e)
-      }
-    }
-
     return (
       <input
         ref={ref}
@@ -51,11 +45,11 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
         value={value}
         defaultValue={defaultValue}
         onChange={handleOnChange}
-        onFocus={handleFocus}
         onBlur={handleOnBlur}
         disabled={disabled}
         placeholder={placeholder}
         required={required}
+        autoComplete={autocomplete}
         {...other}
       />
     )
