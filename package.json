@@ -31,7 +31,7 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build && touch ./storybook-static/.nojekyll",
     "build": "vite build && tsc --project tsconfig.json"
   },
   "peerDependencies": {
