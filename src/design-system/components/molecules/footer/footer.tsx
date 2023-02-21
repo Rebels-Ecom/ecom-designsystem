@@ -9,6 +9,8 @@ export interface IFooter {
   linkComponent: any
 }
 
+//Test commit
+
 const Footer = ({ heading, preamble, links = [], linkComponent: Link }: IFooter) => {
   return (
     <footer className={styles.outerWrapper}>
