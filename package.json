@@ -30,8 +30,8 @@
     }
   },
   "scripts": {
-    "dev": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "dev": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "build": "vite build && tsc --project tsconfig.json"
   },
   "peerDependencies": {
@@ -41,14 +41,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
-    "@storybook/addon-actions": "^6.5.10",
-    "@storybook/addon-docs": "^6.5.10",
-    "@storybook/addon-essentials": "^6.5.10",
-    "@storybook/addon-interactions": "^6.5.10",
-    "@storybook/addon-links": "^6.5.10",
-    "@storybook/builder-vite": "^0.1.30",
-    "@storybook/react": "^6.5.10",
-    "@storybook/testing-library": "0.0.11",
+    "@storybook/addon-actions": "^7.0.0-beta.53",
+    "@storybook/addon-docs": "^7.0.0-beta.53",
+    "@storybook/addon-essentials": "^7.0.0-beta.53",
+    "@storybook/addon-interactions": "^7.0.0-beta.53",
+    "@storybook/addon-links": "^7.0.0-beta.53",
+    "@storybook/react": "^7.0.0-beta.53",
+    "@storybook/react-vite": "^7.0.0-beta.53",
+    "@storybook/testing-library": "0.0.14-next.1",
     "@types/node": "^17.0.25",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -62,8 +62,9 @@
     "postcss-plugin": "^1.0.0",
     "prettier": "2.3.0",
     "rollup-plugin-copy": "^3.4.0",
+    "storybook": "^7.0.0-beta.53",
     "typescript": "^4.6.3",
-    "vite": "^3.2.5"
+    "vite": "^4.0.4"
   },
   "repository": "https://github.com/Rebels-Ecom/ecom-designsystem",
   "publishConfig": {
