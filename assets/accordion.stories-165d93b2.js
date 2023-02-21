@@ -1,0 +1,15 @@
+import{r as b}from"./index-6f814c40.js";import{c as d}from"./index-74f03c09.js";import{I as f}from"./icon-eb31426b.js";import{j as s,F as u,a as n}from"./jsx-runtime-76c5c2e2.js";import{A as h,m as g}from"./index-822585cb.js";const x="_accordionBtn_yh032_1",A="_label_yh032_35",B="_icon_yh032_43",k="_accordionBtnInnerWrapper_yh032_59",v="_accordionContent_yh032_141",r={accordionBtn:x,label:A,icon:B,accordionBtnInnerWrapper:k,accordionContent:v},C={open:{display:"block"},collapsed:{display:"none"}},c=({id:e,label:t,description:i,isExpanded:o=!1,onAccordionBtnClick:_})=>{function y(){_(e)}return s(u,{children:[n("button",{className:r.accordionBtn,id:`btn_${e}`,"aria-controls":e,"aria-expanded":o,onClick:y,children:s("div",{className:r.accordionBtnInnerWrapper,children:[n(f,{icon:o?"icon-x-circle":"icon-plus-circle",className:r.icon}),n("span",{className:d(r.label,"headingXS"),children:t})]})}),n(h,{initial:!1,children:o&&n(g.div,{id:e,className:d(r.accordionContent),initial:"collapsed",animate:"open",exit:"collapsed",variants:C,transition:{duration:.5,ease:"easeOut"},"aria-labelledby":`btn_${e}`,children:i})})]})};try{c.displayName="Accordion",c.__docgenInfo={description:"",displayName:"Accordion",props:{id:{defaultValue:null,description:"",name:"id",required:!0,type:{name:"string"}},label:{defaultValue:null,description:"",name:"label",required:!0,type:{name:"string"}},description:{defaultValue:null,description:"",name:"description",required:!0,type:{name:"ReactNode"}},isExpanded:{defaultValue:{value:"false"},description:"",name:"isExpanded",required:!1,type:{name:"boolean"}},onAccordionBtnClick:{defaultValue:null,description:"",name:"onAccordionBtnClick",required:!0,type:{name:"CallableFunction"}}}}}catch{}const E={title:"Design System/Atoms/Accordion",component:c},N=e=>{const[t,i]=b.useState(!1);function o(){i(!t)}return n(u,{children:n("div",{style:{margin:"0 0 2rem 0",maxWidth:"616px"},children:n(c,{...e,isExpanded:t,onAccordionBtnClick:o})})})},a=N.bind({});a.storyName="Accordion";a.args={id:"food_and_beverage",label:"Mat och dryck",description:n("p",{style:{padding:"0",margin:"0 0 1rem 0"},children:"Vi har täta samarbeten med noga utvalda cateringleverantörer vilket gör att vi hela tiden kan erbjuda dig bra kvalitet på mat och dryck."})};var l,p,m;a.parameters={...a.parameters,docs:{...(l=a.parameters)==null?void 0:l.docs,source:{originalSource:`args => {
+  const [isExpanded, setExpanded] = useState(false);
+  function onAccordionBtnClick() {
+    setExpanded(!isExpanded);
+  }
+  return <>
+      <div style={{
+      margin: '0 0 2rem 0',
+      maxWidth: '616px'
+    }}>
+        <Accordion {...args} isExpanded={isExpanded} onAccordionBtnClick={onAccordionBtnClick} />
+      </div>
+    </>;
+}`,...(m=(p=a.parameters)==null?void 0:p.docs)==null?void 0:m.source}}};const S=["AccordionStory"],O=Object.freeze(Object.defineProperty({__proto__:null,AccordionStory:a,__namedExportsOrder:S,default:E},Symbol.toStringTag,{value:"Module"}));export{c as A,a,O as b};
+//# sourceMappingURL=accordion.stories-165d93b2.js.map

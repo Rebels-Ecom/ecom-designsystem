@@ -1,0 +1,15 @@
+import{r as g}from"./index-6f814c40.js";import{c as r}from"./index-74f03c09.js";import{I as x}from"./icon-eb31426b.js";import{j as d,F as u,a}from"./jsx-runtime-76c5c2e2.js";import{A as y,m as h}from"./index-822585cb.js";import"./_commonjsHelpers-042e6b4d.js";const b="_detailsBtn_1rwce_1",k="_label_1rwce_39",D="_icon_1rwce_49",E="_isExpanded_1rwce_115",C="_detailsContent_1rwce_157",t={detailsBtn:b,label:k,icon:D,isExpanded:E,detailsContent:C},v={open:{opacity:1,height:"auto"},collapsed:{opacity:0,height:0}},l=({id:e,label:i,description:o,isExpanded:n=!1,onDetailsBtnClick:f})=>{function _(){f(e)}return d(u,{children:[d("button",{className:r(t.detailsBtn,n&&t.isExpanded),id:`btn_${e}`,"aria-controls":e,"aria-expanded":n,onClick:_,children:[a(x,{icon:"icon-arrow-right",className:r(t.icon,n&&t.isExpanded)}),a("span",{className:r(t.label,"body"),children:i})]}),a(y,{initial:!1,children:n&&a(h.div,{id:e,className:r(t.detailsContent),initial:"collapsed",animate:"open",exit:"collapsed",variants:v,transition:{duration:.5,ease:"easeOut"},"aria-labelledby":`btn_${e}`,children:o})})]})};try{l.displayName="Details",l.__docgenInfo={description:"",displayName:"Details",props:{id:{defaultValue:null,description:"",name:"id",required:!0,type:{name:"string"}},label:{defaultValue:null,description:"",name:"label",required:!0,type:{name:"string"}},description:{defaultValue:null,description:"",name:"description",required:!0,type:{name:"ReactNode"}},isExpanded:{defaultValue:{value:"false"},description:"",name:"isExpanded",required:!1,type:{name:"boolean"}},onDetailsBtnClick:{defaultValue:null,description:"",name:"onDetailsBtnClick",required:!0,type:{name:"CallableFunction"}}}}}catch{}const A={title:"Design System/Atoms/Details",component:l},B=e=>{const[i,o]=g.useState(!1);function n(){o(!i)}return a(u,{children:a("div",{style:{margin:"0 0 2rem 0",maxWidth:"616px"},children:a(l,{...e,isExpanded:i,onDetailsBtnClick:n})})})},s=B.bind({});s.storyName="Details";s.args={id:"food_and_beverage",label:"Mer om Bioduken",description:a("p",{style:{padding:"0",margin:"0 0 0.5rem 0"},children:"Här finns förväntan i luften, stora känslor och upplevelser som delas med andra. På bio möter ni en entusiastisk publik, som tycker att reklamen före filmen är en del av upplevelsen. Den storslagna duken och det maffiga ljudet ger ditt varumärke en uppmärksamhet och ett engagemang få andra platser."})};var c,p,m;s.parameters={...s.parameters,docs:{...(c=s.parameters)==null?void 0:c.docs,source:{originalSource:`args => {
+  const [isExpanded, setExpanded] = useState(false);
+  function onDetailsBtnClick() {
+    setExpanded(!isExpanded);
+  }
+  return <>
+      <div style={{
+      margin: '0 0 2rem 0',
+      maxWidth: '616px'
+    }}>
+        <Details {...args} isExpanded={isExpanded} onDetailsBtnClick={onDetailsBtnClick} />
+      </div>
+    </>;
+}`,...(m=(p=s.parameters)==null?void 0:p.docs)==null?void 0:m.source}}};const F=["DetailsStory"];export{s as DetailsStory,F as __namedExportsOrder,A as default};
+//# sourceMappingURL=details.stories-f84c540d.js.map

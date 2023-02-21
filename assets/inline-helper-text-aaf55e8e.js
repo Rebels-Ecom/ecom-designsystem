@@ -1,0 +1,2 @@
+import{c as r}from"./index-74f03c09.js";import{a as i}from"./jsx-runtime-76c5c2e2.js";const s="_inlineHelper_6ltnt_1",t={inlineHelper:s},n=({children:e,className:l})=>i("div",{className:r("body",t.inlineHelper,l),children:e});try{n.displayName="InlineHelperText",n.__docgenInfo={description:"",displayName:"InlineHelperText",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{n as I};
+//# sourceMappingURL=inline-helper-text-aaf55e8e.js.map
