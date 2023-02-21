@@ -31,7 +31,7 @@
   },
   "scripts": {
     "dev": "start-storybook -p 6006",
-    "build-storybook": "build-storybook --disable-telemetry",
+    "build-storybook": "build-storybook",
     "build": "vite build && tsc --project tsconfig.json"
   },
   "peerDependencies": {
