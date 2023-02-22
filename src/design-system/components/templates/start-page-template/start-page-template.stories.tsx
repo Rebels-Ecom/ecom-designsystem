@@ -7,6 +7,7 @@ import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-l
 import { BlogCardStoryFullWidth } from '../../molecules/blog-card/blog-card.stories'
 import { TeaserStoryLeft, TeaserStoryRight } from '../../molecules/teaser/teaser.stories'
 import { NavStory } from '../../molecules/navigation/navigation.stories'
+import { FooterStory } from '../../organisms/footer/footer.stories'
 
 export default {
     title:'Design System/Templates/StartPageTemplate',
@@ -28,5 +29,6 @@ StartPageTemplateStory.args = {
     teaserRight: TeaserStoryRight.args,
     blogList_3_Col: BlogCardListStory_3_Columns.args,
     teaserLeft: TeaserStoryLeft.args,
+    footer:FooterStory.args
 }
 

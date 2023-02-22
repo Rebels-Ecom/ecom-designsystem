@@ -132,6 +132,9 @@ export const lightTheme = {
   '--icon-interactive': '#f7f7f7',
   '--icon-disabled': '#d5d5d5',
   '--icon-decorative-orange': '#DA7E00',
+  '--icon-blue':'#003E51',
+  '--icon-orange':'#F08A00',
+  '--icon-backgorund-blue': '#eaeaeb',
   '--gradient-decorative': '#440015',
   '--gradient-decorative-to': '#cc0028',
   '--gradient-decorative-secondary': '#ff3846',
@@ -151,7 +154,7 @@ export const lightTheme = {
   '--top-nav-text-default': '#fff',
   '--top-nav-text-hover': '#F08A00',
   '--top-nav-text-focus': '#F08A00',
-  '--footer-surface-default': '#ffffff',
+  '--footer-background-default': '#f2efea',
 }
 
 export const darkTheme = {
@@ -279,6 +282,9 @@ export const darkTheme = {
   '--icon-critical': '#ee0030',
   '--icon-interactive': '#333333',
   '--icon-decorative-orange': '#DA7E00',
+  '--icon-blue':'#003E51',
+  '--icon-orange':'#F08A00',
+  '--icon-backgorund-blue': '#eaeaeb',
   '--gradient-decorative': '#440015',
   '--gradient-decorative-to': '#cc0028',
   '--gradient-decorative-secondary': '#ff3846',
@@ -295,7 +301,7 @@ export const darkTheme = {
   '--navigation-text-hover': '#F08A00',
   '--navigation-text-focus': '#F08A00',
   '--navigation-icon-default': '#666666',
-  '--footer-surface-default': '#333333',
+  '--footer-background-default': '#333333',
   '--top-nav-text-default': '#fff',
   '--top-nav-text-hover': '#F08A00',
   '--top-nav-text-focus': '#F08A00',

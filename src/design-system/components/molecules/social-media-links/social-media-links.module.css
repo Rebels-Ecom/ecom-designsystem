@@ -1,0 +1,15 @@
+.socialMediaLinksList {
+    display:flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+  
+  .socialMediaLinkItem {
+    background: var(--icon-backgorund-blue);
+    margin-right: 1.25rem;
+    padding: 0.6rem;
+    &:last-child {
+      margin-right: 0;
+    }
+}

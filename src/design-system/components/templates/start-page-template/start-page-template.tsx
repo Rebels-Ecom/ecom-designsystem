@@ -5,6 +5,7 @@ import { IHeroCarousel, HeroCarousel  } from '../../organisms/hero-carousel/hero
 import { IOfferCardList, OfferCardList } from '../../organisms/offer-card-list/offer-card-list'
 import { INavigation, Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
+import { IFooter, Footer } from '../../organisms/footer/footer'
 
 export interface IStartPageTemplate {
     navigation: INavigation
@@ -14,10 +15,11 @@ export interface IStartPageTemplate {
     blogFullwidth: IBlogCard,
     teaserRight: ITeaser,
     blogList_3_Col: IBlogCardList,
-    teaserLeft: ITeaser
+    teaserLeft: ITeaser,
+    footer: IFooter
 }
 
-const StartPageTemplate = ({ navigation, hero, blogList_4_Col, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft }:IStartPageTemplate) => {
+const StartPageTemplate = ({ navigation, hero, blogList_4_Col, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft, footer }:IStartPageTemplate) => {
     return(
         <>
             <Navigation {...navigation}/> 
@@ -30,6 +32,7 @@ const StartPageTemplate = ({ navigation, hero, blogList_4_Col, offerCardsList, b
                 <MaxWidth contentMaxWidth={'narrow'}><Teaser {...teaserLeft}/></MaxWidth>
                 <MaxWidth contentMaxWidth={'wide'}><BlogCardList {...blogList_4_Col}/></MaxWidth>
             </ContentWrapper>
+            <Footer {...footer}/>
         </>
     )
 }

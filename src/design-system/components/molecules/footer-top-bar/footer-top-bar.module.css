@@ -1,0 +1,62 @@
+.footerTopBar {
+  position: relative;
+  background: var(--top-nav-bar-background);
+  height: var(--footer-top-bar-height-mobile);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  @media (min-width: 64rem) {
+    padding: 0 3.4375rem;
+    height: var(--footer-top-bar-height-desktop);
+  }
+}
+
+.topNavText {
+  display:none;
+  @media (min-width: 48rem) {
+    display: block;
+  }
+}
+
+.navLinksList{
+  display: flex;
+  justify-content: center;
+  width:100%;
+  padding: 0;
+  list-style: none;
+}
+
+.linkItem {
+  position: relative;
+  display: flex;
+  text-decoration: none;
+  margin:0;
+  cursor: pointer;
+  background: #ffffff;
+  color: var(--blue-500);
+  margin-right: 1.5rem;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:hover, &:focus {
+    background: none;
+    color: var(--top-nav-text-hover);
+    outline: none;
+    background:none;
+  }
+  &.active {
+    -webkit-text-stroke: 0.03125rem;
+    color: var(--top-nav-text-focus);
+    background: none;
+  }
+}
+
+.buttonLinkText {
+  display: none;
+  @media (min-width: 48rem) {
+    display: block;
+    margin-left: 0.6rem;
+  }
+}

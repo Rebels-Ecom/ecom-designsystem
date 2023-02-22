@@ -1,3 +1,4 @@
+export { Footer } from './footer/footer'
 export { OfferCardList } from './offer-card-list/offer-card-list'
 export { ProductCardList } from './product-card-list/product-card-list'
 export { HeroCarousel } from './hero-carousel/hero-carousel'
