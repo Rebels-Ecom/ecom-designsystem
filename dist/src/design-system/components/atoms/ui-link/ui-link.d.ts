@@ -8,7 +8,8 @@ export interface IUILink extends ILink {
     iconRight?: TIcon;
     size: TSize;
     onSurface: TSurface;
+    children: React.ReactNode;
 }
 export declare const LinkComponent: ({ children, ...props }: any) => JSX.Element;
-declare const UILink: ({ linkComponent: Link, text, href, target, isExternal, title, className, iconLeft: IconLeft, iconRight: IconRight, size, onSurface, }: IUILink) => JSX.Element;
+declare const UILink: ({ linkComponent: Link, children, href, target, isExternal, title, className, iconLeft: IconLeft, iconRight: IconRight, size, onSurface, }: IUILink) => JSX.Element;
 export { UILink };

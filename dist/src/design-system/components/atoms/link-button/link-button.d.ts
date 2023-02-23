@@ -2,10 +2,10 @@
 import { ILink } from '../../../../types/links';
 import { TButtonSurface, TButtonSize } from '../../../../types/button';
 export interface ILinkButton extends ILink {
-    children?: React.ReactNode;
+    children: React.ReactNode;
     surface: TButtonSurface;
     size?: TButtonSize;
     fullWidth?: boolean;
 }
-declare const LinkButton: ({ className, surface, size, children, fullWidth, linkComponent: Link, href, target, title, isExternal, text, id, }: ILinkButton) => JSX.Element;
+declare const LinkButton: ({ className, surface, size, children, fullWidth, linkComponent: Link, href, target, title, isExternal, id, }: ILinkButton) => JSX.Element;
 export { LinkButton };

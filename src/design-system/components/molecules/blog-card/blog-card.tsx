@@ -29,7 +29,11 @@ const BlogCard = ({ image, tag, heading, text, link, fullWidth }: IBlogCard) => 
           {heading && <h2 className={styles.heading}>{heading}</h2>}
           <p className={styles.text} dangerouslySetInnerHTML={{ __html: text }}></p>
         </div>
-        {link && <UILink {...link} onSurface={'transparent'} size={'default'} className={styles.link} />}
+        {link && (
+          <UILink {...link} onSurface={'transparent'} size={'default'} className={styles.link}>
+            {link?.children}
+          </UILink>
+        )}
       </div>
     </div>
   )

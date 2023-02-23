@@ -12,7 +12,11 @@ export default defineConfig({
     react(),
 
     copy({
-      targets: [{ src: 'src/design-system/styles/*', dest: 'dist/styles' }],
+      flatten: false,
+      targets: [{ src: 'src/design-system/styles/*', dest: 'dist/styles' }, {
+        src: ['tailwind.config.js'],
+        dest: ['dist/src'],
+      }],
       hook: 'writeBundle',
     }),
   ],

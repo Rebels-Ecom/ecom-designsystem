@@ -1,6 +1,7 @@
 import React from 'react'
 import { DecoratorFn } from '@storybook/react'
 import './preview.css'
+import '../src/design-system/styles/tailwind/tailwind.css'
 import '../src/design-system/styles/themes/spendrups.css'
 import '../src/design-system/styles/layout/spendrups.css'
 import '../src/design-system/styles/typography/spendrups.css'
