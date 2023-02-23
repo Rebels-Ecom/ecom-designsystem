@@ -13,6 +13,7 @@ export interface IInputText {
   value?: string
   defaultValue?: string
   onChange?: CallableFunction
+  onFocus?: CallableFunction
   onBlur?: CallableFunction
   placeholder?: string
   disabled?: boolean

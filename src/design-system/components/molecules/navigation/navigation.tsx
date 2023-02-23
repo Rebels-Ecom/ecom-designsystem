@@ -3,10 +3,11 @@ import styles from './navigation.module.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ILink } from '../../../../types/links'
 import { ILinkButton } from '../../atoms/link-button/link-button'
-import { Icon} from '../../atoms/icon/icon'
+import { Icon } from '../../atoms/icon/icon'
 import { ISearchNavBar, SearchNavBar } from '../search-nav-bar/search-nav-bar'
 import { ITopNavBar, TopNavBar } from '../top-nav-bar/top-nav-bar'
 import cx from 'classnames'
+import { UILink } from '../../atoms'
 export interface INavigation {
   topNavBar: ITopNavBar
   searchNavBar: ISearchNavBar
@@ -19,16 +20,8 @@ const NavigationList = ({ links = [], linkComponent: Link }: { links: Array<ILin
   return (
     <ul className={styles.linkList}>
       {links.map((link: ILink, index) => (
-        <li key={`${link.text}-${index}`} className={styles.linkItem}>
-          {link.isExternal ? (
-            <a href={link.href} target={link.target} title={link.title} className={styles.link}>
-              {link.text}
-            </a>
-          ) : (
-            <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
-              {link.text}
-            </Link>
-          )}
+        <li key={`${link.href}-${index}`} className={styles.linkItem}>
+          <UILink {...link} size="default" onSurface="transparent" className={styles.link} />
         </li>
       ))}
     </ul>
@@ -37,12 +30,12 @@ const NavigationList = ({ links = [], linkComponent: Link }: { links: Array<ILin
 
 const Navigation = ({ topNavBar, searchNavBar, links, button, linkComponent: Link }: INavigation) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-    
+
   return (
     <nav className={`${styles.navigation} ${isOpen ? styles.navigationOpen : ''}`}>
-      <TopNavBar {...topNavBar}/>
+      <TopNavBar {...topNavBar} />
       <div className={cx(styles.bar, styles.searchNavBar)}>
-        <SearchNavBar {...searchNavBar}/>
+        <SearchNavBar {...searchNavBar} />
         <button
           id="navigation-menu-btn"
           type={'button'}
@@ -76,13 +69,11 @@ const Navigation = ({ topNavBar, searchNavBar, links, button, linkComponent: Lin
               }}
               aria-labelledby={'navigation-menu-btn'}
             >
-              <div className={styles.smallDeviceMenu}>
-                {links?.length && <NavigationList links={links} linkComponent={Link} />}
-              </div>
+              <div className={styles.smallDeviceMenu}>{links?.length && <NavigationList links={links} linkComponent={Link} />}</div>
             </motion.div>
           )}
         </AnimatePresence>
-      )} 
+      )}
     </nav>
   )
 }

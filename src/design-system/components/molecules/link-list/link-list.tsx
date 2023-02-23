@@ -15,13 +15,13 @@ const LinkList = ({ links = [], linkComponent: Link, direction = 'vertical' }: I
       {links instanceof Array && links.length && (
         <ul className={cx(styles.linkList, direction === 'vertical' ? styles.vertical : styles.horizontal)}>
           {links.map((link: ILink, i: number) => (
-            <li key={`${link.text}-${i}`} className={styles.linkListItem}>
+            <li key={`${link.children}-${i}`} className={styles.linkListItem}>
               {link.isExternal ? (
                 <a href={link.href} target={link.target}>
-                  {link.text}
+                  {link.children}
                 </a>
               ) : (
-                <Link to={link.href}>{link.text}</Link>
+                <Link to={link.href}>{link.children}</Link>
               )}
             </li>
           ))}

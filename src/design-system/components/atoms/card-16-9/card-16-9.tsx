@@ -24,7 +24,11 @@ const Card_16_9 = ({ heading, preamble, link, image, imageFit }: ICard_16_9) => 
               {heading && <h2 className={styles.heading}>{heading}</h2>}
               {preamble && <h3 className={styles.preamble}>{preamble}</h3>}
             </div>
-            {link && <UILink {...link} iconRight="icon-arrow-right" onSurface={'transparent'} size={'default'} className={styles.link} />}
+            {link && (
+              <UILink {...link} iconRight="icon-arrow-right" onSurface={'transparent'} size={'default'} className={styles.link}>
+                {link?.children}
+              </UILink>
+            )}
           </>
         )}
       </div>

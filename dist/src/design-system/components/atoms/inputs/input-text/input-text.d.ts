@@ -15,6 +15,7 @@ export interface IInputText {
     isErroneous?: boolean;
     required?: boolean;
     other?: TOther;
+    autocomplete?: string;
 }
 declare const InputText: React.ForwardRefExoticComponent<IInputText & React.RefAttributes<HTMLInputElement>>;
 export { InputText };

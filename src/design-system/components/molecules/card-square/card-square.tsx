@@ -34,14 +34,18 @@ const CardSquare = ({ surface, image, heading, preamble, description, link }: IC
                 onSurface={surface && !image ? surface : image ? 'decorativeTwo' : 'transparent'}
                 size="large"
                 className={cx(styles.link, styles.largeDeviceLink)}
-              />
+              >
+                {link?.children}
+              </UILink>
               <UILink
                 {...link}
                 iconRight="icon-arrow-right"
                 onSurface={surface && !image ? surface : image ? 'decorativeTwo' : 'transparent'}
                 size="default"
                 className={cx(styles.link, styles.smallDeviceLink)}
-              />
+              >
+                {link?.children}
+              </UILink>
             </>
           )}
         </div>

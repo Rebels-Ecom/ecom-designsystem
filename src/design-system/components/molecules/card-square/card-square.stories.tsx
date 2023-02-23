@@ -28,7 +28,7 @@ CardSquareStory.args = {
   heading: 'Webben, foajén, bioduken. Följ publiken genom hela bioupplevelsen',
   description: 'lorem ipsum',
   link: {
-    text: 'Våra Reklamplatser',
+    children: 'Våra Reklamplatser',
     href: '/kontakt',
     linkComponent: 'a',
     title: 'Till kontaktssidan',

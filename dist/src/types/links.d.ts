@@ -5,7 +5,7 @@ export type TNavLink = {
     navLinkType: TNavLinkType;
 } & ILink;
 export interface ILink {
-    text?: React.ReactNode;
+    children: React.ReactNode;
     linkComponent?: any;
     href: string;
     target?: TTarget;

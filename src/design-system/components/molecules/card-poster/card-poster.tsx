@@ -25,7 +25,9 @@ const CardPoster = ({ image, surface, heading, preamble, description, link }: IC
         {preamble ? <h3 className={styles.heading}>{heading}</h3> : <h2 className={styles.heading}>{heading}</h2>}
         {description && <p className={styles.description}>{description}</p>}
         {link && (
-          <UILink {...link} iconRight="icon-arrow-right" onSurface={surface && !image ? surface : 'decorativeTwo'} size="default" className={styles.link} />
+          <UILink {...link} iconRight="icon-arrow-right" onSurface={surface && !image ? surface : 'decorativeTwo'} size="default" className={styles.link}>
+            {link?.children}
+          </UILink>
         )}
       </div>
     </div>

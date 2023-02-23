@@ -32,8 +32,12 @@ const CardList = ({ surface = 'decorativeOne', list = [], preamble, format = '1:
           onSurface={surface}
           size={format === '1:1' ? 'large' : 'default'}
           className={cx(styles.link, styles.largeDeviceLink)}
-        />
-        <UILink {...link} iconRight="icon-arrow-right" onSurface={surface} size={'default'} className={cx(styles.link, styles.smallDeviceLink)} />
+        >
+          {link?.children}
+        </UILink>
+        <UILink {...link} iconRight="icon-arrow-right" onSurface={surface} size={'default'} className={cx(styles.link, styles.smallDeviceLink)}>
+          {link?.children}
+        </UILink>
       </div>
     </div>
   )
