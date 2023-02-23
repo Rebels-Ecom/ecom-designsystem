@@ -20,27 +20,27 @@ const Template: ComponentStory<typeof Footer> = (args) => {
 export const FooterStory = Template.bind({})
 
 FooterStory.args = {
-  heading: 'Filmstaden Möten & Event',
-  preamble: 'Möten för alla tillfällen',
+  heading: 'Footer will be placed here',
+  preamble: 'More info here',
   links: [
     {
-      href: '/#moten_och_konferens',
-      text: 'Möte & konferens',
+      href: '/#page1',
+      text: 'Link to page 1',
       isExternal: true,
     },
     {
-      href: '/#filmevent',
-      text: 'Filmevent',
+      href: '/#page2',
+      text: 'Link to page 2',
       isExternal: true,
     },
     {
-      href: '/#lokaler',
-      text: 'Lokaler',
+      href: '/#page3',
+      text: 'Link to page 3',
       isExternal: true,
     },
     {
-      href: '/#kontakt',
-      text: 'Kontakt',
+      href: '/#page4',
+      text: 'Link to page 4',
       isExternal: true,
     },
   ],

@@ -23,14 +23,14 @@ HeroStory.storyName = 'Hero'
 HeroStory.args = {
   image: PictureStory.args,
   topHeading: 'Nytt i höst',
-  heading: 'Möte, konferens & filmevent med Filmstaden',
-  preamble: 'Låt ditt varumärke följa våra gäster genom hela biobesöket - innan, under och efter.',
+  heading: 'Nya produkter',
+  preamble: 'Mer text här...',
   alignContent: 'left',
   link: {
-    text: 'Ny bokningsförfrågan',
-    href: '#bokningsforfragan',
+    text: 'Ny knapp text',
+    href: '#sometext',
     linkComponent: 'a',
-    title: 'Ny bokningsförfrågan',
+    title: 'Ny knapp text',
   },
 }
 

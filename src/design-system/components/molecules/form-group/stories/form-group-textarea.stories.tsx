@@ -37,8 +37,8 @@ const FormGroupStory: ComponentStory<typeof FormGroup> = (args, context) => {
 }
 
 const formGroupArgs = {
-  label: 'Vilka är dina favoritfilmer?',
-  helperText: 'Genom att skriva filmens titel, kan vi lättare hjälpa dig vidare.',
+  label: 'Vad letar du efter?',
+  helperText: 'Genom att skriva produkt namn, kan vi lättare hjälpa dig vidare.',
   requiredText: '(Obligatorisk)',
 }
 
@@ -52,7 +52,7 @@ export const FormGroupTextareaStoryError = FormGroupStory.bind({})
 FormGroupTextareaStoryError.storyName = 'Form Group with Textarea Error'
 FormGroupTextareaStoryError.args = {
   ...formGroupArgs,
-  errorText: 'Du behöver fylla i dina favoritfilmer',
+  errorText: 'Du behöver fylla i produkt namn',
 }
 
 export const FormGroupTextareaStoryDisabled = FormGroupStory.bind({})
@@ -66,5 +66,5 @@ FormGroupTextareaStoryRightLabelText.storyName = 'Form Group with Textarea Label
 FormGroupTextareaStoryRightLabelText.args = {
   ...formGroupArgs,
   requiredText: '',
-  labelRightText: <a href="/">Se filmer</a>,
+  labelRightText: <a href="/">Se produkter</a>,
 }

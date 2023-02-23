@@ -29,9 +29,9 @@ const Template: ComponentStory<typeof Textarea> = (args) => {
   }
 
   const [valueTextarea1, setValueTextarea1] = useState('')
-  const [valueTextarea2, setValueTextarea2] = useState('We make movies better')
-  const [valueTextarea3, setValueTextarea3] = useState('We make movies better')
-  const [valueTextarea4, setValueTextarea4] = useState('We make movies better')
+  const [valueTextarea2, setValueTextarea2] = useState('Some text here')
+  const [valueTextarea3, setValueTextarea3] = useState('Some text here')
+  const [valueTextarea4, setValueTextarea4] = useState('Some text here')
   const [valueTextarea5, setValueTextarea5] = useState('')
 
   const presentationStyle = { margin: '0 0 1rem 0', maxWidth: '616px' }

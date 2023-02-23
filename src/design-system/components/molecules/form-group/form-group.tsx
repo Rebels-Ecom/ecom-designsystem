@@ -1,16 +1,12 @@
 import cx from 'classnames'
 import { InlineHelperText } from '../../atoms/messages/inline-helper/inline-helper-text'
-import { InputText, Select, Textarea } from '../../atoms'
-import { RadioButtonGroup, CheckboxGroup } from '../../molecules'
+import { InputText, Textarea } from '../../atoms'
 import { InlineErrorText } from '../../atoms/messages/inline-error/inline-error-text'
 import styles from './form-group.module.css'
 
 type TFormElement =
   | React.ReactElement<typeof InputText>
   | React.ReactElement<typeof Textarea>
-  | React.ReactElement<typeof Select>
-  | React.ReactElement<typeof RadioButtonGroup>
-  | React.ReactElement<typeof CheckboxGroup>
 export interface IFormGroup {
   label?: string
   formElementId: string

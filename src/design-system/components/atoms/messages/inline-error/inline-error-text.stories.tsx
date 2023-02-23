@@ -11,7 +11,7 @@ const Template: ComponentStory<typeof InlineErrorText> = () => {
   return (
     <>
       <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
-        <InlineErrorText>Filmtitel är obligatorisk</InlineErrorText>
+        <InlineErrorText>Fält är obligatorisk</InlineErrorText>
       </div>
     </>
   )
