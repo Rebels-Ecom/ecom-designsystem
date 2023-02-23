@@ -11,7 +11,7 @@ export interface IUILink extends ILink {
   iconRight?: TIcon
   size: TSize
   onSurface: TSurface
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export const LinkComponent = ({ children, ...props }: any) => <div {...props}>{children}</div>

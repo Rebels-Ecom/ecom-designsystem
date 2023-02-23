@@ -25,11 +25,11 @@ export const UILinkStory = Template.bind({})
 
 UILinkStory.storyName = 'UILink'
 UILinkStory.args = {
-  children: 'Våra reklamplatser',
+  children: 'Read more here',
   href: '',
   isExternal: true,
   target: null,
-  title: 'Till våra reklamplatser',
+  title: 'Go to some page',
   size: 'default',
   onSurface: 'transparent',
 }

@@ -78,7 +78,7 @@ function Search({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocuse
                 onChange={onChange}
                 value={query}
                 className={styles.inputField}
-                onFocus={onFocus}
+                // onFocus={onFocus}
                 onBlur={onBlur}
                 other={{ autoComplete: 'off' }}
                 disabled={disabled}
