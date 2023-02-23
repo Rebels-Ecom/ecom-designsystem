@@ -1,5 +1,0 @@
-export * from './design-system/components/atoms/index';
-export * from './design-system/components/molecules/index';
-export * from './design-system/components/organisms/index';
-export * from './design-system/components/templates/index';
-export * from './design-system/components/layouts/index';
