@@ -1,19 +1,25 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { LinkButton } from './link-button'
 import { UILinkStory } from '../ui-link/ui-link.stories'
 
-export default {
+const meta: Meta<typeof LinkButton> = {
   title: 'Design System/Atoms/LinkButton',
-  component: LinkButton,
-} as ComponentMeta<typeof LinkButton>
+  component: LinkButton
+};
 
-const Template: ComponentStory<typeof LinkButton> = (args) => <LinkButton {...args}></LinkButton>
-Template.storyName = 'LinkButton'
-Template.args = {
-  ...UILinkStory.args,
-  size: 'large',
-  surface: 'primary',
+export default meta;
+type Story = StoryObj<typeof LinkButton>;
+
+const LinkButtonStoryTemplate: Story = {
+  render: ({ ...args }) => (<LinkButton {...args} />)
+};
+
+export const LinkButtonStory = {
+  ...LinkButtonStoryTemplate,
+  args: {
+    ...UILinkStory.args,
+    size: 'large',
+    surface: 'primary',
+  }
 }
-
-export { Template }
