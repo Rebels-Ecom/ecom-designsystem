@@ -1,0 +1,17 @@
+.header {
+  background: var(--navigation-surface-subdued);
+  width: 100%;
+  position: sticky;
+  z-index: 9;
+  top: 0;
+  left: 0;
+
+  &.navigationOpen {
+   
+
+    @media (min-width: 64em) {
+      height: auto;
+    }
+  }
+}
+
