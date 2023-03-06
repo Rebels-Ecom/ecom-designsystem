@@ -27,7 +27,11 @@ CardImageStory.args = {
   articleId: '1153311',
   country: 'Sverige',
   packaging: 'Engångsglas 33cl',
-  unitPriceStr: '19,44'
+  unitPriceStr: '19,44',
+  productTags: [
+    {text: 'EKO', shape: 'pill', color: 'green'},
+    {text: 'VEGAN', shape: 'pill', color: 'mint'},
+    {text: 'ALCOHOLFRI', shape: 'pill', color: 'blue'},
+    {text: 'STANDARD SORTIMENT', shape: 'pill', color: 'orange'},
+  ]
 }
-
-

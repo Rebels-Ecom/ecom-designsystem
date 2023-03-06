@@ -6,6 +6,7 @@ import { ProductCardStory } from '../../molecules/product-card/product-card.stor
 import { dummyBeerList } from './dummy-product-list-beer'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import { ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 
 export default {
   title: 'Design System/Organisms/ProductCardList',
@@ -15,7 +16,7 @@ export default {
 const Template: ComponentStory<typeof ProductCardList> = (args) => {
   const [cardList] = useState(args.productCards)
   return (
-    <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
+    <div style={{ margin: '0 auto', maxWidth: '1440px' }}>
       <ProductCardList productCards={cardList} maxColumns={args.maxColumns} />
     </div>
   )
@@ -35,6 +36,7 @@ function getVariantsList( productName:string, variantsList:Array<any>) {
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
             image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
             checked: variant.VariantId===firstVariantId,
+            tags: variant.Tags,
             onChange: () => {},
         }
     })
@@ -53,7 +55,9 @@ function getProductList( productList: any) : IProduct {
             price:product.ListPricePerUnit,
             salesUnit:product.SalesUnit,
             itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
-            productVariantList: getVariantsList(productItem.DisplayName, productItem.Variants)
+            tags: product.Tags,
+            productVariantList: getVariantsList(productItem.DisplayName, productItem.Variants),
+            changePackagingButton:ChangePackagingButtonStory.args
         }
 
     })
@@ -97,4 +101,3 @@ Product_Card_List__Max_Columns_4.args = {
   maxColumns: 4,
 }
 Product_Card_List__Max_Columns_4.storyName = 'Card List Max Columns 4 '
-

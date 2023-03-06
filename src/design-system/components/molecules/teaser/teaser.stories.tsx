@@ -33,7 +33,8 @@ TeaserStoryLeft.args = {
         linkComponent: 'a',
         title: 'Boka din plats',
         surface: 'primary',
-        size: 'large'
+        size: 'large',
+        children: 'Boka din plats'
     }
 }
 
@@ -53,6 +54,7 @@ TeaserStoryRight.args = {
         linkComponent: 'a',
         title: 'Läs mer',
         surface: 'primary',
-        size: 'large'
+        size: 'large',
+        children: 'Boka din plats'
     }
 }

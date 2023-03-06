@@ -44,7 +44,7 @@ const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTh
               </header>
             )}
             {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
-            {link && <LinkButton surface="primary" size="small" {...link} className={styles.linkButton} />}
+            {link && <LinkButton surface="tertiary" size="small" {...link} className={styles.linkButton} />}
           </div>
         </div>
       </div>

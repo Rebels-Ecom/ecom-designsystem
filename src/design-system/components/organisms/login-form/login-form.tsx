@@ -51,7 +51,7 @@ const LoginForm = ({
       <UILink onSurface="transparent" size="default" href="#">
         {forgotPasswordLabel}
       </UILink>
-      <Button type="submit" surface="primary" surfaceVariant="blue" size="small" fullWidth>
+      <Button type="submit" surface="primary" size="small" fullWidth>
         {primarySubmitLabel}
       </Button>
       {secondarySubmitLabel && (

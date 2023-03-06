@@ -31,6 +31,7 @@ HeroStory.args = {
     href: '#sometext',
     linkComponent: 'a',
     title: 'Ny knapp text',
+    children: 'Beställ idag',
   },
 }
 
@@ -48,6 +49,7 @@ HeroStoryLeft.args = {
     href: '#bestalla',
     linkComponent: 'a',
     title: 'Beställ idag',
+    children: 'Beställ idag',
   },
 }
 
@@ -65,6 +67,7 @@ HeroStoryRight.args = {
     href: '#bestalla',
     linkComponent: 'a',
     title: 'Beställ idag',
+    children: 'Beställ idag',
   },
 }
 
@@ -82,6 +85,7 @@ HeroStoryCenter.args = {
     href: '#bestalla',
     linkComponent: 'a',
     title: 'Beställ idag',
+    children: 'Beställ idag',
   },
 }
 

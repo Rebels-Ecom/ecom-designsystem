@@ -20,7 +20,8 @@ TagStoryRectangular_S.storyName = 'Tag Story Rectangular Small';
 TagStoryRectangular_S.args = {
     text: 'EKO',
     size: 'small',
-    shape: 'rectangular'
+    shape: 'rectangular',
+    color: 'green'
 }
 
 export const TagStoryRectangular_L = Template.bind({});
@@ -28,7 +29,8 @@ TagStoryRectangular_L.storyName = 'Tag Story Rectangular Large';
 TagStoryRectangular_L.args = {
     text: 'Tillval',
     size: 'large',
-    shape: 'rectangular'
+    shape: 'rectangular',
+    color: 'blue'
 }
 
 export const TagStoryRound_S = Template.bind({});
@@ -36,7 +38,8 @@ TagStoryRound_S.storyName = 'Tag Story Round Small';
 TagStoryRound_S.args = {
     text: 'Kurs',
     size: 'small',
-    shape: 'round'
+    shape: 'round',
+    color: 'mint'
 }
 
 export const TagStoryRound_L = Template.bind({});
@@ -44,6 +47,6 @@ TagStoryRound_L.storyName = 'Tag Story Round Large';
 TagStoryRound_L.args = {
     text: 'Nyhet',
     size: 'large',
-    shape: 'round'
-    
+    shape: 'round',
+    color: 'orange'
 }

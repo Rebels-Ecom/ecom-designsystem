@@ -2,7 +2,10 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 module.exports = {
-  content: ['./src/design-system/components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/design-system/components/**/*.{js,ts,jsx,tsx}',
+    './node_modules/flowbite/**/*.js'
+  ],
   darkMode: 'class',
   theme: {
     spacing: {
@@ -11,14 +14,19 @@ module.exports = {
       4: '.25rem',
       6: '.375rem',
       8: '.5rem',
+      10: '.625rem',
       12: '.75rem',
+      14: '.875rem',
       16: '1rem',
+      18: '1.125rem',
       20: '1.25rem',
       24: '1.5rem',
       32: '2rem',
       40: '2.5rem',
       48: '3rem',
+      56: '3.5rem',
       64: '4rem',
+      76: '4.75rem',
       96: '6rem',
       full: '100%',
     },
@@ -38,17 +46,26 @@ module.exports = {
       xl: ['2rem', { lineHeight: '2.75rem', letterSpacing: -0.01 }],
       '2xl': ['2.5rem', { lineHeight: '3.5rem', letterSpacing: -0.015 }],
       '3xl': ['3.75rem', { lineHeight: '4.5rem', letterSpacing: -0.02 }],
+      'cta-sm': ['var( --cta-s-font-size)', {lineHeight: 'var(--cta-s-line-height)', letterSpacing:'var(--cta-s-letter-spacing)' }],
+      'cta-lg': ['var( --cta-l-font-size)', {lineHeight: 'var(--cta-l-line-height)', letterSpacing:'var(--cta-l-letter-spacing)'}],
+      'tag-rectangular-sm': ['var( --tag-rectangular-mobile-font-size)', {lineHeight: 'var(--tag-rectangular-mobile-line-height)'}],
+      'tag-rectangular-lg': ['var( --tag-rectangular-desktop-font-size)', {lineHeight: 'var(--tag-rectangular-desktop-line-height)'}],
+      'tag-round-sm': ['var( --tag-round-mobile-font-size)', {lineHeight: 'var(--tag-round-mobile-line-height)'}],
+      'tag-round-lg': ['var( --tag-round-desktop-font-size)', {lineHeight: 'var(--tag-round-desktop-line-height)'}],
     },
     borderWidth: {
       DEFAULT: '.0625rem',
       0: '0',
+      1: '0.063rem',
       2: '.125rem',
       3: '.1875rem',
       4: '.25rem',
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-family)', ...defaultTheme.fontFamily.sans],
+        primary: ['spendrups_primary', ...defaultTheme.fontFamily.sans, 'Arial'],
+        secondary: ['spendrups_secondary', ...defaultTheme.fontFamily.sans, 'Arial'],
+        secondaryBold: ['spendrups_secondary_bold', ...defaultTheme.fontFamily.sans, 'Arial']
       },
       textColor: {
         DEFAULT: 'var(--text-default)',
@@ -56,12 +73,27 @@ module.exports = {
         weaker: 'var(--text-weaker)',
         inverse: 'var(--text-inverse)',
         disabled: 'var(--text-disabled)',
-        button: {
+        greyDecorative: 'var(--color-text-decorative-grey)',
+        purpleDecorative: 'var(--color-text-decorative-purple)',
+        cta: {
           primary: {
-            DEFAULT: 'var(--text-button-primary)',
-            active: 'var(--text-button-primary-active)',
+            DEFAULT: 'var(--color-on-primary)',
+            disabled: 'var(--color-on-primary-disabled)',
           },
+          secondary: {
+            DEFAULT: 'var(--color-on-secondary)',
+            hover: 'var(--color-on-secondary-hover)',
+            disabled: 'var(--color-on-secondary-disabled)',
+          },
+          tertiary: {
+            DEFAULT: 'var(--color-on-tertiary)',
+            disabled: 'var(--color-on-tertiary-disabled)',
+          }
         },
+        tag: {
+          blue: 'var(--tag-blue)',
+          white: 'var(--tag-white)',
+        }
       },
       placeholderColor: {
         DEFAULT: 'var(--text-default)',
@@ -84,6 +116,16 @@ module.exports = {
           hover: 'var(--border-input-hover)',
           active: 'var(--border-input-active)',
         },
+        cta: {
+          primary: {
+            DEFAULT: 'var(--border-on-primary)',
+          },
+          secondary: {
+            DEFAULT: 'var(--border-on-secondary)',
+            hover: 'var(--border-on-secondary-hover)',
+            disabled: 'var(--border-on-secondary-disabled)',
+          }
+        }
       },
       backgroundColor: {
         DEFAULT: 'var(--background-default)',
@@ -101,6 +143,27 @@ module.exports = {
           DEFAULT: 'var(--background-input)',
           hover: 'var(--background-input-hover)',
         },
+        cta: {
+          primary: {
+            DEFAULT: 'var(--cta-primary-default)',
+            hover: 'var(--cta-primary-hover)',
+            disabled: 'var(--cta-primary-disabled)',
+          },
+          secondary: {
+            DEFAULT: 'var(--cta-secondary-default)',
+          },
+          tertiary: {
+            DEFAULT: 'var(--cta-tertiary-default)',
+            hover: 'var(--cta-tertiary-hover)',
+            disabled: 'var(--cta-tertiary-disabled)',
+          }
+        },
+        tag: {
+          green: 'var(--tag-green)',
+          mint: 'var(--tag-mint)',
+          blue: 'var(--tag-blue)',
+          orange: 'var(--tag-orange)',
+        }
       },
       ringColor: {
         DEFAULT: 'var(--focus-ring)',
@@ -124,6 +187,11 @@ module.exports = {
         weaker: 'var(--brand-weaker)',
         weakest: 'var(--brand-weakest)',
       },
+      cta: {
+        primary: {
+          focus:'var(--cta-primary-focused-shadow)',
+        },
+      },
       ring: 'var(--focus-ring)',
       transparent: 'transparent',
     },
@@ -139,5 +207,6 @@ module.exports = {
         },
       })
     }),
+    require('flowbite/plugin')
   ],
 }

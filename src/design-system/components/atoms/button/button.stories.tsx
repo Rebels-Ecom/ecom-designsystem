@@ -6,12 +6,6 @@ import { Icon } from '../icon/icon'
 export default {
   title: 'Design System/Atoms/Buttons',
   component: Button,
-  argTypes: {
-    surfaceVariant: {
-      options: ['orange', 'blue', 'light_orange'],
-      control: { type: 'radio' },
-    },
-  },
 } as ComponentMeta<typeof Button>
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args}>{args.children ? args.children : 'Button'}</Button>
@@ -30,8 +24,7 @@ ButtonStoryPrimary.args = {
   id: 'button_primary_1',
   value: '',
   disabled: false,
-  surface: 'primary',
-  surfaceVariant: 'blue'
+  surface: 'primary'
 }
 
 export const ButtonStorySecondary = Template.bind({})
@@ -51,7 +44,8 @@ ButtonStoryTertiary.args = {
   disabled: false,
   rounded:true,
   surface: 'tertiary',
-  children: <>Byt förpacking&nbsp; &nbsp; <Icon icon="icon-layers"/></>
+  children: 'Byt förpacking',
+  iconRight: {icon:"icon-layers"}
 }
 
 export const ButtonStoryTertiaryIconOnly = Template.bind({})
@@ -72,5 +66,18 @@ ButtonProductCardStory.args = {
   disabled: false,
   size: 'small',
   children: 'Lägg i kundvagn',
+  onClick: () => {},
+}
+
+export const ChangePackagingButtonStory = Template.bind({})
+ChangePackagingButtonStory.storyName = 'Change packaging Button'
+ChangePackagingButtonStory.args = {
+  id: 'Button_Change_Packaging',
+  disabled: false,
+  size: 'small',
+  surface: 'secondary',
+  children: 'Byt förpackning',
+  iconRight: {icon:'icon-layers'},
+  rounded:true,
   onClick: () => {},
 }

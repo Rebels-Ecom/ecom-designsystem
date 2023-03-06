@@ -44,6 +44,15 @@ export const lightTheme = {
   /*Text */
   '--color-text-default':'#000000',
   '--color-text-white': '#ffffff',
+  '--color-on-primary':'#ffffff',
+  '--color-on-primary-disabled':'#8A8E8F',
+  '--color-on-secondary':'#003E51',
+  '--color-on-secondary-hover':'#336574',
+  '--color-on-secondary-disabled':'#547E8A',
+  '--color-on-tertiary':'#000000',
+  '--color-on-tertiary-disabled':'#8A8E8F',
+
+
   '--color-text-on-primary': '#ffffff',
   '--color-text-on-primary-disabled': 'rgba(255, 255, 255, 0.3)',
   '--color-text-on-secondary': '#72757A',
@@ -57,7 +66,25 @@ export const lightTheme = {
   '--input-background-focused': 'rgba(255, 196, 22, 0.1)',
   '--input-text-color': '#003E51',
 
+  /* Tag colors*/
+  '--tag-green':'#3D5B49',
+  '--tag-mint': '#C0E1D7',
+  '--tag-blue': '#003E51',
+  '--tag-orange': '#DE9034',
+  '--tag-white': '#ffffff',
+
   /*  CTA COLORS NEED TO BE REVIEWED AFTER THE DESIGN IS UPDATED*/
+
+  /* CTA-s */
+  '--cta-primary-default': '#003E51',
+  '--cta-primary-hover': '#336574',
+  '--cta-primary-disabled': '#E6ECEE',
+  '--cta-secondary-default': 'transparent',
+  '--cta-tertiary-default': '#F08A00',
+  '--cta-tertiary-hover': '#F3A133',
+  '--cta-tertiary-disabled': '#FEF3E6',
+
+
   /*CTA */
   '--action-primary-orange-default': '#F08A00',
   '--action-primary-orange-hover': 'rgba(222, 144, 52, 0.8)',
@@ -119,6 +146,10 @@ export const lightTheme = {
   '--border-subdued': '#d5d5d5',
   '--border-disabled': '#d5d5d5',
   '--border-critical': '#cc0028',
+  '--border-on-primary':'transparent',
+  '--border-on-secondary': '#003E51',
+  '--border-on-secondary-hover': '#336574',
+  '--border-on-secondary-disabled': '#547E8A',
   '--interactive-default': '#F08A00',
   '--interactive-hover': '#DA7E00',
   '--interactive-disabled': '#d5d5d5',
@@ -197,13 +228,39 @@ export const darkTheme = {
    '--top-nav-bar-background': '#003E51',
    '--menu-nav-bar-background': '#ffffff',
 
-     /*Text */
+    /*Text */
   '--color-text-default':'#000000',
   '--color-text-white': '#ffffff',
+  '--color-on-primary':'#ffffff',
+  '--color-on-primary-disabled':'#8A8E8F',
+  '--color-on-secondary':'#003E51',
+  '--color-on-secondary-hover':'#336574',
+  '--color-on-secondary-disabled':'#547E8A',
+  '--color-on-tertiary':'#000000',
+  '--color-on-tertiary-disabled':'#8A8E8F',
+
   '--color-text-on-primary': '#ffffff',
   '--color-text-on-secondary': '#000000',
 
+   /* Tag colors*/
+   '--tag-green':'#3D5B49',
+   '--tag-mint': '#C0E1D7',
+   '--tag-blue': '#003E51',
+   '--tag-orange': '#DE9034',
+   '--tag-white': '#ffffff',
+
    /*  CTA COLORS NEED TO BE REVIEWED AFTER THE DESIGN IS UPDATED*/
+
+  /* CTA-s */
+  '--cta-primary-default': '#003E51',
+  '--cta-primary-hover': '#336574',
+  '--cta-primary-disabled': '#E6ECEE',
+  '--cta-secondary-default': 'transparent',
+  '--cta-tertiary-default': '#F08A00',
+  '--cta-tertiary-hover': '#F3A133',
+  '--cta-tertiary-disabled': '#FEF3E6',
+
+
   /*CTA */
   '--action-primary-orange-default': '#F08A00',
   '--action-primary-orange-hover': 'rgba(222, 144, 52, 0.8)',

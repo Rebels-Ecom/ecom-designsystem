@@ -58,31 +58,39 @@ html {
   --body-s-desktop-line-height: 1.125rem;
 
   /* CTA S */
-  --cta-s-mobile-font-size: 0.875rem;
-  --cta-s-mobile-line-height: 1.125rem;
-  --cta-s-mobile-letter-spacing: 0.02rem;
-  --cta-s-desktop-font-size: 1rem;
-  --cta-s-desktop-line-height: 1.25rem;
-  --cta-s-desktop-letter-spacing: 0.03rem;
+  --cta-s-font-size: 0.875rem;
+  --cta-s-line-height: 1.125rem;
+  --cta-s-letter-spacing: 0.02rem;
 
   /* CTA L */
-  --cta-l-mobile-font-size: 1rem;
-  --cta-l-mobile-line-height: 1.25rem;
-  --cta-l-mobile-letter-spacing: 0.02rem;
-  --cta-l-desktop-font-size: 1rem;
-  --cta-l-desktop-line-height: 1.25rem;
-  --cta-l-desktop-letter-spacing: 0.03rem;
+  --cta-l-font-size: 1rem;
+  --cta-l-line-height: 1.25rem;
+  --cta-l-letter-spacing: 0.03rem;
+
+  /* Tag rectangular */
+  --tag-rectangular-mobile-font-size: 0.75rem;
+  --tag-rectangular-mobile-line-height: 1.5rem;
+  --tag-rectangular-desktop-font-size: 1rem;
+  --tag-rectangular-desktop-line-height: 1.875rem;
+
+  /* Tag round */
+  --tag-round-mobile-font-size: 1rem;
+  --tag-round-mobile-line-height: 1.1rem;
+  --tag-round-desktop-font-size: 1.375rem;
+  --tag-round-desktop-line-height: 1.471rem;
+
+  /*We can remove the tags below*/
 
   /* Tag small rectangular 16/29 */
   --tag-s-rectangular-mobile-font-size: 0.75rem;
   --tag-s-rectangular-mobile-line-height: 1.5rem;
-  --tag-s-rectangular-esktop-font-size: 1rem;
+  --tag-s-rectangular-desktop-font-size: 1rem;
   --tag-s-rectangular-desktop-line-height: 1.875rem;
 
   /* Tag large rectangular 16/19 */
   --tag-l-rectangular-mobile-font-size: 0.75rem;
   --tag-l-rectangular-mobile-line-height: 1.5rem;
-  --tag-l-rectangular-esktop-font-size: 1rem;
+  --tag-l-rectangular-desktop-font-size: 1rem;
   --tag-l-rectangular-desktop-line-height: 1.875rem;
 
   /* Tag small round 22/23 */

@@ -1,13 +1,15 @@
 import { forwardRef } from 'react'
 import cx from 'classnames'
-import { TButtonSize, TButtonSurface, TButtonSurfaceVariant } from '../../../../types/button'
+import { TButtonSize, TButtonSurface } from '../../../../types/button'
+import { Icon, IIcon } from '../icon/icon'
 
 export type TButtonType = 'submit' | 'button'
 export interface IButton {
   children?: React.ReactNode
   type: TButtonType
   surface: TButtonSurface
-  surfaceVariant?: TButtonSurfaceVariant
+  iconLeft?: IIcon
+  iconRight?: IIcon
   size?: TButtonSize
   fullWidth?: boolean
   rounded?: boolean
@@ -17,19 +19,14 @@ export interface IButton {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export const primaryButtonClasses =
-  'bg-brand font-medium border-2 border-transparent text-button-primary hover:bg-brand-strong focus-visible:bg-brand focus-visible:ring-ring active:bg-brand-stronger active:text-button-primary-active disabled:bg-disabled disabled:text-disabled'
+export const defaultButtonClasses = 'flex justify-center items-center font-secondaryBold disabled:cursor-not-allowed rounded'
+export const primaryButtonClasses = 'text-cta-primary bg-cta-primary hover:bg-cta-primary-hover disabled:bg-cta-primary-disabled disabled:text-cta-primary-disabled border-transparent'  
+export const secondaryButtonClasses = 'text-cta-secondary bg-cta-secondary border-1 border-cta-secondary hover:text-cta-secondary-hover hover:border-cta-secondary-hover disabled:bg-cta-secondary-disabled disabled:text-cta-secondary-disabled disabled:border-cta-secondary-disabled'  
+export const tertiaryButtonClasses = 'text-cta-tertiary bg-cta-tertiary hover:bg-cta-tertiary-hover disabled:bg-cta-tertiary-disabled disabled:text-cta-tertiary-disabled border-transparent' 
 
-export const secondaryButtonClasses =
-  'border-2 focus-visible:border-transparent text hover:border-strong hover:bg-weak focus-visible:bg-weak focus-visible:ring-ring active:bg disabled:bg-disabled disabled:text-disabled disabled:border-disabled'
 
-export const tertiaryButtonClasses =
-  'border-2 border-transparent font-bold text hover:border-strong hover:bg-weak focus-visible:border-transparent focus-visible:bg-weak focus-visible:ring-ring active:border-border active:bg disabled:bg-transparent disabled:text-disabled'
-
-export const defaultButtonClasses = 'relative overflow-hidden rounded-full outline-none ring-offset-2 focus-visible:ring-2 disabled:cursor-not-allowed'
-
-export function getVariantClasses(variant: TButtonSurface) {
-  switch (variant) {
+export function getButtonSurfaceClasses(surface: TButtonSurface) {
+  switch (surface) {
     case 'secondary':
       return secondaryButtonClasses
     case 'tertiary':
@@ -41,8 +38,8 @@ export function getVariantClasses(variant: TButtonSurface) {
 }
 
 export function getSizeClasses(size: TButtonSize) {
-  const largeClasses = `h-48 text-md`
-  const smallClasses = `h-32 text-xs`
+  const largeClasses = `h-48 px-32 p-16 text-cta-lg`
+  const smallClasses = `h-40 px-32 py-10 text-cta-sm`
   switch (size) {
     case 'small':
       return smallClasses
@@ -52,21 +49,19 @@ export function getSizeClasses(size: TButtonSize) {
   }
 }
 
-const Button = forwardRef<HTMLButtonElement, IButton>(
-  (
-    { className, surface = 'primary', surfaceVariant = 'orange', size = 'large', type = 'button', children, fullWidth, rounded, disabled, onClick, id },
-    ref
-  ) => (
-    <button
-      ref={ref}
-      id={id ? id : undefined}
-      type={type}
-      className={cx(defaultButtonClasses, getSizeClasses(size), getVariantClasses(surface), fullWidth && 'w-full', className)}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+const Button = forwardRef<HTMLButtonElement, IButton>(({ className, surface = 'primary', size = 'large', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id }, ref ) => (
+  <button
+    ref={ref}
+    id={id ? id : undefined}
+    type={type}
+    className={cx(defaultButtonClasses, getSizeClasses(size), getButtonSurfaceClasses(surface), fullWidth && 'w-full', rounded && 'rounded-full', disabled && 'disabled', className)}
+    disabled={disabled}
+    onClick={onClick}
+  >
+    {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
+    {children && <span className={ cx(iconLeft && 'ml-10', iconRight && 'mr-10')}>{children}</span>}
+    {iconRight && <Icon icon={iconRight.icon}></Icon>}
+  </button>
   )
 )
 
