@@ -1,14 +1,19 @@
 import React from 'react'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { OfferCardList } from './offer-card-list'
 import { OfferCardStory1, OfferCardStory2 } from '../../molecules/offer-card/offer-card.stories'
 
-export default {
+const meta: Meta<typeof OfferCardList> = {
     title: 'Design System/Organisms/OfferCardList',
-    component: OfferCardList,
-} as ComponentMeta<typeof OfferCardList>
+    component: OfferCardList
+};
 
-const Template: ComponentStory<typeof OfferCardList> = (args) => <OfferCardList {...args}></OfferCardList>
+export default meta;
+type Story = StoryObj<typeof OfferCardList>;
+
+const OfferCardListStoryTemplate: Story = {
+  render: ({ ...args }) => (<OfferCardList {...args} />)
+};
 
 const offersList = [
     OfferCardStory1.args,
@@ -17,8 +22,9 @@ const offersList = [
     OfferCardStory2.args,
 ];
 
-export const OfferCardListStory = Template.bind({});
-OfferCardListStory.storyName = 'Offer Card List Story',
-OfferCardListStory.args = {
-    list: offersList
+export const OfferCardListStory = {
+    ...OfferCardListStoryTemplate,
+    args: {
+        list: offersList
+    }
 }
