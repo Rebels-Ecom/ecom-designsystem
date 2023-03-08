@@ -1,40 +1,44 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react';
 import { FormGroup } from '../form-group'
 import { useState } from 'react'
 import { Textarea } from '../../../atoms'
 import { TextareaStory } from '../../../atoms/textarea/textarea.stories'
 
-export default {
+
+const meta: Meta<typeof FormGroup> = {
   title: 'Design System/Molecules/FormGroup/Textarea',
   component: FormGroup,
-} as ComponentMeta<typeof FormGroup>
+};
 
-const FormGroupStory: ComponentStory<typeof FormGroup> = (args, context) => {
-  const [value, setValue] = useState('')
+export default meta;
+type Story = StoryObj<typeof FormGroup>;
 
-  function onChangeInput(e: React.FormEvent<HTMLInputElement>) {
-    setValue(e.currentTarget.value)
-  }
+const FormGroupStoryTemplate: Story = {
+  render: (args, context) => {
+    const [value, setValue] = useState('')
 
-  const formElementProps = {
-    onChange: onChangeInput,
-    value: value,
-  }
-
-  const isErroneous = args.errorText
-  const disabled = context.story.includes('Disabled')
+    function onChangeInput(e: React.FormEvent<HTMLInputElement>) {
+      setValue(e.currentTarget.value)
+    }
+  
+    const formElementProps = {
+      onChange: onChangeInput,
+      value: value,
+    }
+  
+    const isErroneous = args.errorText ? true : false
+    const disabled = context.story.includes('Disabled')  
 
   return (
-    <>
-      <div style={{ margin: '0 0 2rem 0', maxWidth: '616px' }}>
+    <div style={{ margin: '0 0 2rem 0', maxWidth: '616px' }}>
         <FormGroup {...args} formElementId={TextareaStory.args.id}>
           {<Textarea {...{ ...TextareaStory.args, ...formElementProps, disabled, isErroneous }} />}
         </FormGroup>
       </div>
-    </>
-  )
-}
+    )
+  }
+};
 
 const formGroupArgs = {
   label: 'Vad letar du efter?',
@@ -42,29 +46,33 @@ const formGroupArgs = {
   requiredText: '(Obligatorisk)',
 }
 
-export const FormGroupTextareaStory = FormGroupStory.bind({})
-FormGroupTextareaStory.storyName = 'Form Group with Textarea'
-FormGroupTextareaStory.args = {
-  ...formGroupArgs,
+export const FormGroupTextareaStory = {
+  ...FormGroupStoryTemplate,
+  args: {
+    ...formGroupArgs,
+  }
 }
 
-export const FormGroupTextareaStoryError = FormGroupStory.bind({})
-FormGroupTextareaStoryError.storyName = 'Form Group with Textarea Error'
-FormGroupTextareaStoryError.args = {
-  ...formGroupArgs,
-  errorText: 'Du behöver fylla i produkt namn',
+export const FormGroupTextareaStoryError = {
+  ...FormGroupStoryTemplate,
+  args: {
+    ...formGroupArgs,
+    errorText: 'Du behöver fylla i produkt namn',
+  }
 }
 
-export const FormGroupTextareaStoryDisabled = FormGroupStory.bind({})
-FormGroupTextareaStoryDisabled.storyName = 'Form Group with Textarea Disabled'
-FormGroupTextareaStoryDisabled.args = {
-  ...formGroupArgs,
+export const FormGroupTextareaStoryDisabled = {
+  ...FormGroupStoryTemplate,
+  args: {
+    ...formGroupArgs,
+  }
 }
 
-export const FormGroupTextareaStoryRightLabelText = FormGroupStory.bind({})
-FormGroupTextareaStoryRightLabelText.storyName = 'Form Group with Textarea Label Right Text'
-FormGroupTextareaStoryRightLabelText.args = {
-  ...formGroupArgs,
-  requiredText: '',
+export const FormGroupTextareaStoryRightLabelText = {
+  ...FormGroupStoryTemplate,
+  args: {
+    ...formGroupArgs,
+    requiredText: '',
   labelRightText: <a href="/">Se produkter</a>,
+  }
 }

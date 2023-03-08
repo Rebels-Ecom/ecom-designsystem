@@ -1,13 +1,19 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { TopNavBar } from './top-nav-bar'
 
-export default {
-  title: 'Design System/Molecules/Top Nav Bar',
-  component: TopNavBar,
-} as ComponentMeta<typeof TopNavBar>
 
-const Template: ComponentStory<typeof TopNavBar> = (args) => <TopNavBar {...args} />
+const meta: Meta<typeof TopNavBar> = {
+  title: 'Design System/Molecules/Top Nav Bar',
+  component: TopNavBar
+};
+
+export default meta;
+type Story = StoryObj<typeof TopNavBar>;
+
+const TopNavBarStoryTemplate: Story = {
+  render: ({ ...args }) => (<TopNavBar {...args} />)
+};
 
 const topNavArgs = {
   topNavLinks: [
@@ -39,8 +45,9 @@ const topNavArgs = {
   linkComponent: 'a'
 }
 
-export const TopNavBarStory = Template.bind({})
-TopNavBarStory.storyName = 'TopNavBar'
-TopNavBarStory.args = {
-  ...topNavArgs
+export const TopNavBarStory = {
+  ...TopNavBarStoryTemplate,
+  args: {
+    ...topNavArgs
+  }
 }
