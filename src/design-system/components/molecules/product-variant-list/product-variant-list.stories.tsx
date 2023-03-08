@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ProductVariantList } from './product-variant-list'
 import { ButtonProductCardStory } from '../../atoms/button/button.stories'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { dummyBeerProduct } from '../product-card/dummy-product'
 
-export default {
-    title:'Design System/Molecules/Product/Variants List',
-    component: ProductVariantList,
-} as ComponentMeta<typeof ProductVariantList> 
+const meta: Meta<typeof ProductVariantList> = {
+    title: 'Design System/Molecules/Product/Variants List',
+    component: ProductVariantList
+};
 
-const Template: ComponentStory<typeof ProductVariantList> = (args) => {
+export default meta;
+type Story = StoryObj<typeof ProductVariantList>;
 
-    function handleOnChange(selectedVariant ) {
-        alert(`Selected variant: ${selectedVariant.productName} - ${selectedVariant.variantName}`);
+const ProductVariantListStoryTemplate: Story = {
+  render: ({ ...args }) => {
+        function handleOnChange(selectedVariant ) {
+            alert(`Selected variant: ${selectedVariant.productName} - ${selectedVariant.variantName}`);
+        }
+        return(<ProductVariantList variantsList={args.variantsList} onVariantSelect={handleOnChange} selectedVariantId={args.selectedVariantId} />)
     }
-
-    return(<ProductVariantList variantsList={args.variantsList} onVariantSelect={handleOnChange} selectedVariantId={args.selectedVariantId} />)
 }
 
 function getVariantsList( productName:string, variantsList:Array<any>) {
@@ -38,10 +41,11 @@ function getVariantsList( productName:string, variantsList:Array<any>) {
     })
 }
 
-export const ProductVariantListStory = Template.bind({});
-ProductVariantListStory.storyName = 'Product Variants List';
-ProductVariantListStory.args = {
-    selectedVariantId:dummyBeerProduct.Variants[0].VariantId,
-    variantsList: getVariantsList(dummyBeerProduct.DisplayName, dummyBeerProduct.Variants),
-    button: ButtonProductCardStory.args
+export const ProductVariantListStory = {
+    ...ProductVariantListStoryTemplate,
+    args: {
+        selectedVariantId:dummyBeerProduct.Variants[0].VariantId,
+        variantsList: getVariantsList(dummyBeerProduct.DisplayName, dummyBeerProduct.Variants),
+        button: ButtonProductCardStory.args
+    }
 }

@@ -1,18 +1,23 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBar } from './search-nav-bar'
 import { SearchStory } from '../../atoms/search/search.stories'
 
-export default {
+const meta: Meta<typeof SearchNavBar> = {
   title: 'Design System/Molecules/Search Nav Bar',
-  component: SearchNavBar,
-} as ComponentMeta<typeof SearchNavBar>
+  component: SearchNavBar
+};
 
-const Template: ComponentStory<typeof SearchNavBar> = (args) => (
+export default meta;
+type Story = StoryObj<typeof SearchNavBar>;
+
+const SearchNavBarStoryTemplate: Story = {
+render: ({ ...args }) => (
     <div style={{ position: 'relative', height: '5rem', display:'flex', justifyContent:'center', padding: '0.5rem 1rem' }}>
-        <SearchNavBar {...args} />
+      <SearchNavBar {...args} />
     </div>
-)
+  )
+};
 
 const itemsToFilterOn = [
   { id: 'NCG626689', label: 'Ekoöl på riktigt', text: 'Testa vår ekoöl', slug: 'eko-ol' },
@@ -55,8 +60,9 @@ const searchNavBarArgs = {
   itemsToFilterOn: itemsToFilterOn
 }
 
-export const SearchNavBarStory = Template.bind({})
-SearchNavBarStory.storyName = 'Search Nav Bar'
-SearchNavBarStory.args = {
-  ...searchNavBarArgs,
+export const SearchNavBarStory = {
+  ...SearchNavBarStoryTemplate,
+  args: {
+    ...searchNavBarArgs,
+  }
 }

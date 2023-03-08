@@ -1,24 +1,27 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ProductCard } from './product-card'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct } from './dummy-product'
-import { ProductVariantListStory } from '../product-variant-list/product-variant-list.stories'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 
-export default {
-    title:'Design System/Molecules/Product/ProductCard',
-    component: ProductCard,
-} as ComponentMeta<typeof ProductCard> 
+const meta: Meta<typeof ProductCard> = {
+    title: 'Design System/Molecules/Product/ProductCard',
+    component: ProductCard
+};
 
-const Template: ComponentStory<typeof ProductCard> = (args) => {
-    
+export default meta;
+type Story = StoryObj<typeof ProductCard>;
+
+const ProductCardStoryTemplate: Story = {
+  render: ({ ...args }) => {
     function handleAddToCart(product) {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
 
-   return(<ProductCard {...args} addToCart={handleAddToCart}/>)
-}
+    return(<ProductCard {...args} addToCart={handleAddToCart}/>)
+  }
+};
 
 function getVariantsList( productName:string, variantsList:any) {
     const firstVariantId = variantsList[0].VariantId;
@@ -59,6 +62,9 @@ function getProduct( productData: any) : IProduct {
 
 const productArgs = getProduct(dummyBeerProduct);
 
-export const ProductCardStory = Template.bind({});
-ProductCardStory.storyName = 'Product Card';
-ProductCardStory.args = {...productArgs};
+export const ProductCardStory = {
+    ...ProductCardStoryTemplate,
+    args: {
+        ...productArgs
+    }
+}

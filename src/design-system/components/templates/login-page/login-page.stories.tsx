@@ -1,17 +1,23 @@
 import React from 'react'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { LoginPage } from './login-page'
 import { LoginFormStory } from '../../organisms/login-form/login-form.stories'
 
-export default {
+const meta: Meta<typeof LoginPage> = {
   title: 'Design System/Templates/LoginPage',
-  component: LoginPage,
-} as ComponentMeta<typeof LoginPage>
+  component: LoginPage
+};
 
-const Template: ComponentStory<typeof LoginPage> = (args) => <LoginPage {...args} />
+export default meta;
+type Story = StoryObj<typeof LoginPage>;
 
-export const LoginPageStory = Template.bind({})
-LoginPageStory.storyName = 'Login Page Template'
-LoginPageStory.args = {
-  ...LoginFormStory.args,
+const LoginPageStoryTemplate: Story = {
+  render: ({ ...args }) => (<LoginPage {...args} />)
+};
+
+export const LoginPageStory = {
+  ...LoginPageStoryTemplate,
+  args: {
+    ...LoginFormStory.args,
+  }
 }

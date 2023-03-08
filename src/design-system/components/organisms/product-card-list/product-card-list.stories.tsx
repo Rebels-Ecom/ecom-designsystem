@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { ProductCardList } from './product-card-list'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
@@ -7,19 +7,24 @@ import { dummyBeerList } from './dummy-product-list-beer'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 
-export default {
+const meta: Meta<typeof ProductCardList> = {
   title: 'Design System/Organisms/ProductCardList',
-  component: ProductCardList,
-} as ComponentMeta<typeof ProductCardList>
+  component: ProductCardList
+};
 
-const Template: ComponentStory<typeof ProductCardList> = (args) => {
-  const [cardList] = useState(args.productCards)
-  return (
-    <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-      <ProductCardList productCards={cardList} maxColumns={args.maxColumns} />
-    </div>
-  )
-}
+export default meta;
+type Story = StoryObj<typeof ProductCardList>;
+
+const ProductCardListStoryTemplate: Story = {
+  render: ( args ) => {
+    const [cardList] = useState(args.productCards)
+    return (
+      <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
+        <ProductCardList productCards={cardList} maxColumns={args.maxColumns} />
+      </div>
+    )
+  }
+};
 
 function getVariantsList( productName:string, variantsList:Array<any>) {
     const firstVariantId = variantsList[0].VariantId;
@@ -62,12 +67,13 @@ function getProductList( productList: any) : IProduct {
 
 const productArgs = getProductList(dummyBeerList);
 
-export const ProductCardListStory = Template.bind({});
-ProductCardListStory.storyName = 'Product Card List';
-ProductCardListStory.args = {
+export const ProductCardListStory = {
+  ...ProductCardListStoryTemplate,
+  args: {
     productCards: productArgs,
     maxColumns: 4,
-};
+  }
+}
 
 
 const cardList = [
@@ -82,19 +88,18 @@ const cardList = [
   ProductCardStory.args,
 ]
 
-
-export const Product_Card_List__Max_Columns_3 = Template.bind({})
-Product_Card_List__Max_Columns_3.storyName = 'Card List Max Columns 3'
-
-Product_Card_List__Max_Columns_3.args = {
-  productCards: cardList,
-  maxColumns: 3,
+export const Product_Card_List__Max_Columns_3 = {
+  ...ProductCardListStoryTemplate,
+  args: {
+    productCards: cardList,
+    maxColumns: 3,
+  }
 }
 
-export const Product_Card_List__Max_Columns_4 = Template.bind({})
-Product_Card_List__Max_Columns_4.args = {
-  productCards: cardList,
-  maxColumns: 4,
+export const Product_Card_List__Max_Columns_4 = {
+  ...ProductCardListStoryTemplate,
+  args: {
+    productCards: cardList,
+    maxColumns: 4,
+  }
 }
-Product_Card_List__Max_Columns_4.storyName = 'Card List Max Columns 4 '
-

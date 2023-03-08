@@ -5,7 +5,7 @@ import styles from './button.module.css'
 
 export type TButtonType = 'submit' | 'button'
 export interface IButton {
-  children?: React.ReactNode
+  children: React.ReactNode
   type: TButtonType
   surface: TButtonSurface
   surfaceVariant?: TButtonSurfaceVariant
@@ -22,25 +22,30 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
   (
     { className, surface = 'primary', surfaceVariant = 'orange', size = 'large', type = 'button', children, fullWidth, rounded, disabled, onClick, id },
     ref
-  ) => (
-    <button
-      ref={ref}
-      id={id ? id : undefined}
-      type={type}
-      className={cx(
-        styles.button,
-        styles[size],
-        surface === 'primary' && surfaceVariant ? styles[`${surface}-${surfaceVariant}`] : styles[surface],
-        fullWidth && styles.fullWidth,
-        rounded && styles.rounded,
-        className
-      )}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  )
+  ) => {
+    if(!children)
+      return null;
+
+    return(
+      <button
+        ref={ref}
+        id={id ? id : undefined}
+        type={type}
+        className={cx(
+          styles.button,
+          styles[size],
+          surface === 'primary' && surfaceVariant ? styles[`${surface}-${surfaceVariant}`] : styles[surface],
+          fullWidth && styles.fullWidth,
+          rounded && styles.rounded,
+          className
+        )}
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    )
+  }
 )
 
 export { Button }
