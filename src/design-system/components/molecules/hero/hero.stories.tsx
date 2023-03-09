@@ -45,9 +45,12 @@ export const HeroStoryLeft = {
     alignContent: 'left',
     heroTheme: 'dark',
     link: {
-      text: 'Beställ idag',
+      size: 'large',
+      surface: 'primary',
+      children: 'Beställ idag',
       href: '#bestalla',
-      linkComponent: 'a',
+      isExternal: true,
+      target: null,
       title: 'Beställ idag',
     }
   }
@@ -63,9 +66,12 @@ export const HeroStoryRight = {
     alignContent: 'right',
     heroTheme: 'light',
     link: {
-      text: 'Beställ idag',
+      size: 'large',
+      surface: 'primary',
+      children: 'Beställ idag',
       href: '#bestalla',
-      linkComponent: 'a',
+      isExternal: true,
+      target: null,
       title: 'Beställ idag',
     }
   }
@@ -81,9 +87,12 @@ export const HeroStoryCenter = {
     alignContent: 'center',
     heroTheme: 'dark',
     link: {
-      text: 'Beställ idag',
+      size: 'large',
+      surface: 'primary',
+      children: 'Beställ idag',
       href: '#bestalla',
-      linkComponent: 'a',
+      isExternal: true,
+      target: null,
       title: 'Beställ idag',
     }
   }
