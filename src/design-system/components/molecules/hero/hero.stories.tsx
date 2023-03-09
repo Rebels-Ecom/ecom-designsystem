@@ -27,9 +27,12 @@ export const HeroStory = {
     preamble: 'Mer text här...',
     alignContent: 'left',
     link: {
-      text: 'Ny knapp text',
+      size: 'large',
+      surface: 'primary',
+      children: 'Ny knapp text',
       href: '#sometext',
-      linkComponent: 'a',
+      isExternal: true,
+      target: null,
       title: 'Ny knapp text',
     }
   }
