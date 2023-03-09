@@ -1,14 +1,18 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { UILink } from './ui-link'
 
-export default {
+const meta: Meta<typeof UILink> = {
   title: 'Design System/Atoms/UILink',
-  component: UILink,
-} as ComponentMeta<typeof UILink>
+  component: UILink
+};
 
-const Template: ComponentStory<typeof UILink> = (args) => (
-  <div>
+export default meta;
+type Story = StoryObj<typeof UILink>;
+
+const UILinkStoryTemplate: Story = {
+  render: (args) => (
+    <div>
     <div style={{ marginBottom: '1rem' }}>
       <UILink {...args} />
     </div>
@@ -19,29 +23,31 @@ const Template: ComponentStory<typeof UILink> = (args) => (
       <UILink {...args} iconRight={'icon-arrow-right'} />
     </div>
   </div>
-)
+  )
+};
 
-export const UILinkStory = Template.bind({})
-
-UILinkStory.storyName = 'UILink'
-UILinkStory.args = {
-  children: 'Read more here',
-  href: '',
-  isExternal: true,
-  target: null,
-  title: 'Go to some page',
-  size: 'default',
-  onSurface: 'transparent',
+export const UILinkStory = {
+  ...UILinkStoryTemplate,
+  args: {
+    children: 'Read more here',
+    href: '',
+    isExternal: true,
+    target: null,
+    title: 'Go to some page',
+    size: 'default',
+    onSurface: 'transparent',
+  }
 }
 
-export const UILinkBlogStory = Template.bind({})
-UILinkBlogStory.storyName = 'UILink Blog'
-UILinkBlogStory.args = {
-  children: 'Läs mer',
-  href: '',
-  isExternal: true,
-  target: null,
-  title: 'Läs mer',
-  size: 'default',
-  onSurface: 'transparent',
+export const UILinkBlogStory = {
+  ...UILinkStoryTemplate,
+  args: {
+    children: 'Läs mer',
+    href: '',
+    isExternal: true,
+    target: null,
+    title: 'Läs mer',
+    size: 'default',
+    onSurface: 'transparent',
+  }
 }
