@@ -1,4 +1,5 @@
-import { IProductVariant } from "../design-system/components/molecules/product-variant/product-variant";
+import { IProductVariant } from '../design-system/components/molecules/product-variant/product-variant'
+import { ITag } from '../design-system/components/atoms/tag/tag'
 
 export interface IProduct {
     productId: string,
@@ -11,4 +12,5 @@ export interface IProduct {
     salesUnit:string,
     itemNumberPerSalesUnit: number,
     productVariantList: Array<IProductVariant>
+    tags: Array<ITag>
 }

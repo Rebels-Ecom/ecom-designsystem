@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import cx from 'classnames'
-import { TButtonSize, TButtonSurface, TButtonSurfaceVariant } from '../../../../types/button'
+import { TButtonSize, TButtonSurface } from '../../../../types/button'
+import { Icon, IIcon } from '../icon/icon'
 import styles from './button.module.css'
 
 export type TButtonType = 'submit' | 'button'
@@ -8,7 +9,8 @@ export interface IButton {
   children: React.ReactNode
   type: TButtonType
   surface: TButtonSurface
-  surfaceVariant?: TButtonSurfaceVariant
+  iconLeft?: IIcon
+  iconRight?: IIcon
   size?: TButtonSize
   fullWidth?: boolean
   rounded?: boolean
@@ -18,9 +20,21 @@ export interface IButton {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
+export function getButtonSurface(surface: TButtonSurface) {
+  switch (surface) {
+    case 'secondary':
+      return 'secondaryButton'
+    case 'tertiary':
+      return 'tertiaryButton'
+    case 'primary':
+    default:
+      return 'primaryButton'
+  }
+}
+
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { className, surface = 'primary', surfaceVariant = 'orange', size = 'large', type = 'button', children, fullWidth, rounded, disabled, onClick, id },
+    { className, surface = 'primary', size = 'large', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id },
     ref
   ) => {
     if(!children)
@@ -32,9 +46,9 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         id={id ? id : undefined}
         type={type}
         className={cx(
-          styles.button,
-          styles[size],
-          surface === 'primary' && surfaceVariant ? styles[`${surface}-${surfaceVariant}`] : styles[surface],
+          styles.buttonDefault,
+          size==='large' ? 'cta-l' : 'cta-s',
+          styles[getButtonSurface(surface)],
           fullWidth && styles.fullWidth,
           rounded && styles.rounded,
           className
@@ -42,7 +56,9 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         disabled={disabled}
         onClick={onClick}
       >
-        {children}
+        {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
+        {children && <span className={ cx(styles.buttonContent, iconLeft && styles.contentRight, iconRight && styles.contentLeft)}>{children}</span>}
+        {iconRight && <Icon icon={iconRight.icon}></Icon>}
       </button>
     )
   }
