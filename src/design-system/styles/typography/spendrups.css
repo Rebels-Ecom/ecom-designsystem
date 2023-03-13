@@ -228,6 +228,15 @@ h5,
   font-weight: 700;
 }
 
+.cta-xs {
+  font-size: var(--cta-s-font-size);
+  line-height: var(--cta-s-line-height);
+  letter-spacing: var(--cta-s-letter-spacing);
+  height: 2.5rem;
+  min-width: 2.5rem;
+  padding: 0.625rem 2rem;
+}
+
 .cta-s {
   font-size: var(--cta-s-font-size);
   line-height: var(--cta-s-line-height);

@@ -21,42 +21,42 @@ const navigationArgs = {
   links: [
     {
       href: '#',
-      text: 'Hem',
+      title: 'Hem',
       isExternal: true,
     },
     {
       href: '/nyheter',
-      text: 'Nyheter',
+      title: 'Nyheter',
       isExternal: true,
     },
     {
       href: '/ol',
-      text: 'Öl',
+      title: 'Öl',
       isExternal: true,
     },
     {
       href: '/vin',
-      text: 'Vin',
+      title: 'Vin',
       isExternal: true,
     },
     {
       href: '/sprit',
-      text: 'Sprit',
+      title: 'Sprit',
       isExternal: true,
     },
     {
       href: '/cider',
-      text: 'Cider',
+      title: 'Cider',
       isExternal: true,
     },
     {
       href: '/alcoholfritt',
-      text: 'Alcoholfritt',
+      title: 'Alcoholfritt',
       isExternal: true,
     },
     {
       href: '/ovrigt',
-      text: 'Övrigt',
+      title: 'Övrigt',
       isExternal: true,
     },
   ],

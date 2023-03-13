@@ -36,7 +36,8 @@ export const TeaserStoryLeft = {
             linkComponent: 'a',
             title: 'Boka din plats',
             surface: 'primary',
-            size: 'large'
+            size: 'large',
+            children: 'Boka din plats'
         }
     }
 }
@@ -57,7 +58,8 @@ export const TeaserStoryRight = {
             linkComponent: 'a',
             title: 'Läs mer',
             surface: 'primary',
-            size: 'large'
+            size: 'large',
+            children: 'Läs mer'
         }
     }
 }

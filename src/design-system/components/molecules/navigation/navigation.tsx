@@ -48,7 +48,7 @@ const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Ar
       {links.map((link: ILink, index) => {
         return (
           <motion.li
-            key={`${link.text}-${index}`}
+            key={`${link.title}-${index}`}
             className={styles.linkItem}
             variants={mobile ? itemVariants : undefined}
             whileHover={{ scale: 1.1 }}
@@ -56,11 +56,11 @@ const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Ar
           >
             {link.isExternal ? (
               <a href={link.href} target={link.target} title={link.title} className={styles.link}>
-                {link.text}
+                {link.title}
               </a>
             ) : (
               <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
-                {link.text}
+                {link.title}
               </Link>
             )}
           </motion.li>

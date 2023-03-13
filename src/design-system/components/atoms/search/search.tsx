@@ -70,7 +70,7 @@ function Search({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocuse
   return (
     <div ref={searchWrapperElement} className={cx(styles.search, className)}>
       <div className={styles.searchBar}>
-        <Button type="button" surface="primary" size="small">
+        <Button type="button" surface="tertiary" size="x-small">
           <Icon icon="icon-search" />
         </Button>
         <InputText

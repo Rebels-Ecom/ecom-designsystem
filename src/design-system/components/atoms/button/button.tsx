@@ -32,6 +32,18 @@ export function getButtonSurface(surface: TButtonSurface) {
   }
 }
 
+export function getButtonSize(surface: TButtonSize) {
+  switch (surface) {
+    case 'x-small':
+      return 'cta-xs'
+    case 'large':
+      return 'cta-l'
+    case 'small':
+    default:
+      return 'cta-s'
+  }
+}
+
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
     { className, surface = 'primary', size = 'small', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id },
@@ -47,7 +59,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         type={type}
         className={cx(
           styles.buttonDefault,
-          size==='large' ? 'cta-l' : 'cta-s',
+          getButtonSize(size),
           styles[getButtonSurface(surface)],
           fullWidth && styles.fullWidth,
           rounded && styles.rounded,

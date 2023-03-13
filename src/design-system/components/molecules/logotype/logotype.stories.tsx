@@ -1,13 +1,18 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Logotype } from './logotype'
 
-export default {
+const meta: Meta<typeof Logotype> = {
   title: 'Design System/Molecules/Logotype',
-  component: Logotype,
-} as ComponentMeta<typeof Logotype>
+  component: Logotype
+};
 
-const Template: ComponentStory<typeof Logotype> = (args) => <Logotype {...args} />
+export default meta;
+type Story = StoryObj<typeof Logotype>;
+
+const LogotypeStoryTemplate: Story = {
+  render: (args) => <Logotype {...args} />
+};
 
 const logotypeArgs = {
   logo: {
@@ -23,8 +28,9 @@ const logotypeArgs = {
   linkComponent: 'a',
 }
 
-export const logotypeStory = Template.bind({})
-logotypeStory.storyName = 'Logotype'
-logotypeStory.args = {
-  ...logotypeArgs,
+export const logotypeStory = {
+  ...LogotypeStoryTemplate,
+  args: {
+    ...logotypeArgs
+  }
 }

@@ -1,3 +1,3 @@
 export type TButtonSurface = 'primary' | 'secondary' | 'tertiary'
 export type TButtonSurfaceVariant = 'orange' | 'blue' | 'light_orange'
-export type TButtonSize = 'large' | 'small'
+export type TButtonSize = 'large' | 'small' | 'x-small'

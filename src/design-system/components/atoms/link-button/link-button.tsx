@@ -11,10 +11,22 @@ export interface ILinkButton extends ILink {
   fullWidth?: boolean
 }
 
+export function getButtonSize(surface: TButtonSize) {
+  switch (surface) {
+    case 'x-small':
+      return 'cta-xs'
+    case 'large':
+      return 'cta-l'
+    case 'small':
+    default:
+      return 'cta-s'
+  }
+}
+
 const LinkButton = ({
   className,
   surface = 'primary',
-  size = 'large',
+  size = 'small',
   children,
   fullWidth,
   linkComponent: Link = LinkComponent,
@@ -24,7 +36,7 @@ const LinkButton = ({
   isExternal,
   id,
 }: ILinkButton) => {
-  const classNames = cx(styles.button, styles[size], styles[surface], fullWidth && styles.fullWidth, className)
+  const classNames = cx(styles.button, getButtonSize(size), styles[surface], fullWidth && styles.fullWidth, className)
   const Tag = isExternal ? 'a' : Link
   return (
     <Tag to={!isExternal ? href : undefined} href={isExternal ? href : undefined} target={target} title={title} className={classNames} id={id ? id : undefined}>
