@@ -1,3 +1,60 @@
+.tagDefault {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.125rem;
+    font-family: var(--font-family-secondary);
+    color: var(--tag-white);
+    &.mint{
+        background: var(--tag-mint);
+        color: var(--tag-blue);
+    }
+    &.blue{
+        background: var(--tag-blue);
+    }
+    &.orange{
+        background: var(--tag-orange);
+    }
+    &.green{
+        background: var(--tag-green);
+    }
+}
+
+.tagRectangular {
+    height: fit-content;
+    min-width: var(--tag-rectangular-min-width);
+    border-radius: 0.125rem;
+    font-size: var(--tag-rectangular-mobile-font-size);
+    line-height: var(--tag-rectangular-mobile-line-height);
+    @media (min-width: 64em) {
+        font-size: var(--tag-rectangular-desktop-font-size);
+        line-height: var(--tag-rectangular-desktop-line-height);
+    }
+}
+
+.tagRound {
+    height: var(--tag-size-round-small);
+    width: var(--tag-size-round-small);
+    border-radius: 50%;
+    font-size: var(--tag-round-mobile-font-size);
+    line-height: var(--tag-round-mobile-line-height);
+    @media (min-width: 64em) {
+        font-size: var(--tag-round-desktop-font-size);
+        line-height: var(--tag-round-desktop-line-height);
+    }
+
+}
+
+.tagPill {
+    border-radius: 25%;
+    font-size: var(--tag-rectangular-mobile-font-size);
+    line-height: var(--tag-rectangular-mobile-line-height);
+    @media (min-width: 64em) {
+        font-size: var(--tag-rectangular-desktop-font-size);
+        line-height: var(--tag-rectangular-desktop-line-height);
+    }
+}
+
 .tag{
     background:#3D5B49;
     color:white;

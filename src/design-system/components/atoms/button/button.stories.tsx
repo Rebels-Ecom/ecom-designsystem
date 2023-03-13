@@ -6,13 +6,7 @@ import { Icon } from '../icon/icon'
 
 const meta: Meta<typeof Button> = {
   title: 'Design System/Atoms/Buttons',
-  component: Button,
-  argTypes: {
-    surfaceVariant: {
-      options: ['orange', 'blue', 'light_orange'],
-      control: { type: 'radio' },
-    },
-  }
+  component: Button
 };
 
 export default meta;
