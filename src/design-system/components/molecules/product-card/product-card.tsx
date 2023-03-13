@@ -10,11 +10,12 @@ import { getProductPicture } from '../../../../helpers/picture-helper'
 
 export interface IProductCard extends IProduct {
     product: IProduct
-    button: IButton
+    changePackagingButton: IButton
+    addToCartButton: IButton
     addToCart: CallableFunction
 }
 
-const ProductCard = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, productVariantList, button, addToCart }: IProductCard ) => {
+const ProductCard = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, changePackagingButton, addToCartButton, addToCart }: IProductCard ) => {
     const [product, setProduct] = useState(
         {   productId,
             productName, 
@@ -27,11 +28,12 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
             itemNumberPerSalesUnit,
             quantity: '1',
             totalPrice: convertNumToStr(price*itemNumberPerSalesUnit),
+            tags,
             productVariantList,
             selectedVariantId: productId
         }
     )
-    const [packageMenuOpen, setPackageMenuOpen] = useState<Boolean>(false);
+    const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false);
 
     function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
         const quantity = parseInt(e.target.value) || 1;
@@ -41,11 +43,12 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
             totalPrice: convertNumToStr(product.price * product.itemNumberPerSalesUnit * quantity)})
     }
 
-    function handleButtonClick(){
-        setPackageMenuOpen(true)
+    function handleVariantsButtonClick(){
+        setVariantsListOpen(true)
     }
 
     function handlePackageChange(selectedVariant:any){
+        const quantity = product.productId===selectedVariant.variantId ? parseInt(product.quantity) : 1;
         setProduct({
             ...product, 
             productId: selectedVariant.variantId,
@@ -56,14 +59,15 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
             price: selectedVariant.price,
             salesUnit: selectedVariant.salesUnit,
             itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
-            totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit),
+            totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
+            quantity: quantity.toString(),
             selectedVariantId: selectedVariant.variantId
         });
 
-        setPackageMenuOpen(false)
+        setVariantsListOpen(false)
     }
 
-    if(packageMenuOpen) {
+    if(variantsListOpen) {
         return(
             <ProductVariantList className= {styles.productCard} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>
         )
@@ -78,8 +82,9 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
                     country = {product.country}
                     packaging = {product.packaging}
                     unitPriceStr = {product.priceStr}
-                    onClick = {handleButtonClick}
+                    productTags = {product.tags}
                 />
+                <Button {...changePackagingButton} onClick={handleVariantsButtonClick}>{changePackagingButton?.children}</Button>
                 <ProductQuantityInput
                     className={styles.productCardInput}
                     salesUnit = {product.salesUnit}
@@ -89,7 +94,7 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
                     quantityInputId = {product.productId}
                     onChange={handleOnChangeQuantity}
                 />
-                <Button {...button} className={styles.productCardBtn} fullWidth onClick={()=>addToCart(product)}>Add to cart</Button>
+                <Button {...addToCartButton} className={styles.productCardBtn} fullWidth onClick={()=>addToCart(product)}>Add to cart</Button>
             </div>
         )
     }

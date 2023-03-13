@@ -78,3 +78,17 @@ export const ButtonProductCardStory = {
     onClick: action('clicked'),
   },
 };
+
+export const ChangePackagingButtonStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'Button_Change_Packaging',
+    disabled: false,
+    size: 'small',
+    surface: 'secondary',
+    children: 'Byt förpackning',
+    iconRight: {icon:'icon-layers'},
+    rounded:true,
+    onClick: action('clicked'),
+  },
+};

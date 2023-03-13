@@ -70,9 +70,9 @@
 .buttonContent {
   display: flex;
   &.contentLeft {
-    margin-left: 0.625rem;
+    margin-right: 0.625rem;
   }
   &.contentRight {
-    margin-right: 0.625rem;
+    margin-left: 0.625rem;
   }
 }

@@ -2,7 +2,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0.5rem 1.125rem;
+    padding: 0rem 1.125rem;
     font-family: var(--font-family-secondary);
     color: var(--tag-white);
     &.mint{
@@ -46,70 +46,7 @@
 }
 
 .tagPill {
-    border-radius: 25%;
+    border-radius: 2.5rem;
     font-size: var(--tag-rectangular-mobile-font-size);
     line-height: var(--tag-rectangular-mobile-line-height);
-    @media (min-width: 64em) {
-        font-size: var(--tag-rectangular-desktop-font-size);
-        line-height: var(--tag-rectangular-desktop-line-height);
-    }
-}
-
-.tag{
-    background:#3D5B49;
-    color:white;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 0.5rem;
-    border-radius: 0.125rem;
-
-    &.rectangular{
-        &.small {
-            height:var(--tag-rectangular-height);
-            min-width: var(--tag-rectangular-min-width);
-            font-size: var(--tag-s-rectangular-mobile-font-size);
-            line-height: var(--tag-s-rectangular-mobile-line-height);
-            @media (min-width: 64em) {
-                font-size: var(--tag-s-rectangular-desktop-font-size);
-                line-height: var(--tag-s-rectangular-desktop-line-height);
-            }
-        }
-        &.large {
-            height:var(--tag-rectangular-height);
-            min-width: var(--tag-rectangular-min-width);
-            font-size: var(--tag-l-rectangular-mobile-font-size);
-            line-height: var(--tag-l-rectangular-mobile-line-height);
-            @media (min-width: 64em) {
-                font-size: var(--tag-l-rectangular-desktop-font-size);
-                line-height: var(--tag-l-rectangular-desktop-line-height);
-            }
-        }
-    }
-
-    &.round {
-        &.small{
-            width: var(--tag-size-round-small);
-            height: var(--tag-size-round-small);
-            border-radius: 50%;
-            font-size: var(--tag-s-round-mobile-font-size);
-            line-height: var(--tag-s-round-mobile-line-height);
-            @media (min-width: 64em) {
-                font-size: var(--tag-s-round-desktop-font-size);
-                line-height: var(--tag-s-round-desktop-line-height);
-            }
-        }
-
-        &.large{
-            width: var(--tag-size-round-large);
-            height: var(--tag-size-round-large);
-            border-radius: 50%;
-            font-size: var(--tag-l-round-mobile-font-size);
-            line-height: var(--tag-l-round-mobile-line-height);
-            @media (min-width: 64em) {
-                font-size: var(--tag-l-round-desktop-font-size);
-                line-height: var(--tag-l-round-desktop-line-height);
-            }
-        }
-    }
 }
