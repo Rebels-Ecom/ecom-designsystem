@@ -1,2 +1,5 @@
 export { ContentWrapper } from './content-wrapper/content-wrapper'
 export { MaxWidth } from './max-width/max-width'
+export { Above } from './breakpoints/above'
+export { Below } from './breakpoints/below'
+export { Between } from './breakpoints/between'

@@ -1,80 +1,116 @@
-import { useState } from 'react'
+import { useLayoutEffect, useState, useEffect, useRef, useReducer, EffectCallback, ReactElement } from 'react'
 import styles from './navigation.module.css'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { ILink } from '../../../../types/links'
 import { ILinkButton } from '../../atoms/link-button/link-button'
 import { Icon } from '../../atoms/icon/icon'
 import { ISearchNavBar, SearchNavBar } from '../search-nav-bar/search-nav-bar'
 import { ITopNavBar, TopNavBar } from '../top-nav-bar/top-nav-bar'
+import { Above, Below } from '../../layouts'
 import cx from 'classnames'
-import { UILink } from '../../atoms'
+
+import useResizeObserver from '@react-hook/resize-observer'
+
 export interface INavigation {
-  topNavBar: ITopNavBar
-  searchNavBar: ISearchNavBar
-  links?: Array<ILink>
+  links: Array<ILink>
   linkComponent: any
-  button?: ILinkButton
 }
 
-const NavigationList = ({ links = [], linkComponent: Link }: { links: Array<ILink>; linkComponent: any }) => {
+const variants = {
+  open: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+  },
+  closed: {
+    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+  },
+}
+
+const itemVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 50,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+    },
+  },
+}
+
+const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Array<ILink>; linkComponent: any; mobile?: boolean }) => {
   return (
-    <ul className={styles.linkList}>
-      {links.map((link: ILink, index) => (
-        <li key={`${link.href}-${index}`} className={styles.linkItem}>
-          <UILink {...link} size="default" onSurface="transparent" className={styles.link} />
-        </li>
-      ))}
-    </ul>
+    <motion.ul className={styles.linkList} variants={variants}>
+      {links.map((link: ILink, index) => {
+        return (
+          <motion.li
+            key={`${link.text}-${index}`}
+            className={styles.linkItem}
+            variants={mobile ? itemVariants : undefined}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {link.isExternal ? (
+              <a href={link.href} target={link.target} title={link.title} className={styles.link}>
+                {link.text}
+              </a>
+            ) : (
+              <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
+                {link.text}
+              </Link>
+            )}
+          </motion.li>
+        )
+      })}
+    </motion.ul>
   )
 }
 
-const Navigation = ({ topNavBar, searchNavBar, links, button, linkComponent: Link }: INavigation) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+const sidebar = {
+  open: (right = 1000) => ({
+    clipPath: `circle(${1000 * 2 + 200}px at ${right}px -40px)`,
+    transition: {
+      type: 'spring',
+      stiffness: 20,
+      restDelta: 2,
+    },
+  }),
+  closed: (right = 1000) => ({
+    clipPath: `circle(30px at  ${right - 100}px -40px)`,
+    transition: {
+      delay: 0.5,
+      type: 'spring',
+      stiffness: 400,
+      damping: 40,
+    },
+  }),
+}
 
+const Navigation = ({ links, linkComponent: Link }: INavigation) => {
   return (
-    <nav className={`${styles.navigation} ${isOpen ? styles.navigationOpen : ''}`}>
-      <TopNavBar {...topNavBar} />
-      <div className={cx(styles.bar, styles.searchNavBar)}>
-        <SearchNavBar {...searchNavBar} />
-        <button
-          id="navigation-menu-btn"
-          type={'button'}
-          aria-label="menu"
-          aria-controls={'navigation-menu'}
-          aria-expanded={isOpen}
-          onClick={() => setIsOpen(!isOpen)}
-          className={cx(styles.menuButton, isOpen && styles.open)}
-        >
-          <span className={styles.menuButtonInner}>
-            <Icon icon="icon-menu" className={styles.icon} />
-          </span>
-        </button>
-      </div>
-      {links?.length ? (
-        <div className={cx(styles.bar, styles.largeDeviceMenuBar)}>
-          <NavigationList links={links} linkComponent={Link} />
-        </div>
-      ) : null}
-      {(links?.length || button) && (
-        <AnimatePresence initial={false}>
-          {isOpen && (
-            <motion.div
-              id={'navigation-menu'}
-              initial="collapsed"
-              animate="open"
-              exit="collapsed"
-              variants={{
-                open: { display: 'block' },
-                collapsed: { display: 'none' },
-              }}
-              aria-labelledby={'navigation-menu-btn'}
-            >
-              <div className={styles.smallDeviceMenu}>{links?.length && <NavigationList links={links} linkComponent={Link} />}</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <div className={styles.navigation}>
+      {links?.length && (
+        <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
+          <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} />}</Above>
+        </nav>
       )}
-    </nav>
+      {links?.length && (
+        <Below breakpoint="lg">
+          {(matches: any) =>
+            matches && (
+              <>
+                <motion.div className={styles.background} variants={sidebar} />
+                <motion.nav>{links?.length && <NavigationList links={links} linkComponent={Link} mobile />}</motion.nav>
+              </>
+            )
+          }
+        </Below>
+      )}
+    </div>
   )
 }
 

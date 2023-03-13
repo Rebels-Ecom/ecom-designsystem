@@ -1,23 +1,18 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { SearchNavBar } from './search-nav-bar'
 import { SearchStory } from '../../atoms/search/search.stories'
 
-const meta: Meta<typeof SearchNavBar> = {
+export default {
   title: 'Design System/Molecules/Search Nav Bar',
-  component: SearchNavBar
-};
+  component: SearchNavBar,
+} as ComponentMeta<typeof SearchNavBar>
 
-export default meta;
-type Story = StoryObj<typeof SearchNavBar>;
-
-const SearchNavBarStoryTemplate: Story = {
-render: ({ ...args }) => (
-    <div style={{ position: 'relative', height: '5rem', display:'flex', justifyContent:'center', padding: '0.5rem 1rem' }}>
-      <SearchNavBar {...args} />
-    </div>
-  )
-};
+const Template: ComponentStory<typeof SearchNavBar> = (args) => (
+  <div style={{ position: 'relative', height: '5rem', display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+    <SearchNavBar {...args} />
+  </div>
+)
 
 const itemsToFilterOn = [
   { id: 'NCG626689', label: 'Ekoöl på riktigt', text: 'Testa vår ekoöl', slug: 'eko-ol' },
@@ -29,7 +24,7 @@ const itemsToFilterOn = [
   { id: 'NCG880524', label: 'Kiviks musteri', text: 'Prova nya cider', slug: 'kiviks-cider' },
   { id: 'NCG153793', label: 'Här är nya Loka likes favorites', text: 'loka likes favorites - smakar glass och kokos ', slug: 'loka-favorites' },
   { id: 'NCG660063', label: 'Övrig läsk och vatten', text: 'Övrig läsk och vatten', slug: 'lask-och-vatten' },
-];
+]
 
 const searchNavBarArgs = {
   logo: {
@@ -38,8 +33,9 @@ const searchNavBarArgs = {
     href: '/',
     id: 'logo',
     sources: [
-      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)`},
-      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` }],
+      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
+      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+    ],
   },
   searchNavLinks: [
     {
@@ -53,16 +49,15 @@ const searchNavBarArgs = {
       href: '/cart',
       text: 'Cart',
       isExternal: false,
-    }
+    },
   ],
   linkComponent: 'a',
   searchArgs: SearchStory.args,
-  itemsToFilterOn: itemsToFilterOn
+  itemsToFilterOn: itemsToFilterOn,
 }
 
-export const SearchNavBarStory = {
-  ...SearchNavBarStoryTemplate,
-  args: {
-    ...searchNavBarArgs,
-  }
+export const SearchNavBarStory = Template.bind({})
+SearchNavBarStory.storyName = 'Search Nav Bar'
+SearchNavBarStory.args = {
+  ...searchNavBarArgs,
 }
