@@ -7,26 +7,24 @@ import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-l
 import { BlogCardStoryFullWidth } from '../../molecules/blog-card/blog-card.stories'
 import { TeaserStoryLeft, TeaserStoryRight } from '../../molecules/teaser/teaser.stories'
 import { NavStory } from '../../molecules/navigation/navigation.stories'
+import { HeaderStory } from '../../organisms/header/header.stories'
 
 export default {
-    title:'Design System/Templates/StartPageTemplate',
-    component: StartPageTemplate,
+  title: 'Design System/Templates/StartPageTemplate',
+  component: StartPageTemplate,
 } as ComponentMeta<typeof StartPageTemplate>
 
-const Template: ComponentStory<typeof StartPageTemplate> = (args) => (
-    <StartPageTemplate {...args}/>
-);
-    
-export const StartPageTemplateStory = Template.bind({});
+const Template: ComponentStory<typeof StartPageTemplate> = (args) => <StartPageTemplate {...args} />
+
+export const StartPageTemplateStory = Template.bind({})
 StartPageTemplateStory.storyName = 'Start Page Template'
 StartPageTemplateStory.args = {
-    navigation: NavStory.args,
-    hero: HeroCarouselStory.args,
-    blogList_4_Col: BlogCardListStory_4_Columns.args,
-    offerCardsList: OfferCardListStory.args,
-    blogFullwidth: BlogCardStoryFullWidth.args,
-    teaserRight: TeaserStoryRight.args,
-    blogList_3_Col: BlogCardListStory_3_Columns.args,
-    teaserLeft: TeaserStoryLeft.args,
+  header: HeaderStory.args,
+  hero: HeroCarouselStory.args,
+  blogList_4_Col: BlogCardListStory_4_Columns.args,
+  offerCardsList: OfferCardListStory.args,
+  blogFullwidth: BlogCardStoryFullWidth.args,
+  teaserRight: TeaserStoryRight.args,
+  blogList_3_Col: BlogCardListStory_3_Columns.args,
+  teaserLeft: TeaserStoryLeft.args,
 }
-

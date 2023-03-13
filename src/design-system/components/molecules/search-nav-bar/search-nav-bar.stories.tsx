@@ -9,9 +9,9 @@ export default {
 } as ComponentMeta<typeof SearchNavBar>
 
 const Template: ComponentStory<typeof SearchNavBar> = (args) => (
-    <div style={{ position: 'relative', height: '5rem', display:'flex', justifyContent:'center', padding: '0.5rem 1rem' }}>
-        <SearchNavBar {...args} />
-    </div>
+  <div style={{ position: 'relative', height: '5rem', display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+    <SearchNavBar {...args} />
+  </div>
 )
 
 const itemsToFilterOn = [
@@ -24,7 +24,7 @@ const itemsToFilterOn = [
   { id: 'NCG880524', label: 'Kiviks musteri', text: 'Prova nya cider', slug: 'kiviks-cider' },
   { id: 'NCG153793', label: 'Här är nya Loka likes favorites', text: 'loka likes favorites - smakar glass och kokos ', slug: 'loka-favorites' },
   { id: 'NCG660063', label: 'Övrig läsk och vatten', text: 'Övrig läsk och vatten', slug: 'lask-och-vatten' },
-];
+]
 
 const searchNavBarArgs = {
   logo: {
@@ -33,8 +33,9 @@ const searchNavBarArgs = {
     href: '/',
     id: 'logo',
     sources: [
-      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)`},
-      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` }],
+      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
+      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+    ],
   },
   searchNavLinks: [
     {
@@ -48,11 +49,11 @@ const searchNavBarArgs = {
       href: '/cart',
       text: 'Cart',
       isExternal: false,
-    }
+    },
   ],
   linkComponent: 'a',
   searchArgs: SearchStory.args,
-  itemsToFilterOn: itemsToFilterOn
+  itemsToFilterOn: itemsToFilterOn,
 }
 
 export const SearchNavBarStory = Template.bind({})

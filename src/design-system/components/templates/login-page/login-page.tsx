@@ -1,13 +1,7 @@
-import { LoginForm } from '../../organisms'
 import styles from './login-page.module.css'
-import { ILoginForm } from '../../organisms/login-form/login-form'
 
-const LoginPage = (props: ILoginForm) => {
-  return (
-    <div className={styles.pageLayout}>
-      <LoginForm {...props} />
-    </div>
-  )
+const LoginPage = ({ children }: { children: React.ReactNode }) => {
+  return <div className={styles.pageLayout}>{children}</div>
 }
 
 export { LoginPage }
