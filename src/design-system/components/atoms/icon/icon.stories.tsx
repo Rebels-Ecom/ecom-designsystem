@@ -1,5 +1,5 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Icon } from './icon'
 
 const icons = [
@@ -18,7 +18,7 @@ const icons = [
   'icon-users'
 ]
 
-export default {
+const meta: Meta<typeof Icon> = {
   title: 'Design System/Atoms/Icon',
   component: Icon,
   argTypes: {
@@ -27,13 +27,18 @@ export default {
       control: { type: 'radio' },
     },
   },
-} as ComponentMeta<typeof Icon>
+};
 
-const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />
-Template.storyName = 'Icon'
+export default meta;
+type Story = StoryObj<typeof Icon>;
 
-Template.args = {
-  icon: 'icon-map-pin',
+const IconStoryTemplate: Story = {
+  render: ({ ...args }) => (<Icon {...args} />)
+};
+
+export const IconStory = {
+  ...IconStoryTemplate,
+  args: {
+    icon: 'icon-map-pin',
+  }
 }
-
-export { Template }

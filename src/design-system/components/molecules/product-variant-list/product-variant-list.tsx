@@ -33,7 +33,7 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
                     </li>
                 ))}
             </ul>
-            <Button className={styles.productCardBtn} type='button' surface='primary' fullWidth onClick={handleSelectVariant}>Välj variant</Button>
+            <Button className={styles.productCardBtn} type='button' surface='primary' size='small' fullWidth onClick={handleSelectVariant}>Välj variant</Button>
         </div>
     )
 }

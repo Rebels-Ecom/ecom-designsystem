@@ -6,6 +6,7 @@
     align-items: center;
     margin:0 auto;
     width:100%;
+    padding:1rem;
     @media (min-width: 64em) {
         padding: 2.625rem 1.875rem;
       }
@@ -83,7 +84,9 @@
     }
 
     &.contentLeft {
-        align-self: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         text-align: start;
         @media (min-width: 48em) {
             padding-right: 3rem;
@@ -94,7 +97,9 @@
     }
 
     &.contentRight {
-        align-self: flex-end;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
         text-align: end;
         @media (min-width: 48em) {
             padding-left: 3rem;

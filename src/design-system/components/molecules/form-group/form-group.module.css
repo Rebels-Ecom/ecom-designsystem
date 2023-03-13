@@ -21,7 +21,7 @@
     }
   }
 
-  @media screen(min-width: 48em) {
+  @media (min-width: 48em) {
     & span {
       flex: 3;
       & ~ span {

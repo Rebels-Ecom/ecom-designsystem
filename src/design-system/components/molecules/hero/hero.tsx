@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import styles from './hero.module.css'
 import { IPicture, TPictureFetchPriority, TPictureLoading, Picture } from '../../atoms/picture/picture'
-import { LinkButton } from '../../atoms/link-button/link-button'
+import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
 import { ILink } from '../../../../types/links'
 
 export type alignContent = 'left' | 'right' | 'center'
@@ -13,7 +13,7 @@ export interface IHero {
   heading: string
   preamble?: string
   alignContent?: alignContent
-  link?: ILink
+  link?: ILinkButton
   heroTheme?: heroTheme
   fetchPriority?: TPictureFetchPriority
   loading?: TPictureLoading
@@ -44,7 +44,7 @@ const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTh
               </header>
             )}
             {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
-            {link && <LinkButton surface="primary" size="small" {...link} className={styles.linkButton} />}
+            {link && <LinkButton {...link} className={styles.linkButton} />}
           </div>
         </div>
       </div>

@@ -18,13 +18,13 @@ const Footer = ({ heading, preamble, links = [], linkComponent: Link }: IFooter)
         {links instanceof Array && links.length && (
           <ul className={styles.linkList}>
             {links.map((link: ILink, i: number) => (
-              <li key={`${link.text}-${i}`} className={styles.linkListItem}>
+              <li key={`${link.children}-${i}`} className={styles.linkListItem}>
                 {link.isExternal ? (
                   <a href={link.href} target={link.target}>
-                    {link.text}
+                    {link.children}
                   </a>
                 ) : (
-                  <Link to={link.href}>{link.text}</Link>
+                  <Link to={link.href}>{link.children}</Link>
                 )}
               </li>
             ))}

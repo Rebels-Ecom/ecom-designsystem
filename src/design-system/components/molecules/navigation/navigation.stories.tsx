@@ -1,15 +1,19 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Navigation } from './navigation'
 import { SearchNavBarStory } from '../search-nav-bar/search-nav-bar.stories'
 import { TopNavBarStory } from '../top-nav-bar/top-nav-bar.stories'
 
-export default {
+const meta: Meta<typeof Navigation> = {
   title: 'Design System/Molecules/Navigation',
-  component: Navigation,
-} as ComponentMeta<typeof Navigation>
+  component: Navigation
+};
+export default meta;
+type Story = StoryObj<typeof Navigation>;
 
-const Template: ComponentStory<typeof Navigation> = (args) => <Navigation {...args} />
+const NavigationStoryTemplate: Story = {
+  render: ({ ...args }) => (<Navigation {...args} />)
+};
 
 const navigationArgs = {
   topNavBar: TopNavBarStory.args,
@@ -17,50 +21,51 @@ const navigationArgs = {
   links: [
     {
       href: '#',
-      text: 'Hem',
+      title: 'Hem',
       isExternal: true,
     },
     {
       href: '/nyheter',
-      text: 'Nyheter',
+      title: 'Nyheter',
       isExternal: true,
     },
     {
       href: '/ol',
-      text: 'Öl',
+      title: 'Öl',
       isExternal: true,
     },
     {
       href: '/vin',
-      text: 'Vin',
+      title: 'Vin',
       isExternal: true,
     },
     {
       href: '/sprit',
-      text: 'Sprit',
+      title: 'Sprit',
       isExternal: true,
     },
     {
       href: '/cider',
-      text: 'Cider',
+      title: 'Cider',
       isExternal: true,
     },
     {
       href: '/alcoholfritt',
-      text: 'Alcoholfritt',
+      title: 'Alcoholfritt',
       isExternal: true,
     },
     {
       href: '/ovrigt',
-      text: 'Övrigt',
+      title: 'Övrigt',
       isExternal: true,
     },
   ],
   linkComponent: 'a'
 }
 
-export const NavStory = Template.bind({})
-NavStory.storyName = 'Navigation'
-NavStory.args = {
-  ...navigationArgs
+export const NavigationStory = {
+  ...NavigationStoryTemplate,
+  args: {
+    ...navigationArgs
+  }
 }

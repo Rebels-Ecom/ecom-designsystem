@@ -1,7 +1,8 @@
 import styles from './card-image.module.css'
 import { IPicture } from '../../atoms/picture/picture'
-import { Button, Icon, Picture } from '../../atoms'
+import { Picture } from '../../atoms'
 import { DividerLines } from '../../atoms/divider-lines/divider-lines'
+import { ITag, Tag } from '../../atoms/tag/tag'
 
 export interface ICardImage {
   className?: string
@@ -11,13 +12,26 @@ export interface ICardImage {
   country: string
   packaging: string
   unitPriceStr: string
-  onClick: React.MouseEventHandler<HTMLButtonElement>
+  productTags: Array<ITag>
 }
 
-const CardImage = ({ className, image, heading, articleId, country, packaging, unitPriceStr, onClick }: ICardImage) => {
+const ProductTags = ({tagsList=[]} : {tagsList:Array<ITag>}) => {
+  return(
+    <ul className={styles.tagsList}>
+      {Array.isArray(tagsList) && tagsList.length>0 && tagsList.map((tag, index)=>(
+        <li key={index}>
+          <Tag {...tag} ></Tag>
+        </li>
+        ))
+      }
+    </ul>
+  )
+}
+
+const CardImage = ({ className, image, productTags, heading, articleId, country, packaging, unitPriceStr }: ICardImage) => {
   return (
     <div className={`${styles.cardImageWrapper} ${className ? className : ''}`}>
-      <Button className={styles.packageBtn} type='button' surface='tertiary' rounded onClick={onClick}><Icon icon='icon-layers'/></Button>
+      {productTags && <ProductTags tagsList={productTags}/>}
       <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> </div>
       <div className={`${styles.content}`}>
         <p className={styles.heading}>{heading}</p>

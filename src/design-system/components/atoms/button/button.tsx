@@ -1,14 +1,16 @@
 import { forwardRef } from 'react'
 import cx from 'classnames'
-import { TButtonSize, TButtonSurface, TButtonSurfaceVariant } from '../../../../types/button'
+import { TButtonSize, TButtonSurface } from '../../../../types/button'
+import { Icon, IIcon } from '../icon/icon'
 import styles from './button.module.css'
 
 export type TButtonType = 'submit' | 'button'
 export interface IButton {
-  children?: React.ReactNode
+  children: React.ReactNode
   type: TButtonType
   surface: TButtonSurface
-  surfaceVariant?: TButtonSurfaceVariant
+  iconLeft?: IIcon
+  iconRight?: IIcon
   size?: TButtonSize
   fullWidth?: boolean
   rounded?: boolean
@@ -18,29 +20,60 @@ export interface IButton {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
+export function getButtonSurface(surface: TButtonSurface) {
+  switch (surface) {
+    case 'secondary':
+      return 'secondaryButton'
+    case 'tertiary':
+      return 'tertiaryButton'
+    case 'primary':
+    default:
+      return 'primaryButton'
+  }
+}
+
+export function getButtonSize(surface: TButtonSize) {
+  switch (surface) {
+    case 'x-small':
+      return 'cta-xs'
+    case 'large':
+      return 'cta-l'
+    case 'small':
+    default:
+      return 'cta-s'
+  }
+}
+
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { className, surface = 'primary', surfaceVariant = 'orange', size = 'large', type = 'button', children, fullWidth, rounded, disabled, onClick, id },
+    { className, surface = 'primary', size = 'small', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id },
     ref
-  ) => (
-    <button
-      ref={ref}
-      id={id ? id : undefined}
-      type={type}
-      className={cx(
-        styles.button,
-        styles[size],
-        surface === 'primary' && surfaceVariant ? styles[`${surface}-${surfaceVariant}`] : styles[surface],
-        fullWidth && styles.fullWidth,
-        rounded && styles.rounded,
-        className
-      )}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  )
+  ) => {
+    if(!children)
+      return null;
+
+    return(
+      <button
+        ref={ref}
+        id={id ? id : undefined}
+        type={type}
+        className={cx(
+          styles.buttonDefault,
+          getButtonSize(size),
+          styles[getButtonSurface(surface)],
+          fullWidth && styles.fullWidth,
+          rounded && styles.rounded,
+          className
+        )}
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
+        {children && <span className={ cx(styles.buttonContent, iconLeft && styles.contentRight, iconRight && styles.contentLeft)}>{children}</span>}
+        {iconRight && <Icon icon={iconRight.icon}></Icon>}
+      </button>
+    )
+  }
 )
 
 export { Button }

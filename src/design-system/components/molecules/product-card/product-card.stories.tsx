@@ -1,23 +1,38 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ProductCard } from './product-card'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct } from './dummy-product'
-import { ProductVariantListStory } from '../product-variant-list/product-variant-list.stories'
+import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 
-export default {
-    title:'Design System/Molecules/Product/ProductCard',
-    component: ProductCard,
-} as ComponentMeta<typeof ProductCard> 
+const meta: Meta<typeof ProductCard> = {
+    title: 'Design System/Molecules/Product/ProductCard',
+    component: ProductCard
+};
 
-const Template: ComponentStory<typeof ProductCard> = (args) => {
-    
+export default meta;
+type Story = StoryObj<typeof ProductCard>;
+
+const ProductCardStoryTemplate: Story = {
+  render: ({ ...args }) => {
     function handleAddToCart(product) {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
 
-   return(<ProductCard {...args} addToCart={handleAddToCart}/>)
+    return(<ProductCard {...args} addToCart={handleAddToCart}/>)
+  }
+};
+
+function getProductTags(tags:Array<any>){
+    return tags.map((tag)=>{
+        return{
+            text: tag.Text,
+            shape: tag.Shape ? tag.Shape : 'pill',
+            color: tag.Class
+        }
+    });
 }
 
 function getVariantsList( productName:string, variantsList:any) {
@@ -34,12 +49,11 @@ function getVariantsList( productName:string, variantsList:any) {
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
             image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
             checked: variant.VariantId===firstVariantId,
+            tags: getProductTags(variant.Tags),
             onChange: () => {},
         }
     })
 }
-
-
 
 function getProduct( productData: any) : IProduct {
     const product = productData.Variants[0];
@@ -53,12 +67,18 @@ function getProduct( productData: any) : IProduct {
         price:product.ListPricePerUnit,
         salesUnit:product.SalesUnit,
         itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
-        productVariantList: getVariantsList(productData.DisplayName, productData.Variants)
+        tags: getProductTags(product.Tags),
+        productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
     }
 }
 
-const productArgs = getProduct(dummyBeerProduct);
+const productArgs = getProduct(dummyWineProduct);
 
-export const ProductCardStory = Template.bind({});
-ProductCardStory.storyName = 'Product Card';
-ProductCardStory.args = {...productArgs};
+export const ProductCardStory = {
+    ...ProductCardStoryTemplate,
+    args: {
+        ...productArgs,
+        changePackagingButton:ChangePackagingButtonStory.args,
+        addToCartButton: ButtonProductCardStory.args,
+    }
+}
