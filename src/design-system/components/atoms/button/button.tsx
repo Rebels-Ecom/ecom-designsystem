@@ -34,7 +34,7 @@ export function getButtonSurface(surface: TButtonSurface) {
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { className, surface = 'primary', size = 'large', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id },
+    { className, surface = 'primary', size = 'small', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id },
     ref
   ) => {
     if(!children)

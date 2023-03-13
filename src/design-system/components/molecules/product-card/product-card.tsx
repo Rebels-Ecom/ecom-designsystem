@@ -84,7 +84,7 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
                     unitPriceStr = {product.priceStr}
                     productTags = {product.tags}
                 />
-                <Button {...changePackagingButton} onClick={handleVariantsButtonClick}>{changePackagingButton?.children}</Button>
+                <Button {...changePackagingButton} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
                 <ProductQuantityInput
                     className={styles.productCardInput}
                     salesUnit = {product.salesUnit}
@@ -94,7 +94,7 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
                     quantityInputId = {product.productId}
                     onChange={handleOnChangeQuantity}
                 />
-                <Button {...addToCartButton} className={styles.productCardBtn} fullWidth onClick={()=>addToCart(product)}>Add to cart</Button>
+                <Button {...addToCartButton} className={styles.productCardBtn} fullWidth onClick={()=>addToCart(product)}>Lägg i kundvagn</Button>
             </div>
         )
     }
