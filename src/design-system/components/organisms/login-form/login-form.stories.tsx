@@ -23,7 +23,7 @@ LoginFormStory.args = {
   usernameLabel: 'Mailadress',
   username: 'John@doe.se',
   passwordLabel: 'Lösenord',
-  password: '********',
+  password: 'lösenord123',
   forgotPasswordLabel: 'Glömt mitt lösenord?',
   primarySubmitLabel: 'Logga in',
   secondarySubmitLabel: 'Skapa ett konto & bli e-handelskund',

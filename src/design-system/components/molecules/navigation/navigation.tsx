@@ -59,7 +59,7 @@ const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Ar
                 {link.text}
               </a>
             ) : (
-              <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
+              <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
                 {link.text}
               </Link>
             )}
