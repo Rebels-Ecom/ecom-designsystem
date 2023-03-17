@@ -4,19 +4,19 @@ import { LoginForm } from './login-form'
 
 const meta: Meta<typeof LoginForm> = {
   title: 'Design System/Organisms/LoginForm',
-  component: LoginForm
-};
+  component: LoginForm,
+}
 
-export default meta;
-type Story = StoryObj<typeof LoginForm>;
+export default meta
+type Story = StoryObj<typeof LoginForm>
 
 const LoginFormStoryTemplate: Story = {
   render: ({ ...args }) => (
     <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
       <LoginForm {...args} />
     </div>
-  )
-};
+  ),
+}
 
 export const LoginFormStory = {
   ...LoginFormStoryTemplate,
@@ -26,10 +26,13 @@ export const LoginFormStory = {
     usernameLabel: 'Mailadress',
     username: 'John@doe.se',
     passwordLabel: 'Lösenord',
-    password: '********',
+    password: 'lösenord123',
     forgotPasswordLabel: 'Glömt mitt lösenord?',
     primarySubmitLabel: 'Logga in',
     secondarySubmitLabel: 'Skapa ett konto & bli e-handelskund',
     offerLinkLabel: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
-  }
+    onSubmit: (e) => {},
+    onPasswordChange: (e) => {},
+    onUsernameChange: (e) => {},
+  },
 }

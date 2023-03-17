@@ -1,15 +1,8 @@
-import { useLayoutEffect, useState, useEffect, useRef, useReducer, EffectCallback, ReactElement } from 'react'
 import styles from './navigation.module.css'
-import { motion, AnimatePresence, useCycle } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ILink } from '../../../../types/links'
-import { ILinkButton } from '../../atoms/link-button/link-button'
-import { Icon } from '../../atoms/icon/icon'
-import { ISearchNavBar, SearchNavBar } from '../search-nav-bar/search-nav-bar'
-import { ITopNavBar, TopNavBar } from '../top-nav-bar/top-nav-bar'
 import { Above, Below } from '../../layouts'
 import cx from 'classnames'
-
-import useResizeObserver from '@react-hook/resize-observer'
 
 export interface INavigation {
   links: Array<ILink>
@@ -59,7 +52,7 @@ const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Ar
                 {link.title}
               </a>
             ) : (
-              <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
+              <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
                 {link.title}
               </Link>
             )}

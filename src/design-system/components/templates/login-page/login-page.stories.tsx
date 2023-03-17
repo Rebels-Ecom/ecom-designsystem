@@ -6,23 +6,26 @@ import { LoginForm } from '../../organisms/login-form/login-form'
 
 const meta: Meta<typeof LoginPage> = {
   title: 'Design System/Templates/LoginPage',
-  component: LoginPage
-};
+  component: LoginPage,
+}
 
-export default meta;
-type Story = StoryObj<typeof LoginPage>;
+export default meta
+type Story = StoryObj<typeof LoginPage>
 
 const LoginPageStoryTemplate: Story = {
-  render: ({ ...args }) => (
-    <LoginPage>
-      <LoginForm {...args} />
-    </LoginPage>
-  )
-};
+  render: ({ ...args }) => {
+    console.log(args)
+    return (
+      <LoginPage>
+        <LoginForm {...LoginFormStory.args} />
+      </LoginPage>
+    )
+  },
+}
 
 export const LoginPageStory = {
   ...LoginPageStoryTemplate,
   args: {
     ...LoginFormStory.args,
-  }
+  },
 }
