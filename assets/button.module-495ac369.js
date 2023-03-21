@@ -1,2 +1,0 @@
-const r="_button_1cr2v_1",_="_disabled_1cr2v_15",t="_primary_1cr2v_27",a="_secondary_1cr2v_141",c="_tertiary_1cr2v_195",o="_large_1cr2v_229",n="_small_1cr2v_257",e="_rounded_1cr2v_287",l="_fullWidth_1cr2v_295",s={button:r,disabled:_,primary:t,"primary-orange":"_primary-orange_1cr2v_27","primary-blue":"_primary-blue_1cr2v_65","primary-light_orange":"_primary-light_orange_1cr2v_103",secondary:a,tertiary:c,large:o,small:n,rounded:e,fullWidth:l};export{s as b};
-//# sourceMappingURL=button.module-495ac369.js.map
