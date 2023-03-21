@@ -1,0 +1,21 @@
+.outerWrapper {
+    position: relative;
+}
+    
+.select {
+    appearance: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 0.125rem transparent;
+    border-radius: 0.125rem;
+    height: 2rem;
+    padding: 0.2rem 1rem;
+    color: #ffffff;
+    background: #003E51;
+    cursor: pointer;
+    border-radius: 6.25rem;
+    font-size: 0.625rem;
+    margin:0.5rem 0.2rem;
+    outline: none;
+}

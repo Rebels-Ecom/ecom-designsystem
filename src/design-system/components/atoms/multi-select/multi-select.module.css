@@ -1,0 +1,37 @@
+
+.multiSelectDropdown {
+    position: relative;
+}
+
+.multiSelectDropdownOptions{
+    display:block;
+    position: absolute;
+    z-index: 2;
+    background: white;
+    list-style: none;
+    margin-top: 0.5rem;
+    box-sizing: border-box;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    list-style: none;
+    padding-left: 0px;
+    border: solid 1px #eee;
+    padding: 5px 0px;
+}
+
+.multiSelectDropdownOption {
+    display:flex;
+        align-items: center;
+        padding:6px 10px;
+        cursor:pointer;
+
+        &:hover{
+            background-color: #eee;
+        }
+        
+}
+
+.multiSelectDropdownOptionCheckbox {
+    margin-right:6px;
+}
