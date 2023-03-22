@@ -7,6 +7,7 @@ import { INavigation, Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
 import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { IFooter, Footer } from '../../organisms/footer/footer'
 
 export interface IStartPageTemplate {
   header: any
@@ -17,9 +18,10 @@ export interface IStartPageTemplate {
   teaserRight: ITeaser
   blogList_3_Col: IBlogCardList
   teaserLeft: ITeaser
+  footer: IFooter
 }
 
-const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft }: IStartPageTemplate) => {
+const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
   return (
     <>
       <Header>
@@ -67,6 +69,7 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogF
           <BlogCardList {...blogList_4_Col} />
         </MaxWidth>
       </ContentWrapper>
+      <Footer {...footer}/>
     </>
   )
 }

@@ -1,0 +1,9 @@
+.socialMediaLink {
+    background: var(--icon-backgorund-blue);
+    border: none;
+    margin-right: 1.25rem;
+    padding: 0.6rem;
+    &:last-child {
+      margin-right: 0;
+    }
+}
