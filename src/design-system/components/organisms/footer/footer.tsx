@@ -74,13 +74,13 @@ const FooterLinks = ({footerLinks, linkComponent: Link} : {footerLinks:Array<TFo
             {Array.isArray(list.links) && list.links && (
               <ul className={styles.links}>
                 {list.links.map((link:ILink, i:number) => (
-                  <li key={`${link.title}-${i}`} className={styles.linkItem}>
+                  <li key={`${link.children}-${i}`} className={styles.linkItem}>
                     {link.isExternal ? (
                       <a href={link.href} target={link.target} className='body'>
-                        {link.title}
+                        {link.children}
                       </a>
                     ) : (
-                      <Link to={link.href}>{link.title}</Link>
+                      <Link to={link.href}>{link.children}</Link>
                     )}
                   </li>
                 ))}

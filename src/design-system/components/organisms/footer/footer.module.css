@@ -41,10 +41,6 @@
     }
   }
   
-  .linkListTitle {
-  
-  }
-  
   .linkListItem {
     margin: 1rem 0;
     & a {
@@ -68,7 +64,7 @@
     
     @media (min-width: 64em) {
       grid-auto-flow: column;
-      grid-template-rows: repeat(5, auto);
+      grid-template-rows: repeat(7, auto);
     };
   }
   

@@ -39,52 +39,52 @@ export const FooterStory= {
             links: [
                 {
                 href: '/#ol',
-                title: 'Öl',
+                children: 'Öl',
                 isExternal: true,
                 },
                 {
                 href: '/#vin',
-                title: 'Vin',
+                children: 'Vin',
                 isExternal: true,
                 },
                 {
                 href: '/#sprit',
-                title: 'Sprit',
+                children: 'Sprit',
                 isExternal: true,
                 },
                 {
                 href: '/#cider',
-                title: 'Cider',
+                children: 'Cider',
                 isExternal: true,
                 },
                 {
                 href:'/#blanddryck',
-                title: 'FAB / Blanddryck',
+                children: 'FAB / Blanddryck',
                 isExternal: true,
                 },
                 {
                 href: '/#vatten',
-                title: 'Vatten',
+                children: 'Vatten',
                 isExternal: true,
                 },
                 {
                 href: '/#lask',
-                title: 'Läsk',
+                children: 'Läsk',
                 isExternal: true,
                 },
                 {
                 href: '/#fruktdryck',
-                title: 'Fruktdryck',
+                children: 'Fruktdryck',
                 isExternal: true,
                 },
                 {
                 href: '/#mixers',
-                title: 'Mixers',
+                children: 'Mixers',
                 isExternal: true,
                 },
                 {
                 href:'/#ovriga-produkter',
-                text: 'Övriga produkter',
+                children: 'Övriga produkter',
                 isExternal: true,
                 }
             ]
@@ -93,27 +93,27 @@ export const FooterStory= {
             links: [
                 {
                 href: '/#mitt-konto',
-                title: 'Mitt konto',
+                children: 'Mitt konto',
                 isExternal: true,
                 },
                 {
                 href: '/#faktoror',
-                title: 'Faktoror',
+                children: 'Faktoror',
                 isExternal: true,
                 },
                 {
                 href: '/#returer',
-                title: 'Returer',
+                children: 'Returer',
                 isExternal: true,
                 },
                 {
                 href: '/#orderhistorik',
-                title: 'Orderhistorik',
+                children: 'Orderhistorik',
                 isExternal: true,
                 },
                 {
                 href:'/#favoriter',
-                title: 'Inköpslistor / Favoriter',
+                children: 'Inköpslistor / Favoriter',
                 isExternal: true,
                 }
             ]
@@ -122,12 +122,12 @@ export const FooterStory= {
             links: [
                 {
                 href: '/#blogg',
-                title: 'Blogg',
+                children: 'Blogg',
                 isExternal: true,
                 },
                 {
                 href: '/#webshop',
-                title: 'Våran webshop',
+                children: 'Våran webshop',
                 isExternal: true,
                 }
             ]
