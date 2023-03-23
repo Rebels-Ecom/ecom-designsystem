@@ -138,3 +138,8 @@
     align-items: center;
     justify-content:center;
   }
+
+  .socialMediaIconContainer {
+    display: flex;
+    gap: 0.5rem;
+  }

@@ -17,22 +17,28 @@ const FooterTopBarTemplate: Story = {
 const footerTopBarArgs = {
   footerTopBarLinks: [
   {
-      navLinkType: 'login',
-      href: '/login',
-      title: 'Logga in',
-      isExternal: false,
+    navLinkType: 'login',
+    children: 'Logga in',
+    href: '/login',
+    title: 'Logga in',
+    isExternal: true,
+    target: null,
   },
   {
     navLinkType: 'register',
+    children: 'Bli e-handels kund',
     href: 'http://spendrups.se/kund/',
     title: 'Bli e-handels kund',
     isExternal: true,
+    target: null,
   },
   {
     navLinkType: 'contact',
+    children: 'Kontakta oss',
     href: '/kontakta-oss',
     title: 'Kontakta oss',
-    isExternal: false,
+    isExternal: true,
+    target: null,
   }
   ],
   linkComponent: 'a'

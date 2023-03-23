@@ -3,9 +3,7 @@ import { IPicture, Picture } from '../../atoms/picture/picture'
 import { Newsletter } from '../../molecules/newsletter/newsletter'
 import { useState } from 'react'
 import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
-import { SocialMediaLinks } from '../../molecules/social-media-links/social-media-links'
 import styles from './footer.module.css'
-import { TSocialMediaLink } from '../../atoms/social-media-link/social-media-link'
 
 export interface IFooter {
   footerTopBarLinks: Array<TNavLink>,  
@@ -14,10 +12,10 @@ export interface IFooter {
   logo: INavigationLogo
   addressLabel: string
   address: string
-  socialMediaLinks: Array<TSocialMediaLink>
   newsletterId: string
   newsletterPlaceholder: string
   bottomBarText: string
+  children: React.ReactNode
 }
 
 export type INavigationLogo = {
@@ -29,7 +27,7 @@ export type TFooterLinksList = {
   links: Array<ILink>
 }
 
-const FooterContent = ({logo, address, addressLabel, socialMediaLinks, linkComponent: Link, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, socialMediaLinks: any, linkComponent: any, newsletterId:string, newsletterPlaceholder: string }) => {
+const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, newsletterId:string, newsletterPlaceholder: string }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [isErroneous, setIsErroneous] = useState<boolean>(false)
@@ -57,8 +55,9 @@ const FooterContent = ({logo, address, addressLabel, socialMediaLinks, linkCompo
       />
       <div className={styles.addressContainer}>
         <p>{addressLabel}</p>
-        <p>{address}</p></div>
-      <SocialMediaLinks socialMediaLinks={socialMediaLinks}/>
+        <p>{address}</p>
+      </div>
+      <div className={styles.socialMediaIconContainer}>{children}</div>
     </div>
   )
 }
@@ -98,12 +97,12 @@ const FooterBottomBar = ({bottomBarText}:{bottomBarText:string}) => (
   <div className={styles.bottomBar}>{bottomBarText}</div>
 )
 
-const Footer = ({ footerTopBarLinks, logo, address, addressLabel, socialMediaLinks, links = [], linkComponent: Link, newsletterId, newsletterPlaceholder, bottomBarText }: IFooter) => {
+const Footer = ({ footerTopBarLinks, logo, address, addressLabel, children, links = [], linkComponent: Link, newsletterId, newsletterPlaceholder, bottomBarText }: IFooter) => {
   return (
     <>
       <FooterTopBar footerTopBarLinks={footerTopBarLinks} linkComponent={Link}></FooterTopBar>
       <footer className={styles.footer}>
-        <FooterContent logo={logo} address={address} addressLabel={addressLabel} socialMediaLinks={socialMediaLinks} linkComponent={Link} newsletterId={newsletterId} newsletterPlaceholder={newsletterPlaceholder} ></FooterContent>
+        <FooterContent logo={logo} address={address} addressLabel={addressLabel} linkComponent={Link} newsletterId={newsletterId} newsletterPlaceholder={newsletterPlaceholder} children={children}/>
         <FooterLinks footerLinks={links} linkComponent={Link}></FooterLinks>
       </footer>
       <FooterBottomBar bottomBarText={bottomBarText}></FooterBottomBar>

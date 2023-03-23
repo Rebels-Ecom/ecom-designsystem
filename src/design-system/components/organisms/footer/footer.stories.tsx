@@ -2,6 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Footer } from './footer'
 import { FooterTopBarStory } from '../../molecules/footer-top-bar/footer-top-bar.stories'
+import { SocialMediaLink } from '../../atoms/social-media-link/social-media-link'
 
 const meta: Meta<typeof Footer> = {
     title: 'Design System/Organisms/Footer',
@@ -30,26 +31,7 @@ export const FooterStory= {
         },
         addressLabel: 'Besöksadress: ',
         address: 'Huvudkontoret Vårby Allé 39, 143 30 Vårby',
-        socialMediaLinks: [
-            {
-            icon:'icon-facebook',
-            href: 'https://www.facebook.com/spendrupsbryggeri/',
-            title: 'Facebook',
-            isExternal: true,
-            },
-            {
-            icon:'icon-instagram',
-            href: 'https://www.instagram.com/spendrupsbryggeri/',
-            title: 'Instagram',
-            isExternal: true,
-            },
-            {
-            icon:'icon-linkedin',
-            href: 'https://www.linkedin.com/company/spendrups-bryggeri-ab/',
-            title: 'Facebook',
-            isExternal: true,
-            },
-        ],
+        children: [<SocialMediaLink icon={'icon-facebook'} children={undefined} href={''} />, <SocialMediaLink icon={'icon-instagram'} children={undefined} href={''} />],
         newsletterId: 'footerNewsLetterId',
         newsletterPlaceholder: 'Skriv din email address',
         links: [
