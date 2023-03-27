@@ -4,21 +4,17 @@
   border-bottom: 0.1875rem solid transparent;
   padding-bottom: 0.125rem;
 
-  & .linkText {
-    border-bottom: 0.125rem solid;
-  }
-
   &a:focus,
   &a:active {
     outline: none;
     border-bottom: 0.1875rem solid;
     background: var(--focused);
     color: var(--interactive-hover);
-
-    & .linkText {
-      border-bottom: none;
-    }
   }
+}
+
+.link > span {
+  border-bottom: 0.125rem solid;
 }
 
 .transparent {

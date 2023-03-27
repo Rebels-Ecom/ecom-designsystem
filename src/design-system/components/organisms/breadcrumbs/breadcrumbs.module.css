@@ -1,6 +1,6 @@
 .breadcrumbsContainer {
     position: relative;
-    height: 13.438rem;
+    height: var(--breadcrumbs-container-height);
 }
 
 .breadcrumbsPicture {
@@ -63,6 +63,10 @@
             display: block;
         }
     }
+}
+
+.listItem > span {
+    border: none;
 }
 
 .listItemActive {

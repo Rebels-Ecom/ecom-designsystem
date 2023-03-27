@@ -23,11 +23,10 @@ export const BreadcrumbsStoryWithBackground = {
         title: 'Våra ölsorter',
         image: PictureStoryBoat.args,
         breadcrumbs: [
-            { url: '/SE-sv/', text: 'Start' },
-            { url: '/SE-sv/c/ol', text: 'Öl' }
+            { href: '/SE-sv/', children: 'Start', isExternal: true},
+            { href: '/SE-sv/c/ol', children: 'Öl', isExternal: true}
         ],
-        location: '/SE-sv/c/ol',
-        linkComponent: 'a'
+        location: '/SE-sv/c/ol'
     }
 }
 
@@ -36,9 +35,8 @@ export const BreadcrumbsStoryWithoutBackground = {
     args: {
         title: 'Våra ölsorter',
         breadcrumbs: [
-            { url: '/SE-sv/', text: 'Start' },
-            { url: '/SE-sv/c/ol', text: 'Öl' }
-        ],  
-        linkComponent: 'a'
+            { href: '/SE-sv/', children: 'Start', isExternal: true},
+            { href: '/SE-sv/c/ol', children: 'Öl', isExternal: true}
+        ]
     }
 }
