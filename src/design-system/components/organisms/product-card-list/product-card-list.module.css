@@ -61,7 +61,7 @@
     &.maxColumnsFour {
       @media (min-width: 64em) {
         width: calc(25% - 2rem);
-        margin-top: 2rem;
+        margin-top: 3rem;
   
         &:nth-child(4n - 3) {
           margin-right: 1rem;

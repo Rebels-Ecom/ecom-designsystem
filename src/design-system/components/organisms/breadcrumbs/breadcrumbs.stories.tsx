@@ -1,7 +1,7 @@
 import React from 'react'
 import { Breadcrumbs } from './breadcrumbs'
 import type { Meta, StoryObj } from '@storybook/react';
-import { PictureStoryBoat } from '../../atoms/picture/picture.stories';
+import { PictureStoryField } from '../../atoms/picture/picture.stories';
 
 const meta: Meta<typeof Breadcrumbs> = {
     title: 'Design System/Organisms/Breadcrumbs',
@@ -21,7 +21,7 @@ export const BreadcrumbsStoryWithBackground = {
     ...BreadcrumbsStoryTemplate,
     args: {
         title: 'Våra ölsorter',
-        image: PictureStoryBoat.args,
+        image: PictureStoryField.args,
         breadcrumbs: [
             { href: '/SE-sv/', children: 'Start', isExternal: true},
             { href: '/SE-sv/c/ol', children: 'Öl', isExternal: true}
