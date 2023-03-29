@@ -8,6 +8,9 @@
     @media (min-width: 48em) {
       justify-content: center;
     }
+    @media (min-width: 64em) {
+      width:var(--product-listing-width);
+    }
   }
   
   .listItem {

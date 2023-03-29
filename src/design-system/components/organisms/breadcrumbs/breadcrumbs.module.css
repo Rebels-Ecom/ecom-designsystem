@@ -29,20 +29,23 @@
 
 .title {
     margin-bottom: 0.5rem;
+    padding: 0 1rem;
     @media (min-width: 64em) {
-        width: 60%;
+        width: var(--product-listing-width);
         margin: auto;
+        padding: 0;
     }
 }
 
 .list {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 1rem;
     display: flex;
     @media (min-width: 64em) {
-        width: 60%;
+        width: var(--product-listing-width);
         margin: auto;
+        padding: 0;
     }
 }
 
