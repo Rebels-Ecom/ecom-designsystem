@@ -12,9 +12,10 @@ html {
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
     --breadcrumbs-container-height: 13.438rem;
-
     --product-card-height: 41.25rem;
     --product-card-max-width: 18.75rem;
+    --footer-top-bar-height-mobile: 4.25rem;
+    --footer-top-bar-height-desktop: 6rem;
 }
 
 body {

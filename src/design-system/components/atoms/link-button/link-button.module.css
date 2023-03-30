@@ -34,9 +34,10 @@
   background-color: var(--cta-secondary-default);
   border-color: var(--border-on-secondary);
   color: var(--color-on-secondary);
-  &:hover{
+  &:hover {
+    background-color: var(--cta-secondary-default);
     border-color: var(--border-on-secondary-hover);
-    color: var(--color-on-secondary-hover)
+    color: var(--color-on-secondary-hover);
   }
   &.disabled,
   &:disabled {
@@ -63,4 +64,15 @@
   width: 100%;
   text-align: center;
   display: inline-block;
+}
+
+.rounded {
+  border-radius: 6.25rem;
+}
+
+.round {
+  height: 2.5rem;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  border-radius: 50%;
 }

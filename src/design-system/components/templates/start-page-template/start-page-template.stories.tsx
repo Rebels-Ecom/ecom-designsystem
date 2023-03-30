@@ -7,6 +7,7 @@ import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-l
 import { BlogCardStoryFullWidth } from '../../molecules/blog-card/blog-card.stories'
 import { TeaserStoryLeft, TeaserStoryRight } from '../../molecules/teaser/teaser.stories'
 import { HeaderStory } from '../../organisms/header/header.stories'
+import { FooterStory } from '../../organisms/footer/footer.stories'
 
 const meta: Meta<typeof StartPageTemplate> = {
   title: 'Design System/Templates/StartPageTemplate',
@@ -31,5 +32,6 @@ export const StartPageTemplateStory = {
     teaserRight: TeaserStoryRight.args,
     blogList_3_Col: BlogCardListStory_3_Columns.args,
     teaserLeft: TeaserStoryLeft.args,
+    footer:FooterStory.args
   }
 }

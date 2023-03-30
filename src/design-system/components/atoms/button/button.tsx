@@ -46,7 +46,7 @@ export function getButtonSize(surface: TButtonSize) {
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { className, surface = 'primary', size = 'small', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id },
+    { surface = 'primary', size = 'small', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className },
     ref
   ) => {
     if(!children)
