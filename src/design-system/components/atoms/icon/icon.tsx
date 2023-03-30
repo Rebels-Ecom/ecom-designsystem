@@ -22,7 +22,9 @@ export type TIcon =
   | 'icon-award'
   | 'icon-package'
   | 'icon-users'
-
+  | 'icon-facebook'
+  | 'icon-instagram'
+  | 'icon-linkedin'
 
 export interface IIcon {
   icon: TIcon

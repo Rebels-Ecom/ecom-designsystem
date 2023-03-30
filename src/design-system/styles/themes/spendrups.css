@@ -9,7 +9,7 @@
   --cta-primary-hover: #336574;
   --cta-primary-disabled: #E6ECEE;
 
-  --cta-secondary-default: transparent;
+  --cta-secondary-default: #ffffff;
 
   --cta-tertiary-default: #F08A00;
   --cta-tertiary-hover: #F3A133;
@@ -188,7 +188,9 @@
   --icon-interactive: var(--grey-500);
   --icon-disabled: var(--grey-500);
   --icon-decorative-orange: var(--orange-600);
-
+  --icon-blue: var(--blue-500);
+  --icon-orange:var(--orange-500);
+  --icon-backgorund-blue:#eaeaeb;
 
   /* Gradient */
   --gradient-decorative: #440015;
@@ -214,7 +216,7 @@
   --navigation-icon-default: #666666;
 
   /* Footer */
-  --footer-surface-default: #ffffff;
+  --footer-background-default: #f2efea;
 
   /* Dialog */
   --dialog-surface-default: #ffffff;
@@ -231,7 +233,7 @@
   --cta-primary-hover: #336574;
   --cta-primary-disabled: #E6ECEE;
 
-  --cta-secondary-default: transparent;
+  --cta-secondary-default: #ffffff;
 
   --cta-tertiary-default: #F08A00;
   --cta-tertiary-hover: #F3A133;
@@ -412,6 +414,9 @@
   --icon-interactive: var(--grey-500);
   --icon-disabled: var(--grey-500);
   --icon-decorative-orange: var(--orange-600);
+  --icon-blue: var(--blue-500);
+  --icon-orange:var(--orange-500);
+  --icon-backgorund-blue: #eaeaeb;
 
   /* Gradient */
   --gradient-decorative: #440015;
@@ -437,7 +442,7 @@
   --navigation-icon-default: #666666;
 
   /* Footer */
-  --footer-surface-default: #333333;
+  --footer-background-default: #333333;
 
   /* Dialog */
   --dialog-surface-default: #333333;
