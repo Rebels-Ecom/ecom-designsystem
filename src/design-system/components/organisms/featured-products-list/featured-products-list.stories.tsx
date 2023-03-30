@@ -1,32 +1,30 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { ProductCardList } from './product-card-list'
+import { FeaturedProductsList } from './featured-products-list'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
-import { dummyBeerList } from './dummy-product-list-beer'
+//import { dummyBeerList } from './dummy-product-list-beer'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 
-const meta: Meta<typeof ProductCardList> = {
-  title: 'Design System/Organisms/ProductCardList',
-  component: ProductCardList
+const meta: Meta<typeof FeaturedProductsList> = {
+  title: 'Design System/Organisms/FeaturedProductsList',
+  component: FeaturedProductsList
 };
 
 export default meta;
-type Story = StoryObj<typeof ProductCardList>;
+type Story = StoryObj<typeof FeaturedProductsList>;
 
-const ProductCardListStoryTemplate: Story = {
+const FeaturedProductsListStoryTemplate: Story = {
   render: ( args ) => {
     const [cardList] = useState(args.productCards)
 
     function handleAddToCart(product:any) {
-      alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+        alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
-    
+
     return (
-      <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-        <ProductCardList productCards={cardList} maxColumns={args.maxColumns} addToCart={handleAddToCart}/>
-      </div>
+        <FeaturedProductsList productCards={cardList} addToCart={handleAddToCart}/>
     )
   }
 };
@@ -70,15 +68,9 @@ function getProductList( productList: any) : IProduct {
     return list;
 }
 
-const productArgs = getProductList(dummyBeerList);
+//const productArgs = getProductList(dummyBeerList);
 
-export const ProductCardListStory = {
-  ...ProductCardListStoryTemplate,
-  args: {
-    productCards: productArgs,
-    maxColumns: 4,
-  }
-}
+
 
 
 const cardList = [
@@ -88,23 +80,12 @@ const cardList = [
   ProductCardStory.args,
   ProductCardStory.args,
   ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
 ]
 
-export const Product_Card_List__Max_Columns_3 = {
-  ...ProductCardListStoryTemplate,
-  args: {
-    productCards: cardList,
-    maxColumns: 3,
+export const FeaturedProductsListStory = {
+    ...FeaturedProductsListStoryTemplate,
+    args: {
+      productCards: cardList
+    }
   }
-}
 
-export const Product_Card_List__Max_Columns_4 = {
-  ...ProductCardListStoryTemplate,
-  args: {
-    productCards: cardList,
-    maxColumns: 4,
-  }
-}

@@ -7,9 +7,11 @@
     &:hover, &:focus, &:active{
         box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
     }
-    @media (min-width: 48em) {
-        max-width: 18.75rem;
-        height: 41.25rem;
+    width: var(--product-card-width-mobile);
+    height: var(--product-card-height);
+    
+    @media (min-width: 64em) {
+        width: var(--product-card-width-desktop);
     }
 }
 

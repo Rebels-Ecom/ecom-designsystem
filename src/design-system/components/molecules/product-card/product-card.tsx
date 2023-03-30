@@ -7,15 +7,17 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import cx from 'classnames'
 
 export interface IProductCard extends IProduct {
     product: IProduct
     changePackagingButton: IButton
     addToCartButton: IButton
     addToCart: CallableFunction
+    className: string
 }
 
-const ProductCard = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, changePackagingButton, addToCartButton, addToCart }: IProductCard ) => {
+const ProductCard = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, changePackagingButton, addToCartButton, addToCart, className }: IProductCard ) => {
     const [product, setProduct] = useState(
         {   productId,
             productName, 
@@ -74,7 +76,7 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
     }
     else {
         return(
-            <div className= {styles.productCard}>
+            <div className= {cx(styles.productCard)}>
                 <CardImage 
                     heading={product.productName}
                     image = {product.productImage}

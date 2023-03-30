@@ -15,7 +15,6 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
 
     function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
         const selectedValue = e.currentTarget.value;
-        console.log('SELECTED VARIANT ID', selectedValue)
         setSelectedProductVariantId(selectedValue);
     }
 
@@ -25,7 +24,7 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
     }
 
     return(
-        <div className={className ? className : ''}>
+        <div className={styles.variantsWrapper}>
             <ul className={styles.variantsList}>
                 {variantsList.map((variant)=> (
                     <li key={variant.variantId} className={styles.listItem}>
