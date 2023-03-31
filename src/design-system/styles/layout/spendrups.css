@@ -10,9 +10,8 @@ html {
     --content-max-width-narrow: 73rem;
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
-    --product-card-width-mobile: 21rem;
-    --product-card-width-desktop: 16.875rem;
-    --product-card-height: 41.25rem;
+    --product-card-width: 16.875rem; /* 270px */
+    --product-card-height: 40rem; /* 640px */
 }
 
 body {

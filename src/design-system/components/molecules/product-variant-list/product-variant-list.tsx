@@ -24,7 +24,7 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
     }
 
     return(
-        <div className={styles.variantsWrapper}>
+        <div className={className ? className : ''}>
             <ul className={styles.variantsList}>
                 {variantsList.map((variant)=> (
                     <li key={variant.variantId} className={styles.listItem}>
