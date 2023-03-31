@@ -1,30 +1,30 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { FeaturedProductsList } from './featured-products-list'
+import { FeaturedProducts } from './featured-products'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
 //import { dummyBeerList } from './dummy-product-list-beer'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import { action } from '@storybook/addon-actions'
 
-const meta: Meta<typeof FeaturedProductsList> = {
-  title: 'Design System/Organisms/FeaturedProductsList',
-  component: FeaturedProductsList
+const meta: Meta<typeof FeaturedProducts> = {
+  title: 'Design System/Organisms/FeaturedProducts',
+  component: FeaturedProducts
 };
 
 export default meta;
-type Story = StoryObj<typeof FeaturedProductsList>;
+type Story = StoryObj<typeof FeaturedProducts>;
 
-const FeaturedProductsListStoryTemplate: Story = {
+const FeaturedProductsStoryTemplate: Story = {
   render: ( args ) => {
-    const [cardList] = useState(args.productCards)
 
     function handleAddToCart(product:any) {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
 
     return (
-        <FeaturedProductsList productCards={cardList} addToCart={handleAddToCart}/>
+        <FeaturedProducts {...args} addToCart={handleAddToCart}/>
     )
   }
 };
@@ -70,10 +70,11 @@ function getProductList( productList: any) : IProduct {
 
 //const productArgs = getProductList(dummyBeerList);
 
-
-
-
 const cardList = [
+  ProductCardStory.args,
+  ProductCardStory.args,
+  ProductCardStory.args,
+  ProductCardStory.args,
   ProductCardStory.args,
   ProductCardStory.args,
   ProductCardStory.args,
@@ -82,10 +83,18 @@ const cardList = [
   ProductCardStory.args,
 ]
 
-export const FeaturedProductsListStory = {
-    ...FeaturedProductsListStoryTemplate,
+export const FeaturedProductsStory = {
+    ...FeaturedProductsStoryTemplate,
     args: {
-      productCards: cardList
+      title: 'Våra mest sålda',
+      productCards: cardList,
+      link: {
+        href: '/featured-products',
+        children: 'Visa alla blivande favoriter',
+        isExternal: true,
+      },
+      linkComponent: 'a',
+      addToCart: action('clicked'),
     }
   }
 

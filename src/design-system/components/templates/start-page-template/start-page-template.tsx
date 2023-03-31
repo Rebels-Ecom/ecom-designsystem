@@ -8,11 +8,13 @@ import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
 import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
+import { FeaturedProducts, IFeaturedProducts } from '../../organisms/featured-products/featured-products'
 
 export interface IStartPageTemplate {
   header: any
   hero: IHeroCarousel
   blogList_4_Col: IBlogCardList
+  featuredProducts: IFeaturedProducts
   offerCardsList: IOfferCardList
   blogFullwidth: IBlogCard
   teaserRight: ITeaser
@@ -21,7 +23,7 @@ export interface IStartPageTemplate {
   footer: IFooter
 }
 
-const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
+const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
   return (
     <>
       <Header>
@@ -52,6 +54,9 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogF
         <HeroCarousel {...hero} />
         <MaxWidth contentMaxWidth={'wide'}>
           <BlogCardList {...blogList_3_Col} />
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <FeaturedProducts {...featuredProducts} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <OfferCardList {...offerCardsList} />

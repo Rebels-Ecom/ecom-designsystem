@@ -90,28 +90,6 @@
     margin: 0;
   }
   
-  .linkListItem2{
-    display: block;
-    margin: 0 0 1rem 0;
-  
-    @media (min-width: 85.375em) {
-      margin: 0 0 1.75rem 0;
-    }
-  
-    &:last-child {
-      margin-bottom: 0;
-    }
-  
-    & a {
-      font-size: var(--body-mobile-font-size);
-      line-height: var(--body-mobile-line-height);
-      @media (min-width: 85.375em) {
-        font-size: var(--body-desktop-font-size);
-        line-height: var(--body-desktop-line-height);
-      }
-    }
-  }
-  
   .socialMediaIcon {
     background: var(--icon-background-blue);
     color: var(--icon-blue)

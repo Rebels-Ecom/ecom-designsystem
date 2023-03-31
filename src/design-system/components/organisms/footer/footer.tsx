@@ -6,7 +6,7 @@ import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
 import styles from './footer.module.css'
 
 export interface IFooter {
-  footerTopBarLinks: Array<TNavLink>,  
+  footerTopBarLinks: Array<TNavLink>
   links: Array<TFooterLinksList>
   linkComponent: any
   logo: INavigationLogo

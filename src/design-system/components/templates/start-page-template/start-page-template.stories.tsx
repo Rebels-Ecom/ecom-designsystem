@@ -8,6 +8,7 @@ import { BlogCardStoryFullWidth } from '../../molecules/blog-card/blog-card.stor
 import { TeaserStoryLeft, TeaserStoryRight } from '../../molecules/teaser/teaser.stories'
 import { HeaderStory } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
+import { FeaturedProductsStory } from '../../organisms/featured-products/featured-products.stories'
 
 const meta: Meta<typeof StartPageTemplate> = {
   title: 'Design System/Templates/StartPageTemplate',
@@ -27,6 +28,7 @@ export const StartPageTemplateStory = {
     header: HeaderStory.args,
     hero: HeroCarouselStory.args,
     blogList_4_Col: BlogCardListStory_4_Columns.args,
+    featuredProducts: FeaturedProductsStory.args,
     offerCardsList: OfferCardListStory.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     teaserRight: TeaserStoryRight.args,
