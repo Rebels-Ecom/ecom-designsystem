@@ -1,0 +1,51 @@
+.footerTopBar {
+  position: relative;
+  background: var(--top-nav-bar-background);
+  height: var(--footer-top-bar-height-mobile);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  @media (min-width: 64rem) {
+    padding: 0 3.4375rem;
+    height: var(--footer-top-bar-height-desktop);
+  }
+}
+
+.topNavText {
+  display:none;
+  @media (min-width: 48rem) {
+    display: block;
+  }
+}
+
+.navLinksList{
+  display: flex;
+  justify-content: center;
+  width:100%;
+  padding: 0;
+  list-style: none;
+}
+
+.linkItem {
+  position: relative;
+  display: flex;
+  margin:0;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  &:last-child {
+    margin-right: 0;
+  }
+  @media (min-width: 48rem) {
+    margin-right: 1.5rem;
+  }
+}
+
+.buttonLinkText {
+  display: none;
+  @media (min-width: 48rem) {
+    display: block;
+    margin-left: 0.6rem;
+  }
+}

@@ -116,3 +116,19 @@ export const PictureStoryCookies = {
   }
 }
 
+export const PictureStoryField = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'pictureField',
+    src: 'https://picsum.photos/id/98/1366/576',
+    sources: [
+      { srcset: 'https://picsum.photos/id/98/700/1050', media: `(max-width: 767px)` },
+      { srcset: 'https://picsum.photos/id/98/1366/576', media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+

@@ -8,10 +8,14 @@ html {
     --max-width: 120rem;
     --content-max-width-wide: 108rem;
     --content-max-width-narrow: 73rem;
+    --product-listing-width: 77.5rem;
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
     --product-card-width: 16.875rem; /* 270px */
     --product-card-height: 40rem; /* 640px */
+    --breadcrumbs-container-height: 13.438rem;
+    --footer-top-bar-height-mobile: 4.25rem;
+    --footer-top-bar-height-desktop: 6rem;
 }
 
 body {

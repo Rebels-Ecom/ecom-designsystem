@@ -1,0 +1,25 @@
+.newsletter {
+    position:relative;
+    display:flex;
+    height: 2.75rem;
+}
+
+.submitButton {
+    border-radius: 0 0.25rem 0.25rem 0;
+    border: none;
+    padding:0.5rem;
+    height:2.75rem;
+    color: #ffffff;
+}
+
+.newsletterInputField {
+    height: 100%;
+    width:100%;
+    border: solid 0.125rem var(--input-border-color);
+    border-radius: 0.25rem 0 0 0.25rem;
+    padding: 0.5rem;
+    color: var(--color-text-input);
+    &:hover, &:focus {
+        background: #fff;
+    }
+}
