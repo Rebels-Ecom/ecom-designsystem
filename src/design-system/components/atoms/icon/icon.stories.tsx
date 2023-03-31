@@ -15,7 +15,8 @@ const icons = [
   'icon-search',
   'icon-award',
   'icon-package',
-  'icon-users'
+  'icon-users',
+  'icon-clipboard'
 ]
 
 const meta: Meta<typeof Icon> = {
