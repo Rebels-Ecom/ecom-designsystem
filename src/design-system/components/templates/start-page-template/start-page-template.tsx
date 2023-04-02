@@ -8,22 +8,24 @@ import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
 import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
-import { FeaturedProducts, IFeaturedProducts } from '../../organisms/featured-products/featured-products'
+import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
+import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 
 export interface IStartPageTemplate {
   header: any
   hero: IHeroCarousel
   blogList_4_Col: IBlogCardList
-  featuredProducts: IFeaturedProducts
+  featuredProducts: IFeaturedProductsCarousel
   offerCardsList: IOfferCardList
   blogFullwidth: IBlogCard
+  customerTeaser: ICustomerTeaser
   teaserRight: ITeaser
   blogList_3_Col: IBlogCardList
   teaserLeft: ITeaser
   footer: IFooter
 }
 
-const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
+const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, offerCardsList, blogFullwidth, customerTeaser, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
   return (
     <>
       <Header>
@@ -56,13 +58,16 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, off
           <BlogCardList {...blogList_3_Col} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProducts {...featuredProducts} />
+          <FeaturedProductsCarousel {...featuredProducts} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <OfferCardList {...offerCardsList} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <BlogCard {...blogFullwidth} />
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <CustomerTeaser {...customerTeaser} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <Teaser {...teaserRight} />

@@ -1,22 +1,22 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { FeaturedProducts } from './featured-products'
+import { FeaturedProductsCarousel } from './featured-products-carousel'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
 //import { dummyBeerList } from './dummy-product-list-beer'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { action } from '@storybook/addon-actions'
 
-const meta: Meta<typeof FeaturedProducts> = {
-  title: 'Design System/Organisms/FeaturedProducts',
-  component: FeaturedProducts
+const meta: Meta<typeof FeaturedProductsCarousel> = {
+  title: 'Design System/Organisms/FeaturedProductsCarousel',
+  component: FeaturedProductsCarousel
 };
 
 export default meta;
-type Story = StoryObj<typeof FeaturedProducts>;
+type Story = StoryObj<typeof FeaturedProductsCarousel>;
 
-const FeaturedProductsStoryTemplate: Story = {
+const FeaturedProductsCarouselStoryTemplate: Story = {
   render: ( args ) => {
 
     function handleAddToCart(product:any) {
@@ -24,7 +24,7 @@ const FeaturedProductsStoryTemplate: Story = {
     }
 
     return (
-        <FeaturedProducts {...args} addToCart={handleAddToCart}/>
+        <FeaturedProductsCarousel {...args} addToCart={handleAddToCart}/>
     )
   }
 };
@@ -83,8 +83,8 @@ const cardList = [
   ProductCardStory.args,
 ]
 
-export const FeaturedProductsStory = {
-    ...FeaturedProductsStoryTemplate,
+export const FeaturedProductsCarouselStory = {
+    ...FeaturedProductsCarouselStoryTemplate,
     args: {
       title: 'Våra mest sålda',
       productCards: cardList,

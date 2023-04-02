@@ -16,6 +16,8 @@ html {
     --breadcrumbs-container-height: 13.438rem;
     --footer-top-bar-height-mobile: 4.25rem;
     --footer-top-bar-height-desktop: 6rem;
+    --signup-teaser-max-width: 43.875rem;
+    --featured-products-max-width: 54.375rem;
 }
 
 body {

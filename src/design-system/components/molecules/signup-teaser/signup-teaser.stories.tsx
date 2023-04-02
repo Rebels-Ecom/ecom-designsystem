@@ -14,11 +14,16 @@ export default meta;
 type Story = StoryObj<typeof SignupTeaser>;
 
 const SignupTeaserStoryTemplate: Story = {
-  render: ({ ...args }) => (
-        <div style={{ margin: '2rem auto', maxWidth: '50rem' }}>
+  render: ({ ...args }) => {
+    function handleSignup() {
+
+    }
+
+    return(
+        <div style={{ margin: '2rem auto', padding: '1rem', maxWidth: '50rem' }}>
             <SignupTeaser {...args}/>
         </div>
-  )
+  )}
 };
 
 export const SignupTeaserStory = {
@@ -44,13 +49,13 @@ export const SignupTeaserStory = {
             iconRight: {icon:'icon-heart'},
             onClick: action('clicked'),
         },
-        signupButton: {
-            id: 'button_signup',
-            disabled: false,
+        signupLink: {
             surface: 'primary',
-            surfaceVariant: 'blue',
             children: 'Bli kund idag',
-            onClick: action('clicked'),
+            href: '/register',
+            isExternal: true,
+            target: null,
+            title: 'Bli kund idag'
         }
     }
 }

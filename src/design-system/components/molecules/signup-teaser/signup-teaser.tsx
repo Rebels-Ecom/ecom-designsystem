@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './signup-teaser.module.css'
 import { Button, IButton } from '../../atoms/button/button'
 import { Icon, IIcon } from '../../atoms/icon/icon'
+import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
 
 export interface ISignupTeaser {
     heading: string
@@ -9,11 +10,10 @@ export interface ISignupTeaser {
     favoriteButton: IButton
     richText: string
     icon?: IIcon
-    signupButton: IButton
-    signUp: React.MouseEventHandler<HTMLButtonElement>
+    signupLink: ILinkButton
 }
 
-function SignupTeaser({ heading, shoppingListButton, favoriteButton, richText, icon, signupButton, signUp} : ISignupTeaser) {
+function SignupTeaser({ heading, shoppingListButton, favoriteButton, richText, signupLink} : ISignupTeaser) {
   return (
     <div className={styles.signupTeaser}>
         <h2 className={styles.heading}>{heading}</h2>
@@ -25,7 +25,7 @@ function SignupTeaser({ heading, shoppingListButton, favoriteButton, richText, i
             <p dangerouslySetInnerHTML={{ __html: richText }}></p>
             <Icon icon={'icon-heart'}></Icon>
         </div>
-        <Button {...signupButton} type={'button'} surface={'primary'} onClick={signUp}>{signupButton.children}</Button>
+        {signupLink && <LinkButton {...signupLink} surface={'primary'} />}
     </div>
   )
 }

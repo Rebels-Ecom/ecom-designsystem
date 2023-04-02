@@ -1,11 +1,11 @@
 import { IProductCard } from '../../molecules/product-card/product-card'
-import styles from './featured-products.module.css'
+import styles from './featured-products-carousel.module.css'
 import { ILink } from '../../../../types/links'
 import { ProductCarousel } from '../../molecules/product-carousel/product-carousel'
 import { Icon } from '../../atoms/icon/icon'
 
 
-export interface IFeaturedProducts {
+export interface IFeaturedProductsCarousel {
   title: string
   link: ILink
   productCards: Array<IProductCard>
@@ -13,9 +13,9 @@ export interface IFeaturedProducts {
   linkComponent: any
 }
 
-const FeaturedProducts = ({ title, link, productCards, addToCart, linkComponent: Link }: IFeaturedProducts) => {
+const FeaturedProductsCarousel = ({ title, link, productCards, addToCart, linkComponent: Link }: IFeaturedProductsCarousel) => {
   return (
-    <section className={styles.featuredProductsList}>
+    <section>
       <h2 className={styles.title} >{title}</h2>
       <ProductCarousel productCards={productCards} addToCart={addToCart}></ProductCarousel>
       <div className={styles.linkWrapper}>
@@ -33,4 +33,4 @@ const FeaturedProducts = ({ title, link, productCards, addToCart, linkComponent:
   )
 }
 
-export { FeaturedProducts }
+export { FeaturedProductsCarousel }
