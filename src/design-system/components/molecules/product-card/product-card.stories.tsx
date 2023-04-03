@@ -10,10 +10,10 @@ import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/
 const meta: Meta<typeof ProductCard> = {
     title: 'Design System/Molecules/Product/ProductCard',
     component: ProductCard
-};
+}
 
 export default meta;
-type Story = StoryObj<typeof ProductCard>;
+type Story = StoryObj<typeof ProductCard>
 
 const ProductCardStoryTemplate: Story = {
   render: ({ ...args }) => {
@@ -23,7 +23,7 @@ const ProductCardStoryTemplate: Story = {
 
     return(<ProductCard {...args} addToCart={handleAddToCart}/>)
   }
-};
+}
 
 function getProductTags(tags:Array<any>){
     return tags.map((tag)=>{
@@ -72,7 +72,7 @@ function getProduct( productData: any) : IProduct {
     }
 }
 
-const productArgs = getProduct(dummyWineProduct);
+const productArgs = getProduct(dummyWineProduct)
 
 export const ProductCardStory = {
     ...ProductCardStoryTemplate,

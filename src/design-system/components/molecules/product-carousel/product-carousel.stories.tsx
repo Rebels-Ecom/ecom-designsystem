@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductCarousel } from './product-carousel'
-import { ProductCardStory } from '../product-card/product-card.stories';
+import { ProductCardListStory } from '../../organisms/product-card-list/product-card-list.stories'
 
 const meta: Meta<typeof ProductCarousel> = {
     title: 'Design System/Molecules/ProductCarousel',
@@ -25,22 +25,11 @@ const ProductCarouselStoryTemplate: Story = {
   }
 }
 
-const productList = [
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-    ProductCardStory.args,
-  ]
+const products = ProductCardListStory.args.productCards.slice(0, 10)
 
 export const ProductCarouselStory = {
     ...ProductCarouselStoryTemplate,
     args: {
-        productCards: productList
+        productCards: products
     }
 }

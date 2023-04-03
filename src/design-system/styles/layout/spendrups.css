@@ -8,7 +8,8 @@ html {
     --max-width: 120rem;
     --content-max-width-wide: 108rem;
     --content-max-width-narrow: 73rem;
-    --product-listing-width: 77.5rem;
+    --product-listing-width-m: 37.5rem;
+    --product-listing-width-l: 77.5rem;
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
     --product-card-width: 16.875rem; /* 270px */

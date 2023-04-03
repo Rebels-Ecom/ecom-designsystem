@@ -6,9 +6,10 @@
     max-width: var(--featured-products-max-width);
     @media (min-width: 48em) {
       justify-content: center;
+      width:var(--product-listing-width-m);
     }
     @media (min-width: 64em) {
-      width:var(--product-listing-width);
+      width:var(--product-listing-width-l);
       display: flex;
       flex-wrap: wrap;
       margin: 0;

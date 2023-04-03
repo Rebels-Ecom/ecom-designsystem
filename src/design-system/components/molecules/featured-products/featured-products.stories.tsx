@@ -1,12 +1,8 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { useState } from 'react'
 import { FeaturedProducts } from './featured-products'
-import { ProductCardStory } from '../product-card/product-card.stories'
-//import { dummyBeerList } from './dummy-product-list-beer'
-import { IProduct } from '../../../../types/product'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import { action } from '@storybook/addon-actions'
+import { ProductCardListStory } from '../../organisms/product-card-list/product-card-list.stories'
 
 const meta: Meta<typeof FeaturedProducts> = {
   title: 'Design System/Molecules/FeaturedProducts',
@@ -14,7 +10,7 @@ const meta: Meta<typeof FeaturedProducts> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof FeaturedProducts>;
+type Story = StoryObj<typeof FeaturedProducts>
 
 const FeaturedProductsStoryTemplate: Story = {
   render: ( args ) => {
@@ -27,61 +23,9 @@ const FeaturedProductsStoryTemplate: Story = {
         <FeaturedProducts {...args} addToCart={handleAddToCart}/>
     )
   }
-};
-
-function getVariantsList( productName:string, variantsList:Array<any>) {
-    const firstVariantId = variantsList[0].VariantId;
-    return variantsList.map((variant)=>{
-        return{
-            productName: productName,
-            variantName: variant.Name,
-            variantId: variant.VariantId,
-            country: (Array.isArray(variant.ShortTexts) && variant.ShortTexts.length) ? variant.ShortTexts[0] : '',
-            listPricePerUnitString: variant.ListPricePerUnitString,
-            price: variant.ListPricePerUnit,
-            salesUnit: variant.SalesUnit,
-            itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
-            image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
-            checked: variant.VariantId===firstVariantId,
-            onChange: () => {},
-        }
-    })
 }
 
-function getProductList( productList: any) : IProduct {
-    const list = productList.map((productItem: any) => {
-        const product = productItem.Variants[0];
-        return{
-            productId: product.VariantId,
-            productName: productItem.DisplayName,
-            productImageUrl: product.PrimaryImageUrl,
-            country: (Array.isArray(product.ShortTexts) && product.ShortTexts.length) ? product.ShortTexts[0] : '',
-            packaging: product.VariantFullName,
-            priceStr: product.ListPricePerUnitString,
-            price:product.ListPricePerUnit,
-            salesUnit:product.SalesUnit,
-            itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
-            productVariantList: getVariantsList(productItem.DisplayName, productItem.Variants)
-        }
-
-    })
-    return list;
-}
-
-//const productArgs = getProductList(dummyBeerList);
-
-const cardList = [
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-  ProductCardStory.args,
-]
+const cardList = ProductCardListStory.args.productCards.slice(0, 3)
 
 export const FeaturedProductsStory = {
     ...FeaturedProductsStoryTemplate,

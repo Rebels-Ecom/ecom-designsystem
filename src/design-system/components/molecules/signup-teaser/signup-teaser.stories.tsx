@@ -1,30 +1,23 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
 import { SignupTeaser } from './signup-teaser'
-import { PictureStory } from '../../atoms/picture/picture.stories';
-import { TagStoryRound_S } from '../../atoms/tag/tag.stories';
 import { action } from '@storybook/addon-actions';
 
 const meta: Meta<typeof SignupTeaser> = {
     title: 'Design System/Molecules/SignupTeaser',
     component: SignupTeaser
-};
+}
 
 export default meta;
 type Story = StoryObj<typeof SignupTeaser>;
 
 const SignupTeaserStoryTemplate: Story = {
-  render: ({ ...args }) => {
-    function handleSignup() {
-
-    }
-
-    return(
+  render: ({ ...args }) =>(
         <div style={{ margin: '2rem auto', padding: '1rem', maxWidth: '50rem' }}>
             <SignupTeaser {...args}/>
         </div>
-  )}
-};
+  )
+}
 
 export const SignupTeaserStory = {
     ...SignupTeaserStoryTemplate,

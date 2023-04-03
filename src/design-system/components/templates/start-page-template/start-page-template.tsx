@@ -55,13 +55,16 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, off
       <ContentWrapper>
         <HeroCarousel {...hero} />
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
+          <BlogCardList {...blogList_4_Col} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <FeaturedProductsCarousel {...featuredProducts} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <OfferCardList {...offerCardsList} />
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <BlogCardList {...blogList_3_Col} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <BlogCard {...blogFullwidth} />
@@ -72,11 +75,20 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, off
         <MaxWidth contentMaxWidth={'narrow'}>
           <Teaser {...teaserRight} />
         </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <BlogCardList {...blogList_3_Col} />
+        </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <Teaser {...teaserLeft} />
         </MaxWidth>
+        <MaxWidth contentMaxWidth={'narrow'}>
+          <Teaser {...teaserRight} />
+        </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_4_Col} />
+          <BlogCardList {...blogList_3_Col} />
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <FeaturedProductsCarousel {...featuredProducts} />
         </MaxWidth>
       </ContentWrapper>
       <Footer {...footer}/>
