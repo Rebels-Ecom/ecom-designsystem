@@ -35,6 +35,11 @@
             padding-bottom: 120%;
         }
     }
+    &.variantsListOpen {
+      @media (max-width: 48em) {
+        display: none;
+      }
+    }
   }
 
   .tagsList {
@@ -75,6 +80,10 @@
     flex-direction: column;
     align-items: center;
     @media (min-width: 64em) {
+      position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
         width: 50%;
         max-width: var(--product-details-max-width);
         padding: 1rem 1.25rem;

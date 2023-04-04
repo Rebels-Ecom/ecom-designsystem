@@ -26,6 +26,7 @@ export type TIcon =
   | 'icon-instagram'
   | 'icon-linkedin'
   | 'icon-clipboard'
+  | 'icon-download'
 
 export interface IIcon {
   icon: TIcon

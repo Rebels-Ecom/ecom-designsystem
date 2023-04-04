@@ -1,10 +1,10 @@
 import React, { useState} from 'react'
 import styles from './product-details.module.css'
-import { CardImage } from '../card-image/card-image'
-import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
+import { CardImage } from '../../molecules/card-image/card-image'
+import { ProductQuantityInput } from '../../molecules/product-quantity-input/product-quantity-input'
 import { IButton, Button } from '../../atoms/button/button'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { ProductVariantList } from '../product-variant-list/product-variant-list'
+import { ProductVariantList } from '../../molecules/product-variant-list/product-variant-list'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
@@ -89,14 +89,20 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
 
     if(variantsListOpen) {
         return(
-            <ProductVariantList className= {styles.productDetails} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>
+            <div className= {cx(styles.productDetails)}>
+               <div className={cx(styles.imageWrapper, styles.variantsListOpen)}>
+                    <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
+                    <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                </div>
+                <ProductVariantList className= {styles.contentWrapper} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>
+            </div>
         )
     }
     else {
         return(
             <div className= {cx(styles.productDetails)}>
                <div className={styles.imageWrapper}>
-                    <Below breakpoint="sm">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
+                    <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
                     <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
                 </div>
 

@@ -10,9 +10,10 @@ export interface ICustomerTeaser {
 }
 
 const CustomerTeaser = ({ featuredProducts, signupTeaser, addToCart }: ICustomerTeaser) => {
+  const products = featuredProducts.productCards.slice(0, 3)
   return (
     <section className={styles.customerTeaser}>
-        <FeaturedProducts {...featuredProducts} addToCart={addToCart} ></FeaturedProducts>
+        <FeaturedProducts {...featuredProducts} productCards={products} addToCart={addToCart} ></FeaturedProducts>
         <SignupTeaser {...signupTeaser}></SignupTeaser>
     </section>  
   )

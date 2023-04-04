@@ -8,7 +8,7 @@ import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 
 const meta: Meta<typeof ProductDetails> = {
-    title: 'Design System/Molecules/ProductDetails',
+    title: 'Design System/Organisms/ProductDetails',
     component: ProductDetails
 }
 
@@ -72,7 +72,7 @@ function getProduct( productData: any) : IProduct {
     }
 }
 
-const productArgs = getProduct(dummyWineProduct)
+const productArgs = getProduct(dummyBeerProduct)
 
 export const ProductDetailsStory = {
     ...ProductDetailsStoryTemplate,
@@ -80,6 +80,6 @@ export const ProductDetailsStory = {
         ...productArgs,
         productDescription: 'Man brukar säga att pilsen är bryggmästarens stolthet och Pistonhead Lager är inget undantag. En pils med de klassiska inslagen av en riklig humlekaraktär som istället för att vara besk är mer markerad och balanserad. Serveras med en tydlig skumkrona. Dessutom ekologisk.',
         changePackagingButton:ChangePackagingButtonStory.args,
-        addToCartButton: ButtonProductCardStory.args,
+        addToCart: ButtonProductCardStory.args,
     }
 }
