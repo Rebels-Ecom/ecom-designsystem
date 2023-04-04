@@ -1,27 +1,27 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ProductCard } from './product-card'
+import { ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 
-const meta: Meta<typeof ProductCard> = {
-    title: 'Design System/Molecules/Product/ProductCard',
-    component: ProductCard
+const meta: Meta<typeof ProductDetails> = {
+    title: 'Design System/Molecules/ProductDetails',
+    component: ProductDetails
 }
 
 export default meta;
-type Story = StoryObj<typeof ProductCard>
+type Story = StoryObj<typeof ProductDetails>
 
-const ProductCardStoryTemplate: Story = {
+const ProductDetailsStoryTemplate: Story = {
   render: ({ ...args }) => {
     function handleAddToCart(product) {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
 
-    return(<ProductCard {...args} addToCart={handleAddToCart}/>)
+    return(<ProductDetails {...args} addToCart={handleAddToCart}/>)
   }
 }
 
@@ -56,7 +56,7 @@ function getVariantsList( productName:string, variantsList:any) {
 }
 
 function getProduct( productData: any) : IProduct {
-    const product = productData.Variants[0];
+    const product = productData.Variants[0]
     return{
         productId: product.VariantId,
         productName: productData.DisplayName,
@@ -74,10 +74,11 @@ function getProduct( productData: any) : IProduct {
 
 const productArgs = getProduct(dummyWineProduct)
 
-export const ProductCardStory = {
-    ...ProductCardStoryTemplate,
+export const ProductDetailsStory = {
+    ...ProductDetailsStoryTemplate,
     args: {
         ...productArgs,
+        productDescription: 'Man brukar säga att pilsen är bryggmästarens stolthet och Pistonhead Lager är inget undantag. En pils med de klassiska inslagen av en riklig humlekaraktär som istället för att vara besk är mer markerad och balanserad. Serveras med en tydlig skumkrona. Dessutom ekologisk.',
         changePackagingButton:ChangePackagingButtonStory.args,
         addToCartButton: ButtonProductCardStory.args,
     }
