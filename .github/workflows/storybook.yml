@@ -6,8 +6,6 @@ on:
 permissions:
   contents: write
 
-env:
-  BASE_URL: https://rebels-ecom.github.io/ecom-designsystem/
 
 jobs:
   build-and-deploy:

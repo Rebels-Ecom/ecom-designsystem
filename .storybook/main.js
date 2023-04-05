@@ -5,7 +5,7 @@ module.exports = {
     name: "@storybook/react-vite",
     options: {}
   },
-  "staticDirs": ['public'],
+  "staticDirs": ['../public'],
   async viteFinal(config) {
   
     config.base = process.env.BASE_URL || config.base;
