@@ -5,6 +5,10 @@ on:
       - main # if any push happens on branch `main`, run this workflow. You could also add `paths` to detect changes in specific folder
 permissions:
   contents: write
+
+env:
+  BASE_URL: https://rebels-ecom.github.io/ecom-designsystem/
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -17,8 +21,11 @@ jobs:
           npm ci
           npm run build-storybook
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          folder: storybook-static # output folder from `npm run build-storybook`
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          publish_branch: gh-pages
+          publish_dir_prefix: /ecom-designsystem # optional
+         
