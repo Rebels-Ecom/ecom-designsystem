@@ -17,6 +17,7 @@ module.exports = {
     return config;
     
   },
+  assetPrefix: process.env.BASE_URL || "/",
   docs: {
     autodocs: true
   }
