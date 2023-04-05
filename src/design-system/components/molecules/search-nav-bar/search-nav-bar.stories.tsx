@@ -3,21 +3,25 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBar } from './search-nav-bar'
 import { SearchStory } from '../../atoms/search/search.stories'
 
+import logo_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logo_mobile_vertical from '../../../../logotypes/Spendrups_logo_mobile_vertical.svg'
+import logo_mobile_horizontal from '../../../../logotypes/Spendrups_logo_mobile_horizontal.svg'
+
 const meta: Meta<typeof SearchNavBar> = {
   title: 'Design System/Molecules/Search Nav Bar',
-  component: SearchNavBar
-};
+  component: SearchNavBar,
+}
 
-export default meta;
-type Story = StoryObj<typeof SearchNavBar>;
+export default meta
+type Story = StoryObj<typeof SearchNavBar>
 
 const SearchNavBarStoryTemplate: Story = {
   render: (args) => (
     <div style={{ position: 'relative', height: '5rem', display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem' }}>
       <SearchNavBar {...args} />
     </div>
-  )
-};
+  ),
+}
 
 const itemsToFilterOn = [
   { id: 'NCG626689', label: 'Ekoöl på riktigt', text: 'Testa vår ekoöl', slug: 'eko-ol' },
@@ -33,13 +37,13 @@ const itemsToFilterOn = [
 
 const searchNavBarArgs = {
   logo: {
-    src: '/logotypes/Spendrups_logo_desktop_horizontal.svg',
+    src: logo_desktop_horizontal,
     alt: 'logo',
     href: '/',
     id: 'logo',
     sources: [
-      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
-      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+      { srcset: logo_mobile_vertical, media: `(max-width: 767px)` },
+      { srcset: logo_mobile_horizontal, media: `(min-width: 768px)` },
     ],
   },
   searchNavLinks: [
@@ -64,6 +68,6 @@ const searchNavBarArgs = {
 export const SearchNavBarStory = {
   ...SearchNavBarStoryTemplate,
   args: {
-    ...searchNavBarArgs
-  }
+    ...searchNavBarArgs,
+  },
 }
