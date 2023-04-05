@@ -6,6 +6,9 @@ on:
 permissions:
   contents: write
 
+env:
+  BASE_URL: https://rebels-ecom.github.io/ecom-designsystem/
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -24,9 +27,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
           publish_branch: gh-pages
-          base_branch: main
           publish_dir_prefix: /ecom-designsystem # optional
-          commit_message: "Deploy Storybook to GitHub Pages"
-          enable_jekyll: false
-          env:
-            BASE_URL: https://rebels-ecom.github.io/ecom-designsystem/
+         
