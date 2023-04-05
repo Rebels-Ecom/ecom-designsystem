@@ -1,6 +1,5 @@
 {
   "name": "@rebels-ecom/ecom-designsystem",
-  "homepage": "https://rebels-ecom.github.io/ecom-designsystem/",
   "version": "1.0.88",
   "main": "dist/index.es.js",
   "types": "dist/src/index.d.ts",

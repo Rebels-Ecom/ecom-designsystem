@@ -5,13 +5,12 @@ module.exports = {
     name: "@storybook/react-vite",
     options: {}
   },
-  "staticDirs": ['../public'],
+  "staticDirs": ['public'],
   async viteFinal(config) {
-    config.base = process.env.NODE_ENV === "production" ? "/ecom-designsystem/" : "/";
-    return config;
-    
+  
+    config.base = process.env.BASE_URL || config.base;
+    return config;  
   },
-  assetPrefix: process.env.BASE_URL || "/",
   docs: {
     autodocs: true
   }
