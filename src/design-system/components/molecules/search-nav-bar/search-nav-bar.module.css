@@ -1,9 +1,7 @@
 .searchComponent {
     width: 100%;
-    
     @media (min-width: 64em) {
         position: relative;
-        width: 70%;
         margin: 0;
     }
 }

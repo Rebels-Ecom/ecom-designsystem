@@ -21,6 +21,8 @@ html {
     --featured-products-max-width: 54.375rem;
     --product-details-height: 52rem;
     --product-details-max-width: 34.375rem;
+    --nav-bar-height-mobile: 3.75rem;
+    --nav-bar-height-desktop: 5rem;
 }
 
 body {

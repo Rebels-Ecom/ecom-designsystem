@@ -62,9 +62,15 @@
   background: var(--top-nav-bar-background);
 }
 
+.logo, .search, .searchNavLinks  {
+  height: var(--nav-bar-height-mobile);
+  @media (min-width: 64em) {
+    height: var(--nav-bar-height-desktop);
+  }
+}
+
 .logo {
   grid-area: logo;
-  
   @media (min-width: 64em) {
     padding-left: calc(50vw - 60rem);
   }

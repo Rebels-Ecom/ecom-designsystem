@@ -22,7 +22,10 @@
   align-items: center;
   justify-content: space-between;
   background: var(--navigation-surface-default);
- 
+  height: var(--nav-bar-height-mobile);
+  @media (min-width: 64em) {
+    height: var(--nav-bar-height-desktop);
+  }
   @media (min-width: 64em) {
     padding: 0 3.4375rem;
     /* justify-content: reset; */
@@ -48,8 +51,6 @@
     display: none;
   }
 }
-
-
 
 .menuButtonInner {
   display: flex;
@@ -160,6 +161,7 @@
     width: 0;
     @media (min-width: 64em) {
       left: 50%;
+      bottom: -0.5rem;
       height: 0.1875rem;
       width: 0.1875rem;
     }
@@ -167,6 +169,7 @@
 }
 
 .linkItem {
+  font-family: var(--font-family-secondary);
   margin: 0 0 1rem 0.875rem;
   height: 100%;
 

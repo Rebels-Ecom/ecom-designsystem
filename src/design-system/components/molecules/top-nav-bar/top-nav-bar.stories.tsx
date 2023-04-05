@@ -20,25 +20,25 @@ const topNavArgs = {
     {
       navLinkType: 'email',
       href: 'ehandel@spendrups.se',
-      text: 'Kontakta oss',
+      children: 'Kontakta oss',
       isExternal: false,
     },
     {
       navLinkType: 'telephone',
       href: '0771-494910',
-      text: '0771-494910',
+      children: '0771-494910',
       isExternal: false,
     },
     {
       navLinkType: 'register',
       href: 'http://spendrups.se/kund/',
-      text: 'Bli kund',
+      children: 'Bli kund',
       isExternal: true,
     },
     {
       navLinkType: 'login',
       href: '/login',
-      text: 'Logga in',
+      children: 'Logga in',
       isExternal: false,
     }
   ],

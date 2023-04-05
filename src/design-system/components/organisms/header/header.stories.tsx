@@ -9,6 +9,7 @@ import { SearchNavBar } from '../../molecules/search-nav-bar/search-nav-bar'
 import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar.stories'
 import { Logotype } from '../../molecules/logotype/logotype'
 import { NavLinks } from '../../molecules/nav-links/nav-links'
+import { logotypeStory } from '../../molecules/logotype/logotype.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -53,19 +54,7 @@ export const HeaderStory = {
     topNavBar: TopNavBarStory.args,
     navigation: NavigationStory.args,
     searchNavBar: SearchNavBarStory.args,
-    logotype: {
-      logo: {
-        src: '/logotypes/Spendrups_logo_desktop_horizontal.svg',
-        alt: 'logo',
-        href: '/',
-        id: 'logo',
-        sources: [
-          { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
-          { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
-        ],
-      },
-      linkComponent: 'a',
-    },
+    logotype: logotypeStory.args,
     headerLinkList: {
       links: [
         {

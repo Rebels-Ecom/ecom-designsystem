@@ -21,8 +21,8 @@ const logotypeArgs = {
     href: '/',
     id: 'logo',
     sources: [
-      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
-      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 1023px)` },
+      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 1024px)` },
     ],
   },
   linkComponent: 'a',
