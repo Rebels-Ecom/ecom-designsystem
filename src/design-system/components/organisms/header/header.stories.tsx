@@ -9,9 +9,6 @@ import { SearchNavBar } from '../../molecules/search-nav-bar/search-nav-bar'
 import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar.stories'
 import { Logotype } from '../../molecules/logotype/logotype'
 import { NavLinks } from '../../molecules/nav-links/nav-links'
-import logo_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
-import logo_mobile_vertical from '../../../../logotypes/Spendrups_logo_mobile_vertical.svg'
-import logo_mobile_horizontal from '../../../../logotypes/Spendrups_logo_mobile_horizontal.svg'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -58,13 +55,13 @@ export const HeaderStory = {
     searchNavBar: SearchNavBarStory.args,
     logotype: {
       logo: {
-        src: logo_desktop_horizontal,
+        src: '/logotypes/Spendrups_logo_desktop_horizontal.svg',
         alt: 'logo',
         href: '/',
         id: 'logo',
         sources: [
-          { srcset: logo_mobile_vertical, media: `(max-width: 767px)` },
-          { srcset: logo_mobile_horizontal, media: `(min-width: 768px)` },
+          { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
+          { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
         ],
       },
       linkComponent: 'a',
