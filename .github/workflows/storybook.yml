@@ -5,6 +5,8 @@ on:
       - main # if any push happens on branch `main`, run this workflow. You could also add `paths` to detect changes in specific folder
 permissions:
   contents: write
+env: 
+  BASE_URL: https://rebels-ecom.github.io/ecom-designsystem
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
