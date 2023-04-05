@@ -94,8 +94,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
                     <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
                     <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
                 </div>
-                <ProductVariantList className= {styles.contentWrapper} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>
-            </div>
+            <ProductVariantList className= {cx(styles.contentWrapper, styles.productVariants)} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>            </div>
         )
     }
     else {

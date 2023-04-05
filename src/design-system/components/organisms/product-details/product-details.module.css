@@ -91,6 +91,20 @@
         justify-content: center;
     }
   }
+
+  .productVariants {
+    @media (min-width: 64em) {
+      height: 80%;
+      margin: auto;
+    }
+
+    & ul, & button {
+      width: 100%;
+      @media (min-width: 64em) {
+        width: 80%;
+      }
+    }
+  }
   
   .heading {
     margin: 0.5rem 0;
