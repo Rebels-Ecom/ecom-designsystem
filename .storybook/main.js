@@ -7,8 +7,8 @@ module.exports = {
   },
   "staticDirs": ['../public'],
   async viteFinal(config) {
-    config.base = process.env.NODE_ENV === "production" ? "/ecom-designsystem/" : "/";
-    return config;
+  
+    config.base = process.env.BASE_URL || config.base;
     
   },
   assetPrefix: process.env.BASE_URL || "/",
