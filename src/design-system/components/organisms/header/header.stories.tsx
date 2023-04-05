@@ -9,43 +9,46 @@ import { SearchNavBar } from '../../molecules/search-nav-bar/search-nav-bar'
 import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar.stories'
 import { Logotype } from '../../molecules/logotype/logotype'
 import { NavLinks } from '../../molecules/nav-links/nav-links'
+import logo_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logo_mobile_vertical from '../../../../logotypes/Spendrups_logo_mobile_vertical.svg'
+import logo_mobile_horizontal from '../../../../logotypes/Spendrups_logo_mobile_horizontal.svg'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
-  component: Header
-};
+  component: Header,
+}
 
-export default meta;
-type Story = StoryObj<typeof Header>;
+export default meta
+type Story = StoryObj<typeof Header>
 
 const HeaderStoryTemplate: Story = {
-  render: (args ) => (
+  render: (args) => (
     <Header>
-    {({ Wrapper, Button, GridArea }, isOpen) => (
-      <Wrapper isOpen={isOpen}>
-        <GridArea area="top">
-          <TopNavBar {...args.topNavBar} />
-        </GridArea>
-        <GridArea area="logo">
-          <Logotype {...args.logotype} />
-        </GridArea>
-        <GridArea area="search">
-          <SearchNavBar {...args.searchNavBar} />
-        </GridArea>
-        <GridArea area="searchNavLinks">
-          <NavLinks />
-        </GridArea>
-        <GridArea area="btn">
-          <Button />
-        </GridArea>
-        <GridArea area="nav">
-          <Navigation {...args.navigation} />
-        </GridArea>
-      </Wrapper>
-    )}
+      {({ Wrapper, Button, GridArea }, isOpen) => (
+        <Wrapper isOpen={isOpen}>
+          <GridArea area="top">
+            <TopNavBar {...args.topNavBar} />
+          </GridArea>
+          <GridArea area="logo">
+            <Logotype {...args.logotype} />
+          </GridArea>
+          <GridArea area="search">
+            <SearchNavBar {...args.searchNavBar} />
+          </GridArea>
+          <GridArea area="searchNavLinks">
+            <NavLinks />
+          </GridArea>
+          <GridArea area="btn">
+            <Button />
+          </GridArea>
+          <GridArea area="nav">
+            <Navigation {...args.navigation} />
+          </GridArea>
+        </Wrapper>
+      )}
     </Header>
-  )
-};
+  ),
+}
 
 export const HeaderStory = {
   ...HeaderStoryTemplate,
@@ -55,13 +58,13 @@ export const HeaderStory = {
     searchNavBar: SearchNavBarStory.args,
     logotype: {
       logo: {
-        src: '/logotypes/Spendrups_logo_desktop_horizontal.svg',
+        src: logo_desktop_horizontal,
         alt: 'logo',
         href: '/',
         id: 'logo',
         sources: [
-          { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
-          { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+          { srcset: logo_mobile_vertical, media: `(max-width: 767px)` },
+          { srcset: logo_mobile_horizontal, media: `(min-width: 768px)` },
         ],
       },
       linkComponent: 'a',
@@ -82,6 +85,6 @@ export const HeaderStory = {
         },
       ],
       linkComponent: 'a',
-    }
-  }
+    },
+  },
 }
