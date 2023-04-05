@@ -6,9 +6,16 @@ module.exports = {
     options: {}
   },
   "staticDirs": ['../public'],
-  async viteFinal(config) {
-    config.base = process.env.BASE_URL || config.base;
+  async viteFinal(config, { isProd }) {
+    // Set the base URL for production builds on GitHub Pages
+    if (isProd && process.env.GITHUB_ACTIONS) {
+      config.base = "/ecom-designsystem/"; // Replace with your repository name
+      return config;
+    }
+
+     config.base = process.env.BASE_URL || config.base;
     return config;
+    
   },
   docs: {
     autodocs: true

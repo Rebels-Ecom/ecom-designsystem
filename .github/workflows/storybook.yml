@@ -24,3 +24,4 @@ jobs:
         with:
           branch: gh-pages
           folder: storybook-static # output folder from `npm run build-storybook`
+          publish_dir_prefix: ecom-designsystem # Replace with your repository name
