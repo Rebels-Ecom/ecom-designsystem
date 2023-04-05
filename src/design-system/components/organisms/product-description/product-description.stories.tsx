@@ -11,10 +11,21 @@ const meta: Meta<typeof ProductDescription> = {
 export default meta;
 type Story = StoryObj<typeof ProductDescription>;
 
-const ProductDescriptionStoryTemplate: Story = {
-  render: ({ ...args }) =>(
-        <ProductDescription {...args}/>
-  )
+const ProductDescriptionStoryTemplate: Story = {   
+    render: ({ ...args }) => {
+
+        function handleOnClickDescription(product:any) {
+            alert(`Product description will be shown`)
+        }
+
+        function handleOnClickDownload(product:any) {
+            alert(`Product sheet will start downloading`)
+        }
+
+        return(
+            <ProductDescription {...args} onClickGetDescription={handleOnClickDescription} onClickDownloadProductSheet={handleOnClickDownload}/>
+        )
+    }
 }
 
 export const ProductDescriptionStory = {

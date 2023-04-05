@@ -1,6 +1,5 @@
 import React, { useState} from 'react'
 import styles from './product-details.module.css'
-import { CardImage } from '../../molecules/card-image/card-image'
 import { ProductQuantityInput } from '../../molecules/product-quantity-input/product-quantity-input'
 import { IButton, Button } from '../../atoms/button/button'
 import { convertNumToStr } from '../../../../helpers/format-helper'
@@ -106,7 +105,6 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
                 </div>
 
                 <div className={styles.contentWrapper}>
-                
                     <Above breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Above>
                     <h3 className={styles.heading}>{product.productName}</h3>
                     <p className={styles.textPurple}>{`${packaging}: ${product.priceStr} kr/st`}</p>
