@@ -10,8 +10,8 @@ import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar
 import { Logotype } from '../../molecules/logotype/logotype'
 import { NavLinks } from '../../molecules/nav-links/nav-links'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
-import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
-import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_mobile_vertical.svg'
+import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_mobile_horizontal.svg'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -42,7 +42,7 @@ const HeaderStoryTemplate: Story = {
             <Button />
           </GridArea>
           <GridArea area="nav">
-            <Navigation {...args.navigation} />
+            <Navigation {...args.navigation} isOpen={isOpen} />
           </GridArea>
         </Wrapper>
       )}

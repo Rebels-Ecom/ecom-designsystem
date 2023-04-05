@@ -41,6 +41,7 @@ const GridArea = ({ children, area }: { children?: React.ReactNode; area: Area }
 const Wrapper = ({ children, isOpen }: { children: React.ReactNode; isOpen: boolean }) => {
   const target = useRef(null)
   const size = useSize(target) || { width: 0, height: 0 }
+
   return (
     <motion.header className={styles.header} initial={false} animate={isOpen ? 'open' : 'closed'} ref={target} custom={size?.width}>
       {children}

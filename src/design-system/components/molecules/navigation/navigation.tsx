@@ -1,5 +1,5 @@
 import styles from './navigation.module.css'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ILink } from '../../../../types/links'
 import { Above, Below } from '../../layouts'
 import cx from 'classnames'
@@ -7,6 +7,7 @@ import cx from 'classnames'
 export interface INavigation {
   links: Array<ILink>
   linkComponent: any
+  isOpen: boolean
 }
 
 const variants = {
@@ -35,31 +36,47 @@ const itemVariants = {
   },
 }
 
-const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Array<ILink>; linkComponent: any; mobile?: boolean }) => {
+const NavigationList = ({
+  links = [],
+  linkComponent: Link,
+  mobile,
+  isOpen,
+}: {
+  links: Array<ILink>
+  linkComponent: any
+  mobile?: boolean
+  isOpen: boolean
+}) => {
+  console.log(isOpen)
+
   return (
-    <motion.ul className={styles.linkList} variants={variants}>
-      {links.map((link: ILink, index) => {
-        return (
-          <motion.li
-            key={`${link.title}-${index}`}
-            className={styles.linkItem}
-            variants={mobile ? itemVariants : undefined}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {link.isExternal ? (
-              <a href={link.href} target={link.target} title={link.title} className={styles.link}>
-                {link.title}
-              </a>
-            ) : (
-              <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
-                {link.title}
-              </Link>
-            )}
-          </motion.li>
-        )
-      })}
-    </motion.ul>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
+          {links.map((link: ILink, index) => {
+            return (
+              <motion.li
+                key={`${link.title}-${index}`}
+                className={styles.linkItem}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                variants={itemVariants}
+              >
+                {link.isExternal ? (
+                  <a href={link.href} target={link.target} title={link.title} className={styles.link}>
+                    {link.title}
+                  </a>
+                ) : (
+                  <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
+                    {link.title}
+                  </Link>
+                )}
+              </motion.li>
+            )
+          })}
+        </motion.ul>
+      )}
+    </AnimatePresence>
   )
 }
 
@@ -83,7 +100,8 @@ const sidebar = {
   }),
 }
 
-const Navigation = ({ links, linkComponent: Link }: INavigation) => {
+const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
+  console.log(isOpen)
   return (
     <div className={styles.navigation}>
       {links?.length && (
@@ -97,7 +115,7 @@ const Navigation = ({ links, linkComponent: Link }: INavigation) => {
             matches && (
               <>
                 <motion.div className={styles.background} variants={sidebar} />
-                <motion.nav>{links?.length && <NavigationList links={links} linkComponent={Link} mobile />}</motion.nav>
+                <motion.nav>{links?.length && <NavigationList links={links} linkComponent={Link} mobile isOpen={isOpen} />}</motion.nav>
               </>
             )
           }

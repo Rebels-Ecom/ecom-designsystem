@@ -21,7 +21,17 @@ export interface IStartPageTemplate {
   footer: IFooter
 }
 
-const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogFullwidth, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
+const StartPageTemplate = ({
+  header,
+  hero,
+  blogList_4_Col,
+  offerCardsList,
+  blogFullwidth,
+  teaserRight,
+  blogList_3_Col,
+  teaserLeft,
+  footer,
+}: IStartPageTemplate) => {
   return (
     <>
       <Header>
@@ -43,7 +53,7 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogF
               <Button />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} />
+              <Navigation {...header.navigation} isOpen={isOpen} />
             </GridArea>
           </Wrapper>
         )}
@@ -69,7 +79,7 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, offerCardsList, blogF
           <BlogCardList {...blogList_4_Col} />
         </MaxWidth>
       </ContentWrapper>
-      <Footer {...footer}/>
+      <Footer {...footer} />
     </>
   )
 }
