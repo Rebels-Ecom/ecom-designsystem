@@ -9,7 +9,7 @@ module.exports = {
   async viteFinal(config) {
   
     config.base = process.env.BASE_URL || config.base;
-    
+    return config;  
   },
   assetPrefix: process.env.BASE_URL || "/",
   docs: {
