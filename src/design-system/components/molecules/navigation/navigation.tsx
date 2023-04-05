@@ -44,7 +44,7 @@ const NavigationList = ({ links = [], linkComponent: Link, mobile }: { links: Ar
             key={`${link.title}-${index}`}
             className={styles.linkItem}
             variants={mobile ? itemVariants : undefined}
-            whileHover={{ scale: 1.1 }}
+            // whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
             {link.isExternal ? (
