@@ -19,9 +19,10 @@ jobs:
           npm ci
           npm run build-storybook
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          folder: storybook-static # output folder from `npm run build-storybook`
-          repository-name: ecom-designsystem # Replace with your repository name
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          publish_branch: gh-pages
+          publish_dir_prefix: ecom-designsystem
