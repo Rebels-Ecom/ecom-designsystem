@@ -7,6 +7,7 @@ import copy from 'rollup-plugin-copy'
 /* https://vitejs.dev/config/ */
 
 export default defineConfig({
+  base: '/ecom-designsystem/',
   server: { https: true },
   plugins: [
     react(),
