@@ -36,19 +36,7 @@ const itemVariants = {
   },
 }
 
-const NavigationList = ({
-  links = [],
-  linkComponent: Link,
-  mobile,
-  isOpen,
-}: {
-  links: Array<ILink>
-  linkComponent: any
-  mobile?: boolean
-  isOpen: boolean
-}) => {
-  console.log(isOpen)
-
+const NavigationList = ({ links = [], linkComponent: Link, isOpen }: { links: Array<ILink>; linkComponent: any; mobile?: boolean; isOpen?: boolean }) => {
   return (
     <AnimatePresence>
       {isOpen && (

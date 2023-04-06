@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import MediaQuery, { useMediaQuery } from 'react-responsive'
 import { breakpoints, Breakpoint } from '.'
 
-const Below = ({ breakpoint, children }: { breakpoint: Breakpoint; children: React.ReactNode }) => {
+const Below = ({ breakpoint, children }: { breakpoint: Breakpoint; children: (matches: boolean) => React.ReactNode }) => {
   const maxWidth = breakpoints[breakpoint]
   const matches = useMediaQuery({ maxWidth })
   if (typeof children === 'function') {

@@ -49,7 +49,16 @@ const Wrapper = ({ children, isOpen }: { children: React.ReactNode; isOpen: bool
   )
 }
 
-const Header = ({ children }: { topNavBar?: any; logotype?: any; searchNavBar?: any; navigation?: any; headerLinkList?: any; children: React.ReactNode }) => {
+const Header = ({
+  children,
+}: {
+  topNavBar?: any
+  logotype?: any
+  searchNavBar?: any
+  navigation?: any
+  headerLinkList?: any
+  children: ({ Wrapper, Button, GridArea }: { Wrapper: any; Button: any; GridArea: any }, isOpen: any) => React.ReactNode
+}) => {
   const [isOpen, toggleOpen] = useCycle(false, true)
   const Path = (props: any) => <motion.path fill="transparent" strokeWidth="3" strokeLinecap="round" {...props} />
   const Button = () => (
