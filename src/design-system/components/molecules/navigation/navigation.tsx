@@ -37,19 +37,24 @@ const itemVariants = {
   },
 }
 
-const NavigationList = ({ links = [], linkComponent: Link, isOpen }: { links: Array<ILink>; linkComponent: any; mobile?: boolean; isOpen?: boolean }) => {
+const NavigationList = ({
+  links = [],
+  linkComponent: Link,
+  mobile,
+  isOpen,
+}: {
+  links: Array<ILink>
+  linkComponent: any
+  mobile?: boolean
+  isOpen?: boolean
+}) => {
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
           {links.map((link: ILink, index) => {
             return (
-              <motion.li
-                key={`${link.title}-${index}`}
-                className={styles.linkItem}
-                whileTap={{ scale: 0.95 }}
-                variants={itemVariants}
-              >
+              <motion.li key={`${link.title}-${index}`} className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined}>
                 {link.isExternal ? (
                   <a href={link.href} target={link.target} title={link.title} className={styles.link}>
                     {link.title}
