@@ -1,6 +1,10 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Picture } from './picture'
+import pictureMoscowMule from '../../../../assets/hero-images/Promo_Hero_L1.png'
+import pictureBottles from '../../../../assets/hero-images/Promo_Hero_C3.png'
+import pictureManBrewer from '../../../../assets/hero-images/Promo_Hero_L2.png'
+import pictureWomanBrewer from '../../../../assets/hero-images/Promo_Hero_L4.png'
 
 /* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture */
 
@@ -56,10 +60,10 @@ export const PictureStoryMoscowMule = {
   ...PictureStoryTemplate,
   args: {
     id: 'pictureMoscowMule',
-    src: '/assets/hero-images/Promo_Hero_L1.png',
+    src: pictureMoscowMule,
     sources: [
-      { srcset: '/assets/hero-images/Promo_Hero_L1.png', media: `(max-width: 767px)` },
-      { srcset: '/assets/hero-images/Promo_Hero_L1.png', media: `(min-width: 768px)` },
+      { srcset: pictureMoscowMule, media: `(max-width: 767px)` },
+      { srcset: pictureMoscowMule, media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
@@ -72,10 +76,10 @@ export const PictureStoryBottles = {
   ...PictureStoryTemplate,
   args: {
     id: 'pictureBottles',
-    src: '/assets/hero-images/Promo_Hero_C3.png',
+    src: pictureBottles,
     sources: [
-      { srcset: '/assets/hero-images/Promo_Hero_C3.png', media: `(max-width: 767px)` },
-      { srcset: '/assets/hero-images/Promo_Hero_C3.png', media: `(min-width: 768px)` },
+      { srcset: pictureBottles, media: `(max-width: 767px)` },
+      { srcset: pictureBottles, media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
@@ -88,10 +92,10 @@ export const PictureStoryManBrewer = {
   ...PictureStoryTemplate,
   args: {
     id: 'pictureManBrewer',
-    src: '/assets/hero-images/Promo_Hero_L2.png',
+    src: pictureManBrewer,
     sources: [
-      { srcset: '/assets/hero-images/Promo_Hero_L2.png', media: `(max-width: 767px)` },
-      { srcset: '/assets/hero-images/Promo_Hero_L2.png', media: `(min-width: 768px)` },
+      { srcset: pictureManBrewer, media: `(max-width: 767px)` },
+      { srcset: pictureManBrewer, media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
@@ -104,10 +108,10 @@ export const PictureStoryWomanBrewer = {
   ...PictureStoryTemplate,
   args: {
     id: 'pictureWomanBrewer',
-    src: '/assets/hero-images/Promo_Hero_L4.png',
+    src: pictureWomanBrewer,
     sources: [
-      { srcset: '/assets/hero-images/Promo_Hero_L4.png', media: `(max-width: 767px)` },
-      { srcset: '/assets/hero-images/Promo_Hero_L4.png', media: `(min-width: 768px)` },
+      { srcset: pictureWomanBrewer, media: `(max-width: 767px)` },
+      { srcset: pictureWomanBrewer, media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
