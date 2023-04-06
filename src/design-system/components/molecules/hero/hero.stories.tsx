@@ -2,7 +2,6 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Hero } from './hero'
 import { PictureStory, PictureStoryMoscowMule, PictureStoryBottles, PictureStoryManBrewer, PictureStoryWomanBrewer } from '../../atoms/picture/picture.stories'
-import { PictureWithOpacity_BottlesStory } from '../picture-with-opacity/picture-with-opacity.stories';
 
 const meta: Meta<typeof Hero> = {
   title: 'Design System/Molecules/Heros',
@@ -42,12 +41,12 @@ export const HeroStory = {
 export const HeroStoryCenter = {
   ...HeroStoryTemplate,
   args: {
-    image: PictureWithOpacity_BottlesStory.args,
+    image: PictureStoryBottles.args,
     topHeading: 'Kanske sommarens populäraste....',
     heading: 'Vår smidiga spritzer på fat finns nu i ny smak',
     preamble: 'Dominerande smak av kryddig ingefära balanseras upp av frisk och syrlig smak från limejuice. Lång eftersmak från den kryddiga ingefäran.',
     alignContent: 'center',
-    heroTheme: 'dark',
+    heroTheme: 'light',
     link: {
       size: 'large',
       surface: 'primary',

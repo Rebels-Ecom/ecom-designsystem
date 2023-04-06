@@ -1,4 +1,5 @@
 import styles from './picture.module.css'
+import cx from 'classnames'
 
 export type TPictureLoading = 'eager' | 'lazy'
 export type TPictureDecoding = 'sync' | 'async' | 'auto'
@@ -16,6 +17,7 @@ export interface IPicture {
   fetchPriority?: TPictureFetchPriority
   classNamePicture?: string
   classNameImg?: string
+  pictureWithOpacity?: string
 }
 
 export interface IPictureSource {
@@ -37,27 +39,32 @@ const Picture = ({
   fetchPriority = 'auto',
   classNamePicture,
   classNameImg,
+  pictureWithOpacity
 }: IPicture) => {
   function isValidPicture() {
     return sources instanceof Array && src && id
   }
+
   if (!isValidPicture()) return null
   return (
-    <picture className={classNamePicture ? classNamePicture : styles.picture} id={id}>
-      {sources.map((source, i) => (
-        <source key={`${id}_source_${i}`} srcSet={source.srcset} type={source.type} media={source.media} sizes={source.sizes} />
-      ))}
-      <img
-        src={src}
-        className={classNameImg ? classNameImg : styles.image}
-        loading={loading}
-        decoding={decoding}
-        alt={alt}
-        width={width}
-        height={height}
-        fetchpriority={fetchPriority}
-      />
-    </picture>
+    <>
+      <picture className={classNamePicture ? classNamePicture : styles.picture} id={id}>
+        {sources.map((source, i) => (
+          <source key={`${id}_source_${i}`} srcSet={source.srcset} type={source.type} media={source.media} sizes={source.sizes} />
+        ))}
+        <img
+          src={src}
+          className={classNameImg ? classNameImg : styles.image}
+          loading={loading}
+          decoding={decoding}
+          alt={alt}
+          width={width}
+          height={height}
+          fetchpriority={fetchPriority}
+        />
+      </picture>
+      {pictureWithOpacity && <div className={cx(styles.opacityLayer, pictureWithOpacity==='light' ? styles.withLightBackground : styles.withDarkBackground)}/>}
+    </>
   )
 }
 

@@ -3,7 +3,6 @@ import styles from './hero.module.css'
 import { IPicture, TPictureFetchPriority, TPictureLoading, Picture } from '../../atoms/picture/picture'
 import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
 import { ILink } from '../../../../types/links'
-import { PictureWithOpacity } from '../picture-with-opacity/picture-with-opacity'
 
 export type alignContent = 'left' | 'right' | 'center'
 export type heroTheme = 'light' | 'dark'
@@ -31,12 +30,10 @@ function getHeroTheme(heroTheme: string = 'light'): string {
   return styles.lightTheme
 }
 
-const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTheme, fetchPriority, loading }: IHero) => {
+const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTheme='light', fetchPriority, loading }: IHero) => {
   return (
     <section className={styles.hero}>
-      
-      <PictureWithOpacity {...image} theme={getHeroTheme(heroTheme)} classNamePicture={styles.picture} classNameImg={cx(styles.image)} />
-      <Picture {...image} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} />
+      <Picture {...image} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} pictureWithOpacity={heroTheme}/>
       <div className={styles.outerWrapper}>
         <div className={styles.innerWrapper}>
           <div className={cx(styles.content, getAlignContent(alignContent), getHeroTheme(heroTheme))}>
