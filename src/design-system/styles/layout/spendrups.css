@@ -6,16 +6,23 @@
 
 html {
     --max-width: 120rem;
-    --content-max-width-wide: 108rem;
+    --content-max-width-wide: 103rem;
     --content-max-width-narrow: 73rem;
-    --product-listing-width: 77.5rem;
+    --product-listing-width-m: 37.5rem;
+    --product-listing-width-l: 77.5rem;
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
+    --product-card-width: 18.938rem; /* 303px */
+    --product-card-height: 40rem; /* 640px */
     --breadcrumbs-container-height: 13.438rem;
-    --product-card-height: 41.25rem;
-    --product-card-max-width: 18.75rem;
     --footer-top-bar-height-mobile: 4.25rem;
     --footer-top-bar-height-desktop: 6rem;
+    --signup-teaser-max-width: 43.875rem;
+    --featured-products-max-width: 54.375rem;
+    --product-details-height: 52rem;
+    --product-details-max-width: 34.375rem;
+    --nav-bar-height-mobile: 3.75rem;
+    --nav-bar-height-desktop: 5rem;
 }
 
 body {

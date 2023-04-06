@@ -40,6 +40,7 @@ export const lightTheme = {
   '--nav-bar-background': '#F2EFEA',
   '--top-nav-bar-background': '#003E51',
   '--menu-nav-bar-background': '#ffffff',
+  '--product-description-background': '#FBFAF9',
 
   /*Text */
   '--color-text-default':'#000000',
@@ -135,7 +136,7 @@ export const lightTheme = {
   '--color-text-decorative-two': '#ff3846',
   '--color-text-decorative-purple': '#9A576F',
   '--color-text-decorative-orange': '#C79A48',
-  '--color-text-decorative-grey': '#676A6B',
+  '--color-text-decorative-grey': '#4E4E5C',
   '--color-text-on-tertiary': '#333333',
   '--color-decorative-image': '#f7f7f7',
   '--focused': '#F3A133',
@@ -231,6 +232,7 @@ export const darkTheme = {
    '--nav-bar-background': '#F2EFEA',
    '--top-nav-bar-background': '#003E51',
    '--menu-nav-bar-background': '#ffffff',
+   '--product-description-background': '#FBFAF9',
 
      /*Text */
   '--color-text-default':'#000000',
@@ -318,7 +320,7 @@ export const darkTheme = {
   '--color-text-decorative-two': '#ff3846',
   '--color-text-decorative-purple': '#9A576F',
   '--color-text-decorative-orange': '#C79A48',
-  '--color-text-decorative-grey': '#676A6B',
+  '--color-text-decorative-grey': '#4E4E5C',
   '--color-text-on-tertiary': '#f7f7f7',
   '--color-decorative-image': '#f7f7f7',
   '--focused': '#F3A133',

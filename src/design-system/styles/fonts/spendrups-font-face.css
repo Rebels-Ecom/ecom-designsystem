@@ -1,22 +1,31 @@
 @font-face {
-    font-family: 'spendrups_primary';
-    src: url('Rockwell/fonts/rockwell.woff2') format('woff2'), url('Rockwell/fonts/rockwell.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
+  font-family: 'spendrups_primary';
+  src: url('Edmondsans/fonts/EdmondsansRegular_web.woff2') format('woff2'), url('Edmondsans/fonts/EdmondsansRegular_web.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
-    font-family: 'spendrups_secondary';
-    src: url('Calibri/fonts/calibri.woff2') format('woff2'), url('Calibri/fonts/calibri.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  
-  @font-face {
-    font-family: 'spendrups_secondary';
-    src: url('Calibri/fonts/calibrib.woff2') format('woff2'), url('Calibri/fonts/calibrib.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
+  font-family: 'spendrups_primary';
+  src: url('Edmondsans/fonts/EdmondsansBold_web.woff2') format('woff2'), url('Edmondsans/fonts/EdmondsansBold_web.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'spendrups_secondary';
+  src: url('RobotoSlab/fonts/RobotoSlab-Regular.woff2') format('woff2'), url('RobotoSlab/fonts/RobotoSlab-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'spendrups_secondary';
+  src: url('RobotoSlab/fonts/RobotoSlab-Bold.woff2') format('woff2'), url('RobotoSlab/fonts/RobotoSlab-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

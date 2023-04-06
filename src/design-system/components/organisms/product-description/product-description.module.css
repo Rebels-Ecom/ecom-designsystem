@@ -1,0 +1,75 @@
+.productDescription {
+    position: relative;
+    width: 100%;
+    background-color: var(--product-description-background);
+    padding: 3rem 1rem;
+    @media (min-width: 64em) {
+        padding: 6.25rem 1rem;
+    }
+}
+
+.contentWrapper {
+    width: 100%;
+    margin: auto;
+    @media (min-width: 48em) {
+      width:var(--product-listing-width-m);
+    }
+    @media (min-width: 64em) {
+      width:var(--product-listing-width-l);
+    }
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column; 
+    margin-bottom: 2rem;
+    gap: 0.8rem;
+    & > button {
+        padding-left: 1.3rem;
+        padding-left: 1.3rem;
+    }
+    @media(min-width: 48em){
+        flex-direction: row; 
+    }
+    @media(min-width: 64em) {
+        margin-bottom: 2.625rem;
+        gap: 1rem;
+        & > button {
+            padding-left: 2rem;
+            padding-left: 2rem;
+        }
+    }
+}
+
+.richTextWrapper {
+    color: var(--color-text-decorative-grey);
+    font-family: var(--font-family-secondary);
+    & h1, & h2, & h3 {
+        color: var(--color-text-default);
+        margin-bottom: 0;
+    }
+
+    & ul{
+        list-style: none;
+        padding:0;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    
+    & li {
+        width:100%;
+        display: flex;
+        align-items: center;
+        font-family: var(--font-family-secondary);
+        margin: 0.25rem 0;
+        &:before {
+            font-family: 'IcoMoon';
+            content: "\e912";
+            margin-right:0.5rem;
+            color: var(--color-text-default);
+            align-self: flex-start;
+        }
+    }
+
+}

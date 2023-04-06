@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { ProductCardList } from './product-card-list'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
 import { dummyBeerList } from './dummy-product-list-beer'
-import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import { IProductCard } from '../../molecules/product-card/product-card'
 
 const meta: Meta<typeof ProductCardList> = {
   title: 'Design System/Organisms/ProductCardList',
@@ -18,9 +18,14 @@ type Story = StoryObj<typeof ProductCardList>;
 const ProductCardListStoryTemplate: Story = {
   render: ( args ) => {
     const [cardList] = useState(args.productCards)
+
+    function handleAddToCart(product:any) {
+      alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+    }
+    
     return (
       <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-        <ProductCardList productCards={cardList} maxColumns={args.maxColumns} />
+        <ProductCardList productCards={cardList} addToCart={handleAddToCart}/>
       </div>
     )
   }
@@ -45,7 +50,7 @@ function getVariantsList( productName:string, variantsList:Array<any>) {
     })
 }
 
-function getProductList( productList: any) : IProduct {
+function getProductList( productList: any) : Array<IProductCard> {
     const list = productList.map((productItem: any) => {
         const product = productItem.Variants[0];
         return{
@@ -71,7 +76,6 @@ export const ProductCardListStory = {
   ...ProductCardListStoryTemplate,
   args: {
     productCards: productArgs,
-    maxColumns: 4,
   }
 }
 
@@ -88,18 +92,9 @@ const cardList = [
   ProductCardStory.args,
 ]
 
-export const Product_Card_List__Max_Columns_3 = {
+export const ProductCardListStoryLoka = {
   ...ProductCardListStoryTemplate,
   args: {
-    productCards: cardList,
-    maxColumns: 3,
-  }
-}
-
-export const Product_Card_List__Max_Columns_4 = {
-  ...ProductCardListStoryTemplate,
-  args: {
-    productCards: cardList,
-    maxColumns: 4,
+    productCards: cardList
   }
 }

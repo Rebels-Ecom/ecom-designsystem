@@ -12,7 +12,7 @@ export interface INavigation {
 
 const variants = {
   open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.03, delayChildren: 0.2 },
   },
   closed: {
     transition: { staggerChildren: 0.05, staggerDirection: -1 },
@@ -26,6 +26,7 @@ const itemVariants = {
     transition: {
       y: { stiffness: 1000, velocity: -100 },
     },
+    duration: 0.2,
   },
   closed: {
     y: 50,
@@ -36,19 +37,7 @@ const itemVariants = {
   },
 }
 
-const NavigationList = ({
-  links = [],
-  linkComponent: Link,
-  mobile,
-  isOpen,
-}: {
-  links: Array<ILink>
-  linkComponent: any
-  mobile?: boolean
-  isOpen: boolean
-}) => {
-  console.log(isOpen)
-
+const NavigationList = ({ links = [], linkComponent: Link, isOpen }: { links: Array<ILink>; linkComponent: any; mobile?: boolean; isOpen?: boolean }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -58,7 +47,6 @@ const NavigationList = ({
               <motion.li
                 key={`${link.title}-${index}`}
                 className={styles.linkItem}
-                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 variants={itemVariants}
               >
@@ -101,12 +89,11 @@ const sidebar = {
 }
 
 const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
-  console.log(isOpen)
   return (
     <div className={styles.navigation}>
       {links?.length && (
         <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
-          <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} />}</Above>
+          <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} isOpen />}</Above>
         </nav>
       )}
       {links?.length && (

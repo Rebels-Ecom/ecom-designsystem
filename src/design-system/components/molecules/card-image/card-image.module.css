@@ -10,7 +10,7 @@
     
   .imageWrapper {
     width: 100%;
-    height:70%;
+    height:60%;
     position: relative;
     display: flex;
     align-items: center;
@@ -60,26 +60,6 @@
   
   .heading {
     margin:0;
-    font-family: var(--font-family-tertiary-regular);
-    font-weight: var(--font-weight-bold);
-    font-size: var(--heading-product-card-mobile-font-size);
-    line-height: var(--heading-product-card-desktop-font-size);
-  
-    @media (min-width: 64em) {
-      font-size: var(--heading-product-card-mobile-line-height);
-      line-height: var(--heading-product-card-desktop-line-height);
-    }
-  }
-    
-  .textGray, .textPurple {
-    font-family: var(--font-family-secondary-regular);
-    font-size: var(--p-product-card-mobile-font-size);
-    line-height: var(--p-product-card-desktop-font-size);
-  
-    @media (min-width: 64em) {
-      font-size: var(--p-product-card-mobile-line-height);
-      line-height: var(--p-product-card-desktop-line-height);
-    }
   }
   
   .textGray {
@@ -90,6 +70,7 @@
   .textPurple {
     margin:0;
     color: var(--color-text-decorative-purple);
+    font-family: var(--font-family-secondary);
   }
     
   .cardPicture {
@@ -107,7 +88,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    padding: 2rem;
+    padding: 1rem;
     object-fit: contain;
   }
   

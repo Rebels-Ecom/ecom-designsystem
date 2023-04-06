@@ -31,11 +31,16 @@
 .linkItem {
   position: relative;
   display: flex;
-  margin:0;
+  margin:0 0.5rem 0 0;
   cursor: pointer;
-  margin-right: 0.5rem;
   &:last-child {
     margin-right: 0;
+  }
+  @media (max-width: 47.99rem) {
+    height: 2.5rem;
+    width: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0.5rem;
   }
   @media (min-width: 48rem) {
     margin-right: 1.5rem;

@@ -13,4 +13,5 @@ export interface IProduct {
     itemNumberPerSalesUnit: number,
     productVariantList: Array<IProductVariant>
     tags: Array<ITag>
+    productDescription?: string
 }

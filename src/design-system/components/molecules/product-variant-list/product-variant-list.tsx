@@ -15,7 +15,6 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
 
     function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
         const selectedValue = e.currentTarget.value;
-        console.log('SELECTED VARIANT ID', selectedValue)
         setSelectedProductVariantId(selectedValue);
     }
 

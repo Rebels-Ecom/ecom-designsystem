@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   font-family: var(--font-family-secondaryBold);
-  border: solid 0.125rem transparent;
+  border: solid 0.063rem transparent;
   border-radius: 0.125rem;
   &:hover {
     cursor: pointer;

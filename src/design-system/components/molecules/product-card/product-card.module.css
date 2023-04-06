@@ -8,10 +8,8 @@
     &:hover, &:focus, &:active{
         box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
     }
-    @media (min-width: 48em) {
-        max-width: var(--product-card-max-width);
-        height: var(--product-card-height);
-    }
+    width: var(--product-card-width);
+    height: var(--product-card-height);
 }
 
 .productCardInput {

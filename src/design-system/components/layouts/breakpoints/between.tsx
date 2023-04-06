@@ -2,7 +2,13 @@ import { ReactElement } from 'react'
 import MediaQuery, { useMediaQuery } from 'react-responsive'
 import { breakpoints, Breakpoint } from '.'
 
-const Between = ({ betweenBreakpoints: [min, max], children }: { betweenBreakpoints: [Breakpoint, Breakpoint]; children: React.ReactNode }) => {
+const Between = ({
+  betweenBreakpoints: [min, max],
+  children,
+}: {
+  betweenBreakpoints: [Breakpoint, Breakpoint]
+  children: (matches: boolean) => React.ReactNode
+}) => {
   const minWidth = breakpoints[min]
   const maxWidth = breakpoints[max]
   const matches = useMediaQuery({ minWidth, maxWidth })

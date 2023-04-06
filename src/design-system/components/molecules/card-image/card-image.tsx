@@ -3,6 +3,7 @@ import { IPicture } from '../../atoms/picture/picture'
 import { Picture } from '../../atoms'
 import { DividerLines } from '../../atoms/divider-lines/divider-lines'
 import { ITag, Tag } from '../../atoms/tag/tag'
+import cx from 'classnames'
 
 export interface ICardImage {
   className?: string
@@ -34,10 +35,10 @@ const CardImage = ({ className, image, productTags, heading, articleId, country,
       {productTags && <ProductTags tagsList={productTags}/>}
       <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> </div>
       <div className={`${styles.content}`}>
-        <p className={styles.heading}>{heading}</p>
+        <h5 className={styles.heading}>{heading}</h5>
         <DividerLines/>
-        <p className={styles.textGray}>{`Art.nr. ${articleId} - ${country}`}</p>
-        <p className={styles.textPurple}>{`${packaging}: ${unitPriceStr} kr/st`}</p>
+        <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${articleId} - ${country}`}</p>
+        <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${unitPriceStr} kr/st`}</p>
       </div>
     </div>
   )
