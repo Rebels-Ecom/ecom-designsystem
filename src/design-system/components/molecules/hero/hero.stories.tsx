@@ -2,6 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Hero } from './hero'
 import { PictureStory, PictureStoryMoscowMule, PictureStoryBottles, PictureStoryManBrewer, PictureStoryWomanBrewer } from '../../atoms/picture/picture.stories'
+import { PictureWithOpacity_BottlesStory } from '../picture-with-opacity/picture-with-opacity.stories';
 
 const meta: Meta<typeof Hero> = {
   title: 'Design System/Molecules/Heros',
@@ -41,7 +42,7 @@ export const HeroStory = {
 export const HeroStoryCenter = {
   ...HeroStoryTemplate,
   args: {
-    image: PictureStoryBottles.args,
+    image: PictureWithOpacity_BottlesStory.args,
     topHeading: 'Kanske sommarens populäraste....',
     heading: 'Vår smidiga spritzer på fat finns nu i ny smak',
     preamble: 'Dominerande smak av kryddig ingefära balanseras upp av frisk och syrlig smak från limejuice. Lång eftersmak från den kryddiga ingefäran.',
@@ -87,7 +88,7 @@ export const HeroStoryLeft2 = {
     topHeading: 'Kanske sommarens populäraste....',
     heading: 'Wisby är tillbaka, nu bättre en någonsin',
     preamble: 'Man brukar säga att pilsen är bryggmästarens stolthet och Wisby Pils är inget undantag. En pils med de klassiska inslagen av en riklig humlekaraktär',
-    alignContent: 'center',
+    alignContent: 'left',
     heroTheme: 'dark',
     link: {
       size: 'large',
@@ -108,7 +109,7 @@ export const HeroStoryRight = {
     topHeading: 'Kanske sommarens populäraste....',
     heading: 'Wisby är tillbaka, nu bättre en någonsin',
     preamble: 'Man brukar säga att pilsen är bryggmästarens stolthet och Wisby Pils är inget undantag. En pils med de klassiska inslagen av en riklig humlekaraktär',
-    alignContent: 'center',
+    alignContent: 'right',
     heroTheme: 'dark',
     link: {
       size: 'large',
