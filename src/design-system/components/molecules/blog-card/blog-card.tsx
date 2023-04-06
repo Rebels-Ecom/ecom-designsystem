@@ -26,7 +26,7 @@ const BlogCard = ({ image, tag, heading, text, link, fullWidth }: IBlogCard) => 
       )}
       <div className={cx(styles.content, fullWidth && styles.centered)}>
         <div>
-          {heading && <h2 className={styles.heading}>{heading}</h2>}
+          {heading && <h4 className={styles.heading}>{heading}</h4>}
           <p className={styles.text} dangerouslySetInnerHTML={{ __html: text }}></p>
         </div>
         {link && (

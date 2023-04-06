@@ -8,13 +8,8 @@
   &a:active {
     outline: none;
     border-bottom: 0.1875rem solid;
-    background: var(--focused);
     color: var(--interactive-hover);
   }
-}
-
-.link > span {
-  border-bottom: 0.125rem solid;
 }
 
 .transparent {

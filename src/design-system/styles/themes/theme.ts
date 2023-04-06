@@ -41,6 +41,8 @@ export const lightTheme = {
   '--top-nav-bar-background': '#003E51',
   '--menu-nav-bar-background': '#ffffff',
   '--product-description-background': '#FBFAF9',
+  '--pagination-indicators-active':'#003E51',
+  '--pagination-indicators-inactive':'rgba(247, 249, 250, 0.15)',
 
   /*Text */
   '--color-text-default':'#000000',
@@ -233,6 +235,8 @@ export const darkTheme = {
    '--top-nav-bar-background': '#003E51',
    '--menu-nav-bar-background': '#ffffff',
    '--product-description-background': '#FBFAF9',
+   '--pagination-indicators-active':'#003E51',
+   '--pagination-indicators-inactive':'rgba(247, 249, 250, 0.15)',
 
      /*Text */
   '--color-text-default':'#000000',

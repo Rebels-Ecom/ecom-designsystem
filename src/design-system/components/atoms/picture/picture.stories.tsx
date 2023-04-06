@@ -52,14 +52,14 @@ export const PictureStoryBeer = {
   }
 }
 
-export const PictureStoryBoat = {
+export const PictureStoryMoscowMule = {
   ...PictureStoryTemplate,
   args: {
-    id: 'pictureBoat',
-    src: 'https://picsum.photos/id/124/1366/576',
+    id: 'pictureMoscowMule',
+    src: '/assets/hero-images/Promo_Hero_L1.png',
     sources: [
-      { srcset: 'https://picsum.photos/id/124/700/1050', media: `(max-width: 767px)` },
-      { srcset: 'https://picsum.photos/id/124/1366/576', media: `(min-width: 768px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_L1.png', media: `(max-width: 767px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_L1.png', media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
@@ -68,30 +68,30 @@ export const PictureStoryBoat = {
   }
 }
 
-export const PictureStoryCoffee = {
+export const PictureStoryBottles = {
   ...PictureStoryTemplate,
   args: {
-    id: 'pictureCoffee',
-  src: 'https://picsum.photos/id/431/1366/576',
-  sources: [
-    { srcset: 'https://picsum.photos/id/431/700/1050', media: `(max-width: 767px)` },
-    { srcset: 'https://picsum.photos/id/431/1366/576', media: `(min-width: 768px)` },
-  ],
-  alt: 'Placholder',
-  loading: 'eager',
-  decoding: 'auto',
-  fetchPriority: 'high',
-  }
+    id: 'pictureBottles',
+    src: '/assets/hero-images/Promo_Hero_C3.png',
+    sources: [
+      { srcset: '/assets/hero-images/Promo_Hero_C3.png', media: `(max-width: 767px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_C3.png', media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+    }
 }
 
-export const PictureStoryKitchen = {
+export const PictureStoryManBrewer = {
   ...PictureStoryTemplate,
   args: {
-    id: 'pictureKitchen',
-    src: 'https://picsum.photos/id/490/1366/576',
+    id: 'pictureManBrewer',
+    src: '/assets/hero-images/Promo_Hero_L2.png',
     sources: [
-      { srcset: 'https://picsum.photos/id/490/700/1050', media: `(max-width: 767px)` },
-      { srcset: 'https://picsum.photos/id/490/1366/576', media: `(min-width: 768px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_L2.png', media: `(max-width: 767px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_L2.png', media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
@@ -100,14 +100,14 @@ export const PictureStoryKitchen = {
   }
 }
 
-export const PictureStoryCookies = {
+export const PictureStoryWomanBrewer = {
   ...PictureStoryTemplate,
   args: {
-    id: 'pictureCookies',
-    src: 'https://picsum.photos/id/835/1366/576',
+    id: 'pictureWomanBrewer',
+    src: '/assets/hero-images/Promo_Hero_L4.png',
     sources: [
-      { srcset: 'https://picsum.photos/id/835/700/1050', media: `(max-width: 767px)` },
-      { srcset: 'https://picsum.photos/id/835/1366/576', media: `(min-width: 768px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_L4.png', media: `(max-width: 767px)` },
+      { srcset: '/assets/hero-images/Promo_Hero_L4.png', media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',

@@ -30,10 +30,10 @@ function getHeroTheme(heroTheme: string = 'light'): string {
   return styles.lightTheme
 }
 
-const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTheme, fetchPriority, loading }: IHero) => {
+const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTheme='light', fetchPriority, loading }: IHero) => {
   return (
     <section className={styles.hero}>
-      <Picture {...image} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} />
+      <Picture {...image} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} pictureWithOpacity={heroTheme}/>
       <div className={styles.outerWrapper}>
         <div className={styles.innerWrapper}>
           <div className={cx(styles.content, getAlignContent(alignContent), getHeroTheme(heroTheme))}>

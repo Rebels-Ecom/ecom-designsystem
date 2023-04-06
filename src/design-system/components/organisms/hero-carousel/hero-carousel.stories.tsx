@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
 import { HeroCarousel } from './hero-carousel'
-import { HeroStoryCenter, HeroStoryLeft, HeroStoryRight } from '../../molecules/hero/hero.stories'
+import { HeroStoryCenter, HeroStoryLeft1, HeroStoryLeft2, HeroStoryRight } from '../../molecules/hero/hero.stories'
 
 const meta: Meta<typeof HeroCarousel> = {
     title: 'Design System/Organisms/HeroCarousel',
@@ -20,10 +20,9 @@ const HeroCarouselStoryTemplate: Story = {
 };
 
 const heroComponentsList = [
-    HeroStoryLeft.args,
-    HeroStoryRight.args,
+    HeroStoryLeft1.args,
     HeroStoryCenter.args,
-    HeroStoryLeft.args,
+    HeroStoryLeft2.args,
     HeroStoryRight.args,
   ]
 

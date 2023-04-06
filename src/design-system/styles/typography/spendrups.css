@@ -33,11 +33,11 @@ html {
   --heading-m-desktop-font-size: 2rem;
   --heading-m-desktop-line-height: 2.625rem;
 
-  /* Heading S - ?/? mobile - 26/32 desktop */
-  --heading-s-mobile-font-size: 1.625rem;
-  --heading-s-mobie-line-height: 2rem;
-  --heading-s-desktop-font-size: 1.625rem;
-  --heading-s-desktop-line-height: 2rem;
+  /* Heading S - ?/? mobile - 22/28 desktop */
+  --heading-s-mobile-font-size: 1.375rem;
+  --heading-s-mobie-line-height: 1.75rem;
+  --heading-s-desktop-font-size: 1.375rem;
+  --heading-s-desktop-line-height: 1.75rem;
 
   /* Heading XS - ?/? mobile - 18/23 desktop */
   --heading-xs-mobile-font-size: 1.125rem;
