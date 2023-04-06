@@ -107,8 +107,8 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
                 <div className={styles.contentWrapper}>
                     <Above breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Above>
                     <h3 className={styles.heading}>{product.productName}</h3>
-                    <p className={styles.textPurple}>{`${packaging}: ${product.priceStr} kr/st`}</p>
-                    {product.country!=='' && <p className={styles.textGray}>{`Land: ${product.country}`}</p>}
+                    <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${product.priceStr} kr/st`}</p>
+                    {product.country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Land: ${product.country}`}</p>}
                     <p className={styles.description}>{product.productDescription}</p>
                     
                     <Button {...changePackagingButton} className={styles.btn} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>

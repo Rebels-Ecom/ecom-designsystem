@@ -111,17 +111,6 @@
     font-family: var(--font-family-secondary);
     font-weight: var(--font-weight-bold);
   }
-    
-  .textGray, .textPurple {
-    font-family: var(--font-family-secondary);
-    font-size: var(--p-product-card-mobile-font-size);
-    line-height: var(--p-product-card-desktop-font-size);
-  
-    @media (min-width: 64em) {
-      font-size: var(--p-product-card-mobile-line-height);
-      line-height: var(--p-product-card-desktop-line-height);
-    }
-  }
   
   .textGray {
     margin: 0 0 0.5rem 0;
@@ -129,6 +118,7 @@
   }
   
   .textPurple {
+    font-family: var(--font-family-secondary);
     margin: 0 0 0.5rem 0;
     color: var(--color-text-decorative-purple);
   }

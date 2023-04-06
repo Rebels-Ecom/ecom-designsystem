@@ -39,11 +39,11 @@ html {
   --heading-s-desktop-font-size: 1.625rem;
   --heading-s-desktop-line-height: 2rem;
 
-  /* Heading XS - ?/? mobile - 20/26 desktop */
-  --heading-xs-mobile-font-size: 1.25rem;
-  --heading-xs-mobie-line-height: 1.625rem;
-  --heading-xs-desktop-font-size: 1.25rem;
-  --heading-xs-desktop-line-height: 1.625rem;
+  /* Heading XS - ?/? mobile - 18/23 desktop */
+  --heading-xs-mobile-font-size: 1.125rem;
+  --heading-xs-mobie-line-height: 1.438rem;
+  --heading-xs-desktop-font-size: 1.125rem;
+  --heading-xs-desktop-line-height: 1.438rem;
 
   /* Body - ?/? mobile - 16/31 desktop */
   --body-mobile-font-size: 1rem;
@@ -185,7 +185,7 @@ h5,
 .headingXS {
   font-weight: var(--font-weight-bold);
   font-size: var(--heading-xs-mobile-font-size);
-  line-height: var(--heading-xs-mobie-line-height);
+  line-height: var(--heading-xs-mobile-line-height);
 
   @media (min-width: 64em) {
     font-size: var(--heading-xs-desktop-font-size);
