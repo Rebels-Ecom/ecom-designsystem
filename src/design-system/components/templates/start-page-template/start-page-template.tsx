@@ -14,28 +14,32 @@ import { IFooter, Footer } from '../../organisms/footer/footer'
 export interface IStartPageTemplate {
   header: any
   hero: IHeroCarousel
-  blogList_4_Col: IBlogCardList
+  blogList_Why_Spendrups: IBlogCardList
   featuredProducts: IFeaturedProductsCarousel
   offerCardsList: IOfferCardList
+  blogList_Spendrups_Suppliers: IBlogCardList
   blogFullwidth: IBlogCard
   customerTeaser: ICustomerTeaser
   teaserRight: ITeaser
-  blogList_3_Col: IBlogCardList
+  blogList_Spendrups_Brewing: IBlogCardList
   teaserLeft: ITeaser
+  blogList_Spendrups_Equipment: IBlogCardList
   footer: IFooter
 }
 
 const StartPageTemplate = ({
   header,
   hero,
-  blogList_4_Col,
+  blogList_Why_Spendrups,
   featuredProducts,
   offerCardsList,
+  blogList_Spendrups_Suppliers,
   blogFullwidth,
   customerTeaser,
   teaserRight,
-  blogList_3_Col,
+  blogList_Spendrups_Brewing,
   teaserLeft,
+  blogList_Spendrups_Equipment,
   footer,
 }: IStartPageTemplate) => {
   return (
@@ -67,7 +71,7 @@ const StartPageTemplate = ({
       <ContentWrapper>
         <HeroCarousel {...hero} />
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_4_Col} />
+          <BlogCardList {...blogList_Why_Spendrups} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <FeaturedProductsCarousel {...featuredProducts} />
@@ -76,7 +80,7 @@ const StartPageTemplate = ({
           <OfferCardList {...offerCardsList} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
+          <BlogCardList {...blogList_Spendrups_Suppliers} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <BlogCard {...blogFullwidth} />
@@ -88,13 +92,16 @@ const StartPageTemplate = ({
           <Teaser {...teaserRight} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
+          <BlogCardList {...blogList_Spendrups_Brewing} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <Teaser {...teaserLeft} />
         </MaxWidth>
+        <MaxWidth contentMaxWidth={'narrow'}>
+          <Teaser {...teaserRight} />
+        </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-        <BlogCardList {...blogList_3_Col} />
+          <BlogCardList {...blogList_Spendrups_Equipment} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <FeaturedProductsCarousel {...featuredProducts} />

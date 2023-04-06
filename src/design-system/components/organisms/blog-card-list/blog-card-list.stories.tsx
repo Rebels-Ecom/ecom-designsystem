@@ -1,7 +1,20 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { BlogCardList } from './blog-card-list'
-import { BlogCardStory, BlogCardStoryShortText, BlogCardStoryLongText } from '../../molecules/blog-card/blog-card.stories'
+import {  BlogCardStory_AmericanBeer, 
+          BlogCardStory_Pang, 
+          BlogCardStory_SummerWine, 
+          BlogCardStory_GeorgianWine, 
+          BlogCardStory_Suppliers, 
+          BlogCardStory_EHandel,
+          BlogCardStory_Cooperation,
+          BlogCardStory_BrewingFeeling,
+          BlogCardStory_BrewInPeace,
+          BlogCardStory_DarkLightBeer,
+          BlogCardStory_Oranges,
+          BlogCardStory_BeerEquipment,
+          BlogCardStory_BeerTap,
+          BlogCardStoryFullWidth  } from '../../molecules/blog-card/blog-card.stories'
 
 const meta: Meta<typeof BlogCardList> = {
   title: 'Design System/Organisms/BlogCardList',
@@ -20,37 +33,48 @@ const BlogCardListStoryTemplate: Story = {
 };
 
 const cardList = [
-  BlogCardStory.args,
-  BlogCardStory.args,
-  BlogCardStory.args,
-  BlogCardStory.args,
-  BlogCardStoryLongText.args,
-  BlogCardStoryShortText.args,
-  BlogCardStoryShortText.args,
-  BlogCardStoryLongText.args,
-  BlogCardStoryShortText.args,
+  BlogCardStory_AmericanBeer.args, 
+  BlogCardStory_Pang.args, 
+  BlogCardStory_SummerWine.args, 
+  BlogCardStory_GeorgianWine.args, 
+  BlogCardStory_Suppliers.args, 
+  BlogCardStory_EHandel.args,
+  BlogCardStory_Cooperation.args,
+  BlogCardStory_BrewingFeeling.args,
+  BlogCardStory_BrewInPeace.args,
+  BlogCardStory_DarkLightBeer.args,
+  BlogCardStory_Oranges.args,
+  BlogCardStory_BeerEquipment.args,
+  BlogCardStory_BeerTap.args,
 ]
 
 const oneCardList = [
-  BlogCardStory.args
+  BlogCardStoryFullWidth.args
 ]
 
-const twoCardsList = [
-  BlogCardStory.args,
-  BlogCardStory.args
+const whySpendrupsList = [
+  BlogCardStory_AmericanBeer.args, 
+  BlogCardStory_Pang.args, 
+  BlogCardStory_SummerWine.args, 
+  BlogCardStory_GeorgianWine.args,
 ]
 
-const threeCardsList = [
-  BlogCardStory.args,
-  BlogCardStory.args,
-  BlogCardStory.args,
+const spendrupsCooperation = [
+  BlogCardStory_Suppliers.args, 
+  BlogCardStory_EHandel.args,
+  BlogCardStory_Cooperation.args,
 ]
 
-const fourCardsList = [
-  BlogCardStoryShortText.args,
-  BlogCardStoryShortText.args,
-  BlogCardStoryShortText.args,
-  BlogCardStoryShortText.args,
+const spendrupsBrewing = [
+  BlogCardStory_BrewingFeeling.args,
+  BlogCardStory_BrewInPeace.args,
+  BlogCardStory_DarkLightBeer.args,
+]
+
+const spendrupsEquipment = [
+  BlogCardStory_Oranges.args,
+  BlogCardStory_BeerEquipment.args,
+  BlogCardStory_BeerTap.args,
 ]
 
 export const BlogCardListStory_Fullwidth = {
@@ -60,33 +84,31 @@ export const BlogCardListStory_Fullwidth = {
   }
 }
 
-export const BlogCardListStory_2_Columns = {
+export const BlogCardListStory_VarförSpendrups = {
   ...BlogCardListStoryTemplate,
   args: {
-    blogCards: twoCardsList
+    title: 'Varför Spendrups',
+    blogCards: whySpendrupsList
   }
 }
 
-export const BlogCardListStory_3_Columns = {
+export const BlogCardListStory_Samarbete = {
   ...BlogCardListStoryTemplate,
   args: {
-    title: 'Three columns list',
-    blogCards: threeCardsList
+    blogCards: spendrupsCooperation
   }
 }
 
-export const BlogCardListStory_4_Columns = {
+export const BlogCardListStory_Brewing = {
   ...BlogCardListStoryTemplate,
   args: {
-    title: 'Four columns list',
-    blogCards: fourCardsList
+    blogCards: spendrupsBrewing
   }
 }
 
-export const BlogCardListStory_LongList = {
+export const BlogCardListStory_Equipmemt = {
   ...BlogCardListStoryTemplate,
   args: {
-    title: 'Loooong list',
-    blogCards: cardList
+    blogCards: spendrupsEquipment
   }
 }
