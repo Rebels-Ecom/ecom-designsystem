@@ -20,9 +20,10 @@ export interface IStartPageTemplate {
   blogList_Spendrups_Suppliers: IBlogCardList
   blogFullwidth: IBlogCard
   customerTeaser: ICustomerTeaser
-  teaserRight: ITeaser
+  teaserLeft1: ITeaser
   blogList_Spendrups_Brewing: IBlogCardList
-  teaserLeft: ITeaser
+  teaserRight: ITeaser
+  teaserLeft2: ITeaser
   blogList_Spendrups_Equipment: IBlogCardList
   footer: IFooter
 }
@@ -36,9 +37,10 @@ const StartPageTemplate = ({
   blogList_Spendrups_Suppliers,
   blogFullwidth,
   customerTeaser,
-  teaserRight,
+  teaserLeft1,
   blogList_Spendrups_Brewing,
-  teaserLeft,
+  teaserRight,
+  teaserLeft2,
   blogList_Spendrups_Equipment,
   footer,
 }: IStartPageTemplate) => {
@@ -89,16 +91,16 @@ const StartPageTemplate = ({
           <CustomerTeaser {...customerTeaser} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserRight} />
+          <Teaser {...teaserLeft1} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <BlogCardList {...blogList_Spendrups_Brewing} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserLeft} />
+          <Teaser {...teaserRight} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserRight} />
+          <Teaser {...teaserLeft2} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
           <BlogCardList {...blogList_Spendrups_Equipment} />

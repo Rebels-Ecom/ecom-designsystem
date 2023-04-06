@@ -5,6 +5,7 @@ import pictureMoscowMule from '../../../../assets/hero-images/Promo_Hero_L1.png'
 import pictureBottles from '../../../../assets/hero-images/Promo_Hero_C3.png'
 import pictureManBrewer from '../../../../assets/hero-images/Promo_Hero_L2.png'
 import pictureWomanBrewer from '../../../../assets/hero-images/Promo_Hero_L4.png'
+
 import americanBeerImage from '../../../../assets/blog-images/Content12.png'
 import pangBeerImage from '../../../../assets/blog-images/Content1.png'
 import summerWineImage from '../../../../assets/blog-images/Content9.png'
@@ -19,6 +20,10 @@ import orangesImage from '../../../../assets/blog-images/Content3.png'
 import beerEquipmentImage from '../../../../assets/blog-images/Content5.png'
 import tapImage from '../../../../assets/blog-images/Content4.png'
 import breweryImage from '../../../../assets/blog-images/Content14.png'
+
+import teaserKockensVal from '../../../../assets/teaser-images/Teaser1.png'
+import teaserGin from '../../../../assets/teaser-images/Teaser2.png'
+import teaserBeer from '../../../../assets/teaser-images/Teaser3.png'
 
 /* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture */
 
@@ -350,6 +355,54 @@ export const PictureStory_Brewery = {
     sources: [
       { srcset: breweryImage, media: `(max-width: 767px)` },
       { srcset: breweryImage, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+export const PictureStory_Teaser_KockensVal = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'teaser_kockens_val',
+    src: teaserKockensVal,
+    sources: [
+      { srcset: teaserKockensVal, media: `(max-width: 767px)` },
+      { srcset: teaserKockensVal, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+export const PictureStory_Teaser_Gin  = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'teaser_gin',
+    src: teaserGin,
+    sources: [
+      { srcset: teaserGin, media: `(max-width: 767px)` },
+      { srcset: teaserGin, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+export const PictureStory_Teaser_Beer  = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'teaser_beer',
+    src: teaserBeer,
+    sources: [
+      { srcset: teaserBeer, media: `(max-width: 767px)` },
+      { srcset: teaserBeer, media: `(min-width: 768px)` },
     ],
     alt: 'Placholder',
     loading: 'eager',
