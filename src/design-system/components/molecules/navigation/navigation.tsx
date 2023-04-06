@@ -47,7 +47,6 @@ const NavigationList = ({ links = [], linkComponent: Link, isOpen }: { links: Ar
               <motion.li
                 key={`${link.title}-${index}`}
                 className={styles.linkItem}
-                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 variants={itemVariants}
               >
