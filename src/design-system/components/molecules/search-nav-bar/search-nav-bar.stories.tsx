@@ -2,6 +2,8 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBar } from './search-nav-bar'
 import { SearchStory } from '../../atoms/search/search.stories'
+import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
 
 const meta: Meta<typeof SearchNavBar> = {
   title: 'Design System/Molecules/Search Nav Bar',
@@ -33,13 +35,13 @@ const itemsToFilterOn = [
 
 const searchNavBarArgs = {
   logo: {
-    src: '/logotypes/Spendrups_logo_desktop_horizontal.svg',
+    src: logotype_desktop_horizontal,
     alt: 'logo',
     href: '/',
     id: 'logo',
     sources: [
-      { srcset: '/logotypes/Spendrups_logo_mobile_vertical.svg', media: `(max-width: 767px)` },
-      { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+      { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
+      { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
     ],
   },
   searchNavLinks: [

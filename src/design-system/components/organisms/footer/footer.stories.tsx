@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Footer } from './footer'
 import { FooterTopBarStory } from '../../molecules/footer-top-bar/footer-top-bar.stories'
 import { SocialMediaLink } from '../../atoms/social-media-link/social-media-link'
+import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
 
 const meta: Meta<typeof Footer> = {
   title: 'Design System/Organisms/Footer',
@@ -21,13 +23,13 @@ export const FooterStory = {
   args: {
     footerTopBarLinks: FooterTopBarStory.args.footerTopBarLinks,
     logo: {
-      src: '/logotypes/Spendrups_logo_desktop_horizontal.svg',
+      src: logotype_desktop_horizontal,
       alt: 'logo',
       href: '/',
       id: 'logo',
       sources: [
-        { srcset: '/logotypes/Spendrups_logo_mobile_horizontal.svg', media: `(max-width: 767px)` },
-        { srcset: '/logotypes/Spendrups_logo_desktop_horizontal.svg', media: `(min-width: 768px)` },
+        { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
+        { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
       ],
     },
     addressLabel: 'Besöksadress: ',

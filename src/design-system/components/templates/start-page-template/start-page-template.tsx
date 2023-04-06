@@ -8,24 +8,30 @@ import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
 import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
-import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
-import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 
 export interface IStartPageTemplate {
   header: any
   hero: IHeroCarousel
   blogList_4_Col: IBlogCardList
-  featuredProducts: IFeaturedProductsCarousel
   offerCardsList: IOfferCardList
   blogFullwidth: IBlogCard
-  customerTeaser: ICustomerTeaser
   teaserRight: ITeaser
   blogList_3_Col: IBlogCardList
   teaserLeft: ITeaser
   footer: IFooter
 }
 
-const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, offerCardsList, blogFullwidth, customerTeaser, teaserRight, blogList_3_Col, teaserLeft, footer }: IStartPageTemplate) => {
+const StartPageTemplate = ({
+  header,
+  hero,
+  blogList_4_Col,
+  offerCardsList,
+  blogFullwidth,
+  teaserRight,
+  blogList_3_Col,
+  teaserLeft,
+  footer,
+}: IStartPageTemplate) => {
   return (
     <>
       <Header>
@@ -47,7 +53,7 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, off
               <Button />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} />
+              <Navigation {...header.navigation} isOpen={isOpen} />
             </GridArea>
           </Wrapper>
         )}
@@ -55,43 +61,25 @@ const StartPageTemplate = ({ header, hero, blogList_4_Col, featuredProducts, off
       <ContentWrapper>
         <HeroCarousel {...hero} />
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_4_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProductsCarousel {...featuredProducts} />
+          <BlogCardList {...blogList_3_Col} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <OfferCardList {...offerCardsList} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
           <BlogCard {...blogFullwidth} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <CustomerTeaser {...customerTeaser} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <Teaser {...teaserRight} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'narrow'}>
           <Teaser {...teaserLeft} />
         </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserRight} />
-        </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProductsCarousel {...featuredProducts} />
+          <BlogCardList {...blogList_4_Col} />
         </MaxWidth>
       </ContentWrapper>
-      <Footer {...footer}/>
+      <Footer {...footer} />
     </>
   )
 }
