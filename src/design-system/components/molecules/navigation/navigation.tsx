@@ -12,7 +12,7 @@ export interface INavigation {
 
 const variants = {
   open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.03, delayChildren: 0.2 },
   },
   closed: {
     transition: { staggerChildren: 0.05, staggerDirection: -1 },
@@ -26,6 +26,7 @@ const itemVariants = {
     transition: {
       y: { stiffness: 1000, velocity: -100 },
     },
+    duration: 0.2,
   },
   closed: {
     y: 50,
@@ -89,12 +90,11 @@ const sidebar = {
 }
 
 const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
-  console.log(isOpen)
   return (
     <div className={styles.navigation}>
       {links?.length && (
         <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
-          <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} />}</Above>
+          <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} isOpen />}</Above>
         </nav>
       )}
       {links?.length && (
