@@ -47,7 +47,7 @@ function getVariantsList( productName:string, variantsList:any) {
             price: variant.ListPricePerUnit,
             salesUnit: variant.SalesUnit,
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
-            image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
+            image: variant.PrimaryImageUrl,
             checked: variant.VariantId===firstVariantId,
             tags: getProductTags(variant.Tags),
             onChange: () => {},

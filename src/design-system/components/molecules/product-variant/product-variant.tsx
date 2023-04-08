@@ -2,6 +2,7 @@ import { DividerLines } from "../../atoms/divider-lines/divider-lines"
 import { RadioButton } from "../../atoms/inputs/radio-button/radio-button"
 import { IPicture, Picture } from "../../atoms/picture/picture"
 import styles from './product-variant.module.css'
+import fallbackProductImageUrl from '../../../../assets/teaser-images/Teaser1.png'
 
 export interface IProductVariant {
     productName: string
@@ -18,7 +19,7 @@ export interface IProductVariant {
 const ProductVariant = ({ image, productName, variantName, variantId, country, listPricePerUnitString, onChange, checked } : IProductVariant) => {
     return(
         <div className={styles.productVariant}>
-            <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} /> </div>
+            <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} /> </div>
             <div className={`${styles.content}`}>
                 <p className={styles.heading}>{productName}</p>
                 <p className={styles.heading}>{variantName}</p>

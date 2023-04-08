@@ -7,6 +7,7 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import fallbackProductImageUrl from '../../../../assets/teaser-images/Teaser1.png'
 
 export interface IProductCard extends IProduct {
     product: IProduct
@@ -83,6 +84,7 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
                     packaging = {product.packaging}
                     unitPriceStr = {product.priceStr}
                     productTags = {product.tags}
+                    fallbackImageUrl = { fallbackProductImageUrl }
                 />
                 <Button {...changePackagingButton} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
                 <ProductQuantityInput

@@ -1,5 +1,6 @@
 import styles from './picture.module.css'
 import cx from 'classnames'
+import { useState } from 'react'
 
 export type TPictureLoading = 'eager' | 'lazy'
 export type TPictureDecoding = 'sync' | 'async' | 'auto'
@@ -18,6 +19,7 @@ export interface IPicture {
   classNamePicture?: string
   classNameImg?: string
   pictureWithOpacity?: string
+  fallbackImageUrl?: string
 }
 
 export interface IPictureSource {
@@ -39,21 +41,32 @@ const Picture = ({
   fetchPriority = 'auto',
   classNamePicture,
   classNameImg,
-  pictureWithOpacity
+  pictureWithOpacity,
+  fallbackImageUrl=''
 }: IPicture) => {
+
+  const [imageSources, setImageSources] = useState({src, sources})
+
   function isValidPicture() {
     return sources instanceof Array && src && id
+  }
+
+  function handleBrokenImage(e: React.SyntheticEvent<HTMLImageElement, Event>) {
+    setImageSources({
+      src : fallbackImageUrl,
+      sources: [{srcset: fallbackImageUrl}]
+    })
   }
 
   if (!isValidPicture()) return null
   return (
     <>
       <picture className={classNamePicture ? classNamePicture : styles.picture} id={id}>
-        {sources.map((source, i) => (
+        {imageSources.sources.map((source, i) => (
           <source key={`${id}_source_${i}`} srcSet={source.srcset} type={source.type} media={source.media} sizes={source.sizes} />
         ))}
         <img
-          src={src}
+          src={imageSources.src}
           className={classNameImg ? classNameImg : styles.image}
           loading={loading}
           decoding={decoding}
@@ -61,6 +74,7 @@ const Picture = ({
           width={width}
           height={height}
           fetchpriority={fetchPriority}
+          onError={handleBrokenImage}
         />
       </picture>
       {pictureWithOpacity && <div className={cx(styles.opacityLayer, pictureWithOpacity==='light' ? styles.withLightBackground : styles.withDarkBackground)}/>}
