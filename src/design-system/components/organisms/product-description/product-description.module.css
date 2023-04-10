@@ -43,10 +43,8 @@
 
 .richTextWrapper {
     color: var(--color-text-decorative-grey);
-    font-family: var(--font-family-secondary);
     & h1, & h2, & h3 {
         color: var(--color-text-default);
-        margin-bottom: 0;
     }
 
     & ul{
@@ -61,7 +59,6 @@
         width:100%;
         display: flex;
         align-items: center;
-        font-family: var(--font-family-secondary);
         margin: 0.25rem 0;
         &:before {
             font-family: 'IcoMoon';

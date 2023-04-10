@@ -2,7 +2,7 @@ import { DividerLines } from "../../atoms/divider-lines/divider-lines"
 import { RadioButton } from "../../atoms/inputs/radio-button/radio-button"
 import { IPicture, Picture } from "../../atoms/picture/picture"
 import styles from './product-variant.module.css'
-import fallbackProductImageUrl from '../../../../assets/teaser-images/Teaser1.png'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 
 export interface IProductVariant {
     productName: string

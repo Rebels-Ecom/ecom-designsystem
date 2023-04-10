@@ -47,7 +47,7 @@ function getVariantsList( productName:string, variantsList:any) {
             price: variant.ListPricePerUnit,
             salesUnit: variant.SalesUnit,
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
-            image: variant.PrimaryImageUrl,
+            image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
             checked: variant.VariantId===firstVariantId,
             tags: getProductTags(variant.Tags),
             onChange: () => {},
@@ -72,7 +72,7 @@ function getProduct( productData: any) : IProduct {
     }
 }
 
-const productArgs = getProduct(dummyWineProduct)
+const productArgs = getProduct(dummyBeerProduct)
 
 export const ProductCardStory = {
     ...ProductCardStoryTemplate,

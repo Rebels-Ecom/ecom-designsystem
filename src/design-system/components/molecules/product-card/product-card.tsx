@@ -7,7 +7,7 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
-import fallbackProductImageUrl from '../../../../assets/teaser-images/Teaser1.png'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 
 export interface IProductCard extends IProduct {
     product: IProduct

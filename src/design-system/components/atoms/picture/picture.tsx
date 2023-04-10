@@ -1,6 +1,6 @@
 import styles from './picture.module.css'
 import cx from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type TPictureLoading = 'eager' | 'lazy'
 export type TPictureDecoding = 'sync' | 'async' | 'auto'
@@ -46,6 +46,8 @@ const Picture = ({
 }: IPicture) => {
 
   const [imageSources, setImageSources] = useState({src, sources})
+
+  useEffect(() => { setImageSources({src, sources})}, [src])
 
   function isValidPicture() {
     return sources instanceof Array && src && id
