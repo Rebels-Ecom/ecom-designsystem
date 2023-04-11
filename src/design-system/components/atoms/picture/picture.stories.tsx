@@ -24,7 +24,7 @@ import breweryImage from '../../../../assets/blog-images/Content14.png'
 import teaserKockensVal from '../../../../assets/teaser-images/Teaser1.png'
 import teaserGin from '../../../../assets/teaser-images/Teaser2.png'
 import teaserBeer from '../../../../assets/teaser-images/Teaser3.png'
-import pistonHead from '../../../../assets/hero-images/Pistonhead_hero.svg'
+import pistonHead from '../../../../assets/hero-images/Pistonhead_Hero.svg'
 import pistonHeadLogo from '../../../../assets/hero-images/pistonhead_logo.svg'
 import pistonHeadBlog from '../../../../assets/blog-images/Pistonhead_BlogCard.svg'
 
