@@ -1,0 +1,31 @@
+.pageLayout {
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:6rem;
+    width:100%;
+
+    &:first-child {
+        margin-top: 0px; 
+    }
+/* TODO: We need to check with Tomaz about the breakpoints, max-width for the layout*/
+
+    @media (min-width: 37.5em) {
+        margin: 0 auto;
+        max-width: 67.5rem;
+    }
+
+    @media (min-width: 90em) {
+        max-width: 77.5rem;
+    }
+}
+
+.pageLayoutWithPadding {
+    padding: 0 1rem;
+    @media (min-width: 37.5em) {
+        padding: 0 2rem;
+    }
+    @media (min-width: 77.5em) {
+        padding:0;
+    }
+}
