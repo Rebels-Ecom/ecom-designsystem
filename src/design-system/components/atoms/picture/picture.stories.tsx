@@ -24,6 +24,9 @@ import breweryImage from '../../../../assets/blog-images/Content14.png'
 import teaserKockensVal from '../../../../assets/teaser-images/Teaser1.png'
 import teaserGin from '../../../../assets/teaser-images/Teaser2.png'
 import teaserBeer from '../../../../assets/teaser-images/Teaser3.png'
+import pistonHead from '../../../../assets/hero-images/Pistonhead_hero.svg'
+import pistonHeadLogo from '../../../../assets/hero-images/pistonhead_logo.svg'
+import pistonHeadBlog from '../../../../assets/blog-images/Pistonhead_BlogCard.svg'
 
 /* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture */
 
@@ -426,4 +429,56 @@ export const PictureStoryField = {
     fetchPriority: 'high',
   }
 }
+
+export const PictureStoryPistonHead = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'picturePistonhead',
+    src: pistonHead,
+    sources: [
+      { srcset: pistonHead, media: `(max-width: 767px)` },
+      { srcset: pistonHead, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+export const PictureStoryPistonHeadLogo = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'picturePistonheadLogo',
+    src: pistonHeadLogo,
+    sources: [
+      { srcset: pistonHeadLogo, media: `(max-width: 767px)` },
+      { srcset: pistonHeadLogo, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+export const PictureStoryPistonHead_Blog = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'picturePistonheadBlog',
+    src: pistonHeadBlog,
+    sources: [
+      { srcset: pistonHeadBlog, media: `(max-width: 767px)` },
+      { srcset: pistonHeadBlog, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+
+
+
 

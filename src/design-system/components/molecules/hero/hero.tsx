@@ -9,6 +9,7 @@ export type heroTheme = 'light' | 'dark'
 
 export interface IHero {
   image: IPicture
+  contentImage?: IPicture
   topHeading?: string
   heading: string
   preamble?: string
@@ -30,7 +31,7 @@ function getHeroTheme(heroTheme: string = 'light'): string {
   return styles.lightTheme
 }
 
-const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTheme='light', fetchPriority, loading }: IHero) => {
+const Hero = ({ topHeading, heading, preamble, image, contentImage, alignContent, link, heroTheme='light', fetchPriority, loading }: IHero) => {
   return (
     <section className={styles.hero}>
       <Picture {...image} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} pictureWithOpacity={heroTheme}/>
@@ -43,6 +44,7 @@ const Hero = ({ topHeading, heading, preamble, image, alignContent, link, heroTh
                 {heading && <h1 className={cx('headingXL', styles.heading)}>{heading}</h1>}
               </header>
             )}
+            {contentImage && <Picture {...contentImage} fetchPriority={fetchPriority} loading={loading}></Picture>}
             {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
             {link && <LinkButton {...link} className={styles.linkButton} />}
           </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Hero } from './hero'
-import { PictureStory, PictureStoryMoscowMule, PictureStoryBottles, PictureStoryManBrewer, PictureStoryWomanBrewer } from '../../atoms/picture/picture.stories'
+import { PictureStory, PictureStoryMoscowMule, PictureStoryBottles, PictureStoryManBrewer, PictureStoryWomanBrewer, PictureStoryPistonHead, PictureStoryPistonHeadLogo } from '../../atoms/picture/picture.stories'
 
 const meta: Meta<typeof Hero> = {
   title: 'Design System/Molecules/Heros',
@@ -119,6 +119,19 @@ export const HeroStoryRight = {
       target: null,
       title: 'Beställ idag',
     }
+  }
+}
+
+export const HeroStoryPistonhead = {
+  ...HeroStoryTemplate,
+  args: {
+    image: PictureStoryPistonHead.args,
+    contentImage: PictureStoryPistonHeadLogo.args,
+    topHeading: 'Kanske sommarens populäraste....',
+    heading: 'Pistonhead lager',
+    preamble: 'Sedan starten för över 100 år sedan har vi vuxit till Sveriges ledande bryggeri Vi står i dag för en tredjedel av den svenska ölmarknaden',
+    alignContent: 'center',
+    heroTheme: 'dark',
   }
 }
 
