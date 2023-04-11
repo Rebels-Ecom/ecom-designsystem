@@ -1,3 +1,4 @@
+import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
@@ -17,10 +18,12 @@ export interface IProductPage {
 }
 
 const ProductPage = ({ header, productDetails, productDescription, addToCart, footer }: IProductPage) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const handleOnClick = () => setIsOpen(!isOpen)
   return (
     <>
-      <Header>
-        {({ Wrapper, Button, GridArea }: any, isOpen: boolean) => (
+      <Header isOpen={isOpen}>
+        {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -35,23 +38,23 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
               <NavLinks />
             </GridArea>
             <GridArea area="btn">
-              <Button />
+              <Button onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} />
+              <Navigation {...header.navigation} isOpen={isOpen} />
             </GridArea>
           </Wrapper>
         )}
       </Header>
       <ContentWrapper>
         <MaxWidth contentMaxWidth={'wide'}>
-          <ProductDetails {...productDetails} addToCart={addToCart}/>
+          <ProductDetails {...productDetails} addToCart={addToCart} />
         </MaxWidth>
         <MaxWidth contentMaxWidth={'wide'}>
-          <ProductDescription {...productDescription}/>
+          <ProductDescription {...productDescription} />
         </MaxWidth>
       </ContentWrapper>
-      <Footer {...footer}/>
+      <Footer {...footer} />
     </>
   )
 }
