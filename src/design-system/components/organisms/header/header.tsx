@@ -1,4 +1,3 @@
-import { useCycle } from 'framer-motion'
 import React, { ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import cx from 'classnames'
@@ -51,24 +50,25 @@ const Wrapper = ({ children, isOpen }: { children: React.ReactNode; isOpen: bool
 
 const Header = ({
   children,
+  isOpen,
 }: {
+  isOpen: boolean
   topNavBar?: any
   logotype?: any
   searchNavBar?: any
   navigation?: any
   headerLinkList?: any
-  children: ({ Wrapper, Button, GridArea }: { Wrapper: any; Button: any; GridArea: any }, isOpen: any) => React.ReactNode
+  children: ({ Wrapper, Button, GridArea }: { Wrapper: any; Button: any; GridArea: any }) => React.ReactNode
 }) => {
-  const [isOpen, toggleOpen] = useCycle(false, true)
   const Path = (props: any) => <motion.path fill="transparent" strokeWidth="3" strokeLinecap="round" {...props} />
-  const Button = () => (
+  const Button = ({ onClick }: any) => (
     <button
       id="navigation-menu-btn"
       type={'button'}
       aria-label="menu"
       aria-controls={'navigation-menu'}
       aria-expanded={isOpen}
-      onClick={() => toggleOpen()}
+      onClick={onClick}
       className={cx(styles.menuButton, isOpen && styles.open)}
     >
       <svg width="23" height="23" viewBox="0 0 23 23">
@@ -97,7 +97,7 @@ const Header = ({
   )
 
   if (typeof children === 'function') {
-    return children({ Wrapper, Button, GridArea }, isOpen) as ReactElement
+    return children({ Wrapper, Button, GridArea }) as ReactElement
   }
   return children as ReactElement
 }

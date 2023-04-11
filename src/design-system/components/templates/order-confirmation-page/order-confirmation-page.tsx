@@ -1,3 +1,4 @@
+import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { Header } from '../../organisms'
 import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
@@ -9,10 +10,12 @@ export interface IOrderConfirmationPage {
 }
 
 const OrderConfirmationPage = ({ header, footer }: IOrderConfirmationPage) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const handleOnClick = () => setIsOpen(!isOpen)
   return (
     <>
-      <Header>
-        {({ Wrapper, Button, GridArea }: any, isOpen: boolean) => (
+      <Header isOpen={isOpen}>
+        {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -27,7 +30,7 @@ const OrderConfirmationPage = ({ header, footer }: IOrderConfirmationPage) => {
               <NavLinks />
             </GridArea>
             <GridArea area="btn">
-              <Button />
+              <Button onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
               <Navigation {...header.navigation} isOpen={isOpen} />

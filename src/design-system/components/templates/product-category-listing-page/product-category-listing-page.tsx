@@ -1,3 +1,4 @@
+import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
@@ -15,10 +16,12 @@ export interface IProductCategoryListingPage {
 }
 
 const ProductCategoryListingPage = ({ header, breadcrumbs, productCategoryListing, addToCart, footer }: IProductCategoryListingPage) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const handleOnClick = () => setIsOpen(!isOpen)
   return (
     <>
-      <Header>
-        {({ Wrapper, Button, GridArea }: any, isOpen: boolean) => (
+      <Header isOpen={isOpen}>
+        {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -33,21 +36,21 @@ const ProductCategoryListingPage = ({ header, breadcrumbs, productCategoryListin
               <NavLinks />
             </GridArea>
             <GridArea area="btn">
-              <Button />
+              <Button onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} />
+              <Navigation {...header.navigation} isOpen={isOpen} />
             </GridArea>
           </Wrapper>
         )}
       </Header>
       <ContentWrapper>
-        <Breadcrumbs {...breadcrumbs}/>
+        <Breadcrumbs {...breadcrumbs} />
         <MaxWidth contentMaxWidth={'wide'}>
-          <ProductCardList {...productCategoryListing} addToCart={addToCart}/>
+          <ProductCardList {...productCategoryListing} addToCart={addToCart} />
         </MaxWidth>
       </ContentWrapper>
-      <Footer {...footer}/>
+      <Footer {...footer} />
     </>
   )
 }

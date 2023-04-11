@@ -1,3 +1,4 @@
+import React from 'react'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
 import { ITeaser, Teaser } from '../../molecules/teaser/teaser'
 import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
@@ -38,10 +39,12 @@ const ContentPage = ({
   teaserLeft,
   footer,
 }: IContentPage) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const handleOnClick = () => setIsOpen(!isOpen)
   return (
     <>
-      <Header>
-        {({ Wrapper, Button, GridArea }: any, isOpen: boolean) => (
+      <Header isOpen={isOpen}>
+        {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -56,7 +59,7 @@ const ContentPage = ({
               <NavLinks />
             </GridArea>
             <GridArea area="btn">
-              <Button />
+              <Button onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
               <Navigation {...header.navigation} isOpen={isOpen} />

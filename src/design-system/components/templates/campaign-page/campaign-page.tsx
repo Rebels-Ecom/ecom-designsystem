@@ -1,3 +1,4 @@
+import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { Header } from '../../organisms'
 import { IHeroCarousel, HeroCarousel } from '../../organisms/hero-carousel/hero-carousel'
@@ -12,10 +13,12 @@ export interface ICampaign {
 }
 
 const CampaignPage = ({ header, footer, hero }: ICampaign) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const handleOnClick = () => setIsOpen(!isOpen)
   return (
     <>
-      <Header>
-        {({ Wrapper, Button, GridArea }: any, isOpen: boolean) => (
+      <Header isOpen={isOpen}>
+        {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -30,7 +33,7 @@ const CampaignPage = ({ header, footer, hero }: ICampaign) => {
               <NavLinks />
             </GridArea>
             <GridArea area="btn">
-              <Button />
+              <Button onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
               <Navigation {...header.navigation} isOpen={isOpen} />

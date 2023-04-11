@@ -22,32 +22,36 @@ export default meta
 type Story = StoryObj<typeof Header>
 
 const HeaderStoryTemplate: Story = {
-  render: (args) => (
-    <Header>
-      {({ Wrapper, Button, GridArea }, isOpen) => (
-        <Wrapper isOpen={isOpen}>
-          <GridArea area="top">
-            <TopNavBar {...args.topNavBar} />
-          </GridArea>
-          <GridArea area="logo">
-            <Logotype {...args.logotype} />
-          </GridArea>
-          <GridArea area="search">
-            <SearchNavBar {...args.searchNavBar} />
-          </GridArea>
-          <GridArea area="searchNavLinks">
-            <NavLinks />
-          </GridArea>
-          <GridArea area="btn">
-            <Button />
-          </GridArea>
-          <GridArea area="nav">
-            <Navigation {...args.navigation} isOpen={isOpen} />
-          </GridArea>
-        </Wrapper>
-      )}
-    </Header>
-  ),
+  render: (args) => {
+    const [isOpen, setIsOpen] = React.useState(false)
+    const handleOnClick = () => setIsOpen(!isOpen)
+    return (
+      <Header isOpen={isOpen}>
+        {({ Wrapper, Button, GridArea }) => (
+          <Wrapper isOpen={isOpen}>
+            <GridArea area="top">
+              <TopNavBar {...args.topNavBar} />
+            </GridArea>
+            <GridArea area="logo">
+              <Logotype {...args.logotype} />
+            </GridArea>
+            <GridArea area="search">
+              <SearchNavBar {...args.searchNavBar} />
+            </GridArea>
+            <GridArea area="searchNavLinks">
+              <NavLinks />
+            </GridArea>
+            <GridArea area="btn">
+              <Button onClick={handleOnClick} />
+            </GridArea>
+            <GridArea area="nav">
+              <Navigation {...args.navigation} isOpen={isOpen} />
+            </GridArea>
+          </Wrapper>
+        )}
+      </Header>
+    )
+  },
 }
 
 export const HeaderStory = {
