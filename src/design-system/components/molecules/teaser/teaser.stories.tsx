@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
 import { Teaser } from './teaser'
-import { PictureStory } from '../../atoms/picture/picture.stories';
+import { PictureStory_Teaser_Beer, PictureStory_Teaser_Gin, PictureStory_Teaser_KockensVal } from '../../atoms/picture/picture.stories';
 import { TagStoryRound_S } from '../../atoms/tag/tag.stories';
 
 const meta: Meta<typeof Teaser> = {
@@ -20,10 +20,10 @@ const TeaserStoryTemplate: Story = {
   )
 };
 
-export const TeaserStoryLeft = {
+export const TeaserStoryLeft1 = {
     ...TeaserStoryTemplate,
     args: {
-        image: PictureStory.args,
+        image: PictureStory_Teaser_KockensVal.args,
         imagePosition: 'left',
         tag: TagStoryRound_S.args, 
         tagPosition:'left',
@@ -45,13 +45,13 @@ export const TeaserStoryLeft = {
 export const TeaserStoryRight = {
     ...TeaserStoryTemplate,
     args: {
-        image: PictureStory.args,
+        image: PictureStory_Teaser_Gin.args,
         imagePosition: 'right',
         tag: TagStoryRound_S.args, 
         tagPosition:'right',
         heading: 'Stockholm bästa gin',
         preamble: 'Skapad på Södermalm i Stockholm',
-        text : '<p>Framtagen tillsammans med Ludwig Tj&ouml;rnemo. Fyller p&aring; med text f&ouml;r att se hur det blir visuellt p&aring; sidan. Fyller p&aring; med mer text f&ouml;r att se hur det blir</p><ul><li>test1</li><li>test2</li><li>test3</li></ul>',
+        text : '<p>I en gammal Jaguarverkstad på Södermalm i Stockholm. Ligger Stockholms Bränneri I den gamla verkstaden skapar dom Stockholms första hantverksgin, inspirerad av vårt nordiska arv. Påverkade av de naturliga men också arkitektoniska elementen i deras omgivning, drivna av nyfikenhet.</p>',
         linkButton: {
             text:'Läs mer',
             href:'#bokningsforfragan',
@@ -60,6 +60,28 @@ export const TeaserStoryRight = {
             surface: 'primary',
             size: 'large',
             children: 'Läs mer'
+        }
+    }
+}
+
+export const TeaserStoryLeft2 = {
+    ...TeaserStoryTemplate,
+    args: {
+        image: PictureStory_Teaser_Beer.args,
+        imagePosition: 'left',
+        tag: TagStoryRound_S.args, 
+        tagPosition:'left',
+        heading: 'Mer smak med Melleruds',
+        preamble: 'Utmärkt pilsner',
+        text : '<p>Melleruds är en modern rejäl svensk lager som förbinder tradition med ett genuint hantverkskunnande. Som alltid är väl avvägd.</p><ul><li>Perfekt som sällskapsdryck</li><li>Med en utsökt beska</li><li>Svensk ljus lager</li><li>Ekologisk</li></ul>',
+        linkButton: {
+            text:'Boka din plats',
+            href:'#bokningsforfragan',
+            linkComponent: 'a',
+            title: 'Boka din plats',
+            surface: 'primary',
+            size: 'large',
+            children: 'Boka din plats'
         }
     }
 }

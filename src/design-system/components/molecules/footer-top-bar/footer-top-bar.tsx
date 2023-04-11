@@ -27,7 +27,7 @@ const FooterTopBar = ({footerTopBarLinks, linkComponent: Link }: IFooterTopBar) 
       {Array.isArray(footerTopBarLinks) && footerTopBarLinks.length && <ul className={styles.navLinksList}>
         
         {footerTopBarLinks.map((link: TNavLink, index) => (
-          <LinkButton surface="secondary" size= 'small' rounded {...link} className={styles.linkItem}>
+          <LinkButton key={`${link.children}-${index}`} surface="secondary" size= 'small' rounded {...link} className={styles.linkItem}>
            {isValidLinkType(link.navLinkType) && <Icon icon={getIcon(link.navLinkType)}/>}
             <span className={styles.buttonLinkText}>{link.children}</span>
           </LinkButton>

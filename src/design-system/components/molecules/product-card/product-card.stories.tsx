@@ -72,7 +72,7 @@ function getProduct( productData: any) : IProduct {
     }
 }
 
-const productArgs = getProduct(dummyWineProduct)
+const productArgs = getProduct(dummyBeerProduct)
 
 export const ProductCardStory = {
     ...ProductCardStoryTemplate,

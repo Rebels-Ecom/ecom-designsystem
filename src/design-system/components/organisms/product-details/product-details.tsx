@@ -93,7 +93,8 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
                     <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
                     <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
                 </div>
-            <ProductVariantList className= {cx(styles.contentWrapper, styles.productVariants)} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>            </div>
+                <ProductVariantList className= {cx(styles.contentWrapper, styles.productVariants)} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>            
+            </div>
         )
     }
     else {
@@ -107,7 +108,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
                 <div className={styles.contentWrapper}>
                     <Above breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Above>
                     <h3 className={styles.heading}>{product.productName}</h3>
-                    <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${product.priceStr} kr/st`}</p>
+                    <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
                     {product.country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Land: ${product.country}`}</p>}
                     <p className={styles.description}>{product.productDescription}</p>
                     

@@ -14,6 +14,7 @@ export interface ICardImage {
   packaging: string
   unitPriceStr: string
   productTags: Array<ITag>
+  fallbackImageUrl?: string
 }
 
 const ProductTags = ({tagsList=[]} : {tagsList:Array<ITag>}) => {
@@ -29,11 +30,11 @@ const ProductTags = ({tagsList=[]} : {tagsList:Array<ITag>}) => {
   )
 }
 
-const CardImage = ({ className, image, productTags, heading, articleId, country, packaging, unitPriceStr }: ICardImage) => {
+const CardImage = ({ className, image, productTags, heading, articleId, country, packaging, unitPriceStr, fallbackImageUrl }: ICardImage) => {
   return (
     <div className={`${styles.cardImageWrapper} ${className ? className : ''}`}>
       {productTags && <ProductTags tagsList={productTags}/>}
-      <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> </div>
+      <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackImageUrl}/> </div>
       <div className={`${styles.content}`}>
         <h5 className={styles.heading}>{heading}</h5>
         <DividerLines/>
