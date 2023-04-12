@@ -26,13 +26,6 @@ function getAlignContent(alignContent: string = 'left'): string {
   return styles[`content-${alignContent}`]
 }
 
-function getHeroTheme(heroTheme: string = 'light'): string {
-  if (heroTheme === 'dark') {
-    return styles.darkTheme
-  }
-  return styles.lightTheme
-}
-
 const Hero = ({ topHeading, heading, preamble, image, video, contentImage, alignContent, link, heroTheme='light', fetchPriority, loading, isVideo }: IHero) => {
   return (
     <section className={styles.hero}>
@@ -44,7 +37,7 @@ const Hero = ({ topHeading, heading, preamble, image, video, contentImage, align
       }
       <div className={styles.outerWrapper}>
         <div className={styles.innerWrapper}>
-          <div className={cx(styles.content, getAlignContent(alignContent), getHeroTheme(heroTheme))}>
+          <div className={cx(styles.content, getAlignContent(alignContent))}>
             {(topHeading || heading) && (
               <header>
                 {topHeading && <h2 className={cx('body', 'fontRegular', styles.topHeading)}>{topHeading}</h2>}
