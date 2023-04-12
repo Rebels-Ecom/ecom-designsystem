@@ -4,6 +4,7 @@ import { Newsletter } from '../../molecules/newsletter/newsletter'
 import { useState } from 'react'
 import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
 import styles from './footer.module.css'
+import { Logotype } from '../../molecules/logotype/logotype'
 
 export interface IFooter {
   footerTopBarLinks: Array<TNavLink>
@@ -37,11 +38,7 @@ const FooterContent = ({logo, address, addressLabel, children, linkComponent: Li
   }
   return(
     <div className={styles.footerLeft}>
-      {logo && (
-        <Link to={logo.href} className={styles.linkLogo}>
-          <Picture {...logo} classNamePicture={styles.logoPicture} classNameImg={styles.logoImg} />
-        </Link>
-      )}
+      {logo && <Logotype className={styles.linkLogo} logo={logo} linkComponent={Link} /> }
       <Newsletter
         id={newsletterId}
         inputValue={inputValue}

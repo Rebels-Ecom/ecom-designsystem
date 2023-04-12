@@ -2,6 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Hero } from './hero'
 import { PictureStory, PictureStoryMoscowMule, PictureStoryBottles, PictureStoryManBrewer, PictureStoryWomanBrewer, PictureStoryPistonHead, PictureStoryPistonHeadLogo } from '../../atoms/picture/picture.stories'
+import { VideoStory } from '../../atoms/video/video.stories';
 
 const meta: Meta<typeof Hero> = {
   title: 'Design System/Molecules/Heros',
@@ -126,6 +127,21 @@ export const HeroStoryPistonhead = {
   ...HeroStoryTemplate,
   args: {
     image: PictureStoryPistonHead.args,
+    contentImage: PictureStoryPistonHeadLogo.args,
+    topHeading: 'Kanske sommarens populäraste....',
+    heading: 'Pistonhead lager',
+    preamble: 'Sedan starten för över 100 år sedan har vi vuxit till Sveriges ledande bryggeri Vi står i dag för en tredjedel av den svenska ölmarknaden',
+    alignContent: 'center',
+    heroTheme: 'dark',
+  }
+}
+
+export const HeroStoryVideo = {
+  ...HeroStoryTemplate,
+  args: {
+    image: PictureStoryPistonHead.args,
+    video: VideoStory.args,
+    isVideo: true,
     contentImage: PictureStoryPistonHeadLogo.args,
     topHeading: 'Kanske sommarens populäraste....',
     heading: 'Pistonhead lager',

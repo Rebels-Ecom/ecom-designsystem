@@ -73,11 +73,21 @@ function getProduct( productData: any) : IProduct {
 }
 
 const productArgs = getProduct(dummyBeerProduct)
+const productArgsWithTags = getProduct(dummyWineProduct)
 
 export const ProductCardStory = {
     ...ProductCardStoryTemplate,
     args: {
         ...productArgs,
+        changePackagingButton:ChangePackagingButtonStory.args,
+        addToCartButton: ButtonProductCardStory.args,
+    }
+}
+
+export const ProductCardWithTagsStory = {
+    ...ProductCardStoryTemplate,
+    args: {
+        ...productArgsWithTags,
         changePackagingButton:ChangePackagingButtonStory.args,
         addToCartButton: ButtonProductCardStory.args,
     }
