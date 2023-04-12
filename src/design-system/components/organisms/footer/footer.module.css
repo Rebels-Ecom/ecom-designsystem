@@ -18,6 +18,11 @@
       margin: 0 3rem 0 0;
     }
   }
+
+  .linkLogo {
+    padding: 0;
+    height: auto;
+  }
   
   .newsletter {
     margin-top: 2rem;

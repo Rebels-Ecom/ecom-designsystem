@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Footer } from './footer'
 import { FooterTopBarStory } from '../../molecules/footer-top-bar/footer-top-bar.stories'
 import { SocialMediaLink } from '../../atoms/social-media-link/social-media-link'
-import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
-import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
+import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 
 const meta: Meta<typeof Footer> = {
   title: 'Design System/Organisms/Footer',

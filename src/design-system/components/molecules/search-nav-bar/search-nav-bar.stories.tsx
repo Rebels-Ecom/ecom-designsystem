@@ -2,8 +2,8 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBar } from './search-nav-bar'
 import { SearchStory } from '../../atoms/search/search.stories'
-import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
-import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_desktop_horizontal.svg'
+import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
+import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 
 const meta: Meta<typeof SearchNavBar> = {
   title: 'Design System/Molecules/Search Nav Bar',
