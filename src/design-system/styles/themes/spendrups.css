@@ -15,6 +15,10 @@
   --cta-tertiary-hover: #F3A133;
   --cta-tertiary-disabled: #FEF3E6;
 
+  --cta-icon-background: #FFF9E8;
+  --cta-icon-color: #003E51;
+  --cta-icon-hover-color: rgba(0, 62, 81, 0.8);
+
   /* TAG COLORS*/
   --tag-green: #3D5B49;
   --tag-mint: #C0E1D7;
@@ -135,8 +139,8 @@
   --color-text-on-secondary-pressed: #DE9034;
   --color-text-on-secondary-focused: #E28F33;
   --color-text-on-tertiary: #003E51;
-  --color-text-blue: var(--blue500);
-  --color-text-subdued: var(--grey-800);
+  --color-text-blue: #003E51;
+  --color-text-subdued: #676A6B;
 
   /* Surface */
   --surface-default: #ffffff;
@@ -241,6 +245,10 @@
   --cta-tertiary-default: #F08A00;
   --cta-tertiary-hover: #F3A133;
   --cta-tertiary-disabled: #FEF3E6;
+
+  --cta-icon-background: #FFF9E8;
+  --cta-icon-color: #003E51;
+  --cta-icon-hover-color: rgba(0, 62, 81, 0.8);
 
   /* TAG COLORS*/
   --tag-green: #3D5B49;

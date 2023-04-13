@@ -84,6 +84,9 @@ export const lightTheme = {
   '--cta-tertiary-default': '#F08A00',
   '--cta-tertiary-hover': '#F3A133',
   '--cta-tertiary-disabled': '#FEF3E6',  
+  '--cta-icon-background': '#FFF9E8',
+  '--cta-icon-color': '#003E51',
+  '--cta-icon-hover-color': 'rgba(0, 62, 81, 0.8)',
 
   /*  CTA COLORS NEED TO BE REVIEWED AFTER THE DESIGN IS UPDATED*/
   /*CTA */
@@ -268,6 +271,9 @@ export const darkTheme = {
   '--cta-tertiary-default': '#F08A00',
   '--cta-tertiary-hover': '#F3A133',
   '--cta-tertiary-disabled': '#FEF3E6',
+  '--cta-icon-background': '#FFF9E8',
+  '--cta-icon-color': '#003E51',
+  '--cta-icon-hover-color': 'rgba(0, 62, 81, 0.8)',
 
    /*  CTA COLORS NEED TO BE REVIEWED AFTER THE DESIGN IS UPDATED*/
   /*CTA */
