@@ -86,7 +86,7 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
                     productTags = {product.tags}
                     fallbackImageUrl = { fallbackProductImageUrl }
                 />
-                <Button {...changePackagingButton} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
+                <Button {...changePackagingButton} surface='secondary' iconRight={{icon:'icon-layers'}} rounded fullWidth onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
                 <ProductQuantityInput
                     className={styles.productCardInput}
                     salesUnit = {product.salesUnit}

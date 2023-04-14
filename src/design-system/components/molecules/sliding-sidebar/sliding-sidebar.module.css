@@ -1,13 +1,32 @@
 .sidebar {
-    position: absolute;
-    top:0;
-    right: 0;
     background: rgba(0, 62, 81, 0.9);
 }
 
 .sidebarContent {
-    background: red;
+    background: #FFFFFF;
+    margin-left:auto;
+    overflow: auto;
+}
+
+.contentWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    overflow: auto;
+    @media(min-width: 64em) {
+        padding: 3rem 2.5rem;
+    }
+}
+
+.buttonClose {
     position: absolute;
-    top:0;
-    right: 0;
+    top: 1rem;
+    right: 1rem;
+    @media(min-width: 64em) {
+        top: 2rem;
+        right: 2.5rem;
+    }
 }

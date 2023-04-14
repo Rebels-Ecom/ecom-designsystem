@@ -20,8 +20,8 @@ const SlidingSidebarStoryTemplate: Story = {
         setOpenSidebar(false)
       }
     return(
-        <div style={{ margin: 'auto', maxWidth: '800px', position: 'relative'}}>
-            <button onClick={handleSidebarOpen}>Open sidebar</button>
+        <div style={{ margin: 'auto', position: 'relative'}}>
+            <button style={{ position: 'absolute', top:'4rem'}} onClick={handleSidebarOpen}>Open sidebar</button>
             <SlidingSidebar isOpen={openSidebar} children= {args.children} onClose={handleSidebarClose}/>
         </div>
     )

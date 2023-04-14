@@ -11,6 +11,9 @@
     &:hover {
         color: rgba(0, 62, 81, 0.8);
     }
+    &.buttonTransparent {
+        background: transparent;
+    }
 }
 
 .buttonSmall {

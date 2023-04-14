@@ -6,21 +6,26 @@ import { Icon, TIcon } from '../icon/icon'
 
 export type TIconButtonSize = 'small' | 'large'
 
-export interface IIconButton extends ILink {
+export interface IIconButton {
     icon: TIcon
     size?: TIconButtonSize
+    isTransparent?: boolean
     isLink: boolean
     onClick?: React.MouseEventHandler<HTMLButtonElement>
     linkUrl?:string
+    linkComponent: any
+    className?: string
 }
 
 const IconButton = ({
     icon,
     size = 'small',
-    linkComponent: Link = LinkComponent,
+    isTransparent = false,
     isLink = false,
     linkUrl,
-    onClick
+    onClick,
+    linkComponent: Link,
+    className
 }: IIconButton ) => {
 
     if(!icon)
@@ -30,9 +35,9 @@ const IconButton = ({
         <div>
             {isLink
             ?
-                <Link className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall)} to={linkUrl}><Icon icon={icon}></Icon></Link>
+                <Link className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')} to={linkUrl}><Icon icon={icon}></Icon></Link>
             :
-                <button className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall)} onClick={onClick}><Icon icon={icon}></Icon></button>
+                <button className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')} onClick={onClick}><Icon icon={icon}></Icon></button>
             }
         </div>
     )
