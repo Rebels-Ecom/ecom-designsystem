@@ -24,7 +24,7 @@ const IconButton = ({
     isLink = false,
     linkUrl,
     onClick,
-    linkComponent: Link,
+    linkComponent: Link = LinkComponent,
     className
 }: IIconButton ) => {
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import styles from './sliding-sidebar.module.css'
 import { IconButton } from '../../atoms'
+import { LinkComponent } from '../../atoms/ui-link/ui-link'
 
 export interface ISlidingSidebar {
     children: any
@@ -28,7 +29,7 @@ function SlidingSidebar({children, isOpen=false, onClose}: ISlidingSidebar) {
             animate={{width: viewPortWidth<768 ? '90vw': 640}}
           >
             <div className={styles.contentWrapper}>
-              <IconButton className={styles.buttonClose} onClick={onClose} icon={'icon-x'} size='large' isTransparent isLink={false} linkComponent ></IconButton>
+              <IconButton className={styles.buttonClose} onClick={onClose} icon={'icon-x'} size='large' isTransparent isLink={false} linkComponent = { LinkComponent }></IconButton>
               {children}
             </div>
           </motion.div>
