@@ -28,7 +28,7 @@ const CartProduct = ({ product, iconButton, className }: ICartProduct ) => {
                 <p className={styles.heading}>{productName}</p>
                 <DividerLines/>
                 <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
-                {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Land: ${country}`}</p>}
+                {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}
                 <ProductQuantityInput
                     className={styles.quantityInput}
                     salesUnit = {salesUnit}

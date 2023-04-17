@@ -5,7 +5,6 @@ import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
-import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { IconButtonStory_GoToProduct } from '../../atoms/icon-button/icon-button.stories'
 
@@ -22,8 +21,6 @@ const CartProductStoryTemplate: Story = {
     function handleAddToCart(product) {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
-    console.log('ARGS ARE', args)
-
     return(<CartProduct {...args}/>)
   }
 }
@@ -77,12 +74,21 @@ function getProduct( productData: any) : IProduct {
     }
 }
 
-const productArgs = getProduct(dummyWineProduct)
+const productBeerArgs = getProduct(dummyBeerProduct)
+const productWineArgs = getProduct(dummyWineProduct)
 
-export const CartProductStory = {
+export const CartProductStoryBeer = {
     ...CartProductStoryTemplate,
     args: {
-        product: productArgs,
+        product: productBeerArgs,
+        iconButton: IconButtonStory_GoToProduct.args,
+    }
+}
+
+export const CartProductStoryWine = {
+    ...CartProductStoryTemplate,
+    args: {
+        product: productWineArgs,
         iconButton: IconButtonStory_GoToProduct.args,
     }
 }

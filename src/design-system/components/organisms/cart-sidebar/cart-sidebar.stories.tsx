@@ -3,6 +3,7 @@ import { CartSidebar } from './cart-sidebar'
 import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
+import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
 
 const meta: Meta<typeof CartSidebar> = {
     title: 'Design System/Organisms/CartSidebar',
@@ -51,6 +52,7 @@ export const CartSidebarStory = {
         text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
         shoppingListButton: ShoppingListButtonStory.args,
         latestOrderButton: LatertOrderButtonStory.args,
+        cartProductsList: CartProductListStory.args,
         goToCartButton: ButtonGoToCart.args,
         suggestedProductsList: FeaturedProductsStory.args
     }

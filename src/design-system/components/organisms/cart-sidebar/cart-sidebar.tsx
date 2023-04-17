@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, IButton } from '../../atoms/button/button'
 import { SlidingSidebar } from '../../molecules/sliding-sidebar/sliding-sidebar'
+import { CartProductList, ICartProductList } from '../cart-product-list/cart-product-list'
 import { IProductCardList, ProductCardList } from '../product-card-list/product-card-list'
 import styles from './cart-sidebar.module.css'
 
@@ -15,14 +16,14 @@ export interface ICartSidebar {
   latestOrderButton: IButton
   onClickShoppingList: CallableFunction
   onClickLatestOrder: CallableFunction
-  cartProductsList: any
+  cartProductsList: ICartProductList
   goToCartButton: IButton
   onClickGoToCart: CallableFunction
   suggestedProductsList: IProductCardList
   addSuggestedProductToCart: CallableFunction
 }
 
-function CartSidebar({isOpen, onClose, heading, totalAmount, productsNumber, text, shoppingListButton, onClickShoppingList, latestOrderButton, onClickLatestOrder, goToCartButton, onClickGoToCart, suggestedProductsList, addSuggestedProductToCart}: ICartSidebar) {
+function CartSidebar({isOpen, onClose, heading, totalAmount, productsNumber, text, shoppingListButton, onClickShoppingList, latestOrderButton, onClickLatestOrder, cartProductsList, goToCartButton, onClickGoToCart, suggestedProductsList, addSuggestedProductToCart}: ICartSidebar) {
   return (
     <div>
       <SlidingSidebar isOpen={isOpen} onClose={()=>onClose()}>
@@ -32,8 +33,8 @@ function CartSidebar({isOpen, onClose, heading, totalAmount, productsNumber, tex
           <Button {...shoppingListButton} type={'button'} surface={'secondary'} onClick={()=>onClickShoppingList()}></Button>
           <Button {...latestOrderButton} type={'button'} surface={'secondary'} onClick={()=>onClickLatestOrder()}></Button>
         </div>
-        <ProductCardList className={styles.productListWrapper} {...suggestedProductsList} addToCart={addSuggestedProductToCart} />
-        <Button {...goToCartButton} type={'button'} surface={'secondary'} onClick={()=>onClickGoToCart()}></Button>
+        <CartProductList className={styles.productListWrapper} {...cartProductsList}/>
+        <Button {...goToCartButton} type={'button'} surface={'primary'} onClick={()=>onClickGoToCart()}></Button>
         <ProductCardList  className={styles.productListWrapper} {...suggestedProductsList} addToCart={addSuggestedProductToCart} />
       </SlidingSidebar>
     </div>

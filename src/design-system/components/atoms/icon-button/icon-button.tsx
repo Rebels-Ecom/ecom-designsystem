@@ -38,7 +38,7 @@ const IconButton = ({
         <div>
             {isLink && linkUrl
             ?
-                <Tag to={!isExternal ? linkUrl : undefined} href={isExternal ? linkUrl : undefined} linkComponent={Link} className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')}>
+                <Tag to={!isExternal ? linkUrl : undefined} href={isExternal ? linkUrl : undefined} className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')}>
                     <Icon icon={icon}></Icon>
                 </Tag>
             :
