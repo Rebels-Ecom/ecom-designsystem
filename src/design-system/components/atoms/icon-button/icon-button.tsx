@@ -1,6 +1,5 @@
 import styles from './icon-button.module.css'
 import cx from 'classnames'
-import { ILink } from '../../../../types/links'
 import { LinkComponent } from '../ui-link/ui-link'
 import { Icon, TIcon } from '../icon/icon'
 
@@ -8,34 +7,40 @@ export type TIconButtonSize = 'small' | 'large'
 
 export interface IIconButton {
     icon: TIcon
+    linkUrl?: string
     size?: TIconButtonSize
     isTransparent?: boolean
     isLink: boolean
-    onClick?: React.MouseEventHandler<HTMLButtonElement>
-    linkUrl?:string
     linkComponent: any
+    isExternal?: boolean
     className?: string
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
 const IconButton = ({
-    icon,
+    icon, 
+    linkUrl,
     size = 'small',
     isTransparent = false,
     isLink = false,
-    linkUrl,
-    onClick,
+    isExternal=false,
     linkComponent: Link = LinkComponent,
-    className
+    className,
+    onClick
 }: IIconButton ) => {
+
+    const Tag = isExternal ? 'a' : Link
 
     if(!icon)
         return null
 
     return (
         <div>
-            {isLink
+            {isLink && linkUrl
             ?
-                <Link className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')} to={linkUrl}><Icon icon={icon}></Icon></Link>
+                <Tag to={!isExternal ? linkUrl : undefined} href={isExternal ? linkUrl : undefined} linkComponent={Link} className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')}>
+                    <Icon icon={icon}></Icon>
+                </Tag>
             :
                 <button className={cx(styles.iconButton, size==='large' ? styles.buttonLarge : styles.buttonSmall, isTransparent && styles.buttonTransparent, className ? className : '')} onClick={onClick}><Icon icon={icon}></Icon></button>
             }

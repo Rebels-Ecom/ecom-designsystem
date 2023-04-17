@@ -6,6 +6,8 @@ import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
+import { convertNumToStr } from '../../../../helpers/format-helper'
+import { IconButtonStory_GoToProduct } from '../../atoms/icon-button/icon-button.stories'
 
 const meta: Meta<typeof CartProduct> = {
     title: 'Design System/Molecules/CartProduct',
@@ -20,8 +22,9 @@ const CartProductStoryTemplate: Story = {
     function handleAddToCart(product) {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
+    console.log('ARGS ARE', args)
 
-    return(<CartProduct {...args} addToCart={handleAddToCart}/>)
+    return(<CartProduct {...args}/>)
   }
 }
 
@@ -68,18 +71,18 @@ function getProduct( productData: any) : IProduct {
         salesUnit:product.SalesUnit,
         itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
         tags: getProductTags(product.Tags),
+        quantity: '1',
+        totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
         productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
     }
 }
 
-const productArgs = getProduct(dummyBeerProduct)
+const productArgs = getProduct(dummyWineProduct)
 
 export const CartProductStory = {
     ...CartProductStoryTemplate,
     args: {
-        ...productArgs,
-        productDescription: 'Man brukar säga att pilsen är bryggmästarens stolthet och Pistonhead Lager är inget undantag. En pils med de klassiska inslagen av en riklig humlekaraktär som istället för att vara besk är mer markerad och balanserad. Serveras med en tydlig skumkrona. Dessutom ekologisk.',
-        changePackagingButton:ChangePackagingButtonStory.args,
-        addToCart: ButtonProductCardStory.args,
+        product: productArgs,
+        iconButton: IconButtonStory_GoToProduct.args,
     }
 }

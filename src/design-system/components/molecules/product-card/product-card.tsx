@@ -16,7 +16,7 @@ export interface IProductCard extends IProduct {
     addToCart: CallableFunction
 }
 
-const ProductCard = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, changePackagingButton, addToCartButton, addToCart }: IProductCard ) => {
+const ProductCard = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, quantity= '1', totalPrice= convertNumToStr(price*itemNumberPerSalesUnit), productVariantList, changePackagingButton, addToCartButton, addToCart }: IProductCard ) => {
     const [product, setProduct] = useState(
         {   productId,
             productName, 
@@ -27,8 +27,8 @@ const ProductCard = ({ productId, productName, productImageUrl, country, packagi
             price,
             salesUnit,
             itemNumberPerSalesUnit,
-            quantity: '1',
-            totalPrice: convertNumToStr(price*itemNumberPerSalesUnit),
+            quantity: quantity,
+            totalPrice: totalPrice,
             tags,
             productVariantList,
             selectedVariantId: productId

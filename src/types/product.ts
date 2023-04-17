@@ -11,6 +11,8 @@ export interface IProduct {
     price:number,
     salesUnit:string,
     itemNumberPerSalesUnit: number,
+    quantity: string,
+    totalPrice: string,
     productVariantList: Array<IProductVariant>
     tags: Array<ITag>
     productDescription?: string

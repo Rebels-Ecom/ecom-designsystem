@@ -45,5 +45,28 @@ export const IconButtonStoryLargeLink = {
   }
 }
 
+export const IconButtonStory_GoToProduct = {
+  ...IconButtonStoryTemplate,
+  args: {
+    icon: 'icon-chevrons-right',
+    size: 'large',
+    isLink: true,
+    isExternal: true,
+    linkUrl: '/?path=/docs/design-system-templates-productpage--docs',
+    linkComponent: 'a'
+  }
+}
+
+export const IconButtonStory_RemoveProduct = {
+  ...IconButtonStoryTemplate,
+  args: {
+    icon: 'icon-x',
+    size: 'large',
+    isLink: false,
+    onClick: action('clicked')
+  }
+}
+
+
 
 
