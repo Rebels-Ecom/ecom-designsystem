@@ -140,6 +140,7 @@
   --color-text-on-secondary-focused: #E28F33;
   --color-text-on-tertiary: #003E51;
   --color-text-blue: #003E51;
+  --color-text-orange: #DE9034;
   --color-text-subdued: #676A6B;
 
   /* Surface */
@@ -371,6 +372,8 @@
   --color-text-on-secondary-disabled: rgba(114, 117, 122, 0.1);
   --color-text-on-secondary-pressed: #DE9034;
   --color-text-on-secondary-focused: #E28F33;
+  --color-text-blue: #003E51;
+  --color-text-orange: #DE9034;
   --color-text-subdued: var(--grey-800);
 
 

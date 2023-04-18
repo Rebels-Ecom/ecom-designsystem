@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
-import { CartOrderDetails } from './cart-order-details'
+import { Cart} from './cart'
 import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
+import { DeliveryFormStory } from '../delivery-form/delivery-form.stories';
+import { CartOrderDetailsStory } from '../cart-order-details/cart-order-details.stories';
+import { CartDeliveryDetailsStory } from '../cart-delivery-details/cart-delivery-details.stories';
 
-const meta: Meta<typeof CartOrderDetails> = {
-    title: 'Design System/Organisms/CartOrderDetails',
-    component: CartOrderDetails
+const meta: Meta<typeof Cart> = {
+    title: 'Design System/Organisms/Cart',
+    component: Cart
 };
 
 export default meta;
-type Story = StoryObj<typeof CartOrderDetails>;
+type Story = StoryObj<typeof Cart>;
 
-const CartOrderDetailsStoryTemplate: Story = {
+const CartStoryTemplate: Story = {
     render: ({ ...args }) => {
         const [showCartSidebar, setShowCartSidebar] = useState(false)
 
@@ -30,21 +33,18 @@ const CartOrderDetailsStoryTemplate: Story = {
             alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
         }
         return(
-            <div style={{ margin: 'auto', position: 'relative' }}>
-                <CartOrderDetails {...args} addSuggestedProductToCart={handleAddSuggestedProductToCart}/>
+            <div style={{ margin: 'auto', position: 'relative'}}>
+                <Cart {...args}/>
             </div>
         )
     }
 }
 
-export const CartOrderDetailsStory = {
-    ...CartOrderDetailsStoryTemplate,
+export const CartStory = {
+    ...CartStoryTemplate,
     args: {
-        heading: 'Din Kundvagn',
-        totalAmount: '1378,70',
-        productsNumber: 7,
-        text: '<p>Tillagda produkter</p>',
-        cartProductsList: CartProductListStory.args,
-        suggestedProductsList: FeaturedProductsStory.args
+        deliveryDetails: CartDeliveryDetailsStory.args,
+        cartOrderDetails: CartOrderDetailsStory.args
+
     }
 }

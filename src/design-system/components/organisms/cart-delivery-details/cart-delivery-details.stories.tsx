@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import { CartOrderDetails } from './cart-order-details'
+import { CartDeliveryDetails } from './cart-delivery-details'
 import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
+import { DeliveryFormStory } from '../delivery-form/delivery-form.stories';
 
-const meta: Meta<typeof CartOrderDetails> = {
-    title: 'Design System/Organisms/CartOrderDetails',
-    component: CartOrderDetails
+const meta: Meta<typeof CartDeliveryDetails> = {
+    title: 'Design System/Organisms/CartDeliveryDetails',
+    component: CartDeliveryDetails
 };
 
 export default meta;
-type Story = StoryObj<typeof CartOrderDetails>;
+type Story = StoryObj<typeof CartDeliveryDetails>;
 
-const CartOrderDetailsStoryTemplate: Story = {
+const CartDeliveryDetailsStoryTemplate: Story = {
     render: ({ ...args }) => {
         const [showCartSidebar, setShowCartSidebar] = useState(false)
 
@@ -31,20 +32,15 @@ const CartOrderDetailsStoryTemplate: Story = {
         }
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
-                <CartOrderDetails {...args} addSuggestedProductToCart={handleAddSuggestedProductToCart}/>
+                <CartDeliveryDetails {...args}/>
             </div>
         )
     }
 }
 
-export const CartOrderDetailsStory = {
-    ...CartOrderDetailsStoryTemplate,
+export const CartDeliveryDetailsStory = {
+    ...CartDeliveryDetailsStoryTemplate,
     args: {
-        heading: 'Din Kundvagn',
-        totalAmount: '1378,70',
-        productsNumber: 7,
-        text: '<p>Tillagda produkter</p>',
-        cartProductsList: CartProductListStory.args,
-        suggestedProductsList: FeaturedProductsStory.args
+        deliveryForm: DeliveryFormStory.args
     }
 }

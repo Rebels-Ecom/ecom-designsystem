@@ -47,6 +47,8 @@ export const lightTheme = {
   /*Text */
   '--color-text-default':'#000000',
   '--color-text-white': '#ffffff',
+  '--color-text-blue': '#003E51',
+  '--color-text-orange': '#DE9034',
 
   '--color-on-primary':'#ffffff',
   '--color-on-primary-disabled':'#8A8E8F',
@@ -244,6 +246,8 @@ export const darkTheme = {
      /*Text */
   '--color-text-default':'#000000',
   '--color-text-white': '#ffffff',
+  '--color-text-blue': '#003E51',
+  '--color-text-orange': '#DE9034',
   
   '--color-on-primary':'#ffffff',
   '--color-on-primary-disabled':'#8A8E8F',
