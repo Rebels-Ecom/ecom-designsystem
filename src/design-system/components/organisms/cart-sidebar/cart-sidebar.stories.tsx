@@ -82,3 +82,18 @@ export const CartSidebarStory = {
         suggestedProductsList: FeaturedProductsStory.args
     }
 }
+
+export const CartSidebarStoryNoProducts = {
+    ...CartSidebarStoryTemplate,
+    args: {
+        heading: 'Kundvagn',
+        totalAmount: '1378,70',
+        productsNumber: 7,
+        text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
+        shoppingListButton: ShoppingListButtonStory.args,
+        latestOrderButton: LatertOrderButtonStory.args,
+        goToCartButton: ButtonGoToCart.args,
+        toggleSwitchLabel: 'Spara som inköpslista',
+        suggestedProductsList: FeaturedProductsStory.args
+    }
+}

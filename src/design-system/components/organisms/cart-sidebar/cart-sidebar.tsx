@@ -18,7 +18,7 @@ export interface ICartSidebar {
   latestOrderButton: IButton
   onClickShoppingList: CallableFunction
   onClickLatestOrder: CallableFunction
-  cartProductsList: ICartProductList
+  cartProductsList?: ICartProductList
   onClickRemoveProduct: CallableFunction
   goToCartButton: IButton
   onClickGoToCart: CallableFunction
@@ -34,18 +34,28 @@ function CartSidebar({isOpen, onClose, heading, totalAmount, productsNumber, tex
     <div className={styles.cartSidebar}>
       <SlidingSidebar isOpen={isOpen} onClose={()=>onClose()}>
         <div className={styles.headingWrapper}><h3>{heading}</h3><h3>{totalAmount}kr</h3></div>
-        <p className={styles.text}> Du har totalt {productsNumber} olika produkter i din kundvagn. <span className={styles.text} dangerouslySetInnerHTML={{ __html: text }} ></span></p>
+        {
+          cartProductsList && cartProductsList.productList 
+          ?
+          <p className={styles.text}> Du har totalt {productsNumber} olika produkter i din kundvagn. <span className={styles.text} dangerouslySetInnerHTML={{ __html: text }} ></span></p>
+          :
+          <div>Nothing here</div>
+        }
         <div className={styles.buttonsWrapper}>
           <Button {...shoppingListButton} type={'button'} surface={'secondary'} onClick={()=>onClickShoppingList()}></Button>
           <Button {...latestOrderButton} type={'button'} surface={'secondary'} onClick={()=>onClickLatestOrder()}></Button>
         </div>
-        <CartProductList className={styles.productListWrapper} {...cartProductsList} onRemoveProduct={onClickRemoveProduct}/>
-        <div className={styles.buttonsWrapper}>
-          <Button {...goToCartButton} type={'button'} surface={'primary'} size={'large'} onClick={()=>onClickGoToCart()}></Button>
-          <FormGroup label={toggleSwitchLabel} formElementId={'toggle-save-shopping-list'} className={styles.toggleSwitchWrapper}>
-            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={onClickToggleSwitch}></ToggleSwitch>
-          </FormGroup>
-        </div>
+        {cartProductsList && cartProductsList.productList && 
+          <>
+            <CartProductList className={styles.productListWrapper} {...cartProductsList} onRemoveProduct={onClickRemoveProduct}/>
+            <div className={styles.buttonsWrapper}>
+              <Button {...goToCartButton} type={'button'} surface={'primary'} size={'large'} onClick={()=>onClickGoToCart()}></Button>
+              <FormGroup label={toggleSwitchLabel} formElementId={'toggle-save-shopping-list'} className={styles.toggleSwitchWrapper}>
+                <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={onClickToggleSwitch}></ToggleSwitch>
+              </FormGroup>
+            </div>
+          </>
+        }
         <ProductCardList  className={styles.productListWrapper} {...suggestedProductsList} addToCart={addSuggestedProductToCart} />
       </SlidingSidebar>
     </div>

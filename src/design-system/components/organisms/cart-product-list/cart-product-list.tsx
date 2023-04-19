@@ -6,14 +6,14 @@ import cx from 'classnames'
 
 
 export interface ICartProductList {
-  productCards: Array<ICartProduct>
+  productList: Array<ICartProduct>
   onRemoveProduct: CallableFunction
   labelExpandList: string
   labelCollapseList: string
   className?: string
 }
 
-const CartProductList = ({ productCards, onRemoveProduct, labelExpandList, labelCollapseList, className }: ICartProductList) => {
+const CartProductList = ({ productList, onRemoveProduct, labelExpandList, labelCollapseList, className }: ICartProductList) => {
   
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
@@ -28,9 +28,9 @@ const CartProductList = ({ productCards, onRemoveProduct, labelExpandList, label
   return (
     <div className={styles.cartProductList}>
       <ul className={cx(styles.list, isExpanded ? styles.expanded : styles.collapsed, className ? className : '')}>
-        {productCards.map((card: ICartProduct) => (
-          <li key={card.product.productId} className={styles.listItem}>
-            <CartProduct key={card.product.productId} {...card} onClickRemoveProduct={()=>handleRemoveProduct(card.product.productId)}/>
+        {productList.map((productItem: ICartProduct) => (
+          <li key={productItem.product.productId} className={styles.listItem}>
+            <CartProduct key={productItem.product.productId} {...productItem} onClickRemoveProduct={()=>handleRemoveProduct(productItem.product.productId)}/>
           </li>
         ))}
       </ul>
