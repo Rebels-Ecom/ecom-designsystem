@@ -23,3 +23,12 @@ export const LinkButtonStory = {
     surface: 'primary',
   }
 }
+
+export const LinkButtonStory_GoToCart = {
+  ...LinkButtonStoryTemplate,
+  args: {
+    ...UILinkStory.args,
+    size: 'large',
+    surface: 'primary',
+  }
+}

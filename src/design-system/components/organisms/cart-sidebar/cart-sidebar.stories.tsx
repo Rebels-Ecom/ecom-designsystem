@@ -30,6 +30,7 @@ const CartSidebarStoryTemplate: Story = {
         }
         function handleGoToCart(){
             alert('Redirecting to cart page...')
+            //?path=/story/design-system-organisms-cart--cart-story
         }
         function handleAddSuggestedProductToCart(product:any) {
             alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)

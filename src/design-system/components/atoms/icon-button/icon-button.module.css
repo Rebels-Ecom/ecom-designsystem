@@ -29,6 +29,18 @@
     }
 }
 
+.buttonMedium {
+    height: 1.5rem;
+    width: 1.5rem;
+    min-width: 1.5rem;
+    & > span {
+        font-size: 1rem;
+        line-height: 1rem;
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
 .buttonLarge {
     height: 1.875rem;
     width: 1.875rem;

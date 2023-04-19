@@ -6,6 +6,8 @@
     background: #FFFFFF;
     margin-left:auto;
     overflow: auto;
+    box-sizing: border-box;
+    border: solid 0.063rem rgba(0, 62, 81, 0.3);
 }
 
 .contentWrapper {

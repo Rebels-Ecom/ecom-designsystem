@@ -1,12 +1,16 @@
 import React from 'react'
-import { Icon } from '../../atoms'
+import { Icon, IconButton } from '../../atoms'
 import styles from './nav-links.module.css'
 
-const NavLinks = () => {
+export interface INavLinks {
+  onClickCart: CallableFunction
+}
+
+const NavLinks = ({ onClickCart } : INavLinks) => {
   return (
     <div className={styles.navLinks}>
-      <Icon icon="icon-heart" className={styles.navLinksIcon} />
-      <Icon icon="icon-shopping-cart" className={styles.navLinksIcon} />
+      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={()=>onClickCart()} size='medium' isTransparent></IconButton>
     </div>
   )
 }

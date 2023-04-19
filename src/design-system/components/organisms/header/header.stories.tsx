@@ -11,6 +11,8 @@ import { Logotype } from '../../molecules/logotype/logotype'
 import { NavLinks } from '../../molecules/nav-links/nav-links'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
+import { CartSidebarStory } from '../cart-sidebar/cart-sidebar.stories'
+import { CartSidebar } from '../cart-sidebar/cart-sidebar'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -23,8 +25,12 @@ type Story = StoryObj<typeof Header>
 const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
+    const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
+    const onClickCartIcon = () => setIsCartSidebarOpen(true)
+    const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
     return (
+      <>
       <Header isOpen={isOpen}>
         {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
@@ -38,7 +44,7 @@ const HeaderStoryTemplate: Story = {
               <SearchNavBar {...args.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <NavLinks onClickCart={onClickCartIcon}/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -49,6 +55,8 @@ const HeaderStoryTemplate: Story = {
           </Wrapper>
         )}
       </Header>
+      <CartSidebar {...args.cartSidebar} isOpen={isCartSidebarOpen} onClose={onClickCloseCartSidebar}></CartSidebar>
+      </>
     )
   },
 }
@@ -89,5 +97,6 @@ export const HeaderStory = {
       ],
       linkComponent: 'a',
     },
+    cartSidebar: CartSidebarStory.args
   },
 }
