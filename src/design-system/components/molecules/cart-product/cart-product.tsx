@@ -11,12 +11,17 @@ import { DividerLines } from '../../atoms/divider-lines/divider-lines'
 export interface ICartProduct extends IProduct {
     product: IProduct
     iconButton: IIconButton
+    onClickRemoveProduct: CallableFunction
     className?: string
 }
 
-const CartProduct = ({ product, iconButton, className }: ICartProduct ) => {
+const CartProduct = ({ product, iconButton, onClickRemoveProduct, className }: ICartProduct ) => {
     const {productId, productName, productImageUrl, country, packaging, priceStr, totalPrice,  quantity, salesUnit, itemNumberPerSalesUnit} = product
     const productImage = getProductPicture(productId, productImageUrl)
+
+    function handleRemoveProduct(id: string) {
+        onClickRemoveProduct(id)
+    }
 
     return(
         <div className= {cx(styles.cartProduct, className ? className : '')}>
@@ -40,7 +45,7 @@ const CartProduct = ({ product, iconButton, className }: ICartProduct ) => {
                 />
             </div>
             <div className={styles.iconLink}>
-                <IconButton {...iconButton}></IconButton>
+                <IconButton {...iconButton} onClick={()=>handleRemoveProduct(productId)}></IconButton>
             </div>
         </div>
     )

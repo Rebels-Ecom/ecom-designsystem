@@ -19,26 +19,49 @@ const CartSidebarStoryTemplate: Story = {
         function openCartSidebar(){
             setShowCartSidebar(true)
         }
+
         function closeCartSidebar(){
             setShowCartSidebar(false)
         }
+
         function addShopingListToCart(){
             alert(`Updating cart with products from the shopping list`)
         }
+
         function addLatestOrderToCart(){
             alert('Updating cart with products from the latest order')
         }
+
+        function handleRemoveProduct(id: string){
+            alert(`Removing the product with id: ${id}`)
+        }
+
         function handleGoToCart(){
             alert('Redirecting to cart page...')
             //?path=/story/design-system-organisms-cart--cart-story
         }
+
+        function handleToggleSwitch(e: React.ChangeEvent<HTMLInputElement>) {
+            console.log("---", e.currentTarget.checked);
+        }
+
         function handleAddSuggestedProductToCart(product:any) {
             alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
         }
+        
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
                 <button style={{ position: 'absolute', top:'2rem', left:'2rem'}}  onClick={openCartSidebar}>Open sidebar</button>
-                <CartSidebar {...args} isOpen={showCartSidebar} onClose={closeCartSidebar} onClickShoppingList={addShopingListToCart} onClickLatestOrder={addLatestOrderToCart} onClickGoToCart={handleGoToCart} addSuggestedProductToCart={handleAddSuggestedProductToCart}/>
+                <CartSidebar 
+                    {...args} 
+                    isOpen={showCartSidebar} 
+                    onClose={closeCartSidebar} 
+                    onClickShoppingList={addShopingListToCart} 
+                    onClickLatestOrder={addLatestOrderToCart} 
+                    onClickRemoveProduct={handleRemoveProduct}
+                    onClickGoToCart={handleGoToCart} 
+                    onClickToggleSwitch={handleToggleSwitch}
+                    addSuggestedProductToCart={handleAddSuggestedProductToCart}/>
             </div>
         )
     }
@@ -55,6 +78,7 @@ export const CartSidebarStory = {
         latestOrderButton: LatertOrderButtonStory.args,
         cartProductsList: CartProductListStory.args,
         goToCartButton: ButtonGoToCart.args,
+        toggleSwitchLabel: 'Spara som inköpslista',
         suggestedProductsList: FeaturedProductsStory.args
     }
 }

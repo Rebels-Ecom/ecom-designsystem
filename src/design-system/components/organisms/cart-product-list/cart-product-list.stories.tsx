@@ -18,15 +18,13 @@ type Story = StoryObj<typeof CartProductList>;
 
 const CartProductListStoryTemplate: Story = {
   render: ( args ) => {
-    const [cardList] = useState(args.productCards)
-
-    function handleAddToCart(product:any) {
-      alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+    function handleRemoveProduct(id:string) {
+      alert(`Removing the product with id: ${id}`)
     }
     
     return (
       <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-        <CartProductList productCards={cardList} />
+        <CartProductList {...args} productCards={args.productCards} onRemoveProduct={handleRemoveProduct}/>
       </div>
     )
   }
@@ -71,8 +69,9 @@ function getProductList( productList: any) : Array<IProductCard> {
     return list;
 }
 
-const productArgs = getProductList(dummyBeerList);
 const cartProducts = [
+    CartProductStoryBeer.args,
+    CartProductStoryWine.args,
     CartProductStoryBeer.args,
     CartProductStoryWine.args
 ]
@@ -81,25 +80,7 @@ export const CartProductListStory = {
   ...CartProductListStoryTemplate,
   args: {
     productCards: cartProducts,
+    labelExpandList: 'Visa alla dina tillagda produkter',
+    labelCollapseList: 'Dölja tillagda produkter'
   }
 }
-
-
-// const cardList = [
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-//   ProductCardStory.args,
-// ]
-
-// export const ProductCardListStoryLoka = {
-//   ...ProductCardListStoryTemplate,
-//   args: {
-//     productCards: cardList
-//   }
-// }

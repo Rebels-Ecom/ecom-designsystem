@@ -60,8 +60,9 @@ export const IconButtonStory_GoToProduct = {
 export const IconButtonStory_RemoveProduct = {
   ...IconButtonStoryTemplate,
   args: {
-    icon: 'icon-x',
+    icon: 'icon-x-circle',
     size: 'large',
+    isTransparent: true,
     isLink: false,
     onClick: action('clicked')
   }

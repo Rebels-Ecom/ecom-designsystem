@@ -41,7 +41,6 @@
   
   .contentWrapper {
     width: 60%;
-    padding: 0 1rem;
     display: flex;
     flex-direction: column;
   }
@@ -86,7 +85,7 @@
     height:100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     @media (min-width: 48em) {
       width: 20%;
     }

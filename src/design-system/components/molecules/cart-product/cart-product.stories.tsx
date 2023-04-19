@@ -6,7 +6,7 @@ import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { IconButtonStory_GoToProduct } from '../../atoms/icon-button/icon-button.stories'
+import { IconButtonStory_RemoveProduct } from '../../atoms/icon-button/icon-button.stories'
 
 const meta: Meta<typeof CartProduct> = {
     title: 'Design System/Molecules/CartProduct',
@@ -18,10 +18,11 @@ type Story = StoryObj<typeof CartProduct>
 
 const CartProductStoryTemplate: Story = {
   render: ({ ...args }) => {
-    function handleAddToCart(product) {
-        alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+
+    function handleRemoveProduct(id: string) {
+        alert(`Removing the product with id: ${id}`)
     }
-    return(<CartProduct {...args}/>)
+    return(<CartProduct {...args} onClickRemoveProduct={handleRemoveProduct}/>)
   }
 }
 
@@ -81,7 +82,7 @@ export const CartProductStoryBeer = {
     ...CartProductStoryTemplate,
     args: {
         product: productBeerArgs,
-        iconButton: IconButtonStory_GoToProduct.args,
+        iconButton: IconButtonStory_RemoveProduct.args,
     }
 }
 
@@ -89,6 +90,6 @@ export const CartProductStoryWine = {
     ...CartProductStoryTemplate,
     args: {
         product: productWineArgs,
-        iconButton: IconButtonStory_GoToProduct.args,
+        iconButton: IconButtonStory_RemoveProduct.args,
     }
 }

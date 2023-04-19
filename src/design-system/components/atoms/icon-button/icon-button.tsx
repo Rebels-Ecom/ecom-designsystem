@@ -11,7 +11,7 @@ export interface IIconButton {
     size?: TIconButtonSize
     isTransparent?: boolean
     isLink: boolean
-    linkComponent: any
+    linkComponent?: any
     isExternal?: boolean
     className?: string
     onClick?: React.MouseEventHandler<HTMLButtonElement>

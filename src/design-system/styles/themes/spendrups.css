@@ -141,6 +141,7 @@
   --color-text-on-tertiary: #003E51;
   --color-text-blue: #003E51;
   --color-text-orange: #DE9034;
+  --color-text-orange-hover: #E28F33;
   --color-text-subdued: #676A6B;
 
   /* Surface */
@@ -374,6 +375,7 @@
   --color-text-on-secondary-focused: #E28F33;
   --color-text-blue: #003E51;
   --color-text-orange: #DE9034;
+  --color-text-orange-hover: #E28F33;
   --color-text-subdued: var(--grey-800);
 
 

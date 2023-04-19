@@ -1,0 +1,74 @@
+.toggleSwitch {
+    position: relative;
+    width: 5.625rem;
+    height: 2.813rem;
+    overflow: hidden;
+    border-radius: 6.25rem;
+}
+
+.switchKnob, .switchBackground {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.switchBackground {
+    width: 100%;
+    background-color:#FFFDF8;
+    transition: 0.3s ease all;
+    border: solid 0.063rem var(--color-text-orange);
+    z-index: 1;
+    border-radius: 6.25rem;
+}
+
+.switchKnob {
+    z-index: 2;
+    &:before {
+        font-family: 'IcoMoon';
+        content: "\e92b";
+        position: absolute;
+        top: 0.063rem;
+        left: 0rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 2.688rem;
+        height: 2.688rem;
+        color: rgba(255, 196, 22, 0.4);
+        font-size: 1.375rem;
+        background: rgba(255, 196, 22, 0.1);
+        border-radius: 50%;
+        transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+    }
+}
+
+.checkbox {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+  
+.checkbox:checked + .switchKnob:before {
+    font-family: 'IcoMoon';
+    content: "\e92b";
+    left: 46px;
+    background-color:  #FFF9E8;
+    color: var(--icon-blue);
+}
+
+.checkbox:checked ~ .switchBackground {
+    background-color: var(--color-text-orange);
+}
+  
+.switchKnob, .switchKnob:before, .switchBackground {
+    transition: 0.4s ease all;
+}
+
+  

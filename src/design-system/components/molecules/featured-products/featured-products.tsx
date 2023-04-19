@@ -38,12 +38,11 @@ const FeaturedProducts = ({ title, link, productCards, addToCart, linkComponent:
                 {link.isExternal 
                 ? (
                 <a href={link.href} target={link.target} className='body'>
-                    {link.children}
+                    {link.children} <Icon icon={'icon-plus-circle'}></Icon>
                 </a>
                 ) : (
-                <Link to={link.href}>{link.children}</Link>
+                <Link to={link.href}>{link.children} <Icon icon={'icon-plus-circle'}></Icon></Link>
                 )}
-                <Icon icon={'icon-plus-circle'}></Icon>
             </div>
         </div>  
     )

@@ -49,6 +49,7 @@ export const lightTheme = {
   '--color-text-white': '#ffffff',
   '--color-text-blue': '#003E51',
   '--color-text-orange': '#DE9034',
+  '--color-text-orange-hover': '#E28F33',
 
   '--color-on-primary':'#ffffff',
   '--color-on-primary-disabled':'#8A8E8F',
@@ -248,6 +249,7 @@ export const darkTheme = {
   '--color-text-white': '#ffffff',
   '--color-text-blue': '#003E51',
   '--color-text-orange': '#DE9034',
+  '--color-text-orange-hover': '#E28F33',
   
   '--color-on-primary':'#ffffff',
   '--color-on-primary-disabled':'#8A8E8F',
