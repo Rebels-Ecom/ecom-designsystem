@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Cart} from './cart'
 import type { Meta, StoryObj } from '@storybook/react';
-import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
-import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
-import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
-import { DeliveryFormStory } from '../delivery-form/delivery-form.stories';
 import { CartOrderDetailsStory } from '../cart-order-details/cart-order-details.stories';
 import { CartDeliveryDetailsStory } from '../cart-delivery-details/cart-delivery-details.stories';
+import { CartDeliveryDetails } from '../cart-delivery-details/cart-delivery-details';
+import { CartOrderDetails } from '../cart-order-details/cart-order-details';
 
 const meta: Meta<typeof Cart> = {
     title: 'Design System/Organisms/Cart',
@@ -18,23 +16,18 @@ type Story = StoryObj<typeof Cart>;
 
 const CartStoryTemplate: Story = {
     render: ({ ...args }) => {
-        const [showCartSidebar, setShowCartSidebar] = useState(false)
-
-        function addShopingListToCart(){
-            alert(`Updating cart with products from the shopping list`)
-        }
-        function addLatestOrderToCart(){
-            alert('Updating cart with products from the latest order')
-        }
-        function handleGoToCart(){
-            alert('Redirecting to cart page...')
+        function handleRemoveFromCart(id: string){
+            alert(`Remove product from cart - product id: ${id}`)
         }
         function handleAddSuggestedProductToCart(product:any) {
             alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
         }
         return(
             <div style={{ margin: 'auto', position: 'relative'}}>
-                <Cart {...args}/>
+                <Cart>
+                    <CartDeliveryDetails {...args.deliveryDetails}/>
+                    <CartOrderDetails>{args.cartOrderDetails}</CartOrderDetails>
+                </Cart>
             </div>
         )
     }
@@ -45,6 +38,5 @@ export const CartStory = {
     args: {
         deliveryDetails: CartDeliveryDetailsStory.args,
         cartOrderDetails: CartOrderDetailsStory.args
-
     }
 }

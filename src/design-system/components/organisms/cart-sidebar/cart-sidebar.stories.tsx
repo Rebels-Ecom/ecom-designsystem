@@ -4,6 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
+import { Drawer, Group, Title } from '@mantine/core'
+import { Button } from '../../atoms/button/button';
+import { CartProductList } from '../cart-product-list/cart-product-list';
+import { LinkButton } from '../../atoms/link-button/link-button';
+import { FormGroup } from '../../molecules/form-group/form-group';
+import { ToggleSwitch } from '../../atoms/toggle-switch/toggle-switch';
+import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product';
 
 const meta: Meta<typeof CartSidebar> = {
     title: 'Design System/Organisms/CartSidebar',
@@ -38,7 +45,6 @@ const CartSidebarStoryTemplate: Story = {
 
         function handleGoToCart(){
             alert('Redirecting to cart page...')
-            //?path=/story/design-system-organisms-cart--cart-story
         }
 
         function handleToggleSwitch(e: React.ChangeEvent<HTMLInputElement>) {
@@ -48,24 +54,36 @@ const CartSidebarStoryTemplate: Story = {
         function handleAddSuggestedProductToCart(product:any) {
             alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
         }
-        
+
         return(
-            <div style={{ margin: 'auto', position: 'relative' }}>
-                <button style={{ position: 'absolute', top:'2rem', left:'2rem'}}  onClick={openCartSidebar}>Open sidebar</button>
-                <CartSidebar 
-                    {...args} 
-                    isOpen={showCartSidebar} 
-                    onClose={closeCartSidebar} 
-                    onClickShoppingList={addShopingListToCart} 
-                    onClickLatestOrder={addLatestOrderToCart} 
-                    onClickRemoveProduct={handleRemoveProduct}
-                    onClickGoToCart={handleGoToCart} 
-                    onClickToggleSwitch={handleToggleSwitch}
-                    addSuggestedProductToCart={handleAddSuggestedProductToCart}/>
+            <div style={{ margin: 'auto', position: 'relative' }} className='light'>
+                <Button  onClick={openCartSidebar} type={'button'} surface={'primary'}>Open sidebar</Button>
+                <Drawer onClose={closeCartSidebar} opened={showCartSidebar} position='right' size='lg' overlayProps={{ opacity: 0.9, blur: 1, color: '#003E51' }}>
+                    <CartSidebar classNames={['light']}>
+                        <Group position='apart'>
+                            <Title order={1} inherit>{args.heading}</Title>
+                            <Title order={1}>1378,00 kr</Title>
+                        </Group>
+                        <Group>
+                            <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+                            <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+                            {/* <Button {...args.shoppingListButton}></Button> */}
+                        </Group>
+                        <CartProductList>
+                            { args?.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
+                        </CartProductList>
+                        <Group>
+                            <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+                        <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
+                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={handleToggleSwitch}></ToggleSwitch>
+                        </FormGroup>
+                        </Group>
+                    </CartSidebar>
+                </Drawer>
             </div>
         )
     }
-}
+}                   
 
 export const CartSidebarStory = {
     ...CartSidebarStoryTemplate,
@@ -92,6 +110,7 @@ export const CartSidebarStoryNoProducts = {
         text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
         shoppingListButton: ShoppingListButtonStory.args,
         latestOrderButton: LatertOrderButtonStory.args,
+        cartProductsList: [],
         goToCartButton: ButtonGoToCart.args,
         toggleSwitchLabel: 'Spara som inköpslista',
         suggestedProductsList: FeaturedProductsStory.args

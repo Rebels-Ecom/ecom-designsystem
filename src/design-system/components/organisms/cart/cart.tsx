@@ -4,15 +4,17 @@ import { CartOrderDetails, ICartOrderDetails } from '../cart-order-details/cart-
 import { CartDeliveryDetails, ICartDeliveryDetails } from '../cart-delivery-details/cart-delivery-details'
 
 export interface ICart {
-  deliveryDetails: ICartDeliveryDetails
-  cartOrderDetails: ICartOrderDetails
+  children: React.ReactNode
+  // deliveryDetails: ICartDeliveryDetails
+  // cartOrderDetails: ICartOrderDetails
+  // addProductToCart: CallableFunction
+  // removeProductFromCart: CallableFunction
 }
 
-function Cart({ deliveryDetails, cartOrderDetails }: ICart) {
+function Cart({ children }: ICart) {
   return (
     <div className={styles.cart}>
-      <CartDeliveryDetails {...deliveryDetails} className={styles.deliveryDetails} ></CartDeliveryDetails>
-      <CartOrderDetails {...cartOrderDetails} className={styles.orderDetails} ></CartOrderDetails>
+      {children}
     </div>
   )
 }

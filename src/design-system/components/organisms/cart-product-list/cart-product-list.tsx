@@ -6,14 +6,11 @@ import cx from 'classnames'
 
 
 export interface ICartProductList {
-  productList: Array<ICartProduct>
-  onRemoveProduct: CallableFunction
-  labelExpandList: string
-  labelCollapseList: string
+  children: React.ReactNode
   className?: string
 }
 
-const CartProductList = ({ productList, onRemoveProduct, labelExpandList, labelCollapseList, className }: ICartProductList) => {
+const CartProductList = ({ children, className }: ICartProductList) => {
   
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
@@ -21,20 +18,20 @@ const CartProductList = ({ productList, onRemoveProduct, labelExpandList, labelC
     setIsExpanded(!isExpanded)
   }
 
-  function handleRemoveProduct(id: string){
-    onRemoveProduct(id)
-  }
+  if(!children)
+    return null
 
   return (
-    <div className={styles.cartProductList}>
-      <ul className={cx(styles.list, isExpanded ? styles.expanded : styles.collapsed, className ? className : '')}>
-        {productList.map((productItem: ICartProduct) => (
+    <div className={cx(styles.cartProductList, className && className)}>
+      {children}
+      {/* <ul className={cx(styles.list, isExpanded ? styles.expanded : styles.collapsed, className ? className : '')}>
+        {children.map((productItem: ICartProduct) => (
           <li key={productItem.product.productId} className={styles.listItem}>
             <CartProduct key={productItem.product.productId} {...productItem} onClickRemoveProduct={()=>handleRemoveProduct(productItem.product.productId)}/>
           </li>
         ))}
-      </ul>
-      <ToggleButton toggleBtnLabelExpand={labelExpandList} toggleBtnLabelCollapse={labelCollapseList} isExpanded={isExpanded} onToggleClick={handleExpandList}></ToggleButton>
+      </ul> */}
+      {/* <ToggleButton toggleBtnLabelExpand={labelExpandList} toggleBtnLabelCollapse={labelCollapseList} isExpanded={isExpanded} onToggleClick={handleExpandList}></ToggleButton> */}
     </div>
     
   )

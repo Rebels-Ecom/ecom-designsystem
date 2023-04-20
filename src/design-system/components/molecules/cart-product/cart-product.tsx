@@ -7,15 +7,17 @@ import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { IconButton, IIconButton } from '../../atoms/icon-button/icon-button'
 import { DividerLines } from '../../atoms/divider-lines/divider-lines'
+import { LoadingOverlay } from '@mantine/core'
 
 export interface ICartProduct extends IProduct {
     product: IProduct
     iconButton: IIconButton
     onClickRemoveProduct: CallableFunction
     className?: string
+    loading: boolean
 }
 
-const CartProduct = ({ product, iconButton, onClickRemoveProduct, className }: ICartProduct ) => {
+const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , loading= false}: ICartProduct ) => {
     const {productId, productName, productImageUrl, country, packaging, priceStr, totalPrice,  quantity, salesUnit, itemNumberPerSalesUnit} = product
     const productImage = getProductPicture(productId, productImageUrl)
 
@@ -25,6 +27,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className }: I
 
     return(
         <div className= {cx(styles.cartProduct, className ? className : '')}>
+            <LoadingOverlay visible={loading}></LoadingOverlay>
             <div className={styles.imageWrapper}>
                 <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
             </div>

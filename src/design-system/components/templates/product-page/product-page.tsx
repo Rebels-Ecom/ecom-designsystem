@@ -1,10 +1,8 @@
 import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
-import { Header } from '../../organisms'
+import { CartSidebar, Header } from '../../organisms'
 import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
-import { Breadcrumbs, IBreadcrumbs } from '../../organisms/breadcrumbs/breadcrumbs'
-import { IProductCardList, ProductCardList } from '../../organisms/product-card-list/product-card-list'
 import { Footer, IFooter } from '../../organisms/footer/footer'
 import { IProductDetails, ProductDetails } from '../../organisms/product-details/product-details'
 import { IProductDescription, ProductDescription } from '../../organisms/product-description/product-description'
@@ -19,7 +17,10 @@ export interface IProductPage {
 
 const ProductPage = ({ header, productDetails, productDescription, addToCart, footer }: IProductPage) => {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const onClickCartIcon = () => setIsCartSidebarOpen(true)
+  const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
   return (
     <>
       <Header isOpen={isOpen}>
@@ -35,7 +36,7 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <NavLinks onClickCart={onClickCartIcon}/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -46,6 +47,7 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
           </Wrapper>
         )}
       </Header>
+      <CartSidebar {...header.cartSidebar} isOpen={isCartSidebarOpen} onClose={onClickCloseCartSidebar}></CartSidebar>
       <ContentWrapper>
         <MaxWidth contentMaxWidth={'wide'}>
           <ProductDetails {...productDetails} addToCart={addToCart} />
