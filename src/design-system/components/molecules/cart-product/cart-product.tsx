@@ -27,7 +27,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
 
     return(
         <div className= {cx(styles.cartProduct, className ? className : '')}>
-            <LoadingOverlay visible={loading}></LoadingOverlay>
+            <LoadingOverlay visible={loading} loaderProps={{ color: '#003E51' }}></LoadingOverlay>
             <div className={styles.imageWrapper}>
                 <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
             </div>
