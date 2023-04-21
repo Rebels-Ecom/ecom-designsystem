@@ -2,10 +2,13 @@ import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { Footer, IFooter } from '../../organisms/footer/footer'
 import { IProductDetails, ProductDetails } from '../../organisms/product-details/product-details'
 import { IProductDescription, ProductDescription } from '../../organisms/product-description/product-description'
+import { Heading, LinkButton, ToggleSwitch, Button } from '../../atoms'
+import { ICartProduct } from '../../molecules/cart-product/cart-product'
+import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 
 export interface IProductPage {
   header: any
@@ -47,7 +50,27 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
           </Wrapper>
         )}
       </Header>
-      <CartSidebar {...header.cartSidebar} isOpen={isCartSidebarOpen} onClose={onClickCloseCartSidebar}></CartSidebar>
+      <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen} position='right' size='lg'>
+          <CartSidebar classNames={['light']}>
+              <GroupWrapper position='apart'>
+                  <Heading order={1}>Kundvagn</Heading>
+                  <Heading order={1}>1378,00 kr</Heading>
+              </GroupWrapper>
+              <GroupWrapper>
+                  <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+                  <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+              </GroupWrapper>
+              <CartProductList>
+                  { header.cartSidebar?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
+              </CartProductList>
+              <GroupWrapper>
+                  <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+              <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
+                  <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
+              </FormGroup>
+              </GroupWrapper>
+          </CartSidebar>
+      </DrawerSidebar>
       <ContentWrapper>
         <MaxWidth contentMaxWidth={'wide'}>
           <ProductDetails {...productDetails} addToCart={addToCart} />
