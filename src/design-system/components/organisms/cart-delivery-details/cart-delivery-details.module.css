@@ -14,9 +14,6 @@
     }
 }
 
-.productListWrapper {
-    display: flex;
-    flex-direction: column;
-    width: auto;
-    margin: 1rem 0;
+.button {
+    margin-top: 3rem;
 }

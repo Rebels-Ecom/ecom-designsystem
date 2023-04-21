@@ -13,23 +13,14 @@ type Story = StoryObj<typeof CartDeliveryDetails>;
 
 const CartDeliveryDetailsStoryTemplate: Story = {
     render: ({ ...args }) => {
-        const [showCartSidebar, setShowCartSidebar] = useState(false)
 
-        function addShopingListToCart(){
-            alert(`Updating cart with products from the shopping list`)
+        function handleStartCheckout(){
+            alert(`Start checkout process...`)
         }
-        function addLatestOrderToCart(){
-            alert('Updating cart with products from the latest order')
-        }
-        function handleGoToCart(){
-            alert('Redirecting to cart page...')
-        }
-        function handleAddSuggestedProductToCart(product:any) {
-            alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
-        }
+
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
-                <CartDeliveryDetails {...args}/>
+                <CartDeliveryDetails {...args} onClick={handleStartCheckout}/>
             </div>
         )
     }
