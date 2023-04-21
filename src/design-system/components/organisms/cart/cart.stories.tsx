@@ -5,6 +5,11 @@ import { CartOrderDetailsStory } from '../cart-order-details/cart-order-details.
 import { CartDeliveryDetailsStory } from '../cart-delivery-details/cart-delivery-details.stories';
 import { CartDeliveryDetails } from '../cart-delivery-details/cart-delivery-details';
 import { CartOrderDetails } from '../cart-order-details/cart-order-details';
+import { Group, Title } from '@mantine/core';
+import { LinkButton, ToggleSwitch, Button } from '../../atoms';
+import { CartProduct, FormGroup } from '../../molecules';
+import { ICartProduct } from '../../molecules/cart-product/cart-product';
+import { CartProductList } from '../cart-product-list/cart-product-list';
 
 const meta: Meta<typeof Cart> = {
     title: 'Design System/Organisms/Cart',
@@ -16,17 +21,30 @@ type Story = StoryObj<typeof Cart>;
 
 const CartStoryTemplate: Story = {
     render: ({ ...args }) => {
-        function handleRemoveFromCart(id: string){
-            alert(`Remove product from cart - product id: ${id}`)
-        }
-        function handleAddSuggestedProductToCart(product:any) {
-            alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
-        }
+
         return(
             <div style={{ margin: 'auto', position: 'relative'}}>
                 <Cart>
                     <CartDeliveryDetails {...args.deliveryDetails}/>
-                    <CartOrderDetails>{args.cartOrderDetails}</CartOrderDetails>
+                    <CartOrderDetails>
+                    <Group position='apart'>
+                        <Title order={1} inherit>{args.cartOrderDetails.heading}</Title>
+                        <Title order={1}>{args.cartOrderDetails.totalAmount}</Title>
+                        </Group>
+                        <Group>
+                            <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+                            <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+                        </Group>
+                        <CartProductList>
+                            { args.cartOrderDetails.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} onClickRemoveProduct={()=>{}}></CartProduct>) }
+                        </CartProductList>
+                        <Group>
+                            <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+                        <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
+                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
+                        </FormGroup>
+                        </Group>
+                    </CartOrderDetails>
                 </Cart>
             </div>
         )

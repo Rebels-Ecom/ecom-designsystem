@@ -1,6 +1,9 @@
 .cartOrderDetails {
     background: #FFFFFF;
-    padding: 4.8rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding:2rem 1rem;
 }
 
 .contentWrapper {

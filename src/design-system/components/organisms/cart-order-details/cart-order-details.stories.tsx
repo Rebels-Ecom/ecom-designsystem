@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CartOrderDetails } from './cart-order-details'
 import type { Meta, StoryObj } from '@storybook/react';
-import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
 import { Group, Title } from '@mantine/core';
@@ -24,18 +23,8 @@ type Story = StoryObj<typeof CartOrderDetails>;
 const CartOrderDetailsStoryTemplate: Story = {
     render: ({ ...args }) => {
 
-        function handleRemoveProduct(id: string){
-            alert(`Removing the product with id: ${id}`)
-        }
-        function handleAddSuggestedProductToCart(product:any) {
-            alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
-        }
-        function handleToggleSwitch(e: React.ChangeEvent<HTMLInputElement>) {
-            console.log("---", e.currentTarget.checked);
-        }
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
-                {/* <CartOrderDetails {...args} addSuggestedProductToCart={handleAddSuggestedProductToCart} onClickRemoveProduct={handleRemoveProduct}/> */}
                 <CartOrderDetails>
                         <Group position='apart'>
                             <Title order={1} inherit>{args.heading}</Title>
@@ -47,12 +36,12 @@ const CartOrderDetailsStoryTemplate: Story = {
                             {/* <Button {...args.shoppingListButton}></Button> */}
                         </Group>
                         <CartProductList>
-                            { args?.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
+                            { args?.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} onClickRemoveProduct={()=>{}}></CartProduct>) }
                         </CartProductList>
                         <Group>
                             <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
                         <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
-                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={handleToggleSwitch}></ToggleSwitch>
+                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
                         </FormGroup>
                         </Group>
                 </CartOrderDetails>

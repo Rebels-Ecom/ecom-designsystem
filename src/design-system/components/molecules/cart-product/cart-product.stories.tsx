@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { CartProduct } from './cart-product'
 import { IProduct } from '../../../../types/product'
@@ -19,10 +19,14 @@ type Story = StoryObj<typeof CartProduct>
 const CartProductStoryTemplate: Story = {
   render: ({ ...args }) => {
 
+    const [loading, setLoading] = useState<boolean>(false)
+
     function handleRemoveProduct(id: string) {
-        alert(`Removing the product with id: ${id}`)
+        console.log('Removing the product with id:', id)
+        setLoading(true)
     }
-    return(<CartProduct {...args} onClickRemoveProduct={handleRemoveProduct}/>)
+
+    return(<CartProduct {...args} loading={loading} onClickRemoveProduct={handleRemoveProduct}/>)
   }
 }
 
@@ -83,7 +87,6 @@ export const CartProductStoryBeer = {
     args: {
         product: productBeerArgs,
         iconButton: IconButtonStory_RemoveProduct.args,
-        loading: true
     }
 }
 

@@ -21,14 +21,10 @@ const cartProducts = [
 
 const CartProductListStoryTemplate: Story = {
   render: ( args ) => {
-    function handleRemoveProduct(id:string) {
-      alert(`Removing the product with id: ${id}`)
-    }
-    
     return (
       <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
         <CartProductList>
-          { args?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
+          { args?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} onClickRemoveProduct={()=>{}} ></CartProduct>) }
         </CartProductList>
       </div>
     )

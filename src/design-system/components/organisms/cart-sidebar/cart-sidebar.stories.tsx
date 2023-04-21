@@ -31,30 +31,6 @@ const CartSidebarStoryTemplate: Story = {
             setShowCartSidebar(false)
         }
 
-        function addShopingListToCart(){
-            alert(`Updating cart with products from the shopping list`)
-        }
-
-        function addLatestOrderToCart(){
-            alert('Updating cart with products from the latest order')
-        }
-
-        function handleRemoveProduct(id: string){
-            alert(`Removing the product with id: ${id}`)
-        }
-
-        function handleGoToCart(){
-            alert('Redirecting to cart page...')
-        }
-
-        function handleToggleSwitch(e: React.ChangeEvent<HTMLInputElement>) {
-            console.log("---", e.currentTarget.checked);
-        }
-
-        function handleAddSuggestedProductToCart(product:any) {
-            alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
-        }
-
         return(
             <div style={{ margin: 'auto', position: 'relative' }} className='light'>
                 <Button  onClick={openCartSidebar} type={'button'} surface={'primary'}>Open sidebar</Button>
@@ -67,7 +43,6 @@ const CartSidebarStoryTemplate: Story = {
                         <Group>
                             <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
                             <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
-                            {/* <Button {...args.shoppingListButton}></Button> */}
                         </Group>
                         <CartProductList>
                             { args?.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
@@ -75,7 +50,7 @@ const CartSidebarStoryTemplate: Story = {
                         <Group>
                             <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
                         <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
-                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={handleToggleSwitch}></ToggleSwitch>
+                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
                         </FormGroup>
                         </Group>
                     </CartSidebar>
