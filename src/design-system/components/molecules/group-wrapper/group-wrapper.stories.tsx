@@ -25,6 +25,6 @@ export const GroupWrapperStory = {
         children: <Heading order={1}>Heading Component </Heading>,
         position: 'left',
         spacing: 'md', 
-        noWrap: true
+        noWrap: true,
     }
 }

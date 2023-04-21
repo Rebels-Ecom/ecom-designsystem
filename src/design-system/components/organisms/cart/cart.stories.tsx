@@ -1,5 +1,5 @@
 import React from 'react'
-import { Cart} from './cart'
+import { Cart } from './cart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { CartOrderDetailsStory } from '../cart-order-details/cart-order-details.stories'
 import { CartDeliveryDetailsStory } from '../cart-delivery-details/cart-delivery-details.stories'

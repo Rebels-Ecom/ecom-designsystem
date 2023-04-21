@@ -1,22 +1,24 @@
 .cart {
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+
     @media(min-width: 64em){
         flex-direction: row;
     }
-}
 
-.deliveryDetails {
-    width: 100%;
-    @media(min-width: 64em){
-        width: 60%;
-    }
-}
-
-.orderDetails {
-    width: 100%;
-    @media(min-width: 64em){
-        width: 40%;
+    > div {
+        &:first-child {
+            width:100%;
+            @media(min-width: 64em){
+                width:60%;
+            }
+        }
+        &:nth-child(2) {
+            width:100%;
+            @media(min-width: 64em){
+                width:40%;
+            }
+        } 
     }
 }

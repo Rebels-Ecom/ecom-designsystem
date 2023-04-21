@@ -42,14 +42,14 @@ const CartSidebarStoryTemplate: Story = {
                             <Heading order={1}>{args.heading}</Heading>
                             <Heading order={1}>1378,00 kr</Heading>
                         </GroupWrapper>
-                        <GroupWrapper>
+                        <GroupWrapper spacing='xl'>
                             <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
                             <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
                         </GroupWrapper>
                         <CartProductList>
                             { args?.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
                         </CartProductList>
-                        <GroupWrapper>
+                        <GroupWrapper spacing='xl'>
                             <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
                         <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
                             <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
