@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { CartDeliveryDetails } from './cart-delivery-details'
 import type { Meta, StoryObj } from '@storybook/react';
-import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
-import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
-import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
 import { DeliveryFormStory } from '../delivery-form/delivery-form.stories';
 
 const meta: Meta<typeof CartDeliveryDetails> = {

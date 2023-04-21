@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import { SlidingSidebar } from './sliding-sidebar'
+import { DrawerSidebar } from './drawer-sidebar'
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof SlidingSidebar> = {
-    title: 'Design System/Molecules/SlidingSidebar',
-    component: SlidingSidebar
+const meta: Meta<typeof DrawerSidebar> = {
+    title: 'Design System/Molecules/DrawerSidebar',
+    component: DrawerSidebar
 };
 
 export default meta;
-type Story = StoryObj<typeof SlidingSidebar>;
+type Story = StoryObj<typeof DrawerSidebar>;
 
-const SlidingSidebarStoryTemplate: Story = {
+const DrawerSidebarStoryTemplate: Story = {
   render: ({ ...args }) => {
     const [openSidebar, setOpenSidebar] = useState(false)
     function handleSidebarOpen(){
@@ -22,14 +22,14 @@ const SlidingSidebarStoryTemplate: Story = {
     return(
         <div style={{ margin: 'auto', position: 'relative'}}>
             <button style={{ position: 'absolute', top:'4rem'}} onClick={handleSidebarOpen}>Open sidebar</button>
-            <SlidingSidebar isOpen={openSidebar} children= {args.children} onClose={handleSidebarClose}/>
+            <DrawerSidebar isOpen={openSidebar} children={args.children} onClose={handleSidebarClose} position={'right'} size={'lg'}/>
         </div>
     )
   }
 }
 
 export const SlidingSidebarStory = {
-    ...SlidingSidebarStoryTemplate,
+    ...DrawerSidebarStoryTemplate,
     args: {
         children: 'HERE COMES SOME STUFF SLIDING IN...',  
     }

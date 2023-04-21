@@ -4,7 +4,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories';
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories';
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories';
-import { Drawer, Group, Title } from '@mantine/core'
+import { Group, Title } from '@mantine/core'
+import { DrawerSidebar } from '../../molecules/drawer-sidebar/drawer-sidebar'
 import { Button } from '../../atoms/button/button';
 import { CartProductList } from '../cart-product-list/cart-product-list';
 import { LinkButton } from '../../atoms/link-button/link-button';
@@ -34,7 +35,7 @@ const CartSidebarStoryTemplate: Story = {
         return(
             <div style={{ margin: 'auto', position: 'relative' }} className='light'>
                 <Button  onClick={openCartSidebar} type={'button'} surface={'primary'}>Open sidebar</Button>
-                <Drawer onClose={closeCartSidebar} opened={showCartSidebar} position='right' size='lg' overlayProps={{ opacity: 0.9, blur: 1, color: '#003E51' }}>
+                <DrawerSidebar onClose={closeCartSidebar} isOpen={showCartSidebar} position='right' size='lg'>
                     <CartSidebar classNames={['light']}>
                         <Group position='apart'>
                             <Title order={1} inherit>{args.heading}</Title>
@@ -54,7 +55,7 @@ const CartSidebarStoryTemplate: Story = {
                         </FormGroup>
                         </Group>
                     </CartSidebar>
-                </Drawer>
+                </DrawerSidebar>
             </div>
         )
     }
