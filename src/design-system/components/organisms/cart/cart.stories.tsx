@@ -9,6 +9,9 @@ import { LinkButton, ToggleSwitch, Button, Heading } from '../../atoms'
 import { CartProduct, FormGroup, GroupWrapper } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
+import { DeliveryForm } from '../delivery-form/delivery-form'
+import { ButtonPlaceOrderStory } from '../../atoms/button/button.stories'
+import { DeliveryFormStory } from '../delivery-form/delivery-form.stories'
 
 const meta: Meta<typeof Cart> = {
     title: 'Design System/Organisms/Cart',
@@ -21,10 +24,17 @@ type Story = StoryObj<typeof Cart>
 const CartStoryTemplate: Story = {
     render: ({ ...args }) => {
 
+        function handleStartCheckout(){
+            alert(`Start checkout process...`)
+        }
+        
         return(
             <div style={{ margin: 'auto', position: 'relative'}}>
                 <Cart>
-                    <CartDeliveryDetails {...args.deliveryDetails}/>
+                    <CartDeliveryDetails>
+                        <DeliveryForm {...DeliveryFormStory.args}/>
+                        <Button {...ButtonPlaceOrderStory.args} type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
+                    </CartDeliveryDetails>
                     <CartOrderDetails>
                     <GroupWrapper position='apart'>
                         <Heading order={1}>{args.cartOrderDetails.heading}</Heading>

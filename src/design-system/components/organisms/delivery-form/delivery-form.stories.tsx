@@ -34,8 +34,8 @@ export const DeliveryFormStory = {
     address: 'Granängsringen 3',
     zipcodeLabel: 'Postnummer',
     zipcode: '135 44',
-    customerNumberLabel: 'Kundnummer',
-    customerNumber: '1234-567890',
+    customerIdLabel: 'Kundnummer',
+    customerId: '1234-567890',
     contactPersonLabel: 'Kontaktperson',
     contactPersonLabelHelperText: '(firmatecknaren)',
     contactPerson: 'Jon Jonsson',
@@ -44,9 +44,6 @@ export const DeliveryFormStory = {
     email: 'jon.jonsson@beerfest.com',
     phoneLabel: 'Telefonummer',
     phone: '070 - 133 7700',
-    errorMessage: '',
-    onSubmit: (e) => {},
-    onPasswordChange: (e) => {},
-    onUsernameChange: (e) => {},
+    errorMessage: ''
   },
 }

@@ -130,3 +130,13 @@ export const ButtonGoToCart = {
     onClick: action('clicked'),
   },
 };
+
+export const ButtonPlaceOrderStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_Place_Order',
+    disabled: false,
+    surface: 'primary',
+    children: 'Lägg beställning',
+  },
+};
