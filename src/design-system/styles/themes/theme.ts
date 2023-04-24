@@ -68,6 +68,7 @@ export const lightTheme = {
 
   /* Input text*/
   '--input-background-default': '#FFFFFF',
+  '--input-background-readonly':'#FEF9EA',
   '--input-border-color': '#DE9034',
   '--input-background-focused': 'rgba(255, 196, 22, 0.1)',
   '--input-text-color': '#003E51',

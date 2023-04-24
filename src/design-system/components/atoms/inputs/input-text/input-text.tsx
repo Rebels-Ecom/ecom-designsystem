@@ -3,6 +3,7 @@ import cx from 'classnames'
 import { getisErroneousStyle } from '../../../../../helpers/form-helper'
 import { TOther } from '../../../../../types/other'
 import styles from './input-text.module.css'
+import { IIcon, Icon } from '../../icon/icon'
 
 type acceptedTypes = 'text' | 'email' | 'tel' | 'password' | 'number'
 
@@ -19,12 +20,14 @@ export interface IInputText {
   disabled?: boolean
   isErroneous?: boolean
   required?: boolean
+  readonly?: boolean
   other?: TOther
   autocomplete?: string
+  iconRight?: IIcon
 }
 
 const InputText = forwardRef<HTMLInputElement, IInputText>(
-  ({ id, className, type = 'text', value, defaultValue, isErroneous, required, onChange, onBlur, disabled, placeholder, other, autocomplete }, ref) => {
+  ({ id, className, type = 'text', value, defaultValue, isErroneous, required, readonly, onChange, onBlur, disabled, placeholder, other, autocomplete, iconRight }, ref) => {
     function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
       if (onChange) {
         onChange(e)
@@ -38,21 +41,25 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
     }
 
     return (
-      <input
-        ref={ref}
-        type={type}
-        className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), className)}
-        id={id}
-        value={value}
-        defaultValue={defaultValue}
-        onChange={handleOnChange}
-        onBlur={handleOnBlur}
-        disabled={disabled}
-        placeholder={placeholder}
-        required={required}
-        autoComplete={autocomplete}
-        {...other}
-      />
+      <div className={styles.inputWrapper}>
+        {iconRight && <Icon className={styles.iconRight} icon={iconRight.icon}></Icon>}
+        <input
+          ref={ref}
+          type={type}
+          className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), className)}
+          id={id}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={handleOnChange}
+          onBlur={handleOnBlur}
+          disabled={disabled}
+          placeholder={placeholder}
+          required={required}
+          readOnly={readonly}
+          autoComplete={autocomplete}
+          {...other}
+        />
+      </div>
     )
   }
 )

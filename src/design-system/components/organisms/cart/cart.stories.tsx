@@ -12,6 +12,7 @@ import { CartProductList } from '../cart-product-list/cart-product-list'
 import { DeliveryForm } from '../delivery-form/delivery-form'
 import { ButtonPlaceOrderStory } from '../../atoms/button/button.stories'
 import { DeliveryFormStory } from '../delivery-form/delivery-form.stories'
+import { TextContent } from '../../atoms/text/text-content'
 
 const meta: Meta<typeof Cart> = {
     title: 'Design System/Organisms/Cart',
@@ -33,6 +34,11 @@ const CartStoryTemplate: Story = {
                 <Cart>
                     <CartDeliveryDetails>
                         <DeliveryForm {...DeliveryFormStory.args}/>
+                        <FormGroup label={'Jag godkänner köpesvillkoren'} formElementId={'terms-and-conditions'}>
+                            <ToggleSwitch id={'terms-and-conditions'} onChangeToggle={()=>{}}></ToggleSwitch>
+                        </FormGroup>
+                        <TextContent>Genom att klicka på "Lägg beställning" godkänner jag Villkor för Spendrups Shoppingtjänst och bekräftar att jag har läst Spendrups Dataskyddsinformation och Cookiepolicy. Jag godkänner villkoren för Spendrups AB.</TextContent>
+                        <TextContent componentType='a' href='/kopevillkor' underline color='#DE9034'>Spendrups köpevillkor</TextContent>
                         <Button {...ButtonPlaceOrderStory.args} type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
                     </CartDeliveryDetails>
                     <CartOrderDetails>
