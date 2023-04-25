@@ -12,6 +12,11 @@
     margin: 0;
   }
 
+  &.isToggleBtnLabel {
+    font-weight: 400;
+    color: var(--color-text-orange)
+  }
+
   & span {
     flex: 1;
     & ~ span {

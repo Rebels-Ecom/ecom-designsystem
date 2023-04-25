@@ -21,7 +21,6 @@ const DeliveryFormStoryTemplate: Story = {
 export const DeliveryFormStory = {
   ...DeliveryFormStoryTemplate,
   args: {
-    title: 'Dina leverans uppgifter',
     expandButtonText: 'Expandera',
     collapseButtonText: 'Stäng',
     customerInfo: [

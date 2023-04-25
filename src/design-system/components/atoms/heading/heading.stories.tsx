@@ -24,3 +24,10 @@ export const HeadingStory = {
         children: 'Heading here'
     }
 }
+
+export const Heading_DeliveryForm_Story = {
+    ...HeadingStoryTemplate,
+    args: {
+        children: 'Dina leverans uppgifter'
+    }
+}

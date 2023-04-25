@@ -51,7 +51,7 @@ const CartSidebarStoryTemplate: Story = {
                         </CartProductList>
                         <GroupWrapper spacing='xl'>
                             <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
-                        <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
+                        <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'} isToggleBtnLabel>
                             <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
                         </FormGroup>
                         </GroupWrapper>

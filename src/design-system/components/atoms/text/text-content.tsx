@@ -9,18 +9,22 @@ export interface ITextContent {
     componentType?: TComponentType
     href?: string
     align?: TTextAlignment
-    color?: string
     underline?: boolean
     weight?: TTextWeight
 }
 
-function TextContent({ children, align='left', color='#000000', componentType, href, underline=false, weight='normal' } : ITextContent){
+function TextContent({ children, align='left', componentType, href, underline=false, weight='normal' } : ITextContent){
+
+    function getTextColor(isLink: boolean){
+        return isLink ? '#DE9034' : '#000000'
+    }
+
     return(
         <Text 
             component={componentType} 
             href={componentType==='a' && href!=='' ? href : ''} 
             align={align} 
-            color={color}
+            color={getTextColor(componentType==='a' && href!=='')}
             underline={underline}
             weight={weight}
             >

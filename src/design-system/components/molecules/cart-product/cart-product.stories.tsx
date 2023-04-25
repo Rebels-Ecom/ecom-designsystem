@@ -87,6 +87,7 @@ export const CartProductStoryBeer = {
     args: {
         product: productBeerArgs,
         iconButton: IconButtonStory_RemoveProduct.args,
+        loading: false
     }
 }
 
@@ -95,5 +96,6 @@ export const CartProductStoryWine = {
     args: {
         product: productWineArgs,
         iconButton: IconButtonStory_RemoveProduct.args,
+        loading: false
     }
 }
