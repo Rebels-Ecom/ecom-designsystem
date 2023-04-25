@@ -20,7 +20,6 @@ interface ICustomerInfoSummary {
 }
 
 export interface IDeliveryForm {
-  title: string
   expandButtonText: string
   collapseButtonText: string
   customerInfo: Array<ICustomerInfoItem>
@@ -29,7 +28,6 @@ export interface IDeliveryForm {
 }
 
 const DeliveryForm = ({
-  title,
   expandButtonText,
   collapseButtonText,
   customerInfo = [],
@@ -45,7 +43,6 @@ const DeliveryForm = ({
 
   return (
     <div className={styles.deliveryFormWrapper}>
-      <h1 className="h3">{title}</h1>
       <div className={styles.contentWrapper}>
       <button id="expand-form-btn" type={'button'} aria-label='expand-form-button' onClick={toggleExpandForm} className={cx(styles.expandButton, 'body')}>{isFormExpanded ? collapseButtonText : expandButtonText}</button>
       { isFormExpanded 
@@ -60,14 +57,14 @@ const DeliveryForm = ({
           }
         </form>
         : 
-        <>
+        <div>
           <label className={styles.summaryLabel} htmlFor="customerInfoSummary">{customerInfoSummaryLabel}</label>
           <div id="customerInfoSummary" className={styles.customerSummaryBox}>
             <p><b>{customerInfoSummary?.companyName}</b></p>
             <p>{customerInfoSummary?.contactPerson}</p>
             <p>{customerInfoSummary?.address}, {customerInfoSummary?.zipcode}, {customerInfoSummary?.city}</p>
           </div>
-        </> 
+        </div> 
       }
       </div>
     </div>

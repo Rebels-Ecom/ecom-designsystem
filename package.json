@@ -42,8 +42,9 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@emotion/react": "^11.10.6",
-    "@mantine/core": "^6.0.1",
-    "@mantine/hooks": "^6.0.1",
+    "@mantine/core": "^6.0.9",
+    "@mantine/hooks": "^6.0.9",
+    "@mantine/notifications": "^6.0.9",
     "@react-hook/resize-observer": "^1.2.6",
     "@storybook/addon-actions": "^7.0.0-beta.53",
     "@storybook/addon-docs": "^7.0.0-beta.53",
