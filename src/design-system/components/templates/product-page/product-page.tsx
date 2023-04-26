@@ -50,11 +50,11 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
           </Wrapper>
         )}
       </Header>
-      <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen} position='right' size='lg'>
+      <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
           <CartSidebar classNames={['light']}>
               <GroupWrapper position='apart'>
-                  <Heading order={1}>Kundvagn</Heading>
-                  <Heading order={1}>1378,00 kr</Heading>
+                  <Heading order={3}>Kundvagn</Heading>
+                  <Heading order={3}>1378,00 kr</Heading>
               </GroupWrapper>
               <GroupWrapper>
                   <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>

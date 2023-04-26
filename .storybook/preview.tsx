@@ -5,9 +5,6 @@ import '../src/design-system/styles/themes/spendrups.css'
 import '../src/design-system/styles/layout/spendrups.css'
 import '../src/design-system/styles/typography/spendrups.css'
 import '../src/design-system/styles/icons/style.css'
-import { MantineProvider } from '@mantine/core'
-import { Notifications } from '@mantine/notifications';
-import { theme } from './theme'
 
 const customViewports = {
   iphoneSE: {
@@ -91,48 +88,34 @@ export const globalTypes = {
   },
 }
 
-// export const theme: DecoratorFn = (StoryFn, context) => {
-//   const theme = context.parameters.theme || context.globals.theme
-//   const padding = context.parameters?.padding ?? true
+export const theme: DecoratorFn = (StoryFn, context) => {
+  const theme = context.parameters.theme || context.globals.theme
+  const padding = context.parameters?.padding ?? true
 
-//   return theme === 'side-by-side' ? (
-//     <div className="wrapper">
-//       <div className="preview light">
-//         <div className={padding ? 'padding' : ''}>
-//           <StoryFn />
-//         </div>
-//       </div>
-//       <div className="preview dark">
-//         <div className={padding ? 'padding' : ''}>
-//           <StoryFn />
-//         </div>
-//       </div>
-//     </div>
-//   ) : (
-//     <div className="wrapper">
-//       <div className={`preview ${theme}`}>
-//         <div className={padding ? 'padding' : ''}>
-//           <StoryFn />
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export const decorators = [theme]
-
-function ThemeWrapper(props: { children: React.ReactNode }) {
-
-  return (
-    <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-        <Notifications position="top-right" zIndex={2077}/>
-        <div className="wrapper">
-          <div className="preview light">
-            {props.children}
-          </div>
+  return theme === 'side-by-side' ? (
+    <div className="wrapper">
+      <div className="preview light">
+        <div className={padding ? 'padding' : ''}>
+          <StoryFn />
         </div>
-    </MantineProvider>
-  );
+      </div>
+      <div className="preview dark">
+        <div className={padding ? 'padding' : ''}>
+          <StoryFn />
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="wrapper">
+      <div className={`preview ${theme}`}>
+        <div className={padding ? 'padding' : ''}>
+          <StoryFn />
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export const decorators = [(renderStory: Function) => <ThemeWrapper>{renderStory()}</ThemeWrapper>];
+export const decorators = [theme]
+
+

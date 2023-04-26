@@ -36,11 +36,11 @@ const CartSidebarStoryTemplate: Story = {
         return(
             <div style={{ margin: 'auto', position: 'relative' }} className='light'>
                 <Button  onClick={openCartSidebar} type={'button'} surface={'primary'}>Open sidebar</Button>
-                <DrawerSidebar onClose={closeCartSidebar} isOpen={showCartSidebar} position='right' size='lg'>
+                <DrawerSidebar onClose={closeCartSidebar} isOpen={showCartSidebar}>
                     <CartSidebar classNames={['light']}>
                         <GroupWrapper position='apart'>
-                            <Heading order={1}>{args.heading}</Heading>
-                            <Heading order={1}>1378,00 kr</Heading>
+                            <Heading order={3}>{args.heading}</Heading>
+                            <Heading order={3}>1378,00 kr</Heading>
                         </GroupWrapper>
                         <GroupWrapper spacing='xl'>
                             <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>

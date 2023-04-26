@@ -22,7 +22,7 @@ const DrawerSidebarStoryTemplate: Story = {
     return(
         <div style={{ margin: 'auto', position: 'relative'}}>
             <button style={{ position: 'absolute', top:'4rem'}} onClick={handleSidebarOpen}>Open sidebar</button>
-            <DrawerSidebar isOpen={openSidebar} children={args.children} onClose={handleSidebarClose} position={'right'} size={'lg'}/>
+            <DrawerSidebar isOpen={openSidebar} children={args.children} onClose={handleSidebarClose}/>
         </div>
     )
   }

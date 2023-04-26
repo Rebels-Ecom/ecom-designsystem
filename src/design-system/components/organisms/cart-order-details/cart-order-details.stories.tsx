@@ -27,8 +27,8 @@ const CartOrderDetailsStoryTemplate: Story = {
             <div style={{ margin: 'auto', position: 'relative' }}>
                 <CartOrderDetails>
                         <GroupWrapper position='apart'>
-                            <Heading order={1}>{args.heading}</Heading>
-                            <Heading order={1}>1378,00 kr</Heading>
+                            <Heading order={3}>{args.heading}</Heading>
+                            <Heading order={3}>1378,00 kr</Heading>
                         </GroupWrapper>
                         <GroupWrapper>
                             <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
@@ -38,7 +38,7 @@ const CartOrderDetailsStoryTemplate: Story = {
                         <CartProductList>
                             { args?.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} onClickRemoveProduct={()=>{}}></CartProduct>) }
                         </CartProductList>
-                        <GroupWrapper>
+                        <GroupWrapper align='right'>
                             <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
                         <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
                             <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>

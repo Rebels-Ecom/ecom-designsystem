@@ -1,34 +1,34 @@
 import React from 'react'
-import { TextContent } from './text-content'
+import { Text } from './text'
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof TextContent> = {
-    title: 'Design System/Atoms/TextContent',
-    component: TextContent
+const meta: Meta<typeof Text> = {
+    title: 'Design System/Atoms/Text',
+    component: Text
 };
 
 export default meta;
-type Story = StoryObj<typeof TextContent>;
+type Story = StoryObj<typeof Text>;
 
-const TextContentStoryTemplate: Story = {
+const TextStoryTemplate: Story = {
     render: ({...args}) => (
         <div style={{ margin: 'auto', maxWidth: '1800px' }}>
-            <TextContent {...args}>
+            <Text {...args}>
                 {args.children}
-            </TextContent>
+            </Text>
         </div>
     )
 }
 
-export const TextContentStory = {
-    ...TextContentStoryTemplate,
+export const TextStory = {
+    ...TextStoryTemplate,
     args: {
         children: `Hello! Here's some text`
     }
 }
 
-export const TextContentStoryLink = {
-    ...TextContentStoryTemplate,
+export const TextStoryLink = {
+    ...TextStoryTemplate,
     args: {
         children: `Hello! Here's some text`,
         componentType: 'a',
@@ -36,8 +36,8 @@ export const TextContentStoryLink = {
     }
 }
 
-export const TextContentStorySpan = {
-    ...TextContentStoryTemplate,
+export const TextStorySpan = {
+    ...TextStoryTemplate,
     args: {
         children: `Hello! Here's some text`,
         componentType: 'span',

@@ -1,5 +1,10 @@
 .sidebar {
     background: rgba(0, 62, 81, 0.9);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0; 
+    z-index: 99999;
 }
 
 .sidebarContent {

@@ -1,6 +1,13 @@
-.heading {
+.text {
     display: flex;
     &.leftAlignment { justify-content: flex-start;}
     &.rightAlignment { justify-content: flex-end;}
     &.centerAlignment { justify-content: center;}
+    &.textBold { font-weight: bold;}
+    &.textUnderlined {text-decoration: underline;}
+}
+
+.linkText {
+    color: var(--color-text-orange);
+    cursor: pointer;
 }

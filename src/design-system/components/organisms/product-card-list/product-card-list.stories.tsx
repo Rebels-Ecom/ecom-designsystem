@@ -6,7 +6,6 @@ import { ProductCardStory } from '../../molecules/product-card/product-card.stor
 import { dummyBeerList } from './dummy-product-list-beer'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IProductCard } from '../../molecules/product-card/product-card'
-import { showToast } from '../../molecules/toast/toast'
 
 const meta: Meta<typeof ProductCardList> = {
   title: 'Design System/Organisms/ProductCardList',
@@ -21,7 +20,7 @@ const ProductCardListStoryTemplate: Story = {
     const [cardList] = useState(args.productCards)
 
     function handleAddToCart(product:any) {
-      showToast({product: product})
+      console.log('Showing toast with product...')
     }
     
     return (

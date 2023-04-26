@@ -7,7 +7,6 @@ import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { IconButton, IIconButton } from '../../atoms/icon-button/icon-button'
 import { DividerLines } from '../../atoms/divider-lines/divider-lines'
-import { LoadingOverlay } from '@mantine/core'
 
 export interface ICartProduct extends IProduct {
     product: IProduct
@@ -27,7 +26,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
 
     return(
         <div className= {cx(styles.cartProduct, className ? className : '')}>
-            <LoadingOverlay visible={loading} loaderProps={{ color: '#003E51' }}></LoadingOverlay>
+            {/* <LoadingOverlay visible={loading} loaderProps={{ color: '#003E51' }}></LoadingOverlay> */}
             <div className={styles.imageWrapper}>
                 <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
             </div>

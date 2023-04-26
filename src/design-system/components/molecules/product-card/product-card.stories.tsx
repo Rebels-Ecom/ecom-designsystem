@@ -7,7 +7,7 @@ import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { showToast } from '../toast/toast'
+
 
 const meta: Meta<typeof ProductCard> = {
     title: 'Design System/Molecules/Product/ProductCard',
@@ -20,7 +20,7 @@ type Story = StoryObj<typeof ProductCard>
 const ProductCardStoryTemplate: Story = {
   render: ({ ...args }) => {
     function handleAddToCart(product) {
-        showToast({product: product})
+        console.log('Showing toast with product...')
     }
 
     return(<ProductCard {...args} addToCart={handleAddToCart}/>)
