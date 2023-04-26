@@ -1,26 +1,33 @@
 import React from 'react'
 import styles from './toast.module.css'
-import { Icon, IIcon } from '../../atoms/icon/icon'
-import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
+import { CartProduct, ICartProduct } from '../cart-product/cart-product'
+import cx from 'classnames'
 import { notifications } from '@mantine/notifications'
-import { GroupWrapper } from '../group-wrapper/group-wrapper'
-import { Button } from '@mantine/core'
 
 export interface IToast {
+    product: ICartProduct
 }
 
-function Toast() {
+function showToast(product: any){
+    return notifications.show(
+        {
+            message: <Toast product={product}/>,
+            withCloseButton: false,
+            autoClose: 2000,
+            style: { backgroundColor: '#ffffff', borderRadius: '0.25rem', minHeight:'16rem', width:'30rem', overflow: 'visible' },
+            color:'orange'
+        }
+    )
+}
+
+function Toast({product} : IToast) {
     return (
-        <GroupWrapper position="center">
-          <Button 
-            onClick={() => notifications.show({
-                title: 'Default notification',
-                message: 'Hey there, your code is awesome! 🤥',
-            })}>
-            Show notification
-          </Button>
-        </GroupWrapper>
-      )
+        <div className={styles.notification}>
+            <div className={cx('body', styles.heading)}>Lagd i kundvagnen</div>
+            <hr className={styles.hr}></hr>
+            <CartProduct {...product}></CartProduct>
+        </div>
+    )
 }
 
-export { Toast }
+export { Toast, showToast }

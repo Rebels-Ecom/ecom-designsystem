@@ -11,8 +11,8 @@ import { LoadingOverlay } from '@mantine/core'
 
 export interface ICartProduct extends IProduct {
     product: IProduct
-    iconButton: IIconButton
-    onClickRemoveProduct: CallableFunction
+    iconButton?: IIconButton
+    onClickRemoveProduct?: CallableFunction
     className?: string
     loading: boolean
 }
@@ -22,7 +22,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
     const productImage = getProductPicture(productId, productImageUrl)
 
     function handleRemoveProduct(id: string) {
-        onClickRemoveProduct(id)
+        onClickRemoveProduct && onClickRemoveProduct(id)
     }
 
     return(
@@ -47,9 +47,9 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
                     disabled
                 />
             </div>
-            <div className={styles.iconLink}>
-                <IconButton {...iconButton} onClick={()=>handleRemoveProduct(productId)}></IconButton>
-            </div>
+            {onClickRemoveProduct && iconButton && <div className={styles.iconLink}>
+                <IconButton {...iconButton} onClick={()=> handleRemoveProduct(productId)}></IconButton>
+            </div>}
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { Notifications } from '@mantine/notifications';
 function ThemeProvider(children: React.ReactNode) {
   return (
     <MantineProvider theme={{ fontFamily: 'spendrups_primary' }} withGlobalStyles withNormalizeCSS>
-        <Notifications />
+        <Notifications position="top-left" zIndex={2077}/>
         {children}
     </MantineProvider>
   );

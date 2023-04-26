@@ -11,7 +11,6 @@ declare module '@mantine/core' {
 
 // export your theme object
 export const theme: MantineThemeOverride = {
-  primaryColor: 'orange',
   defaultRadius: 0,
   fontFamily: 'spendrups_primary',
   other: {

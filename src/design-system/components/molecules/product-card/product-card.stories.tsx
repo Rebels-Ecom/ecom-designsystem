@@ -6,6 +6,8 @@ import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
+import { convertNumToStr } from '../../../../helpers/format-helper'
+import { showToast } from '../toast/toast'
 
 const meta: Meta<typeof ProductCard> = {
     title: 'Design System/Molecules/Product/ProductCard',
@@ -18,7 +20,7 @@ type Story = StoryObj<typeof ProductCard>
 const ProductCardStoryTemplate: Story = {
   render: ({ ...args }) => {
     function handleAddToCart(product) {
-        alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+        showToast({product: product})
     }
 
     return(<ProductCard {...args} addToCart={handleAddToCart}/>)
@@ -68,6 +70,8 @@ function getProduct( productData: any) : IProduct {
         salesUnit:product.SalesUnit,
         itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
         tags: getProductTags(product.Tags),
+        quantity: '1',
+        totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
         productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
     }
 }

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
-import { Toast } from './toast'
-import { action } from '@storybook/addon-actions';
+import { Toast, showToast } from './toast'
+import { CartProductStoryWine } from '../cart-product/cart-product.stories'
+import { Button } from '../../atoms/button/button'
 
 const meta: Meta<typeof Toast> = {
     title: 'Design System/Molecules/Toast',
@@ -12,13 +13,21 @@ export default meta;
 type Story = StoryObj<typeof Toast>;
 
 const ToastStoryTemplate: Story = {
-  render: () =>(
+  render: ({...args}) =>{
+
+    return(
         <div style={{ margin: '2rem auto', padding: '1rem', maxWidth: '50rem' }}>
-            <Toast/>
+            <Button surface='primary' type='button' onClick={()=>showToast(args.product)}>
+                Trigger toast
+            </Button>
         </div>
-  )
+    )
+  }
 }
 
 export const ToastStory = {
     ...ToastStoryTemplate,
+    args: {
+        product: CartProductStoryWine.args
+    }
 }

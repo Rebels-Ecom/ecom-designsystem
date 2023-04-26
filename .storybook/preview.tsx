@@ -125,7 +125,7 @@ function ThemeWrapper(props: { children: React.ReactNode }) {
 
   return (
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-        <Notifications />
+        <Notifications position="top-right" zIndex={2077}/>
         <div className="wrapper">
           <div className="preview light">
             {props.children}
