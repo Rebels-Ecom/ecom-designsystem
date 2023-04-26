@@ -21,6 +21,12 @@
   --tag-blue: #003E51;
   --tag-orange: #DE9034;
   --tag-white: #ffffff;
+
+  /* Loading bar */
+  --bar-bkg-orange: #EEE1C8;
+  --bar-bkg-purple: #E1CDD4;
+  --bar-fill-orange: #C79A48;
+  --bar-fill-purple: #9A576F;
   
   /* CTA primary orange */
   --action-primary-orange-default: #DE9034;
@@ -249,6 +255,11 @@
   --tag-orange: #DE9034;
   --tag-white: #ffffff;
 
+  /* Loading bar */
+  --bar-bkg-orange: #EEE1C8;
+  --bar-bkg-purple: #E1CDD4;
+  --bar-fill-orange: #C79A48;
+  --bar-fill-purple: #9A576F;
 
   /* CTA primary orange */
   --action-primary-orange-default: #DE9034;

@@ -76,6 +76,12 @@ export const lightTheme = {
   '--tag-orange': '#DE9034',
   '--tag-white': '#ffffff',
 
+  /* Loading bar */
+  '--bar-bkg-orange': '#EEE1C8',
+  '--bar-bkg-purple': '#E1CDD4',
+  '--bar-fill-orange': '#C79A48',
+  '--bar-fill-purple': '#9A576F',
+
   /* CTA-s */
   '--cta-primary-default': '#003E51',
   '--cta-primary-hover': '#336574',
@@ -259,6 +265,12 @@ export const darkTheme = {
    '--tag-blue': '#003E51',
    '--tag-orange': '#DE9034',
    '--tag-white': '#ffffff',
+
+  /* Loading bar */
+  '--bar-bkg-orange': '#EEE1C8',
+  '--bar-bkg-purple': '#E1CDD4',
+  '--bar-fill-orange': '#C79A48',
+  '--bar-fill-purple': '#9A576F',
 
   /* CTA-s */
   '--cta-primary-default': '#003E51',
