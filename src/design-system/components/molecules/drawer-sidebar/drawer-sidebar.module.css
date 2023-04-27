@@ -1,10 +1,12 @@
 .sidebar {
     background: rgba(0, 62, 81, 0.9);
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 0;
-    bottom: 0; 
+    right: 0;
+    bottom: 0;
+    left: 0; 
     z-index: 99999;
+    backdrop-filter: blur(10px);
 }
 
 .sidebarContent {
@@ -13,6 +15,12 @@
     overflow: auto;
     box-sizing: border-box;
     border: solid 0.063rem rgba(0, 62, 81, 0.3);
+    max-width: 90%;
+    height: 100%;
+
+    @media(min-width: 64em) {
+        max-width: 640px;
+    }
 }
 
 .contentWrapper {
