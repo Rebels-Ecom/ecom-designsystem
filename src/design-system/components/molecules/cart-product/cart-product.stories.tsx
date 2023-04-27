@@ -96,6 +96,6 @@ export const CartProductStoryWine = {
     args: {
         product: productWineArgs,
         iconButton: IconButtonStory_RemoveProduct.args,
-        loading: false
+        loading: true
     }
 }
