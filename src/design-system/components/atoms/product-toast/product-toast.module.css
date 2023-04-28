@@ -18,6 +18,8 @@
 	animation: toast-in-left .7s;
 }
 
+
+
 .toast {
 	background: #fff;
 	transition: .3s ease;
@@ -32,6 +34,13 @@
 	@media(min-width: 64em){
 		width: 38.75rem;
 	}
+}
+
+.header {
+	padding-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
+	text-align: center;
+	border-bottom: 1px solid #eee;
 }
 
 @keyframes toast-in-right {
