@@ -19,7 +19,7 @@ export interface IProductVariant {
 
 const ProductVariant = ({ image, productName, variantName, variantId, country, listPricePerUnitString, onChange, checked } : IProductVariant) => {
     return(
-        <div className={styles.productVariant}>
+        <label className={styles.productVariant}>
             <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} /> </div>
             <div className={`${styles.content}`}>
                 <p className={styles.heading}>{productName}</p>
@@ -37,7 +37,7 @@ const ProductVariant = ({ image, productName, variantName, variantId, country, l
                     onChange={onChange}
                 />
              </div>
-        </div>
+        </label>
     )
 }
 

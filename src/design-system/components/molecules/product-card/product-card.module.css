@@ -1,10 +1,14 @@
 .productCard {
-  width: var(--product-card-width);
-  height: var(--product-card-height);
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
-  margin:auto;
+  position:relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  width: var(--product-card-width);
+  height: var(--product-card-height);
+  &:hover, &:focus, &:active{
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+  }
+  margin:auto;
   padding: 1rem;  
 }
 

@@ -83,7 +83,7 @@ const productWineArgs = getProduct(dummyWineProduct)
 export const ProductCardStory = {
   ...ProductCardStoryTemplate,
   args: {
-    product: productBeerArgs,
+    product: productWineArgs,
   }
 }
 
