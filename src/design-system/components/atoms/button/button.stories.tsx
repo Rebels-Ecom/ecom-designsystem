@@ -140,3 +140,13 @@ export const ButtonPlaceOrderStory = {
     children: 'Lägg beställning',
   },
 };
+
+export const ButtonChooseAcountStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_Choose_Account',
+    disabled: false,
+    surface: 'primary',
+    children: 'Välj konto',
+  },
+};
