@@ -39,7 +39,7 @@ function ProductCard({ product, changePackagingButton, addToCartButton, addToCar
     setProduct({
       ...myProduct, 
       quantity:quantity.toString(),
-      totalPrice: convertNumToStr(product.price * product.itemNumberPerSalesUnit * quantity)
+      totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * quantity)
     })
   }
 
@@ -48,7 +48,7 @@ function ProductCard({ product, changePackagingButton, addToCartButton, addToCar
   }
 
   function handlePackageChange(selectedVariant:any){
-    const quantity = product.productId===selectedVariant.variantId ? parseInt(product.quantity) : 1;
+    const quantity = myProduct.productId===selectedVariant.variantId ? parseInt(myProduct.quantity) : 1;
     setProduct({
       ...myProduct, 
       productId: selectedVariant.variantId,
@@ -68,7 +68,7 @@ function ProductCard({ product, changePackagingButton, addToCartButton, addToCar
 
   if(variantsListOpen) {
     return(
-        <ProductVariantList className= {styles.productCard} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={myProduct.selectedVariantId}/>
+        <ProductVariantList className= {styles.productCard} variantsList= {myProduct.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={myProduct.selectedVariantId}/>
     )
   }
   else {

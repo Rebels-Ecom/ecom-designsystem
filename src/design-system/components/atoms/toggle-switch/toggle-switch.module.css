@@ -59,7 +59,7 @@
     font-family: 'IcoMoon';
     content: "\e92b";
     left: 46px;
-    background-color:  #FFF9E8;
+    background-color: var(--radio-checkbox-background);
     color: var(--icon-blue);
 }
 

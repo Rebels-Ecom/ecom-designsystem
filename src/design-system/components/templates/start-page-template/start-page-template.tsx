@@ -53,7 +53,6 @@ const StartPageTemplate = ({
   const handleOnClick = () => setIsOpen(!isOpen)
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
-  console.log('HEADER STUFF', header)
   return (
     <>
       <Header isOpen={isOpen}>
