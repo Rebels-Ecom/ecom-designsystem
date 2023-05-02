@@ -1,0 +1,65 @@
+.placeholderImage {
+    position: static;
+    overflow: hidden;
+    -webkit-animation: placeholderShimmer 2s linear;
+    animation: placeholderShimmer 2s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    background-color: #fff;
+    background-image: linear-gradient(to right,rgba(0,0,0,.08) 0,rgba(0,0,0,.15) 15%,rgba(0,0,0,.08) 30%);
+    background-size: 75rem 100%;
+    width: 100%;
+    height: 60%;
+}
+
+.placeholderTags {
+    position:relative;
+    height: 1.5rem;
+    width: 90%;
+}
+
+.placeholderHeading {
+    position:relative;
+    height: 1.125rem;
+    width: 90%;
+}
+
+.placeholderParagraphLong {
+    height: 0.875rem;
+    width: 80%;
+}
+
+.placeholderParagraphShort {
+    height: 0.875rem;
+    width: 20%;
+}
+
+.placeholderTags, .placeholderHeading, .placeholderParagraphLong, .placeholderParagraphShort {
+    margin-bottom:0.6rem;
+    background-image: linear-gradient(to right,rgba(0,0,0,.08) 0,rgba(0,0,0,.15) 15%,rgba(0,0,0,.08) 30%);
+    background-size: 1200px 100%;
+    webkit-animation: placeholderShimmer 2s linear;
+    animation: placeholderShimmer 2s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes placeholderShimmer {
+    0% {
+        background-position: -1200px 0;
+    }
+
+    100% {
+        background-position: 1200px 0;
+    }
+}
+
+@keyframes placeholderShimmer {
+    0% {
+        background-position: -1200px 0;
+    }
+
+    100% {
+        background-position: 1200px 0;
+    }
+}

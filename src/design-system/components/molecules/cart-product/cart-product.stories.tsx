@@ -86,7 +86,7 @@ export const CartProductStoryBeer = {
   args: {
     product: productBeerArgs,
     iconButton: IconButtonStory_RemoveProduct.args,
-    loading: true,
+    loading: false,
   },
 }
 
