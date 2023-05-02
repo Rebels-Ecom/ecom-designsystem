@@ -27,29 +27,35 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
 
     return(
         <div className= {cx(styles.cartProduct, className ? className : '')}>
-            <Loader visible={loading} text={'Loading'}/>
-            <div className={styles.imageWrapper}>
-                <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
-            </div>
+            {loading 
+                ? 
+                <Loader visible={loading} text={'Loading'}/>
+                : 
+                <>
+                    <div className={styles.imageWrapper}>
+                        <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                    </div>
 
-            <div className={styles.contentWrapper}>
-                <p className={styles.heading}>{productName}</p>
-                <DividerLines/>
-                <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
-                {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}
-                <ProductQuantityInput
-                    className={styles.quantityInput}
-                    salesUnit = {salesUnit}
-                    itemNumberPerSalesUnit = {itemNumberPerSalesUnit}
-                    totalPrice = {totalPrice}
-                    quantity = {quantity}
-                    quantityInputId = {productId}
-                    disabled
-                />
-            </div>
-            {onClickRemoveProduct && iconButton && <div className={styles.iconLink}>
-                <IconButton {...iconButton} onClick={()=> handleRemoveProduct(productId)}></IconButton>
-            </div>}
+                    <div className={styles.contentWrapper}>
+                        <p className={styles.heading}>{productName}</p>
+                        <DividerLines/>
+                        <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
+                        {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}
+                        <ProductQuantityInput
+                            className={styles.quantityInput}
+                            salesUnit = {salesUnit}
+                            itemNumberPerSalesUnit = {itemNumberPerSalesUnit}
+                            totalPrice = {totalPrice}
+                            quantity = {quantity}
+                            quantityInputId = {productId}
+                            disabled
+                        />
+                    </div>
+                    {onClickRemoveProduct && iconButton && <div className={styles.iconLink}>
+                        <IconButton {...iconButton} onClick={()=> handleRemoveProduct(productId)}></IconButton>
+                    </div>}
+                </>
+            }
         </div>
     )
 }
