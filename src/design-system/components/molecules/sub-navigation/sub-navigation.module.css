@@ -1,0 +1,58 @@
+.subNavDropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top:100%;
+    background: #FBFAF9;
+    z-index: 9999;
+    padding: 1rem 15%;
+    display: none;
+    &.isVisible {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    & a {
+        font-family: var(--font-family-primary);
+        cursor:pointer;
+        color: var(--color-text-decorative-grey);
+        border-bottom: 0.5px solid #DE9034;
+        line-height: 1.25rem;
+        padding: 0.625rem 0;
+        &:hover {
+            color: #DE9034;
+        }
+        
+    }
+}
+
+.title {
+    
+}
+
+.subNavLists {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    gap: 4rem;
+}
+
+.subNavListWrapper {
+    width: 20%;
+}
+
+.listName {
+
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.listItem {
+ 
+}

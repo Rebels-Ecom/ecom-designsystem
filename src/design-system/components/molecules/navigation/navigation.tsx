@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ILink } from '../../../../types/links'
 import { Above, Below } from '../../layouts'
 import cx from 'classnames'
+import { SubNavigation } from '../sub-navigation/sub-navigation'
+import { createRef, useEffect, useRef, useState } from 'react'
 
 export interface INavigation {
   links: Array<ILink>
@@ -37,6 +39,47 @@ const itemVariants = {
   },
 }
 
+const NavItem = ({
+  link,
+  linkComponent: Link,
+  mobile
+}: {
+  link: ILink,
+  linkComponent: any,
+  mobile?: boolean
+} ) => {
+  console.log('IS MOBILE', mobile)
+
+  const[showSubNav, setShowSubNav] = useState <boolean>(false)
+  const onMouseEnter = () => {
+    !mobile && setShowSubNav(true)
+   };
+   
+   const onMouseLeave = () => {
+    !mobile && setShowSubNav(false)
+   };
+
+  return(
+    <motion.li className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        {link.isExternal ? (
+          <>
+            <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
+              {link.title}
+            </a>
+            {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav}/>}
+          </>
+        ) : (
+          <>
+            <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
+              {link.title}
+            </Link>
+            {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav}/>}
+          </>
+        )}
+      </motion.li>
+  )
+}
+
 const NavigationList = ({
   links = [],
   linkComponent: Link,
@@ -48,23 +91,14 @@ const NavigationList = ({
   mobile?: boolean
   isOpen?: boolean
 }) => {
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
           {links.map((link: ILink, index) => {
             return (
-              <motion.li key={`${link.title}-${index}`} className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined}>
-                {link.isExternal ? (
-                  <a href={link.href} target={link.target} title={link.title} className={styles.link}>
-                    {link.title}
-                  </a>
-                ) : (
-                  <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
-                    {link.title}
-                  </Link>
-                )}
-              </motion.li>
+              <NavItem key={`${link.title}-${index}`} link={link} linkComponent={Link} mobile={mobile}/>
             )
           })}
         </motion.ul>

@@ -89,12 +89,12 @@
   right: 0;
   left: 0;
   margin: 2.5rem 0;
-  padding: 20px;
+  padding: 0 1.25rem;
   list-style-type: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+  height: 100%;
 
   @media (min-width: 64em) {
     margin: 0;
@@ -161,7 +161,7 @@
     width: 0;
     @media (min-width: 64em) {
       left: 50%;
-      bottom: -1.844rem;
+      bottom: 0;
       height: 0.1875rem;
       width: 0.1875rem;
     }
