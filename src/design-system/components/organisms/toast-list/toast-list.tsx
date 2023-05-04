@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styles from './toast-list.module.css'
 import cx from 'classnames'
-import { ICartProduct } from '../cart-product/cart-product'
-import { ProductToast } from '../../atoms/product-toast/product-toast'
+import { ICartProduct } from '../../molecules/cart-product/cart-product'
+import { ProductToast } from '../../molecules/product-toast/product-toast'
 
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IToastList {

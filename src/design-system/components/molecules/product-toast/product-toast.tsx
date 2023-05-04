@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './product-toast.module.css'
 import cx from 'classnames'
-import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
-import { Text } from '../text/text'
+import { CartProduct, ICartProduct } from '../cart-product/cart-product'
+import { Text } from '../../atoms/text/text'
 
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IProductToast {

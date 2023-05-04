@@ -17,3 +17,4 @@ export { CartDeliveryDetails } from './cart-delivery-details/cart-delivery-detai
 export { CartProductList } from './cart-product-list/cart-product-list' 
 export { Cart } from './cart/cart'
 export { AccountBoxList } from './account-box-list/account-box-list'
+export { ToastList } from './toast-list/toast-list'

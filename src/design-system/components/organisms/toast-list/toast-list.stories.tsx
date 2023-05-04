@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ToastList } from './toast-list'
-import { CartProductStoryBeer, CartProductStoryWine } from '../cart-product/cart-product.stories';
+import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories';
 
 const meta: Meta<typeof ToastList> = {
-  title: 'Design System/Molecules/ToastList',
+  title: 'Design System/Organisms/ToastList',
   component: ToastList
 }
 
