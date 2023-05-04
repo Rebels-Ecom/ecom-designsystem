@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductToast } from './product-toast'
-import { CartProductStoryBeer } from '../cart-product/cart-product.stories'
+import { CartProductStoryBeer } from '../../molecules/cart-product/cart-product.stories'
+import { AnimatePresence } from 'framer-motion'
 
 const meta: Meta<typeof ProductToast> = {
   title: 'Design System/Molecules/ProductToast',
@@ -28,7 +29,7 @@ const ProductToastStoryTemplate: Story = {
     return (
       <div>
         <button onClick={() => setToastOpen(true)}>Add toast</button>
-        <ProductToast {...args}></ProductToast>
+        <AnimatePresence>{openToast && <ProductToast {...args}></ProductToast>}</AnimatePresence>
       </div>
     )
   },

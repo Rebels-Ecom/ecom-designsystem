@@ -7,18 +7,13 @@
 .top-right {
 	top: 0.75rem;
 	right: 0.75rem;
-	transition: transform .6s ease-in-out;
-	animation: toast-in-right .7s;
+
 }
 
 .top-left {
 	top: 0.75rem;
 	left: 0.75rem;
-	transition: transform .6s ease-in;
-	animation: toast-in-left .7s;
 }
-
-
 
 .toast {
 	background: #fff;
@@ -43,22 +38,3 @@
 	border-bottom: 1px solid #eee;
 }
 
-@keyframes toast-in-right {
-	from {
-	  transform: translateX(100%);
-	  
-	}
-	to {
-	  transform: translateX(0);
-	}
-}
-
-@keyframes toast-in-left {
-	from {
-		transform: translateX(-100%);
-		
-	}
-	to {
-		transform: translateX(0);
-	}
-}

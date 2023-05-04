@@ -1,8 +1,9 @@
 import React from 'react'
 import styles from './product-toast.module.css'
 import cx from 'classnames'
-import { CartProduct, ICartProduct } from '../cart-product/cart-product'
+import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
 import { Text } from '../../atoms/text/text'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IProductToast {
@@ -16,7 +17,13 @@ function ProductToast({ cartProduct, position = 'top-left', className, label }: 
   if (!cartProduct) return null
 
   return (
-    <div className={cx(className ? className : styles.toastContainer, styles[position])}>
+    <motion.div
+      animate={{ x: 0 }}
+      initial={{ x: '100%' }}
+      exit={{ x: '100%' }}
+      transition={{ duration: 0.2, ease: 'easeIn' }}
+      className={cx(className ? className : styles.toastContainer, styles[position])}
+    >
       <div className={styles.toast}>
         <div className={styles.header}>
           {label && (
@@ -27,7 +34,7 @@ function ProductToast({ cartProduct, position = 'top-left', className, label }: 
         </div>
         <CartProduct {...cartProduct}></CartProduct>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

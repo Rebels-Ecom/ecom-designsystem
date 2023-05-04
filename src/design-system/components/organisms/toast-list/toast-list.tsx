@@ -3,6 +3,7 @@ import styles from './toast-list.module.css'
 import cx from 'classnames'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { ProductToast } from '../../molecules/product-toast/product-toast'
+import { AnimatePresence } from 'framer-motion'
 
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IToastList {
@@ -42,9 +43,11 @@ function ToastList({ toastList, autoCloseDelay = 1000, position = 'top-right' }:
 
   return (
     <div className={cx(styles.toastListContainer, styles[position])}>
-      {list.map((toast, i) => (
-        <ProductToast key={i} className={styles.toastWrapper} cartProduct={toast} position={position}></ProductToast>
-      ))}
+      <AnimatePresence>
+        {list.map((toast, i) => (
+          <ProductToast key={i} className={styles.toastWrapper} cartProduct={toast} position={position}></ProductToast>
+        ))}
+      </AnimatePresence>
     </div>
   )
 }
