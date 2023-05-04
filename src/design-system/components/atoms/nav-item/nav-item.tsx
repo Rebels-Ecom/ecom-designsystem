@@ -5,7 +5,8 @@ import { Above, Below } from '../../layouts'
 import cx from 'classnames'
 import { SubNavigation } from '../../molecules/sub-navigation/sub-navigation'
 import { createRef, useEffect, useRef, useState } from 'react'
-import { IconButton } from '../../atoms' 
+import { Icon, IconButton } from '../../atoms' 
+import { LinkComponent } from '../ui-link/ui-link'
 
 const variants = {
     open: {
@@ -34,17 +35,36 @@ const variants = {
     },
   }
 
-const NavItem = ({
-    link,
-    linkComponent: Link,
-    mobile
-  }: {
-    link: ILink,
-    linkComponent: any,
-    mobile?: boolean
-  } ) => {
-    console.log('IS MOBILE', mobile)
-  
+  const MobileNavItem = ({link, onClickExpandSubnav}:{link: ILink, onClickExpandSubnav:CallableFunction}) => {
+    const[showSubNav, setShowSubNav] = useState <boolean>(false)
+    function toggleDropdownArrow(){
+      setShowSubNav(!showSubNav)
+     }
+
+    //  if(showSubNav)
+    //  {
+    //   return(
+    //     <motion.li className={styles.navItemMobile} variants={itemVariants}>
+    //       {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={true}/>}
+    //     </motion.li>
+    //   )
+    //  }
+    function handleOnClick(link: ILink){
+      onClickExpandSubnav(link)
+    }
+
+    return(
+      <motion.li className={styles.navItemMobile} variants={itemVariants}>
+        <button className={styles.navItemBtn} onClick={()=>handleOnClick(link)}>
+            {link.title?.toUpperCase()}
+            {link.hasChildren && <Icon icon={showSubNav ? 'icon-chevron-up' : 'icon-chevron-down'}></Icon>}
+        </button>
+        {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={true}/>}
+      </motion.li>
+    )
+  }
+
+  const DesktopNavItem = ({ link, linkComponent: Link } : {link: ILink, linkComponent: any}) => {
     const[showSubNav, setShowSubNav] = useState <boolean>(false)
     const onMouseEnter = () => {
       setShowSubNav(true)
@@ -53,88 +73,45 @@ const NavItem = ({
      const onMouseLeave = () => {
       setShowSubNav(false)
      };
-  
-     function toggleDropdownArrow(){
-      console.log('TOGGLE ARROW', !showSubNav)
-      setShowSubNav(!showSubNav)
-     }
-     if(mobile)
-     return(
-        <motion.li className={styles.navItemMobile} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-                <button className={styles.navItemBtn} onClick={toggleDropdownArrow} aria-expanded={showSubNav ? "true" : "false"}>
-                    {link.title?.toUpperCase()}
-                    {link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-                </button>
-                {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
-              {/* <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-                {link.title?.toUpperCase()}
-              </a>
-              {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-              {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>} */}
-            {/* </div>
-          ) : (
-            <div className={styles.linkWrapper}>
-              <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-                {link.title}
-              </Link>
-              {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-              {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
-            </div>
-          )} */}
-        </motion.li>
-     )
-  
     return(
-      <motion.li className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-          {mobile 
-          ?
-          (<>
-          {link.isExternal ? (
-            <div className={styles.linkItemContent}>
-                <button className={styles.navItemBtn} onClick={toggleDropdownArrow} aria-expanded={showSubNav ? "true" : "false"}>
-                    {link.title?.toUpperCase()}
-                    {link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-                </button>
-                {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
-              {/* <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-                {link.title?.toUpperCase()}
-              </a>
-              {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-              {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>} */}
-            </div>
-          ) : (
-            <div className={styles.linkWrapper}>
-              <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-                {link.title}
-              </Link>
-              {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-              {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
-            </div>
-          )}</>)
-          :
-          (<>
-          {link.isExternal ? (
-            <div className={styles.linkItemContent}>
-              <div className={styles.linkWrapper}>
-              </div>
-              <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-                {link.title}
-              </a>
-              {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-              {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
-            </div>
-          ) : (
-            <div className={styles.linkWrapper}>
-              <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-                {link.title}
-              </Link>
-              {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
-              {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
-            </div>
-          )}</>)
-          }
-        </motion.li>
+      <motion.li className={styles.navItemDesktop} whileTap={{ scale: 0.95 }} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      {link.isExternal ? (
+        <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
+          {link.title}
+        </a>
+      ) : (
+        <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
+          {link.title}
+        </Link>
+      )}
+      {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={false}/>}
+    </motion.li>
     )
   }
+
+const NavItem = ({
+    link,
+    linkComponent: Link,
+    mobile,
+    onClickOpenSubnav
+  }: {
+    link: ILink,
+    linkComponent: any,
+    mobile?: boolean,
+    onClickOpenSubnav: CallableFunction
+
+  } ) => {
+
+     if(mobile){
+      return(
+          <MobileNavItem link={link} onClickExpandSubnav={onClickOpenSubnav}></MobileNavItem>
+      )
+     }
+
+     return(
+      <DesktopNavItem link={link} linkComponent={Link}></DesktopNavItem>
+    )
+
+}
 
   export { NavItem }

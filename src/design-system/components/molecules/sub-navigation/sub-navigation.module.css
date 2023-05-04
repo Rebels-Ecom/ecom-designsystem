@@ -1,4 +1,16 @@
-.subNavDropdown {
+.subNavDropdownMobile {
+    background: #FBFAF9;
+    width:100%;
+    display: none;
+    &.isVisible {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+}
+
+.subNavDropdownDesktop {
     position: absolute;
     left: 0;
     right: 0;
@@ -26,6 +38,18 @@
     display: flex;
     justify-content: flex-start;
     gap: 4rem;
+}
+
+.subNavListsMobile {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.subNavListWrapperMobile {
+    width: 100%;
 }
 
 .subNavListWrapper {

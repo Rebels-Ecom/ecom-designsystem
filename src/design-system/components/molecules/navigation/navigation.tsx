@@ -105,13 +105,37 @@ const NavigationList = ({
   isOpen?: boolean
 }) => {
 
+  const[showSubNav, setShowSubNav] = useState <boolean>(false)
+  const[subNavLink, setSubNavLink] = useState <ILink>()
+
+  function openSubnav(link: ILink){
+    console.log('LINK', link)
+    setSubNavLink(link)
+    setShowSubNav(true)
+  }
+
+  function closeSubnav(){
+    setShowSubNav(false)
+  }
+
+  if(mobile && showSubNav && subNavLink && subNavLink.hasChildren && subNavLink?.subNav?.lists?.length){
+    return (
+    <AnimatePresence>
+        <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
+          <button onClick={closeSubnav}>{subNavLink.title}</button>
+          <SubNavigation subNav={subNavLink.subNav} isOpen={true} isMobile={true}/>
+        </motion.ul>
+  </AnimatePresence>
+    )
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
           {links.map((link: ILink, index) => {
             return (
-              <NavItem key={`${link.title}-${index}`} link={link} linkComponent={Link} mobile={mobile}/>
+              <NavItem key={`${link.title}-${index}`} link={link} linkComponent={Link} mobile={mobile} onClickOpenSubnav={openSubnav}/>
             )
           })}
         </motion.ul>
