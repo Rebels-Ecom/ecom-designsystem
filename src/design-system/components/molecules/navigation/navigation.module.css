@@ -94,13 +94,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
 
   @media (min-width: 64em) {
     margin: 0;
     flex-direction: row;
     position: static;
     gap: 3.5rem;
+    height: 100%;
   }
 }
 
@@ -194,4 +194,8 @@
       line-height: var(--body-desktop-line-height);
     }
   }
+}
+
+.linkWrapper {
+  display: flex;
 }

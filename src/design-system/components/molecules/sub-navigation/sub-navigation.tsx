@@ -6,6 +6,7 @@ import cx from 'classnames'
 export interface ISubNavigation {
     subNav: ISubNav
     isOpen: boolean
+    isMobile?: boolean
     linkComponent?: any
   }
 
@@ -24,15 +25,27 @@ function SubNavList({listName, listLinks}: {listName:string, listLinks: Array<IL
     )
 }
 
-function SubNavigation({subNav, isOpen}: ISubNavigation) {
-  return (
-    <div className={cx(styles.subNavDropdown, isOpen ? styles.isVisible : '')}>
-        <h3 className={styles.title}>{subNav.title}</h3>
-        <ul className={cx(styles.subNavLists)}>
-            {subNav.lists.map((list: ISubNavList, index: number)=>(<SubNavList key={index} {...list}></SubNavList>))}
-        </ul>
-    </div>
-  )
+function SubNavigation({subNav, isOpen, isMobile}: ISubNavigation) {
+    return (
+        <>
+        {   isMobile ? 
+            <div className={cx(styles.subNavDropdown, isOpen ? styles.isVisible : '')}>
+                {subNav.title && <h3 className={styles.title}>{subNav.title}</h3>}
+                <ul className={cx(styles.subNavLists)}>
+                    {subNav.lists.map((list: ISubNavList, index: number)=>(<SubNavList key={index} {...list}></SubNavList>))}
+                </ul>
+            </div>
+        :
+            <div className={cx(styles.subNavDropdown, isOpen ? styles.isVisible : '')}>
+                {subNav.title && <h3 className={styles.title}>{subNav.title}</h3>}
+                <ul className={cx(styles.subNavLists)}>
+                    {subNav.lists.map((list: ISubNavList, index: number)=>(<SubNavList key={index} {...list}></SubNavList>))}
+                </ul>
+            </div>
+        }
+        </>
+        
+    )
 }
 
 export { SubNavigation }

@@ -12,18 +12,7 @@
         flex-direction: column;
         align-items: flex-start;
     }
-    & a {
-        font-family: var(--font-family-primary);
-        cursor:pointer;
-        color: var(--color-text-decorative-grey);
-        border-bottom: 0.5px solid #DE9034;
-        line-height: 1.25rem;
-        padding: 0.625rem 0;
-        &:hover {
-            color: #DE9034;
-        }
-        
-    }
+    
 }
 
 .title {
@@ -54,5 +43,17 @@
 }
 
 .listItem {
- 
+    & a {
+        font-family: var(--font-family-primary);
+        cursor:pointer;
+        color: var(--color-text-decorative-grey);
+        border-bottom: 0.5px solid var(--color-text-decorative-grey);
+        line-height: 1.25rem;
+        padding: 0.625rem 0;
+        &:hover {
+            color: #DE9034;
+            border-bottom: 0.5px solid #DE9034;
+        }
+        
+    }
 }

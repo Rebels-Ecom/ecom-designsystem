@@ -5,6 +5,8 @@ import { Above, Below } from '../../layouts'
 import cx from 'classnames'
 import { SubNavigation } from '../sub-navigation/sub-navigation'
 import { createRef, useEffect, useRef, useState } from 'react'
+import { IconButton } from '../../atoms'
+import { NavItem } from '../../atoms/nav-item/nav-item'
 
 export interface INavigation {
   links: Array<ILink>
@@ -39,46 +41,57 @@ const itemVariants = {
   },
 }
 
-const NavItem = ({
-  link,
-  linkComponent: Link,
-  mobile
-}: {
-  link: ILink,
-  linkComponent: any,
-  mobile?: boolean
-} ) => {
-  console.log('IS MOBILE', mobile)
+// const NavItem = ({
+//   link,
+//   linkComponent: Link,
+//   mobile
+// }: {
+//   link: ILink,
+//   linkComponent: any,
+//   mobile?: boolean
+// } ) => {
+//   console.log('IS MOBILE', mobile)
 
-  const[showSubNav, setShowSubNav] = useState <boolean>(false)
-  const onMouseEnter = () => {
-    !mobile && setShowSubNav(true)
-   };
+//   const[showSubNav, setShowSubNav] = useState <boolean>(false)
+//   const onMouseEnter = () => {
+//     setShowSubNav(true)
+//    };
    
-   const onMouseLeave = () => {
-    !mobile && setShowSubNav(false)
-   };
+//    const onMouseLeave = () => {
+//     setShowSubNav(false)
+//    };
 
-  return(
-    <motion.li className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        {link.isExternal ? (
-          <>
-            <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-              {link.title}
-            </a>
-            {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav}/>}
-          </>
-        ) : (
-          <>
-            <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
-              {link.title}
-            </Link>
-            {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav}/>}
-          </>
-        )}
-      </motion.li>
-  )
-}
+//    function toggleDropdownArrow(){
+//     console.log('TOGGLE ARROW', !showSubNav)
+//     setShowSubNav(!showSubNav)
+//    }
+
+//   return(
+//     <motion.li className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+//         {link.isExternal ? (
+//           <div className={styles.linkItemContent}>
+//             <div className={styles.linkWrapper}>
+
+
+//             </div>
+//             <a href={link.href} target={link.target} title={link.title} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
+//               {link.title}
+//             </a>
+//             {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
+//             {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
+//           </div>
+//         ) : (
+//           <div className={styles.linkWrapper}>
+//             <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link} aria-expanded={showSubNav ? "true" : "false"}>
+//               {link.title}
+//             </Link>
+//             {mobile && link.hasChildren && <IconButton icon={'icon-chevron-down'} isLink={false} onClick={toggleDropdownArrow}></IconButton>}
+//             {link.hasChildren && link?.subNav?.lists && <SubNavigation subNav={link.subNav} isOpen={showSubNav} isMobile={mobile}/>}
+//           </div>
+//         )}
+//       </motion.li>
+//   )
+// }
 
 const NavigationList = ({
   links = [],
