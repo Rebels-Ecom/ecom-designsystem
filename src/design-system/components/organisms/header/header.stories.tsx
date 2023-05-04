@@ -11,6 +11,14 @@ import { Logotype } from '../../molecules/logotype/logotype'
 import { NavLinks } from '../../molecules/nav-links/nav-links'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
+import { CartSidebarStory } from '../cart-sidebar/cart-sidebar.stories'
+import { CartSidebar } from '../cart-sidebar/cart-sidebar'
+import { Heading, LinkButton, ToggleSwitch, Button } from '../../atoms'
+import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup } from '../../molecules'
+import { ICartProduct } from '../../molecules/cart-product/cart-product'
+import { CartProductList } from '../cart-product-list/cart-product-list'
+import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories'
+import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -23,8 +31,13 @@ type Story = StoryObj<typeof Header>
 const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
+    const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
+    const onClickCartIcon = () => setIsCartSidebarOpen(true)
+    const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+
     return (
+      <>
       <Header isOpen={isOpen}>
         {({ Wrapper, Button, GridArea }) => (
           <Wrapper isOpen={isOpen}>
@@ -38,7 +51,7 @@ const HeaderStoryTemplate: Story = {
               <SearchNavBar {...args.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <NavLinks onClickCart={onClickCartIcon}/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -49,6 +62,28 @@ const HeaderStoryTemplate: Story = {
           </Wrapper>
         )}
       </Header>
+      <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
+          <CartSidebar classNames={['light']}>
+              <GroupWrapper position='apart'>
+                  <Heading order={3}>Kundvagn</Heading>
+                  <Heading order={3}>1378,00 kr</Heading>
+              </GroupWrapper>
+              <GroupWrapper>
+                  <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+                  <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+              </GroupWrapper>
+              <CartProductList>
+                  { args.cartSidebar?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
+              </CartProductList>
+              <GroupWrapper>
+                  <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+              <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
+                  <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
+              </FormGroup>
+              </GroupWrapper>
+          </CartSidebar>
+      </DrawerSidebar>
+      </>
     )
   },
 }
@@ -89,5 +124,6 @@ export const HeaderStory = {
       ],
       linkComponent: 'a',
     },
+    cartSidebar: CartProductListStory.args
   },
 }

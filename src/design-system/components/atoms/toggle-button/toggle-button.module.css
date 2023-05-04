@@ -1,0 +1,29 @@
+.toggleButton {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    outline: none;
+    border: none;
+    gap: 0.3rem;
+    &:hover {
+        cursor: pointer;
+    }
+
+    & .icon{
+        color: var(--color-text-blue);
+        text-decoration: none;
+    }
+}
+
+.buttonText {
+    color: var(--color-text-orange);
+    text-decoration: underline;
+    &:hover {
+        cursor: pointer;
+        color: var(--color-text-orange-hover);
+    }
+}
+

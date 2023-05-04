@@ -15,12 +15,21 @@
   --cta-tertiary-hover: #F3A133;
   --cta-tertiary-disabled: #FEF3E6;
 
+  --cta-icon-background: #FFF9E8;
+  --cta-icon-color: #003E51;
+  --cta-icon-hover-color: rgba(0, 62, 81, 0.8);
+
   /* TAG COLORS*/
   --tag-green: #3D5B49;
   --tag-mint: #C0E1D7;
   --tag-blue: #003E51;
   --tag-orange: #DE9034;
   --tag-white: #ffffff;
+
+  /* Radio / checkbox colors */
+  --radio-checkbox-background:#FFF9E8;
+  --radio-checkbox-background-checked:#DE9034;
+  --radio-checkbox-color-checked:#003E51;
   
   /* CTA primary orange */
   --action-primary-orange-default: #DE9034;
@@ -67,6 +76,7 @@
   /* Input text*/
 
   --input-background-default: #FFFFFF;
+  --input-background-readonly:#FEF9EA;
   --input-border-color: #DE9034;
   --input-background-focused: rgba(255, 196, 22, 0.1);
   --input-text-color: #003E51;
@@ -135,8 +145,10 @@
   --color-text-on-secondary-pressed: #DE9034;
   --color-text-on-secondary-focused: #E28F33;
   --color-text-on-tertiary: #003E51;
-  --color-text-blue: var(--blue500);
-  --color-text-subdued: var(--grey-800);
+  --color-text-blue: #003E51;
+  --color-text-orange: #DE9034;
+  --color-text-orange-hover: #E28F33;
+  --color-text-subdued: #676A6B;
 
   /* Surface */
   --surface-default: #ffffff;
@@ -242,6 +254,10 @@
   --cta-tertiary-hover: #F3A133;
   --cta-tertiary-disabled: #FEF3E6;
 
+  --cta-icon-background: #FFF9E8;
+  --cta-icon-color: #003E51;
+  --cta-icon-hover-color: rgba(0, 62, 81, 0.8);
+
   /* TAG COLORS*/
   --tag-green: #3D5B49;
   --tag-mint: #C0E1D7;
@@ -249,6 +265,10 @@
   --tag-orange: #DE9034;
   --tag-white: #ffffff;
 
+  /* Radio / checkbox colors */
+  --radio-checkbox-background:#FFF9E8;
+  --radio-checkbox-background-checked:#DE9034;
+  --radio-checkbox-color-checked:#003E51;
 
   /* CTA primary orange */
   --action-primary-orange-default: #DE9034;
@@ -295,6 +315,7 @@
   /* Input text*/
 
   --input-background-default: #FFFFFF;
+  --input-background-readonly:#FEF9EA;
   --input-border-color: #DE9034;
   --input-background-focused: rgba(255, 196, 22, 0.1);
   --input-text-color: #003E51;
@@ -363,6 +384,9 @@
   --color-text-on-secondary-disabled: rgba(114, 117, 122, 0.1);
   --color-text-on-secondary-pressed: #DE9034;
   --color-text-on-secondary-focused: #E28F33;
+  --color-text-blue: #003E51;
+  --color-text-orange: #DE9034;
+  --color-text-orange-hover: #E28F33;
   --color-text-subdued: var(--grey-800);
 
 

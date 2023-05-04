@@ -27,6 +27,7 @@ export type TIcon =
   | 'icon-linkedin'
   | 'icon-clipboard'
   | 'icon-download'
+  | 'icon-chevrons-right'
 
 export interface IIcon {
   icon: TIcon

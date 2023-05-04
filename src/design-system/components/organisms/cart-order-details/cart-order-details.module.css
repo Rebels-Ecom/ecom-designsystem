@@ -1,0 +1,28 @@
+.cartOrderDetails {
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding:2rem 1rem;
+    @media (min-width: 64em) {
+        padding: 4.813rem 4.125rem;
+    }
+}
+
+.contentWrapper {
+    width: 100%;
+    margin: auto;
+    @media (min-width: 48em) {
+        padding: 0 2rem;
+    }
+    @media (min-width: 85.375em) {
+        padding: 0 4.125rem;
+    }
+}
+
+.productListWrapper {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    margin: 1rem 0;
+}

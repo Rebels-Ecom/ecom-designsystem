@@ -1,6 +1,10 @@
+.inputWrapper {
+  position: relative;
+}
+
 .inputText {
   appearance: none;
-  border-width: 0.125rem;
+  border-width: 0.063rem;
   border-style: solid;
   height: 3rem;
   border-radius: 0.25rem;
@@ -23,6 +27,10 @@
     color: var(--color-text-subdued);
     cursor: not-allowed;
   }
+  &:read-only {
+    background: var(--input-background-readonly);
+    border-color: var(--input-border-color);
+  }
 
   &.error {
     background: var(--surface-critical-subdued);
@@ -36,4 +44,13 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     margin: 0; 
+}
+
+.iconRight {
+  position: absolute;
+  height: 100%;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

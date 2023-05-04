@@ -16,13 +16,14 @@ export interface IFormGroup {
   errorText?: string
   requiredText?: string
   labelRightText?: string | React.ReactNode
+  isToggleBtnLabel?: boolean
 }
 
-const FormGroup = ({ label, formElementId, className, children, helperText, errorText, requiredText, labelRightText }: IFormGroup) => {
+const FormGroup = ({ label, formElementId, className, children, helperText, errorText, requiredText, labelRightText, isToggleBtnLabel=false }: IFormGroup) => {
   return (
     <div className={className}>
       <label className={styles.labelWrapper} htmlFor={formElementId}>
-        <span className={cx('body', styles.label, helperText && styles.hasHelpText)}>
+        <span className={cx('body', styles.label, helperText && styles.hasHelpText, isToggleBtnLabel && styles.isToggleBtnLabel)}>
           <span>
             {label} {requiredText}
           </span>

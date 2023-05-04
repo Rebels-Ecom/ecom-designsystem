@@ -2,6 +2,7 @@ import { DividerLines } from "../../atoms/divider-lines/divider-lines"
 import { RadioButton } from "../../atoms/inputs/radio-button/radio-button"
 import { IPicture, Picture } from "../../atoms/picture/picture"
 import styles from './product-variant.module.css'
+import cx from 'classnames'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 
 export interface IProductVariant {
@@ -18,16 +19,16 @@ export interface IProductVariant {
 
 const ProductVariant = ({ image, productName, variantName, variantId, country, listPricePerUnitString, onChange, checked } : IProductVariant) => {
     return(
-        <div className={styles.productVariant}>
+        <label className={styles.productVariant}>
             <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} /> </div>
             <div className={`${styles.content}`}>
                 <p className={styles.heading}>{productName}</p>
                 <p className={styles.heading}>{variantName}</p>
                 <DividerLines/>
-                <p className={styles.textGray}>{`Art.nr. ${variantId} - ${country}`}</p>
-                <p className={styles.textPurple}>{`${variantName}: ${listPricePerUnitString} kr/st`}</p>
+                <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${variantId} - ${country}`}</p>
+                <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${listPricePerUnitString} kr/st`}</p>
             </div>
-            <div className={styles.checkboxWrapper}>
+            <div className={styles.radioWrapper}>
                 <RadioButton
                     id={variantId}
                     name={`variant-radio-${productName}`}
@@ -36,7 +37,7 @@ const ProductVariant = ({ image, productName, variantName, variantId, country, l
                     onChange={onChange}
                 />
              </div>
-        </div>
+        </label>
     )
 }
 

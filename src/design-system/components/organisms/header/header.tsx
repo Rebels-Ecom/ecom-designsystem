@@ -58,6 +58,7 @@ const Header = ({
   searchNavBar?: any
   navigation?: any
   headerLinkList?: any
+  cartSidebar?: any
   children: ({ Wrapper, Button, GridArea }: { Wrapper: any; Button: any; GridArea: any }) => React.ReactNode
 }) => {
   const Path = (props: any) => <motion.path fill="transparent" strokeWidth="3" strokeLinecap="round" {...props} />

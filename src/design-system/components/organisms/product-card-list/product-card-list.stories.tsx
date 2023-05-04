@@ -5,7 +5,8 @@ import { ProductCardList } from './product-card-list'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
 import { dummyBeerList } from './dummy-product-list-beer'
 import { getProductPicture } from '../../../../helpers/picture-helper'
-import { IProductCard } from '../../molecules/product-card/product-card'
+import { convertNumToStr } from '../../../../helpers/format-helper'
+import { IProduct } from '../../../../types/product'
 
 const meta: Meta<typeof ProductCardList> = {
   title: 'Design System/Organisms/ProductCardList',
@@ -20,7 +21,7 @@ const ProductCardListStoryTemplate: Story = {
     const [cardList] = useState(args.productCards)
 
     function handleAddToCart(product:any) {
-      alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+      console.log('Showing toast with product...')
     }
     
     return (
@@ -30,6 +31,16 @@ const ProductCardListStoryTemplate: Story = {
     )
   }
 };
+
+function getProductTags(tags: Array<any>) {
+  return tags.map((tag) => {
+    return {
+      text: tag.Text,
+      shape: tag.Shape ? tag.Shape : 'pill',
+      color: tag.Class,
+    }
+  })
+}
 
 function getVariantsList( productName:string, variantsList:Array<any>) {
     const firstVariantId = variantsList[0].VariantId;
@@ -45,29 +56,34 @@ function getVariantsList( productName:string, variantsList:Array<any>) {
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
             image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
             checked: variant.VariantId===firstVariantId,
+            tags: getProductTags(variant.Tags),
             onChange: () => {},
         }
     })
 }
 
-function getProductList( productList: any) : Array<IProductCard> {
+function getProductList( productList:any) : Array<IProduct> {
     const list = productList.map((productItem: any) => {
-        const product = productItem.Variants[0];
-        return{
-            productId: product.VariantId,
-            productName: productItem.DisplayName,
-            productImageUrl: product.PrimaryImageUrl,
-            country: (Array.isArray(product.ShortTexts) && product.ShortTexts.length) ? product.ShortTexts[0] : '',
-            packaging: product.VariantFullName,
-            priceStr: product.ListPricePerUnitString,
-            price:product.ListPricePerUnit,
-            salesUnit:product.SalesUnit,
-            itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
-            productVariantList: getVariantsList(productItem.DisplayName, productItem.Variants)
+      const product = productItem.Variants[0];
+      return { 
+        product: {
+          productId: product.VariantId,
+          productName: productItem.DisplayName,
+          productImageUrl: product.PrimaryImageUrl,
+          country: (Array.isArray(product.ShortTexts) && product.ShortTexts.length) ? product.ShortTexts[0] : '',
+          packaging: product.VariantFullName,
+          priceStr: product.ListPricePerUnitString,
+          price:product.ListPricePerUnit,
+          salesUnit:product.SalesUnit,
+          itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
+          tags: getProductTags(product.Tags),
+          quantity: '1',
+          totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
+          productVariantList: getVariantsList(productItem.DisplayName, productItem.Variants),
         }
-
+      }
     })
-    return list;
+    return list
 }
 
 const productArgs = getProductList(dummyBeerList);

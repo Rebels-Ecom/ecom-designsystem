@@ -1,7 +1,7 @@
 .variantsList {
     list-style:none;
-    padding:0 0.5rem;
-    margin:0;
+    padding: 0;
+    margin: 0;
     flex: 1;
     overflow-y: scroll;
     -ms-overflow-style: none;
@@ -13,7 +13,7 @@
 }
 
 .listItem {
-    padding: 0.5rem 0;
+    padding: 0.8rem 0;
     border-bottom: 0.0625rem solid var(--border-orange);
     &:last-child {
         border: 0;

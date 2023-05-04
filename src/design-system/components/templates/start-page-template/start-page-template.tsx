@@ -8,9 +8,12 @@ import { INavigation, Navigation } from '../../molecules/navigation/navigation'
 import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { ContentWrapper, MaxWidth } from '../../layouts'
-import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartSidebar, Header } from '../../organisms'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
+import { Heading, LinkButton, Button, ToggleSwitch } from '../../atoms'
+import { ICartProduct } from '../../molecules/cart-product/cart-product'
+import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 
 export interface IStartPageTemplate {
   header: any
@@ -46,7 +49,10 @@ const StartPageTemplate = ({
   footer,
 }: IStartPageTemplate) => {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const onClickCartIcon = () => setIsCartSidebarOpen(true)
+  const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
   return (
     <>
       <Header isOpen={isOpen}>
@@ -62,7 +68,7 @@ const StartPageTemplate = ({
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <NavLinks onClickCart={onClickCartIcon}/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -73,6 +79,27 @@ const StartPageTemplate = ({
           </Wrapper>
         )}
       </Header>
+      <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
+          <CartSidebar classNames={['light']}>
+              <GroupWrapper position='apart'>
+                  <Heading order={3}>Kundvagn</Heading>
+                  <Heading order={3}>1378,00 kr</Heading>
+              </GroupWrapper>
+              <GroupWrapper>
+                  <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+                  <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+              </GroupWrapper>
+              <CartProductList>
+                  { header.cartSidebar?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product}></CartProduct>) }
+              </CartProductList>
+              <GroupWrapper>
+                  <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+              <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
+                  <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
+              </FormGroup>
+              </GroupWrapper>
+          </CartSidebar>
+      </DrawerSidebar>
       <ContentWrapper>
         <HeroCarousel {...hero} />
         <MaxWidth contentMaxWidth={'wide'}>
