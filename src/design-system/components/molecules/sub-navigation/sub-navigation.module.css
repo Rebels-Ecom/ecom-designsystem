@@ -1,13 +1,12 @@
 .subNavDropdownMobile {
-    background: #FBFAF9;
+    background: var(--sub-nav-background);
     width:100%;
     display: none;
     &.isVisible {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-    }
-    
+    }  
 }
 
 .subNavDropdownDesktop {
@@ -15,68 +14,46 @@
     left: 0;
     right: 0;
     top:100%;
-    background: #FBFAF9;
+    background: var(--sub-nav-background);
     z-index: 9999;
-    padding: 1rem 15%;
+    padding: 1rem 1rem 3rem 15%;
     display: none;
+    min-height: 15rem;
     &.isVisible {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-    }
-    
+    } 
 }
 
-.title {
-    
-}
-
-.subNavLists {
+.subNavList {
     width: 100%;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: flex-start;
-    gap: 4rem;
-}
-
-.subNavListsMobile {
-    width: 100%;
+    list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.5rem;
 }
 
-.subNavListWrapperMobile {
-    width: 100%;
-}
-
-.subNavListWrapper {
+.subNavItemWrapper {
     width: 20%;
 }
 
-.listName {
-
-}
-
-.list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
 .listItem {
+    display: flex;
+    flex-direction: column;
     & a {
         font-family: var(--font-family-primary);
         cursor:pointer;
         color: var(--color-text-decorative-grey);
-        border-bottom: 0.5px solid var(--color-text-decorative-grey);
+        border-bottom: 0.031rem solid var(--color-text-decorative-grey);
         line-height: 1.25rem;
         padding: 0.625rem 0;
         &:hover {
-            color: #DE9034;
-            border-bottom: 0.5px solid #DE9034;
+            color: var(--color-text-orange);
+            border-bottom: 0.031rem solid var(--color-text-orange);
         }
         
     }

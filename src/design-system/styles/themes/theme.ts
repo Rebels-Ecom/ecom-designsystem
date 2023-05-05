@@ -38,6 +38,7 @@ export const lightTheme = {
   /*Background */
   '--background': '#ffffff',
   '--nav-bar-background': '#F2EFEA',
+  '--sub-nav-background': '#FBFAF9',
   '--top-nav-bar-background': '#003E51',
   '--menu-nav-bar-background': '#ffffff',
   '--product-description-background': '#FBFAF9',
@@ -244,6 +245,7 @@ export const darkTheme = {
    /*Background */
    '--background': '#000000',
    '--nav-bar-background': '#F2EFEA',
+   '--sub-nav-background': '#FBFAF9',
    '--top-nav-bar-background': '#003E51',
    '--menu-nav-bar-background': '#ffffff',
    '--product-description-background': '#FBFAF9',

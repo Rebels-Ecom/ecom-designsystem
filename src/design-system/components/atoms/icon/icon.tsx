@@ -15,6 +15,8 @@ export type TIcon =
   | 'icon-plus-circle'
   | 'icon-chevron-up'
   | 'icon-chevron-down'
+  | 'icon-chevron-left'
+  | 'icon-chevron-right'
   | 'icon-chevrons-left'
   | 'icon-chevrons-right'
   | 'icon-layers'

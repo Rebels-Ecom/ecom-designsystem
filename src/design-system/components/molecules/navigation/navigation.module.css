@@ -199,3 +199,26 @@
 .linkWrapper {
   display: flex;
 }
+
+.subNavBackBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  outline: none;
+  border: none;
+  background: none;
+  font-family: var(--font-family-primary);
+  font-size: 1rem;
+}
+
+.subNavHeadingWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subNavHeadingButton {
+  width: 170px;
+  height: 35px;
+}
