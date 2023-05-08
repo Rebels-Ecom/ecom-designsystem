@@ -24,7 +24,16 @@ function SubNavigation({subNavLinks, linkComponent: Link, isOpen, isMobile}: ISu
                         {subNavLinks.map((link: INavigationLink, index: number)=>(
                             <li key={index} className={styles.subNavItemWrapper}>
                                 <div className={styles.listItem}>
-                                    <a href={link.href}>{link.title?.toUpperCase()}</a>
+                                {link.isExternal 
+                                    ? 
+                                    <a href={link.href} target={link.target} title={link.title}>
+                                        {link.title?.toUpperCase()}
+                                    </a>
+                                    : 
+                                    <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active}>
+                                        {link.title?.toUpperCase()}
+                                    </Link>
+                                }
                                 </div>
                             </li>
                         ))}

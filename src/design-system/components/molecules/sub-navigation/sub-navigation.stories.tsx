@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { SubNavigation } from './sub-navigation'
 
@@ -12,14 +12,22 @@ type Story = StoryObj<typeof SubNavigation>;
 
 const SubNavStoryTemplate: Story = {
   render: ({...args}) => {
-    return(<SubNavigation {...args} />)
+    const[openSubmenu, setOpenSubmenu] = useState<boolean>(false)
+    function handleOpenSubmenu(){
+      setOpenSubmenu(true)
+    }
+    
+    return(
+      <div style={{position: 'relative'}}>
+        <button onClick={handleOpenSubmenu}>Open Submenu</button>
+        <SubNavigation {...args} isOpen={openSubmenu}/>
+      </div>)
   }
 }
 
 export const SubNavigationStory = {
   ...SubNavStoryTemplate,
   args: {
-    isOpen: true,
     subNavLinks: [
       {href: 'ol/ale', title: 'Ale', isExternal: true }, 
       {href: 'ol/ipa', title: 'Ipa', isExternal: true}, 
