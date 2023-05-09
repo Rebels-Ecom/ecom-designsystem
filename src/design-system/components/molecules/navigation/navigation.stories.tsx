@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof Navigation>;
 
 const NavigationStoryTemplate: Story = {
-  render: ({ ...args }) => (<Navigation {...args} />)
+  render: ({ ...args }) => (<Navigation {...args} isOpen={true}/>)
 };
 
 const navigationArgs = {

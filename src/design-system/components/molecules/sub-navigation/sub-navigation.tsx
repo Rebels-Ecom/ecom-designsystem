@@ -30,7 +30,7 @@ function SubNavigation({subNavLinks, linkComponent: Link, isOpen, isMobile}: ISu
                                         {link.title?.toUpperCase()}
                                     </a>
                                     : 
-                                    <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active}>
+                                    <Link field={link} target={link.target} title={link.title} activeClassName={styles.active}>
                                         {link.title?.toUpperCase()}
                                     </Link>
                                 }
