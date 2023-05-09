@@ -52,7 +52,7 @@ function DesktopNavLink({link, linkComponent: Link }:{link:INavigationLink, link
                     {link.title}
                 </a>
             : 
-                <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkDesktop} aria-expanded={showSubNavigation ? "true" : "false"}>
+                <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkDesktop} aria-expanded={showSubNavigation ? "true" : "false"}>
                     {link.title}
                 </Link>
             }
@@ -115,7 +115,7 @@ function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INa
                                     {link.title?.toUpperCase()}
                                 </a>
                             : 
-                                <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkMobile} aria-expanded={showSubNavigation ? "true" : "false"}>
+                                <Link to={link.href} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkMobile} aria-expanded={showSubNavigation ? "true" : "false"}>
                                     {link.title?.toUpperCase()}
                                 </Link>
                             
