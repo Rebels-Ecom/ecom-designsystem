@@ -35,7 +35,7 @@ const navigationArgs = {
       isExternal: true,
       hasChildren: true,
       subNavigationLinks: [
-        {href: 'ol/ale', title: 'Ale', isExternal: true }, 
+        {href: 'ol/ale', title: 'Ale', isExternal: false }, 
         {href: 'ol/ipa', title: 'Ipa', isExternal: true}, 
         {href: 'ol/ljus-lager', title: 'Ljus lager', isExternal: true},
         {href: 'ol/mork-lager', title: 'Mörk lager', isExternal: true}, 

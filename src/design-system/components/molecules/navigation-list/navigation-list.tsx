@@ -56,7 +56,7 @@ function DesktopNavLink({link, linkComponent: Link }:{link:INavigationLink, link
                     {link.title}
                 </Link>
             }
-            {link?.hasChildren && link?.subNavigationLinks && link?.subNavigationLinks?.length>0 && <SubNavigation subNavLinks={link.subNavigationLinks} isOpen={showSubNavigation} isMobile={false}/>}
+            {link?.hasChildren && link?.subNavigationLinks && link?.subNavigationLinks?.length>0 && <SubNavigation subNavLinks={link.subNavigationLinks} linkComponent={Link} isOpen={showSubNavigation} isMobile={false}/>}
         </motion.li>
     )
 }
@@ -87,7 +87,7 @@ function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INa
                         </button>
                         <LinkButton className={styles.subNavShowAllBtn} surface={'primary'} size={'x-small'} href={subNavLink.href}>Visa alla sorter</LinkButton>
                     </div>
-                    <SubNavigation subNavLinks={subNavLink.subNavigationLinks} isOpen={true} isMobile={true}/>
+                    <SubNavigation subNavLinks={subNavLink.subNavigationLinks} linkComponent={Link} isOpen={true} isMobile={true}/>
                 </motion.ul>
             </AnimatePresence>
         )
@@ -122,7 +122,7 @@ function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INa
                                 }
                             </>
                         }
-                        {link.hasChildren && link?.subNavigationLinks && <SubNavigation subNavLinks={link.subNavigationLinks} isOpen={showSubNavigation} isMobile={true}/>}
+                        {link.hasChildren && link?.subNavigationLinks && <SubNavigation subNavLinks={link.subNavigationLinks} linkComponent={Link} isOpen={showSubNavigation} isMobile={true}/>}
                     </motion.li>
                 )}
                 return (
