@@ -1,6 +1,8 @@
 .orderConfirmation {
     position: relative;
+    background: var(--background);
     width: 100%;
+    max-width: 58.125rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,57 +11,6 @@
     @media(min-width: 48em){
         padding: 4.813rem 5.625rem;
     } 
-}
-
-.title {
-    margin: 0;
-}
-
-.orderNumberBox {
-    position: relative;
-    width:100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 196, 22, 0.1);
-    padding: 0.5rem 1rem;
-}
-
-.checkIcon {
-    position: absolute;
-    right: 1rem;
-}
-
-.detailItemWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    @media(min-width: 48rem){
-        padding: 0.5rem 3rem;
-    }
-}
-
-.withBackground {
-    background: linear-gradient(0deg, #FFFDF8, #FFFDF8), #003E51;
-}
-
-.detailItem {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin: 0.3rem  0;
-    & .totalAmount{
-        font-size: 2.25rem;
-        font-weight: bold;
-    }
-}
-
-.deliveryDateWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .itemsList {

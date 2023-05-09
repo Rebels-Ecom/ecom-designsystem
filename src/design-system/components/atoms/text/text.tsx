@@ -4,6 +4,7 @@ import cx from 'classnames'
 
 export type TTextAlignment = 'left' | 'center' | 'right'
 export type TTextWeight = 'normal' | 'bold'
+export type TTextSize = 'regular' | 'small'
 export type TComponentType = 'a' | 'span'
 
 export interface IText {
@@ -13,10 +14,11 @@ export interface IText {
   align?: TTextAlignment
   underline?: boolean
   weight?: TTextWeight
+  size?: TTextSize
   className?: string
 }
 
-function Text({ children, align = 'left', componentType, href, underline = false, weight, className }: IText) {
+function Text({ children, align = 'left', componentType, href, underline = false, weight, size = 'regular', className }: IText) {
   function getTextAlignment(alignment: TTextAlignment) {
     switch (alignment) {
       case 'left':
@@ -54,6 +56,7 @@ function Text({ children, align = 'left', componentType, href, underline = false
         weight === 'bold' && styles.textBold,
         underline && styles.textUnderlined,
         styles[getTextAlignment(align)],
+        size==='small' ? 'bodyS' : 'body',
         className ? className : ''
       )}
     >
