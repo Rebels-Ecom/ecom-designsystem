@@ -1,3 +1,4 @@
+import React from 'react'
 import styles from './navigation.module.css'
 import { motion } from 'framer-motion'
 import { INavigationLink } from '../../../../types/links'
