@@ -38,7 +38,6 @@ export const FooterStory = {
       <SocialMediaLink icon={'icon-facebook'} children={undefined} href={''} />,
       <SocialMediaLink icon={'icon-instagram'} children={undefined} href={''} />,
     ],
-    showNewsletter: true,
     newsletterId: 'footerNewsLetterId',
     newsletterPlaceholder: 'Skriv din email address',
     links: [

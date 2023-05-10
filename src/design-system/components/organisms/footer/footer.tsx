@@ -29,7 +29,7 @@ export type TFooterLinksList = {
   links: Array<ILink>
 }
 
-const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, showNewsletter, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, showNewsletter:boolean, newsletterId:string, newsletterPlaceholder: string }) => {
+const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, showNewsletter=false, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, showNewsletter:boolean, newsletterId:string, newsletterPlaceholder: string }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [isErroneous, setIsErroneous] = useState<boolean>(false)
