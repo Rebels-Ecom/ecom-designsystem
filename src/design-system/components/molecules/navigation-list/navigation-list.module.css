@@ -14,7 +14,6 @@
     margin: 0;
     flex-direction: row;
     position: static;
-    gap: 3.5rem;
   }
 }
 
@@ -42,6 +41,7 @@
   @media (min-width: 64em) {
     display: flex;
     margin: 0;
+    padding: 0 1.75rem;
   }
 
   & a {
@@ -143,38 +143,4 @@
       width: 0.1875rem;
     }
   }
-}
- 
-.subNavBackBtn {
-  font-family: var(--font-family-primary);
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--color-text-orange);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  outline: none;
-  border: none;
-  padding: none;
-  background: none;
-  cursor: pointer;
-}
-
-.subNavBackArrow {
-  color: var(--navigation-text-default);
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-  
-.subNavHeading {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-  
-.subNavShowAllBtn {
-  width: 10.625rem;
-  height: 2.188rem;
 }

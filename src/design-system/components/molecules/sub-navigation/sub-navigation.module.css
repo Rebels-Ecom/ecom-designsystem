@@ -58,3 +58,70 @@
         
     }
 }
+
+.linkList {
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: 2.5rem 0;
+    padding: 0 1.25rem;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    @media (min-width: 64em) {
+      height: 100%;
+      margin: 0;
+      flex-direction: row;
+      position: static;
+      gap: 3.5rem;
+    }
+}
+ 
+.subNavBackBtn {
+    font-family: var(--font-family-primary);
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--color-text-orange);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    outline: none;
+    border: none;
+    padding: none;
+    background: none;
+    cursor: pointer;
+}
+  
+  .subNavBackArrow {
+    color: var(--navigation-text-default);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+    
+  .subNavHeading {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+    
+  .subNavShowAllBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 0.063rem transparent;
+    border-radius: 0.125rem;
+    width: 10.625rem;
+    height: 2.188rem;
+    background-color: var(--cta-primary-default);
+    color: var(--color-on-primary);
+    text-decoration: none;
+    text-weight: bold;
+    &:hover, &:active{
+      background-color: var(--cta-primary-hover);
+      color: var(--color-on-primary);
+    }
+}

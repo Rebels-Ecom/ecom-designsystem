@@ -15,7 +15,8 @@ export interface ILink {
 }
 
 export interface INavigationLink extends ILink {
-  listTitle?: string,
+  listTitle?: string
   hasChildren?: boolean
+  subNavBtnLabel?: string
   subNavigationLinks?: Array<INavigationLink>
 }

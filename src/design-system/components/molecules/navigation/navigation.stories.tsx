@@ -34,6 +34,7 @@ const navigationArgs = {
       title: 'Öl',
       isExternal: true,
       hasChildren: true,
+      subNavBtnLabel: 'Visa alla sorter',
       subNavigationLinks: [
         {href: 'ol/ale', title: 'Ale', isExternal: false }, 
         {href: 'ol/ipa', title: 'Ipa', isExternal: true}, 
@@ -50,6 +51,7 @@ const navigationArgs = {
       title: 'Vin',
       isExternal: true,
       hasChildren: true,
+      subNavBtnLabel: 'Visa alla vin',
       subNavigationLinks: [
         {href: 'vin/alkoholfritt', title: 'Alkoholfritt', isExternal: true }, 
         {href: 'vin/champagne', title: 'Champagne', isExternal: true}, 
