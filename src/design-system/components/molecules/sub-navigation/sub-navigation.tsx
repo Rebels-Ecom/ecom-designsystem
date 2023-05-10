@@ -37,7 +37,7 @@ export interface ISubNavigation {
     navLink: INavigationLink
     subNavLinks: Array<INavigationLink>
     isOpen: boolean
-    exitSubNav?: CallableFunction
+    exitSubNav: ()=> void
     isMobile?: boolean
     linkComponent?: any
 }
@@ -50,17 +50,17 @@ function SubNavigation({navLink, subNavLinks, linkComponent: Link, isOpen, exitS
                 <div className={cx(styles.subNavDropdownMobile, isOpen ? styles.isVisible : '')}>
                     <div className={styles.linkList}>
                         <div className={styles.subNavHeading}>
-                            <button className={styles.subNavBackBtn} onClick={exitSubNav ? ()=>exitSubNav(navLink) : ()=>{}}>
+                            <button className={styles.subNavBackBtn} onClick={exitSubNav}>
                                 <Icon icon={'icon-chevron-left'} className={styles.subNavBackArrow}></Icon>
                                 {navLink?.title?.toUpperCase()}
                             </button>
                             {navLink.isExternal 
                                 ? 
-                                <a href={navLink.href} target={navLink.target} className={cx('bodyS', styles.subNavShowAllBtn)}>
+                                <a href={navLink.href} onClick={exitSubNav} target={navLink.target} className={cx('bodyS', styles.subNavShowAllBtn)}>
                                     {navLink.subNavBtnLabel ? navLink.subNavBtnLabel : 'Visa alla sorter'}
                                 </a>
                                 : 
-                                <Link field={navLink} target={navLink.target} className={cx('bodyS', styles.subNavShowAllBtn)}>
+                                <Link field={navLink} onClick={exitSubNav} target={navLink.target} className={cx('bodyS', styles.subNavShowAllBtn)}>
                                     {navLink.subNavBtnLabel ? navLink.subNavBtnLabel : 'Visa alla sorter'}
                                 </Link>
                             }
@@ -78,11 +78,11 @@ function SubNavigation({navLink, subNavLinks, linkComponent: Link, isOpen, exitS
                                         <div className={styles.listItem}>
                                             { link.isExternal 
                                                 ? 
-                                                <a href={link.href} target={link.target} title={link.title}>
+                                                <a href={link.href} onClick={exitSubNav} target={link.target} title={link.title}>
                                                     {link.title?.toUpperCase()}
                                                 </a>
                                                 : 
-                                                <Link field={link} target={link.target} title={link.title} activeClassName={styles.active}>
+                                                <Link field={link} onClick={exitSubNav} target={link.target} title={link.title} activeClassName={styles.active}>
                                                     {link.title?.toUpperCase()}
                                                 </Link>
                                             }

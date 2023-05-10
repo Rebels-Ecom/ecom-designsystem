@@ -42,20 +42,23 @@ const itemVariants = {
 
 function DesktopNavLink({link, linkComponent: Link }:{link:INavigationLink, linkComponent: any}){
     const[showSubNavigation, setShowSubNavigation] = useState <boolean>(false)
+    function closeSubNav(){
+        setShowSubNavigation(false)
+    }
     return (
         <div className={styles.navItemDesktop} onMouseOver={() => setShowSubNavigation(true)} onMouseLeave={() => setShowSubNavigation(false)}>
             {link.isExternal 
             ? 
-                <a href={link.href} onClick={() => setShowSubNavigation(false)} target={link.target} title={link.title} className={styles.linkDesktop} aria-expanded={showSubNavigation ? "true" : "false"}>
+                <a href={link.href} onClick={closeSubNav} target={link.target} title={link.title} className={styles.linkDesktop} aria-expanded={showSubNavigation ? "true" : "false"}>
                     {link.title}
                 </a>
             : 
-                <Link field={link} onClick={() => setShowSubNavigation(false)} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkDesktop} aria-expanded={showSubNavigation ? "true" : "false"}>
+                <Link field={link} onClick={closeSubNav} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkDesktop} aria-expanded={showSubNavigation ? "true" : "false"}>
                     {link.title}
                 </Link>
             }
             {link?.hasChildren && link?.subNavigationLinks && link?.subNavigationLinks?.length>0 && 
-                <SubNavigation navLink={link} subNavLinks={link.subNavigationLinks} linkComponent={Link} isOpen={showSubNavigation} isMobile={false}/>}
+                <SubNavigation navLink={link} subNavLinks={link.subNavigationLinks} linkComponent={Link} isOpen={showSubNavigation} isMobile={false} exitSubNav={closeSubNav}/>}
         </div>
     )
 }
@@ -63,7 +66,7 @@ function DesktopNavLink({link, linkComponent: Link }:{link:INavigationLink, link
 
 function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INavigationList) {
 
-    const[showSubNavigation, setShowSubNavigation] = useState <boolean>(false)
+    const[showSubNavigation, setShowSubNavigation] = useState <boolean>(isOpen)
     const[subNavLink, setSubNavLink] = useState <INavigationLink>()
 
     useEffect(()=>{
@@ -75,8 +78,8 @@ function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INa
       setShowSubNavigation(true)
     }
   
-    function exitSubNavMenu(link: INavigationLink){
-      subNavLink && link.href===subNavLink.href && setShowSubNavigation(false)
+    function exitSubNavMenu(){
+      setShowSubNavigation(false)
     }
   
     if(mobile && isOpen && showSubNavigation && subNavLink?.subNavigationLinks?.length){
@@ -110,11 +113,11 @@ function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INa
                                         <>
                                             {link.isExternal 
                                             ? 
-                                                <a href={link.href} target={link.target} title={link.title} className={styles.linkMobile} aria-expanded={showSubNavigation ? "true" : "false"}>
+                                                <a href={link.href} onClick={exitSubNavMenu} target={link.target} title={link.title} className={styles.linkMobile} aria-expanded={showSubNavigation ? "true" : "false"}>
                                                     {link.title?.toUpperCase()}
                                                 </a>
                                             : 
-                                                <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkMobile} aria-expanded={showSubNavigation ? "true" : "false"}>
+                                                <Link field={link} onClick={exitSubNavMenu} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkMobile} aria-expanded={showSubNavigation ? "true" : "false"}>
                                                     {link.title?.toUpperCase()}
                                                 </Link>
                                             }
