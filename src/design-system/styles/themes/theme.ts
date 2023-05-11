@@ -156,7 +156,7 @@ export const lightTheme = {
   '--color-decorative-image': '#f7f7f7',
   '--focused': '#F3A133',
   '--border-default': '#b3b3b3',
-  '--border-orange': '#DA7E00',
+  '--border-orange': '#DE9034',
   '--border-subdued': '#d5d5d5',
   '--border-disabled': '#d5d5d5',
   '--border-critical': '#cc0028',

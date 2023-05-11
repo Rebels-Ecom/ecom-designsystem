@@ -21,3 +21,11 @@ export const LoaderStory = {
     text: 'Loading',
   }
 }
+
+export const LoaderStory_Large = {
+  ...LoaderStoryTemplate,
+  args: {
+    visible: true,
+    size: 'lg',
+  }
+}

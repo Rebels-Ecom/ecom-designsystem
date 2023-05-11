@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Cart } from './cart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { CartOrderDetailsStory } from '../cart-order-details/cart-order-details.stories'
 import { CartDeliveryDetailsStory } from '../cart-delivery-details/cart-delivery-details.stories'
 import { CartDeliveryDetails } from '../cart-delivery-details/cart-delivery-details'
 import { CartOrderDetails } from '../cart-order-details/cart-order-details'
-import { LinkButton, ToggleSwitch, Button, Heading } from '../../atoms'
+import { LinkButton, ToggleSwitch, Button, Heading, Loader } from '../../atoms'
 import { CartProduct, FormGroup, GroupWrapper } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
@@ -25,15 +25,15 @@ type Story = StoryObj<typeof Cart>
 
 const CartStoryTemplate: Story = {
     render: ({ ...args }) => {
-
+        const [isLoading, setIsLoading] = useState<boolean>(false)
         function handleStartCheckout(){
-            alert(`Start checkout process...`)
+            setIsLoading(true)
         }
         
         return(
             <div style={{ margin: 'auto', position: 'relative'}}>
                 <Cart>
-                    <CartDeliveryDetails>
+                    <CartDeliveryDetails loading={isLoading}>
                         <Heading order={3}>{Heading_DeliveryForm_Story.args.children}</Heading>
                         <DeliveryForm {...DeliveryFormStory.args}/>
                         <FormGroup label={'Jag godkänner köpesvillkoren'} formElementId={'terms-and-conditions'} isToggleBtnLabel>
@@ -44,23 +44,34 @@ const CartStoryTemplate: Story = {
                         <Button {...ButtonPlaceOrderStory.args} type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
                     </CartDeliveryDetails>
                     <CartOrderDetails>
-                    <GroupWrapper position='apart'>
-                        <Heading order={3}>{ CartOrderDetailsStory.args.heading}</Heading>
-                        <Heading order={3}>{ CartOrderDetailsStory.args.totalAmount}</Heading>
+                        {isLoading
+                        ?
+                        <GroupWrapper direction='column' align='center' spacing='lg'>
+                            <Heading order={3}>Vi hanterar din order</Heading>
+                            <Text>Det här kan ta någon minut eller två.</Text>
+                            <Loader visible={isLoading} size='lg' position='relative' color='orange'></Loader>
                         </GroupWrapper>
-                        <GroupWrapper spacing='md'>
-                            <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
-                            <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+                        :
+                        <GroupWrapper direction='column' align='left' spacing='xl'>
+                            <GroupWrapper position='apart'>
+                                <Heading order={3}>{ CartOrderDetailsStory.args.heading}</Heading>
+                                <Heading order={3}>{ CartOrderDetailsStory.args.totalAmount}</Heading>
+                            </GroupWrapper>
+                            <GroupWrapper spacing='md'>
+                                <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+                                <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+                            </GroupWrapper>
+                            <CartProductList>
+                                { args.cartOrderDetails.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} onClickRemoveProduct={()=>{}}></CartProduct>) }
+                            </CartProductList>
+                            <GroupWrapper align='right'>
+                                <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+                            <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'} isToggleBtnLabel>
+                                <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
+                            </FormGroup>
+                            </GroupWrapper>
                         </GroupWrapper>
-                        <CartProductList>
-                            { args.cartOrderDetails.cartProductsList?.children?.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} onClickRemoveProduct={()=>{}}></CartProduct>) }
-                        </CartProductList>
-                        <GroupWrapper align='right'>
-                            <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
-                        <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'} isToggleBtnLabel>
-                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
-                        </FormGroup>
-                        </GroupWrapper>
+                        }   
                     </CartOrderDetails>
                 </Cart>
             </div>
