@@ -1,0 +1,39 @@
+.datePicker {
+    border: 1px solid #DE9034;
+}
+
+.calendar {
+    background: #ffffff;
+    border: 1px solid DE9034;
+}
+
+.day {
+    min-width:3rem;
+    max-width:3rem;
+    height:3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F1F1F1;
+    border-radius: 0.125rem;
+}
+
+.pastDay {
+    background: rgba(241, 241, 241, 0.3);
+}
+
+.selectedDay {
+    background: #DE9034;
+}
+.react-datepicker__day--selected {
+    background: #DE9034;
+}
+
+.deliveryDay {
+    background: #ffffff;
+    border: 1px solid #DE9034;
+}
+
+.holidayDay {
+    background: grey;
+}

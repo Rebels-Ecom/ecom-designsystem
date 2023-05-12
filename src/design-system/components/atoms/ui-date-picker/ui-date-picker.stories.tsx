@@ -1,0 +1,41 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { UiDatePicker } from './ui-date-picker'
+import { deliveryDays } from './dummy-delivery-dates'
+
+const meta: Meta<typeof UiDatePicker> = {
+  title: 'Design System/Atoms/UiDatePicker',
+  component: UiDatePicker
+};
+
+export default meta;
+type Story = StoryObj<typeof UiDatePicker>;
+
+const UiDatePickerStoryTemplate: Story = {
+  render: ({...args}) => {
+  console.log('DELIVERY DAYS', args.selectedDeliveryDate)
+    return(
+      <div style={{ margin: '2rem auto auto auto', width:'100%', display: 'grid', justifyContent:'center', alignItems: 'center' }}>
+        <UiDatePicker {...args}/>
+      </div>
+    )
+  }
+}
+
+
+function getDeliveryDates(dates:any){
+  return dates.map((date: any) => {
+    return new Date(date.Time)
+  })
+}
+
+export const UiDatePickerStory = {
+  ...UiDatePickerStoryTemplate,
+  args: {
+    selectedDeliveryDate: deliveryDays.SelectedDeliveryDate,
+    deliveryDates: deliveryDays.DeliveryDates,
+    holidayDates: deliveryDays.HollidayDates,
+  }
+}
+
+
