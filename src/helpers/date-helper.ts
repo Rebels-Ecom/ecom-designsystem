@@ -28,4 +28,4 @@ function getIsoString(date: Date) {
         ':' + pad(Math.abs(tzo) % 60);
   }
 
-  export { getIsoString}
+  export { getIsoString }

@@ -13,17 +13,19 @@ type Story = StoryObj<typeof UiDatePicker>;
 
 const UiDatePickerStoryTemplate: Story = {
   render: ({...args}) => {
-  console.log('DELIVERY DAYS', args.selectedDeliveryDate)
+    function setSelectedDate(date:Date){
+      console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)
+    }
+
     return(
       <div style={{ margin: '2rem auto auto auto', width:'100%', display: 'grid', justifyContent:'center', alignItems: 'center' }}>
-        <UiDatePicker {...args}/>
+        <UiDatePicker {...args} onDateSelected={setSelectedDate}/>
       </div>
     )
   }
 }
 
-
-function getDeliveryDates(dates:any){
+function getDates(dates:any){
   return dates.map((date: any) => {
     return new Date(date.Time)
   })
@@ -33,8 +35,8 @@ export const UiDatePickerStory = {
   ...UiDatePickerStoryTemplate,
   args: {
     selectedDeliveryDate: deliveryDays.SelectedDeliveryDate,
-    deliveryDates: deliveryDays.DeliveryDates,
-    holidayDates: deliveryDays.HollidayDates,
+    deliveryDates: getDates(deliveryDays.DeliveryDates),
+    holidayDates: getDates(deliveryDays.HollidayDates),
   }
 }
 
