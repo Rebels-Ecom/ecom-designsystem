@@ -56,6 +56,7 @@ const Header = ({
   topNavBar?: any
   logotype?: any
   searchNavBar?: any
+  searchNavLinks?: any
   navigation?: any
   headerLinkList?: any
   cartSidebar?: any

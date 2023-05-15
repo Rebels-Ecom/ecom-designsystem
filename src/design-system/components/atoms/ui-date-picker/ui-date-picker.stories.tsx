@@ -34,7 +34,7 @@ function getDates(dates:any){
 export const UiDatePickerStory = {
   ...UiDatePickerStoryTemplate,
   args: {
-    selectedDeliveryDate: deliveryDays.SelectedDeliveryDate,
+    selectedDeliveryDate: deliveryDays.SelectedDeliveryDate.toString(),
     deliveryDates: getDates(deliveryDays.DeliveryDates),
     holidayDates: getDates(deliveryDays.HollidayDates),
   }

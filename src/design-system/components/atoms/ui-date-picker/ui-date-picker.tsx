@@ -14,9 +14,10 @@ export interface IUiDatePicker {
   holidayDates: Array<Date>
   headerText?: string
   onDateSelected: CallableFunction
+  className?: string
 }
 
-function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected } : IUiDatePicker) {
+function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, className } : IUiDatePicker) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(selectedDeliveryDate))
   const deliveryDaysStrings = getDateStrings(deliveryDates)
   const holidayDaysStrings = getDateStrings(holidayDates)
@@ -67,7 +68,11 @@ function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, heade
     return 'day'
   }
 
+  if(!selectedDeliveryDate || !deliveryDates || deliveryDates.length===0 || !holidayDates || holidayDates.length===0 || !onDateSelected)
+    return null
+
   return (
+    <div className={styles.datePickerWrapper}>
     <DatePicker 
       selected={selectedDate} 
       onChange={date => date && onClickSelectDate(date)}
@@ -78,8 +83,9 @@ function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, heade
       calendarClassName={styles.calendar}
       calendarContainer={CustomCalendarContainer}
       dayClassName={(date)=> cx(styles.day, styles[getDayCustomClass(date)])}
-      customInput={<Button type={'button'} surface={'secondary'} iconRight={{icon:'icon-calendar'}}rounded>{selectedDate.toLocaleDateString()}</Button>}
+      customInput={<Button type={'button'} surface={'secondary'} iconRight={{icon:'icon-calendar'}} rounded className={className ? className : ''} >{selectedDate.toLocaleDateString()}</Button>}
     />
+    </div>
   )
 }
 

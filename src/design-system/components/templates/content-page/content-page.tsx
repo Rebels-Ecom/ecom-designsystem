@@ -9,7 +9,7 @@ import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organ
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 
 export interface IContentPage {
@@ -41,6 +41,7 @@ const ContentPage = ({
 }: IContentPage) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   return (
     <>
       <Header isOpen={isOpen}>
@@ -56,7 +57,7 @@ const ContentPage = ({
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <SearchNavBarLinks {...header.searchNavLinks} onClickSelectDate={setSelectedDate} />
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />

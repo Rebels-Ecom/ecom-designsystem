@@ -10,6 +10,16 @@
     border: none;
 }
 
+:global .react-datepicker__tab-loop {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.datePickerWrapper {
+    z-index:99;
+}
+
 .calendar {
     background: #ffffff;
     border: 1px solid #DE9034;

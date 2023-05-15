@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { Footer, IFooter } from '../../organisms/footer/footer'
 import { IProductDetails, ProductDetails } from '../../organisms/product-details/product-details'
 import { IProductDescription, ProductDescription } from '../../organisms/product-description/product-description'
@@ -23,6 +23,7 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
   return (
     <>
@@ -39,7 +40,7 @@ const ProductPage = ({ header, productDetails, productDescription, addToCart, fo
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks onClickCart={onClickCartIcon}/>
+              <SearchNavBarLinks {...header.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} />
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />

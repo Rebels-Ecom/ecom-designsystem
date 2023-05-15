@@ -124,19 +124,14 @@ const deliveryDays = {
             "Time": "2023-08-08T00:00:00",
             "Date": "2023-08-08",
             "Title": "2023-08-08"
+        },
+        {
+            "Time": "2023-08-11T00:00:00",
+            "Date": "2023-08-11",
+            "Title": "2023-08-11"
         }
     ],
     "HollidayDates": [
-        {
-            "Time": "2023-05-13T00:00:00",
-            "Date": "2023-05-13",
-            "Title": "2023-05-13"
-        },
-        {
-            "Time": "2023-05-14T00:00:00",
-            "Date": "2023-05-14",
-            "Title": "2023-05-14"
-        },
         {
             "Time": "2023-05-20T00:00:00",
             "Date": "2023-05-20",
@@ -186,12 +181,22 @@ const deliveryDays = {
             "Time": "2023-06-18T00:00:00",
             "Date": "2023-06-18",
             "Title": "2023-06-18"
+        },
+        {
+            "Time": "2023-06-24T00:00:00",
+            "Date": "2023-06-24",
+            "Title": "2023-06-24"
+        },
+        {
+            "Time": "2023-06-25T00:00:00",
+            "Date": "2023-06-25",
+            "Title": "2023-06-25"
         }
     ],
     "SelectedDeliveryDate": "2023-05-16",
     "SelectedDeliveryDateFull": "2023-05-16",
-    "OrderNowMessage1": "3 dagar",
-    "OrderNowMessage2": "5 dagar",
+    "OrderNowMessage1": "39 minuter",
+    "OrderNowMessage2": "1 dag",
     "M3DataIsNotLoaded": false,
     "M3Available": true,
     "Success": true,
@@ -203,6 +208,6 @@ const deliveryDays = {
     "JsonRequestBehavior": 1,
     "MaxJsonLength": null,
     "RecursionLimit": null
-  }
+}
 
   export { deliveryDays } 
