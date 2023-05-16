@@ -69,6 +69,7 @@ function getProductList( productList:any) : Array<IProduct> {
         product: {
           productId: product.VariantId,
           productName: productItem.DisplayName,
+          productUrl: productItem.ProductUrl,
           productImageUrl: product.PrimaryImageUrl,
           country: (Array.isArray(product.ShortTexts) && product.ShortTexts.length) ? product.ShortTexts[0] : '',
           packaging: product.VariantFullName,
@@ -80,7 +81,8 @@ function getProductList( productList:any) : Array<IProduct> {
           quantity: '1',
           totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
           productVariantList: getVariantsList(productItem.DisplayName, productItem.Variants),
-        }
+        },
+        linkComponent: 'a'
       }
     })
     return list

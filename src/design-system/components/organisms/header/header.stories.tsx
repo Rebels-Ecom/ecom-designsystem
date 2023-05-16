@@ -8,7 +8,7 @@ import { NavigationStory } from '../../molecules/navigation/navigation.stories'
 import { SearchNavBar } from '../../molecules/search-nav-bar/search-nav-bar'
 import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar.stories'
 import { Logotype } from '../../molecules/logotype/logotype'
-import { NavLinks } from '../../molecules/nav-links/nav-links'
+import { SearchNavBarLinks } from '../../molecules/search-nav-bar-links/search-nav-bar-links'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebarStory } from '../cart-sidebar/cart-sidebar.stories'
@@ -19,6 +19,7 @@ import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
+import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -35,6 +36,7 @@ const HeaderStoryTemplate: Story = {
     const handleOnClick = () => setIsOpen(!isOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+    const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
 
     return (
       <>
@@ -51,7 +53,7 @@ const HeaderStoryTemplate: Story = {
               <SearchNavBar {...args.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks onClickCart={onClickCartIcon}/>
+              <SearchNavBarLinks {...args.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} isMyAccountPage/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -94,6 +96,7 @@ export const HeaderStory = {
     topNavBar: TopNavBarStory.args,
     navigation: NavigationStory.args,
     searchNavBar: SearchNavBarStory.args,
+    searchNavLinks: SearchNavBarLinksStory.args,
     logotype: {
       logo: {
         src: logotype_desktop_horizontal,

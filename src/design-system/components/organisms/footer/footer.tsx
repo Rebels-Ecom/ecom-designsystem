@@ -13,6 +13,7 @@ export interface IFooter {
   logo: INavigationLogo
   addressLabel: string
   address: string
+  showNewsletter: boolean
   newsletterId: string
   newsletterPlaceholder: string
   bottomBarText: string
@@ -28,7 +29,7 @@ export type TFooterLinksList = {
   links: Array<ILink>
 }
 
-const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, newsletterId:string, newsletterPlaceholder: string }) => {
+const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, showNewsletter=false, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, showNewsletter:boolean, newsletterId:string, newsletterPlaceholder: string }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [isErroneous, setIsErroneous] = useState<boolean>(false)
@@ -38,18 +39,20 @@ const FooterContent = ({logo, address, addressLabel, children, linkComponent: Li
   }
   return(
     <div className={styles.footerLeft}>
-      {logo && <Logotype className={styles.linkLogo} logo={logo} linkComponent={Link} /> }
-      <Newsletter
-        id={newsletterId}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        isErroneous={isErroneous}
-        setIsFocused={setIsFocused}
-        setIsErroneous={setIsErroneous}
-        placeholder={newsletterPlaceholder}
-        signupForNewsletter={signupForNewsletter}
-        className={styles.newsletter}
-      />
+      {logo && <Logotype logo={logo} linkComponent={Link} className={styles.logoLink}/> }
+      {showNewsletter && 
+        <Newsletter
+          id={newsletterId}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          isErroneous={isErroneous}
+          setIsFocused={setIsFocused}
+          setIsErroneous={setIsErroneous}
+          placeholder={newsletterPlaceholder}
+          signupForNewsletter={signupForNewsletter}
+          className={styles.newsletter}
+        />
+      }
       <div className={styles.addressContainer}>
         <p>{addressLabel}</p>
         <p>{address}</p>
@@ -60,7 +63,7 @@ const FooterContent = ({logo, address, addressLabel, children, linkComponent: Li
 }
 
 const FooterLinks = ({footerLinks, linkComponent: Link} : {footerLinks:Array<TFooterLinksList>, linkComponent: any}) => {
-  if( !Array.isArray(footerLinks) || !footerLinks.length )
+  if( !Array.isArray(footerLinks) || footerLinks.length===0 )
     return null;
   else
     return(
@@ -94,12 +97,12 @@ const FooterBottomBar = ({bottomBarText}:{bottomBarText:string}) => (
   <div className={styles.bottomBar}>{bottomBarText}</div>
 )
 
-const Footer = ({ footerTopBarLinks, logo, address, addressLabel, children, links = [], linkComponent: Link, newsletterId, newsletterPlaceholder, bottomBarText }: IFooter) => {
+const Footer = ({ footerTopBarLinks, logo, address, addressLabel, children, links = [], linkComponent: Link, showNewsletter, newsletterId, newsletterPlaceholder, bottomBarText }: IFooter) => {
   return (
     <>
       <FooterTopBar footerTopBarLinks={footerTopBarLinks} linkComponent={Link}></FooterTopBar>
       <footer className={styles.footer}>
-        <FooterContent logo={logo} address={address} addressLabel={addressLabel} linkComponent={Link} newsletterId={newsletterId} newsletterPlaceholder={newsletterPlaceholder} children={children}/>
+        <FooterContent logo={logo} address={address} addressLabel={addressLabel} linkComponent={Link} showNewsletter={showNewsletter} newsletterId={newsletterId} newsletterPlaceholder={newsletterPlaceholder} children={children}/>
         <FooterLinks footerLinks={links} linkComponent={Link}></FooterLinks>
       </footer>
       <FooterBottomBar bottomBarText={bottomBarText}></FooterBottomBar>

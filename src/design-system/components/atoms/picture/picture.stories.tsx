@@ -27,6 +27,7 @@ import teaserBeer from '../../../../assets/teaser-images/Teaser3.png'
 import pistonHead from '../../../../assets/hero-images/Pistonhead_Hero.svg'
 import pistonHeadLogo from '../../../../assets/hero-images/pistonhead_logo.svg'
 import pistonHeadBlog from '../../../../assets/blog-images/Pistonhead_BlogCard.svg'
+import breadcrumbsBlackAndWhite from '../../../../assets/breadcrumbs-images/breadcrumbs_bw.png'
 
 /* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture */
 
@@ -477,6 +478,24 @@ export const PictureStoryPistonHead_Blog = {
     fetchPriority: 'high',
   }
 }
+
+export const PictureStory_BreadcrumbsContentPage = {
+  ...PictureStoryTemplate,
+  args: {
+    id: 'breadcrumbsBlackAndWhite',
+    src: breadcrumbsBlackAndWhite,
+    sources: [
+      { srcset: breadcrumbsBlackAndWhite, media: `(max-width: 767px)` },
+      { srcset: breadcrumbsBlackAndWhite, media: `(min-width: 768px)` },
+    ],
+    alt: 'Placholder',
+    loading: 'eager',
+    decoding: 'auto',
+    fetchPriority: 'high',
+  }
+}
+
+
 
 
 

@@ -1,0 +1,21 @@
+.orderConfirmation {
+    position: relative;
+    background: var(--background);
+    width: 100%;
+    max-width: 58.125rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    @media(min-width: 48em){
+        padding: 4.813rem 5.625rem;
+    } 
+}
+
+.itemsList {
+    padding: 1rem;
+    @media(min-width: 48rem){
+        padding: 1.25rem 3rem;
+    }
+}

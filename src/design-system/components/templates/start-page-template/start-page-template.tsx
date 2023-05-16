@@ -9,7 +9,7 @@ import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organ
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Heading, LinkButton, Button, ToggleSwitch } from '../../atoms'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
@@ -51,8 +51,11 @@ const StartPageTemplate = ({
   const [isOpen, setIsOpen] = React.useState(false)
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
-  const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+  const onClickCartIcon = () => setIsCartSidebarOpen(true)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
+  const handleClickAccountBtn = () => { console.log(`Mitt Spendrups btn clicked...`)}
+
   return (
     <>
       <Header isOpen={isOpen}>
@@ -68,7 +71,7 @@ const StartPageTemplate = ({
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks onClickCart={onClickCartIcon}/>
+              <SearchNavBarLinks {...header.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} onClickMyAccountBtn={handleClickAccountBtn} isMyAccountPage={true}/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
@@ -17,6 +17,7 @@ export interface ICampaign {
 const BrandPage = ({ header, hero, blogFullwidth, footer }: ICampaign) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   return (
     <>
       <Header isOpen={isOpen}>
@@ -32,7 +33,7 @@ const BrandPage = ({ header, hero, blogFullwidth, footer }: ICampaign) => {
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <SearchNavBarLinks {...header.searchNavLinks} onClickSelectDate={setSelectedDate} />
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />

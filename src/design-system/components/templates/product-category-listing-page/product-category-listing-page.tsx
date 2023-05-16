@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { Breadcrumbs, IBreadcrumbs } from '../../organisms/breadcrumbs/breadcrumbs'
 import { IProductCardList, ProductCardList } from '../../organisms/product-card-list/product-card-list'
 import { Footer, IFooter } from '../../organisms/footer/footer'
@@ -18,6 +18,7 @@ export interface IProductCategoryListingPage {
 const ProductCategoryListingPage = ({ header, breadcrumbs, productCategoryListing, addToCart, footer }: IProductCategoryListingPage) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   return (
     <>
       <Header isOpen={isOpen}>
@@ -33,7 +34,7 @@ const ProductCategoryListingPage = ({ header, breadcrumbs, productCategoryListin
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <SearchNavBarLinks {...header.searchNavLinks} onClickSelectDate={setSelectedDate} />
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />

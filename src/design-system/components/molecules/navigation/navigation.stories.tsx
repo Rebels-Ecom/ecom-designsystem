@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof Navigation>;
 
 const NavigationStoryTemplate: Story = {
-  render: ({ ...args }) => (<Navigation {...args} />)
+  render: ({ ...args }) => (<Navigation {...args} isOpen={true}/>)
 };
 
 const navigationArgs = {
@@ -33,11 +33,36 @@ const navigationArgs = {
       href: '/ol',
       title: 'Öl',
       isExternal: true,
+      hasChildren: true,
+      subNavBtnLabel: 'Visa alla sorter',
+      subNavigationLinks: [
+        {href: 'ol/ale', title: 'Ale', isExternal: false }, 
+        {href: 'ol/ipa', title: 'Ipa', isExternal: true}, 
+        {href: 'ol/ljus-lager', title: 'Ljus lager', isExternal: true},
+        {href: 'ol/mork-lager', title: 'Mörk lager', isExternal: true}, 
+        {href: 'ol/pale-ale', title: 'Pale Ale', isExternal: true}, 
+        {href: 'ol/stout-och-porter', title: 'Stout och Porter', isExternal: true}, 
+        {href: 'ol/surol', title: 'Suröl', isExternal: true}, 
+        {href: 'ol/veteol', title: 'Veteöl', isExternal: true}
+      ]
     },
     {
       href: '/vin',
       title: 'Vin',
       isExternal: true,
+      hasChildren: true,
+      subNavBtnLabel: 'Visa alla vin',
+      subNavigationLinks: [
+        {href: 'vin/alkoholfritt', title: 'Alkoholfritt', isExternal: true }, 
+        {href: 'vin/champagne', title: 'Champagne', isExternal: true}, 
+        {href: 'vin/mousserande', title: 'Mousserande', isExternal: true},
+        {href: 'vin/rose', title: 'Rosé', isExternal: true},
+        {href: 'vin/rott', title: 'Rött', isExternal: true},
+        {href: 'vin/sma-partier', title: 'Små partier', isExternal: true},
+        {href: 'vin/sott', title: 'Sött', isExternal: true},
+        {href: 'vin/starkvin', title: 'Starkvin', isExternal: true},
+        {href: 'vin/vitt', title: 'Vitt', isExternal: true}
+      ]
     },
     {
       href: '/sprit',

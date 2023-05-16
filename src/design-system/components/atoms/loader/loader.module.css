@@ -4,7 +4,6 @@
     gap: 0.5rem;
     justify-content: center;
     align-items: center;
-    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
@@ -14,17 +13,42 @@
     opacity: 1;
     transition: .5s ease;  
     z-index: 3;
+    &.loaderAbsolutePos{
+        position: absolute;
+    }
+    &.loaderRelativePos{
+        position: relative;
+    }
 }
 
 .loaderSpinner {
     display: inline-block;
-    width: 3.5rem;
-    height: 3.5rem;
-    border: 0.25rem solid rgba(0, 62, 81, 0.3);
+    border-style: solid;
     border-radius: 50%;
-    border-top-color: var(--color-text-blue);
     animation: spin .8s linear infinite;
     -webkit-animation: spin .8s linear infinite;
+    &.loaderSmall{
+        width: 3.5rem;
+        height: 3.5rem;
+        border-width: 0.25rem;
+    }
+    &.loaderLarge{
+        width: 10rem;
+        height: 10rem;
+        border-width: 0.5rem;
+        @media(min-width:64em){
+            width: 16.5rem;
+            height: 16.5rem;
+        }
+    }
+    &.loaderDefaultColor{
+        border-color: rgba(0, 62, 81, 0.3);
+        border-top-color: var(--color-text-blue);
+    }
+    &.loaderOrange{
+        border-color: var(--border-orange);
+        border-top-color: var(--color-text-blue);
+    }
 }
 
 .loaderText {

@@ -1,76 +1,15 @@
+import React from 'react'
 import styles from './navigation.module.css'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ILink } from '../../../../types/links'
+import { motion } from 'framer-motion'
+import { INavigationLink } from '../../../../types/links'
 import { Above, Below } from '../../layouts'
 import cx from 'classnames'
+import { NavigationList } from '../navigation-list/navigation-list'
 
 export interface INavigation {
-  links: Array<ILink>
+  links: Array<INavigationLink>
   linkComponent: any
   isOpen: boolean
-}
-
-const variants = {
-  open: {
-    transition: { staggerChildren: 0.03, delayChildren: 0.2 },
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-}
-
-const itemVariants = {
-  open: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      y: { stiffness: 1000, velocity: -100 },
-    },
-    duration: 0.2,
-  },
-  closed: {
-    y: 50,
-    opacity: 0,
-    transition: {
-      y: { stiffness: 1000 },
-    },
-  },
-}
-
-const NavigationList = ({
-  links = [],
-  linkComponent: Link,
-  mobile,
-  isOpen,
-}: {
-  links: Array<ILink>
-  linkComponent: any
-  mobile?: boolean
-  isOpen?: boolean
-}) => {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
-          {links.map((link: ILink, index) => {
-            return (
-              <motion.li key={`${link.title}-${index}`} className={styles.linkItem} whileTap={{ scale: 0.95 }} variants={mobile ? itemVariants : undefined}>
-                {link.isExternal ? (
-                  <a href={link.href} target={link.target} title={link.title} className={styles.link}>
-                    {link.title}
-                  </a>
-                ) : (
-                  <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.link}>
-                    {link.title}
-                  </Link>
-                )}
-              </motion.li>
-            )
-          })}
-        </motion.ul>
-      )}
-    </AnimatePresence>
-  )
 }
 
 const sidebar = {

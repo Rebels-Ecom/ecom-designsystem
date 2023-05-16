@@ -42,7 +42,7 @@ function getHeadingAlignment(alignment: THeadingAlignment){
 
 function Heading({ children, order=3, align='left', className} : IHeading){
     return(
-       <div className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), className ? className : '')}>{ children }</div>
+       <h1 className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), className ? className : '')}>{ children }</h1>
     )
 }
 

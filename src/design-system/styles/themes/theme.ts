@@ -38,6 +38,7 @@ export const lightTheme = {
   /*Background */
   '--background': '#ffffff',
   '--nav-bar-background': '#F2EFEA',
+  '--sub-nav-background': '#FBFAF9',
   '--top-nav-bar-background': '#003E51',
   '--menu-nav-bar-background': '#ffffff',
   '--product-description-background': '#FBFAF9',
@@ -155,7 +156,7 @@ export const lightTheme = {
   '--color-decorative-image': '#f7f7f7',
   '--focused': '#F3A133',
   '--border-default': '#b3b3b3',
-  '--border-orange': '#DA7E00',
+  '--border-orange': '#DE9034',
   '--border-subdued': '#d5d5d5',
   '--border-disabled': '#d5d5d5',
   '--border-critical': '#cc0028',
@@ -244,6 +245,7 @@ export const darkTheme = {
    /*Background */
    '--background': '#000000',
    '--nav-bar-background': '#F2EFEA',
+   '--sub-nav-background': '#FBFAF9',
    '--top-nav-bar-background': '#003E51',
    '--menu-nav-bar-background': '#ffffff',
    '--product-description-background': '#FBFAF9',

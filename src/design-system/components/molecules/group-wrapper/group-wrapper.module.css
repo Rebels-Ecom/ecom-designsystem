@@ -1,10 +1,14 @@
 .groupWrapper {
     display: flex;
-    flex-direction: column;
-    @media(min-width: 48em) {
-        flex-direction: row;
+    &.row {
+        flex-direction: column;
+        @media(min-width: 48em) {
+            flex-direction: row;
+        }
     }
-
+    &.column {
+        flex-direction: column;
+    }
     &.leftPosition { justify-content: flex-start;}
     &.rightPosition { justify-content: flex-end;}
     &.centerPosition { justify-content: center;}

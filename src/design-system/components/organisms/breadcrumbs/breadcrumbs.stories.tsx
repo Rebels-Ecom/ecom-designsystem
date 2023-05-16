@@ -1,7 +1,7 @@
 import React from 'react'
 import { Breadcrumbs } from './breadcrumbs'
 import type { Meta, StoryObj } from '@storybook/react';
-import { PictureStoryField } from '../../atoms/picture/picture.stories';
+import { PictureStoryField, PictureStory_BreadcrumbsContentPage } from '../../atoms/picture/picture.stories';
 
 const meta: Meta<typeof Breadcrumbs> = {
     title: 'Design System/Organisms/Breadcrumbs',
@@ -38,5 +38,19 @@ export const BreadcrumbsStoryWithoutBackground = {
             { href: '/SE-sv/', children: 'Start', isExternal: true},
             { href: '/SE-sv/c/ol', children: 'Öl', isExternal: true}
         ]
+    }
+}
+
+export const BreadcrumbsStory_Sustainability = {
+    ...BreadcrumbsStoryTemplate,
+    args: {
+        title: 'Små aktörer brygger mer hållbart',
+        image: PictureStory_BreadcrumbsContentPage.args,
+        breadcrumbs: [
+            { href: '/SE-sv/', children: 'Start', isExternal: true},
+            { href: '/SE-sv/artikel', children: 'Artikel', isExternal: true},
+            { href: '/SE-sv/artikel/hallbarhet', children: 'Små aktörer, mer hållbart?', isExternal: true}
+        ],
+        location: '/SE-sv/artikel/hallbarhet'
     }
 }

@@ -1,46 +1,28 @@
 import React from 'react'
-import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
-import { ITeaser, Teaser } from '../../molecules/teaser/teaser'
-import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
-import { IHeroCarousel, HeroCarousel } from '../../organisms/hero-carousel/hero-carousel'
-import { IOfferCardList, OfferCardList } from '../../organisms/offer-card-list/offer-card-list'
-import { INavigation, Navigation } from '../../molecules/navigation/navigation'
-import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
-import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
+import { Navigation } from '../../molecules/navigation/navigation'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
+import { Breadcrumbs, IBreadcrumbs } from '../../organisms/breadcrumbs/breadcrumbs'
+import { IRichText, RichText } from '../../organisms/rich-text/rich-text'
 
 export interface IContentPage {
   header: any
-  hero: IHeroCarousel
-  blogList_4_Col: IBlogCardList
-  featuredProducts: IFeaturedProductsCarousel
-  offerCardsList: IOfferCardList
-  blogFullwidth: IBlogCard
-  customerTeaser: ICustomerTeaser
-  teaserRight: ITeaser
-  blogList_3_Col: IBlogCardList
-  teaserLeft: ITeaser
+  breadcrumbs: IBreadcrumbs
+  richText: IRichText
   footer: IFooter
 }
 
 const ContentPage = ({
   header,
-  hero,
-  blogList_4_Col,
-  featuredProducts,
-  offerCardsList,
-  blogFullwidth,
-  customerTeaser,
-  teaserRight,
-  blogList_3_Col,
-  teaserLeft,
+  breadcrumbs,
+  richText,
   footer,
 }: IContentPage) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   return (
     <>
       <Header isOpen={isOpen}>
@@ -56,7 +38,7 @@ const ContentPage = ({
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <NavLinks />
+              <SearchNavBarLinks {...header.searchNavLinks} onClickSelectDate={setSelectedDate} />
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -68,39 +50,9 @@ const ContentPage = ({
         )}
       </Header>
       <ContentWrapper>
-        <HeroCarousel {...hero} />
+        <Breadcrumbs textWidth='narrow' {...breadcrumbs} />
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_4_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProductsCarousel {...featuredProducts} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <OfferCardList {...offerCardsList} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCard {...blogFullwidth} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <CustomerTeaser {...customerTeaser} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserRight} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserLeft} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProductsCarousel {...featuredProducts} />
+          <RichText {...richText} />
         </MaxWidth>
       </ContentWrapper>
       <Footer {...footer} />

@@ -31,7 +31,9 @@
     }
 }
 
-
+.searchInput {
+    width: 100%;
+}
 
 .clearButton {
     position: absolute;

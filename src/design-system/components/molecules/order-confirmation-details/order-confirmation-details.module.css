@@ -1,0 +1,24 @@
+.detailItemWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    @media(min-width: 48rem){
+        padding: 0.5rem 3rem;
+    }
+}
+
+.withBackground {
+    background: linear-gradient(0deg, #FFFDF8, #FFFDF8), #003E51;
+}
+
+.detailItem {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0.3rem  0;
+    & .totalAmount{
+        font-size: 2.25rem;
+        font-weight: bold;
+    }
+}

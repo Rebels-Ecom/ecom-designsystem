@@ -98,3 +98,19 @@ export const CartProductStoryWine = {
     loading: true,
   },
 }
+
+export const CartProduct_OrderConfirmation_Beer = {
+  ...CartProductStoryTemplate,
+  args: {
+    product: productBeerArgs,
+    loading: false,
+  },
+}
+
+export const CartProduct_OrderConfirmation_Wine = {
+  ...CartProductStoryTemplate,
+  args: {
+    product: productWineArgs,
+    loading: false,
+  },
+}
