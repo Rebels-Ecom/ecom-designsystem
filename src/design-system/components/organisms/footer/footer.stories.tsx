@@ -146,3 +146,36 @@ export const FooterStory = {
     bottomBarText: '© 2022 SPENDRUPS BRYGGERI AB - All Rights Reserved',
   },
 }
+
+export const FooterStory_AnonymousUser = {
+  ...FooterTemplate,
+  args: {
+    footerTopBarLinks: FooterTopBarStory.args.footerTopBarLinks,
+    logo: {
+      src: logotype_desktop_horizontal,
+      alt: 'logo',
+      href: '/',
+      id: 'logo',
+      sources: [
+        { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
+        { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+      ],
+    },
+    addressLabel: 'Besöksadress: ',
+    address: 'Huvudkontoret Vårby Allé 39, 143 30 Vårby',
+    children: [
+      <SocialMediaLink 
+        icon={'icon-facebook'}
+        href= {'https://www.facebook.com/spendrupsbryggeri/'}
+        children= {'Facebook'}
+        isExternal={true} />,
+      <SocialMediaLink icon={'icon-instagram'} children={undefined} href={''} />,
+    ],
+    showNewsletter: false,
+    newsletterId: 'footerNewsLetterId',
+    newsletterPlaceholder: 'Skriv din email address',
+    links: [],
+    linkComponent: 'a',
+    bottomBarText: '© 2022 SPENDRUPS BRYGGERI AB - All Rights Reserved',
+  },
+}
