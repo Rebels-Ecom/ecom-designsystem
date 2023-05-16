@@ -20,7 +20,7 @@ const SearchNavBarLinks = ({ isMyAccountPage=false, datePicker, onClickSelectDat
       </div>
       {isMyAccountPage && <div className={styles.buttonsWrapper}>
         <UiDatePicker className={styles.button} {...datePicker} onDateSelected={onClickSelectDate}></UiDatePicker>
-        <Button className={styles.button} type={'button'} surface={'primary'} rounded iconRight={{icon: 'icon-x-circle'}} onClick={onClickMyAccountBtn ? ()=>onClickMyAccountBtn() : ()=>{}}>Mitt spendrups</Button>
+        <Button className={styles.button} type={'button'} surface={'primary'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMyAccountBtn ? ()=>onClickMyAccountBtn() : ()=>{}}>Mitt spendrups</Button>
       </div>}
     </div>
   )

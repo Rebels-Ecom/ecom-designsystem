@@ -34,6 +34,7 @@ export type TIcon =
   | 'icon-clipboard'
   | 'icon-download'
   | 'icon-calendar'
+  | 'icon-settings'
 
 export interface IIcon {
   icon: TIcon
