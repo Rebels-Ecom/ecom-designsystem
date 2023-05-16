@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import { Cart } from './cart'
 import type { Meta, StoryObj } from '@storybook/react'
-import { CartOrderDetailsStory } from '../cart-order-details/cart-order-details.stories'
-import { CartDeliveryDetailsStory } from '../cart-delivery-details/cart-delivery-details.stories'
-import { CartDeliveryDetails } from '../cart-delivery-details/cart-delivery-details'
-import { CartOrderDetails } from '../cart-order-details/cart-order-details'
+import { CartOrderDetailsStory } from '../../organisms/cart-order-details/cart-order-details.stories'
+import { CartDeliveryDetailsStory } from '../../organisms/cart-delivery-details/cart-delivery-details.stories'
+import { CartDeliveryDetails } from '../../organisms/cart-delivery-details/cart-delivery-details'
+import { CartOrderDetails } from '../../organisms/cart-order-details/cart-order-details'
 import { LinkButton, ToggleSwitch, Button, Heading, Loader } from '../../atoms'
 import { CartProduct, FormGroup, GroupWrapper } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
-import { CartProductList } from '../cart-product-list/cart-product-list'
-import { DeliveryForm } from '../delivery-form/delivery-form'
+import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
+import { DeliveryForm } from '../../organisms/delivery-form/delivery-form'
 import { ButtonPlaceOrderStory } from '../../atoms/button/button.stories'
-import { DeliveryFormStory } from '../delivery-form/delivery-form.stories'
+import { DeliveryFormStory } from '../../organisms/delivery-form/delivery-form.stories'
 import { Text } from '../../atoms/text/text'
 import { Heading_DeliveryForm_Story } from '../../atoms/heading/heading.stories'
 
 const meta: Meta<typeof Cart> = {
-    title: 'Design System/Organisms/Cart',
+    title: 'Design System/Templates/Cart',
     component: Cart
 }
 
