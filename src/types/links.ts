@@ -1,6 +1,6 @@
 import React from 'react'
 export type TTarget = '_blank' | '_self' | '_parent' | '_top'
-export type TNavLinkType = 'email' | 'telephone' | 'login' | 'register' | 'favorites' | 'cart'
+export type TNavLinkType = 'email' | 'telephone' | 'login' | 'register' | 'logout' | 'loggedInUser' | 'favorites' | 'cart' 
 export type TNavLink = { navLinkType: TNavLinkType } & ILink
 
 export interface ILink {

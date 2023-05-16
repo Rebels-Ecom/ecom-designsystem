@@ -45,9 +45,48 @@ const topNavArgs = {
   linkComponent: 'a'
 }
 
+const topNavArgsLoggedIn = {
+  userLoggedIn: true,
+  userName: 'Jon Johnson',
+  topNavLinks: [
+    {
+      navLinkType: 'email',
+      href: 'ehandel@spendrups.se',
+      children: 'Kontakta oss',
+      isExternal: false,
+    },
+    {
+      navLinkType: 'telephone',
+      href: '0771-494910',
+      children: '0771-494910',
+      isExternal: false,
+    },
+    {
+      navLinkType: 'loggedInUser',
+      href: '#',
+      children: 'Inloggad som ',
+      isExternal: false,
+    },
+    {
+      navLinkType: 'logout',
+      href: '/logout',
+      children: 'Logga ut',
+      isExternal: false,
+    }
+  ],
+  linkComponent: 'a'
+}
+
 export const TopNavBarStory = {
   ...TopNavBarStoryTemplate,
   args: {
     ...topNavArgs
+  }
+}
+
+export const TopNavBarStory_Logged_In_User = {
+  ...TopNavBarStoryTemplate,
+  args: {
+    ...topNavArgsLoggedIn
   }
 }

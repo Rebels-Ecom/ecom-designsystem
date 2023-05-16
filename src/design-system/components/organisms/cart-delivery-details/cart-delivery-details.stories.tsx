@@ -28,7 +28,7 @@ const CartDeliveryDetailsStoryTemplate: Story = {
 
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
-                <CartDeliveryDetails>
+                <CartDeliveryDetails loading={args.loading}>
                     <Heading order={3}>{Heading_DeliveryForm_Story.args.children}</Heading>
                     <DeliveryForm {...DeliveryFormStory.args}/>
                     <FormGroup label={'Jag godkänner köpesvillkoren'} formElementId={'terms-and-conditions'}>
@@ -46,6 +46,7 @@ const CartDeliveryDetailsStoryTemplate: Story = {
 export const CartDeliveryDetailsStory = {
     ...CartDeliveryDetailsStoryTemplate,
     args: {
+        loading: false,
         ...Heading_DeliveryForm_Story.args,
         ...DeliveryFormStory.args,
         ...ButtonPlaceOrderStory.args
