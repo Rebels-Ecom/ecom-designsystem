@@ -49,6 +49,11 @@
   }
 }
 
+.headingWrapper {
+  text-decoration: none;
+  color: var(--color-text-default);
+}
+
 .heading {
   margin:0;
 }

@@ -20,9 +20,10 @@ export interface IProductCard extends IProduct {
   addToCartButton: IButton
   addToCart: CallableFunction
   loading: boolean
+  linkComponent?: any
 }
 
-function ProductCard({ product, changePackagingButton, addToCartButton, addToCart, loading }: IProductCard ) {
+function ProductCard({ product, changePackagingButton, addToCartButton, addToCart, loading, linkComponent: Link }: IProductCard ) {
   const { productId, productImageUrl, price, itemNumberPerSalesUnit} = product
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const [ myProduct, setProduct ] = useState(
@@ -93,7 +94,12 @@ function ProductCard({ product, changePackagingButton, addToCartButton, addToCar
           </div>
           :
           <div className={`${styles.cardContent}`}>
-            <h5 className={styles.heading}>{myProduct.productName}</h5>
+            { myProduct.productUrl && Link
+              ? 
+                <Link to={myProduct.productUrl} href={myProduct.productUrl} className={styles.headingWrapper}><h5 className={styles.heading}>{myProduct.productName}</h5></Link>
+              : 
+                <h5 className={styles.heading}>{myProduct.productName}</h5>
+            }
             <DividerLines/>
             <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${myProduct.country}`}</p>
             <p className={cx(styles.textPurple, 'bodyS')}>{`${myProduct.packaging}: ${myProduct.priceStr} kr/st`}</p>
