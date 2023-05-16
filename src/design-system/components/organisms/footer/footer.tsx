@@ -39,7 +39,7 @@ const FooterContent = ({logo, address, addressLabel, children, linkComponent: Li
   }
   return(
     <div className={styles.footerLeft}>
-      {logo && <Logotype className={styles.linkLogo} logo={logo} linkComponent={Link} /> }
+      {logo && <Logotype logo={logo} linkComponent={Link} className={styles.logoLink}/> }
       {showNewsletter && 
         <Newsletter
           id={newsletterId}

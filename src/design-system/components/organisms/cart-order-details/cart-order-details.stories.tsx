@@ -27,7 +27,7 @@ const CartOrderDetailsStoryTemplate: Story = {
         const isLoading = false
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
-                <CartOrderDetails loading={isLoading}>
+                <CartOrderDetails>
                     {isLoading ? 
                         <GroupWrapper direction='column' align='center' spacing='lg'>
                             <Heading order={3}>Vi hanterar din order</Heading>

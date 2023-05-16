@@ -10,6 +10,7 @@ type acceptedTypes = 'text' | 'email' | 'tel' | 'password' | 'number'
 export interface IInputText {
   id: string
   className?: string
+  wrapperClassName?: string
   type?: acceptedTypes
   value?: string
   defaultValue?: string
@@ -27,7 +28,7 @@ export interface IInputText {
 }
 
 const InputText = forwardRef<HTMLInputElement, IInputText>(
-  ({ id, className, type = 'text', value, defaultValue, isErroneous, required, readonly, onChange, onBlur, disabled, placeholder, other, autocomplete, iconRight }, ref) => {
+  ({ id, className, wrapperClassName, type = 'text', value, defaultValue, isErroneous, required, readonly, onChange, onBlur, disabled, placeholder, other, autocomplete, iconRight }, ref) => {
     function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
       if (onChange) {
         onChange(e)
@@ -41,7 +42,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
     }
 
     return (
-      <div className={styles.inputWrapper}>
+      <div className={cx(styles.inputWrapper, wrapperClassName ? wrapperClassName : '')}>
         {iconRight && <Icon className={styles.iconRight} icon={iconRight.icon}></Icon>}
         <input
           ref={ref}
