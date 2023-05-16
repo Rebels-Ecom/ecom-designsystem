@@ -1,7 +1,0 @@
-import{c as u}from"./index-74f03c09.js";import{a as s}from"./jsx-runtime-76c5c2e2.js";import{C as a,b as c,a as m}from"./cart-product.stories-3b2b3c29.js";const p="_cartProductList_ywir2_1",_="_list_ywir2_10",y="_collapsed_ywir2_15",P="_expanded_ywir2_34",C="_listItem_ywir2_39",L={cartProductList:p,list:_,collapsed:y,expanded:P,listItem:C},o=({children:t,className:r})=>t?s("div",{className:u(L.cartProductList,r&&r),children:t}):null;try{o.displayName="CartProductList",o.__docgenInfo={description:"",displayName:"CartProductList",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}const g={title:"Design System/Organisms/CartProductList",component:o},f=[a.args,c.args,a.args,c.args],S={render:t=>{var r;return s("div",{style:{margin:"0 auto",maxWidth:"1254px"},children:s(o,{children:(r=t==null?void 0:t.children)==null?void 0:r.map(l=>s(m,{...l,onClickRemoveProduct:()=>{}},Math.random()))})})}},e={...S,args:{children:f}};var i,d,n;e.parameters={...e.parameters,docs:{...(i=e.parameters)==null?void 0:i.docs,source:{originalSource:`{
-  ...CartProductListStoryTemplate,
-  args: {
-    children: cartProducts
-  }
-}`,...(n=(d=e.parameters)==null?void 0:d.docs)==null?void 0:n.source}}};const x=["CartProductListStory"],v=Object.freeze(Object.defineProperty({__proto__:null,CartProductListStory:e,__namedExportsOrder:x,default:g},Symbol.toStringTag,{value:"Module"}));export{e as C,o as a,v as c};
-//# sourceMappingURL=cart-product-list.stories-621eec58.js.map
