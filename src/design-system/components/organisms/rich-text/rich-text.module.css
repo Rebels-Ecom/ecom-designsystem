@@ -1,0 +1,56 @@
+.richTextOuterWrapper {
+    position: relative;
+    width:100%;
+    padding: 0;
+    margin: 0 auto;
+    @media(min-width: 48em){
+        width: var(--text-width-m);
+    }
+    @media(min-width: 64em){
+        width: var(--text-width-narrow);
+    }
+}
+
+.richText {
+    width:100%;
+    @media(min-width: 64em){
+        width: 70%;
+    }
+
+    & > * { 
+        width:100% !important;
+        font-family: var(--font-family-primary);
+    }
+
+    & > img, & > * > img {
+        max-width: 100%;
+        height: auto !important;
+    }
+
+    & p, & li {
+        font-size: var(--body-mobile-font-size);
+        line-height: 1.875rem;
+        letter-spacing: 0.02em;
+
+        @media (min-width: 64em) {
+            font-size: var(--body-desktop-font-size);
+        } 
+    }
+
+    & ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    & li {
+        &:before {
+            font-family: 'IcoMoon';
+            font-size: 1.5rem;
+            content: "\e92b";
+            margin-right:0.3rem;
+        }
+        
+    }
+}
+

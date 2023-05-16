@@ -10,6 +10,8 @@ import { HeaderStory } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { FeaturedProductsCarouselStory } from '../../organisms/featured-products-carousel/featured-products-carousel.stories'
 import { CustomerTeaserStory } from '../../organisms/customer-teaser/customer-teaser.stories'
+import { BreadcrumbsStory_Sustainability } from '../../organisms/breadcrumbs/breadcrumbs.stories'
+import { RichTextStory, RichTextStory_Beer } from '../../organisms/rich-text/rich-text.stories'
 
 const meta: Meta<typeof ContentPage> = {
   title: 'Design System/Templates/ContentPage',
@@ -27,15 +29,18 @@ export const ContentPageTemplateStory = {
   ...ContentPageStoryTemplate,
   args: {
     header: HeaderStory.args,
-    hero: HeroCarouselStory.args,
-    blogList_4_Col: BlogCardListStory_VarförSpendrups.args,
-    featuredProducts: FeaturedProductsCarouselStory.args,
-    offerCardsList: OfferCardListStory.args,
-    blogFullwidth: BlogCardStoryFullWidth.args,
-    customerTeaser: CustomerTeaserStory.args,
-    teaserRight: TeaserStoryRight.args,
-    blogList_3_Col: BlogCardListStory_Samarbete.args,
-    teaserLeft: TeaserStoryLeft1.args,
+    breadcrumbs: BreadcrumbsStory_Sustainability.args,
+    richText: RichTextStory.args,
+    footer: FooterStory.args,
+  },
+}
+
+export const ContentPageTemplateStory_Beer = {
+  ...ContentPageStoryTemplate,
+  args: {
+    header: HeaderStory.args,
+    breadcrumbs: BreadcrumbsStory_Sustainability.args,
+    richText: RichTextStory_Beer.args,
     footer: FooterStory.args,
   },
 }
