@@ -2,6 +2,10 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBarLinks } from './search-nav-bar-links'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
+import { UserProfileDropdown } from '../user-profile-dropdown/user-profile-dropdown';
+import { DropdownList } from '../../atoms';
+import { DropdownListStory } from '../../atoms/dropdown-list/dropdown-list.stories';
+import { UserProfileDropdownStory } from '../user-profile-dropdown/user-profile-dropdown.stories';
 
 const meta: Meta<typeof SearchNavBarLinks> = {
   title: 'Design System/Molecules/SearchNavBarLinks',
@@ -17,9 +21,11 @@ const SearchNavBarLinksStoryTemplate: Story = {
       console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)
     }
     function handleClickAccountBtn(){
-      console.log(`Do something...`)
+      return(<UserProfileDropdown>
+        <DropdownList links={DropdownListStory.args.links} linkComponent={'a'}></DropdownList>
+      </UserProfileDropdown>)
     }
-    return(<SearchNavBarLinks {...args} onClickSelectDate={setSelectedDate} onClickMyAccountBtn={handleClickAccountBtn}/>)}
+    return(<SearchNavBarLinks {...args} onClickSelectDate={setSelectedDate}/>)}
 };
 
 export const SearchNavBarLinksStory = {
@@ -33,6 +39,7 @@ export const SearchNavBarLinksStory_MittSpendrupsPage = {
   ...SearchNavBarLinksStoryTemplate,
   args: {
     datePicker: UiDatePickerStory.args,
-    isMyAccountPage: true
+    userProfileDropdown: UserProfileDropdownStory.args,
+    isUserLoggedIn: true
   }
 }

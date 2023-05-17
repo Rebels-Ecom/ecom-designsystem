@@ -12,6 +12,7 @@
 }
 
 .button {
+  position: relative;
   width: max-content;
   padding: 0.625rem 1rem;
 }
