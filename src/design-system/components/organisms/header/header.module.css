@@ -7,7 +7,7 @@
   
    grid-template-areas:
     "topNav topNav topNav topNav topNav"
-    "logo logo logo button button"
+    "logo searchNavLinks searchNavLinks searchNavLinks button"
     "searchNavBar searchNavBar searchNavBar searchNavBar searchNavBar"
     "navigation navigation navigation navigation navigation";
 
@@ -104,7 +104,8 @@
 
 .searchNavLinks {
   grid-area: searchNavLinks;
-  display: none;
+  /* display: none; */
+  display: flex;
   align-items: center;
   justify-self: end;
 

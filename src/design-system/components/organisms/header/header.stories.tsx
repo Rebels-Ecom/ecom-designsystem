@@ -21,6 +21,7 @@ import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
+import { Above, Below } from '../../layouts'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -55,16 +56,27 @@ const HeaderStoryTemplate: Story = {
               <SearchNavBar {...args.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <SearchNavBarLinks>
-                <GroupWrapper position='apart'>
-                  <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
-                  <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
-                </GroupWrapper>
-                <GroupWrapper position='apart'>
-                    <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-                    <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
-                </GroupWrapper>
-              </SearchNavBarLinks>
+              <Below breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                      <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Below>
+                <Above breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                    <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                    <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                    </GroupWrapper>
+                    <GroupWrapper position='apart'>
+                        <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                        <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Above>
             </GridArea>
             <GridArea area="btn">
               <MenuButton onClick={handleOnClick} />
