@@ -1,8 +1,22 @@
+.userProfileDropdown {
+    position:relative;
+}
+
 .button {
     position: relative;
+    width: max-content;
+    padding: 0.625rem 1rem;
 }
 
 .dropdown {
     position: absolute;
-    
+    right: 0;
+    z-index: 99;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #DE9034;
+    border-radius: 4px;
+    min-width: 250px;
+    max-width: 570px;
 }

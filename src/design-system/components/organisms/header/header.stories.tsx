@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from './header'
-import { TopNavBarStory } from '../../molecules/top-nav-bar/top-nav-bar.stories'
+import { TopNavBarStory, TopNavBarStory_Logged_In_User } from '../../molecules/top-nav-bar/top-nav-bar.stories'
 import { TopNavBar } from '../../molecules/top-nav-bar/top-nav-bar'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { NavigationStory } from '../../molecules/navigation/navigation.stories'
@@ -19,7 +19,7 @@ import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
-import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
+import { SearchNavBarLinksStory, SearchNavBarLinksStory_LoggedIn } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -53,7 +53,7 @@ const HeaderStoryTemplate: Story = {
               <SearchNavBar {...args.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <SearchNavBarLinks {...args.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} isMyAccountPage/>
+              <SearchNavBarLinks {...args.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} isUserLoggedIn/>
             </GridArea>
             <GridArea area="btn">
               <Button onClick={handleOnClick} />
@@ -93,10 +93,10 @@ const HeaderStoryTemplate: Story = {
 export const HeaderStory = {
   ...HeaderStoryTemplate,
   args: {
-    topNavBar: TopNavBarStory.args,
+    topNavBar: TopNavBarStory_Logged_In_User.args,
     navigation: NavigationStory.args,
     searchNavBar: SearchNavBarStory.args,
-    searchNavLinks: SearchNavBarLinksStory.args,
+    searchNavLinks: SearchNavBarLinksStory_LoggedIn.args,
     logotype: {
       logo: {
         src: logotype_desktop_horizontal,

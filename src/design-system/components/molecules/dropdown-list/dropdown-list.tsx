@@ -2,8 +2,6 @@ import React from 'react'
 import styles from './dropdown-list.module.css'
 import { INavigationLink } from '../../../../types/links'
 import { AnimatePresence, motion } from 'framer-motion'
-import { SubNavigation } from '../../molecules'
-import { Icon } from '../icon/icon'
 
 const variants = {
     open: {
