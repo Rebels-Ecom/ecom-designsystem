@@ -28,8 +28,8 @@ html {
     --nav-bar-height-desktop: 5rem;
     --logotype-height-desktop: 2.284rem;
     --logotype-height-mobile: 2rem;
-    --cta-width-normal: 16.875rem;
-    --cta-width-narrow: 13.75rem;
+    --cta-width-lg: 16.875rem;
+    --cta-width-default: 13.75rem;
 }
 
 body {
