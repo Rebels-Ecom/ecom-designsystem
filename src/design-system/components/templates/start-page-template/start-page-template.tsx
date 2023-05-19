@@ -11,9 +11,10 @@ import { ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
 import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
-import { Heading, LinkButton, Button, ToggleSwitch } from '../../atoms'
+import { Heading, LinkButton, Button, ToggleSwitch, IconButton, UiDatePicker } from '../../atoms'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
+import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 
 export interface IStartPageTemplate {
   header: any
@@ -54,12 +55,12 @@ const StartPageTemplate = ({
   const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
-  const handleClickAccountBtn = () => { console.log(`Mitt Spendrups btn clicked...`)}
+  const onClickMySpendrupsBtn = () => { console.log(`Go to my Spendrups page`)}
 
   return (
     <>
       <Header isOpen={isOpen}>
-        {({ Wrapper, Button, GridArea }) => (
+        {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -71,10 +72,19 @@ const StartPageTemplate = ({
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <SearchNavBarLinks {...header.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} onClickMyAccountBtn={handleClickAccountBtn} isMyAccountPage={true}/>
+              <SearchNavBarLinks>
+                <GroupWrapper position='apart'>
+                  <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                  <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                </GroupWrapper>
+                <GroupWrapper position='apart'>
+                    <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                    <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
+                </GroupWrapper>
+              </SearchNavBarLinks>
             </GridArea>
             <GridArea area="btn">
-              <Button onClick={handleOnClick} />
+              <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
               <Navigation {...header.navigation} isOpen={isOpen} />

@@ -13,12 +13,13 @@ import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_ho
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebarStory } from '../cart-sidebar/cart-sidebar.stories'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
-import { Heading, LinkButton, ToggleSwitch, Button } from '../../atoms'
+import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } from '../../atoms'
 import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
+import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
 
 const meta: Meta<typeof Header> = {
@@ -36,12 +37,13 @@ const HeaderStoryTemplate: Story = {
     const handleOnClick = () => setIsOpen(!isOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+    const onClickMySpendrupsBtn = () => { console.log(`Go to my Spendrups page`)}
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
 
     return (
       <>
       <Header isOpen={isOpen}>
-        {({ Wrapper, Button, GridArea }) => (
+        {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...args.topNavBar} />
@@ -53,10 +55,19 @@ const HeaderStoryTemplate: Story = {
               <SearchNavBar {...args.searchNavBar} />
             </GridArea>
             <GridArea area="searchNavLinks">
-              <SearchNavBarLinks {...args.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} isMyAccountPage/>
+              <SearchNavBarLinks>
+                <GroupWrapper position='apart'>
+                  <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                  <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                </GroupWrapper>
+                <GroupWrapper position='apart'>
+                    <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                    <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
+                </GroupWrapper>
+              </SearchNavBarLinks>
             </GridArea>
             <GridArea area="btn">
-              <Button onClick={handleOnClick} />
+              <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
               <Navigation {...args.navigation} isOpen={isOpen} />

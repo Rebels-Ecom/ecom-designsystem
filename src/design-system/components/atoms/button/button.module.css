@@ -5,7 +5,6 @@
   font-family: var(--font-family-secondaryBold);
   border: solid 0.063rem transparent;
   border-radius: 0.125rem;
-  width: var(--cta-width-narrow);
   &:hover {
     cursor: pointer;
   }

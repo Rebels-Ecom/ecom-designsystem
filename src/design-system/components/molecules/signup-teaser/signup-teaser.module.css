@@ -22,7 +22,7 @@
         & > button {
             padding-left: 2rem;
             padding-left: 2rem;
-            width: var(--cta-width-narrow);
+            width: var(--cta-width-default);
         }
     }
 }

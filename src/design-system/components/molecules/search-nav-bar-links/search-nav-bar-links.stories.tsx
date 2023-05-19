@@ -2,6 +2,10 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBarLinks } from './search-nav-bar-links'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
+import { GroupWrapper } from '../group-wrapper/group-wrapper';
+import { IconButton } from '../../atoms/icon-button/icon-button';
+import { UiDatePicker } from '../../atoms/ui-date-picker/ui-date-picker';
+import { Button } from '../../atoms/button/button';
 
 const meta: Meta<typeof SearchNavBarLinks> = {
   title: 'Design System/Molecules/SearchNavBarLinks',
@@ -16,23 +20,25 @@ const SearchNavBarLinksStoryTemplate: Story = {
     function setSelectedDate(date:Date){
       console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)
     }
-    function handleClickAccountBtn(){
-      console.log(`Do something...`)
-    }
-    return(<SearchNavBarLinks {...args} onClickSelectDate={setSelectedDate} onClickMyAccountBtn={handleClickAccountBtn}/>)}
-};
+    function handleClickAccountBtn(){ console.log(`Go to my spendrups page`)}
+    function handleClickCartIcon(){console.log('Open cart sidebar')}
+
+    return(
+      <SearchNavBarLinks>
+         <GroupWrapper position='apart'>
+          <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+          <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={handleClickCartIcon ? ()=>handleClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+      </GroupWrapper>
+      <GroupWrapper position='apart'>
+          <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+          <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={handleClickAccountBtn ? ()=>handleClickAccountBtn() : ()=>{}}>Mitt spendrups</Button>
+      </GroupWrapper>
+      </SearchNavBarLinks>)}
+}
 
 export const SearchNavBarLinksStory = {
   ...SearchNavBarLinksStoryTemplate,
   args: {
-    datePicker: UiDatePickerStory.args
-  }
-}
-
-export const SearchNavBarLinksStory_MittSpendrupsPage = {
-  ...SearchNavBarLinksStoryTemplate,
-  args: {
-    datePicker: UiDatePickerStory.args,
-    isMyAccountPage: true
+    
   }
 }

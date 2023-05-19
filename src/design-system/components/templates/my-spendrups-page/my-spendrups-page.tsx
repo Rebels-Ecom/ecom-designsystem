@@ -16,7 +16,7 @@ const MySpendrupsPage = ({ header, footer }: IMySpendrupsPage) => {
   return (
     <>
       <Header isOpen={isOpen}>
-        {({ Wrapper, Button, GridArea }) => (
+        {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} />
@@ -27,11 +27,8 @@ const MySpendrupsPage = ({ header, footer }: IMySpendrupsPage) => {
             <GridArea area="search">
               <SearchNavBar {...header.searchNavBar} />
             </GridArea>
-            <GridArea area="searchNavLinks">
-              <SearchNavBarLinks {...header.searchNavLinks} onClickSelectDate={setSelectedDate} />
-            </GridArea>
             <GridArea area="btn">
-              <Button onClick={handleOnClick} />
+              <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
               <Navigation {...header.navigation} isOpen={isOpen} />

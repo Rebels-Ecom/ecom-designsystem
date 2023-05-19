@@ -83,7 +83,7 @@ function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, heade
       calendarClassName={styles.calendar}
       calendarContainer={CustomCalendarContainer}
       dayClassName={(date)=> cx(styles.day, styles[getDayCustomClass(date)])}
-      customInput={<Button type={'button'} surface={'secondary'} iconRight={{icon:'icon-calendar'}} rounded className={className ? className : ''} >{selectedDate.toLocaleDateString()}</Button>}
+      customInput={<Button type={'button'} surface={'secondary'} size={'x-small'} iconRight={{icon:'icon-calendar'}} rounded className={className ? className : ''} >{selectedDate.toLocaleDateString()}</Button>}
     />
     </div>
   )

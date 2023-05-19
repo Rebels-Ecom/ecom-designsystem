@@ -1,12 +1,15 @@
 .groupWrapper {
     display: flex;
-    &.row {
+    &.direction-default {
         flex-direction: column;
         @media(min-width: 48em) {
             flex-direction: row;
         }
     }
-    &.column {
+    &.direction-row {
+        flex-direction: row;
+    }
+    &.direction-column {
         flex-direction: column;
     }
     &.leftPosition { justify-content: flex-start;}
