@@ -22,6 +22,10 @@ import { CartProductListStory } from '../cart-product-list/cart-product-list.sto
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
 import { Above, Below } from '../../layouts'
+import { TabsStory } from '../../molecules/tabs/tabs.stories'
+import { Tabs } from '../../molecules/tabs/tabs'
+import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
+import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -34,11 +38,12 @@ type Story = StoryObj<typeof Header>
 const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
-    const onClickMySpendrupsBtn = () => { console.log(`Go to my Spendrups page`)}
+    const onClickMySpendrupsBtn = () => setIsDropdownOpen(!isDropdownOpen)
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
 
     return (
@@ -82,11 +87,13 @@ const HeaderStoryTemplate: Story = {
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...args.navigation} isOpen={isOpen} />
+              {/* <Navigation {...args.navigation} isOpen={isOpen} /> */}
+              <Tabs {...args.navigation} isOpen={isOpen}></Tabs>
             </GridArea>
           </Wrapper>
         )}
       </Header>
+      <UserProfileDropdown {...UserProfileDropdownStory.args} isOpen={isDropdownOpen} setIsOpen={setIsDropdownOpen}></UserProfileDropdown>
       <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
           <CartSidebar classNames={['light']}>
               <GroupWrapper position='apart'>
@@ -117,7 +124,7 @@ export const HeaderStory = {
   ...HeaderStoryTemplate,
   args: {
     topNavBar: TopNavBarStory.args,
-    navigation: NavigationStory.args,
+    navigation: TabsStory.args,
     searchNavBar: SearchNavBarStory.args,
     searchNavLinks: SearchNavBarLinksStory.args,
     logotype: {

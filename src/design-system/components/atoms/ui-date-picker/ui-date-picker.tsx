@@ -7,6 +7,7 @@ import sv from 'date-fns/locale/sv'
 import { Button } from '../button/button'
 import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
+import { Icon } from '../icon/icon'
 
 export interface IUiDatePicker {
   selectedDeliveryDate: string,
@@ -83,7 +84,11 @@ function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, heade
       calendarClassName={styles.calendar}
       calendarContainer={CustomCalendarContainer}
       dayClassName={(date)=> cx(styles.day, styles[getDayCustomClass(date)])}
-      customInput={<Button type={'button'} surface={'secondary'} size={'x-small'} iconRight={{icon:'icon-calendar'}} rounded className={className ? className : ''} >{selectedDate.toLocaleDateString()}</Button>}
+      customInput={
+        <Button type={'button'} surface={'secondary'} size={'x-small'} rounded className={cx(styles.datePickerBtn, className ? className : '')} >
+            <span className={styles.buttonLinkText}>{selectedDate.toLocaleDateString()}</span>
+            <Icon icon={'icon-calendar'}/>
+        </Button>}
     />
     </div>
   )

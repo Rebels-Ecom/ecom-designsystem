@@ -1,0 +1,15 @@
+.tabs {
+    display: flex;
+}
+
+.tabBtn {
+    flex: 1;
+    width: auto;
+    min-width: auto;
+    
+    &.disabled,
+    &:disabled {
+        background: #FFF9E8;
+        color: #DE9034
+    }
+}

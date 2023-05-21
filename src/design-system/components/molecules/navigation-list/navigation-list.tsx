@@ -66,7 +66,7 @@ function DesktopNavLink({link, linkComponent: Link }:{link:INavigationLink, link
 
 function NavigationList({ links = [], linkComponent: Link, mobile, isOpen }: INavigationList) {
 
-    const[showSubNavigation, setShowSubNavigation] = useState <boolean>(isOpen)
+    const[showSubNavigation, setShowSubNavigation] = useState <boolean>(false)
     const[subNavLink, setSubNavLink] = useState <INavigationLink>()
 
     useEffect(()=>{

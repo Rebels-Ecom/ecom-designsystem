@@ -1,5 +1,6 @@
 .userProfileDropdown {
     position:relative;
+    background: var(--navigation-surface-subdued);
 }
 
 .button {
@@ -10,13 +11,17 @@
 
 .dropdown {
     position: absolute;
+    left: 0;
     right: 0;
     z-index: 99;
     padding: 1.25rem;
     box-sizing: border-box;
-    background: #FFFFFF;
-    border: 1px solid #DE9034;
-    border-radius: 4px;
-    min-width: 250px;
-    max-width: 570px;
+    border-radius: 0.25rem;
+    min-width: 15.625rem;
+    max-width: 35.625rem;
+    @media(min-width: 64em){
+        left: auto;
+        right: 1rem;
+        border: 1px solid #DE9034;
+    }
 }
