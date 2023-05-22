@@ -14,10 +14,13 @@ export interface IIconButton {
     linkComponent?: any
     isExternal?: boolean
     className?: string
+    children?: React.ReactNode,
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export function getIconButtonSize(surface: TIconButtonSize) {
+export function getIconButtonSize(surface: TIconButtonSize, hasChildren: boolean) {
+    if(hasChildren)
+        return 'buttonRectangular'
     switch (surface) {
       case 'medium':
         return 'buttonMedium'
@@ -38,6 +41,7 @@ const IconButton = ({
     isExternal=false,
     linkComponent: Link = LinkComponent,
     className,
+    children,
     onClick
 }: IIconButton ) => {
 
@@ -50,11 +54,12 @@ const IconButton = ({
         <div>
             {isLink && linkUrl
             ?
-                <Tag to={!isExternal ? linkUrl : undefined} href={isExternal ? linkUrl : undefined} className={cx(styles.iconButton, styles[getIconButtonSize(size)], isTransparent && styles.buttonTransparent, className ? className : '')}>
+                <Tag to={!isExternal ? linkUrl : undefined} href={isExternal ? linkUrl : undefined} className={cx(styles.iconButton, children? styles.hasChildren : '', styles[getIconButtonSize(size, children ? true : false)], isTransparent && styles.buttonTransparent, className ? className : '')}>
                     <Icon icon={icon}></Icon>
+                    {children && children}
                 </Tag>
             :
-                <button className={cx(styles.iconButton, styles[getIconButtonSize(size)], isTransparent && styles.buttonTransparent, className ? className : '')} onClick={onClick}><Icon icon={icon}></Icon></button>
+                <button className={cx(styles.iconButton, children? styles.hasChildren : '', styles[getIconButtonSize(size, children ? true : false)], isTransparent && styles.buttonTransparent, className ? className : '')} onClick={onClick}><Icon icon={icon}></Icon>{children && children}</button>
             }
         </div>
     )

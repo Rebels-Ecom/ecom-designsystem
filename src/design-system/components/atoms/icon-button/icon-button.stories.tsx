@@ -68,6 +68,29 @@ export const IconButtonStory_RemoveProduct = {
   }
 }
 
+export const IconButtonStory_CartEmpty = {
+  ...IconButtonStoryTemplate,
+  args: {
+    icon: 'icon-shopping-cart',
+    size: 'large',
+    isTransparent: true,
+    isLink: false,
+    onClick: action('clicked')
+  }
+}
+
+export const IconButtonStory_CartWithProducts = {
+  ...IconButtonStoryTemplate,
+  args: {
+    icon: 'icon-shopping-cart',
+    size: 'large',
+    isTransparent: true,
+    isLink: false,
+    children: <span>(7)</span>,
+    onClick: action('clicked')
+  }
+}
+
 
 
 
