@@ -110,7 +110,7 @@ const tabsList = [
     {
         id: '4',
         tabTitle: 'Mitt spendrups',
-        content: <UserProfileDropdown {...UserProfileDropdownStory.args} isOpen={true}></UserProfileDropdown> 
+        content: <UserProfileDropdown {...UserProfileDropdownStory.args} isDropdownOpen={true}></UserProfileDropdown> 
     }
 ];
 

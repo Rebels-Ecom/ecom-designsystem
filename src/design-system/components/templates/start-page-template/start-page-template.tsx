@@ -9,12 +9,13 @@ import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organ
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Heading, LinkButton, Button, ToggleSwitch, IconButton, UiDatePicker } from '../../atoms'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
+import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 
 export interface IStartPageTemplate {
   header: any
@@ -79,7 +80,7 @@ const StartPageTemplate = ({
                 </GroupWrapper>
                 <GroupWrapper position='apart'>
                     <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-                    <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
+                    <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>               
                 </GroupWrapper>
               </SearchNavBarLinks>
             </GridArea>
@@ -87,7 +88,7 @@ const StartPageTemplate = ({
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} isOpen={isOpen} />
+              <Tabs {...header.navigation} isOpen={isOpen}></Tabs>
             </GridArea>
           </Wrapper>
         )}

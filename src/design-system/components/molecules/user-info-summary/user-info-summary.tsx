@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './user-info-summary.module.css'
 
-interface IUserSummary {
+export interface IUserSummary {
   userName: string
   companyName: string
   customerNumber?: string

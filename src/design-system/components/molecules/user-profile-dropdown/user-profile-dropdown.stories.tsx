@@ -16,26 +16,30 @@ export default meta;
 type Story = StoryObj<typeof UserProfileDropdown>
 
 const UserProfileDropdownStoryTemplate: Story = {
-  render: ({ ...args }) => {
-    const [isOpen, setIsOpen ] = useState<boolean>(false)
-    return(
-      <>
-        <Button type={'button'} surface={'primary'} rounded iconRight={{icon: 'icon-settings'}} onClick={()=>setIsOpen(!isOpen)}>Mitt spendrups</Button>
-        <UserProfileDropdown isOpen={isOpen} setIsOpen={setIsOpen}>
-          {args.children} 
-        </UserProfileDropdown>
-      </>
-      )
-    }
+  render: ({ ...args }) => (
+    <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
+      <UserProfileDropdown isDropdownOpen={args.isDropdownOpen}> 
+        {args.children}
+      </UserProfileDropdown>
+    </div>
+  )
 }
-
-const dropdownList = () => (
-  <DropdownList {...DropdownListStory.args}></DropdownList>
-)
 
 export const UserProfileDropdownStory = {
   ...UserProfileDropdownStoryTemplate,
   args: {
+    isDropdownOpen: false,
+    children: [
+      <UserInfoSummary {...UserInfoSummaryStory.args}></UserInfoSummary>,
+      <DropdownList {...DropdownListStory.args}></DropdownList>
+    ]
+  }
+}
+
+export const UserProfileDropdownStory_Open = {
+  ...UserProfileDropdownStoryTemplate,
+  args: {
+    isDropdownOpen: true,
     children: [
       <UserInfoSummary {...UserInfoSummaryStory.args}></UserInfoSummary>,
       <DropdownList {...DropdownListStory.args}></DropdownList>

@@ -78,7 +78,7 @@ const HeaderStoryTemplate: Story = {
                     </GroupWrapper>
                     <GroupWrapper position='apart'>
                         <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-                        <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
+                        <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
                     </GroupWrapper>
                   </SearchNavBarLinks>}
                 </Above>
@@ -93,7 +93,6 @@ const HeaderStoryTemplate: Story = {
           </Wrapper>
         )}
       </Header>
-      <UserProfileDropdown {...UserProfileDropdownStory.args} isOpen={isDropdownOpen} setIsOpen={setIsDropdownOpen}></UserProfileDropdown>
       <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
           <CartSidebar classNames={['light']}>
               <GroupWrapper position='apart'>
