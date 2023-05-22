@@ -59,3 +59,8 @@
 .navIcon {
     margin-right:0.5rem;
 }
+
+.btn {
+    outline: none;
+    border: none;
+}

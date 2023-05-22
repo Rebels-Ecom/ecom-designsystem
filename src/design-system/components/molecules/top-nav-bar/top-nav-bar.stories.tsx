@@ -12,32 +12,38 @@ export default meta;
 type Story = StoryObj<typeof TopNavBar>;
 
 const TopNavBarStoryTemplate: Story = {
-  render: ({ ...args }) => (<TopNavBar {...args} />)
+  render: ({ ...args }) => {
+    function handleOnClick(){
+      console.log('Navigate to login page...')
+    }
+    return(<TopNavBar {...args} onClick={handleOnClick}/>)
+  }
 };
 
 const topNavArgs = {
-  topNavLinks: [
+  links: [
     {
-      navLinkType: 'email',
-      href: 'ehandel@spendrups.se',
+      href: '/kontakta-oss',
+      icon: 'icon-mail',
       children: 'Kontakta oss',
       isExternal: false,
     },
     {
-      navLinkType: 'telephone',
+      isTelephoneLink: true,
       href: '0771-494910',
+      icon: 'icon-phone',
       children: '0771-494910',
-      isExternal: false,
+      isExternal: true,
     },
     {
-      navLinkType: 'register',
       href: 'http://spendrups.se/kund/',
+      icon: 'icon-plus-circle',
       children: 'Bli kund',
       isExternal: true,
     },
     {
-      navLinkType: 'login',
       href: '/login',
+      icon: 'icon-user',
       children: 'Logga in',
       isExternal: false,
     }
@@ -45,34 +51,33 @@ const topNavArgs = {
   linkComponent: 'a'
 }
 
+const userName = 'Jon Johnsson'
+
 const topNavArgsLoggedIn = {
   userLoggedIn: true,
   userName: 'Jon Johnson',
-  topNavLinks: [
+  btnIcon: 'icon-x-circle',
+  btnText: 'Logga ut',
+  links: [
     {
-      navLinkType: 'email',
-      href: 'ehandel@spendrups.se',
+      href: '/kontakta-oss',
+      icon: 'icon-mail',
       children: 'Kontakta oss',
       isExternal: false,
     },
     {
-      navLinkType: 'telephone',
+      isTelephoneLink: true,
       href: '0771-494910',
+      icon: 'icon-phone',
       children: '0771-494910',
-      isExternal: false,
+      isExternal: true,
     },
     {
-      navLinkType: 'loggedInUser',
       href: '#',
-      children: 'Inloggad som ',
+      icon: 'icon-users',
+      children: `Inloggad som ${userName}`,
       isExternal: false,
     },
-    {
-      navLinkType: 'logout',
-      href: '/logout',
-      children: 'Logga ut',
-      isExternal: false,
-    }
   ],
   linkComponent: 'a'
 }

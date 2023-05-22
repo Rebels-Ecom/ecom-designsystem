@@ -1,73 +1,54 @@
-import { TNavLink } from '../../../../types/links'
-import { Icon } from '../../atoms/icon/icon'
+import { TIconNavLink } from '../../../../types/links'
+import { Icon, TIcon } from '../../atoms/icon/icon'
 import styles from './top-nav-bar.module.css'
 import cx from 'classnames'
 
 export interface ITopNavBar {
-  topNavLinks: Array<TNavLink>
+  links: Array<TIconNavLink>
   userLoggedIn: boolean
-  userName?: string
+  btnIcon?: TIcon
+  btnText?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   linkComponent: any
 }
 
-const TopNavBar = ({ topNavLinks, userLoggedIn=false, userName,  linkComponent: Link }: ITopNavBar) => {
-  const contactLinks = topNavLinks.filter((link) => link.navLinkType === 'email' || link.navLinkType === 'telephone')
-  const userLinks = topNavLinks.filter((link) => link.navLinkType === 'login' || link.navLinkType === 'register')
-  const loggedInUserLinks = topNavLinks.filter((link) => link.navLinkType === 'logout' || link.navLinkType === 'loggedInUser')
-  return (
-    <div className={styles.topNavBar}>
-      {Array.isArray(contactLinks) && contactLinks.length ? (
-        <ul className={cx(styles.navLinksWrapper, styles.navLinksLeft)}>
-          {contactLinks.map((link: TNavLink, index) => (
-            <a href={link.navLinkType === 'email' ? `mailto:${link.href}` : `tel:${link.href}`} key={`${link.href}-${index}`} className={styles.topNavLink}>
-              <Icon icon={link.navLinkType === 'email' ? 'icon-mail' : 'icon-phone'} className={styles.navIcon} />
-              <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
-            </a>
-          ))}
-        </ul>
-      ) : null }
-      {userLoggedIn 
-        ? 
-        <>
-          { Array.isArray(loggedInUserLinks) && loggedInUserLinks.length 
-            ? (<ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
-                {loggedInUserLinks.map((link: TNavLink, index) => {
-                  if(link.navLinkType === 'loggedInUser'){
-                    return(
-                      <div className={styles.topNavLink} key={`${link.href}-${index}`}>
-                        <Icon icon={'icon-users'} className={styles.navIcon} />
-                        <span className={cx('bodyS', styles.topNavText)}>{link.children} {userName}</span>
-                      </div>
-                    )
-                  }
-                  return(
-                    <Link to={link.href} className={styles.topNavLink} key={`${link.href}-${index}`} target={'_blank'} title={link.children}>
-                      <Icon icon={'icon-x-circle'} className={styles.navIcon} />
-                      <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
-                    </Link>
-                  )
-                  })}
-              </ul>) 
-            : 
-            null
-          }
-        </>
-        : 
-        <>
-          { Array.isArray(userLinks) && userLinks.length 
-            ? (<ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
-                {userLinks.map((link: TNavLink, index) => (
-                  <Link to={link.href} className={styles.topNavLink} key={`${link.href}-${index}`} target={'_blank'} title={link.children}>
-                    <Icon icon={link.navLinkType === 'register' ? 'icon-plus-circle' : 'icon-user'} className={styles.navIcon} />
-                    <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
-                  </Link>
-                ))}
-              </ul>) 
-            : 
-            null
-          }
-        </>
+const TopNavBar = ({ links, userLoggedIn=false, btnIcon, btnText, onClick, linkComponent: Link }: ITopNavBar) => {
+
+  function renderLink(link:TIconNavLink) {
+    return(
+      <>
+      {link.isExternal
+        ?
+        <a href={link.isTelephoneLink ? `tel:${link.href}` : link.href} className={styles.topNavLink} target={'_blank'}>
+          <Icon className={styles.navIcon} icon={link.icon} />
+          <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
+        </a>
+        :
+        <Link to={link.href} className={styles.topNavLink} title={link.children}>
+          <Icon icon={link.icon} className={styles.navIcon} />
+          <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
+        </Link>
       }
+      </>
+    )
+  }
+
+  if(!Array.isArray(links) || links.length<=0){
+    return null
+  }
+
+  const linksLeft = links.slice(0, Math.ceil(links.length / 2))
+  const linksRight = links.slice(- Math.floor(links.length / 2))
+
+  return(
+    <div className={styles.topNavBar}>
+      <ul className={cx(styles.navLinksWrapper, styles.navLinksLeft)}>
+        {linksLeft.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
+      </ul>
+      <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
+        {linksRight.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
+        {userLoggedIn && btnText && onClick && <button className={cx(styles.topNavLink, styles.btn)} onClick={onClick}> {btnIcon && <Icon icon={btnIcon} className={styles.navIcon}/>}{btnText}</button>}
+      </ul>
     </div>
   )
 }
