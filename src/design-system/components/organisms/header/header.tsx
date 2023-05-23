@@ -58,6 +58,7 @@ const Header = ({
   searchNavBar?: any
   searchNavLinks?: any
   navigation?: any
+  navigationTabs?: any
   headerLinkList?: any
   cartSidebar?: any
   children: ({ Wrapper, MenuButton, GridArea }: { Wrapper: any; MenuButton: any; GridArea: any }) => React.ReactNode

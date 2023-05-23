@@ -7,7 +7,7 @@ import { IOfferCardList, OfferCardList } from '../../organisms/offer-card-list/o
 import { INavigation, Navigation } from '../../molecules/navigation/navigation'
 import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
-import { ContentWrapper, MaxWidth } from '../../layouts'
+import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
 import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
@@ -88,7 +88,8 @@ const StartPageTemplate = ({
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Tabs {...header.navigation} isOpen={isOpen}></Tabs>
+              <Below breakpoint="lg">{(matches: any) => matches &&  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>}</Below>
+              <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...header.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
         )}

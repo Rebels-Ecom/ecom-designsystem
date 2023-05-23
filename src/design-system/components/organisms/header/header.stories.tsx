@@ -87,8 +87,8 @@ const HeaderStoryTemplate: Story = {
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              {/* <Navigation {...args.navigation} isOpen={isOpen} /> */}
-              <Tabs {...args.navigation} isOpen={isOpen}></Tabs>
+              <Below breakpoint="lg">{(matches: any) => matches &&  <Tabs {...args.navigationTabs} isOpen={isOpen}></Tabs>}</Below>
+              <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...args.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
         )}
@@ -123,7 +123,8 @@ export const HeaderStory = {
   ...HeaderStoryTemplate,
   args: {
     topNavBar: TopNavBarStory.args,
-    navigation: TabsStory.args,
+    navigation: NavigationStory.args,
+    navigationTabs: TabsStory.args,
     searchNavBar: SearchNavBarStory.args,
     searchNavLinks: SearchNavBarLinksStory.args,
     logotype: {
