@@ -1,7 +1,7 @@
 .loader {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
     top: 0;
@@ -18,6 +18,9 @@
     }
     &.loaderRelativePos{
         position: relative;
+    }
+    @media(min-width:64em){
+        gap: 2rem;
     }
 }
 
@@ -54,6 +57,7 @@
 .loaderText {
     color: var(--color-text-blue);
     font-weight: 700;
+    max-width: 16.5rem;
 }
 
 @keyframes spin {

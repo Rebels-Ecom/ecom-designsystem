@@ -36,3 +36,23 @@ export const LoginFormStory = {
     onUsernameChange: (e) => {},
   },
 }
+
+export const LoginFormStory_Loading = {
+  ...LoginFormStoryTemplate,
+  args: {
+    title: 'Logga in',
+    description: 'Fyll i dina uppgifter här nedanför',
+    usernameLabel: 'Mailadress',
+    username: 'John@doe.se',
+    passwordLabel: 'Lösenord',
+    password: 'lösenord123',
+    forgotPasswordLabel: 'Glömt mitt lösenord?',
+    primarySubmitLabel: 'Logga in',
+    secondarySubmitLabel: 'Skapa ett konto & bli e-handelskund',
+    offerLinkLabel: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
+    onSubmit: (e) => {},
+    onPasswordChange: (e) => {},
+    onUsernameChange: (e) => {},
+    loading: true
+  },
+}
