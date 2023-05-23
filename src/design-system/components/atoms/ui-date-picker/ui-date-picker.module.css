@@ -17,7 +17,7 @@
 }
 
 .datePickerWrapper {
-    z-index:99;
+    z-index:99999;
 }
 
 .calendar {

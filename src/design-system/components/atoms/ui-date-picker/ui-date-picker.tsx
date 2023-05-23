@@ -69,7 +69,7 @@ function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, heade
     return 'day'
   }
 
-  if(!selectedDeliveryDate || !deliveryDates || deliveryDates.length===0 || !holidayDates || holidayDates.length===0 || !onDateSelected)
+  if(!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length===0 || !onDateSelected)
     return null
 
   return (
