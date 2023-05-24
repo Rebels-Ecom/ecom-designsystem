@@ -16,6 +16,10 @@
     right: 0;
 }
 
+:global .react-datepicker-popper {
+    z-index: 10;
+}
+
 .datePickerWrapper {
     z-index:99999;
 }
