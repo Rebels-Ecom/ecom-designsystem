@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { TopNavBar } from './top-nav-bar'
+import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories';
 
 
 const meta: Meta<typeof TopNavBar> = {
@@ -16,7 +17,9 @@ const TopNavBarStoryTemplate: Story = {
     function handleOnClick(){
       console.log('Navigate to login page...')
     }
-    return(<TopNavBar {...args} onClick={handleOnClick}/>)
+    const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
+
+    return(<TopNavBar {...args} onClick={handleOnClick} onSelectDate={setSelectedDate}/>)
   }
 };
 
@@ -58,6 +61,7 @@ const topNavArgsLoggedIn = {
   userName: 'Jon Johnson',
   btnIcon: 'icon-x-circle',
   btnText: 'Logga ut',
+  datePicker: UiDatePickerStory.args,
   links: [
     {
       href: '/kontakta-oss',
@@ -82,6 +86,23 @@ const topNavArgsLoggedIn = {
   linkComponent: 'a'
 }
 
+const topNavArgs_Admin = {
+  userLoggedIn: true,
+  isAdmin: true,
+  userName: 'Jon Johnson',
+  btnIcon: 'icon-x-circle',
+  btnText: 'Logga ut',
+  links: [
+    {
+      href: '#',
+      icon: 'icon-users',
+      children: `Inloggad som ${userName}`,
+      isExternal: false,
+    },
+  ],
+  linkComponent: 'a'
+}
+
 export const TopNavBarStory = {
   ...TopNavBarStoryTemplate,
   args: {
@@ -93,5 +114,12 @@ export const TopNavBarStory_Logged_In_User = {
   ...TopNavBarStoryTemplate,
   args: {
     ...topNavArgsLoggedIn
+  }
+}
+
+export const TopNavBarStory_Admin = {
+  ...TopNavBarStoryTemplate,
+  args: {
+    ...topNavArgs_Admin,
   }
 }
