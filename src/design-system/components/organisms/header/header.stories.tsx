@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from './header'
-import { TopNavBarStory } from '../../molecules/top-nav-bar/top-nav-bar.stories'
+import { TopNavBarStory_Guest_User, TopNavBarStory_Logged_In_User } from '../../molecules/top-nav-bar/top-nav-bar.stories'
 import { TopNavBar } from '../../molecules/top-nav-bar/top-nav-bar'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { NavigationStory } from '../../molecules/navigation/navigation.stories'
@@ -26,6 +26,7 @@ import { TabsStory } from '../../molecules/tabs/tabs.stories'
 import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
+import { motion } from 'framer-motion'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -39,12 +40,19 @@ const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
+    const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
+    const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
     const onClickMySpendrupsBtn = () => setIsDropdownOpen(!isDropdownOpen)
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
+
+    const variants = {
+      open: { y: 0, opacity: 1 },
+      closed: { y: "-0.7rem", opacity: 1 },
+    }
 
     return (
       <>
@@ -52,21 +60,33 @@ const HeaderStoryTemplate: Story = {
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
-              <TopNavBar {...args.topNavBar} />
+              <TopNavBar {...args.topNavBar} onSelectDate={setSelectedDate}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...args.logotype} />
             </GridArea>
-            <GridArea area="search">
-              <SearchNavBar {...args.searchNavBar} />
-            </GridArea>
+            <Below breakpoint="lg">{(matches: any) => matches && <>
+              
+    
+              <GridArea area="search">
+              <motion.div
+      animate={isSearchbarOpen ? "open" : "closed"}
+      transition={{duration: 2}}
+      variants={variants}><SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/> </motion.div>
+              </GridArea> </>} 
+            </Below>
+            <Above breakpoint="lg">{(matches: any) => matches && 
+              <GridArea area="search">
+                <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/>
+              </GridArea>}
+            </Above>
             <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
                     <GroupWrapper position='apart' align='center'>
-                      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
-                      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
-                      <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                      <IconButton icon={isSearchbarOpen ? 'icon-x' : 'icon-search'} isLink={false} linkComponent={undefined} size='large' isTransparent onClick={onClickSearchIcon ? ()=>onClickSearchIcon() : ()=>{}}></IconButton>
+                      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='large' isTransparent></IconButton>
+                      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='large' isTransparent></IconButton>
                     </GroupWrapper>
                   </SearchNavBarLinks>}
                 </Below>
@@ -119,10 +139,52 @@ const HeaderStoryTemplate: Story = {
   },
 }
 
-export const HeaderStory = {
+export const HeaderStory_Guest_User = {
   ...HeaderStoryTemplate,
   args: {
-    topNavBar: TopNavBarStory.args,
+    topNavBar: TopNavBarStory_Guest_User.args,
+    navigation: NavigationStory.args,
+    navigationTabs: TabsStory.args,
+    searchNavBar: SearchNavBarStory.args,
+    searchNavLinks: SearchNavBarLinksStory.args,
+    logotype: {
+      logo: {
+        src: logotype_desktop_horizontal,
+        alt: 'logo',
+        href: '/',
+        id: 'logo',
+        sources: [
+          { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
+          { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+        ],
+      },
+      linkComponent: 'a',
+    },
+    headerLinkList: {
+      links: [
+        {
+          navLinkType: 'favorites',
+          href: '/favorites',
+          text: 'My favorites',
+          isExternal: false,
+        },
+        {
+          navLinkType: 'cart',
+          href: '/cart',
+          text: 'Cart',
+          isExternal: false,
+        },
+      ],
+      linkComponent: 'a',
+    },
+    cartSidebar: CartProductListStory.args
+  },
+}
+
+export const HeaderStory_Logged_In_User = {
+  ...HeaderStoryTemplate,
+  args: {
+    topNavBar: TopNavBarStory_Logged_In_User.args,
     navigation: NavigationStory.args,
     navigationTabs: TabsStory.args,
     searchNavBar: SearchNavBarStory.args,

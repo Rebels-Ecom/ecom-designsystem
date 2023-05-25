@@ -2,7 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Navigation } from './navigation'
 import { SearchNavBarStory } from '../search-nav-bar/search-nav-bar.stories'
-import { TopNavBarStory } from '../top-nav-bar/top-nav-bar.stories'
+import { TopNavBarStory_Guest_User } from '../top-nav-bar/top-nav-bar.stories'
 
 const meta: Meta<typeof Navigation> = {
   title: 'Design System/Molecules/Navigation',
@@ -16,7 +16,7 @@ const NavigationStoryTemplate: Story = {
 };
 
 const navigationArgs = {
-  topNavBar: TopNavBarStory.args,
+  topNavBar: TopNavBarStory_Guest_User.args,
   searchNavBar: SearchNavBarStory.args,
   links: [
     {

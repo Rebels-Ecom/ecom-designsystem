@@ -103,7 +103,7 @@ const topNavArgs_Admin = {
   linkComponent: 'a'
 }
 
-export const TopNavBarStory = {
+export const TopNavBarStory_Guest_User = {
   ...TopNavBarStoryTemplate,
   args: {
     ...topNavArgs

@@ -34,32 +34,7 @@ const itemsToFilterOn = [
 ]
 
 const searchNavBarArgs = {
-  logo: {
-    src: logotype_desktop_horizontal,
-    alt: 'logo',
-    href: '/',
-    id: 'logo',
-    sources: [
-      { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
-      { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
-    ],
-  },
-  searchNavLinks: [
-    {
-      navLinkType: 'favorites',
-      href: '/favorites',
-      text: 'My favorites',
-      isExternal: false,
-    },
-    {
-      navLinkType: 'cart',
-      href: '/cart',
-      text: 'Cart',
-      isExternal: false,
-    },
-  ],
   linkComponent: 'a',
-  searchArgs: SearchStory.args,
   itemsToFilterOn: itemsToFilterOn,
 }
 
