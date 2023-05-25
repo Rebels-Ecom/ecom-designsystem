@@ -45,7 +45,6 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, btnIcon, btnText,
 
   const linksLeft = links.slice(0, Math.ceil(links.length / 2))
   const linksRight = links.slice(- Math.floor(links.length / 2))
-  console.log('UI DATE PICKER', datePicker)
 
   return(
     <div className={cx(styles.topNavBar, isAdmin ? styles.adminTopNavBar : styles.userTopNavBar)}>

@@ -30,6 +30,7 @@ html {
     --logotype-height-mobile: 2rem;
     --cta-width-lg: 16.875rem;
     --cta-width-default: 13.75rem;
+    --search-bar-height-mobile: 3.125rem;
 }
 
 body {

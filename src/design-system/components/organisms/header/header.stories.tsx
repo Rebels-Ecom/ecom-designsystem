@@ -51,7 +51,7 @@ const HeaderStoryTemplate: Story = {
 
     const variants = {
       open: { y: 0, opacity: 1 },
-      closed: { y: "-0.7rem", opacity: 1 },
+      closed: { y: "-3.7rem", opacity: 0 },
     }
 
     return (
@@ -64,23 +64,20 @@ const HeaderStoryTemplate: Story = {
             </GridArea>
             <GridArea area="logo">
               <Logotype {...args.logotype} />
-            </GridArea>
-            <Below breakpoint="lg">{(matches: any) => matches && <>
-              
-    
+            </GridArea>  
+            <Below breakpoint="lg">{(matches: any) => matches && <> {isSearchbarOpen && 
               <GridArea area="search">
-              <motion.div
-      animate={isSearchbarOpen ? "open" : "closed"}
-      transition={{duration: 2}}
-      variants={variants}><SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/> </motion.div>
-              </GridArea> </>} 
+                <motion.div initial={{opacity: 0}} animate={isSearchbarOpen ? "open" : "closed"} transition={{duration: 1}} variants={variants}>
+                  <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/> 
+                </motion.div>
+              </GridArea> } </> } 
             </Below>
             <Above breakpoint="lg">{(matches: any) => matches && 
               <GridArea area="search">
                 <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/>
               </GridArea>}
             </Above>
-            <GridArea area="searchNavLinks">
+            {args.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
                     <GroupWrapper position='apart' align='center'>
@@ -103,6 +100,7 @@ const HeaderStoryTemplate: Story = {
                   </SearchNavBarLinks>}
                 </Above>
             </GridArea>
+            }
             <GridArea area="btn">
               <MenuButton onClick={handleOnClick} />
             </GridArea>
@@ -146,7 +144,6 @@ export const HeaderStory_Guest_User = {
     navigation: NavigationStory.args,
     navigationTabs: TabsStory.args,
     searchNavBar: SearchNavBarStory.args,
-    searchNavLinks: SearchNavBarLinksStory.args,
     logotype: {
       logo: {
         src: logotype_desktop_horizontal,
@@ -158,23 +155,6 @@ export const HeaderStory_Guest_User = {
           { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
         ],
       },
-      linkComponent: 'a',
-    },
-    headerLinkList: {
-      links: [
-        {
-          navLinkType: 'favorites',
-          href: '/favorites',
-          text: 'My favorites',
-          isExternal: false,
-        },
-        {
-          navLinkType: 'cart',
-          href: '/cart',
-          text: 'Cart',
-          isExternal: false,
-        },
-      ],
       linkComponent: 'a',
     },
     cartSidebar: CartProductListStory.args
@@ -200,23 +180,6 @@ export const HeaderStory_Logged_In_User = {
           { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
         ],
       },
-      linkComponent: 'a',
-    },
-    headerLinkList: {
-      links: [
-        {
-          navLinkType: 'favorites',
-          href: '/favorites',
-          text: 'My favorites',
-          isExternal: false,
-        },
-        {
-          navLinkType: 'cart',
-          href: '/cart',
-          text: 'Cart',
-          isExternal: false,
-        },
-      ],
       linkComponent: 'a',
     },
     cartSidebar: CartProductListStory.args

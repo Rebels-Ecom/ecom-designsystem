@@ -27,7 +27,7 @@ function Tabs({tabs, isOpen}: ITabs) {
         <div className={styles.tabsWrapper}>
             <div className={styles.tabs}>
                 {tabs.map((tab, i) =>
-                    <Button key={i} id={tab.id} className={styles.tabBtn} disabled={currentTab === `${tab.id}`} onClick={handleTabClick} type={'button'} surface={'secondary'}>{tab.tabTitle}</Button>
+                    <Button key={i} id={tab.id} className={styles.tabBtn} disabled={currentTab === `${tab.id}`} onClick={handleTabClick} type={'button'} surface={'secondary'} size={'large'} rounded>{tab.tabTitle}</Button>
                 )}
             </div>
             <div className={styles.tabContent}>

@@ -79,19 +79,16 @@
 }
 
 .search {
+  height: var(--search-bar-height-mobile);
   grid-area: searchNavBar;
   display: flex;
   align-items: center;
   background: #ffffff;
+  z-index:3;
   & > div {
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
-  }
-  @media(min-width: 48em) {
-    & > div {
-      width: 55%;
-      margin: 0 auto;
-    }
+    z-index:0;
   }
   @media(min-width: 64em) {
     background: transparent;
@@ -104,11 +101,10 @@
 
 .searchNavLinks {
   grid-area: searchNavLinks;
-  /* display: none; */
   display: flex;
   align-items: center;
   justify-self: end;
-
+  z-index: 9999999;
   @media (min-width: 64em) {
     display: flex;
     padding-right: calc(50vw - 60rem);
@@ -117,6 +113,7 @@
 
 .nav {
   grid-area: navigation;
+  z-index: -1;
 }
 
 .btn {

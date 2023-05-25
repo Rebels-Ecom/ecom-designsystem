@@ -27,7 +27,7 @@
     box-sizing: border-box;
     border-radius: 0.25rem;
     min-width: 15.625rem;
-    background: var(--navigation-surface-subdued);
+    background: var(--navigation-surface-default);
     max-height: calc(100vh - 12rem);
     overflow: scroll;
     @media(min-width: 64em){
