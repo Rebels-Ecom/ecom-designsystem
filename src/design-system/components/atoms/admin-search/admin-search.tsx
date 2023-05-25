@@ -7,14 +7,14 @@ import { Button } from '../button/button'
 import cx from 'classnames'
 
 export interface ISearchNoResult {
-  name: string
   text: React.ReactNode | string
 }
 
 export interface IResult {
   name: string
-  text: string
-  slug: string
+  companyName: string
+  companyId: number
+  email: string
 }
 
 export interface IAdminSearch {
@@ -25,13 +25,15 @@ export interface IAdminSearch {
   query: string
   setQuery: (query: string) => void
   results: Array<IResult>
+  onClick: CallableFunction
   disabled?: boolean
   noResult: ISearchNoResult
+  searchBtnLabel?: string
   placeholder?: string
   className?: string
 }
 
-function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocused, results, disabled, noResult, placeholder }: IAdminSearch) {
+function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocused, results, onClick, disabled, noResult, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
   const searchWrapperElement = useRef<HTMLDivElement | null>(null)
   const inputField = useRef<HTMLInputElement | null>(null)
 
@@ -39,11 +41,6 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
     setIsOpen(false)
     return inputField?.current && inputField.current.blur()
   }, [setIsOpen])
-
-  const onFocus = useCallback(() => {
-    setIsOpen(true)
-    setIsFocused(true)
-  }, [setIsOpen, setIsFocused])
 
   const onBlur = useCallback(() => {
     setIsFocused(false)
@@ -64,14 +61,20 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
     return inputField?.current && inputField.current.focus()
   }
 
+  function handleClick(item: IResult){
+    onClick(item)
+    onClose()
+    onClear()
+  }
+
   useOnClickOutside({ ref: searchWrapperElement, onClose })
   useCloseOnEscape({ onClose, isOpen })
 
   return (
     <div ref={searchWrapperElement} className={cx(styles.search, className)}>
       <div className={styles.searchBar}>
-        <Button type="button" surface="tertiary" size="x-small">
-          <Icon icon="icon-search" />
+        <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn}>
+          <span>{searchBtnLabel}</span>
         </Button>
         <InputText
           ref={inputField}
@@ -79,7 +82,6 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
           id={id}
           onChange={onChange}
           value={query}
-          // onFocus={onFocus}
           onBlur={onBlur}
           other={{ autoComplete: 'off' }}
           disabled={disabled}
@@ -87,7 +89,7 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
           wrapperClassName={styles.searchInput}
         />
         {query && (
-          <button onClick={onClear} tabIndex={-1} type="button" className={styles.clearButton}>
+          <button onClick={onClear} tabIndex={-1} type="button" className={styles.clearBtn}>
             <Icon icon="icon-x" className="text-icon" />
           </button>
         )}
@@ -97,19 +99,16 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
         <div className={styles.searchResults}>
           <ul aria-labelledby={id}>
             {results.map((li: IResult, i: number) => (
-              <li key={`${id}_${i}`}>
-                <a href={li.slug} className={styles.searchResultLink}>
-                  <span className={styles.serchResultItemLabel}>{li.name}</span>
-                  {li.text && <span> - </span>}
-                  <span className={styles.serchResultItemText}>{li.text}</span>
-                </a>
+              <li key={`${id}_${i}`} onClick={() => handleClick(li)} className={styles.resultListItem}>
+                <span className={styles.serchResultItemText}>{li.name}</span>
+                <span className={styles.serchResultItemText}>{li.companyName}</span>
+                <span className={styles.serchResultItemText}>{li.companyId}</span>
+                <span className={styles.serchResultItemText}>{li.email}</span>
               </li>
             ))}
             {results.length === 0 && query.length ? (
-              <li key={`search_no_result_${id}`}>
-                <div className={styles.serchResultItem}>
-                  <span className={styles.serchResultItemLabel}>{noResult.name}</span>
-                  {noResult.text && <span>-</span>}
+              <li key={`search_no_result_${id}`} className={styles.noResultListItem}>
+                <div >
                   <span className={styles.serchResultItemText}>{noResult.text}</span>
                 </div>
               </li>

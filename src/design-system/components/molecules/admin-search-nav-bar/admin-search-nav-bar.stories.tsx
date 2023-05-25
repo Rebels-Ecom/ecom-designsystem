@@ -1,53 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { AdminSearch, IResult } from './admin-search'
+import { AdminSearchNavBar } from './admin-search-nav-bar'
+import { IResult } from '../../atoms/admin-search/admin-search'
 
-const meta: Meta<typeof AdminSearch> = {
-  title: 'Design System/Atoms/AdminSearch',
-  component: AdminSearch
-};
+const meta: Meta<typeof AdminSearchNavBar> = {
+  title: 'Design System/Molecules/AdminSearchNavBar',
+  component: AdminSearchNavBar,
+}
 
-export default meta;
-type Story = StoryObj<typeof AdminSearch>;
+export default meta
+type Story = StoryObj<typeof AdminSearchNavBar>
 
-const AdminSearchStoryTemplate: Story = {
-  render: ({ ...args }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(args.isOpen)
-    const [isFocused, setIsFocused] = useState<boolean>(false)
-    const [query, setQuery] = useState<string>(args.query)
-    const [results, setResults] = useState<Array<any>>([])
-
+const AdminSearchNavBarStoryTemplate: Story = {
+  render: (args) => {
     function handleOnClick(clickedItem: IResult){
       console.log('Handle clicked item', clickedItem)
     }
 
-    useEffect(() => {
-      let pattern = new RegExp(query.toLowerCase(), 'i')
-      setResults(itemsToFilterOn.filter((item) => query && (
-        (item.name && pattern.test(item.name.toLowerCase())) ||
-        (item.companyName && pattern.test(item.companyName.toLowerCase())) ||
-        (item.companyId && pattern.test(item.companyId.toString().toLowerCase())) ||
-        (item.email && pattern.test(item.email.toLowerCase()))
-        )))
-    }, [query]);
-
-    return(
-      <AdminSearch
-        id={args.id}
-        query={query}
-        setQuery={setQuery}
-        results={results}
-        onClick={handleOnClick}
-        disabled={args.disabled}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        setIsFocused={setIsFocused}
-        noResult={args.noResult}
-        placeholder={args.placeholder}
-      />
+    return (
+      <div style={{ position: 'relative', height: '5rem', display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+        <AdminSearchNavBar {...args} onClick={handleOnClick}/>
+      </div>
     )
   }
-};
+}
 
 const itemsToFilterOn = [
   { id: 1747842, name: "371000 EXPERIUM LODGEBAREN", email: "admin-371000@spendrups.nu", phone: null, companyId: 283903, companyName: "EXPERIUM LODGEBAREN (371000)" },
@@ -62,17 +38,13 @@ const itemsToFilterOn = [
   { id: 3708697, name: "Henrik Test", email: "test-henrik@371000.se", phone: null, companyId: 283903, companyName: "EXPERIUM LODGEBAREN (371000)"}
 ]
 
-export const AdminSearchStory = {
-  ...AdminSearchStoryTemplate,
+const searchNavBarArgs = {
+  itemsToFilterOn: itemsToFilterOn,
+}
+
+export const AdminSearchNavBarStory = {
+  ...AdminSearchNavBarStoryTemplate,
   args: {
-    id: 'SearchId',
-    results: [],
-    isOpen: false,
-    disabled: false,
-    query: '',
-    noResult: {
-      text: 'Your search returned no results',
-    },
-    placeholder: 'Sök på kundnummer, företag, namn'
-  }
+    ...searchNavBarArgs,
+  },
 }
