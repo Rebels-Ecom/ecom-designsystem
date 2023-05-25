@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductCategoryListingPage } from './product-category-listing-page'
-import { HeaderStory } from '../../organisms/header/header.stories'
+import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
 import { BreadcrumbsStoryWithBackground } from '../../organisms/breadcrumbs/breadcrumbs.stories'
 import { ProductCardListStory } from '../../organisms/product-card-list/product-card-list.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
@@ -27,7 +27,7 @@ const ProductCategoryListingPageStoryTemplate: Story = {
 export const ProductCategoryListingPageStory = {
   ...ProductCategoryListingPageStoryTemplate,
   args: {
-    header: HeaderStory.args,
+    header: HeaderStory_Logged_In_User.args,
     breadcrumbs: BreadcrumbsStoryWithBackground.args,
     productCategoryListing: ProductCardListStory.args,
     footer: FooterStory.args

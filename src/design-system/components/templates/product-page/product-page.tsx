@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
-import { ContentWrapper, MaxWidth } from '../../layouts'
+import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, Tabs, UserProfileDropdown } from '../../molecules'
 import { Footer, IFooter } from '../../organisms/footer/footer'
 import { IProductDetails, ProductDetails } from '../../organisms/product-details/product-details'
 import { IProductDescription, ProductDescription } from '../../organisms/product-description/product-description'
@@ -10,6 +10,8 @@ import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } f
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
+import { motion } from 'framer-motion'
+import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 
 export interface IProductPage {
   header: any
@@ -22,42 +24,72 @@ export interface IProductPage {
 const ProductPage = ({ header, productDetails, productDescription, addToCart, footer }: IProductPage) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
+  const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+  const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
-  const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
-  const onClickMySpendrupsBtn = () => { console.log(`Go to my Spendrups page`)}
+  const onClickLogout = () => { console.log('Handle logout...')}
+
+  const variants = {
+    open: { y: 0, opacity: 1 },
+    closed: { y: "-3.7rem", opacity: 0 },
+  }
+
   return (
     <>
       <Header isOpen={isOpen}>
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
-              <TopNavBar {...header.topNavBar} />
+              <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...header.logotype} />
+            </GridArea>  
+            <Below breakpoint="lg">{(matches: any) => matches && <> {isSearchbarOpen && 
+              <GridArea area="search">
+                <motion.div initial={{opacity: 0}} animate={isSearchbarOpen ? "open" : "closed"} transition={{duration: 1}} variants={variants}>
+                  <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/> 
+                </motion.div>
+              </GridArea> } </> } 
+            </Below>
+            <Above breakpoint="lg">{(matches: any) => matches && 
+              <GridArea area="search">
+                <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
+              </GridArea>}
+            </Above>
+            {header.searchNavLinks && <GridArea area="searchNavLinks">
+              <Below breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                      <IconButton icon={isSearchbarOpen ? 'icon-x' : 'icon-search'} isLink={false} linkComponent={undefined} size='large' isTransparent onClick={onClickSearchIcon ? ()=>onClickSearchIcon() : ()=>{}}></IconButton>
+                      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='large' isTransparent></IconButton>
+                      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='large' isTransparent></IconButton>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Below>
+                <Above breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                    <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                    <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                    </GroupWrapper>
+                    <GroupWrapper position='apart'>
+                        <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                        <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Above>
             </GridArea>
-            <GridArea area="search">
-              <SearchNavBar {...header.searchNavBar} />
-            </GridArea>
-            <GridArea area="searchNavLinks">
-              <SearchNavBarLinks>
-                <GroupWrapper position='apart'>
-                  <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
-                  <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
-                </GroupWrapper>
-                <GroupWrapper position='apart'>
-                    <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-                    <Button type={'button'} surface={'primary'} size={'x-small'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClickMySpendrupsBtn ? ()=>onClickMySpendrupsBtn() : ()=>{}}>Mitt spendrups</Button>
-                </GroupWrapper>
-              </SearchNavBarLinks>
-            </GridArea>
+            }
             <GridArea area="btn">
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} isOpen={isOpen} />
+              <Below breakpoint="lg">{(matches: any) => matches &&  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>}</Below>
+              <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...header.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
         )}

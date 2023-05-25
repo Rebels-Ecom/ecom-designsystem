@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { MySpendrupsPage } from './my-spendrups-page'
-import { HeaderStory } from '../../organisms/header/header.stories'
+import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 
 const meta: Meta<typeof MySpendrupsPage> = {
@@ -19,7 +19,7 @@ const MySpendrupsPageStoryTemplate: Story = {
 export const MySpendrupsPageTemplateStory = {
   ...MySpendrupsPageStoryTemplate,
   args: {
-    header: HeaderStory.args,
+    header: HeaderStory_Logged_In_User.args,
     footer: FooterStory.args,
   },
 }

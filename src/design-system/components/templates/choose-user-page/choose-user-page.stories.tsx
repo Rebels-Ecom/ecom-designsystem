@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ChooseUserPage } from './choose-user-page'
-import { HeaderStory } from '../../organisms/header/header.stories'
+import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { HeroCarouselStory } from '../../organisms/hero-carousel/hero-carousel.stories'
 
@@ -20,7 +20,7 @@ const ChooseUserPageStoryTemplate: Story = {
 export const ChooseUserPageTemplateStory = {
   ...ChooseUserPageStoryTemplate,
   args: {
-    header: HeaderStory.args,
+    header: HeaderStory_Logged_In_User.args,
     hero: HeroCarouselStory.args,
     footer: FooterStory.args,
   },

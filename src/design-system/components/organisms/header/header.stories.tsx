@@ -39,15 +39,14 @@ type Story = StoryObj<typeof Header>
 const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
-    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
     const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
     const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
-    const onClickMySpendrupsBtn = () => setIsDropdownOpen(!isDropdownOpen)
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
+    const onClickLogout = () => { console.log('Handle logout...')}
 
     const variants = {
       open: { y: 0, opacity: 1 },
@@ -60,7 +59,7 @@ const HeaderStoryTemplate: Story = {
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
-              <TopNavBar {...args.topNavBar} onSelectDate={setSelectedDate}/>
+              <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...args.logotype} />

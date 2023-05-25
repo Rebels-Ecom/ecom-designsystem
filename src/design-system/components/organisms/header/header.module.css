@@ -4,13 +4,13 @@
   grid-template-rows: repeat(4, auto);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  
-   grid-template-areas:
+  grid-template-areas:
     "topNav topNav topNav topNav topNav"
     "logo searchNavLinks searchNavLinks searchNavLinks button"
     "searchNavBar searchNavBar searchNavBar searchNavBar searchNavBar"
     "navigation navigation navigation navigation navigation";
 
+  align-items: center;
   background: var(--nav-bar-background);
   width: 100%;
   position: sticky;
@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   justify-self: end;
-  z-index: 9999999;
+  z-index: 999;
   @media (min-width: 64em) {
     display: flex;
     padding-right: calc(50vw - 60rem);
