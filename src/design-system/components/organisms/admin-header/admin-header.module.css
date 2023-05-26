@@ -39,7 +39,7 @@
   grid-area: adminSearch;
   display: flex;
   align-items: center;
-  background: #ffffff;
+  background: transparent;
   & > div {
     width: 70%;
     margin: 0 auto;

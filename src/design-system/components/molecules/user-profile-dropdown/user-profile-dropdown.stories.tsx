@@ -5,7 +5,6 @@ import { DropdownList } from '../dropdown-list/dropdown-list'
 import { DropdownListStory } from '../dropdown-list/dropdown-list.stories'
 import { UserInfoSummary } from '../user-info-summary/user-info-summary'
 import { UserInfoSummaryStory } from '../user-info-summary/user-info-summary.stories'
-import { Button } from '../../atoms/button/button'
 
 const meta: Meta<typeof UserProfileDropdown> = {
   title: 'Design System/Molecules/UserProfileDropdown',

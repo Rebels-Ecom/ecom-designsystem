@@ -5,7 +5,7 @@ import { HeroCarouselStory } from '../../organisms/hero-carousel/hero-carousel.s
 import { BlogCardListStory_VarförSpendrups, BlogCardListStory_Brewing, BlogCardListStory_Samarbete, BlogCardListStory_Equipmemt } from '../../organisms/blog-card-list/blog-card-list.stories'
 import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-list.stories'
 import { TeaserStoryLeft1, TeaserStoryRight, TeaserStoryLeft2 } from '../../molecules/teaser/teaser.stories'
-import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
+import { HeaderStory_Admin_User, HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { FeaturedProductsCarouselStory } from '../../organisms/featured-products-carousel/featured-products-carousel.stories'
 import { CustomerTeaserStory } from '../../organisms/customer-teaser/customer-teaser.stories'
@@ -46,7 +46,7 @@ export const StartPageTemplateStory = {
 export const StartPageTemplateStory_Admin_User = {
   ...StartPageStoryTemplate,
   args: {
-    header: HeaderStory_Logged_In_User.args,
+    header: HeaderStory_Admin_User.args,
     hero: HeroCarouselStory.args,
     blogList_Why_Spendrups: BlogCardListStory_VarförSpendrups.args,
     featuredProducts: FeaturedProductsCarouselStory.args,

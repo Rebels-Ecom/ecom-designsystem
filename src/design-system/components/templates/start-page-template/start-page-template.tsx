@@ -8,8 +8,8 @@ import { INavigation, Navigation } from '../../molecules/navigation/navigation'
 import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
-import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs } from '../../molecules'
+import { AdminHeader, CartSidebar, Header } from '../../organisms'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs, AdminSearchNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Heading, LinkButton, Button, ToggleSwitch, IconButton, UiDatePicker } from '../../atoms'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
@@ -17,6 +17,7 @@ import { CartProductList } from '../../organisms/cart-product-list/cart-product-
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 import { motion } from 'framer-motion'
+import { IResult } from '../../atoms/admin-search/admin-search'
 
 export interface IStartPageTemplate {
   header: any
@@ -60,6 +61,7 @@ const StartPageTemplate = ({
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   const onClickLogout = () => { console.log('Handle logout...')}
+  const onClickSearchCustomer = (customer:IResult) => {console.log('Customer clicked', customer)}
 
   const variants = {
     open: { y: 0, opacity: 1 },
@@ -71,6 +73,32 @@ const StartPageTemplate = ({
       <Header isOpen={isOpen}>
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
+            {header.isAdmin && header.adminHeader && <GridArea area="adminHeader">
+              <AdminHeader>
+                {({ Wrapper, GridArea }) => (
+                  <Wrapper>
+                    <GridArea area="adminSearch">
+                      <AdminSearchNavBar {...header.adminHeader.adminSearchNavBar} onClick={onClickSearchCustomer}/>
+                    </GridArea>
+                    <GridArea area="searchNavLinks">
+                    <SearchNavBarLinks>
+                        <GroupWrapper position='apart'>
+                          <Below breakpoint="lg">{(matches: any) => matches && <>
+                            <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                            <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                          </>}
+                          </Below>
+                          <Above breakpoint="lg">{(matches: any) => matches && <>
+                              <Button type={'button'} surface={'secondary'} children={'Jon Johnson'} iconRight={{icon:'icon-user'}} rounded onClick={()=>{}}/>
+                              <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} onClick={()=>{}}/>
+                          </>}</Above>
+                        </GroupWrapper>
+                      </SearchNavBarLinks>
+                    </GridArea>
+                  </Wrapper>
+                )}
+              </AdminHeader>
+            </GridArea>}
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
             </GridArea>

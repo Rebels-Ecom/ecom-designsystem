@@ -70,12 +70,19 @@ const HeaderStoryTemplate: Story = {
                       <AdminSearchNavBar {...args.adminHeader.adminSearchNavBar} onClick={onClickSearchCustomer}/>
                     </GridArea>
                     <GridArea area="searchNavLinks">
-                          <SearchNavBarLinks>
-                            <GroupWrapper position='apart'>
-                                <Button type={'button'} surface={'secondary'} children={'Jon Johnson'} iconRight={{icon:'icon-user'}} rounded onClick={()=>{}}/>
-                                <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} rounded onClick={()=>{}}/>
-                            </GroupWrapper>
-                          </SearchNavBarLinks>
+                      <SearchNavBarLinks>
+                        <GroupWrapper position='apart'>
+                          <Below breakpoint="lg">{(matches: any) => matches && <>
+                            <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                            <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                          </>}
+                          </Below>
+                          <Above breakpoint="lg">{(matches: any) => matches && <>
+                              <Button type={'button'} surface={'secondary'} children={'Jon Johnson'} iconRight={{icon:'icon-user'}} rounded onClick={()=>{}}/>
+                              <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} onClick={()=>{}}/>
+                          </>}</Above>
+                        </GroupWrapper>
+                      </SearchNavBarLinks>
                     </GridArea>
                   </Wrapper>
                 )}
