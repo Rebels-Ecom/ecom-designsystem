@@ -13,7 +13,7 @@ type Story = StoryObj<typeof SearchNavBar>
 const SearchNavBarStoryTemplate: Story = {
   render: (args) => (
     <div style={{ position: 'relative', height: '5rem', display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem' }}>
-      <SearchNavBar {...args} />
+      <SearchNavBar {...args} isOpen={true}/>
     </div>
   ),
 }

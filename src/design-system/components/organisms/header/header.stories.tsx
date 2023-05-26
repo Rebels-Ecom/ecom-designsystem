@@ -11,7 +11,6 @@ import { Logotype } from '../../molecules/logotype/logotype'
 import { SearchNavBarLinks } from '../../molecules/search-nav-bar-links/search-nav-bar-links'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
-import { CartSidebarStory } from '../cart-sidebar/cart-sidebar.stories'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
 import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } from '../../atoms'
 import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup, AdminSearchNavBar } from '../../molecules'
@@ -26,7 +25,6 @@ import { TabsStory } from '../../molecules/tabs/tabs.stories'
 import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
-import { motion } from 'framer-motion'
 import { IResult } from '../../atoms/admin-search/admin-search'
 import { AdminSearchNavBarStory } from '../../molecules/admin-search-nav-bar/admin-search-nav-bar.stories'
 
@@ -52,11 +50,6 @@ const HeaderStoryTemplate: Story = {
     const onClickLogout = () => { console.log('Handle logout...')}
     const onClickSearchCustomer = (customer:IResult) => {setActiveUser(customer)}
 
-    const variants = {
-      open: { y: 0, opacity: 1 },
-      closed: { y: "-3.7rem", opacity: 0 },
-    }
-
     return (
       <>
       <Header isOpen={isOpen}>
@@ -71,13 +64,13 @@ const HeaderStoryTemplate: Story = {
                 <SearchNavBarLinks>
                   <GroupWrapper position='apart'>
                     <Below breakpoint="lg">{(matches: any) => matches && <>
-                      <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                      { activeUser?.name && <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>}
                       <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
                     </>}
                     </Below>
                     <Above breakpoint="lg">{(matches: any) => matches && <>
-                        { activeUser?.name && <Button type={'button'} surface={'secondary'} children={activeUser.name} iconRight={{icon:'icon-user'}} size={'x-small'} rounded onClick={()=>{}}/>}
-                        <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} size={'x-small'} onClick={()=>{}}/>
+                      { activeUser?.name && <Button type={'button'} surface={'secondary'} children={activeUser.name} iconRight={{icon:'icon-user'}} size={'x-small'} rounded onClick={()=>{}}/>}
+                      <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} size={'x-small'} onClick={()=>{}}/>
                     </>}</Above>
                   </GroupWrapper>
                 </SearchNavBarLinks>
@@ -89,18 +82,9 @@ const HeaderStoryTemplate: Story = {
             <GridArea area="logo">
               <Logotype {...args.logotype} />
             </GridArea>  
-            <Below breakpoint="lg">{(matches: any) => matches && <> {isSearchbarOpen && 
-              <GridArea area="search">
-                <motion.div initial={{opacity: 0}} animate={isSearchbarOpen ? "open" : "closed"} transition={{duration: 1}} variants={variants}>
-                  <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/> 
-                </motion.div>
-              </GridArea> } </> } 
-            </Below>
-            <Above breakpoint="lg">{(matches: any) => matches && 
-              <GridArea area="search">
-                <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/>
-              </GridArea>}
-            </Above>
+            {isSearchbarOpen && <GridArea area="search">
+              <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/>
+            </GridArea>}
             {args.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
@@ -129,7 +113,14 @@ const HeaderStoryTemplate: Story = {
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Below breakpoint="lg">{(matches: any) => matches &&  <Tabs {...args.navigationTabs} isOpen={isOpen}></Tabs>}</Below>
+              <Below breakpoint="lg">{(matches: any) => matches &&  <>
+                {args.isLoggedIn 
+                  ? 
+                  <Tabs {...args.navigationTabs} isOpen={isOpen}></Tabs>
+                :
+                  <Navigation {...args.navigation} isOpen={isOpen} />
+                }
+              </>}</Below>
               <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...args.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
@@ -188,6 +179,7 @@ export const HeaderStory_Guest_User = {
 export const HeaderStory_Logged_In_User = {
   ...HeaderStoryTemplate,
   args: {
+    isLoggedIn: true,
     topNavBar: TopNavBarStory_Logged_In_User.args,
     navigation: NavigationStory.args,
     navigationTabs: TabsStory.args,
@@ -214,6 +206,7 @@ export const HeaderStory_Admin_User = {
   ...HeaderStoryTemplate,
   args: {
     isAdmin: true,
+    isLoggedIn: true,
     adminSearchNavBar: AdminSearchNavBarStory.args, 
     adminNavLinks: SearchNavBarLinksStory.args,
     topNavBar: TopNavBarStory_Admin.args,

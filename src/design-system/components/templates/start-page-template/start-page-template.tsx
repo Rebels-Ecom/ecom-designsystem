@@ -4,7 +4,7 @@ import { ITeaser, Teaser } from '../../molecules/teaser/teaser'
 import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
 import { IHeroCarousel, HeroCarousel } from '../../organisms/hero-carousel/hero-carousel'
 import { IOfferCardList, OfferCardList } from '../../organisms/offer-card-list/offer-card-list'
-import { INavigation, Navigation } from '../../molecules/navigation/navigation'
+import { Navigation } from '../../molecules/navigation/navigation'
 import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
@@ -16,7 +16,6 @@ import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
-import { motion } from 'framer-motion'
 import { IResult } from '../../atoms/admin-search/admin-search'
 
 export interface IStartPageTemplate {
@@ -62,12 +61,7 @@ const StartPageTemplate = ({
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   const onClickLogout = () => { console.log('Handle logout...')}
-  const onClickSearchCustomer = (customer:IResult) => {console.log('Customer clicked', customer)}
-
-  const variants = {
-    open: { y: 0, opacity: 1 },
-    closed: { y: "-3.7rem", opacity: 0 },
-  }
+  const onClickSearchCustomer = (customer:IResult) => {setActiveUser(customer)}
 
   return (
     <>
@@ -83,7 +77,7 @@ const StartPageTemplate = ({
                 <SearchNavBarLinks>
                   <GroupWrapper position='apart'>
                     <Below breakpoint="lg">{(matches: any) => matches && <>
-                      <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                      { activeUser?.name &&  <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>}
                       <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
                     </>}
                     </Below>
@@ -101,18 +95,9 @@ const StartPageTemplate = ({
             <GridArea area="logo">
               <Logotype {...header.logotype} />
             </GridArea>  
-            <Below breakpoint="lg">{(matches: any) => matches && <> {isSearchbarOpen && 
-              <GridArea area="search">
-                <motion.div initial={{opacity: 0}} animate={isSearchbarOpen ? "open" : "closed"} transition={{duration: 1}} variants={variants}>
-                  <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/> 
-                </motion.div>
-              </GridArea> } </> } 
-            </Below>
-            <Above breakpoint="lg">{(matches: any) => matches && 
-              <GridArea area="search">
-                <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
-              </GridArea>}
-            </Above>
+            {isSearchbarOpen && <GridArea area="search">
+              <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
+            </GridArea>}
             {header.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
@@ -141,7 +126,14 @@ const StartPageTemplate = ({
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Below breakpoint="lg">{(matches: any) => matches &&  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>}</Below>
+              <Below breakpoint="lg">{(matches: any) => matches &&  <>
+                {header.isLoggedIn 
+                  ? 
+                  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>
+                :
+                  <Navigation {...header.navigation} isOpen={isOpen} />
+                }
+              </>}</Below>
               <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...header.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>

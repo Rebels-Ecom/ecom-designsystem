@@ -5,7 +5,6 @@ import { IHeroCarousel, HeroCarousel } from '../../organisms/hero-carousel/hero-
 import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, GroupWrapper, Tabs, UserProfileDropdown } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Above, Below, ContentWrapper } from '../../layouts'
-import { motion } from 'framer-motion'
 import { IconButton, UiDatePicker } from '../../atoms'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
@@ -27,11 +26,6 @@ const CampaignPage = ({ header, footer, hero }: ICampaign) => {
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   const onClickLogout = () => { console.log('Handle logout...')}
 
-  const variants = {
-    open: { y: 0, opacity: 1 },
-    closed: { y: "-3.7rem", opacity: 0 },
-  }
-
   return (
     <>
       <Header isOpen={isOpen}>
@@ -43,18 +37,9 @@ const CampaignPage = ({ header, footer, hero }: ICampaign) => {
             <GridArea area="logo">
               <Logotype {...header.logotype} />
             </GridArea>  
-            <Below breakpoint="lg">{(matches: any) => matches && <> {isSearchbarOpen && 
-              <GridArea area="search">
-                <motion.div initial={{opacity: 0}} animate={isSearchbarOpen ? "open" : "closed"} transition={{duration: 1}} variants={variants}>
-                  <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/> 
-                </motion.div>
-              </GridArea> } </> } 
-            </Below>
-            <Above breakpoint="lg">{(matches: any) => matches && 
-              <GridArea area="search">
-                <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
-              </GridArea>}
-            </Above>
+            {isSearchbarOpen && <GridArea area="search">
+              <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
+            </GridArea>}
             {header.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
@@ -83,7 +68,14 @@ const CampaignPage = ({ header, footer, hero }: ICampaign) => {
               <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Below breakpoint="lg">{(matches: any) => matches &&  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>}</Below>
+            <Below breakpoint="lg">{(matches: any) => matches &&  <>
+                {header.isLoggedIn 
+                  ? 
+                  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>
+                :
+                  <Navigation {...header.navigation} isOpen={isOpen} />
+                }
+              </>}</Below>
               <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...header.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
