@@ -104,6 +104,25 @@ const topNavArgs_Admin = {
   linkComponent: 'a'
 }
 
+const topNavArgs_Admin_HasActiveUser = {
+  userLoggedIn: true,
+  isAdmin: true,
+  hasActiveUser: true,
+  userName: 'Jon Johnson',
+  btnIcon: 'icon-x-circle',
+  btnText: 'Logga ut',
+  datePicker: UiDatePickerStory.args,
+  links: [
+    {
+      href: '#',
+      icon: 'icon-users',
+      children: `Inloggad som ${userName}`,
+      isExternal: false,
+    },
+  ],
+  linkComponent: 'a'
+}
+
 export const TopNavBarStory_Guest_User = {
   ...TopNavBarStoryTemplate,
   args: {
@@ -122,5 +141,12 @@ export const TopNavBarStory_Admin = {
   ...TopNavBarStoryTemplate,
   args: {
     ...topNavArgs_Admin,
+  }
+}
+
+export const TopNavBarStory_AdminHasActiveUser = {
+  ...TopNavBarStoryTemplate,
+  args: {
+    ...topNavArgs_Admin_HasActiveUser,
   }
 }

@@ -35,9 +35,9 @@ const ChooseUserPage = ({ header, footer }: IChooseUserPage) => {
             <GridArea area="logo">
               <Logotype {...header.logotype} />
             </GridArea>  
-            {isSearchbarOpen && <GridArea area="search">
+            <GridArea area="search">
               <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
-            </GridArea>}
+            </GridArea>
             {header.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>

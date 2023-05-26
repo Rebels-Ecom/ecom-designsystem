@@ -77,14 +77,14 @@ const HeaderStoryTemplate: Story = {
               </GridArea>
             </>}
             <GridArea area="top">
-              <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate} isAdmin={args.isAdmin}/>
+              <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate} isAdmin={args.isAdmin} hasActiveUser={activeUser?.name && activeUser?.name.length>0}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...args.logotype} />
             </GridArea>  
-            {isSearchbarOpen && <GridArea area="search">
+            <GridArea area="search">
               <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/>
-            </GridArea>}
+            </GridArea>
             {args.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>

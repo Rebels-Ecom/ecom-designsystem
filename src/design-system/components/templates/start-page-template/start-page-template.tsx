@@ -90,14 +90,14 @@ const StartPageTemplate = ({
               </GridArea>
             </>}
             <GridArea area="top">
-              <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
+              <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate} isAdmin={header.isAdmin} hasActiveUser={activeUser?.name && activeUser?.name.length>0}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...header.logotype} />
             </GridArea>  
-            {isSearchbarOpen && <GridArea area="search">
+            <GridArea area="search">
               <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
-            </GridArea>}
+            </GridArea>
             {header.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>

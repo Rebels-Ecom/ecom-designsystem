@@ -10,6 +10,7 @@ export interface ITopNavBar {
   links: Array<TIconNavLink>
   userLoggedIn: boolean
   isAdmin?: boolean
+  hasActiveUser?: boolean
   btnIcon?: TIcon
   btnText?: string
   datePicker?:IUiDatePicker
@@ -18,7 +19,7 @@ export interface ITopNavBar {
   linkComponent: any
 }
 
-const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, btnIcon, btnText, onClick, datePicker, onSelectDate, linkComponent: Link }: ITopNavBar) => {
+const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=false, btnIcon, btnText, onClick, datePicker, onSelectDate, linkComponent: Link }: ITopNavBar) => {
 
   function renderLink(link:TIconNavLink) {
     return(
@@ -47,7 +48,7 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, btnIcon, btnText,
   const linksRight = links.slice(- Math.floor(links.length / 2))
 
   return(
-    <div className={cx(styles.topNavBar, isAdmin ? styles.adminTopNavBar : styles.userTopNavBar)}>
+    <div className={cx(styles.topNavBar, hasActiveUser ? styles.adminTopNavBar : styles.userTopNavBar)}>
       {
         isAdmin 
         ?

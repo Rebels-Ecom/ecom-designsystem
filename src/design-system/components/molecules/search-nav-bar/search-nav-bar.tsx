@@ -16,7 +16,7 @@ const variants = {
 }
 
 const SearchNavBar = ({ itemsToFilterOn, isOpen=false }: ISearchNavBar) => {
-  const [isSeachBarOpen, setIsOpen] = useState<boolean>(isOpen)
+  const [isSearchBarOpen, setIsOpen] = useState<boolean>(isOpen)
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [query, setQuery] = useState<string>('')
   const [results, setResults] = useState<Array<any>>([])
@@ -34,7 +34,7 @@ const SearchNavBar = ({ itemsToFilterOn, isOpen=false }: ISearchNavBar) => {
         query={query}
         setQuery={setQuery}
         results={results}
-        isOpen={isSeachBarOpen}
+        isOpen={isSearchBarOpen}
         setIsOpen={setIsOpen}
         setIsFocused={setIsFocused}
         placeholder={'Sök på produkt'}
