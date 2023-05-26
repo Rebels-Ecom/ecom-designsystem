@@ -20,6 +20,7 @@ const useSize = (target: any) => {
 }
 
 enum Area {
+  ADMIN_HEADER = 'adminHeader',
   TOP = 'top',
   LOGO = 'logo',
   SEARCH = 'search',
@@ -53,6 +54,8 @@ const Header = ({
   isOpen,
 }: {
   isOpen: boolean
+  isAdmin: boolean
+  adminHeader?:any
   topNavBar?: any
   logotype?: any
   searchNavBar?: any

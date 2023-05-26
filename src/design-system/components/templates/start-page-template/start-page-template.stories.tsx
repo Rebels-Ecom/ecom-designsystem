@@ -42,3 +42,23 @@ export const StartPageTemplateStory = {
     footer:FooterStory.args
   }
 }
+
+export const StartPageTemplateStory_Admin_User = {
+  ...StartPageStoryTemplate,
+  args: {
+    header: HeaderStory_Logged_In_User.args,
+    hero: HeroCarouselStory.args,
+    blogList_Why_Spendrups: BlogCardListStory_VarförSpendrups.args,
+    featuredProducts: FeaturedProductsCarouselStory.args,
+    offerCardsList: OfferCardListStory.args,
+    blogList_Spendrups_Suppliers: BlogCardListStory_Samarbete.args,
+    blogFullwidth: BlogCardStoryFullWidth.args,
+    customerTeaser: CustomerTeaserStory.args,
+    teaserRight: TeaserStoryRight.args,
+    blogList_Spendrups_Brewing: BlogCardListStory_Brewing.args,
+    teaserLeft1: TeaserStoryLeft1.args,
+    teaserLeft2: TeaserStoryLeft2.args,
+    blogList_Spendrups_Equipment: BlogCardListStory_Equipmemt.args,
+    footer:FooterStory.args
+  }
+}

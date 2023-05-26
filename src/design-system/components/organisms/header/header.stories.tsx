@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from './header'
-import { TopNavBarStory_Guest_User, TopNavBarStory_Logged_In_User } from '../../molecules/top-nav-bar/top-nav-bar.stories'
+import { TopNavBarStory_Admin, TopNavBarStory_Guest_User, TopNavBarStory_Logged_In_User } from '../../molecules/top-nav-bar/top-nav-bar.stories'
 import { TopNavBar } from '../../molecules/top-nav-bar/top-nav-bar'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { NavigationStory } from '../../molecules/navigation/navigation.stories'
@@ -14,7 +14,7 @@ import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_verti
 import { CartSidebarStory } from '../cart-sidebar/cart-sidebar.stories'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
 import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } from '../../atoms'
-import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup } from '../../molecules'
+import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup, AdminSearchNavBar } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories'
@@ -27,6 +27,9 @@ import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 import { motion } from 'framer-motion'
+import { AdminHeader } from '../admin-header/admin-header'
+import { IResult } from '../../atoms/admin-search/admin-search'
+import { AdminHeaderStory } from '../admin-header/admin-header.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -47,6 +50,7 @@ const HeaderStoryTemplate: Story = {
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
     const onClickLogout = () => { console.log('Handle logout...')}
+    const onClickSearchCustomer = (customer:IResult) => {console.log('Customer clicked', customer)}
 
     const variants = {
       open: { y: 0, opacity: 1 },
@@ -55,9 +59,28 @@ const HeaderStoryTemplate: Story = {
 
     return (
       <>
-      <Header isOpen={isOpen}>
+      <Header isOpen={isOpen} isAdmin={args.isAdmin}>
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
+            {args.isAdmin && args.adminHeader && <GridArea area="adminHeader">
+              <AdminHeader>
+                {({ Wrapper, GridArea }) => (
+                  <Wrapper>
+                    <GridArea area="adminSearch">
+                      <AdminSearchNavBar {...args.adminHeader.adminSearchNavBar} onClick={onClickSearchCustomer}/>
+                    </GridArea>
+                    <GridArea area="searchNavLinks">
+                          <SearchNavBarLinks>
+                            <GroupWrapper position='apart'>
+                                <Button type={'button'} surface={'secondary'} children={'Jon Johnson'} iconRight={{icon:'icon-user'}} rounded onClick={()=>{}}/>
+                                <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} rounded onClick={()=>{}}/>
+                            </GroupWrapper>
+                          </SearchNavBarLinks>
+                    </GridArea>
+                  </Wrapper>
+                )}
+              </AdminHeader>
+            </GridArea>}
             <GridArea area="top">
               <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
             </GridArea>
@@ -164,6 +187,33 @@ export const HeaderStory_Logged_In_User = {
   ...HeaderStoryTemplate,
   args: {
     topNavBar: TopNavBarStory_Logged_In_User.args,
+    navigation: NavigationStory.args,
+    navigationTabs: TabsStory.args,
+    searchNavBar: SearchNavBarStory.args,
+    searchNavLinks: SearchNavBarLinksStory.args,
+    logotype: {
+      logo: {
+        src: logotype_desktop_horizontal,
+        alt: 'logo',
+        href: '/',
+        id: 'logo',
+        sources: [
+          { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
+          { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+        ],
+      },
+      linkComponent: 'a',
+    },
+    cartSidebar: CartProductListStory.args
+  },
+}
+
+export const HeaderStory_Admin_User = {
+  ...HeaderStoryTemplate,
+  args: {
+    isAdmin: true,
+    adminHeader: AdminHeaderStory.args, 
+    topNavBar: TopNavBarStory_Admin.args,
     navigation: NavigationStory.args,
     navigationTabs: TabsStory.args,
     searchNavBar: SearchNavBarStory.args,

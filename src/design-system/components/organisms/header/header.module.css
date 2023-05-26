@@ -1,10 +1,11 @@
 .header {
   display: grid;
   grid-template-columns: repeat( 5, 1fr );
-  grid-template-rows: repeat(4, auto);
+  grid-template-rows: repeat(5, auto);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   grid-template-areas:
+    "adminHeader adminHeader adminHeader adminHeader adminHeader"
     "topNav topNav topNav topNav topNav"
     "logo searchNavLinks searchNavLinks searchNavLinks button"
     "searchNavBar searchNavBar searchNavBar searchNavBar searchNavBar"
@@ -18,8 +19,9 @@
   z-index: 99999;
 
   @media (min-width: 64em) {
-    grid-template-rows: repeat(3, auto);
+    grid-template-rows: repeat(4, auto);
     grid-template-areas:
+    "adminHeader adminHeader adminHeader adminHeader adminHeader"
     "topNav topNav topNav topNav topNav"
     "logo searchNavBar searchNavBar searchNavBar searchNavLinks"
     "navigation navigation navigation navigation navigation";
@@ -56,6 +58,11 @@
   & svg path {
     stroke: var(--action-primary-blue-default);
   }
+}
+.adminHeader {
+  grid-area: adminHeader;
+  padding: 0 calc(50vw - 60rem);
+  background: var(--top-nav-bar-background);
 }
 
 .top {
