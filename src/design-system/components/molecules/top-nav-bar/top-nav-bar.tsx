@@ -53,6 +53,9 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, btnIcon, btnText,
         ?
         <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
             {links.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
+            <Below breakpoint="lg">{(matches: any) => matches && 
+              <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
+            </Below>
             {userLoggedIn && btnText && onClick && <button className={cx(styles.topNavLink, styles.btn)} onClick={onClick}> {btnIcon && <Icon icon={btnIcon} className={styles.navIcon}/>}<span className={styles.btnText}>{btnText}</span></button>}
         </ul>
         :

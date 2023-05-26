@@ -27,9 +27,8 @@ import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 import { motion } from 'framer-motion'
-import { AdminHeader } from '../admin-header/admin-header'
 import { IResult } from '../../atoms/admin-search/admin-search'
-import { AdminHeaderStory } from '../admin-header/admin-header.stories'
+import { AdminSearchNavBarStory } from '../../molecules/admin-search-nav-bar/admin-search-nav-bar.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -42,6 +41,7 @@ type Story = StoryObj<typeof Header>
 const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
+    const [activeUser, setActiveUser] = React.useState({} as IResult)
     const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
@@ -50,7 +50,7 @@ const HeaderStoryTemplate: Story = {
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
     const onClickLogout = () => { console.log('Handle logout...')}
-    const onClickSearchCustomer = (customer:IResult) => {console.log('Customer clicked', customer)}
+    const onClickSearchCustomer = (customer:IResult) => {setActiveUser(customer)}
 
     const variants = {
       open: { y: 0, opacity: 1 },
@@ -59,37 +59,32 @@ const HeaderStoryTemplate: Story = {
 
     return (
       <>
-      <Header isOpen={isOpen} isAdmin={args.isAdmin}>
+      <Header isOpen={isOpen}>
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
-            {args.isAdmin && args.adminHeader && <GridArea area="adminHeader">
-              <AdminHeader>
-                {({ Wrapper, GridArea }) => (
-                  <Wrapper>
-                    <GridArea area="adminSearch">
-                      <AdminSearchNavBar {...args.adminHeader.adminSearchNavBar} onClick={onClickSearchCustomer}/>
-                    </GridArea>
-                    <GridArea area="searchNavLinks">
-                      <SearchNavBarLinks>
-                        <GroupWrapper position='apart'>
-                          <Below breakpoint="lg">{(matches: any) => matches && <>
-                            <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
-                            <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
-                          </>}
-                          </Below>
-                          <Above breakpoint="lg">{(matches: any) => matches && <>
-                              <Button type={'button'} surface={'secondary'} children={'Jon Johnson'} iconRight={{icon:'icon-user'}} rounded onClick={()=>{}}/>
-                              <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} onClick={()=>{}}/>
-                          </>}</Above>
-                        </GroupWrapper>
-                      </SearchNavBarLinks>
-                    </GridArea>
-                  </Wrapper>
-                )}
-              </AdminHeader>
-            </GridArea>}
+            {args.isAdmin && args.adminSearchNavBar && args.adminNavLinks && 
+            <>
+              <GridArea area="adminSearch">
+                <AdminSearchNavBar {...args.adminSearchNavBar} onClick={onClickSearchCustomer}/>
+              </GridArea>               
+              <GridArea area="adminNavLinks">
+                <SearchNavBarLinks>
+                  <GroupWrapper position='apart'>
+                    <Below breakpoint="lg">{(matches: any) => matches && <>
+                      <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                      <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                    </>}
+                    </Below>
+                    <Above breakpoint="lg">{(matches: any) => matches && <>
+                        { activeUser?.name && <Button type={'button'} surface={'secondary'} children={activeUser.name} iconRight={{icon:'icon-user'}} size={'x-small'} rounded onClick={()=>{}}/>}
+                        <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} size={'x-small'} onClick={()=>{}}/>
+                    </>}</Above>
+                  </GroupWrapper>
+                </SearchNavBarLinks>
+              </GridArea>
+            </>}
             <GridArea area="top">
-              <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
+              <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate} isAdmin={args.isAdmin}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...args.logotype} />
@@ -219,7 +214,36 @@ export const HeaderStory_Admin_User = {
   ...HeaderStoryTemplate,
   args: {
     isAdmin: true,
-    adminHeader: AdminHeaderStory.args, 
+    adminSearchNavBar: AdminSearchNavBarStory.args, 
+    adminNavLinks: SearchNavBarLinksStory.args,
+    topNavBar: TopNavBarStory_Admin.args,
+    navigation: NavigationStory.args,
+    navigationTabs: TabsStory.args,
+    searchNavBar: SearchNavBarStory.args,
+    searchNavLinks: SearchNavBarLinksStory.args,
+    logotype: {
+      logo: {
+        src: logotype_desktop_horizontal,
+        alt: 'logo',
+        href: '/',
+        id: 'logo',
+        sources: [
+          { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
+          { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+        ],
+      },
+      linkComponent: 'a',
+    },
+    cartSidebar: CartProductListStory.args
+  },
+}
+
+export const HeaderStory_Admin_Selects_Customer_Flow = {
+  ...HeaderStoryTemplate,
+  args: {
+    isAdmin: true,
+    adminSearchNavBar: AdminSearchNavBarStory.args, 
+    adminNavLinks: SearchNavBarLinksStory.args,
     topNavBar: TopNavBarStory_Admin.args,
     navigation: NavigationStory.args,
     navigationTabs: TabsStory.args,

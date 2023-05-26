@@ -5,7 +5,7 @@
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   grid-template-areas:
-    "adminHeader adminHeader adminHeader adminHeader adminHeader"
+    "adminSearch adminSearch adminSearch adminSearch adminNavLinks"
     "topNav topNav topNav topNav topNav"
     "logo searchNavLinks searchNavLinks searchNavLinks button"
     "searchNavBar searchNavBar searchNavBar searchNavBar searchNavBar"
@@ -21,7 +21,7 @@
   @media (min-width: 64em) {
     grid-template-rows: repeat(4, auto);
     grid-template-areas:
-    "adminHeader adminHeader adminHeader adminHeader adminHeader"
+    "placeholder adminSearch adminSearch adminSearch adminNavLinks"
     "topNav topNav topNav topNav topNav"
     "logo searchNavBar searchNavBar searchNavBar searchNavLinks"
     "navigation navigation navigation navigation navigation";
@@ -59,26 +59,55 @@
     stroke: var(--action-primary-blue-default);
   }
 }
-.adminHeader {
-  grid-area: adminHeader;
-  padding: 0 calc(50vw - 60rem);
-  background: var(--top-nav-bar-background);
+
+.adminSearch {
+  height: var(--search-bar-height-mobile);
+  grid-area: adminSearch;
+  display: flex;
+  align-items: center;
+  z-index:4;
+  padding: 1rem;
+  & > div {
+    width: 100%;
+    margin: 0 auto;
+    z-index:0;
+  }
+  @media(min-width: 64em) {
+    background: transparent;
+    padding: 0;
+    & > div {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.adminNavLinks {
+  grid-area: adminNavLinks;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  z-index: 3;
+  padding: 1rem 1rem 1rem 0;
+  @media (min-width: 64em) {
+    display: flex;
+    padding-right: calc(50vw - 60rem);
+  }
 }
 
 .top {
   grid-area: topNav;
-  padding: 0 calc(50vw - 60rem);
   background: var(--top-nav-bar-background);
 }
 
-.logo, .search, .searchNavLinks  {
+.logo, .placeholder, .adminSearch, .search, .searchNavLinks, .adminNavLinks  {
   height: var(--nav-bar-height-mobile);
   @media (min-width: 64em) {
     height: var(--nav-bar-height-desktop);
   }
 }
 
-.logo {
+.logo, .placeholder {
   grid-area: logo;
   @media (min-width: 64em) {
     padding-left: calc(50vw - 60rem);
@@ -111,7 +140,7 @@
   display: flex;
   align-items: center;
   justify-self: end;
-  z-index: 999;
+  z-index: 3;
   @media (min-width: 64em) {
     display: flex;
     padding-right: calc(50vw - 60rem);

@@ -92,6 +92,7 @@ const topNavArgs_Admin = {
   userName: 'Jon Johnson',
   btnIcon: 'icon-x-circle',
   btnText: 'Logga ut',
+  datePicker: UiDatePickerStory.args,
   links: [
     {
       href: '#',

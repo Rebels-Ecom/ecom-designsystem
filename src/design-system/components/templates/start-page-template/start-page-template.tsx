@@ -8,7 +8,7 @@ import { INavigation, Navigation } from '../../molecules/navigation/navigation'
 import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
-import { AdminHeader, CartSidebar, Header } from '../../organisms'
+import { CartSidebar, Header } from '../../organisms'
 import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs, AdminSearchNavBar } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Heading, LinkButton, Button, ToggleSwitch, IconButton, UiDatePicker } from '../../atoms'
@@ -53,6 +53,7 @@ const StartPageTemplate = ({
   footer,
 }: IStartPageTemplate) => {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [activeUser, setActiveUser] = React.useState({} as IResult)
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
@@ -73,32 +74,27 @@ const StartPageTemplate = ({
       <Header isOpen={isOpen}>
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
-            {header.isAdmin && header.adminHeader && <GridArea area="adminHeader">
-              <AdminHeader>
-                {({ Wrapper, GridArea }) => (
-                  <Wrapper>
-                    <GridArea area="adminSearch">
-                      <AdminSearchNavBar {...header.adminHeader.adminSearchNavBar} onClick={onClickSearchCustomer}/>
-                    </GridArea>
-                    <GridArea area="searchNavLinks">
-                    <SearchNavBarLinks>
-                        <GroupWrapper position='apart'>
-                          <Below breakpoint="lg">{(matches: any) => matches && <>
-                            <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
-                            <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
-                          </>}
-                          </Below>
-                          <Above breakpoint="lg">{(matches: any) => matches && <>
-                              <Button type={'button'} surface={'secondary'} children={'Jon Johnson'} iconRight={{icon:'icon-user'}} rounded onClick={()=>{}}/>
-                              <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} onClick={()=>{}}/>
-                          </>}</Above>
-                        </GroupWrapper>
-                      </SearchNavBarLinks>
-                    </GridArea>
-                  </Wrapper>
-                )}
-              </AdminHeader>
-            </GridArea>}
+            {header.isAdmin && header.adminSearchNavBar && header.adminNavLinks && 
+            <>
+              <GridArea area="adminSearch">
+                <AdminSearchNavBar {...header.adminSearchNavBar} onClick={onClickSearchCustomer}/>
+              </GridArea>               
+              <GridArea area="adminNavLinks">
+                <SearchNavBarLinks>
+                  <GroupWrapper position='apart'>
+                    <Below breakpoint="lg">{(matches: any) => matches && <>
+                      <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                      <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                    </>}
+                    </Below>
+                    <Above breakpoint="lg">{(matches: any) => matches && <>
+                        { activeUser?.name && <Button type={'button'} surface={'secondary'} children={activeUser.name} iconRight={{icon:'icon-user'}} size={'x-small'} rounded onClick={()=>{}}/>}
+                        <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} size={'x-small'} onClick={()=>{}}/>
+                    </>}</Above>
+                  </GroupWrapper>
+                </SearchNavBarLinks>
+              </GridArea>
+            </>}
             <GridArea area="top">
               <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
             </GridArea>

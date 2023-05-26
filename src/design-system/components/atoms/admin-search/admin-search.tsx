@@ -74,7 +74,7 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
     <div ref={searchWrapperElement} className={cx(styles.search, className)}>
       <div className={styles.searchBar}>
         <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn}>
-          <span>{searchBtnLabel}</span>
+          <span className={styles.btnLabel}>{searchBtnLabel}</span>
         </Button>
         <InputText
           ref={inputField}
