@@ -41,8 +41,7 @@ const LoginForm = ({
 }: ILoginForm) => {
   return (
     <form className={styles.loginForm} onSubmit={onSubmit}>
-      {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay}></LoadingOverlay>}
-      <Icon className={styles.closeButton} icon="icon-x" />
+      {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
       <h1 className="h3">{title}</h1>
       {description && <p>{description}</p>}
       <FormGroup label={usernameLabel} formElementId="email">

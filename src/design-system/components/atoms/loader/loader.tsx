@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './loader.module.css'
 import cx from 'classnames'
 
-export type TLoaderSize = 'sm' | 'lg'
+export type TLoaderSize = 'sm' | 'md' | 'lg'
 export type TLoaderColor = 'default' | 'orange'
 export type TLoaderPosition = 'absolute' | 'relative'
 
@@ -16,6 +16,8 @@ export interface ILoader {
 
 function getLoaderSize(size:TLoaderSize){
     switch(size){
+        case 'md': 
+            return 'loaderMedium'
         case 'lg': 
             return 'loaderLarge'
         case 'sm':
