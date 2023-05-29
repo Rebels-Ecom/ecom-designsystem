@@ -1,0 +1,22 @@
+.tabs {
+    background: var(--navigation-surface-subdued);
+    height: 5.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0 1.25rem;
+}
+
+.tabBtn {
+    flex: 1;
+    width: auto;
+    min-width: auto;
+    &.disabled,
+    &:disabled {
+        background: #FFF9E8;
+        color: #DE9034;
+        border-color: #DE9034;
+    }
+}
+

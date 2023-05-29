@@ -1,106 +1,97 @@
 import React from 'react'
-import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
-import { ITeaser, Teaser } from '../../molecules/teaser/teaser'
-import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
-import { IHeroCarousel, HeroCarousel } from '../../organisms/hero-carousel/hero-carousel'
-import { IOfferCardList, OfferCardList } from '../../organisms/offer-card-list/offer-card-list'
-import { INavigation, Navigation } from '../../molecules/navigation/navigation'
-import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
-import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
-import { ContentWrapper, MaxWidth } from '../../layouts'
+import { Navigation } from '../../molecules/navigation/navigation'
+import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
 import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, GroupWrapper, Tabs, UserProfileDropdown } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
+import { Breadcrumbs, IBreadcrumbs } from '../../organisms/breadcrumbs/breadcrumbs'
+import { IRichText, RichText } from '../../organisms/rich-text/rich-text'
+import { IconButton, UiDatePicker } from '../../atoms'
+import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
+import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 
 export interface IContentPage {
   header: any
-  hero: IHeroCarousel
-  blogList_4_Col: IBlogCardList
-  featuredProducts: IFeaturedProductsCarousel
-  offerCardsList: IOfferCardList
-  blogFullwidth: IBlogCard
-  customerTeaser: ICustomerTeaser
-  teaserRight: ITeaser
-  blogList_3_Col: IBlogCardList
-  teaserLeft: ITeaser
+  breadcrumbs: IBreadcrumbs
+  richText: IRichText
   footer: IFooter
 }
 
 const ContentPage = ({
   header,
-  hero,
-  blogList_4_Col,
-  featuredProducts,
-  offerCardsList,
-  blogFullwidth,
-  customerTeaser,
-  teaserRight,
-  blogList_3_Col,
-  teaserLeft,
+  breadcrumbs,
+  richText,
   footer,
 }: IContentPage) => {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
+  const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
+  const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+  const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
+  const onClickCartIcon = () => setIsCartSidebarOpen(true)
+  const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
+  const onClickLogout = () => { console.log('Handle logout...')}
+
   return (
     <>
       <Header isOpen={isOpen}>
-        {({ Wrapper, Button, GridArea }) => (
+        {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
             <GridArea area="top">
-              <TopNavBar {...header.topNavBar} />
+              <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...header.logotype} />
-            </GridArea>
+            </GridArea>  
             <GridArea area="search">
-              <SearchNavBar {...header.searchNavBar} />
+              <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
             </GridArea>
-            <GridArea area="searchNavLinks">
-              <NavLinks />
+            {header.searchNavLinks && <GridArea area="searchNavLinks">
+              <Below breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                      <IconButton icon={isSearchbarOpen ? 'icon-x' : 'icon-search'} isLink={false} linkComponent={undefined} size='large' isTransparent onClick={onClickSearchIcon ? ()=>onClickSearchIcon() : ()=>{}}></IconButton>
+                      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='large' isTransparent></IconButton>
+                      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='large' isTransparent></IconButton>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Below>
+                <Above breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                    <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                    <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                    </GroupWrapper>
+                    <GroupWrapper position='apart'>
+                        <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                        <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Above>
             </GridArea>
+            }
             <GridArea area="btn">
-              <Button onClick={handleOnClick} />
+              <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} isOpen={isOpen} />
+            <Below breakpoint="lg">{(matches: any) => matches &&  <>
+                {header.isLoggedIn 
+                  ? 
+                  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>
+                :
+                  <Navigation {...header.navigation} isOpen={isOpen} />
+                }
+              </>}</Below>
+              <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...header.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
         )}
       </Header>
       <ContentWrapper>
-        <HeroCarousel {...hero} />
+        <Breadcrumbs textWidth='narrow' {...breadcrumbs} />
         <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_4_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProductsCarousel {...featuredProducts} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <OfferCardList {...offerCardsList} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCard {...blogFullwidth} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <CustomerTeaser {...customerTeaser} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserRight} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'narrow'}>
-          <Teaser {...teaserLeft} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <BlogCardList {...blogList_3_Col} />
-        </MaxWidth>
-        <MaxWidth contentMaxWidth={'wide'}>
-          <FeaturedProductsCarousel {...featuredProducts} />
+          <RichText {...richText} />
         </MaxWidth>
       </ContentWrapper>
       <Footer {...footer} />

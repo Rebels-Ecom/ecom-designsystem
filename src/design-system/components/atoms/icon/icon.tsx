@@ -13,9 +13,15 @@ export type TIcon =
   | 'icon-search'
   | 'icon-x-circle'
   | 'icon-plus-circle'
+  | 'icon-chevron-up'
   | 'icon-chevron-down'
+  | 'icon-chevron-left'
+  | 'icon-chevron-right'
+  | 'icon-chevrons-left'
+  | 'icon-chevrons-right'
   | 'icon-layers'
   | 'icon-check'
+  | 'icon-check-circle'
   | 'icon-user'
   | 'icon-heart'
   | 'icon-shopping-cart'
@@ -27,6 +33,8 @@ export type TIcon =
   | 'icon-linkedin'
   | 'icon-clipboard'
   | 'icon-download'
+  | 'icon-calendar'
+  | 'icon-settings'
 
 export interface IIcon {
   icon: TIcon

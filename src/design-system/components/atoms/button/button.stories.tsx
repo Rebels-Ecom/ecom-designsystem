@@ -26,7 +26,6 @@ export const ButtonPrimary = {
     id: 'button_primary_1',
     disabled: false,
     surface: 'primary',
-    surfaceVariant: 'blue',
     children: 'Button primary',
     onClick: action('clicked'),
   },
@@ -90,5 +89,64 @@ export const ChangePackagingButtonStory = {
     iconRight: {icon:'icon-layers'},
     rounded:true,
     onClick: action('clicked'),
+  },
+};
+
+export const ShoppingListButtonStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'Button_Get_Shopping_list',
+    disabled: false,
+    size: 'small',
+    surface: 'secondary',
+    children: 'Hämta inköpslista',
+    iconRight: {icon:'icon-clipboard'},
+    rounded:true,
+    onClick: action('clicked'),
+  },
+};
+
+export const LatertOrderButtonStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'Button_Latest_Order',
+    disabled: false,
+    size: 'small',
+    surface: 'secondary',
+    children: 'Senaste order',
+    iconRight: {icon:'icon-package'},
+    rounded:true,
+    onClick: action('clicked'),
+  },
+};
+
+export const ButtonGoToCart = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_Go_To_Cart',
+    disabled: false,
+    surface: 'primary',
+    children: 'Gå till kassan',
+    onClick: action('clicked'),
+  },
+};
+
+export const ButtonPlaceOrderStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_Place_Order',
+    disabled: false,
+    surface: 'primary',
+    children: 'Lägg beställning',
+  },
+};
+
+export const ButtonChooseAcountStory = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_Choose_Account',
+    disabled: false,
+    surface: 'primary',
+    children: 'Välj konto',
   },
 };

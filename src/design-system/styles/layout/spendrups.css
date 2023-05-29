@@ -10,6 +10,9 @@ html {
     --content-max-width-narrow: 73rem;
     --product-listing-width-m: 37.5rem;
     --product-listing-width-l: 77.5rem;
+    --text-width-m: 37.5rem;
+    --text-width-narrow: 73rem;
+    --text-width-wide: 77.5rem;
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
     --product-card-width: 18.938rem; /* 303px */
@@ -25,6 +28,9 @@ html {
     --nav-bar-height-desktop: 5rem;
     --logotype-height-desktop: 2.284rem;
     --logotype-height-mobile: 2rem;
+    --cta-width-lg: 16.875rem;
+    --cta-width-default: 13.75rem;
+    --search-bar-height-mobile: 3.125rem;
 }
 
 body {

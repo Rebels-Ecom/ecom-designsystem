@@ -1,0 +1,6 @@
+.heading {
+    display: flex;
+    &.leftAlignment { justify-content: flex-start;}
+    &.rightAlignment { justify-content: flex-end;}
+    &.centerAlignment { justify-content: center;}
+}

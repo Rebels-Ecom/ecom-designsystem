@@ -1,45 +1,13 @@
 import React from 'react'
-import { Navigation } from '../../molecules/navigation/navigation'
-import { Header } from '../../organisms'
-import { Logotype, NavLinks, SearchNavBar, TopNavBar } from '../../molecules'
-import { IFooter, Footer } from '../../organisms/footer/footer'
+import styles from './order-confirmation-page.module.css'
 
-export interface IOrderConfirmationPage {
-  header: any
-  footer: IFooter
+interface IOrderConfirmationPage {
+  children: React.ReactNode
 }
 
-const OrderConfirmationPage = ({ header, footer }: IOrderConfirmationPage) => {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const handleOnClick = () => setIsOpen(!isOpen)
+const OrderConfirmationPage: React.FunctionComponent<IOrderConfirmationPage> = ({ children }) => {
   return (
-    <>
-      <Header isOpen={isOpen}>
-        {({ Wrapper, Button, GridArea }) => (
-          <Wrapper isOpen={isOpen}>
-            <GridArea area="top">
-              <TopNavBar {...header.topNavBar} />
-            </GridArea>
-            <GridArea area="logo">
-              <Logotype {...header.logotype} />
-            </GridArea>
-            <GridArea area="search">
-              <SearchNavBar {...header.searchNavBar} />
-            </GridArea>
-            <GridArea area="searchNavLinks">
-              <NavLinks />
-            </GridArea>
-            <GridArea area="btn">
-              <Button onClick={handleOnClick} />
-            </GridArea>
-            <GridArea area="nav">
-              <Navigation {...header.navigation} isOpen={isOpen} />
-            </GridArea>
-          </Wrapper>
-        )}
-      </Header>
-      <Footer {...footer} />
-    </>
+    <div className={styles.pageLayout}>{children}</div>
   )
 }
 

@@ -84,6 +84,7 @@ function Search({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocuse
           other={{ autoComplete: 'off' }}
           disabled={disabled}
           placeholder={placeholder}
+          wrapperClassName={styles.searchInput}
         />
         {query && (
           <button onClick={onClear} tabIndex={-1} type="button" className={styles.clearButton}>

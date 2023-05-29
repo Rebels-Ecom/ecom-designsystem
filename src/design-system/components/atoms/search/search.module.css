@@ -5,11 +5,12 @@
 .searchBar {
     position:relative;
     display:flex;
-    height: 2.5rem;
+    height: 3.125rem;
 
     & button {
-        width: 2.5rem;
-        border-radius: 0.25rem 0 0 0.25rem;
+        width: 3.125rem;
+        height:100%;
+        border-radius: 0;
         border: none;
         padding:0.5rem;
         color: var(--color-text-white);
@@ -22,16 +23,28 @@
         height: 100%;
         width: 100%;
         border: solid 0.063rem var(--input-border-color);
-        border-radius: 0 0.25rem 0.25rem 0;
+        border-radius: 0;
         padding: 0.5rem 2rem;
         color: var(--color-text-input);
         &:hover, &:focus {
             background: #fff;
         }
     }
+    @media(min-width: 64rem) {
+        height: 2.5rem;
+        & button {
+            width: 2.5rem;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+        & input[type="text"] {
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+    }
 }
 
-
+.searchInput {
+    width: 100%;
+}
 
 .clearButton {
     position: absolute;

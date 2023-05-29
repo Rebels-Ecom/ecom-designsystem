@@ -15,12 +15,14 @@
     & > button {
         padding-left: 1.3rem;
         padding-left: 1.3rem;
+        width: fit-content;
     }
     @media(min-width: 64em) {
         gap: 1rem;
         & > button {
             padding-left: 2rem;
             padding-left: 2rem;
+            width: var(--cta-width-default);
         }
     }
 }

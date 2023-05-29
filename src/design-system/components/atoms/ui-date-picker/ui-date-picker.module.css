@@ -1,0 +1,126 @@
+:global .react-datepicker__day-name {
+    width: 3rem;
+    @media(min-width: 64rem){
+        width: 4.3rem;
+    }
+}
+
+:global .react-datepicker__header {
+    background: #FFFFFF;
+    border: none;
+}
+
+:global .react-datepicker__tab-loop {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+:global .react-datepicker-popper {
+    z-index: 10;
+}
+
+.datePickerWrapper {
+    z-index:99999;
+}
+
+.calendar {
+    background: #ffffff;
+    border: 1px solid #DE9034;
+}
+
+.customHeaderTextWrapper {
+    font-family: var(--font-family-primary);
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    padding: 0.3rem;
+}
+
+.day {
+    font-family: var(--font-family-primary);
+    font-weight: bold;
+    width: 3rem;
+    height:3rem;
+    @media(min-width: 64rem){
+        width: 4.3rem;
+        height: 4.3rem;
+    }
+    background: #F1F1F1;
+    border-radius: 0.125rem;
+    &:hover {
+        background: #F1F1F1;
+    }
+}
+
+.currentDay {
+    background: #FFF9E8;
+    color: #003E51;
+    border: 1px solid #DE9034;
+    &:hover {
+        background: #FFF9E8;
+    }
+}
+
+.selectedDay {
+    background: #DE9034;
+    color: #ffffff;
+    &:hover {
+        background: #DE9034;
+    }
+}
+
+.pastDay {
+    background: rgba(241, 241, 241, 0.3);
+    color: rgba(0, 62, 81, 0.1);
+    &:hover {
+        cursor: not-allowed;
+        background: rgba(241, 241, 241, 0.3);
+    }
+}
+
+.deliveryDay {
+    background: #ffffff;
+    border: 1px solid #DE9034;
+    color: #003E51;
+    &:hover {
+        background: #DE9034;
+    }
+}
+
+.holidayDay {
+    background: #F1F1F1;
+    color: rgba(0, 62, 81, 0.3);
+}
+
+.datePickerBtn {
+    position: relative;
+    display: flex;
+    margin: 0 0.5rem 0 0;
+    cursor: pointer;
+    border-color: transparent;
+    background: transparent;
+    &:last-child {
+      margin-right: 0;
+    }
+    @media (max-width: 47.99rem) {
+      height: 2.5rem;
+      width: 2.5rem;
+      min-width: 2.5rem;
+      padding: 0.5rem;
+    }
+    @media (min-width: 48rem) {
+        background: #ffffff;
+        border-color: var(--border-on-secondary);
+        margin-right: 1.5rem;
+    }
+  }
+  
+  .buttonLinkText {
+    display: none;
+    @media (min-width: 64rem) {
+      display: flex;
+      align-self: flex-end;
+      margin-right: 0.6rem;
+    }
+  }

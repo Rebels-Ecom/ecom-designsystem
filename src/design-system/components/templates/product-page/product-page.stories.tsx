@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductPage } from './product-page'
-import { HeaderStory } from '../../organisms/header/header.stories'
+import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { ProductDetailsStory } from '../../organisms/product-details/product-details.stories'
 import { ProductDescriptionStory } from '../../organisms/product-description/product-description.stories'
@@ -29,7 +29,7 @@ const ProductPageStoryTemplate: Story = {
 export const ProductPageStory = {
   ...ProductPageStoryTemplate,
   args: {
-    header: HeaderStory.args,
+    header: HeaderStory_Logged_In_User.args,
     productDetails: ProductDetailsStory.args,
     productDescription: ProductDescriptionStory.args,
     footer: FooterStory.args

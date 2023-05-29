@@ -4,6 +4,7 @@ import { ITag } from '../design-system/components/atoms/tag/tag'
 export interface IProduct {
     productId: string,
     productName: string,
+    productUrl?: string,
     productImageUrl: string,
     country: string,
     packaging: string,
@@ -11,6 +12,8 @@ export interface IProduct {
     price:number,
     salesUnit:string,
     itemNumberPerSalesUnit: number,
+    quantity: string,
+    totalPrice: string,
     productVariantList: Array<IProductVariant>
     tags: Array<ITag>
     productDescription?: string

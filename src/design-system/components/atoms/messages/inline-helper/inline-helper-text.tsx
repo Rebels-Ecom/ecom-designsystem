@@ -7,7 +7,7 @@ export interface IInlineHelper {
 }
 
 const InlineHelperText = ({ children, className }: IInlineHelper) => {
-  return <div className={cx('body', styles.inlineHelper, className)}>{children}</div>
+  return <span className={cx('body', styles.inlineHelper, className)}>{children}</span>
 }
 
 export { InlineHelperText }

@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrandPage } from './brand-page'
-import { HeaderStory } from '../../organisms/header/header.stories'
+import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { BlogCardStoryPistonhead } from '../../molecules/blog-card/blog-card.stories'
 import { HeroStoryPistonhead } from '../../molecules/hero/hero.stories'
@@ -21,7 +21,7 @@ const BrandPageStoryTemplate: Story = {
 export const BrandPageTemplateStory = {
   ...BrandPageStoryTemplate,
   args: {
-    header: HeaderStory.args,
+    header: HeaderStory_Logged_In_User.args,
     hero: HeroStoryPistonhead.args,
     blogFullwidth: BlogCardStoryPistonhead.args,
     footer: FooterStory.args,

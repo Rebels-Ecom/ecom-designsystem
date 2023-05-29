@@ -1,0 +1,32 @@
+.linkList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  
+.listItem {
+  width: 100%;
+  height: 3rem;
+  & > *, & a {
+    color: var(--navigation-text-default);
+    text-decoration: none;
+    font-family: var(--font-family-primary);
+    font-size: var(--body-mobile-font-size);
+    line-height: var(--body-mobile-line-height);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    &:hover {
+      cursor: pointer;
+      color: var(--color-text-orange);
+    }
+    &.active, &:active {
+      color: var(--color-text-orange);
+      font-weight: bold;
+    }
+  }  
+}
+

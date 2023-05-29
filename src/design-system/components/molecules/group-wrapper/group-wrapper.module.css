@@ -1,0 +1,32 @@
+.groupWrapper {
+    display: flex;
+    &.direction-default {
+        flex-direction: column;
+        @media(min-width: 48em) {
+            flex-direction: row;
+        }
+    }
+    &.direction-row {
+        flex-direction: row;
+    }
+    &.direction-column {
+        flex-direction: column;
+    }
+    &.leftPosition { justify-content: flex-start;}
+    &.rightPosition { justify-content: flex-end;}
+    &.centerPosition { justify-content: center;}
+    &.apartPosition { justify-content: space-between;}
+
+    &.leftAlignment { align-items: flex-start;}
+    &.rightAlignment { align-items: flex-end;}
+    &.centerAlignment { align-items: center;}
+    &.baselineAlignment { align-items: baseline;}
+
+    &.spacing-xs { gap: 0.3rem;}
+    &.spacing-sm { gap: 0.5rem;}
+    &.spacing-md { gap: 1rem;}
+    &.spacing-lg { gap: 1.5rem;}
+    &.spacing-xl { gap: 2rem;}
+
+    &.noWrap {flex-wrap: nowrap;}
+}

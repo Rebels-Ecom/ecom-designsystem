@@ -1,15 +1,17 @@
 .header {
   display: grid;
   grid-template-columns: repeat( 5, 1fr );
-  grid-template-rows: repeat(3, auto);
+  grid-template-rows: repeat(5, auto);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  
-   grid-template-areas:
+  grid-template-areas:
+    "adminSearch adminSearch adminSearch adminSearch adminNavLinks"
     "topNav topNav topNav topNav topNav"
-    "logo searchNavBar searchNavBar searchNavBar button"
+    "logo searchNavLinks searchNavLinks searchNavLinks button"
+    "searchNavBar searchNavBar searchNavBar searchNavBar searchNavBar"
     "navigation navigation navigation navigation navigation";
 
+  align-items: center;
   background: var(--nav-bar-background);
   width: 100%;
   position: sticky;
@@ -17,7 +19,9 @@
   z-index: 99999;
 
   @media (min-width: 64em) {
+    grid-template-rows: repeat(4, auto);
     grid-template-areas:
+    "placeholder adminSearch adminSearch adminSearch adminNavLinks"
     "topNav topNav topNav topNav topNav"
     "logo searchNavBar searchNavBar searchNavBar searchNavLinks"
     "navigation navigation navigation navigation navigation";
@@ -56,20 +60,54 @@
   }
 }
 
+.adminSearch {
+  height: var(--search-bar-height-mobile);
+  grid-area: adminSearch;
+  display: flex;
+  align-items: center;
+  z-index:4;
+  padding: 1rem;
+  & > div {
+    width: 100%;
+    margin: 0 auto;
+    z-index:0;
+  }
+  @media(min-width: 64em) {
+    background: transparent;
+    padding: 0;
+    & > div {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.adminNavLinks {
+  grid-area: adminNavLinks;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  z-index: 3;
+  padding: 1rem 1rem 1rem 0;
+  @media (min-width: 64em) {
+    display: flex;
+    padding-right: calc(50vw - 60rem);
+  }
+}
+
 .top {
   grid-area: topNav;
-  padding: 0 calc(50vw - 60rem);
   background: var(--top-nav-bar-background);
 }
 
-.logo, .search, .searchNavLinks  {
+.logo, .placeholder, .adminSearch, .search, .searchNavLinks, .adminNavLinks  {
   height: var(--nav-bar-height-mobile);
   @media (min-width: 64em) {
     height: var(--nav-bar-height-desktop);
   }
 }
 
-.logo {
+.logo, .placeholder {
   grid-area: logo;
   @media (min-width: 64em) {
     padding-left: calc(50vw - 60rem);
@@ -77,17 +115,32 @@
 }
 
 .search {
+  height: var(--search-bar-height-mobile);
   grid-area: searchNavBar;
   display: flex;
   align-items: center;
+  background: #ffffff;
+  z-index:3;
+  & > div {
+    width: 100%;
+    margin: 0 auto;
+    z-index:0;
+  }
+  @media(min-width: 64em) {
+    background: transparent;
+    & > div {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
 }
 
 .searchNavLinks {
   grid-area: searchNavLinks;
-  display: none;
+  display: flex;
   align-items: center;
   justify-self: end;
-
+  z-index: 3;
   @media (min-width: 64em) {
     display: flex;
     padding-right: calc(50vw - 60rem);
@@ -96,6 +149,7 @@
 
 .nav {
   grid-area: navigation;
+  z-index: -1;
 }
 
 .btn {

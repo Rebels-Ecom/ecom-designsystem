@@ -1,0 +1,45 @@
+.cartSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding:2rem 1rem;
+}
+
+.headingWrapper {
+    display: flex;
+    justify-content: space-between;
+    & >h1, & >h2, & > h3, & > h4, & > h5 {
+        margin-bottom: 1rem;
+    }
+}
+
+.text {
+    & > p {
+        margin: 0.5rem 0 1rem 0;
+    }
+}
+
+.buttonsWrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    @media(min-width: 64em){
+        gap: 2.375rem;
+    }
+}
+
+.productListWrapper {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    margin: 1rem 0;
+}
+
+.toggleSwitchWrapper {
+    & >label >span {
+        font-family: var(--font-family-secondary);
+        font-weight: 400;
+        color: var(--color-text-orange);
+        margin-bottom: 0.813rem;
+    }
+}

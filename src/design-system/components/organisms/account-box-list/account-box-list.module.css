@@ -1,0 +1,32 @@
+.accountBoxList {
+  padding: 20px;
+  width: 100%;
+  max-width: 830px;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+  @media (min-width: 768px) {
+   padding: 50px;
+  }
+}
+
+.logoPicture {
+  display: block;
+  height: var(--logotype-height-mobile);
+  @media (min-width: 64em) {
+      height: var(--logotype-height-desktop);
+  }
+}
+
+.logoImg {
+  display: block;
+  height: 100%;
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,40 @@
+.toastContainer {
+	box-sizing: border-box;
+	position: fixed;
+	z-index: 999999;
+}
+
+.top-right {
+	top: 0.75rem;
+	right: 0.75rem;
+
+}
+
+.top-left {
+	top: 0.75rem;
+	left: 0.75rem;
+}
+
+.toast {
+	background: #fff;
+	transition: .3s ease;
+	position: relative;
+	pointer-events: auto;
+	overflow: hidden;
+	padding: 1.5rem;
+	width: 90vw;
+	border-radius: 0.25rem;
+	box-shadow: 0 0 0.5rem #999;
+	opacity: .9;
+	@media(min-width: 64em){
+		width: 38.75rem;
+	}
+}
+
+.header {
+	padding-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
+	text-align: center;
+	border-bottom: 1px solid #eee;
+}
+

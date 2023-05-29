@@ -6,6 +6,7 @@ import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
+import { convertNumToStr } from '../../../../helpers/format-helper'
 
 const meta: Meta<typeof ProductDetails> = {
     title: 'Design System/Organisms/ProductDetails',
@@ -68,6 +69,8 @@ function getProduct( productData: any) : IProduct {
         salesUnit:product.SalesUnit,
         itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
         tags: getProductTags(product.Tags),
+        quantity: '1',
+        totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
         productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
     }
 }

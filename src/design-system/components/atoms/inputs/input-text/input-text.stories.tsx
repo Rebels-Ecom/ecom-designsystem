@@ -61,3 +61,11 @@ export const InputTextStoryDisabled = {
     disabled: true,
   }
 }
+
+export const InputTextStoryCheckIcon = {
+  ...InputTextStoryTemplate,
+  args: {
+    ...InputTextStory.args,
+    iconRight: {icon: 'icon-check'},
+  }
+}

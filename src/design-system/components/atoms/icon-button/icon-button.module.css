@@ -1,0 +1,73 @@
+.iconButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: var(--cta-icon-color);
+    background: var(--cta-icon-background);
+    cursor: pointer;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    &:hover {
+        color: rgba(0, 62, 81, 0.8);
+    }
+    &.buttonTransparent {
+        background: transparent;
+    }
+    &.hasChildren{
+        gap: 0.5rem;
+        padding:0.5rem;
+        background: var(--blue-500);
+        color: var(--color-text-white);
+        border-radius: 0.25rem;
+        &:hover {
+            background: rgba(0, 62, 81, 0.8);
+        }
+    }
+}
+
+.buttonSmall {
+    height: 1.25rem;
+    width: 1.25rem;
+    min-width: 1.25rem;
+    & > span {
+        font-size: 0.75rem;
+        line-height: 0.75rem;
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+}
+
+.buttonMedium {
+    height: 1.5rem;
+    width: 1.5rem;
+    min-width: 1.5rem;
+    & > span {
+        font-size: 1rem;
+        line-height: 1rem;
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+.buttonLarge {
+    height: 1.875rem;
+    width: 1.875rem;
+    min-width: 1.875rem;
+    & > span {
+        font-size: 1.125rem;
+        line-height: 1.125rem;
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+}
+
+.buttonRectangular {
+    background: var(--blue-500);
+    color: var(--color-text-white);
+    border-radius: 0.25rem;
+    height: 2.5rem;
+    min-width: 5.125rem;
+    width: auto;
+}

@@ -30,6 +30,7 @@ export const lightTheme = {
   '--grey-700': '#8A8E8F',
   '--grey-800': '#676A6B',
   '--grey-900': '#000709',
+  '--decorative-purple': '#9A576F',
   '--success-green': '#38B000',
   '--error-red':'#CE0B0B',
   '--warning-orange': '#F5B154',
@@ -38,6 +39,7 @@ export const lightTheme = {
   /*Background */
   '--background': '#ffffff',
   '--nav-bar-background': '#F2EFEA',
+  '--sub-nav-background': '#FBFAF9',
   '--top-nav-bar-background': '#003E51',
   '--menu-nav-bar-background': '#ffffff',
   '--product-description-background': '#FBFAF9',
@@ -47,6 +49,9 @@ export const lightTheme = {
   /*Text */
   '--color-text-default':'#000000',
   '--color-text-white': '#ffffff',
+  '--color-text-blue': '#003E51',
+  '--color-text-orange': '#DE9034',
+  '--color-text-orange-hover': '#E28F33',
 
   '--color-on-primary':'#ffffff',
   '--color-on-primary-disabled':'#8A8E8F',
@@ -65,6 +70,7 @@ export const lightTheme = {
 
   /* Input text*/
   '--input-background-default': '#FFFFFF',
+  '--input-background-readonly':'#FEF9EA',
   '--input-border-color': '#DE9034',
   '--input-background-focused': 'rgba(255, 196, 22, 0.1)',
   '--input-text-color': '#003E51',
@@ -76,11 +82,10 @@ export const lightTheme = {
   '--tag-orange': '#DE9034',
   '--tag-white': '#ffffff',
 
-  /* Loading bar */
-  '--bar-bkg-orange': '#EEE1C8',
-  '--bar-bkg-purple': '#E1CDD4',
-  '--bar-fill-orange': '#C79A48',
-  '--bar-fill-purple': '#9A576F',
+  /* Radio / checkbox colors */
+  '--radio-checkbox-background':'#FFF9E8',
+  '--radio-checkbox-background-checked':'#DE9034',
+  '--radio-checkbox-color-checked':'#003E51',
 
   /* CTA-s */
   '--cta-primary-default': '#003E51',
@@ -90,6 +95,9 @@ export const lightTheme = {
   '--cta-tertiary-default': '#F08A00',
   '--cta-tertiary-hover': '#F3A133',
   '--cta-tertiary-disabled': '#FEF3E6',  
+  '--cta-icon-background': '#FFF9E8',
+  '--cta-icon-color': '#003E51',
+  '--cta-icon-hover-color': 'rgba(0, 62, 81, 0.8)',
 
   /*  CTA COLORS NEED TO BE REVIEWED AFTER THE DESIGN IS UPDATED*/
   /*CTA */
@@ -149,7 +157,7 @@ export const lightTheme = {
   '--color-decorative-image': '#f7f7f7',
   '--focused': '#F3A133',
   '--border-default': '#b3b3b3',
-  '--border-orange': '#DA7E00',
+  '--border-orange': '#DE9034',
   '--border-subdued': '#d5d5d5',
   '--border-disabled': '#d5d5d5',
   '--border-critical': '#cc0028',
@@ -230,6 +238,7 @@ export const darkTheme = {
    '--grey-700': '#8A8E8F',
    '--grey-800': '#676A6B',
    '--grey-900': '#000709',
+   '--decorative-purple': '#9A576F',
    '--success-green': '#38B000',
    '--error-red':'#CE0B0B',
    '--warning-orange': '#F5B154',
@@ -238,6 +247,7 @@ export const darkTheme = {
    /*Background */
    '--background': '#000000',
    '--nav-bar-background': '#F2EFEA',
+   '--sub-nav-background': '#FBFAF9',
    '--top-nav-bar-background': '#003E51',
    '--menu-nav-bar-background': '#ffffff',
    '--product-description-background': '#FBFAF9',
@@ -247,6 +257,9 @@ export const darkTheme = {
      /*Text */
   '--color-text-default':'#000000',
   '--color-text-white': '#ffffff',
+  '--color-text-blue': '#003E51',
+  '--color-text-orange': '#DE9034',
+  '--color-text-orange-hover': '#E28F33',
   
   '--color-on-primary':'#ffffff',
   '--color-on-primary-disabled':'#8A8E8F',
@@ -266,11 +279,10 @@ export const darkTheme = {
    '--tag-orange': '#DE9034',
    '--tag-white': '#ffffff',
 
-  /* Loading bar */
-  '--bar-bkg-orange': '#EEE1C8',
-  '--bar-bkg-purple': '#E1CDD4',
-  '--bar-fill-orange': '#C79A48',
-  '--bar-fill-purple': '#9A576F',
+    /* Radio / checkbox colors */
+  '--radio-checkbox-background':'#FFF9E8',
+  '--radio-checkbox-background-checked':'#DE9034',
+  '--radio-checkbox-color-checked':'#003E51',
 
   /* CTA-s */
   '--cta-primary-default': '#003E51',
@@ -280,6 +292,9 @@ export const darkTheme = {
   '--cta-tertiary-default': '#F08A00',
   '--cta-tertiary-hover': '#F3A133',
   '--cta-tertiary-disabled': '#FEF3E6',
+  '--cta-icon-background': '#FFF9E8',
+  '--cta-icon-color': '#003E51',
+  '--cta-icon-hover-color': 'rgba(0, 62, 81, 0.8)',
 
    /*  CTA COLORS NEED TO BE REVIEWED AFTER THE DESIGN IS UPDATED*/
   /*CTA */

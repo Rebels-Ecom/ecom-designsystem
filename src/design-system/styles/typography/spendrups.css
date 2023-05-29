@@ -27,11 +27,11 @@ html {
   --heading-l-desktop-font-size: 2.563rem;
   --heading-l-desktop-line-height: 3.188rem;
 
-  /* Heading M - ?/? mobile - 32/42 desktop */
-  --heading-m-mobile-font-size: 2rem;
-  --heading-m-mobie-line-height: 2.625rem;
-  --heading-m-desktop-font-size: 2rem;
-  --heading-m-desktop-line-height: 2.625rem;
+  /* Heading M - ?/? mobile - 36/46 desktop */
+  --heading-m-mobile-font-size: 2.25rem;
+  --heading-m-mobie-line-height: 2.875rem;
+  --heading-m-desktop-font-size: 2.25rem;
+  --heading-m-desktop-line-height: 2.875rem;
 
   /* Heading S - ?/? mobile - 22/28 desktop */
   --heading-s-mobile-font-size: 1.375rem;
@@ -234,7 +234,8 @@ h5,
   letter-spacing: var(--cta-s-letter-spacing);
   height: 2.5rem;
   min-width: 2.5rem;
-  padding: 0.625rem 2rem;
+  width: max-content;
+  padding: 0.625rem 1rem;
 }
 
 .cta-s {
@@ -243,6 +244,7 @@ h5,
   letter-spacing: var(--cta-s-letter-spacing);
   height: 2.5rem;
   min-width: 7.5rem;
+  width: var(--cta-width-default);
   padding: 0.625rem 2rem;
 }
 

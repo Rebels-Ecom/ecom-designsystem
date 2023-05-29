@@ -1,7 +1,8 @@
 import styles from './login-form.module.css'
 import cx from 'classnames'
 import { FormGroup } from '../../molecules'
-import { Button, Icon, InputText, UILink } from '../../atoms'
+import { Button, Icon, InputText, Loader, UILink } from '../../atoms'
+import { LoadingOverlay } from '../../molecules/loading-overlay/loading-overlay'
 
 export interface ILoginForm {
   title: string
@@ -18,6 +19,7 @@ export interface ILoginForm {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  loading?: boolean 
 }
 
 const LoginForm = ({
@@ -35,10 +37,11 @@ const LoginForm = ({
   errorMessage,
   onPasswordChange,
   onUsernameChange,
+  loading
 }: ILoginForm) => {
   return (
     <form className={styles.loginForm} onSubmit={onSubmit}>
-      <Icon className={styles.closeButton} icon="icon-x" />
+      {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
       <h1 className="h3">{title}</h1>
       {description && <p>{description}</p>}
       <FormGroup label={usernameLabel} formElementId="email">
