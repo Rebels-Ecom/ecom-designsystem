@@ -13,7 +13,7 @@ import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_ho
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
 import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } from '../../atoms'
-import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup, AdminSearchNavBar } from '../../molecules'
+import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
