@@ -48,7 +48,8 @@ const HeaderStoryTemplate: Story = {
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
     const onClickLogout = () => { console.log('Handle logout...')}
-    const onClickSearchCustomer = (customer:IResult) => {setActiveUser(customer)}
+    const onClickSearchButton = () => {console.log('Handle search button click')}
+    const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
 
     return (
       <>
@@ -58,7 +59,7 @@ const HeaderStoryTemplate: Story = {
             {args.isAdmin && args.adminSearchNavBar && args.adminNavLinks && 
             <>
               <GridArea area="adminSearch">
-                <AdminSearchNavBar {...args.adminSearchNavBar} onClick={onClickSearchCustomer}/>
+                <AdminSearchNavBar {...args.adminSearchNavBar} onClick={onClickSearchButton} onClickSearchResult={onClickSearchResultItem}/>
               </GridArea>               
               <GridArea area="adminNavLinks">
                 <SearchNavBarLinks>

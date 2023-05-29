@@ -5,9 +5,10 @@ import { AdminSearch } from '../../atoms'
 export interface ISearchNavBar {
   itemsToFilterOn: Array<any>
   onClick: CallableFunction
+  onClickSearchResult: CallableFunction
 }
 
-const AdminSearchNavBar = ({ itemsToFilterOn, onClick }: ISearchNavBar) => {
+const AdminSearchNavBar = ({ itemsToFilterOn, onClick, onClickSearchResult }: ISearchNavBar) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [query, setQuery] = useState<string>('')
@@ -37,7 +38,8 @@ const AdminSearchNavBar = ({ itemsToFilterOn, onClick }: ISearchNavBar) => {
         searchBtnLabel={'Sök på en kund'}
         placeholder={'Sök på kundnummer, företag, namn'}
         noResult={{ text: 'Din sökning gav inga träffar'}} 
-        onClick={onClick}/>
+        onClick={onClick}
+        onClickSearchResult={onClickSearchResult}/>
     </div>
   )
 }

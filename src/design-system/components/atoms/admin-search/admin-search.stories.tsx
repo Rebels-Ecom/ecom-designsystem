@@ -17,7 +17,11 @@ const AdminSearchStoryTemplate: Story = {
     const [query, setQuery] = useState<string>(args.query)
     const [results, setResults] = useState<Array<any>>([])
 
-    function handleOnClick(clickedItem: IResult){
+    function handleOnClick(){
+      console.log('Handle on click search button')
+    }
+
+    function handleOnClickSearchResult(clickedItem: IResult){
       console.log('Handle clicked item', clickedItem)
     }
 
@@ -38,6 +42,7 @@ const AdminSearchStoryTemplate: Story = {
         setQuery={setQuery}
         results={results}
         onClick={handleOnClick}
+        onClickSearchResult={handleOnClickSearchResult}
         disabled={args.disabled}
         isOpen={isOpen}
         setIsOpen={setIsOpen}

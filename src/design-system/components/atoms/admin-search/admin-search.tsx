@@ -26,6 +26,7 @@ export interface IAdminSearch {
   setQuery: (query: string) => void
   results: Array<IResult>
   onClick: CallableFunction
+  onClickSearchResult: CallableFunction
   disabled?: boolean
   noResult: ISearchNoResult
   searchBtnLabel?: string
@@ -33,7 +34,7 @@ export interface IAdminSearch {
   className?: string
 }
 
-function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocused, results, onClick, disabled, noResult, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
+function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocused, results, onClick, onClickSearchResult, disabled, noResult, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
   const searchWrapperElement = useRef<HTMLDivElement | null>(null)
   const inputField = useRef<HTMLInputElement | null>(null)
 
@@ -61,8 +62,8 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
     return inputField?.current && inputField.current.focus()
   }
 
-  function handleClick(item: IResult){
-    onClick(item)
+  function handleOnClickSearchResult(item: IResult){
+    onClickSearchResult(item)
     onClose()
     onClear()
   }
@@ -73,7 +74,7 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
   return (
     <div ref={searchWrapperElement} className={cx(styles.search, className)}>
       <div className={styles.searchBar}>
-        <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn}>
+        <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn} onClick={()=>onClick()}>
           <span className={styles.btnLabel}>{searchBtnLabel}</span>
         </Button>
         <InputText
@@ -99,7 +100,7 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
         <div className={styles.searchResults}>
           <ul aria-labelledby={id}>
             {results.map((li: IResult, i: number) => (
-              <li key={`${id}_${i}`} onClick={() => handleClick(li)} className={styles.resultListItem}>
+              <li key={`${id}_${i}`} onClick={() => handleOnClickSearchResult(li)} className={styles.resultListItem}>
                 <span className={styles.serchResultItemText}>{li.name}</span>
                 <span className={styles.serchResultItemText}>{li.companyName}</span>
                 <span className={styles.serchResultItemText}>{li.companyId}</span>

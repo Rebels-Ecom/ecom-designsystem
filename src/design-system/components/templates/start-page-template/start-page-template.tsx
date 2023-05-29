@@ -61,18 +61,19 @@ const StartPageTemplate = ({
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   const onClickLogout = () => { console.log('Handle logout...')}
-  const onClickSearchCustomer = (customer:IResult) => {setActiveUser(customer)}
+  const onClickSearchButton = () => {console.log('Handle search button click')}
+  const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
 
   return (
     <>
-      <Header isOpen={isOpen}>
-        {({ Wrapper, MenuButton, GridArea }) => (
-          <Wrapper isOpen={isOpen}>
-            {header.isAdmin && header.adminSearchNavBar && header.adminNavLinks && 
-            <>
-              <GridArea area="adminSearch">
-                <AdminSearchNavBar {...header.adminSearchNavBar} onClick={onClickSearchCustomer}/>
-              </GridArea>               
+    <Header isOpen={isOpen}>
+      {({ Wrapper, MenuButton, GridArea }) => (
+        <Wrapper isOpen={isOpen}>
+          {header.isAdmin && header.adminSearchNavBar && header.adminNavLinks && 
+          <>
+            <GridArea area="adminSearch">
+              <AdminSearchNavBar {...header.adminSearchNavBar} onClick={onClickSearchButton} onClickSearchResult={onClickSearchResultItem}/>
+            </GridArea>              
               <GridArea area="adminNavLinks">
                 <SearchNavBarLinks>
                   <GroupWrapper position='apart'>

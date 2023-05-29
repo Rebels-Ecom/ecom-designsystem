@@ -13,13 +13,17 @@ type Story = StoryObj<typeof AdminSearchNavBar>
 
 const AdminSearchNavBarStoryTemplate: Story = {
   render: (args) => {
-    function handleOnClick(clickedItem: IResult){
+    function handleOnClick(){
+      console.log('Handle on click search button')
+    }
+
+    function handleOnClickSearchResult(clickedItem: IResult){
       console.log('Handle clicked item', clickedItem)
     }
 
     return (
       <div style={{ position: 'relative', height: '5rem', display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem' }}>
-        <AdminSearchNavBar {...args} onClick={handleOnClick}/>
+        <AdminSearchNavBar {...args} onClick={handleOnClick} onClickSearchResult={handleOnClickSearchResult}/>
       </div>
     )
   }
