@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from './header'
 import { TopNavBarStory_Admin, TopNavBarStory_Guest_User, TopNavBarStory_Logged_In_User } from '../../molecules/top-nav-bar/top-nav-bar.stories'
@@ -16,7 +16,6 @@ import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } f
 import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup, AdminSearchNavBar } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
-import { CartProductStoryBeer, CartProductStoryWine } from '../../molecules/cart-product/cart-product.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
@@ -25,8 +24,8 @@ import { TabsStory } from '../../molecules/tabs/tabs.stories'
 import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
-import { IResult } from '../../atoms/admin-search/admin-search'
-import { AdminSearchNavBarStory } from '../../molecules/admin-search-nav-bar/admin-search-nav-bar.stories'
+import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
+import { AdminSearchStory, itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -40,6 +39,9 @@ const HeaderStoryTemplate: Story = {
   render: (args) => {
     const [isOpen, setIsOpen] = React.useState(false)
     const [activeUser, setActiveUser] = React.useState({} as IResult)
+    const [isAdminSearchbarOpen, setIsAdminSearchbarOpen] = React.useState<boolean>(false)
+    const [query, setQuery] = React.useState<string>('')
+    const [adminSearchResults, setAdminSearchResults] = React.useState<Array<any>>([])
     const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const handleOnClick = () => setIsOpen(!isOpen)
@@ -51,15 +53,34 @@ const HeaderStoryTemplate: Story = {
     const onClickSearchButton = () => {console.log('Handle search button click')}
     const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
 
+    useEffect(() => {
+      let pattern = new RegExp(query.toLowerCase(), 'i')
+      setAdminSearchResults(itemsToFilterOn.filter((item) => query && (
+        (item.name && pattern.test(item.name.toLowerCase())) ||
+        (item.companyName && pattern.test(item.companyName.toLowerCase())) ||
+        (item.companyId && pattern.test(item.companyId.toString().toLowerCase())) ||
+        (item.email && pattern.test(item.email.toLowerCase()))
+        )))
+    }, [query]);
+
     return (
       <>
       <Header isOpen={isOpen}>
         {({ Wrapper, MenuButton, GridArea }) => (
           <Wrapper isOpen={isOpen}>
-            {args.isAdmin && args.adminSearchNavBar && args.adminNavLinks && 
+            {args.isAdmin && args.adminSearch && args.adminNavLinks && 
             <>
               <GridArea area="adminSearch">
-                <AdminSearchNavBar {...args.adminSearchNavBar} onClick={onClickSearchButton} onClickSearchResult={onClickSearchResultItem}/>
+                <AdminSearch
+                  {...args.adminSearch}
+                  query={query}
+                  setQuery={setQuery}
+                  results={adminSearchResults}
+                  onClick={onClickSearchButton}
+                  onClickSearchResult={onClickSearchResultItem}
+                  isOpen={isAdminSearchbarOpen}
+                  setIsOpen={setIsAdminSearchbarOpen}
+                />
               </GridArea>               
               <GridArea area="adminNavLinks">
                 <SearchNavBarLinks>
@@ -208,7 +229,7 @@ export const HeaderStory_Admin_User = {
   args: {
     isAdmin: true,
     isLoggedIn: true,
-    adminSearchNavBar: AdminSearchNavBarStory.args, 
+    adminSearch: AdminSearchStory.args, 
     adminNavLinks: SearchNavBarLinksStory.args,
     topNavBar: TopNavBarStory_Admin.args,
     navigation: NavigationStory.args,
@@ -236,7 +257,7 @@ export const HeaderStory_Admin_Selects_Customer_Flow = {
   ...HeaderStoryTemplate,
   args: {
     isAdmin: true,
-    adminSearchNavBar: AdminSearchNavBarStory.args, 
+    adminSearch: AdminSearchStory.args, 
     adminNavLinks: SearchNavBarLinksStory.args,
     topNavBar: TopNavBarStory_Admin.args,
     navigation: NavigationStory.args,
