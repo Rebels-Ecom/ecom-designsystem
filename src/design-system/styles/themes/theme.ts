@@ -82,6 +82,12 @@ export const lightTheme = {
   '--tag-orange': '#DE9034',
   '--tag-white': '#ffffff',
 
+  /* Loading bar */
+  '--bar-bkg-orange': '#EEE1C8',
+  '--bar-bkg-purple': '#E1CDD4',
+  '--bar-fill-orange': '#C79A48',
+  '--bar-fill-purple': '#9A576F',
+
   /* Radio / checkbox colors */
   '--radio-checkbox-background':'#FFF9E8',
   '--radio-checkbox-background-checked':'#DE9034',
@@ -272,12 +278,18 @@ export const darkTheme = {
   '--color-text-on-primary': '#ffffff',
   '--color-text-on-secondary': '#000000',
 
-   /* Tag colors*/
-   '--tag-green':'#3D5B49',
-   '--tag-mint': '#C0E1D7',
-   '--tag-blue': '#003E51',
-   '--tag-orange': '#DE9034',
-   '--tag-white': '#ffffff',
+    /* Tag colors*/
+  '--tag-green':'#3D5B49',
+  '--tag-mint': '#C0E1D7',
+  '--tag-blue': '#003E51',
+  '--tag-orange': '#DE9034',
+  '--tag-white': '#ffffff',
+
+    /* Loading bar */
+  '--bar-bkg-orange': '#EEE1C8',
+  '--bar-bkg-purple': '#E1CDD4',
+  '--bar-fill-orange': '#C79A48',
+  '--bar-fill-purple': '#9A576F',
 
     /* Radio / checkbox colors */
   '--radio-checkbox-background':'#FFF9E8',

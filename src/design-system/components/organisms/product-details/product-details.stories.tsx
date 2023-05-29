@@ -60,13 +60,14 @@ function getProduct( productData: any) : IProduct {
     const product = productData.Variants[0]
     return{
         productId: product.VariantId,
+        productUrl: productData.ProductUrl,
         productName: productData.DisplayName,
         productImageUrl: product.PrimaryImageUrl,
-        country: (Array.isArray(product.ShortTexts) && product.ShortTexts.length) ? product.ShortTexts[0] : '',
+        country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
         packaging: product.VariantFullName,
         priceStr: product.ListPricePerUnitString,
-        price:product.ListPricePerUnit,
-        salesUnit:product.SalesUnit,
+        price: product.ListPricePerUnit,
+        salesUnit: product.SalesUnit,
         itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
         tags: getProductTags(product.Tags),
         quantity: '1',

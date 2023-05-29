@@ -12,6 +12,12 @@
         height: var(--product-details-height);
     }
   }
+
+.imageOuterWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
     
   .imageWrapper {
     width: 100%;

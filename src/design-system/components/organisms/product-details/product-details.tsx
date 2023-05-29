@@ -11,6 +11,7 @@ import { Picture } from '../../atoms/picture/picture'
 import { ITag, Tag } from '../../atoms/tag/tag'
 import { Below } from '../../layouts/breakpoints/below'
 import { Above } from '../../layouts/breakpoints/above'
+import { LoadingBars } from '../../molecules'
 
 export interface IProductDetails extends IProduct {
     product: IProduct
@@ -100,9 +101,12 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
     else {
         return(
             <div className= {cx(styles.productDetails)}>
-               <div className={styles.imageWrapper}>
-                    <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
-                    <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                <div className={styles.imageOuterWrapper}>
+                    {/* <LoadingBars></LoadingBars> */}
+                    <div className={styles.imageWrapper}>
+                        <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
+                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                    </div>
                 </div>
 
                 <div className={styles.contentWrapper}>
