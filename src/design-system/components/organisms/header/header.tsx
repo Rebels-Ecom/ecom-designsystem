@@ -57,7 +57,7 @@ const Header = ({
   isOpen: boolean
   isAdmin?: boolean
   isLoggedIn?: boolean
-  adminSearchNavBar?:any
+  adminSearch?:any
   adminNavLinks?: any
   topNavBar?: any
   logotype?: any

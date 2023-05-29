@@ -21,19 +21,19 @@ export interface IAdminSearch {
   id: string
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
-  setIsFocused: (isFocused: boolean) => void
   query: string
   setQuery: (query: string) => void
   results: Array<IResult>
   onClick: CallableFunction
+  onClickSearchResult: CallableFunction
   disabled?: boolean
-  noResult: ISearchNoResult
+  noResultText: ISearchNoResult
   searchBtnLabel?: string
   placeholder?: string
   className?: string
 }
 
-function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsFocused, results, onClick, disabled, noResult, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
+function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, results, onClick, onClickSearchResult, disabled, noResultText, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
   const searchWrapperElement = useRef<HTMLDivElement | null>(null)
   const inputField = useRef<HTMLInputElement | null>(null)
 
@@ -42,11 +42,7 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
     return inputField?.current && inputField.current.blur()
   }, [setIsOpen])
 
-  const onBlur = useCallback(() => {
-    setIsFocused(false)
-  }, [setIsFocused])
-
-  const onChange = useCallback(
+  const onInputChange = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       if (!isOpen) {
         setIsOpen(true)
@@ -61,8 +57,8 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
     return inputField?.current && inputField.current.focus()
   }
 
-  function handleClick(item: IResult){
-    onClick(item)
+  function handleOnClickSearchResult(item: IResult){
+    onClickSearchResult(item)
     onClose()
     onClear()
   }
@@ -73,16 +69,15 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
   return (
     <div ref={searchWrapperElement} className={cx(styles.search, className)}>
       <div className={styles.searchBar}>
-        <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn}>
+        <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn} onClick={()=>onClick()}>
           <span className={styles.btnLabel}>{searchBtnLabel}</span>
         </Button>
         <InputText
           ref={inputField}
           type="text"
           id={id}
-          onChange={onChange}
+          onChange={onInputChange}
           value={query}
-          onBlur={onBlur}
           other={{ autoComplete: 'off' }}
           disabled={disabled}
           placeholder={placeholder}
@@ -99,17 +94,17 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, setIsF
         <div className={styles.searchResults}>
           <ul aria-labelledby={id}>
             {results.map((li: IResult, i: number) => (
-              <li key={`${id}_${i}`} onClick={() => handleClick(li)} className={styles.resultListItem}>
+              <button key={`${id}_${i}`} onClick={() => handleOnClickSearchResult(li)} className={styles.resultListItem}>
                 <span className={styles.serchResultItemText}>{li.name}</span>
                 <span className={styles.serchResultItemText}>{li.companyName}</span>
                 <span className={styles.serchResultItemText}>{li.companyId}</span>
                 <span className={styles.serchResultItemText}>{li.email}</span>
-              </li>
+              </button>
             ))}
             {results.length === 0 && query.length ? (
               <li key={`search_no_result_${id}`} className={styles.noResultListItem}>
                 <div >
-                  <span className={styles.serchResultItemText}>{noResult.text}</span>
+                  <span className={styles.serchResultItemText}>{noResultText.text}</span>
                 </div>
               </li>
             ) : null}

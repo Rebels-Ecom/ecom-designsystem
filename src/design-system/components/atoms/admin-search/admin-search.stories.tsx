@@ -13,11 +13,14 @@ type Story = StoryObj<typeof AdminSearch>;
 const AdminSearchStoryTemplate: Story = {
   render: ({ ...args }) => {
     const [isOpen, setIsOpen] = useState<boolean>(args.isOpen)
-    const [isFocused, setIsFocused] = useState<boolean>(false)
     const [query, setQuery] = useState<string>(args.query)
     const [results, setResults] = useState<Array<any>>([])
 
-    function handleOnClick(clickedItem: IResult){
+    function handleOnClick(){
+      console.log('Handle on click search button')
+    }
+
+    function handleOnClickSearchResult(clickedItem: IResult){
       console.log('Handle clicked item', clickedItem)
     }
 
@@ -38,18 +41,19 @@ const AdminSearchStoryTemplate: Story = {
         setQuery={setQuery}
         results={results}
         onClick={handleOnClick}
+        onClickSearchResult={handleOnClickSearchResult}
         disabled={args.disabled}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        setIsFocused={setIsFocused}
-        noResult={args.noResult}
+        searchBtnLabel={args.searchBtnLabel}
+        noResultText={args.noResultText}
         placeholder={args.placeholder}
       />
     )
   }
 };
 
-const itemsToFilterOn = [
+export const itemsToFilterOn = [
   { id: 1747842, name: "371000 EXPERIUM LODGEBAREN", email: "admin-371000@spendrups.nu", phone: null, companyId: 283903, companyName: "EXPERIUM LODGEBAREN (371000)" },
   { id: 2480854, name: "371000 EXPERIUM LODGEBAREN", email: "admin-37100012@spendrups.nu", phone: null, companyId: 283903, companyName: "EXPERIUM LODGEBAREN (371000)" },
   { id: 1735352, name: "Beställare 222 371000", email: "order-371000@371000.se", phone: null, companyId: 283903, companyName: "EXPERIUM LODGEBAREN (371000)" },
@@ -70,9 +74,8 @@ export const AdminSearchStory = {
     isOpen: false,
     disabled: false,
     query: '',
-    noResult: {
-      text: 'Your search returned no results',
-    },
+    searchBtnLabel: 'Sök på en kund',
+    noResultText: 'Your search returned no results',
     placeholder: 'Sök på kundnummer, företag, namn'
   }
 }

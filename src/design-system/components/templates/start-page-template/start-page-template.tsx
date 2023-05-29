@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
 import { ITeaser, Teaser } from '../../molecules/teaser/teaser'
 import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
@@ -9,14 +9,15 @@ import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organ
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
 import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs, AdminSearchNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Heading, LinkButton, Button, ToggleSwitch, IconButton, UiDatePicker } from '../../atoms'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
-import { IResult } from '../../atoms/admin-search/admin-search'
+import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
+import { itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
 
 export interface IStartPageTemplate {
   header: any
@@ -53,6 +54,9 @@ const StartPageTemplate = ({
 }: IStartPageTemplate) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [activeUser, setActiveUser] = React.useState({} as IResult)
+  const [isAdminSearchbarOpen, setIsAdminSearchbarOpen] = React.useState<boolean>(false)
+  const [query, setQuery] = React.useState<string>('')
+  const [adminSearchResults, setAdminSearchResults] = React.useState<Array<any>>([])
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
@@ -61,18 +65,38 @@ const StartPageTemplate = ({
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
   const onClickLogout = () => { console.log('Handle logout...')}
-  const onClickSearchCustomer = (customer:IResult) => {setActiveUser(customer)}
+  const onClickSearchButton = () => {console.log('Handle search button click')}
+  const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
+
+  useEffect(() => {
+    let pattern = new RegExp(query.toLowerCase(), 'i')
+    setAdminSearchResults(itemsToFilterOn.filter((item) => query && (
+      (item.name && pattern.test(item.name.toLowerCase())) ||
+      (item.companyName && pattern.test(item.companyName.toLowerCase())) ||
+      (item.companyId && pattern.test(item.companyId.toString().toLowerCase())) ||
+      (item.email && pattern.test(item.email.toLowerCase()))
+      )))
+  }, [query]);
 
   return (
     <>
-      <Header isOpen={isOpen}>
-        {({ Wrapper, MenuButton, GridArea }) => (
-          <Wrapper isOpen={isOpen}>
-            {header.isAdmin && header.adminSearchNavBar && header.adminNavLinks && 
-            <>
-              <GridArea area="adminSearch">
-                <AdminSearchNavBar {...header.adminSearchNavBar} onClick={onClickSearchCustomer}/>
-              </GridArea>               
+    <Header isOpen={isOpen}>
+      {({ Wrapper, MenuButton, GridArea }) => (
+        <Wrapper isOpen={isOpen}>
+          {header.isAdmin && header.adminSearch && header.adminNavLinks && 
+          <>
+            <GridArea area="adminSearch">
+                <AdminSearch
+                  {...header.adminSearch}
+                  query={query}
+                  setQuery={setQuery}
+                  results={adminSearchResults}
+                  onClick={onClickSearchButton}
+                  onClickSearchResult={onClickSearchResultItem}
+                  isOpen={isAdminSearchbarOpen}
+                  setIsOpen={setIsAdminSearchbarOpen}
+                />
+              </GridArea>             
               <GridArea area="adminNavLinks">
                 <SearchNavBarLinks>
                   <GroupWrapper position='apart'>
