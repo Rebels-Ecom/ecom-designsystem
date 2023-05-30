@@ -97,6 +97,7 @@
 
 .top {
   grid-area: topNav;
+  z-index: 3;
   background: var(--top-nav-bar-background);
 }
 

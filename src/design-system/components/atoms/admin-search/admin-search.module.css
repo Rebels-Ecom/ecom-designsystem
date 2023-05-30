@@ -74,7 +74,7 @@
 
 .searchResults {
    position: fixed;
-   margin-top: 1.2rem;
+   margin-top: 0.6rem;
    left:0;
    width: 100%;
    background: #ffffff;
@@ -82,8 +82,11 @@
    z-index: 9999;
    background: var(--blue-500);
    color: var(--color-text-white);
+   @media (min-width: 64em) {
+        margin-top: 1.2rem;
+    }
 
-   & ul {
+    & ul {
         list-style: none;
         width:100%;
         max-height: 70vh;
@@ -119,6 +122,14 @@
 
 .resultListItem {
     direction:ltr;
+    position: relative;
+    width: 100%;
+    &:nth-child(2n) {
+        background: rgba(251, 250, 249, 0.1);
+    }
+}
+
+.resultListItemBtn {
     position: relative;
     display: grid;
     grid-template-columns: repeat( 4, 1fr );
