@@ -1,12 +1,14 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ProductDetails } from './product-details'
+import { IProductDetail, ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct } from './dummy-product'
 import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
+import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
+import { dummyProductWineDetails } from './dummy-product-wine-details'
 
 const meta: Meta<typeof ProductDetails> = {
     title: 'Design System/Organisms/ProductDetails',
@@ -36,6 +38,40 @@ function getProductTags(tags:Array<any>){
     });
 }
 
+function getSpecifications(specs:Array<any>){
+    return specs.map((spec)=>{
+        return{
+            name: spec.Item1,
+            value: spec.Item2
+        }
+    });
+}
+
+function getLoadingBars(loadingBars:Array<any>, category: string) : Array<ILoadingBar>{
+    const barColor= category ==='Vin' ? 'purple' : 'orange'
+    return loadingBars.map((bar)=>{
+        return{
+            name: bar.Key,
+            value: bar.Value,
+            color: barColor
+        }
+    });
+}
+
+
+function getProductDetails( productDetailsData: any) : IProductDetail {
+    return { 
+        visibleSpecs: getSpecifications(productDetailsData.VisibleInfo.Specifications),
+        visibleDescription: productDetailsData.VisibleInfo.FullDescription,
+        invisibleSpecs: getSpecifications(productDetailsData.InvisibleInfo.Specifications),
+        invisibleDescription: productDetailsData.InvisibleInfo.FullDescription,
+        tags: getProductTags(productDetailsData.Tags),
+        loaderValues: getLoadingBars(productDetailsData.ClockValues, productDetailsData.CategoryString)
+    }
+}
+
+
+
 function getVariantsList( productName:string, variantsList:any) {
     const firstVariantId = variantsList[0].VariantId;
     return variantsList.map((variant)=>{
@@ -50,7 +86,6 @@ function getVariantsList( productName:string, variantsList:any) {
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
             image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
             checked: variant.VariantId===firstVariantId,
-            tags: getProductTags(variant.Tags),
             onChange: () => {},
         }
     })
@@ -69,7 +104,6 @@ function getProduct( productData: any) : IProduct {
         price: product.ListPricePerUnit,
         salesUnit: product.SalesUnit,
         itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
-        tags: getProductTags(product.Tags),
         quantity: '1',
         totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
         productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
@@ -77,12 +111,13 @@ function getProduct( productData: any) : IProduct {
 }
 
 const productArgs = getProduct(dummyBeerProduct)
+const productDetailsArgs = getProductDetails(dummyProductWineDetails)
 
 export const ProductDetailsStory = {
     ...ProductDetailsStoryTemplate,
     args: {
         ...productArgs,
-        productDescription: 'Man brukar säga att pilsen är bryggmästarens stolthet och Pistonhead Lager är inget undantag. En pils med de klassiska inslagen av en riklig humlekaraktär som istället för att vara besk är mer markerad och balanserad. Serveras med en tydlig skumkrona. Dessutom ekologisk.',
+        productDetail: productDetailsArgs,
         changePackagingButton:ChangePackagingButtonStory.args,
         addToCart: ButtonProductCardStory.args,
     }

@@ -6,7 +6,7 @@ export interface IProduct {
     productName: string,
     productUrl?: string,
     productImageUrl: string,
-    country: string,
+    country?: string,
     packaging: string,
     priceStr: string,
     price:number,
@@ -15,6 +15,5 @@ export interface IProduct {
     quantity: string,
     totalPrice: string,
     productVariantList: Array<IProductVariant>
-    tags: Array<ITag>
-    productDescription?: string
+    tags?: Array<ITag>
 }
