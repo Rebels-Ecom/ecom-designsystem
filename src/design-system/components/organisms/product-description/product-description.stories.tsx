@@ -32,18 +32,19 @@ const items = [
     {
         id: 'item1',
         btnLabel: 'Beskrivning',
-        onClick: ()=>{},
+        btnIcon: 'icon-info',
         descriptionContent: 'Content stuff 1'
     },
     {
         id: 'item2',
         btnLabel: 'Ladda ner produktbeskrivning',
+        btnIcon: 'icon-download',
         onClick: ()=>{console.log('DOWNLOAD PRODUKTBLAD')},
     },
     {
         id: 'item3',
         btnLabel: 'Spela video',
-        onClick: ()=>{},
+        btnIcon: 'icon-play',
         descriptionContent: 'Content stuff 3'
     }
 ]

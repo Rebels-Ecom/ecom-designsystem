@@ -1,14 +1,34 @@
 .productDescription {
     position: relative;
     width: 100%;
+}
+
+.buttonsWrapper {
     background-color: var(--product-description-background);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
     padding: 1rem;
     @media (min-width: 64em) {
-        //padding: 6.25rem 1rem;
+        padding: 2rem;
+    }
+}
+
+.btn {
+    &.active {
+        background-color: var(--cta-primary-default);
+        color: var(--color-on-primary);
     }
 }
 
 .contentWrapper {
+    background-color: var(--product-description-background);
+    width: 100%;
+    margin: auto;
+}
+
+.content{
     width: 100%;
     margin: auto;
     @media (min-width: 48em) {
@@ -70,15 +90,9 @@
     }
 
 }
-
-.buttonsWrapper {
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    width: 100%;
-}
-
-.tabContent {
-    background: pink;
+.tabBtn {
+    &.active {
+        background-color: var(--cta-primary-default);
+        color: var(--color-on-primary);
+    }
 }

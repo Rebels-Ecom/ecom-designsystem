@@ -21,7 +21,7 @@
   &:checked {
     &:after {
       font-family: 'IcoMoon';
-      content: "\e92b";
+      content: "\e913";
       position: absolute;
       top: 0.063rem;
       left: 0rem;
