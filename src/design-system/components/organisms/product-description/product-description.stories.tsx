@@ -23,10 +23,30 @@ const ProductDescriptionStoryTemplate: Story = {
         }
 
         return(
-            <ProductDescription {...args} onClickGetDescription={handleOnClickDescription} onClickDownloadProductSheet={handleOnClickDownload}/>
+            <ProductDescription {...args}/>
         )
     }
 }
+
+const items = [
+    {
+        id: 'item1',
+        btnLabel: 'Beskrivning',
+        onClick: ()=>{},
+        descriptionContent: 'Content stuff 1'
+    },
+    {
+        id: 'item2',
+        btnLabel: 'Ladda ner produktbeskrivning',
+        onClick: ()=>{console.log('DOWNLOAD PRODUKTBLAD')},
+    },
+    {
+        id: 'item3',
+        btnLabel: 'Spela video',
+        onClick: ()=>{},
+        descriptionContent: 'Content stuff 3'
+    }
+]
 
 export const ProductDescriptionStory = {
     ...ProductDescriptionStoryTemplate,
@@ -41,6 +61,7 @@ export const ProductDescriptionStory = {
             id: 'button_favorite',
             children: 'Ladda ner produktblad',
             onClick: action('clicked'),
-        }
+        }, 
+        productDescriptionItems: items
     }
 }

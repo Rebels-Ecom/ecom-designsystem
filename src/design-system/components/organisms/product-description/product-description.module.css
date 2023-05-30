@@ -2,9 +2,9 @@
     position: relative;
     width: 100%;
     background-color: var(--product-description-background);
-    padding: 3rem 1rem;
+    padding: 1rem;
     @media (min-width: 64em) {
-        padding: 6.25rem 1rem;
+        //padding: 6.25rem 1rem;
     }
 }
 
@@ -19,7 +19,7 @@
     }
 }
 
-.buttonsWrapper {
+.buttonsWrapper2 {
     display: flex;
     flex-direction: column; 
     margin-bottom: 2rem;
@@ -69,4 +69,16 @@
         }
     }
 
+}
+
+.buttonsWrapper {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.tabContent {
+    background: pink;
 }
