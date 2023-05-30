@@ -94,12 +94,14 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, result
         <div className={styles.searchResults}>
           <ul aria-labelledby={id}>
             {results.map((li: IResult, i: number) => (
-              <button key={`${id}_${i}`} onClick={() => handleOnClickSearchResult(li)} className={styles.resultListItem}>
-                <span className={styles.serchResultItemText}>{li.name}</span>
-                <span className={styles.serchResultItemText}>{li.companyName}</span>
-                <span className={styles.serchResultItemText}>{li.companyId}</span>
-                <span className={styles.serchResultItemText}>{li.email}</span>
-              </button>
+              <li key={`${id}_${i}`} className={styles.resultListItem}>
+                <button key={`${id}_${i}`} onClick={() => handleOnClickSearchResult(li)} className={styles.resultListItemBtn}>
+                  <span className={styles.serchResultItemText}>{li.name}</span>
+                  <span className={styles.serchResultItemText}>{li.companyName}</span>
+                  <span className={styles.serchResultItemText}>{li.companyId}</span>
+                  <span className={styles.serchResultItemText}>{li.email}</span>
+                </button>
+              </li>
             ))}
             {results.length === 0 && query.length ? (
               <li key={`search_no_result_${id}`} className={styles.noResultListItem}>
