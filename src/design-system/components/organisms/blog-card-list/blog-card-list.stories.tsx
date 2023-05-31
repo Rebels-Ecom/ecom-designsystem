@@ -14,7 +14,11 @@ import {  BlogCardStory_AmericanBeer,
           BlogCardStory_Oranges,
           BlogCardStory_BeerEquipment,
           BlogCardStory_BeerTap,
-          BlogCardStoryFullWidth  } from '../../molecules/blog-card/blog-card.stories'
+          BlogCardStoryFullWidth,
+          BlogCardStoryMariestad,
+          BlogCardStoryPang,
+          BlogCardStoryWisby,  } from '../../molecules/blog-card/blog-card.stories'
+import { PictureStoryMariestad_Blog } from '../../atoms/picture/picture.stories';
 
 const meta: Meta<typeof BlogCardList> = {
   title: 'Design System/Organisms/BlogCardList',
@@ -77,6 +81,12 @@ const spendrupsEquipment = [
   BlogCardStory_BeerTap.args,
 ]
 
+const brandPromoPage_Blog = [
+  BlogCardStoryMariestad.args,
+  BlogCardStoryWisby.args,
+  BlogCardStoryPang.args,
+]
+
 export const BlogCardListStory_Fullwidth = {
   ...BlogCardListStoryTemplate,
   args: {
@@ -110,5 +120,13 @@ export const BlogCardListStory_Equipmemt = {
   ...BlogCardListStoryTemplate,
   args: {
     blogCards: spendrupsEquipment
+  }
+}
+
+export const BlogCardListStory_Likande_Varumarken = {
+  ...BlogCardListStoryTemplate,
+  args: {
+    title: 'Likande varumärken',
+    blogCards: brandPromoPage_Blog
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigation } from '../../molecules/navigation/navigation'
 import { Header } from '../../organisms'
-import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, GroupWrapper, Tabs, UserProfileDropdown } from '../../molecules'
+import { Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, GroupWrapper, Tabs, UserProfileDropdown, FeaturedProducts } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
 import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
@@ -9,15 +9,22 @@ import { Hero, IHero } from '../../molecules/hero/hero'
 import { IconButton, UiDatePicker } from '../../atoms'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
+import { IFeaturedProducts } from '../../molecules/featured-products/featured-products'
+import { IRichText, RichText } from '../../organisms/rich-text/rich-text'
+import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
 
 export interface ICampaign {
   header: any
   hero: IHero
   blogFullwidth: IBlogCard
+  featuredProducts1: IFeaturedProducts
+  featuredProducts2: IFeaturedProducts
+  richText: IRichText
+  blogList: IBlogCardList
   footer: IFooter
 }
 
-const BrandPage = ({ header, hero, blogFullwidth, footer }: ICampaign) => {
+const BrandPage = ({ header, hero, blogFullwidth, featuredProducts1, featuredProducts2, richText, blogList, footer }: ICampaign) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
   const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
@@ -87,6 +94,18 @@ const BrandPage = ({ header, hero, blogFullwidth, footer }: ICampaign) => {
         <Hero {...hero} />
         <MaxWidth contentMaxWidth={'narrow'}>
           <BlogCard {...blogFullwidth} />
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'narrow'}>
+          <FeaturedProducts {...featuredProducts1} ></FeaturedProducts>
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'narrow'}>
+          <FeaturedProducts {...featuredProducts2} ></FeaturedProducts>
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <RichText {...richText} />
+        </MaxWidth>
+        <MaxWidth contentMaxWidth={'wide'}>
+          <BlogCardList {...blogList} />
         </MaxWidth>
       </ContentWrapper>
       <Footer {...footer} />
