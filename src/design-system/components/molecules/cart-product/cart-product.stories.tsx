@@ -64,6 +64,7 @@ function getProduct(productData: any): IProduct {
   return {
     productId: product.VariantId,
     productName: productData.DisplayName,
+    productUrl: productData.ProductUrl,
     productImageUrl: product.PrimaryImageUrl,
     country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
     packaging: product.VariantFullName,
@@ -87,6 +88,7 @@ export const CartProductStoryBeer = {
     product: productBeerArgs,
     iconButton: IconButtonStory_RemoveProduct.args,
     loading: false,
+    linkComponent: 'a'
   },
 }
 
@@ -96,6 +98,7 @@ export const CartProductStoryWine = {
     product: productWineArgs,
     iconButton: IconButtonStory_RemoveProduct.args,
     loading: true,
+    linkComponent: 'a'
   },
 }
 
@@ -104,6 +107,7 @@ export const CartProduct_OrderConfirmation_Beer = {
   args: {
     product: productBeerArgs,
     loading: false,
+    linkComponent: 'a'
   },
 }
 
@@ -112,5 +116,6 @@ export const CartProduct_OrderConfirmation_Wine = {
   args: {
     product: productWineArgs,
     loading: false,
+    linkComponent: 'a'
   },
 }
