@@ -55,8 +55,6 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
     )
     const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
 
-    console.log('PROD DET', productDetail)
-
     function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
         const quantity = parseInt(e.target.value) || 1;
         setProduct({

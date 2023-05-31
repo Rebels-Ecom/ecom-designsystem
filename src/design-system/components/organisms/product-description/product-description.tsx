@@ -4,7 +4,7 @@ import { Button } from '../../atoms/button/button'
 import { IProductDetail } from '../product-details/product-details'
 import { AnimatePresence, motion } from 'framer-motion'
 import cx from 'classnames'
-import { IIcon, TIcon } from '../../atoms/icon/icon'
+import { IIcon, Icon, TIcon } from '../../atoms/icon/icon'
 
 export interface IProductDescriptionItem {
   id: string,
@@ -16,6 +16,14 @@ export interface IProductDescriptionItem {
 
 export interface IProductDescription {
   productDescriptionItems: Array<IProductDescriptionItem>
+}
+
+const contentBoxAnimation = {
+  key:'contentAnimation',
+  initial:{y: '-50%', opacity: 0, },
+  animate:{y: 0, opacity: 1, zIndex: 1},
+  transition:{duration: 0.5, ease: 'easeOut'},
+  exit:{y:'-50%', opacity: 0, transition: {duration: 0.5}}
 }
 
 function ProductDescription({ productDescriptionItems }: IProductDescription) {
@@ -37,15 +45,7 @@ function ProductDescription({ productDescriptionItems }: IProductDescription) {
         setCurrentTab(e.currentTarget.id)
       }
     }
- {/* <div className={styles.contentWrapper}>
-          <div className={styles.buttonsWrapper}>
-              <Button {...productDescriptionButton} type={'button'} surface={'primary'} iconRight={{icon:'icon-alert-circle'}} rounded onClick={onClickGetDescription}>{productDescriptionButton.children}</Button>
-              <Button {...productSheetButton} type={'button'} surface={'secondary'} iconRight={{icon:'icon-download'}} rounded onClick={onClickDownloadProductSheet}> {productSheetButton.children}</Button>
-          </div>
-          <div className={styles.richTextWrapper} dangerouslySetInnerHTML={{ __html: richText }}/>
-        </div> */}
-    
-        
+
   return (
     <div className={styles.productDescription}>
       <div className={styles.buttonsWrapper}>
@@ -64,22 +64,27 @@ function ProductDescription({ productDescriptionItems }: IProductDescription) {
           </Button>
         )}
       </div>
-      {productDescriptionItems.map((item, i) =>
-        <AnimatePresence>
-          {item.descriptionContent && isOpen && 
-            <motion.div 
-              className={styles.contentWrapper}
-              key={i}
-              initial={{y: '50%', opacity: 0}}
-              animate={{y: 0, opacity: 1}}
-              transition={{duration: 2, ease: 'easeOut'}}
-              exit={{y:'50%', opacity: 0, transition: {duration: 0.1}}}
-              >
-                {currentTab === `${item.id}` && <div className={styles.content}>{item.descriptionContent}</div>}
-            </motion.div>
-          }
-        </AnimatePresence>
-      )}
+      <ul className={styles.contentOuterWrapper}>
+        {productDescriptionItems.map((item, i) =>
+          <li key={i}>
+            <AnimatePresence>
+              {item.descriptionContent && isOpen && 
+                <motion.div className={styles.contentWrapper}  {...contentBoxAnimation}>
+                  {currentTab === `${item.id}` && <div className={styles.content}>
+                    {item.descriptionContent?.invisibleDescription && <p className={styles.description}> {item.descriptionContent.invisibleDescription}</p>}
+                    {Array.isArray(item.descriptionContent.invisibleSpecs) && item.descriptionContent.invisibleSpecs.length>0 && item.descriptionContent.invisibleSpecs.map((spec, index)=> 
+                      <p key={index} className={cx(styles.specsText, 'bodyS')}>
+                         <Icon icon={'icon-arrow-right'}></Icon>
+                          <span className={styles.specTitle}>{spec.name}</span>{` : ${spec.value}`}
+                      </p>
+                    )}      
+                  </div>}
+              </motion.div>
+            }
+            </AnimatePresence>
+          </li>
+        )}
+      </ul>
     </div>     
   )
 }
