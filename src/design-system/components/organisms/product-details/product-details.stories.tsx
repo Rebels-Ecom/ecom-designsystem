@@ -70,8 +70,6 @@ function getProductDetails( productDetailsData: any) : IProductDetail {
     }
 }
 
-
-
 function getVariantsList( productName:string, variantsList:any) {
     const firstVariantId = variantsList[0].VariantId;
     return variantsList.map((variant)=>{
