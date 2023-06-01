@@ -13,12 +13,13 @@ export interface IText {
   href?: string
   align?: TTextAlignment
   underline?: boolean
+  borderBottom?: boolean
   weight?: TTextWeight
   size?: TTextSize
   className?: string
 }
 
-function Text({ children, align = 'left', componentType, href, underline = false, weight, size = 'regular', className }: IText) {
+function Text({ children, align = 'left', componentType, href, underline = false, borderBottom = false, weight, size = 'regular', className }: IText) {
   function getTextAlignment(alignment: TTextAlignment) {
     switch (alignment) {
       case 'left':
@@ -41,6 +42,7 @@ function Text({ children, align = 'left', componentType, href, underline = false
           'p',
           weight === 'bold' && styles.textBold,
           underline && styles.textUnderlined,
+          borderBottom && styles.textWithBottomBorder,
           styles[getTextAlignment(align)],
           className ? className : ''
         )}
@@ -55,6 +57,7 @@ function Text({ children, align = 'left', componentType, href, underline = false
         'p',
         weight === 'bold' && styles.textBold,
         underline && styles.textUnderlined,
+        borderBottom && styles.textWithBottomBorder,
         styles[getTextAlignment(align)],
         size==='small' ? 'bodyS' : 'body',
         className ? className : ''

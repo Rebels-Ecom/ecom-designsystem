@@ -33,3 +33,4 @@ export { UserProfileDropdown } from './user-profile-dropdown/user-profile-dropdo
 export { Tabs } from './tabs/tabs'
 export { LoadingBars } from './loading-bars/loading-bars'
 export { DeliveryDateInfo } from './delivery-date-info/delivery-date-info'
+export { InfoSummaryBox } from './info-summary-box/info-summary-box'
