@@ -131,7 +131,9 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
                     {Array.isArray(productDetail.visibleSpecs) && productDetail.visibleSpecs.length>0 && productDetail.visibleSpecs.map((spec, index)=> <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
                     {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
                     
-                    <Button {...changePackagingButton} className={styles.btn} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
+                    {Array.isArray(product.productVariantList) && product.productVariantList.length>1 && 
+                        <Button {...changePackagingButton} className={styles.btn} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
+                    }
                     <ProductQuantityInput
                         className={styles.quantityInput}
                         salesUnit = {product.salesUnit}

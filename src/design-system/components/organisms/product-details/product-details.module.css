@@ -19,6 +19,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     @media (min-width: 64em) {
       width: 50%;
   }

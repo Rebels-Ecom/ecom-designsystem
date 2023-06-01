@@ -2,13 +2,12 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { IProductDetail, ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
-import { dummyBeerProduct } from './dummy-product'
-import { dummyWineProduct } from './dummy-product'
+import { dummyBeerProduct , dummyWineProduct, dummyWineProductNoVariants} from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
-import { dummyProductWineDetails } from './dummy-product-wine-details'
+import { dummyProductBeerDetails, dummyProductWineDetails } from './dummy-product-details'
 
 const meta: Meta<typeof ProductDetails> = {
     title: 'Design System/Organisms/ProductDetails',
@@ -57,7 +56,6 @@ function getLoadingBars(loadingBars:Array<any>, category: string) : Array<ILoadi
         }
     });
 }
-
 
 function getProductDetails( productDetailsData: any) : IProductDetail {
     return { 
@@ -109,13 +107,36 @@ function getProduct( productData: any) : IProduct {
 }
 
 const productArgs = getProduct(dummyBeerProduct)
-const productDetailsArgs = getProductDetails(dummyProductWineDetails)
+const productArgsWine = getProduct(dummyWineProduct)
+const productArgsWineNoVariants = getProduct(dummyWineProductNoVariants)
+const productDetailsArgs = getProductDetails(dummyProductBeerDetails)
+const productDetailsArgsWine = getProductDetails(dummyProductWineDetails)
 
 export const ProductDetailsStory = {
     ...ProductDetailsStoryTemplate,
     args: {
         ...productArgs,
         productDetail: productDetailsArgs,
+        changePackagingButton:ChangePackagingButtonStory.args,
+        addToCart: ButtonProductCardStory.args,
+    }
+}
+
+export const ProductDetailsStory_Wine = {
+    ...ProductDetailsStoryTemplate,
+    args: {
+        ...productArgsWine,
+        productDetail: productDetailsArgsWine,
+        changePackagingButton:ChangePackagingButtonStory.args,
+        addToCart: ButtonProductCardStory.args,
+    }
+}
+
+export const ProductDetailsStory_Wine_NoVariants = {
+    ...ProductDetailsStoryTemplate,
+    args: {
+        ...productArgsWineNoVariants,
+        productDetail: productDetailsArgsWine,
         changePackagingButton:ChangePackagingButtonStory.args,
         addToCart: ButtonProductCardStory.args,
     }

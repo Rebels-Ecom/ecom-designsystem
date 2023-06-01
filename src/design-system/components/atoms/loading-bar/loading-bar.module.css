@@ -40,6 +40,10 @@
     }
 }
 
+.barText {
+    max-width: 4rem;
+}
+
 .fill_1 { height: 8.33%; }
 .fill_2 { height: 16.66%; }
 .fill_3 { height: 25%; }

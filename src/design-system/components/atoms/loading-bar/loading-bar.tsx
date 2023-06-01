@@ -48,7 +48,7 @@ function LoadingBar({className, name, value, color} :ILoadingBar ) {
 			<div className={cx(styles.loadingBar, color==='orange' ? styles.orangeBar : styles.purpleBar)}>
 				<div className={cx(styles.loadingBarFill, styles[calculateFillPercentage(value)], color==='orange' ? styles.orangeFill : styles.purpleFill)}></div>
 			</div>
-      <div className={'body'}>{name}</div>
+      <div className={cx('body', styles.barText)}>{name}</div>
 		</div>
   )
 }
