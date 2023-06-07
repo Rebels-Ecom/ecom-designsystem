@@ -43,6 +43,7 @@ const AdminSearchStoryTemplate: Story = {
         onClick={handleOnClick}
         onClickSearchResult={handleOnClickSearchResult}
         disabled={args.disabled}
+        isLoading={args.isLoading}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         searchBtnLabel={args.searchBtnLabel}
@@ -72,6 +73,21 @@ export const AdminSearchStory = {
     id: 'SearchId',
     results: [],
     isOpen: false,
+    disabled: false,
+    query: '',
+    searchBtnLabel: 'Sök på en kund',
+    noResultText: 'Your search returned no results',
+    placeholder: 'Sök på kundnummer, företag, namn'
+  }
+}
+
+export const AdminSearchStory_Loading = {
+  ...AdminSearchStoryTemplate,
+  args: {
+    id: 'SearchId',
+    results: [],
+    isOpen: false,
+    isLoading: true,
     disabled: false,
     query: '',
     searchBtnLabel: 'Sök på en kund',

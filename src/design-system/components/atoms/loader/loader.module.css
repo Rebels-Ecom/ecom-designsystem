@@ -25,11 +25,16 @@
 }
 
 .loaderSpinner {
-    display: inline-block;
+    display: block;
     border-style: solid;
     border-radius: 50%;
     animation: spin .8s linear infinite;
     -webkit-animation: spin .8s linear infinite;
+    &.loaderXSmall {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-width: 0.15rem;
+    }
     &.loaderSmall{
         width: 3.5rem;
         height: 3.5rem;
@@ -50,12 +55,12 @@
         }
     }
     &.loaderDefaultColor{
-        border-color: rgba(0, 62, 81, 0.3);
+        border-color: var(--grey-300);
         border-top-color: var(--color-text-blue);
     }
     &.loaderOrange{
-        border-color: var(--border-orange);
-        border-top-color: var(--color-text-blue);
+        border-color: var(--grey-300);
+        border-top-color: var(--border-orange);
     }
 }
 

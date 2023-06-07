@@ -5,6 +5,7 @@ import { Icon } from '../icon/icon'
 import { InputText } from '../inputs/input-text/input-text'
 import { Button } from '../button/button'
 import cx from 'classnames'
+import { Loader } from '../loader/loader'
 
 export interface ISearchNoResult {
   text: React.ReactNode | string
@@ -20,6 +21,7 @@ export interface IResult {
 export interface IAdminSearch {
   id: string
   isOpen: boolean
+  isLoading?: boolean
   setIsOpen: (isOpen: boolean) => void
   query: string
   setQuery: (query: string) => void
@@ -33,7 +35,7 @@ export interface IAdminSearch {
   className?: string
 }
 
-function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, results, onClick, onClickSearchResult, disabled, noResultText, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
+function AdminSearch({ className, id, isLoading=false, isOpen, setIsOpen, query, setQuery, results, onClick, onClickSearchResult, disabled, noResultText, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
   const searchWrapperElement = useRef<HTMLDivElement | null>(null)
   const inputField = useRef<HTMLInputElement | null>(null)
 
@@ -89,8 +91,12 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, result
           </button>
         )}
       </div>
-
-      {isOpen && query && (
+      {isOpen && query && isLoading &&(
+        <div className={styles.searchResultsLoading}>
+          <Loader visible={true} position='relative' color='orange' size='sm'/>
+        </div>
+      )}
+      {isOpen && query && !isLoading &&(
         <div className={styles.searchResults}>
           <ul aria-labelledby={id}>
             {results.map((li: IResult, i: number) => (

@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './loader.module.css'
 import cx from 'classnames'
 
-export type TLoaderSize = 'sm' | 'md' | 'lg'
+export type TLoaderSize = 'xs' | 'sm' | 'md' | 'lg'
 export type TLoaderColor = 'default' | 'orange'
 export type TLoaderPosition = 'absolute' | 'relative'
 
@@ -16,6 +16,8 @@ export interface ILoader {
 
 function getLoaderSize(size:TLoaderSize){
     switch(size){
+        case 'xs': 
+            return 'loaderXSmall'
         case 'md': 
             return 'loaderMedium'
         case 'lg': 
@@ -53,7 +55,7 @@ function Loader({ visible, position='absolute', text, color='default', size='sm'
     return (
         <div className={cx(styles.loader, styles[getLoaderPosition(position)])}>
             <div className={cx(styles.loaderSpinner, styles[getLoaderSize(size)], styles[getLoaderColor(color)])}/>
-            <div className={styles.loaderText}>{text}</div>
+            {text && <div className={styles.loaderText}>{text}</div>}
         </div>
     )
 }
