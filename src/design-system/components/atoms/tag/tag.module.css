@@ -15,6 +15,17 @@
     &.orange{
         background: var(--tag-orange);
     }
+    &.grey{
+        background: var(--tag-grey);
+        color: var(--color-text-default);
+    }
+    &.yellow{
+        background: var(--tag-yellow);
+        color: var(--color-text-default);
+    }
+    &.purple{
+        background: var(--tag-purple);
+    }
     &.green{
         background: var(--tag-green);
     }
@@ -30,11 +41,22 @@
         font-size: var(--tag-rectangular-desktop-font-size);
         line-height: var(--tag-rectangular-desktop-line-height);
     }
+    &.tagSmall {height: 1.25rem; font-size: 0.625rem}
+    &.tagMedium {height: 1.875rem; }
+    &.tagLarge {height: var( --tag-rectangular-height); }
 }
 
 .tagRound {
     height: var(--tag-size-round-small);
     width: var(--tag-size-round-small);
+    &.tagSmall, &.tagMedium { 
+        height: var(--tag-size-round-small);
+        width: var(--tag-size-round-small);
+    }
+    &.tagLarge { 
+        height: var(--tag-size-round-large);
+        width: var(--tag-size-round-large); 
+    }
     border-radius: 50%;
     font-size: var(--tag-round-mobile-font-size);
     line-height: var(--tag-round-mobile-line-height);

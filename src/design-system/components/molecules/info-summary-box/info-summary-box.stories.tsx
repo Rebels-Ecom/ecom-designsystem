@@ -1,7 +1,9 @@
-import React from 'react';
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { InfoSummaryBox } from './info-summary-box'
 import { Text } from '../../atoms/text/text'
+import { OrderItem } from '../order-item/order-item'
+import { OrderItem_MinaOrdrar_1, OrderItem_MinaOrdrar_2, OrderItem_Sommarfest, OrderItem_Vinterfest } from '../order-item/order-item.stories'
 
 const meta: Meta<typeof InfoSummaryBox> = {
   title: 'Design System/Molecules/InfoSummaryBox',
@@ -39,6 +41,20 @@ const itemsListBestallare = (
     </>
 )
 
+const itemsListInkopslistor = (
+    <>
+        <OrderItem {...OrderItem_Sommarfest.args}></OrderItem>
+        <OrderItem {...OrderItem_Vinterfest.args}></OrderItem>
+    </>
+)
+
+const itemsListMinaOrdrar = (
+    <>
+        <OrderItem {...OrderItem_MinaOrdrar_1.args}></OrderItem>
+        <OrderItem {...OrderItem_MinaOrdrar_2.args}></OrderItem>
+    </>
+)
+
 export const InfoSummaryBoxStory_DinaUppgifter = {
     ...InfoSummaryBoxStoryTemplate,
     args: {
@@ -56,5 +72,22 @@ export const InfoSummaryBoxStory_Anvandare = {
         linkLabel: 'Hantera',
         onClick: ()=>{},
         children: itemsListBestallare
+    }
+}
+
+export const InfoSummaryBoxStory_Inkopslistor = {
+    ...InfoSummaryBoxStoryTemplate,
+    args: {
+        label: 'Listor',
+        linkLabel: 'Hantera',
+        onClick: ()=>{},
+        children: itemsListInkopslistor
+    }
+}
+
+export const InfoSummaryBoxStory_MinaOrdrar = {
+    ...InfoSummaryBoxStoryTemplate,
+    args: {
+        children: itemsListMinaOrdrar
     }
 }

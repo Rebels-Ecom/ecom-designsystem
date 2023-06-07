@@ -1,6 +1,26 @@
+.boxWrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--background);
+    border: solid 0.063rem var(--border-grey);
+    border-radius: 0.5rem;
+    @media(min-width: 64em) {
+        padding: 1rem 3.75rem 2.5rem 3.75rem;
+    }
+
+    &.spacing-xs { gap: 0.3rem;}
+    &.spacing-sm { gap: 0.5rem;}
+    &.spacing-md { gap: 1rem;}
+    &.spacing-lg { gap: 1.5rem;}
+    &.spacing-xl { gap: 2rem;}
+
+    &.noWrap {flex-wrap: nowrap;}
+}
 .groupWrapper {
     display: flex;
-    width: 100%;
     &.direction-default {
         flex-direction: column;
         @media(min-width: 48em) {
