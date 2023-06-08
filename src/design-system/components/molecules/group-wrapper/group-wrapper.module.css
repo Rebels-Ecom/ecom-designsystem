@@ -3,7 +3,7 @@
     width: 100%;
     &.direction-default {
         flex-direction: column;
-        @media(min-width: 48em) {
+        @media(min-width: 64em) {
             flex-direction: row;
         }
     }

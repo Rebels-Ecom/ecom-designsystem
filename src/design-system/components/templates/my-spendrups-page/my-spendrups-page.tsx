@@ -47,7 +47,7 @@ const MySpendrupsPage = ({ header, boxMittSpendrups, boxMinaFavoriter, boxOvriga
             {header.searchNavLinks && <GridArea area="searchNavLinks">
               <Below breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
-                    <GroupWrapper position='apart' align='center'>
+                    <GroupWrapper position='apart' align='center' direction='row'>
                       <IconButton icon={isSearchbarOpen ? 'icon-x' : 'icon-search'} isLink={false} linkComponent={undefined} size='large' isTransparent onClick={onClickSearchIcon ? ()=>onClickSearchIcon() : ()=>{}}></IconButton>
                       <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='large' isTransparent></IconButton>
                       <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='large' isTransparent></IconButton>
@@ -56,7 +56,7 @@ const MySpendrupsPage = ({ header, boxMittSpendrups, boxMinaFavoriter, boxOvriga
                 </Below>
                 <Above breakpoint="lg">{(matches: any) => matches && 
                   <SearchNavBarLinks>
-                    <GroupWrapper position='apart' align='center'>
+                    <GroupWrapper position='apart' align='center' direction='row'>
                     <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
                     <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
                     </GroupWrapper>
@@ -87,7 +87,7 @@ const MySpendrupsPage = ({ header, boxMittSpendrups, boxMinaFavoriter, boxOvriga
       </Header>
       <ContentWrapper>
         <MaxWidth contentMaxWidth={'wide'}>
-          <GroupWrapper>
+          <GroupWrapper direction='default'>
             <GroupWrapper direction='column'>
               <BoxWrapper {...boxMittSpendrups} />
               <BoxWrapper {...boxMinaFavoriter} />

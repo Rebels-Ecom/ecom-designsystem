@@ -70,7 +70,7 @@ function GroupWrapper({ children,  direction='default', position='left', spacing
             return 'direction-row'
           case 'default':
           default:
-            return 'direction-row'
+            return 'direction-default'
       }
   }
 
