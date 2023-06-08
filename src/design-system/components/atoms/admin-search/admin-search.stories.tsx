@@ -16,10 +16,6 @@ const AdminSearchStoryTemplate: Story = {
     const [query, setQuery] = useState<string>(args.query)
     const [results, setResults] = useState<Array<any>>([])
 
-    function handleOnClick(){
-      console.log('Handle on click search button')
-    }
-
     function handleOnClickSearchResult(clickedItem: IResult){
       console.log('Handle clicked item', clickedItem)
     }
@@ -40,12 +36,11 @@ const AdminSearchStoryTemplate: Story = {
         query={query}
         setQuery={setQuery}
         results={results}
-        onClick={handleOnClick}
         onClickSearchResult={handleOnClickSearchResult}
         disabled={args.disabled}
+        isLoading={args.isLoading}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        searchBtnLabel={args.searchBtnLabel}
         noResultText={args.noResultText}
         placeholder={args.placeholder}
       />
@@ -74,7 +69,20 @@ export const AdminSearchStory = {
     isOpen: false,
     disabled: false,
     query: '',
-    searchBtnLabel: 'Sök på en kund',
+    noResultText: 'Your search returned no results',
+    placeholder: 'Sök på kundnummer, företag, namn'
+  }
+}
+
+export const AdminSearchStory_Loading = {
+  ...AdminSearchStoryTemplate,
+  args: {
+    id: 'SearchId',
+    results: [],
+    isOpen: false,
+    isLoading: true,
+    disabled: false,
+    query: '',
     noResultText: 'Your search returned no results',
     placeholder: 'Sök på kundnummer, företag, namn'
   }

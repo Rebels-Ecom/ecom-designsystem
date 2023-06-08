@@ -25,7 +25,7 @@ import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
-import { AdminSearchStory, itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
+import { AdminSearchStory, AdminSearchStory_Loading, itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -253,6 +253,35 @@ export const HeaderStory_Admin_User = {
   },
 }
 
+export const HeaderStory_Admin_Search_Loading = {
+  ...HeaderStoryTemplate,
+  args: {
+    isAdmin: true,
+    isLoggedIn: true,
+    adminSearch: AdminSearchStory_Loading.args, 
+    adminNavLinks: SearchNavBarLinksStory.args,
+    topNavBar: TopNavBarStory_Admin.args,
+    navigation: NavigationStory.args,
+    navigationTabs: TabsStory.args,
+    searchNavBar: SearchNavBarStory.args,
+    searchNavLinks: SearchNavBarLinksStory.args,
+    logotype: {
+      logo: {
+        src: logotype_desktop_horizontal,
+        alt: 'logo',
+        href: '/',
+        id: 'logo',
+        sources: [
+          { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
+          { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+        ],
+      },
+      linkComponent: 'a',
+    },
+    cartSidebar: CartProductListStory.args
+  },
+}
+
 export const HeaderStory_Admin_Selects_Customer_Flow = {
   ...HeaderStoryTemplate,
   args: {
@@ -280,3 +309,5 @@ export const HeaderStory_Admin_Selects_Customer_Flow = {
     cartSidebar: CartProductListStory.args
   },
 }
+
+

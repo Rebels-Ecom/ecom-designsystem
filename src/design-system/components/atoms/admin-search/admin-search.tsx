@@ -3,8 +3,8 @@ import styles from './admin-search.module.css'
 import { useCloseOnEscape, useOnClickOutside } from '../../../hooks'
 import { Icon } from '../icon/icon'
 import { InputText } from '../inputs/input-text/input-text'
-import { Button } from '../button/button'
 import cx from 'classnames'
+import { Loader } from '../loader/loader'
 
 export interface ISearchNoResult {
   text: React.ReactNode | string
@@ -20,20 +20,19 @@ export interface IResult {
 export interface IAdminSearch {
   id: string
   isOpen: boolean
+  isLoading?: boolean
   setIsOpen: (isOpen: boolean) => void
   query: string
   setQuery: (query: string) => void
   results: Array<IResult>
-  onClick: CallableFunction
   onClickSearchResult: CallableFunction
   disabled?: boolean
   noResultText: ISearchNoResult
-  searchBtnLabel?: string
   placeholder?: string
   className?: string
 }
 
-function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, results, onClick, onClickSearchResult, disabled, noResultText, placeholder, searchBtnLabel='Sök på en kund' }: IAdminSearch) {
+function AdminSearch({ className, id, isLoading=false, isOpen, setIsOpen, query, setQuery, results, onClickSearchResult, disabled, noResultText, placeholder }: IAdminSearch) {
   const searchWrapperElement = useRef<HTMLDivElement | null>(null)
   const inputField = useRef<HTMLInputElement | null>(null)
 
@@ -69,9 +68,9 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, result
   return (
     <div ref={searchWrapperElement} className={cx(styles.search, className)}>
       <div className={styles.searchBar}>
-        <Button type="button" surface="primary" size="small" iconLeft={{icon:"icon-search"}} className={styles.searchBtn} onClick={()=>onClick()}>
-          <span className={styles.btnLabel}>{searchBtnLabel}</span>
-        </Button>
+        <div className={styles.searchIconWrapper}>
+          <Icon className={styles.searchIcon} icon={'icon-search'}></Icon>
+        </div>
         <InputText
           ref={inputField}
           type="text"
@@ -89,8 +88,12 @@ function AdminSearch({ className, id, isOpen, setIsOpen, query, setQuery, result
           </button>
         )}
       </div>
-
-      {isOpen && query && (
+      {isOpen && query && isLoading &&(
+        <div className={styles.searchResultsLoading}>
+          <Loader visible={true} position='relative' color='orange' size='sm'/>
+        </div>
+      )}
+      {isOpen && query && !isLoading &&(
         <div className={styles.searchResults}>
           <ul aria-labelledby={id}>
             {results.map((li: IResult, i: number) => (
