@@ -4,6 +4,9 @@ import { InfoSummaryBox } from './info-summary-box'
 import { Text } from '../../atoms/text/text'
 import { OrderItem } from '../order-item/order-item'
 import { OrderItem_MinaOrdrar_1, OrderItem_MinaOrdrar_2, OrderItem_Sommarfest, OrderItem_Vinterfest } from '../order-item/order-item.stories'
+import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
+import { CartProduct } from '../cart-product/cart-product'
+import { CartProduct_OrderConfirmation_Beer, CartProduct_OrderConfirmation_Wine } from '../cart-product/cart-product.stories'
 
 const meta: Meta<typeof InfoSummaryBox> = {
   title: 'Design System/Molecules/InfoSummaryBox',
@@ -55,6 +58,17 @@ const itemsListMinaOrdrar = (
     </>
 )
 
+const cartProducts = [
+    CartProduct_OrderConfirmation_Beer.args,
+    CartProduct_OrderConfirmation_Wine.args,
+  ]
+
+const itemsProdukter = (
+    <CartProductList>
+      { cartProducts.map( (product: any) => <CartProduct key={Math.random()} {...product} ></CartProduct>) }
+    </CartProductList>
+)
+
 export const InfoSummaryBoxStory_DinaUppgifter = {
     ...InfoSummaryBoxStoryTemplate,
     args: {
@@ -82,6 +96,16 @@ export const InfoSummaryBoxStory_Inkopslistor = {
         linkLabel: 'Hantera',
         onClick: ()=>{},
         children: itemsListInkopslistor
+    }
+}
+
+export const InfoSummaryBoxStory_Produkter = {
+    ...InfoSummaryBoxStoryTemplate,
+    args: {
+        label: 'Produkter',
+        linkLabel: 'Hantera',
+        onClick: ()=>{},
+        children: itemsProdukter
     }
 }
 
