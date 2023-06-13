@@ -13,6 +13,7 @@ import { Below } from '../../layouts/breakpoints/below'
 import { Above } from '../../layouts/breakpoints/above'
 import { LoadingBars } from '../../molecules'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 
 export interface IProductSpec {
     name: string
@@ -41,7 +42,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
     const [product, setProduct] = useState(
         {   productId,
             productName, 
-            productImage: getProductPicture(productId, productImageUrl),
+            productImage: getProductPicture(productId, productImageUrl ? productImageUrl : fallbackProductImageUrl),
             packaging,
             priceStr,
             price,
@@ -72,7 +73,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
         setProduct({
             ...product, 
             productId: selectedVariant.variantId,
-            productImage: selectedVariant.image,
+            productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
             packaging: selectedVariant.variantName,
             priceStr: selectedVariant.listPricePerUnitString,
             price: selectedVariant.price,
@@ -106,7 +107,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
                     <Above breakpoint="md">{(matches: any) => matches &&productDetail?.loaderValues && productDetail.loaderValues.length>0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars}></LoadingBars>}</Above>
                     <div className={cx(styles.imageWrapper, styles.variantsListOpen)}>
                         <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Below>
-                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl}/> 
                     </div>
                 </div>
                 <ProductVariantList className= {cx(styles.contentWrapper, styles.productVariants)} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>            
@@ -120,7 +121,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
                     <Above breakpoint="md">{(matches: any) => matches &&productDetail?.loaderValues && productDetail.loaderValues.length>0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars}></LoadingBars>}</Above>
                     <div className={styles.imageWrapper}>
                         <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Below>
-                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl}/> 
                     </div>
                 </div>
 
