@@ -53,7 +53,7 @@ function ProductCard({ product, changePackagingButton, addToCartButton, addToCar
     setProduct({
       ...myProduct, 
       productId: selectedVariant.variantId,
-      productImage: selectedVariant.image,
+      productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
       country: selectedVariant.country,
       packaging: selectedVariant.variantName,
       priceStr: selectedVariant.listPricePerUnitString,

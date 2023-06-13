@@ -30,6 +30,6 @@ export const ProductVariantStory = {
         country: "Sverige",
         listPricePerUnitString: "22,68",
         salesUnit:"KLI",
-        image: getProductPicture("1105101", "https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb")
+        imageUrl: "https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb"
     }
 }

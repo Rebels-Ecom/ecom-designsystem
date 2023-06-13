@@ -286,4 +286,108 @@ const dummyWineProductNoVariants = {
 
 }
 
-export { dummyBeerProduct, dummyWineProduct, dummyWineProductNoVariants } 
+const dummyWineProduct_VariantDefaultImg = {
+	"FirstVariantName":"",
+	"ListPricePerUnit":132,
+	"ListPricePerUnitString":"132",
+	"DisplayName":"Torre Del Falasco Valpolicella Ripasso Superiore DOC",
+	"ProductUrl":"/Product/2489224",
+	"IsHit":true,
+	"IsProduct":true,
+	"PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
+	"ExternalId":"2489224",
+	"LimitedProduct":false,
+	"CampaignProduct":false,
+	"ActiveCampaign":null,
+	"Tags":[
+	   {
+		  "Text":"Vegan",
+		  "Class":"purple",
+		  "ExternalId":"16267"
+	   }
+	],
+	"SellerOnly":true,
+	"ShortTexts":[
+	   "Italien"
+	],
+	"Variants":[
+	   {
+		  "Name":"75cl Engångsglas",
+		  "VariantFullName":"75cl Engångsglas",
+		  "VariantId":"2489224",
+		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
+		  "SalesUnit":"ST",
+		  "UnitsPerBaseUnit":1,
+		  "Tags":[
+			 {
+				"Text":"Vegan",
+				"Class":"purple",
+				"ExternalId":"16267"
+			 }
+		  ],
+		  "ShortTexts":[
+			 "Italien"
+		  ],
+		  "ListPricePerUnit":132,
+		  "ListPricePerUnitString":"132",
+		  "SellerOnly":true,
+		  "AccessoryPotVariant":false,
+		  "ActiveCampaign":null
+	   },
+	   {
+		  "Name":"75cl Engångsglas",
+		  "VariantFullName":"75cl Engångsglas",
+		  "VariantId":"2489214",
+		  "PrimaryImageUrl":"",
+		  "SalesUnit":"KLI",
+		  "UnitsPerBaseUnit":6,
+		  "Tags":[
+			 {
+				"Text":"Vegan",
+				"Class":"purple",
+				"ExternalId":"16267"
+			 }
+		  ],
+		  "ShortTexts":[
+			 "Italien"
+		  ],
+		  "ListPricePerUnit":132,
+		  "ListPricePerUnitString":"132",
+		  "SellerOnly":false,
+		  "AccessoryPotVariant":false,
+		  "ActiveCampaign":null
+	   },
+	   {
+		  "Name":"150cl Engångsglas",
+		  "VariantFullName":"150cl Engångsglas",
+		  "VariantId":"2527326",
+		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/1704f06e-d5c2-419c-8dc4-c60e9665664a",
+		  "SalesUnit":"ST",
+		  "UnitsPerBaseUnit":1,
+		  "Tags":[
+			 {
+				"Text":"Vegan",
+				"Class":"purple",
+				"ExternalId":"16267"
+			 }
+		  ],
+		  "ShortTexts":[
+			 "Italien"
+		  ],
+		  "ListPricePerUnit":280,
+		  "ListPricePerUnitString":"280",
+		  "SellerOnly":false,
+		  "AccessoryPotVariant":false,
+		  "ActiveCampaign":null
+	   }
+	],
+	"Desc":"",
+	"SalesUnit":"ST",
+	"UnitsPerBaseUnit":1,
+	"AccessoryPotItem":false,
+	"ModelName":"75cl Engångsglas",
+	"CategoryName":"Vin",
+	"BrandName":"Spendrups"
+}
+
+export { dummyBeerProduct, dummyWineProduct, dummyWineProductNoVariants, dummyWineProduct_VariantDefaultImg } 

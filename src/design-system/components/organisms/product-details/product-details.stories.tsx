@@ -2,7 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { IProductDetail, ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
-import { dummyBeerProduct , dummyWineProduct, dummyWineProductNoVariants} from './dummy-product'
+import { dummyBeerProduct , dummyWineProduct, dummyWineProductNoVariants, dummyWineProduct_VariantDefaultImg} from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
@@ -80,7 +80,7 @@ function getVariantsList( productName:string, variantsList:any) {
             price: variant.ListPricePerUnit,
             salesUnit: variant.SalesUnit,
             itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
-            image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
+            imageUrl: variant.PrimaryImageUrl,
             checked: variant.VariantId===firstVariantId,
             onChange: () => {},
         }
@@ -108,6 +108,7 @@ function getProduct( productData: any) : IProduct {
 
 const productArgs = getProduct(dummyBeerProduct)
 const productArgsWine = getProduct(dummyWineProduct)
+const productArgsWine_VariantDefaultImg = getProduct(dummyWineProduct_VariantDefaultImg)
 const productArgsWineNoVariants = getProduct(dummyWineProductNoVariants)
 const productDetailsArgs = getProductDetails(dummyProductBeerDetails)
 const productDetailsArgsWine = getProductDetails(dummyProductWineDetails)
@@ -136,6 +137,16 @@ export const ProductDetailsStory_Wine_NoVariants = {
     ...ProductDetailsStoryTemplate,
     args: {
         ...productArgsWineNoVariants,
+        productDetail: productDetailsArgsWine,
+        changePackagingButton:ChangePackagingButtonStory.args,
+        addToCart: ButtonProductCardStory.args,
+    }
+}
+
+export const ProductDetailsStory_Wine_VariantFallbackImg = {
+    ...ProductDetailsStoryTemplate,
+    args: {
+        ...productArgsWine_VariantDefaultImg,
         productDetail: productDetailsArgsWine,
         changePackagingButton:ChangePackagingButtonStory.args,
         addToCart: ButtonProductCardStory.args,
