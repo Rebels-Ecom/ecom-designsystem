@@ -7,6 +7,9 @@ import { OrderItem_MinaOrdrar_1, OrderItem_MinaOrdrar_2, OrderItem_Sommarfest, O
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { CartProduct } from '../cart-product/cart-product'
 import { CartProduct_OrderConfirmation_Beer, CartProduct_OrderConfirmation_Wine } from '../cart-product/cart-product.stories'
+import { GroupWrapper } from '../group-wrapper/group-wrapper'
+import { LatestOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories'
+import { Button } from '../../atoms'
 
 const meta: Meta<typeof InfoSummaryBox> = {
   title: 'Design System/Molecules/InfoSummaryBox',
@@ -69,6 +72,13 @@ const itemsProdukter = (
     </CartProductList>
 )
 
+const itemsShoppingList = (
+    <GroupWrapper position='center'>
+        <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
+        <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
+    </GroupWrapper>
+    )
+
 export const InfoSummaryBoxStory_DinaUppgifter = {
     ...InfoSummaryBoxStoryTemplate,
     args: {
@@ -113,5 +123,15 @@ export const InfoSummaryBoxStory_MinaOrdrar = {
     ...InfoSummaryBoxStoryTemplate,
     args: {
         children: itemsListMinaOrdrar
+    }
+}
+
+export const InfoSummaryBoxStory_ShoppingList = {
+    ...InfoSummaryBoxStoryTemplate,
+    args: {
+        label: 'Produkter',
+        linkLabel: 'Hantera',
+        onClick: ()=>{},
+        children: itemsShoppingList
     }
 }
