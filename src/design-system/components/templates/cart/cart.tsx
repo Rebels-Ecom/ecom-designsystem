@@ -5,10 +5,6 @@ import { CartDeliveryDetails, ICartDeliveryDetails } from '../../organisms/cart-
 
 export interface ICart {
   children: React.ReactNode
-  // deliveryDetails: ICartDeliveryDetails
-  // cartOrderDetails: ICartOrderDetails
-  // addProductToCart: CallableFunction
-  // removeProductFromCart: CallableFunction
 }
 
 function Cart({ children }: ICart) {

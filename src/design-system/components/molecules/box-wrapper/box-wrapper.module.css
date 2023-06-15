@@ -1,6 +1,8 @@
 .boxWrapper {
     position: relative;
     width: 100%;
+    max-width: 43.75rem;
+    margin: auto;
     display: flex;
     flex-direction: column;
     padding: 1rem;
