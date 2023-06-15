@@ -1,0 +1,2 @@
+import{r as o}from"./index-6f814c40.js";function c({ref:e,onClose:n,disableClose:u}){o.useEffect(()=>{if(u)return;const t=r=>{!e.current||e.current.contains(r.target)||n(r)};return document.addEventListener("mousedown",t),document.addEventListener("touchstart",t),()=>{document.removeEventListener("mousedown",t),document.removeEventListener("touchstart",t)}},[e,n])}export{c as u};
+//# sourceMappingURL=useOnClickOutside-47d3035a.js.map

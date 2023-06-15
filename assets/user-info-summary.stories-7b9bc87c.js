@@ -1,0 +1,8 @@
+import{j as r,a as n}from"./jsx-runtime-76c5c2e2.js";const u="_userInfoSummary_1cr48_1",c={userInfoSummary:u};function s({label:a,infoSummary:e}){return r("div",{className:c.userInfoSummary,children:[a&&n("p",{children:r("b",{children:[" ",a," "]})}),e.userName&&n("p",{children:r("b",{children:[" ",e.userName.toUpperCase()," "]})}),e.companyName&&r("p",{children:[" ",e.companyName," "]}),e.customerNumber&&r("p",{children:[" ",e.customerNumber," "]}),e.role&&r("p",{children:[" ",e.role," "]})]})}try{s.displayName="UserInfoSummary",s.__docgenInfo={description:"",displayName:"UserInfoSummary",props:{label:{defaultValue:null,description:"",name:"label",required:!1,type:{name:"string"}},infoSummary:{defaultValue:null,description:"",name:"infoSummary",required:!0,type:{name:"IUserSummary"}}}}}catch{}const p={title:"Design System/Molecules/UserInfoSummary",component:s},d={render:({...a})=>n(s,{...a})},i={userName:"Jon Johnsson",companyName:"Gustav Grill & Bar",customerNumber:"Kundnr: 186922",role:"Roll: Sales"},o={...d,args:{label:"Inloggat som:",infoSummary:i}};var m,t,l;o.parameters={...o.parameters,docs:{...(m=o.parameters)==null?void 0:m.docs,source:{originalSource:`{
+  ...UserInfoSummaryStoryTemplate,
+  args: {
+    label: 'Inloggat som:',
+    infoSummary: infoSummaryText
+  }
+}`,...(l=(t=o.parameters)==null?void 0:t.docs)==null?void 0:l.source}}};const y=["UserInfoSummaryStory"],f=Object.freeze(Object.defineProperty({__proto__:null,UserInfoSummaryStory:o,__namedExportsOrder:y,default:p},Symbol.toStringTag,{value:"Module"}));export{s as U,o as a,f as u};
+//# sourceMappingURL=user-info-summary.stories-7b9bc87c.js.map

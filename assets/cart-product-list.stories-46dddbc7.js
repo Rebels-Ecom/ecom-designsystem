@@ -1,7 +1,0 @@
-import{C as p}from"./cart-product-list-a1b9ae6a.js";import{C as e,b as i,a as n}from"./cart-product.stories-00eff095.js";import{a as o}from"./jsx-runtime-76c5c2e2.js";import"./index-74f03c09.js";import"./index-6f814c40.js";import"./_commonjsHelpers-042e6b4d.js";import"./format-helper-aac6be36.js";import"./input-text-b673fc3a.js";import"./form-helper-ce65ae5e.js";import"./icon-8c95f315.js";import"./divider-lines-aed21525.js";import"./picture-1385f78c.js";import"./icon-button-6af62ba5.js";import"./ui-link-d168131e.js";import"./loader-7383e603.js";import"./icon-button.stories-5a73a7ee.js";import"./chunk-OPEUWD42-0dc0813d.js";const B={title:"Design System/Organisms/CartProductList",component:p},u=[e.args,i.args,e.args,i.args],l={render:t=>{var a;return o("div",{style:{margin:"0 auto",maxWidth:"1254px"},children:o(p,{children:(a=t==null?void 0:t.children)==null?void 0:a.map(d=>o(n,{...d,onClickRemoveProduct:()=>{}},Math.random()))})})}},r={...l,args:{children:u}};var s,m,c;r.parameters={...r.parameters,docs:{...(s=r.parameters)==null?void 0:s.docs,source:{originalSource:`{
-  ...CartProductListStoryTemplate,
-  args: {
-    children: cartProducts
-  }
-}`,...(c=(m=r.parameters)==null?void 0:m.docs)==null?void 0:c.source}}};const D=["CartProductListStory"];export{r as CartProductListStory,D as __namedExportsOrder,B as default};
-//# sourceMappingURL=cart-product-list.stories-46dddbc7.js.map
