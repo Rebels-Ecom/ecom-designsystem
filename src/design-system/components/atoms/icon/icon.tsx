@@ -13,6 +13,7 @@ export type TIcon =
   | 'icon-search'
   | 'icon-x-circle'
   | 'icon-plus-circle'
+  | 'icon-plus'
   | 'icon-chevron-up'
   | 'icon-chevron-down'
   | 'icon-chevron-left'

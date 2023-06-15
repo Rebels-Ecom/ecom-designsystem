@@ -1,0 +1,40 @@
+.cartProductList {
+    position: relative
+}
+
+.list {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+        
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #FFF9E8; 
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: var(--color-text-orange);
+        border-radius: 0.5rem;
+    }
+
+    &.listFade {
+        --mask: linear-gradient(to bottom, rgba(0,0,0, 1) 0,   rgba(0,0,0, 1) 85%, rgba(0,0,0, 0) 99%, rgba(0,0,0, 0) 0) 100% 50% / 100% 100% repeat-x;
+        -webkit-mask: var(--mask); 
+        mask: var(--mask);
+    }
+}
+
+.listItem {
+    border-bottom: 1px solid #F1F1F1;
+    padding:1rem 0;
+    &:last-child {
+        border-bottom: none;
+    }
+}
+

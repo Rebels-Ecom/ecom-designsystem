@@ -12,15 +12,14 @@ export interface IOrderItem {
 function OrderItem({ children, linkUrl, linkComponent: Link } : IOrderItem) {
   return (
     <div className={cx(styles.summaryItem, styles.summaryItemLink)}>
-      {linkUrl
-        ?
+      {linkUrl ? (
           <Link className={styles.linkWrapper}>
             <div>{children}</div>
             {linkUrl && <Icon icon={'icon-chevrons-right'}></Icon>}
           </Link>
-        :
+      ) : (
           <div>{children}</div>
-      }
+      )}
     </div>
   )
 }
