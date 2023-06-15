@@ -1,9 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
 import { MessagePopup } from './message-popup'
-import { action } from '@storybook/addon-actions';
 import { Text } from '../../atoms';
-import { GroupWrapper } from '../../molecules';
+import { GroupWrapper } from '../../molecules'
 
 const meta: Meta<typeof MessagePopup> = {
     title: 'Design System/Atoms/MessagePopup',

@@ -7,6 +7,7 @@ import { dummyWineProduct } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { IconButtonStory_RemoveProduct } from '../../atoms/icon-button/icon-button.stories'
+import { IProductVariant } from '../product-variant/product-variant'
 
 const meta: Meta<typeof CartProduct> = {
   title: 'Design System/Molecules/CartProduct',
@@ -41,7 +42,7 @@ function getProductTags(tags: Array<any>) {
 
 function getVariantsList(productName: string, variantsList: any) {
   const firstVariantId = variantsList[0].VariantId
-  return variantsList.map((variant) => {
+  return variantsList.map((variant:any) => {
     return {
       productName: productName,
       variantName: variant.Name,
