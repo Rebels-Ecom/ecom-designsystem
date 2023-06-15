@@ -20,6 +20,8 @@ const useSize = (target: any) => {
 }
 
 enum Area {
+  ADMIN_SEARCH = 'adminSearch',
+  ADMIN_NAV_LINKS = 'adminNavLinks',
   TOP = 'top',
   LOGO = 'logo',
   SEARCH = 'search',
@@ -53,17 +55,21 @@ const Header = ({
   isOpen,
 }: {
   isOpen: boolean
+  isAdmin?: boolean
+  isLoggedIn?: boolean
+  adminSearch?:any
+  adminNavLinks?: any
   topNavBar?: any
   logotype?: any
   searchNavBar?: any
   searchNavLinks?: any
   navigation?: any
-  headerLinkList?: any
+  navigationTabs?: any
   cartSidebar?: any
-  children: ({ Wrapper, Button, GridArea }: { Wrapper: any; Button: any; GridArea: any }) => React.ReactNode
+  children: ({ Wrapper, MenuButton, GridArea }: { Wrapper: any; MenuButton: any; GridArea: any }) => React.ReactNode
 }) => {
   const Path = (props: any) => <motion.path fill="transparent" strokeWidth="3" strokeLinecap="round" {...props} />
-  const Button = ({ onClick }: any) => (
+  const MenuButton = ({ onClick }: any) => (
     <button
       id="navigation-menu-btn"
       type={'button'}
@@ -99,7 +105,7 @@ const Header = ({
   )
 
   if (typeof children === 'function') {
-    return children({ Wrapper, Button, GridArea }) as ReactElement
+    return children({ Wrapper, MenuButton, GridArea }) as ReactElement
   }
   return children as ReactElement
 }

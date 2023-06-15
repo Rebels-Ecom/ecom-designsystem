@@ -1,19 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
 import { ITeaser, Teaser } from '../../molecules/teaser/teaser'
 import { BlogCardList, IBlogCardList } from '../../organisms/blog-card-list/blog-card-list'
 import { IHeroCarousel, HeroCarousel } from '../../organisms/hero-carousel/hero-carousel'
 import { IOfferCardList, OfferCardList } from '../../organisms/offer-card-list/offer-card-list'
-import { INavigation, Navigation } from '../../molecules/navigation/navigation'
+import { Navigation } from '../../molecules/navigation/navigation'
 import { FeaturedProductsCarousel, IFeaturedProductsCarousel } from '../../organisms/featured-products-carousel/featured-products-carousel'
 import { CustomerTeaser, ICustomerTeaser } from '../../organisms/customer-teaser/customer-teaser'
-import { ContentWrapper, MaxWidth } from '../../layouts'
+import { Above, Below, ContentWrapper, MaxWidth } from '../../layouts'
 import { CartSidebar, Header } from '../../organisms'
-import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar } from '../../molecules'
+import { CartProduct, DrawerSidebar, FormGroup, GroupWrapper, Logotype, SearchNavBarLinks, SearchNavBar, TopNavBar, UserProfileDropdown, Tabs } from '../../molecules'
 import { IFooter, Footer } from '../../organisms/footer/footer'
-import { Heading, LinkButton, Button, ToggleSwitch } from '../../atoms'
+import { Heading, LinkButton, Button, ToggleSwitch, IconButton, UiDatePicker } from '../../atoms'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
+import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
+import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
+import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
+import { itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
 
 export interface IStartPageTemplate {
   header: any
@@ -49,35 +53,112 @@ const StartPageTemplate = ({
   footer,
 }: IStartPageTemplate) => {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [activeUser, setActiveUser] = React.useState({} as IResult)
+  const [isAdminSearchbarOpen, setIsAdminSearchbarOpen] = React.useState<boolean>(false)
+  const [query, setQuery] = React.useState<string>('')
+  const [adminSearchResults, setAdminSearchResults] = React.useState<Array<any>>([])
   const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
+  const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
   const handleOnClick = () => setIsOpen(!isOpen)
   const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
+  const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
   const onClickCartIcon = () => setIsCartSidebarOpen(true)
   const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
-  const handleClickAccountBtn = () => { console.log(`Mitt Spendrups btn clicked...`)}
+  const onClickLogout = () => { console.log('Handle logout...')}
+  const onClickSearchButton = () => {console.log('Handle search button click')}
+  const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
+
+  useEffect(() => {
+    let pattern = new RegExp(query.toLowerCase(), 'i')
+    setAdminSearchResults(itemsToFilterOn.filter((item) => query && (
+      (item.name && pattern.test(item.name.toLowerCase())) ||
+      (item.companyName && pattern.test(item.companyName.toLowerCase())) ||
+      (item.companyId && pattern.test(item.companyId.toString().toLowerCase())) ||
+      (item.email && pattern.test(item.email.toLowerCase()))
+      )))
+  }, [query]);
 
   return (
     <>
-      <Header isOpen={isOpen}>
-        {({ Wrapper, Button, GridArea }) => (
-          <Wrapper isOpen={isOpen}>
+    <Header isOpen={isOpen}>
+      {({ Wrapper, MenuButton, GridArea }) => (
+        <Wrapper isOpen={isOpen}>
+          {header.isAdmin && header.adminSearch && header.adminNavLinks && 
+          <>
+            <GridArea area="adminSearch">
+                <AdminSearch
+                  {...header.adminSearch}
+                  query={query}
+                  setQuery={setQuery}
+                  results={adminSearchResults}
+                  onClick={onClickSearchButton}
+                  onClickSearchResult={onClickSearchResultItem}
+                  isOpen={isAdminSearchbarOpen}
+                  setIsOpen={setIsAdminSearchbarOpen}
+                />
+              </GridArea>             
+              <GridArea area="adminNavLinks">
+                <SearchNavBarLinks>
+                  <GroupWrapper position='apart'>
+                    <Below breakpoint="lg">{(matches: any) => matches && <>
+                      { activeUser?.name &&  <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>}
+                      <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                    </>}
+                    </Below>
+                    <Above breakpoint="lg">{(matches: any) => matches && <>
+                        { activeUser?.name && <Button type={'button'} surface={'secondary'} children={activeUser.name} iconRight={{icon:'icon-user'}} size={'x-small'} rounded onClick={()=>{}}/>}
+                        <Button type={'button'} surface={'primary'} children={'Mitt adminkonto'} iconRight={{icon:'icon-settings'}} size={'x-small'} onClick={()=>{}}/>
+                    </>}</Above>
+                  </GroupWrapper>
+                </SearchNavBarLinks>
+              </GridArea>
+            </>}
             <GridArea area="top">
-              <TopNavBar {...header.topNavBar} />
+              <TopNavBar {...header.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate} isAdmin={header.isAdmin} hasActiveUser={activeUser?.name && activeUser?.name.length>0}/>
             </GridArea>
             <GridArea area="logo">
               <Logotype {...header.logotype} />
-            </GridArea>
+            </GridArea>  
             <GridArea area="search">
-              <SearchNavBar {...header.searchNavBar} />
+              <SearchNavBar {...header.searchNavBar} isOpen={isSearchbarOpen}/>
             </GridArea>
-            <GridArea area="searchNavLinks">
-              <SearchNavBarLinks {...header.searchNavLinks} onClickCart={onClickCartIcon} onClickSelectDate={setSelectedDate} onClickMyAccountBtn={handleClickAccountBtn} isMyAccountPage={true}/>
+            {header.searchNavLinks && <GridArea area="searchNavLinks">
+              <Below breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                      <IconButton icon={isSearchbarOpen ? 'icon-x' : 'icon-search'} isLink={false} linkComponent={undefined} size='large' isTransparent onClick={onClickSearchIcon ? ()=>onClickSearchIcon() : ()=>{}}></IconButton>
+                      <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='large' isTransparent></IconButton>
+                      <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='large' isTransparent></IconButton>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Below>
+                <Above breakpoint="lg">{(matches: any) => matches && 
+                  <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center'>
+                    <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                    <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                    </GroupWrapper>
+                    <GroupWrapper position='apart'>
+                        <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                        <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>}
+                </Above>
             </GridArea>
+            }
             <GridArea area="btn">
-              <Button onClick={handleOnClick} />
+              <MenuButton onClick={handleOnClick} />
             </GridArea>
             <GridArea area="nav">
-              <Navigation {...header.navigation} isOpen={isOpen} />
+              <Below breakpoint="lg">{(matches: any) => matches &&  <>
+                {header.isLoggedIn 
+                  ? 
+                  <Tabs {...header.navigationTabs} isOpen={isOpen}></Tabs>
+                :
+                  <Navigation {...header.navigation} isOpen={isOpen} />
+                }
+              </>}</Below>
+              <Above breakpoint="lg">{(matches: any) => matches && <Navigation {...header.navigation} isOpen={isOpen} />}</Above>
             </GridArea>
           </Wrapper>
         )}

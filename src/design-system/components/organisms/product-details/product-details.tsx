@@ -11,21 +11,38 @@ import { Picture } from '../../atoms/picture/picture'
 import { ITag, Tag } from '../../atoms/tag/tag'
 import { Below } from '../../layouts/breakpoints/below'
 import { Above } from '../../layouts/breakpoints/above'
+import { LoadingBars } from '../../molecules'
+import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+
+export interface IProductSpec {
+    name: string
+    value: string
+}
+
+export interface IProductDetail {
+    visibleSpecs: Array<IProductSpec>
+    visibleDescription: string
+    invisibleSpecs: Array<IProductSpec>
+    invisibleDescription: string
+    tags: Array<ITag>
+    loaderValues: Array<ILoadingBar>
+}
 
 export interface IProductDetails extends IProduct {
     product: IProduct
+    productDetail: IProductDetail
     changePackagingButton: IButton
     addToCartButton: IButton
     addToCart: CallableFunction
     className: string
 }
 
-const ProductDetails = ({ productId, productName, productImageUrl, country, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, changePackagingButton, addToCartButton, addToCart, productDescription, className }: IProductDetails ) => {
+const ProductDetails = ({ productId, productName, productImageUrl, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, productDetail, changePackagingButton, addToCartButton, addToCart, className }: IProductDetails ) => {
     const [product, setProduct] = useState(
         {   productId,
             productName, 
-            productImage: getProductPicture(productId, productImageUrl),
-            country,
+            productImage: getProductPicture(productId, productImageUrl ? productImageUrl : fallbackProductImageUrl),
             packaging,
             priceStr,
             price,
@@ -33,13 +50,11 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
             itemNumberPerSalesUnit,
             quantity: '1',
             totalPrice: convertNumToStr(price*itemNumberPerSalesUnit),
-            tags,
-            productDescription,
             productVariantList,
             selectedVariantId: productId
         }
     )
-    const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false);
+    const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
 
     function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
         const quantity = parseInt(e.target.value) || 1;
@@ -58,8 +73,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
         setProduct({
             ...product, 
             productId: selectedVariant.variantId,
-            productImage: selectedVariant.image,
-            country: selectedVariant.country,
+            productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
             packaging: selectedVariant.variantName,
             priceStr: selectedVariant.listPricePerUnitString,
             price: selectedVariant.price,
@@ -89,9 +103,12 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
     if(variantsListOpen) {
         return(
             <div className= {cx(styles.productDetails)}>
-               <div className={cx(styles.imageWrapper, styles.variantsListOpen)}>
-                    <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
-                    <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                <div className={styles.imageOuterWrapper}>
+                    <Above breakpoint="md">{(matches: any) => matches &&productDetail?.loaderValues && productDetail.loaderValues.length>0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars}></LoadingBars>}</Above>
+                    <div className={cx(styles.imageWrapper, styles.variantsListOpen)}>
+                        <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Below>
+                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl}/> 
+                    </div>
                 </div>
                 <ProductVariantList className= {cx(styles.contentWrapper, styles.productVariants)} variantsList= {product.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={product.selectedVariantId}/>            
             </div>
@@ -100,19 +117,24 @@ const ProductDetails = ({ productId, productName, productImageUrl, country, pack
     else {
         return(
             <div className= {cx(styles.productDetails)}>
-               <div className={styles.imageWrapper}>
-                    <Below breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Below>
-                    <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} /> 
+                <div className={styles.imageOuterWrapper}>
+                    <Above breakpoint="md">{(matches: any) => matches &&productDetail?.loaderValues && productDetail.loaderValues.length>0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars}></LoadingBars>}</Above>
+                    <div className={styles.imageWrapper}>
+                        <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Below>
+                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl}/> 
+                    </div>
                 </div>
 
                 <div className={styles.contentWrapper}>
-                    <Above breakpoint="md">{(matches: any) => matches && product.tags && <ProductTags tagsList={product.tags}/>}</Above>
+                    <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Above>
                     <h3 className={styles.heading}>{product.productName}</h3>
                     <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
-                    {product.country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Land: ${product.country}`}</p>}
-                    <p className={styles.description}>{product.productDescription}</p>
+                    {Array.isArray(productDetail.visibleSpecs) && productDetail.visibleSpecs.length>0 && productDetail.visibleSpecs.map((spec, index)=> <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
+                    {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
                     
-                    <Button {...changePackagingButton} className={styles.btn} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
+                    {Array.isArray(product.productVariantList) && product.productVariantList.length>1 && 
+                        <Button {...changePackagingButton} className={styles.btn} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
+                    }
                     <ProductQuantityInput
                         className={styles.quantityInput}
                         salesUnit = {product.salesUnit}

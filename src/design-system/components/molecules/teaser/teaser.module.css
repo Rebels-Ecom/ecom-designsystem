@@ -144,7 +144,7 @@
         }
         &:before {
             font-family: 'IcoMoon';
-            content: "\e92b";
+            content: "\e913";
             margin-right:0.3rem;
             color: var( --color-text-decorative-purple);
         }

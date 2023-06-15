@@ -1,6 +1,5 @@
 .topNavBar {
     grid-area: topNav;
-    background: var(--top-nav-bar-background);
     height: 44px;
     width: 100%;
     display: flex;
@@ -11,18 +10,25 @@
       padding: 0 3.5rem;
     }
 }
+
+.adminTopNavBar {
+    background: var(--decorative-purple);
+}
+
+.userTopNavBar {
+    background: var(--top-nav-bar-background);
+}
   
 .topNavText {
-    display:none;
-    @media (min-width: 48rem) {
-      display: block;
-    }
+    display:flex;
 }
 
 .navLinksWrapper{
     display: flex;
+    align-items: center;
     padding: 0;
     list-style: none;
+    gap: 1rem;
 }
 
 .navLinksLeft {
@@ -30,7 +36,13 @@
 }
 
 .navLinksRight {
-    margin-left: auto;
+    width: 100%;
+    justify-content: space-between;
+    @media (min-width: 64rem) {
+        width: auto;
+        margin-left: auto;
+        margin-right: 0;
+    }
 }
   
 .topNavLink {
@@ -40,9 +52,6 @@
     cursor: pointer;
     background: none;
     color: var(--top-nav-text-default);
-    &:first-child {
-        margin-right: 1rem;
-    }
     &:hover, &:focus {
         background: none;
         color: var(--top-nav-text-hover);
@@ -58,4 +67,30 @@
 
 .navIcon {
     margin-right:0.5rem;
+}
+
+.btn {
+    display: none;
+    @media(min-width: 64em){
+        display:flex;
+        outline: none;
+        border: none;
+    }
+}
+
+.btnText {
+    display: none;
+    @media(min-width: 64em){
+        display:flex;
+    }
+}
+
+.btnCalendar {
+    background: transparent;
+    color: var(--color-text-white);
+    border: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    min-width: 1.5rem;
+    padding: 0.5rem;
 }

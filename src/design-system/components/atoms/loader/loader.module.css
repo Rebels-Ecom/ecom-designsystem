@@ -1,7 +1,7 @@
 .loader {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
     top: 0;
@@ -19,18 +19,31 @@
     &.loaderRelativePos{
         position: relative;
     }
+    @media(min-width:64em){
+        gap: 2rem;
+    }
 }
 
 .loaderSpinner {
-    display: inline-block;
+    display: block;
     border-style: solid;
     border-radius: 50%;
     animation: spin .8s linear infinite;
     -webkit-animation: spin .8s linear infinite;
+    &.loaderXSmall {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-width: 0.15rem;
+    }
     &.loaderSmall{
         width: 3.5rem;
         height: 3.5rem;
         border-width: 0.25rem;
+    }
+    &.loaderMedium{
+        width:8.5rem;
+        height: 8.5rem;
+        border-width: 0.35rem;
     }
     &.loaderLarge{
         width: 10rem;
@@ -42,18 +55,19 @@
         }
     }
     &.loaderDefaultColor{
-        border-color: rgba(0, 62, 81, 0.3);
+        border-color: var(--grey-300);
         border-top-color: var(--color-text-blue);
     }
     &.loaderOrange{
-        border-color: var(--border-orange);
-        border-top-color: var(--color-text-blue);
+        border-color: var(--grey-300);
+        border-top-color: var(--border-orange);
     }
 }
 
 .loaderText {
     color: var(--color-text-blue);
     font-weight: 700;
+    max-width: 16.5rem;
 }
 
 @keyframes spin {

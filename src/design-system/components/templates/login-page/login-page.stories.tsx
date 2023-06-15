@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { LoginPage } from './login-page'
-import { LoginFormStory } from '../../organisms/login-form/login-form.stories'
+import { LoginFormStory, LoginFormStory_Loading } from '../../organisms/login-form/login-form.stories'
 import { LoginForm } from '../../organisms/login-form/login-form'
 import { AccountBoxListStory } from '../../organisms/account-box-list/account-box-list.stories'
 import { AccountBoxList } from '../../organisms/account-box-list/account-box-list'
@@ -18,7 +18,7 @@ const LoginPageStoryTemplate: Story = {
   render: ({...args}) => {
     return (
       <LoginPage>
-        <LoginForm {...LoginFormStory.args} />
+        <LoginForm {...args} />
       </LoginPage>
     )
   },
@@ -28,7 +28,7 @@ const ChooseAccountStoryTemplate: Story = {
   render: ({...args}) => {
     return (
       <LoginPage>
-          <AccountBoxList {...AccountBoxListStory.args}/>
+          <AccountBoxList {...args}/>
       </LoginPage>
     )
   },
@@ -37,7 +37,14 @@ const ChooseAccountStoryTemplate: Story = {
 export const LoginPageStory = {
   ...LoginPageStoryTemplate,
   args: {
-    ...LoginFormStory.args,
+    ...LoginFormStory.args
+  },
+}
+
+export const LoginPageStory_Loading = {
+  ...LoginPageStoryTemplate,
+  args: {
+    ...LoginFormStory_Loading.args
   },
 }
 

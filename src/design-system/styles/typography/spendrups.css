@@ -234,7 +234,8 @@ h5,
   letter-spacing: var(--cta-s-letter-spacing);
   height: 2.5rem;
   min-width: 2.5rem;
-  padding: 0.625rem 2rem;
+  width: max-content;
+  padding: 0.625rem 1rem;
 }
 
 .cta-s {
@@ -243,6 +244,7 @@ h5,
   letter-spacing: var(--cta-s-letter-spacing);
   height: 2.5rem;
   min-width: 7.5rem;
+  width: var(--cta-width-default);
   padding: 0.625rem 2rem;
 }
 

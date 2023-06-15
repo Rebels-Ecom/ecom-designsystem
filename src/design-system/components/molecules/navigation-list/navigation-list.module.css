@@ -41,7 +41,6 @@
   @media (min-width: 64em) {
     display: flex;
     margin: 0;
-    padding: 0 1.75rem;
   }
 
   & a {
@@ -55,7 +54,7 @@
     padding-left: 0.625rem;
 
     @media (min-width: 64em) {
-      padding-left: 0;
+      padding: 0 1.75rem;
       font-size: var(--body-desktop-font-size);
       line-height: var(--body-desktop-line-height);
     }
@@ -121,7 +120,7 @@
 
     @media (min-width: 64em) {
       &:after {
-        width: 100%;
+        width: calc(100% - 48px);
       }
     }
   }

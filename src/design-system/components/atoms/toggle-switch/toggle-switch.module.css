@@ -27,7 +27,7 @@
     z-index: 2;
     &:before {
         font-family: 'IcoMoon';
-        content: "\e92b";
+        content: "\e913";
         position: absolute;
         top: 0.063rem;
         left: 0rem;
@@ -57,7 +57,7 @@
   
 .checkbox:checked + .switchKnob:before {
     font-family: 'IcoMoon';
-    content: "\e92b";
+    content: "\e913";
     left: 46px;
     background-color: var(--radio-checkbox-background);
     color: var(--icon-blue);

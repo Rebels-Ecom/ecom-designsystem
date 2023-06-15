@@ -26,6 +26,8 @@ const FeaturedProductsStoryTemplate: Story = {
 }
 
 const cardList = ProductCardListStory.args.productCards.slice(0, 3)
+const promoBrandsCardList1 = ProductCardListStory.args.productCards.slice(0, 4)
+const promoBrandsCardList2 = ProductCardListStory.args.productCards.slice(8, 12)
 
 export const FeaturedProductsStory = {
     ...FeaturedProductsStoryTemplate,
@@ -39,6 +41,24 @@ export const FeaturedProductsStory = {
       },
       linkComponent: 'a',
       addToCart: action('clicked'),
+  }
+}
+
+export const FeaturedProductsStory_PromoBrands1 = {
+  ...FeaturedProductsStoryTemplate,
+  args: {
+    productCards: promoBrandsCardList1,
+    productCardsNumber: '4',
+    addToCart: action('clicked'),
+  }
+}
+
+export const FeaturedProductsStory_PromoBrands2 = {
+  ...FeaturedProductsStoryTemplate,
+  args: {
+    productCards: promoBrandsCardList2,
+    productCardsNumber: '4',
+    addToCart: action('clicked'),
   }
 }
 

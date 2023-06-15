@@ -15,10 +15,11 @@ export interface ICartProduct extends IProduct {
     onClickRemoveProduct?: CallableFunction
     className?: string
     loading: boolean
+    linkComponent?: any
 }
 
-const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , loading= false}: ICartProduct ) => {
-    const {productId, productName, productImageUrl, country, packaging, priceStr, totalPrice,  quantity, salesUnit, itemNumberPerSalesUnit} = product
+const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , loading= false, linkComponent: Link}: ICartProduct ) => {
+    const {productId, productName, productUrl, productImageUrl, country, packaging, priceStr, totalPrice,  quantity, salesUnit, itemNumberPerSalesUnit} = product
     const productImage = getProductPicture(productId, productImageUrl)
 
     function handleRemoveProduct(id: string) {
@@ -37,7 +38,12 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
                     </div>
 
                     <div className={styles.contentWrapper}>
-                        <p className={styles.heading}>{productName}</p>
+                        { productUrl && Link
+                        ? 
+                            <Link to={productUrl} href={productUrl} className={styles.headingWrapper}><h5 className={styles.heading}>{productName}</h5></Link>
+                        : 
+                            <h5 className={styles.heading}>{productName}</h5>
+                        }
                         <DividerLines/>
                         <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
                         {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}

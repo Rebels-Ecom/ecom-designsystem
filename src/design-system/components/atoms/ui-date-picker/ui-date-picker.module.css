@@ -16,8 +16,12 @@
     right: 0;
 }
 
+:global .react-datepicker-popper {
+    z-index: 10;
+}
+
 .datePickerWrapper {
-    z-index:99;
+    z-index:99999;
 }
 
 .calendar {
@@ -88,3 +92,35 @@
     background: #F1F1F1;
     color: rgba(0, 62, 81, 0.3);
 }
+
+.datePickerBtn {
+    position: relative;
+    display: flex;
+    margin: 0 0.5rem 0 0;
+    cursor: pointer;
+    border-color: transparent;
+    background: transparent;
+    &:last-child {
+      margin-right: 0;
+    }
+    @media (max-width: 47.99rem) {
+      height: 2.5rem;
+      width: 2.5rem;
+      min-width: 2.5rem;
+      padding: 0.5rem;
+    }
+    @media (min-width: 48rem) {
+        background: #ffffff;
+        border-color: var(--border-on-secondary);
+        margin-right: 1.5rem;
+    }
+  }
+  
+  .buttonLinkText {
+    display: none;
+    @media (min-width: 64rem) {
+      display: flex;
+      align-self: flex-end;
+      margin-right: 0.6rem;
+    }
+  }

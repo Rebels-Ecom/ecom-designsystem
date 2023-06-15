@@ -30,6 +30,7 @@ export const lightTheme = {
   '--grey-700': '#8A8E8F',
   '--grey-800': '#676A6B',
   '--grey-900': '#000709',
+  '--decorative-purple': '#9A576F',
   '--success-green': '#38B000',
   '--error-red':'#CE0B0B',
   '--warning-orange': '#F5B154',
@@ -80,6 +81,12 @@ export const lightTheme = {
   '--tag-blue': '#003E51',
   '--tag-orange': '#DE9034',
   '--tag-white': '#ffffff',
+
+  /* Loading bar */
+  '--bar-bkg-orange': '#EEE1C8',
+  '--bar-bkg-purple': '#E1CDD4',
+  '--bar-fill-orange': '#C79A48',
+  '--bar-fill-purple': '#9A576F',
 
   /* Radio / checkbox colors */
   '--radio-checkbox-background':'#FFF9E8',
@@ -237,6 +244,7 @@ export const darkTheme = {
    '--grey-700': '#8A8E8F',
    '--grey-800': '#676A6B',
    '--grey-900': '#000709',
+   '--decorative-purple': '#9A576F',
    '--success-green': '#38B000',
    '--error-red':'#CE0B0B',
    '--warning-orange': '#F5B154',
@@ -270,12 +278,18 @@ export const darkTheme = {
   '--color-text-on-primary': '#ffffff',
   '--color-text-on-secondary': '#000000',
 
-   /* Tag colors*/
-   '--tag-green':'#3D5B49',
-   '--tag-mint': '#C0E1D7',
-   '--tag-blue': '#003E51',
-   '--tag-orange': '#DE9034',
-   '--tag-white': '#ffffff',
+    /* Tag colors*/
+  '--tag-green':'#3D5B49',
+  '--tag-mint': '#C0E1D7',
+  '--tag-blue': '#003E51',
+  '--tag-orange': '#DE9034',
+  '--tag-white': '#ffffff',
+
+    /* Loading bar */
+  '--bar-bkg-orange': '#EEE1C8',
+  '--bar-bkg-purple': '#E1CDD4',
+  '--bar-fill-orange': '#C79A48',
+  '--bar-fill-purple': '#9A576F',
 
     /* Radio / checkbox colors */
   '--radio-checkbox-background':'#FFF9E8',

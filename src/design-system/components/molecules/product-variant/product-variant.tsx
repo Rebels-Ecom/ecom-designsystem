@@ -1,9 +1,10 @@
 import { DividerLines } from "../../atoms/divider-lines/divider-lines"
 import { RadioButton } from "../../atoms/inputs/radio-button/radio-button"
-import { IPicture, Picture } from "../../atoms/picture/picture"
+import { Picture } from "../../atoms/picture/picture"
 import styles from './product-variant.module.css'
 import cx from 'classnames'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+import { getProductPicture } from "../../../../helpers/picture-helper"
 
 export interface IProductVariant {
     productName: string
@@ -12,12 +13,13 @@ export interface IProductVariant {
     country: string
     listPricePerUnitString: string
     salesUnit: string
-    image: IPicture
+    imageUrl: string
     onChange: CallableFunction
     checked: boolean
 }
 
-const ProductVariant = ({ image, productName, variantName, variantId, country, listPricePerUnitString, onChange, checked } : IProductVariant) => {
+const ProductVariant = ({ imageUrl, productName, variantName, variantId, country, listPricePerUnitString, onChange, checked } : IProductVariant) => {
+    const image = getProductPicture(variantId, imageUrl ? imageUrl : fallbackProductImageUrl)
     return(
         <label className={styles.productVariant}>
             <div className={styles.imageWrapper}><Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} /> </div>

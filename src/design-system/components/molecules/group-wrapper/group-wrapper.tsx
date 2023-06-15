@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './group-wrapper.module.css'
 import cx from 'classnames'
 
-export type TGroupDirection = 'row' | 'column'
+export type TGroupDirection = 'default' | 'row' | 'column'
 export type TGroupPosition = 'left' | 'right' | 'center' |'apart'
 export type TSpacing = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type TAlign = 'left' | 'right' | 'center' |'baseline'
@@ -16,7 +16,7 @@ export interface IGroupWrapper {
     align?: TAlign
 }
 
-function GroupWrapper({ children,  direction='row', position='left', spacing='md', noWrap= true, align='left' } : IGroupWrapper){
+function GroupWrapper({ children,  direction='default', position='left', spacing='md', noWrap= true, align='left' } : IGroupWrapper){
 
     function getGroupElementsPosition(position: TGroupPosition){
         switch (position) {
@@ -62,10 +62,22 @@ function GroupWrapper({ children,  direction='row', position='left', spacing='md
         }
     }
 
+    function getGroupElementsDirection(direction: TGroupDirection){
+      switch (direction) {
+          case 'column':
+            return 'direction-column'
+          case 'row':
+            return 'direction-row'
+          case 'default':
+          default:
+            return 'direction-row'
+      }
+  }
+
     return(
         <div className={cx(
             styles.groupWrapper, 
-            styles[direction],
+            styles[getGroupElementsDirection(direction)],
             styles[getGroupElementsPosition(position)], 
             styles[getGroupElementsAlignment(align)], 
             styles[getGroupElementsSpacing(spacing)], 

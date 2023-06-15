@@ -1,8 +1,13 @@
 .searchNavBarLinks {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 3.5rem 1rem 0; 
-  gap: 2rem;
+  align-items: center;
+  padding: 1rem 0rem;
+  gap: 1rem;
+  @media(min-width:64em){
+    padding: 1rem 3.5rem 1rem 1rem;
+    gap: 2rem;
+  }
 }
 
 .buttonsWrapper {
@@ -12,6 +17,7 @@
 }
 
 .button {
+  position: relative;
   width: max-content;
   padding: 0.625rem 1rem;
 }

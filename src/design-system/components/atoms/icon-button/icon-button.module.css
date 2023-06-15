@@ -15,6 +15,16 @@
     &.buttonTransparent {
         background: transparent;
     }
+    &.hasChildren{
+        gap: 0.5rem;
+        padding:0.5rem;
+        background: var(--blue-500);
+        color: var(--color-text-white);
+        border-radius: 0.25rem;
+        &:hover {
+            background: rgba(0, 62, 81, 0.8);
+        }
+    }
 }
 
 .buttonSmall {
@@ -51,4 +61,13 @@
         width: 1.125rem;
         height: 1.125rem;
     }
+}
+
+.buttonRectangular {
+    background: var(--blue-500);
+    color: var(--color-text-white);
+    border-radius: 0.25rem;
+    height: 2.5rem;
+    min-width: 5.125rem;
+    width: auto;
 }

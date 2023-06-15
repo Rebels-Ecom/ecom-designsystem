@@ -1,7 +1,7 @@
 import React from 'react'
 import { BlogCard } from './blog-card'
 import type { Meta, StoryObj } from '@storybook/react'
-import { PictureStory, PictureStoryPistonHead_Blog, PictureStory_AmericanBeer, PictureStory_BeerTap, PictureStory_Brewery, PictureStory_BrewingFeeling, PictureStory_BrewInPeace, PictureStory_Cooperation, PictureStory_DarkLightBeer, PictureStory_EHandel, PictureStory_Equipment, PictureStory_GeorgianWine, PictureStory_Oranges, PictureStory_Pang, PictureStory_SummerWine, PictureStory_Suppliers } from '../../atoms/picture/picture.stories'
+import { PictureStory, PictureStoryPistonHead_Blog, PictureStory_AmericanBeer, PictureStory_BeerTap, PictureStory_Brewery, PictureStory_BrewingFeeling, PictureStory_BrewInPeace, PictureStory_Cooperation, PictureStory_DarkLightBeer, PictureStory_EHandel, PictureStory_Equipment, PictureStory_GeorgianWine, PictureStory_Oranges, PictureStory_Pang, PictureStory_SummerWine, PictureStory_Suppliers, PictureStoryMariestad_Blog, PictureStoryVisby_Blog, PictureStoryPang_Blog} from '../../atoms/picture/picture.stories'
 import { UILinkBlogStory } from '../../atoms/ui-link/ui-link.stories'
 import { TagStoryRectangular_S } from '../../atoms/tag/tag.stories'
 
@@ -176,5 +176,35 @@ export const BlogCardStoryPistonhead = {
         heading: 'NO NONSENSE BEER!',
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ',
         fullWidth: true
+    }
+}
+
+export const BlogCardStoryMariestad = {
+    ...BlogCardStoryTemplate,
+    args: {
+        image: PictureStoryMariestad_Blog.args,
+        heading: 'Mariestad',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
+        link: UILinkBlogStory.args,
+    }
+}
+
+export const BlogCardStoryWisby = {
+    ...BlogCardStoryTemplate,
+    args: {
+        image: PictureStoryVisby_Blog.args,
+        heading: 'Wisby',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
+        link: UILinkBlogStory.args,
+    }
+}
+
+export const BlogCardStoryPang = {
+    ...BlogCardStoryTemplate,
+    args: {
+        image: PictureStoryPang_Blog.args,
+        heading: 'PANG PANG!',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
+        link: UILinkBlogStory.args,
     }
 }
