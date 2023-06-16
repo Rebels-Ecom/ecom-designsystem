@@ -46,6 +46,15 @@ export const ScrollableListListStory = {
   }
 }
 
+export const ScrollableListListStory_Loading = {
+  ...ScrollableListStoryTemplate,
+  args: {  
+    children: itemsList(cartProducts),
+    visibleItemsNumber: 2,
+    loading: true
+  }
+}
+
 export const ScrollableListListStory_WithFade = {
   ...ScrollableListStoryTemplate,
   args: {  
