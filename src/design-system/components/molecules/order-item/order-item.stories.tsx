@@ -110,6 +110,32 @@ const summaryItemArgs_MinaOrdrar_2 = (
     </>
 )
 
+export const OrderItemStory_Processing = {
+    ...OrderItemStoryTemplate,
+    args: {
+        orderDate: '2023-06-01',
+        deliveryDate: '2023-06-07',
+        orderStatus: 'status-progress',
+        title: 'Order nummer: 1423569',
+        children: <Text>22 artiklar</Text>,
+        linkUrl: '/link-to-somewhere',
+        linkComponent: 'a'
+    }
+}
+
+export const OrderItemStory_Delivered = {
+    ...OrderItemStoryTemplate,
+    args: {
+        orderDate: '2023-06-01',
+        deliveryDate: '2023-06-07',
+        orderStatus: 'status-delivered',
+        title: 'Order nummer: 1423569',
+        children: <Text>22 artiklar</Text>,
+        linkUrl: '/link-to-somewhere',
+        linkComponent: 'a'
+    }
+}
+
 export const OrderItem_Sommarfest = {
     ...OrderItemStoryTemplate,
     args: {

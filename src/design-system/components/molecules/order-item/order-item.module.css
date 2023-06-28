@@ -1,5 +1,20 @@
-.summaryItem {
+.orderItem {
     position: relative;
+}
+
+.linkContentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+}
+
+.tagsWrapper{
+    display: flex;
+    gap:0.5rem;
+}
+
+.title {
+    margin: 0;
 }
 
 .linkWrapper {

@@ -16,4 +16,21 @@ function getTag(tagText: any, tagShape: any, tagColor: any) {
     }
 }
 
-export { getTagsList, getTag }
+function getOrderStatusTagColor(status: string) {
+  switch (status) {
+    case 'status-progress':
+      return 'yellow'
+    case 'status-delivered':
+      return 'green'
+    case 'status-returned':
+      return 'purple'
+    case 'status-cancelled':
+      return 'orange'
+    case 'status-invoice':
+      return 'blue'
+    default:
+      return 'grey'
+  }
+}
+
+export { getTagsList, getTag, getOrderStatusTagColor }

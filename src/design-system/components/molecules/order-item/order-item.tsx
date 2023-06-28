@@ -1,24 +1,52 @@
 import React from 'react'
-import { Icon } from '../../atoms'
+import { Heading, Icon } from '../../atoms'
 import styles from './order-item.module.css'
 import cx from 'classnames'
+import { getOrderStatusTagColor } from '../../../../helpers/tag-helper'
+import { Tag, TTagColor } from '../../atoms/tag/tag'
 
 export interface IOrderItem {
+  title?: string
   children: React.ReactNode
+  orderDate?: string
+  deliveryDate?: string
+  orderStatus?: string
   linkUrl?: string
   linkComponent: any
 }
 
-function OrderItem({ children, linkUrl, linkComponent: Link } : IOrderItem) {
+function OrderItem({ title, children, orderDate, deliveryDate, orderStatus, linkUrl, linkComponent: Link }: IOrderItem) {
   return (
-    <div className={cx(styles.summaryItem, styles.summaryItemLink)}>
+    <div className={styles.orderItem}>
       {linkUrl ? (
-          <Link className={styles.linkWrapper}>
-            <div>{children}</div>
-            {linkUrl && <Icon icon={'icon-chevrons-right'}></Icon>}
-          </Link>
-      ) : (
+        <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl}>
+          <div className={styles.linkContentWrapper}>
+          { orderDate || deliveryDate ?
+            <div className={styles.tagsWrapper}>
+              {orderDate && (
+                <Tag
+                  text={orderDate}
+                  shape={'rectangular'}
+                  color={'grey'}
+                />
+              )}
+              {deliveryDate && (
+                <Tag
+                  text={deliveryDate}
+                  shape={'rectangular'}
+                  color={orderStatus ? getOrderStatusTagColor(orderStatus as TTagColor) : 'grey'}
+                />
+              )}
+            </div>
+            : null
+          }
+          {title && <h4 className={styles.title}>{title}</h4>}
           <div>{children}</div>
+          </div>
+          {linkUrl && <Icon icon={'icon-chevrons-right'}></Icon>}
+        </Link>
+      ) : (
+        <div>{children}</div>
       )}
     </div>
   )
