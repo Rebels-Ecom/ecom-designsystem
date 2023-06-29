@@ -10,7 +10,6 @@ export interface ISingleSelectButtonsList {
 }
 
 export interface ISelectOption {
-  id: string
   name: string
   value: string
 }
@@ -27,11 +26,11 @@ function SingleSelectButtonsList({ options, onChange, selectedOption }: ISingleS
   return isOptionsPopulated ? (
     <ul className={styles.buttonsList}>
       {options.map((option) => {
-        const isSelected = option.value === selectedOption
+        const isSelected = option.name === selectedOption
         return (
           <li key={option.value} className={styles.radioBtnWrapper}>
-            <input type="radio" id={option.id} className={styles.radio} checked={isSelected} value={option.value} onChange={handleOnChange} />
-            <label className={cx(styles.radioBtn, 'cta-s')} htmlFor={option.id}>
+            <input type="radio" id={option.name} className={styles.radio} checked={isSelected} value={option.value} onChange={handleOnChange} />
+            <label className={cx(styles.radioBtn, 'cta-s')} htmlFor={option.name}>
               {option.name}
               <Icon icon={'icon-alert-circle'} className={styles.icon} />
             </label>
