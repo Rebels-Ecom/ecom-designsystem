@@ -29,7 +29,15 @@ function SingleSelectButtonsList({ options, onChange, selectedOption }: ISingleS
         const isSelected = option.name === selectedOption
         return (
           <li key={option.value} className={styles.radioBtnWrapper}>
-            <input type="radio" id={option.name} className={styles.radio} checked={isSelected} value={option.value} onChange={handleOnChange} />
+            <input
+              type="radio"
+              id={option.name}
+              name={option.name}
+              className={styles.radio}
+              checked={isSelected}
+              value={option.value}
+              onChange={handleOnChange}
+            />
             <label className={cx(styles.radioBtn, 'cta-s')} htmlFor={option.name}>
               {option.name}
               <Icon icon={'icon-alert-circle'} className={styles.icon} />

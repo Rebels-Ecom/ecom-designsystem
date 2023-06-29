@@ -30,12 +30,12 @@ export const SingleSelectButtonsListStory = {
   args: {
     selectedOption: 'Juni 2023',
     options: [
-      { id: 'Juni 2023', name: 'Juni 2023', value: 'Juni 2023' },
-      { id: 'Maj 2023', name: 'Maj 2023', value: 'Maj 2023' },
-      { id: 'April 2023', name: 'April 2023', value: 'April 2023' },
-      { id: 'Mars 2023', name: 'Mars 2023', value: 'Mars 2023' },
-      { id: 'Februari 2023', name: 'Februari 2023', value: 'Februari 2023' },
-      { id: 'Januari 2023', name: 'Januari 2023', value: 'Januari 2023' },
+      { name: 'Juni 2023', value: 'Juni 2023' },
+      { name: 'Maj 2023', value: 'Maj 2023' },
+      { name: 'April 2023', value: 'April 2023' },
+      { name: 'Mars 2023', value: 'Mars 2023' },
+      { name: 'Februari 2023', value: 'Februari 2023' },
+      { name: 'Januari 2023', value: 'Januari 2023' },
     ],
   },
 }
