@@ -34,22 +34,4 @@ function getIsoString(date: Date) {
   )
 }
 
-function getMonthName(date: Date) {
-    const months = [
-        'Januari',
-        'Februar',
-        'Mars',
-        'April',
-        'Maj',
-        'Juni',
-        'Juli',
-        'Augusti',
-        'September',
-        'October',
-        'November',
-        'December'
-    ]
-    return months[date.getMonth()]
-}
-
-export { getIsoString, convertToISOStringMidnight, getMonthName }
+export { getIsoString, convertToISOStringMidnight }
