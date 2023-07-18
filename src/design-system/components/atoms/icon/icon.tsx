@@ -41,6 +41,7 @@ export type TIcon =
   | 'icon-archive'
   | 'icon-file'
   | 'icon-file-text'
+  | 'icon-message-circle'
 
 export interface IIcon {
   icon: TIcon

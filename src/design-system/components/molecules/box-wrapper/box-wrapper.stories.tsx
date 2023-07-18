@@ -22,7 +22,11 @@ import { GroupWrapper } from '../group-wrapper/group-wrapper'
 import { ButtonProductCardStory } from '../../atoms/button/button.stories'
 import { MessagePopupStory } from '../../atoms/message-popup/message-popup.stories'
 import { ScrollableList } from '../scrollable-list/scrollable-list'
-import { ScrollableListListStory_WithFade_2_products, ScrollableListListStory_WithFade } from '../scrollable-list/scrollable-list.stories'
+import {
+  ScrollableListListStory_WithFade_2_products,
+  ScrollableListListStory_WithFade,
+  ScrollableListListStory_PurchaseLists,
+} from '../scrollable-list/scrollable-list.stories'
 import { SingleSelectButtonsListStory } from '../single-select-buttons-list/single-select-buttons-list.stories'
 
 const meta: Meta<typeof BoxWrapper> = {
@@ -216,6 +220,25 @@ const downloadWordArgs = (
   </>
 )
 
+const purchaseListsArgs = (
+  <>
+    <Heading order={3}>Inköpslistor</Heading>
+    <ScrollableList {...ScrollableListListStory_PurchaseLists.args}></ScrollableList>
+  </>
+)
+
+const purchaseListArgs = (
+  <>
+    <Heading order={3}>List Namn</Heading>
+    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Beer.args}></InfoSummaryBox>
+    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Wine.args}></InfoSummaryBox>
+    <OrderConfirmationDetails {...OrderConfirmationDetailsStory_Pricing.args} withBackground></OrderConfirmationDetails>
+    <Button type={'button'} surface={'primary'}>
+      Beställ igen
+    </Button>
+  </>
+)
+
 export const BoxWrapperStory_MittSpendrups = {
   ...BoxWrapperStoryTemplate,
   args: {
@@ -279,6 +302,26 @@ export const BoxWrapperStory_TidigareOrdrar = {
   ...BoxWrapperStoryTemplate,
   args: {
     children: tidigareOrdrarArgs,
+    position: 'left',
+    spacing: 'md',
+    noWrap: true,
+  },
+}
+
+export const BoxWrapperStory_PurchaseLists = {
+  ...BoxWrapperStoryTemplate,
+  args: {
+    children: purchaseListsArgs,
+    position: 'left',
+    spacing: 'md',
+    noWrap: true,
+  },
+}
+
+export const BoxWrapperStory_PurchaseListDetails = {
+  ...BoxWrapperStoryTemplate,
+  args: {
+    children: purchaseListArgs,
     position: 'left',
     spacing: 'md',
     noWrap: true,

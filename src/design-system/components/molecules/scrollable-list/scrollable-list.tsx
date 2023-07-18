@@ -11,8 +11,7 @@ export interface IScrollableList {
   className?: string
 }
 
-const ScrollableList = ({ children, loading, visibleItemsNumber = 1, hasFade, className }: IScrollableList) => {
-
+const ScrollableList = ({ children, loading, visibleItemsNumber, hasFade, className }: IScrollableList) => {
   const [height, setHeight] = useState(0)
   const [listHasFade, setListFade] = useState(hasFade)
   const ref = useRef<HTMLLIElement | null>(null)
@@ -24,25 +23,29 @@ const ScrollableList = ({ children, loading, visibleItemsNumber = 1, hasFade, cl
 
   useEffect(() => {
     ref?.current?.clientHeight && setHeight(ref.current.clientHeight)
-  },[])
+  }, [])
 
-  if(!Array.isArray(children) || !children.length)
-    return null
+  if (!Array.isArray(children) || !children.length) return null
 
   return (
     <div className={cx(styles.cartProductList, className && className)}>
-      { loading 
-        ?
-        <Loader visible={loading} size='sm' position='relative' color='orange'/>
-        :
-        <ul onScroll={hasFade ? handleScroll : undefined} className={cx(styles.list, listHasFade ? styles.listFade : '')} style={{height: (height * visibleItemsNumber)}}>
-          { children?.map( (item: React.ReactNode) => <li key={Math.random()} ref={ref} className={styles.listItem} >{item}</li>) }
-        </ul>   
-      }
+      {loading ? (
+        <Loader visible={loading} size="sm" position="relative" color="orange" />
+      ) : (
+        <ul
+          onScroll={hasFade ? handleScroll : undefined}
+          className={cx(styles.list, listHasFade && visibleItemsNumber ? styles.listFade : '')}
+          style={visibleItemsNumber ? { height: height * visibleItemsNumber } : { height: height * children.length }}
+        >
+          {children?.map((item: React.ReactNode) => (
+            <li key={Math.random()} ref={ref} className={styles.listItem}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
 
-export {ScrollableList}
-
-
+export { ScrollableList }

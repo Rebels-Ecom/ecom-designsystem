@@ -155,6 +155,14 @@ export const InfoSummaryBoxStory_PDF_Category_Wine = {
   },
 }
 
+export const InfoSummaryBoxStory_PurchaseListItem = {
+  ...InfoSummaryBoxStoryTemplate,
+  args: {
+    label: 'Vin',
+    children: itemsListCategoryWine,
+  },
+}
+
 export const InfoSummaryBoxStory_ShoppingList = {
   ...InfoSummaryBoxStoryTemplate,
   args: {
