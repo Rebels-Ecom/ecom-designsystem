@@ -39,6 +39,8 @@ export type TIcon =
   | 'icon-info'
   | 'icon-play'
   | 'icon-archive'
+  | 'icon-file'
+  | 'icon-file-text'
 
 export interface IIcon {
   icon: TIcon

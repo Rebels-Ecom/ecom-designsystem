@@ -8,6 +8,8 @@ import {
   InfoSummaryBoxStory_DinaUppgifter,
   InfoSummaryBoxStory_Inkopslistor,
   InfoSummaryBoxStory_MinaOrdrar,
+  InfoSummaryBoxStory_PDF_Category_Beer,
+  InfoSummaryBoxStory_PDF_Category_Wine,
   InfoSummaryBoxStory_ShoppingList,
 } from '../info-summary-box/info-summary-box.stories'
 import { OrderItem_MinSenasteOrder } from '../order-item/order-item.stories'
@@ -185,6 +187,35 @@ const tidigareOrdrarArgs = (
   </>
 )
 
+const downloadPDFArgs = (
+  <>
+    <Heading order={3} noMargin>
+      Produktblad
+    </Heading>
+    <Heading order={4} noMargin>
+      Inköpslista namn
+    </Heading>
+    <Text>2023-07-18 kl 13:33</Text>
+    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Beer.args}></InfoSummaryBox>
+    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Wine.args}></InfoSummaryBox>
+    <Button type={'button'} surface={'primary'} iconRight={{ icon: 'icon-file' }}>
+      Spara PDF-fil
+    </Button>
+  </>
+)
+
+const downloadWordArgs = (
+  <>
+    <Heading order={3}>Dryckeslista</Heading>
+    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Beer.args}></InfoSummaryBox>
+    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Wine.args}></InfoSummaryBox>
+    <OrderConfirmationDetails {...OrderConfirmationDetailsStory_Pricing.args} withBackground></OrderConfirmationDetails>
+    <Button type={'button'} surface={'primary'}>
+      Beställ igen
+    </Button>
+  </>
+)
+
 export const BoxWrapperStory_MittSpendrups = {
   ...BoxWrapperStoryTemplate,
   args: {
@@ -248,6 +279,16 @@ export const BoxWrapperStory_TidigareOrdrar = {
   ...BoxWrapperStoryTemplate,
   args: {
     children: tidigareOrdrarArgs,
+    position: 'left',
+    spacing: 'md',
+    noWrap: true,
+  },
+}
+
+export const BoxWrapperStory_Download_PDF = {
+  ...BoxWrapperStoryTemplate,
+  args: {
+    children: downloadPDFArgs,
     position: 'left',
     spacing: 'md',
     noWrap: true,

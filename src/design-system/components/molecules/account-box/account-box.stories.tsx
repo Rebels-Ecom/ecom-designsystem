@@ -1,26 +1,26 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AccountBox } from './account-box'
 import { ButtonChooseAcountStory } from '../../atoms/button/button.stories'
 import { action } from '@storybook/addon-actions'
 
 const meta: Meta<typeof AccountBox> = {
   title: 'Design System/Molecules/AccountBox',
-  component: AccountBox
-};
+  component: AccountBox,
+}
 
-export default meta;
-type Story = StoryObj<typeof AccountBox>;
+export default meta
+type Story = StoryObj<typeof AccountBox>
 
 const AccountBoxStoryTemplate: Story = {
   render: ({ ...args }) => {
-    function handleChooseAccount(accNum: string){
-        console.log('Go to account number: ', accNum)
+    function handleChooseAccount(accNum: string) {
+      console.log('Go to account number: ', accNum)
     }
 
-    return(<AccountBox {...args} />)
-  }
-};
+    return <AccountBox {...args} />
+  },
+}
 
 export const AccountBoxStory = {
   ...AccountBoxStoryTemplate,
@@ -32,6 +32,19 @@ export const AccountBoxStory = {
     zipcode: '135 44',
     city: 'Tyresö',
     chooseAccountBtn: ButtonChooseAcountStory.args,
-    onClickChooseAccount: action('clicked')
-  }
+    onClickChooseAccount: action('clicked'),
+  },
+}
+
+export const AccountBoxStory_2 = {
+  ...AccountBoxStoryTemplate,
+  args: {
+    companyName: 'Beer Fest',
+    accountNumber: '186922',
+    address: 'Granängsringen 3',
+    zipcode: '135 44',
+    city: 'Tyresö',
+    chooseAccountBtn: ButtonChooseAcountStory.args,
+    onClickChooseAccount: action('clicked'),
+  },
 }
