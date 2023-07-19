@@ -1,6 +1,6 @@
 {
   "name": "@rebels-ecom/ecom-designsystem",
-  "version": "1.0.153",
+  "version": "1.0.154",
   "main": "dist/index.es.js",
   "types": "dist/src/index.d.ts",
   "sideEffects": [
