@@ -1,6 +1,8 @@
 .groupWrapper {
     display: flex;
-    width: 100%;
+    &.fullWidth{
+        width: 100%;
+    }
     &.direction-default {
         flex-direction: column;
         @media(min-width: 64em) {
