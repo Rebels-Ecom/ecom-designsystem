@@ -254,6 +254,8 @@ export const BoxWrapperStory_MittSpendrups = {
   args: {
     children: mittSpendrupsArgs,
     position: 'left',
+    hasMaxWidth: false,
+    withBorder: false,
     spacing: 'md',
     noWrap: true,
   },

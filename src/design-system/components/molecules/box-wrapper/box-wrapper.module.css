@@ -1,14 +1,11 @@
 .boxWrapper {
     position: relative;
     width: 100%;
-    max-width: 43.75rem;
     margin: auto;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     background: var(--background);
-    border: solid 0.063rem var(--border-grey);
-    border-radius: 0.5rem;
     @media(min-width: 64em) {
         padding: 1rem 3.75rem 2.5rem 3.75rem;
     }
@@ -20,6 +17,8 @@
     &.spacing-xl { gap: 2rem;}
 
     &.noWrap {flex-wrap: nowrap;}
+    &.hasMaxWidth {max-width: 43.75rem;}
+    &.withBorder { border: solid 0.063rem var(--border-grey); border-radius: 0.5rem; }
 }
 .groupWrapper {
     display: flex;
