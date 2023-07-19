@@ -2,15 +2,27 @@ import React from 'react'
 import { BoxWrapper } from './box-wrapper'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button, Heading, IconLink, MessagePopup, Text } from '../../atoms'
-import { DeliveryDateInfo, InfoSummaryBox, OrderConfirmationDetails, OrderItem, SingleSelectButtonsList, Tabs, TagsList } from '../../molecules'
+import {
+  CheckboxListItem,
+  DeliveryDateInfo,
+  InfoSummaryBox,
+  OrderConfirmationDetails,
+  OrderItem,
+  SingleSelectButtonsList,
+  Tabs,
+  TagsList,
+} from '../../molecules'
 import {
   InfoSummaryBoxStory_Anvandare,
+  InfoSummaryBoxStory_CheckboxList_Heineken,
+  InfoSummaryBoxStory_CheckboxList_Loka,
   InfoSummaryBoxStory_DinaUppgifter,
   InfoSummaryBoxStory_Inkopslistor,
   InfoSummaryBoxStory_MinaOrdrar,
   InfoSummaryBoxStory_PDF_Category_Beer,
   InfoSummaryBoxStory_PDF_Category_Wine,
   InfoSummaryBoxStory_ShoppingList,
+  InfoSummaryBoxStory_WordFilters,
 } from '../info-summary-box/info-summary-box.stories'
 import { OrderItem_MinSenasteOrder } from '../order-item/order-item.stories'
 import { TabsStory_MinaFavoriter } from '../tabs/tabs.stories'
@@ -28,6 +40,7 @@ import {
   ScrollableListListStory_PurchaseLists,
 } from '../scrollable-list/scrollable-list.stories'
 import { SingleSelectButtonsListStory } from '../single-select-buttons-list/single-select-buttons-list.stories'
+import { CheckboxListItem_Loka, CheckboxListItem_Heineken } from '../checkbox-list-item/checkbox-list-item.stories'
 
 const meta: Meta<typeof BoxWrapper> = {
   title: 'Design System/Molecules/BoxWrapper',
@@ -200,23 +213,20 @@ const downloadPDFArgs = (
       Inköpslista namn
     </Heading>
     <Text>2023-07-18 kl 13:33</Text>
-    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Beer.args}></InfoSummaryBox>
-    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Wine.args}></InfoSummaryBox>
+    <InfoSummaryBox {...InfoSummaryBoxStory_CheckboxList_Loka.args}></InfoSummaryBox>
+    <InfoSummaryBox {...InfoSummaryBoxStory_CheckboxList_Heineken.args}></InfoSummaryBox>
     <Button type={'button'} surface={'primary'} iconRight={{ icon: 'icon-file' }}>
       Spara PDF-fil
     </Button>
   </>
 )
 
-const downloadWordArgs = (
+const wordFiltersArgs = (
   <>
-    <Heading order={3}>Dryckeslista</Heading>
-    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Beer.args}></InfoSummaryBox>
-    <InfoSummaryBox {...InfoSummaryBoxStory_PDF_Category_Wine.args}></InfoSummaryBox>
-    <OrderConfirmationDetails {...OrderConfirmationDetailsStory_Pricing.args} withBackground></OrderConfirmationDetails>
-    <Button type={'button'} surface={'primary'}>
-      Beställ igen
-    </Button>
+    <Heading order={4} noMargin>
+      Vilka Fakta
+    </Heading>
+    <InfoSummaryBox {...InfoSummaryBoxStory_WordFilters.args}></InfoSummaryBox>
   </>
 )
 
@@ -332,6 +342,16 @@ export const BoxWrapperStory_Download_PDF = {
   ...BoxWrapperStoryTemplate,
   args: {
     children: downloadPDFArgs,
+    position: 'left',
+    spacing: 'md',
+    noWrap: true,
+  },
+}
+
+export const BoxWrapperStory_WordFilters = {
+  ...BoxWrapperStoryTemplate,
+  args: {
+    children: wordFiltersArgs,
     position: 'left',
     spacing: 'md',
     noWrap: true,

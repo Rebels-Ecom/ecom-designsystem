@@ -8,8 +8,11 @@ import { CartProductList } from '../../organisms/cart-product-list/cart-product-
 import { CartProduct } from '../cart-product/cart-product'
 import { CartProduct_OrderConfirmation_Beer, CartProduct_OrderConfirmation_Wine } from '../cart-product/cart-product.stories'
 import { GroupWrapper } from '../group-wrapper/group-wrapper'
-import { LatestOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories'
-import { Button } from '../../atoms'
+import { Button, Heading } from '../../atoms'
+import { CheckboxListItem } from '../checkbox-list-item/checkbox-list-item'
+import { CheckboxListItem_Loka, CheckboxListItem_Heineken } from '../checkbox-list-item/checkbox-list-item.stories'
+import { UnorderedListStory } from '../unordered-list/unordered-list.stories'
+import { UnorderedList } from '../unordered-list/unordered-list'
 
 const meta: Meta<typeof InfoSummaryBox> = {
   title: 'Design System/Molecules/InfoSummaryBox',
@@ -92,6 +95,25 @@ const itemsShoppingList = (
   </GroupWrapper>
 )
 
+const checkboxProducts = [CheckboxListItem_Heineken.args, CheckboxListItem_Loka.args, CheckboxListItem_Heineken.args]
+const itemsCheckboxListLoka = <UnorderedList {...UnorderedListStory.args} spacing="md"></UnorderedList>
+const itemsCheckboxListHeineken = (
+  <>
+    {checkboxProducts.map((product: any) => (
+      <CheckboxListItem checked={false} onChange={() => {}} {...product}></CheckboxListItem>
+    ))}
+  </>
+)
+
+const itemsWordFilters = (
+  <>
+    <Heading order={5}>Ursprung</Heading>
+    <UnorderedList {...UnorderedListStory.args} spacing="md"></UnorderedList>
+    <Heading order={5}>Karaktär</Heading>
+    <UnorderedList {...UnorderedListStory.args} spacing="md"></UnorderedList>
+  </>
+)
+
 export const InfoSummaryBoxStory_DinaUppgifter = {
   ...InfoSummaryBoxStoryTemplate,
   args: {
@@ -170,5 +192,30 @@ export const InfoSummaryBoxStory_ShoppingList = {
     linkLabel: 'Hantera',
     onClick: () => {},
     children: itemsShoppingList,
+  },
+}
+
+export const InfoSummaryBoxStory_CheckboxList_Loka = {
+  ...InfoSummaryBoxStoryTemplate,
+  args: {
+    label: 'VATTEN',
+    children: itemsCheckboxListLoka,
+  },
+}
+
+export const InfoSummaryBoxStory_CheckboxList_Heineken = {
+  ...InfoSummaryBoxStoryTemplate,
+  args: {
+    label: 'ÖL',
+    children: itemsCheckboxListHeineken,
+  },
+}
+
+export const InfoSummaryBoxStory_WordFilters = {
+  ...InfoSummaryBoxStoryTemplate,
+  args: {
+    label: 'Välj vilka fakta du vill visa i din dryckeslista',
+    children: itemsWordFilters,
+    withBackground: true,
   },
 }
