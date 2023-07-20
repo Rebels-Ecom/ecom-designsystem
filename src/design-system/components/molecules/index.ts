@@ -43,3 +43,4 @@ export { SingleSelectButtonsList } from './single-select-buttons-list/single-sel
 export { LinkListItem } from './link-list-item/link-list-item'
 export { CheckboxListItem } from './checkbox-list-item/checkbox-list-item'
 export { UnorderedList } from './unordered-list/unordered-list'
+export { LoadingOverlay } from './loading-overlay/loading-overlay'
