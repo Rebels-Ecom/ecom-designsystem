@@ -1,0 +1,129 @@
+.productCardHorizontal {
+    width: 100%;
+    height: 12.5rem;
+    position: relative;
+    display: flex;
+  }
+    
+  .imageWrapper {
+    width: 30%;
+    height:100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    @media (min-width: 48em) {
+      width: 20%;
+    }
+  }
+
+  .imageWrapperPlaceholder {
+    padding: 0 2rem;
+  }
+
+
+  .quantityInput {
+    width: 100%;
+    margin: 0.5rem 0;
+    align-items: baseline;
+    
+    
+    & > input {
+      &:disabled{
+        background: var(--surface-default);
+        border-color: var(--input-border-color);
+        color: var(--input-text-color);
+        font-weight: bold;
+      } 
+    } 
+    @media (min-width: 48em) {
+      & > div {
+        display: flex;
+        gap: 3rem;
+      }
+    }
+  }
+  
+  .contentWrapper, .placeholderContent {
+    width: 60%;
+    display: inline-block;
+    margin: auto 0;
+    overflow: hidden;
+  }
+
+  .headingWrapper {
+    text-decoration: none;
+    color: var(--color-text-default);
+  }
+  
+  .heading {
+    margin: 0.5rem 0;
+    font-family: var(--font-family-secondary);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .textGray {
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text-decorative-grey);
+  }
+  
+  .textPurple {
+    font-family: var(--font-family-secondary);
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text-decorative-purple);
+  }
+    
+  .cardPicture {
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    width:100%;
+  }
+  
+  .cardImage{
+    position: relative;
+    z-index: 1;
+    margin: auto;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem 2rem 1.5rem 0;
+    object-fit: contain;
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    min-width: 10%;
+    height:100%;
+    padding-right: 0.5rem;
+    @media (min-width: 48em) {
+      min-width: 20%;
+    }
+  }
+
+  .iconLink {
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .productCardBtn{
+    margin-top:1rem;
+}
+
+.cartBtnIcon {
+  @media (min-width: 48em) {
+    display: none;
+  }
+}
+
+.cartBtnText {
+  display: none;
+  @media (min-width: 48em) {
+    display: flex;
+  }
+}
+  

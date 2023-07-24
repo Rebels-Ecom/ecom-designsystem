@@ -1,30 +1,25 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ProductCard } from './product-card'
+import { ProductCardVertical } from './product-card-vertical'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IProduct } from '../../../../types/product'
-import { dummyBeerProduct, dummyWineProduct, dummyProductNoVariants } from './dummy-product'
+import { dummyProductNoVariants, dummyWineProduct } from '../product-card/dummy-product'
+import { PictureStoryBeer } from '../../atoms/picture/picture.stories'
 
-const meta: Meta<typeof ProductCard> = {
-  title: 'Design System/Molecules/ProductCard',
-  component: ProductCard,
+const meta: Meta<typeof ProductCardVertical> = {
+  title: 'Design System/Molecules/ProductCardVertical',
+  component: ProductCardVertical,
 }
 
 export default meta
-type Story = StoryObj<typeof ProductCard>
+type Story = StoryObj<typeof ProductCardVertical>
 
-const ProductCardStoryTemplate: Story = {
+const ProductCardVerticalStoryTemplate: Story = {
   render: ({ ...args }) => {
     function handleAddToCart(product) {
       console.log('Showing toast with product...')
     }
-
-    return (
-      <div style={{ width: '100%', marginTop: '2rem', marginLeft: '2rem' }}>
-        <ProductCard {...args} addToCart={handleAddToCart} />
-      </div>
-    )
+    return <ProductCardVertical {...args} addToCart={handleAddToCart} />
   },
 }
 
@@ -78,49 +73,30 @@ function getProduct(productData: any): IProduct {
   }
 }
 
-const productBeerArgs = getProduct(dummyBeerProduct)
 const productWineArgs = getProduct(dummyWineProduct)
 const productNoVariantsArgs = getProduct(dummyProductNoVariants)
+const productImage = PictureStoryBeer.args
 
-export const ProductCardStory = {
-  ...ProductCardStoryTemplate,
+export const ProductCardVerticalStory = {
+  ...ProductCardVerticalStoryTemplate,
   args: {
     product: productWineArgs,
-    linkComponent: 'a',
+    productImage: productImage,
   },
 }
 
-export const ProductCardStory_NoVariants = {
-  ...ProductCardStoryTemplate,
+export const ProductCardVerticalStory_NoVariants = {
+  ...ProductCardVerticalStoryTemplate,
   args: {
     product: productNoVariantsArgs,
-    linkComponent: 'a',
+    productImage: productImage,
   },
 }
 
-export const ProductCardStory_Loading = {
-  ...ProductCardStoryTemplate,
+export const ProductCardVerticalStory_Loading = {
+  ...ProductCardVerticalStoryTemplate,
   args: {
-    product: productWineArgs,
+    product: productNoVariantsArgs,
     loading: true,
-  },
-}
-
-export const ProductCardStory_Horizontal = {
-  ...ProductCardStoryTemplate,
-  args: {
-    product: productWineArgs,
-    linkComponent: 'a',
-    cardDisplay: 'horizontal',
-  },
-}
-
-export const ProductCardHorizontal_Horizontal_Beer = {
-  ...ProductCardStoryTemplate,
-  args: {
-    product: productBeerArgs,
-    loading: false,
-    linkComponent: 'a',
-    cardDisplay: 'horizontal',
   },
 }

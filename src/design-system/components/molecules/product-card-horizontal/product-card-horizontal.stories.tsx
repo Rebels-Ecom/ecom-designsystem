@@ -1,29 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ProductCard } from './product-card'
-import { convertNumToStr } from '../../../../helpers/format-helper'
-import { getProductPicture } from '../../../../helpers/picture-helper'
+import { ProductCardHorizontal } from './product-card-horizontal'
 import { IProduct } from '../../../../types/product'
-import { dummyBeerProduct, dummyWineProduct, dummyProductNoVariants } from './dummy-product'
+import { dummyBeerProduct, dummyWineProduct } from '../product-card/dummy-product'
+import { convertNumToStr } from '../../../../helpers/format-helper'
 
-const meta: Meta<typeof ProductCard> = {
-  title: 'Design System/Molecules/ProductCard',
-  component: ProductCard,
+const meta: Meta<typeof ProductCardHorizontal> = {
+  title: 'Design System/Molecules/ProductCardHorizontal',
+  component: ProductCardHorizontal,
 }
 
 export default meta
-type Story = StoryObj<typeof ProductCard>
+type Story = StoryObj<typeof ProductCardHorizontal>
 
-const ProductCardStoryTemplate: Story = {
+const ProductCardHorizontalStoryTemplate: Story = {
   render: ({ ...args }) => {
+    const [loading, setLoading] = useState<boolean>(false)
+
+    function handleRemoveProduct(id: string) {
+      console.log('Removing the product with id:', id)
+      setLoading(true)
+    }
+
+    function handleQuantityChange(quantity: number) {
+      console.log('Current quantity:', quantity)
+    }
+
     function handleAddToCart(product) {
       console.log('Showing toast with product...')
     }
 
     return (
-      <div style={{ width: '100%', marginTop: '2rem', marginLeft: '2rem' }}>
-        <ProductCard {...args} addToCart={handleAddToCart} />
-      </div>
+      <ProductCardHorizontal
+        {...args}
+        loading={loading}
+        addToCart={handleAddToCart}
+        onChangeQuantity={handleQuantityChange}
+        onClickRemoveProduct={handleRemoveProduct}
+      />
     )
   },
 }
@@ -40,7 +54,7 @@ function getProductTags(tags: Array<any>) {
 
 function getVariantsList(productName: string, variantsList: any) {
   const firstVariantId = variantsList[0].VariantId
-  return variantsList.map((variant) => {
+  return variantsList.map((variant: any) => {
     return {
       productName: productName,
       variantName: variant.Name,
@@ -62,8 +76,8 @@ function getProduct(productData: any): IProduct {
   const product = productData.Variants[0]
   return {
     productId: product.VariantId,
-    productUrl: productData.ProductUrl,
     productName: productData.DisplayName,
+    productUrl: productData.ProductUrl,
     productImageUrl: product.PrimaryImageUrl,
     country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
     packaging: product.VariantFullName,
@@ -80,47 +94,41 @@ function getProduct(productData: any): IProduct {
 
 const productBeerArgs = getProduct(dummyBeerProduct)
 const productWineArgs = getProduct(dummyWineProduct)
-const productNoVariantsArgs = getProduct(dummyProductNoVariants)
 
-export const ProductCardStory = {
-  ...ProductCardStoryTemplate,
-  args: {
-    product: productWineArgs,
-    linkComponent: 'a',
-  },
-}
-
-export const ProductCardStory_NoVariants = {
-  ...ProductCardStoryTemplate,
-  args: {
-    product: productNoVariantsArgs,
-    linkComponent: 'a',
-  },
-}
-
-export const ProductCardStory_Loading = {
-  ...ProductCardStoryTemplate,
-  args: {
-    product: productWineArgs,
-    loading: true,
-  },
-}
-
-export const ProductCardStory_Horizontal = {
-  ...ProductCardStoryTemplate,
-  args: {
-    product: productWineArgs,
-    linkComponent: 'a',
-    cardDisplay: 'horizontal',
-  },
-}
-
-export const ProductCardHorizontal_Horizontal_Beer = {
-  ...ProductCardStoryTemplate,
+export const CartProductStoryBeer = {
+  ...ProductCardHorizontalStoryTemplate,
   args: {
     product: productBeerArgs,
     loading: false,
     linkComponent: 'a',
-    cardDisplay: 'horizontal',
+    hideCartButton: true,
+  },
+}
+
+export const ProductCardHorizontalStoryWine = {
+  ...ProductCardHorizontalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    loading: true,
+    linkComponent: 'a',
+  },
+}
+
+export const ProductCardHorizontal_OrderConfirmation_Beer = {
+  ...ProductCardHorizontalStoryTemplate,
+  args: {
+    product: productBeerArgs,
+    loading: false,
+    linkComponent: 'a',
+    hideRemoveButton: true,
+  },
+}
+
+export const ProductCardHorizontal_OrderConfirmation_Wine = {
+  ...ProductCardHorizontalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    loading: false,
+    linkComponent: 'a',
   },
 }

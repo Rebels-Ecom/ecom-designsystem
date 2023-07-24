@@ -212,6 +212,45 @@ const dummyWineProduct = {
 		"BrandName": "Övriga"
 };
 
+const dummyProductNoVariants = {
+    "FirstVariantName": "",
+		"ListPricePerUnit": 22.677,
+		"ListPricePerUnitString": "22,68",
+		"DisplayName": "Norrlands Guld Export 5,3",
+		"ProductUrl": "/Product/1105101",
+		"IsHit": true,
+		"IsProduct": true,
+		"PrimaryImageUrl": "https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb",
+		"ExternalId": "1105101",
+		"LimitedProduct": false,
+		"CampaignProduct": false,
+		"ActiveCampaign": null,
+		"Tags": [],
+		"SellerOnly": false,
+		"ShortTexts": ["Sverige"],
+		"Variants": [{
+			"Name": "50cl Returglas",
+			"VariantFullName": "50cl Returglas",
+			"VariantId": "1105101",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb",
+			"SalesUnit": "KLI",
+			"UnitsPerBaseUnit": 15,
+			"Tags": [],
+			"ShortTexts": ["Sverige"],
+			"ListPricePerUnit": 22.677,
+			"ListPricePerUnitString": "22,68",
+			"SellerOnly": false,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		}],
+		"Desc": "",
+		"SalesUnit": "KLI",
+		"UnitsPerBaseUnit": 15,
+		"AccessoryPotItem": false,
+		"ModelName": "50cl Returglas",
+		"CategoryName": "Öl",
+		"BrandName": "Norrlands Guld"
+	};
 
 
-export { dummyBeerProduct, dummyWineProduct } 
+export { dummyBeerProduct, dummyWineProduct, dummyProductNoVariants } 
