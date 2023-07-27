@@ -43,6 +43,7 @@ export type TIcon =
   | 'icon-file-text'
   | 'icon-message-circle'
   | 'icon-share'
+  | 'icon-arrow-down-circle'
 
 export interface IIcon {
   icon: TIcon
