@@ -40,7 +40,7 @@ function ProductSearchResultItem({ productId, productName, productImage, product
     <div className={className ? className : ''}>
       <div className={styles.productItemWrapper}>
         <ProductItem productName={productName} productImage={productImage}></ProductItem>
-        {productVariantList.length > 1 ? (
+        {productVariantList && productVariantList.length > 1 ? (
           <IconButton
             icon={showVariants ? 'icon-chevron-up' : 'icon-chevron-down'}
             isLink={false}
@@ -51,7 +51,7 @@ function ProductSearchResultItem({ productId, productName, productImage, product
           <IconButton icon={'icon-plus-circle'} isLink={false} onClick={() => handleOnClickProduct(productId)} size="large"></IconButton>
         )}
       </div>
-      {showVariants && productVariantList.length > 1 && (
+      {showVariants && productVariantList && productVariantList.length > 1 && (
         <ul className={styles.productVariantsList}>
           {productVariantList.map((variant) => {
             const variantImage = getProductPicture(variant.variantId, variant.imageUrl)
