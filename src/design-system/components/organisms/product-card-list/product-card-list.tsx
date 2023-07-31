@@ -11,9 +11,9 @@ export interface IProductCardList {
 const ProductCardList = ({ productCards, addToCart, className }: IProductCardList) => {
   return (
     <ul className={cx(styles.list, className ? className : '')}>
-      {productCards.map((card: IProductCard) => (
-        <li key={card.productId} className={styles.listItem}>
-          <ProductCard key={card.productId} {...card} addToCart={addToCart}/>
+      {productCards.map((card: IProductCard, index) => (
+        <li key={`${card.productId}${index}`} className={styles.listItem}>
+          <ProductCard key={card.productId} {...card} addToCart={addToCart} />
         </li>
       ))}
     </ul>

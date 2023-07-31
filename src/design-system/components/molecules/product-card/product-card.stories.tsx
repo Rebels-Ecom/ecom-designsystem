@@ -16,8 +16,8 @@ type Story = StoryObj<typeof ProductCard>
 
 const ProductCardStoryTemplate: Story = {
   render: ({ ...args }) => {
-    function handleAddToCart(product) {
-      console.log('Showing toast with product...')
+    function handleAddToCart(product: any) {
+      console.log('Showing toast with product...', product)
     }
 
     return (

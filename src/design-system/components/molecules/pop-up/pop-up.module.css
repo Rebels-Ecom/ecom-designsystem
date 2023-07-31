@@ -14,15 +14,3 @@
     &.right { justify-content: flex-end;}
     &.center { justify-content: center;}
 }
-
-.buttonClose {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    color: var(--color-text-default);
-    z-index: 1;
-    @media(min-width: 64rem){
-        top: 1.875rem;
-        right: 1.875rem;
-    }
-}

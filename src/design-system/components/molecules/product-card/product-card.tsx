@@ -36,23 +36,22 @@ function ProductCard({
   linkComponent: Link,
   className,
 }: IProductCard) {
-  const { productId, productImageUrl, price, itemNumberPerSalesUnit } = product
+  const { productId, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
     productImage: getProductPicture(productId, productImageUrl),
-    quantity: '1',
+    quantity: quantity ? quantity : '1',
     totalPrice: convertNumToStr(price * itemNumberPerSalesUnit),
     selectedVariantId: productId,
   })
 
-  function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
-    const quantity = parseInt(e.target.value) || 1
-    setProduct({
-      ...myProduct,
-      quantity: quantity.toString(),
-      totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * quantity),
-    })
+  function handleOnChangeQuantity(productQuantity: number) {
+    setProduct((prevState) => ({
+      ...prevState,
+      quantity: productQuantity.toString(),
+      totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity),
+    }))
   }
 
   function handleVariantsButtonClick() {
@@ -65,8 +64,8 @@ function ProductCard({
 
   function handlePackageChange(selectedVariant: any) {
     const quantity = myProduct.productId === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
-    setProduct({
-      ...myProduct,
+    setProduct((prevState) => ({
+      ...prevState,
       productId: selectedVariant.variantId,
       productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
       country: selectedVariant.country,
@@ -78,7 +77,7 @@ function ProductCard({
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
-    })
+    }))
     setVariantsListOpen(false)
   }
 

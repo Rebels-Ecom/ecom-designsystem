@@ -19,7 +19,7 @@ const PopUpStoryTemplate: Story = {
       <div>
         <button onClick={() => setIsOpen(true)}>Open Modal</button>
 
-        <PopUp {...args} open={isOpen} onClose={() => setIsOpen(false)}>
+        <PopUp {...args} open={isOpen}>
           {args.children}
         </PopUp>
       </div>
