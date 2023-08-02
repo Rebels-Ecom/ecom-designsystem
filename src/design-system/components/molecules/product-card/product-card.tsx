@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IButton } from '../../atoms/button/button'
 import { IProduct } from '../../../../types/product'
@@ -13,6 +13,7 @@ export interface IProductCard extends IProduct {
   changePackagingButton: IButton
   addToCartButton: IButton
   addToCart: CallableFunction
+  onChangeQuantity?: CallableFunction
   hideCartButton?: boolean
   loading: boolean
   linkComponent?: any
@@ -30,6 +31,7 @@ function ProductCard({
   changePackagingButton,
   addToCartButton,
   addToCart,
+  onChangeQuantity,
   onRemoveProduct,
   productQuantityDisabled,
   loading,
@@ -42,9 +44,10 @@ function ProductCard({
     ...product,
     productImage: getProductPicture(productId, productImageUrl),
     quantity: quantity ? quantity : '1',
-    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit),
+    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (quantity ? parseInt(quantity) : 1)),
     selectedVariantId: productId,
   })
+  const didMount = useRef<boolean>(false)
 
   function handleOnChangeQuantity(productQuantity: number) {
     setProduct((prevState) => ({
@@ -53,6 +56,14 @@ function ProductCard({
       totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity),
     }))
   }
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true
+      return
+    }
+    onChangeQuantity && onChangeQuantity(myProduct)
+  }, [myProduct.quantity])
 
   function handleVariantsButtonClick() {
     setVariantsListOpen(true)

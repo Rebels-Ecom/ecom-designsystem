@@ -90,8 +90,8 @@ const ProductCardHorizontal = ({
                 <h5 className={styles.heading}>{productName}</h5>
               )}
               <DividerLines />
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
-              {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
+              {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country}`}</p>}
               <ProductQuantityInput
                 className={styles.quantityInput}
                 salesUnit={salesUnit}

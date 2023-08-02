@@ -2,7 +2,6 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductCard } from './product-card'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct, dummyWineProduct, dummyProductNoVariants } from './dummy-product'
 
@@ -19,10 +18,13 @@ const ProductCardStoryTemplate: Story = {
     function handleAddToCart(product: any) {
       console.log('Showing toast with product...', product)
     }
+    function handleOnChangeQuantity(product: any) {
+      console.log('Quantity change', product)
+    }
 
     return (
       <div style={{ width: '100%', marginTop: '2rem', marginLeft: '2rem' }}>
-        <ProductCard {...args} addToCart={handleAddToCart} />
+        <ProductCard {...args} addToCart={handleAddToCart} onChangeQuantity={handleOnChangeQuantity} />
       </div>
     )
   },
