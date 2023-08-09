@@ -121,9 +121,11 @@ export const LinkListItemStory_Order_Processing = {
     date2: '2023-06-07',
     status: 'status-progress',
     title: 'Order nummer: 1423569',
-    children: <Text>22 artiklar</Text>,
     linkUrl: '/link-to-somewhere',
     linkComponent: 'a',
+    downloadLinkUrl: 'https://stage-cm-front-ehandel.spendrups.se//jss/api/OrderJss/InvoiceDownload?orderNumber=1007039270',
+    downloadFileName: 'SomeFileName',
+    target: 'blank',
   },
 }
 

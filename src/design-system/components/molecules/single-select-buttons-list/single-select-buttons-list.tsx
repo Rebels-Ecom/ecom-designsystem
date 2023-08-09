@@ -25,10 +25,10 @@ function SingleSelectButtonsList({ options, onChange, selectedOption }: ISingleS
 
   return isOptionsPopulated ? (
     <ul className={styles.buttonsList}>
-      {options.map((option) => {
+      {options.map((option, index) => {
         const isSelected = option.name === selectedOption
         return (
-          <li key={option.value} className={styles.radioBtnWrapper}>
+          <li key={`${option.value}-${option.name}-${index}`} className={styles.radioBtnWrapper}>
             <input
               type="radio"
               id={option.name}
@@ -40,7 +40,7 @@ function SingleSelectButtonsList({ options, onChange, selectedOption }: ISingleS
             />
             <label className={cx(styles.radioBtn, 'cta-s')} htmlFor={option.name}>
               {option.name}
-              <Icon icon={'icon-alert-circle'} className={styles.icon} />
+              <Icon icon={'icon-calendar'} className={styles.icon} />
             </label>
           </li>
         )

@@ -124,5 +124,6 @@ export const ProductCardHorizontal_Horizontal_Beer = {
     loading: false,
     linkComponent: 'a',
     cardDisplay: 'horizontal',
+    hideRemoveButton: true,
   },
 }

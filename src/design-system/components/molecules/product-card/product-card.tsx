@@ -19,7 +19,7 @@ export interface IProductCard extends IProduct {
   linkComponent?: any
   showLinkIcon?: boolean
   cardDisplay?: TCardDisplayType
-  removable?: boolean
+  hideRemoveButton?: boolean
   onRemoveProduct?: CallableFunction
   productQuantityDisabled?: boolean
   className?: string
@@ -31,8 +31,10 @@ function ProductCard({
   changePackagingButton,
   addToCartButton,
   addToCart,
+  hideCartButton,
   onChangeQuantity,
   onRemoveProduct,
+  hideRemoveButton,
   productQuantityDisabled,
   loading,
   linkComponent: Link,
@@ -103,6 +105,7 @@ function ProductCard({
         addToCart={addToCart}
         onClickRemoveProduct={handleRemoveProduct}
         linkComponent={Link}
+        hideRemoveButton={hideRemoveButton}
         className={className}
       />
     )
