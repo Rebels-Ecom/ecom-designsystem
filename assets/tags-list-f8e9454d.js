@@ -1,0 +1,2 @@
+import{T as i}from"./tag-cf40f1b7.js";import{a}from"./jsx-runtime-76c5c2e2.js";const o="_tagsList_94v77_1",n={tagsList:o};function t({tagsList:s=[]}){return a("ul",{className:n.tagsList,children:Array.isArray(s)&&s.length>0&&s.map((e,r)=>a("li",{children:a(i,{...e})},r))})}try{t.displayName="TagsList",t.__docgenInfo={description:"",displayName:"TagsList",props:{tagsList:{defaultValue:{value:"[]"},description:"",name:"tagsList",required:!1,type:{name:"ITag[]"}}}}}catch{}export{t as T};
+//# sourceMappingURL=tags-list-f8e9454d.js.map
