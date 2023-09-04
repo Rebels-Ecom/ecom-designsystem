@@ -1,57 +1,84 @@
-import React, { useState } from 'react'
-import styles from './product-card.module.css'
-import cx from 'classnames'
-import { Picture } from '../../atoms/picture/picture'
+import React, { useState, useEffect, useRef } from 'react'
 import { getProductPicture } from '../../../../helpers/picture-helper'
-import { DividerLines } from '../../atoms/divider-lines/divider-lines'
-import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
-import { Button, IButton } from '../../atoms/button/button'
+import { IButton } from '../../atoms/button/button'
 import { IProduct } from '../../../../types/product'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { TagsList } from '../tags-list/tags-list'
-import { Placeholder } from '../../atoms/placeholder/placeholder'
+import { ProductCardHorizontal } from '../product-card-horizontal/product-card-horizontal'
+import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
 
-
+export type TCardDisplayType = 'vertical' | 'horizontal'
 export interface IProductCard extends IProduct {
   product: IProduct
   changePackagingButton: IButton
   addToCartButton: IButton
   addToCart: CallableFunction
+  onChangeQuantity?: CallableFunction
+  hideCartButton?: boolean
   loading: boolean
   linkComponent?: any
+  showLinkIcon?: boolean
+  cardDisplay?: TCardDisplayType
+  hideRemoveButton?: boolean
+  onRemoveProduct?: CallableFunction
+  productQuantityDisabled?: boolean
+  className?: string
 }
 
-function ProductCard({ product, changePackagingButton, addToCartButton, addToCart, loading, linkComponent: Link }: IProductCard ) {
-  const { productId, productImageUrl, price, itemNumberPerSalesUnit} = product
-  const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
-  const [ myProduct, setProduct ] = useState(
-    { ...product,
-      productImage: getProductPicture(productId, productImageUrl),
-      quantity: '1',
-      totalPrice: convertNumToStr(price*itemNumberPerSalesUnit),
-      selectedVariantId: productId
+function ProductCard({
+  cardDisplay = 'vertical',
+  product,
+  changePackagingButton,
+  addToCartButton,
+  addToCart,
+  hideCartButton,
+  onChangeQuantity,
+  onRemoveProduct,
+  hideRemoveButton,
+  productQuantityDisabled,
+  loading,
+  linkComponent: Link,
+  className,
+}: IProductCard) {
+  const { productId, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
+  const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
+  const [myProduct, setProduct] = useState({
+    ...product,
+    productImage: getProductPicture(productId, productImageUrl),
+    quantity: quantity ? quantity : '1',
+    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (quantity ? parseInt(quantity) : 1)),
+    selectedVariantId: productId,
+  })
+  const didMount = useRef<boolean>(false)
+
+  function handleOnChangeQuantity(productQuantity: number) {
+    setProduct((prevState) => ({
+      ...prevState,
+      quantity: productQuantity.toString(),
+      totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity),
+    }))
+  }
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true
+      return
     }
-  ) 
+    onChangeQuantity && onChangeQuantity(myProduct)
+  }, [myProduct.quantity])
 
-  function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
-    const quantity = parseInt(e.target.value) || 1
-    setProduct({
-      ...myProduct, 
-      quantity:quantity.toString(),
-      totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * quantity)
-    })
+  function handleVariantsButtonClick() {
+    setVariantsListOpen(true)
   }
 
-  function handleVariantsButtonClick(){
-      setVariantsListOpen(true)
+  function handleRemoveProduct(id: string) {
+    onRemoveProduct && onRemoveProduct(id)
   }
 
-  function handlePackageChange(selectedVariant:any){
-    const quantity = myProduct.productId===selectedVariant.variantId ? parseInt(myProduct.quantity) : 1;
-    setProduct({
-      ...myProduct, 
+  function handlePackageChange(selectedVariant: any) {
+    const quantity = myProduct.productId === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
+    setProduct((prevState) => ({
+      ...prevState,
       productId: selectedVariant.variantId,
       productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
       country: selectedVariant.country,
@@ -62,71 +89,45 @@ function ProductCard({ product, changePackagingButton, addToCartButton, addToCar
       itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
-      selectedVariantId: selectedVariant.variantId
-    })
+      selectedVariantId: selectedVariant.variantId,
+    }))
     setVariantsListOpen(false)
   }
 
-  if(variantsListOpen) {
-    return(
-        <ProductVariantList className= {styles.productCard} variantsList= {myProduct.productVariantList} onVariantSelect={handlePackageChange} selectedVariantId={myProduct.selectedVariantId}/>
-    )
-  }
-  else {
+  if (cardDisplay === 'horizontal') {
     return (
-      <div className={styles.productCard}>
-        { Array.isArray(myProduct.tags) && myProduct.tags.length ? <>{ loading ? <Placeholder type='tags' /> : <TagsList tagsList={myProduct.tags}/> }</> : null }
-        { loading 
-          ?
-          <Placeholder type='image' />
-          :
-          <div className={styles.imageWrapper}>
-              <Picture {...myProduct.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl}/> 
-          </div>
-        }
-        { loading 
-          ?
-          <div className={styles.placeholderContent}>
-            <Placeholder type={'heading'} />
-            <Placeholder type={'p_short'} />
-            <Placeholder type={'p_long'} />
-            <Placeholder type={'p_long'} />
-          </div>
-          :
-          <div className={`${styles.cardContent}`}>
-            { myProduct.productUrl && Link
-              ? 
-                <Link to={myProduct.productUrl} href={myProduct.productUrl} className={styles.headingWrapper}><h5 className={styles.heading}>{myProduct.productName}</h5></Link>
-              : 
-                <h5 className={styles.heading}>{myProduct.productName}</h5>
-            }
-            <DividerLines/>
-            <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${myProduct.country}`}</p>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${myProduct.packaging}: ${myProduct.priceStr} kr/st`}</p>
-          </div>
-        }
-        <Button {...changePackagingButton} surface='secondary' iconRight={{icon:'icon-layers'}} rounded fullWidth onClick={()=>handleVariantsButtonClick()} disabled={loading}>Byt förpackning</Button>
-        { loading 
-          ?
-          <div className={styles.placeholderContent}>
-            <Placeholder type={'p_long'} />
-            <Placeholder type={'p_long'} />
-          </div>
-          :
-          <ProductQuantityInput
-            className={styles.productCardInput}
-            salesUnit = {myProduct.salesUnit}
-            itemNumberPerSalesUnit = {myProduct.itemNumberPerSalesUnit}
-            totalPrice = {myProduct.totalPrice}
-            quantity = {myProduct.quantity}
-            quantityInputId = {myProduct.productId}
-            onChange={handleOnChangeQuantity}
-          />
-        }
-        <Button {...addToCartButton} className={!loading ? styles.productCardBtn : ''} fullWidth onClick={()=>addToCart(product)} disabled={loading}>Lägg i kundvagn</Button>
-      </div>
+      <ProductCardHorizontal
+        loading={loading}
+        product={myProduct}
+        onChangeQuantity={handleOnChangeQuantity}
+        productQuantityDisabled={productQuantityDisabled}
+        addToCartButton={addToCartButton}
+        addToCart={addToCart}
+        onClickRemoveProduct={handleRemoveProduct}
+        linkComponent={Link}
+        hideRemoveButton={hideRemoveButton}
+        className={className}
+      />
     )
   }
+  return (
+    <ProductCardVertical
+      loading={loading}
+      product={myProduct}
+      productImage={myProduct.productImage}
+      onChangeQuantity={handleOnChangeQuantity}
+      productQuantityDisabled={productQuantityDisabled}
+      addToCartButton={addToCartButton}
+      addToCart={addToCart}
+      changePackagingButton={changePackagingButton}
+      onVariantsButtonClick={handleVariantsButtonClick}
+      variantsOpen={variantsListOpen}
+      selectedVariantId={myProduct.selectedVariantId}
+      handlePackageChange={handlePackageChange}
+      linkComponent={Link}
+      className={className}
+    />
+  )
 }
 
 export { ProductCard }

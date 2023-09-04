@@ -1,0 +1,54 @@
+.boxWrapper {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--background);
+    @media(min-width: 64em) {
+        padding: 1rem 3.75rem 2.5rem 3.75rem;
+    }
+
+    &.spacing-xs { gap: 0.3rem;}
+    &.spacing-sm { gap: 0.5rem;}
+    &.spacing-md { gap: 1rem;}
+    &.spacing-lg { gap: 1.5rem;}
+    &.spacing-xl { gap: 2rem;}
+
+    &.noWrap {flex-wrap: nowrap;}
+    &.hasMaxWidth {max-width: 43.75rem;}
+    &.withBorder { border: solid 0.063rem var(--border-grey); border-radius: 0.5rem; }
+}
+.groupWrapper {
+    display: flex;
+    &.direction-default {
+        flex-direction: column;
+        @media(min-width: 48em) {
+            flex-direction: row;
+        }
+    }
+    &.direction-row {
+        flex-direction: row;
+    }
+    &.direction-column {
+        flex-direction: column;
+    }
+    &.leftPosition { justify-content: flex-start;}
+    &.rightPosition { justify-content: flex-end;}
+    &.centerPosition { justify-content: center;}
+    &.apartPosition { justify-content: space-between;}
+
+    &.leftAlignment { align-items: flex-start;}
+    &.rightAlignment { align-items: flex-end;}
+    &.centerAlignment { align-items: center;}
+    &.baselineAlignment { align-items: baseline;}
+
+    &.spacing-xs { gap: 0.3rem;}
+    &.spacing-sm { gap: 0.5rem;}
+    &.spacing-md { gap: 1rem;}
+    &.spacing-lg { gap: 1.5rem;}
+    &.spacing-xl { gap: 2rem;}
+
+    &.noWrap {flex-wrap: nowrap;}
+}

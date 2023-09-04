@@ -1,19 +1,20 @@
 .textarea {
   appearance: none;
-  border-width: 0.125rem;
+  border-width: 0.063rem;
   border-style: solid;
   border-radius: 0.25rem;
   padding: 0.5rem 0.75rem;
   width: 100%;
   background: var(--surface-default);
-  border-color: var(--border-default);
-  color: var(--color-text-default);
-  min-height: 9.5rem;
+  border-color: var(--input-border-color);
+  color: var(--color-text-input);
+  min-height: 5rem;
   font-family: var(--font-family-primary);
 
   &:focus {
-    outline: 0.125rem solid var(--focused);
-    outline-offset: 0.125rem;
+    outline:none;
+    background: var(--input-background-focused);
+    border-color: var(--input-border-color);
   }
 
   &:disabled {
@@ -22,10 +23,9 @@
     color: var(--color-text-subdued);
     cursor: not-allowed;
   }
-
-  &::placeholder,
-  &::-webkit-input-placeholder {
-    color: var(--color-text-subdued);
+  &:read-only {
+    background: var(--input-background-readonly);
+    border-color: var(--input-border-color);
   }
 
   &.error {
@@ -33,8 +33,13 @@
     border-color: var(--border-critical);
   }
 
+  &::placeholder,
+  &::-webkit-input-placeholder {
+    color: var(--color-text-subdued);
+  }
+
   @media (min-width: 48em) {
-    max-height: 10rem;
-    min-height: 10rem;
+    max-height: 8rem;
+    min-height: 8rem;
   }
 }

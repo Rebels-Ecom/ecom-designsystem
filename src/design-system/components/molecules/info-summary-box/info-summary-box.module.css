@@ -1,0 +1,35 @@
+.infoSummaryBox {
+    position: relative;
+    width: 100%;
+}
+
+.linkButton {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--color-text-orange);
+    z-index: 2;
+}
+
+.label {
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+    display: flex;
+}
+
+.box {
+    background: var(--background);
+    border: solid 0.063rem var(--border-grey);
+    border-radius: 4px;
+    padding: 0.5rem 1.125rem;
+    & > * {
+        padding: 0.5rem 0;
+    }
+    &.withBackground {
+        background: #FFF9E8;
+    }
+}

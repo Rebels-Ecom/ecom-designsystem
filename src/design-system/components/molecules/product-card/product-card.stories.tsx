@@ -2,30 +2,32 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductCard } from './product-card'
 import { convertNumToStr } from '../../../../helpers/format-helper'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IProduct } from '../../../../types/product'
-import { dummyBeerProduct, dummyWineProduct } from './dummy-product'
+import { dummyBeerProduct, dummyWineProduct, dummyProductNoVariants } from './dummy-product'
 
 const meta: Meta<typeof ProductCard> = {
   title: 'Design System/Molecules/ProductCard',
-  component: ProductCard
-};
+  component: ProductCard,
+}
 
-export default meta;
+export default meta
 type Story = StoryObj<typeof ProductCard>
 
 const ProductCardStoryTemplate: Story = {
-  render: ({...args}) => {
-    function handleAddToCart(product) {
-      console.log('Showing toast with product...')
+  render: ({ ...args }) => {
+    function handleAddToCart(product: any) {
+      console.log('Showing toast with product...', product)
+    }
+    function handleOnChangeQuantity(product: any) {
+      console.log('Quantity change', product)
     }
 
-    return(
+    return (
       <div style={{ width: '100%', marginTop: '2rem', marginLeft: '2rem' }}>
-        <ProductCard {...args} addToCart={handleAddToCart}/>
+        <ProductCard {...args} addToCart={handleAddToCart} onChangeQuantity={handleOnChangeQuantity} />
       </div>
     )
-  }
+  },
 }
 
 function getProductTags(tags: Array<any>) {
@@ -80,19 +82,48 @@ function getProduct(productData: any): IProduct {
 
 const productBeerArgs = getProduct(dummyBeerProduct)
 const productWineArgs = getProduct(dummyWineProduct)
+const productNoVariantsArgs = getProduct(dummyProductNoVariants)
 
 export const ProductCardStory = {
   ...ProductCardStoryTemplate,
   args: {
     product: productWineArgs,
-    linkComponent: 'a'
-  }
+    linkComponent: 'a',
+  },
+}
+
+export const ProductCardStory_NoVariants = {
+  ...ProductCardStoryTemplate,
+  args: {
+    product: productNoVariantsArgs,
+    linkComponent: 'a',
+  },
 }
 
 export const ProductCardStory_Loading = {
   ...ProductCardStoryTemplate,
   args: {
     product: productWineArgs,
-    loading: true
-  }
+    loading: true,
+  },
+}
+
+export const ProductCardStory_Horizontal = {
+  ...ProductCardStoryTemplate,
+  args: {
+    product: productWineArgs,
+    linkComponent: 'a',
+    cardDisplay: 'horizontal',
+  },
+}
+
+export const ProductCardHorizontal_Horizontal_Beer = {
+  ...ProductCardStoryTemplate,
+  args: {
+    product: productBeerArgs,
+    loading: false,
+    linkComponent: 'a',
+    cardDisplay: 'horizontal',
+    hideRemoveButton: true,
+  },
 }

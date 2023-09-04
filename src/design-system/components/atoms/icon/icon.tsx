@@ -13,6 +13,7 @@ export type TIcon =
   | 'icon-search'
   | 'icon-x-circle'
   | 'icon-plus-circle'
+  | 'icon-plus'
   | 'icon-chevron-up'
   | 'icon-chevron-down'
   | 'icon-chevron-left'
@@ -37,6 +38,12 @@ export type TIcon =
   | 'icon-settings'
   | 'icon-info'
   | 'icon-play'
+  | 'icon-archive'
+  | 'icon-file'
+  | 'icon-file-text'
+  | 'icon-message-circle'
+  | 'icon-share'
+  | 'icon-arrow-down-circle'
 
 export interface IIcon {
   icon: TIcon

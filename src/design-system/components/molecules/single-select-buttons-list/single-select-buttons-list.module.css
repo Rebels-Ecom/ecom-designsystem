@@ -1,0 +1,62 @@
+.buttonsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.radioBtn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-family-secondaryBold);
+    border: solid 0.063rem transparent;
+    border-radius: 0.125rem;
+    background-color: var(--cta-secondary-default);
+    border-color: var(--border-on-secondary);
+    color: var(--color-on-secondary);
+    border-radius: 6.25rem;
+    &:hover{
+        border-color: var(--border-on-secondary-hover);
+        color: var(--color-on-secondary-hover);
+        cursor: pointer;
+    }
+    &.disabled,
+    &:disabled {
+        border-color: var(--border-on-secondary-disabled);
+        color: var(--color-on-secondary-disabled);
+    }
+}
+
+.icon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: var(--cta-icon-color);
+    background: var(--cta-icon-background);  
+    right: 0.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    min-width: 1.5rem;
+    &:before{
+        font-size: 1rem;
+    }
+}
+
+.radioBtnWrapper input[type=radio] {
+    display: none;
+}
+
+.radioBtnWrapper input[type=radio]:checked + .radioBtn {
+    background-color: var(--cta-primary-default);
+    color: var(--color-on-primary);
+    & .icon{
+        background-color: var(--cta-primary-hover);
+        color: var(--color-on-primary);
+    }
+}

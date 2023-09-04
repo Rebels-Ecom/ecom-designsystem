@@ -2,11 +2,13 @@ import styles from './tag.module.css'
 import cx from 'classnames'
 
 export type TTagShape = 'rectangular' | 'round' | 'pill';
-export type TTagColor = 'green' | 'mint' | 'blue' | 'orange';
+export type TTagSize = 'sm' | 'md' | 'lg';
+export type TTagColor = 'green' | 'mint' | 'blue' | 'orange' | 'grey' | 'yellow' | 'purple';
 export interface ITag {
     text: string
     shape: TTagShape
-    color: TTagColor
+    color?: TTagColor
+    size?: TTagSize
     className?: string
 }
 
@@ -22,23 +24,21 @@ function getTagShape(shape:TTagShape){
     }
 }
 
-function getTagColor(color:TTagColor){
-    switch(color){
-        case 'mint' : 
-            return 'mint'
-        case 'blue' : 
-            return 'blue'
-        case 'orange' : 
-            return 'orange'
-        case 'green' : 
+function getTagSize(size:TTagSize){
+    switch(size){
+        case 'sm' : 
+            return 'tagSmall'
+        case 'md' : 
+            return 'tagMedium'
+        case 'lg' : 
         default:
-            return 'green'
+            return 'tagLarge'
     }
 }
 
-const Tag = ({text, shape, color, className}:ITag)=>{
+const Tag = ({text, size='lg', shape, color='green', className}:ITag)=>{
     return(
-        <div className={cx(styles.tagDefault, styles[getTagShape(shape)], styles[getTagColor(color)], className ? className : '')}>
+        <div className={cx(styles.tagDefault, styles[getTagSize(size)], styles[getTagShape(shape)], styles[color], className ? className : '')}>
             {text}
         </div>
     )

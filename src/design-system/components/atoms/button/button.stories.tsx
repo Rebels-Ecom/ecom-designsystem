@@ -106,7 +106,7 @@ export const ShoppingListButtonStory = {
   },
 };
 
-export const LatertOrderButtonStory = {
+export const LatestOrderButtonStory = {
   ...ButtonStoryTemplate,
   args: {
     id: 'Button_Latest_Order',

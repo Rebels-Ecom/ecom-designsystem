@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CartSidebar } from './cart-sidebar'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ButtonGoToCart, LatertOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories'
+import { ButtonGoToCart, LatestOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories'
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { DrawerSidebar } from '../../molecules/drawer-sidebar/drawer-sidebar'
@@ -70,7 +70,7 @@ export const CartSidebarStory = {
         productsNumber: 7,
         text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
         shoppingListButton: ShoppingListButtonStory.args,
-        latestOrderButton: LatertOrderButtonStory.args,
+        latestOrderButton: LatestOrderButtonStory.args,
         cartProductsList: CartProductListStory.args,
         goToCartButton: ButtonGoToCart.args,
         toggleSwitchLabel: 'Spara som inköpslista',
@@ -86,7 +86,7 @@ export const CartSidebarStoryNoProducts = {
         productsNumber: 7,
         text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
         shoppingListButton: ShoppingListButtonStory.args,
-        latestOrderButton: LatertOrderButtonStory.args,
+        latestOrderButton: LatestOrderButtonStory.args,
         cartProductsList: [],
         goToCartButton: ButtonGoToCart.args,
         toggleSwitchLabel: 'Spara som inköpslista',

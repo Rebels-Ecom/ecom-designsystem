@@ -1,0 +1,45 @@
+.createListForm {
+  padding: 20px;
+  width: 100%;
+  max-width: 830px;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+  @media (min-width: 768px) {
+   padding: 50px;
+  }
+}
+
+.createListForm input[type="text"] {
+  margin: 5px 0 22px 0;
+}
+
+.createListForm button {
+  margin: 24px 0;
+}
+
+.createListForm h1, p {
+  margin: 0 0 10px 0;
+}
+
+.createListForm p {
+  margin: 0 0 30px 0;
+}
+
+.logo {
+  padding: 0;
+  margin-bottom: 1.875rem;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  left: auto;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.overlay {
+  border-radius: 0.625rem;
+}

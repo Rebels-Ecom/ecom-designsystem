@@ -38,6 +38,7 @@ export const lightTheme = {
 
   /*Background */
   '--background': '#ffffff',
+  '--light-orange-background': '#FFF9E8',
   '--nav-bar-background': '#F2EFEA',
   '--sub-nav-background': '#FBFAF9',
   '--top-nav-bar-background': '#003E51',
@@ -81,6 +82,9 @@ export const lightTheme = {
   '--tag-blue': '#003E51',
   '--tag-orange': '#DE9034',
   '--tag-white': '#ffffff',
+  '--tag-grey': '#F1F1F1',
+  '--tag-yellow': '#FFF9E8',
+  '--tag-purple': '#9A576F',
 
   /* Loading bar */
   '--bar-bkg-orange': '#EEE1C8',
@@ -166,6 +170,7 @@ export const lightTheme = {
   '--border-orange': '#DE9034',
   '--border-subdued': '#d5d5d5',
   '--border-disabled': '#d5d5d5',
+  '--border-grey': '#E5ECEE',
   '--border-critical': '#cc0028',
 
   '--border-on-primary':'transparent',
@@ -252,6 +257,7 @@ export const darkTheme = {
  
    /*Background */
    '--background': '#000000',
+   '--light-orange-background': '#FFF9E8',
    '--nav-bar-background': '#F2EFEA',
    '--sub-nav-background': '#FBFAF9',
    '--top-nav-bar-background': '#003E51',
@@ -284,6 +290,9 @@ export const darkTheme = {
   '--tag-blue': '#003E51',
   '--tag-orange': '#DE9034',
   '--tag-white': '#ffffff',
+  '--tag-grey': '#F1F1F1',
+  '--tag-yellow': '#FFF9E8',
+  '--tag-purple': '#9A576F',
 
     /* Loading bar */
   '--bar-bkg-orange': '#EEE1C8',
@@ -371,6 +380,7 @@ export const darkTheme = {
   '--border-orange': '#DA7E00',
   '--border-subdued': '#555555',
   '--border-disabled': '#777777',
+  '--border-grey': '#E5ECEE',
   '--border-critical': '#ee0030',
   '--interactive-default': '#F08A00',
   '--interactive-hover': '#DA7E00',

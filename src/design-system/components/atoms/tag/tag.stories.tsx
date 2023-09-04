@@ -21,8 +21,8 @@ const TagStoryTemplate: Story = {
 export const TagStoryRectangular_S = {
     ...TagStoryTemplate,
     args: {
-        text: 'EKO',
-        size: 'small',
+        text: 'Eko',
+        size: 'sm',
         shape: 'rectangular',
         color: 'green'    
     }
@@ -32,7 +32,7 @@ export const TagStoryRectangular_L = {
     ...TagStoryTemplate,
     args: {
         text: 'Tillval',
-        size: 'large',
+        size: 'lg',
         shape: 'rectangular',
         color: 'blue'  
     }
@@ -42,7 +42,7 @@ export const TagStoryRound_S = {
     ...TagStoryTemplate,
     args: {
         text: 'Kurs',
-        size: 'small',
+        size: 'sm',
         shape: 'round',
         color: 'mint'
     }
@@ -52,7 +52,7 @@ export const TagStoryRound_L = {
     ...TagStoryTemplate,
     args: {
         text: 'Nyhet',
-        size: 'large',
+        size: 'lg',
         shape: 'round',
         color: 'orange'
     }

@@ -5,6 +5,7 @@
     &.centerAlignment { justify-content: center;}
     &.textBold { font-weight: bold;}
     &.textUnderlined {text-decoration: underline;}
+    &.textWithBottomBorder {border-bottom: 0.063rem solid #F1F1F1;}
 }
 
 .linkText {

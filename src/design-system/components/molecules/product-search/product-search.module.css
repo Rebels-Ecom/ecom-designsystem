@@ -1,0 +1,130 @@
+.search {
+    width: 100%;
+    @media (min-width: 64em) {
+        position: relative;
+        margin: 0;
+    }
+}
+
+.searchBar {
+    position:relative;
+    display:flex;
+    height: 2.5rem;
+
+    & input[type="text"] {
+        height: 100%;
+        width: 100%;
+        border: solid 0.0125rem var(--nav-bar-background);
+        border-radius: 0 0.25rem 0.25rem 0;
+        padding: 0.5rem 1rem;
+        background: var(--background);
+        color: var(--color-text-blue);
+        &::placeholder {
+            color: var(--color-text-blue);
+        }
+        @media (min-width: 64em) {
+            padding: 0.5rem 2rem;
+        }
+    }
+}
+
+.searchInput {
+    width: 100%;
+}
+
+.searchIconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cta-tertiary-default);
+    color: var(--color-on-primary);
+    border-radius: 0.25rem 0 0 0.25rem;
+    border: none;
+    width: 2.5rem;
+    min-width: 2.5rem;
+}
+
+.searchIcon {
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+.clearBtn {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    outline: none;
+    background: transparent;
+    border: none;
+    color: var(--color-text-blue);
+}
+
+.searchResults {
+   left:0;
+   width: 100%;
+   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+   z-index: 9999;
+   color: var(--color-text-blue);
+}
+
+.searchResultsList {
+        list-style: none;
+        width:100%;
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0.8rem 0;
+
+        &::-webkit-scrollbar {
+            width: 0.5rem;  
+        }
+
+        &::-webkit-scrollbar-track {
+            border-radius: 0.5rem;
+            background: rgba(251, 250, 249, 0.1);
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: var(--color-text-orange);
+            border-radius: 0.5rem;
+        }
+        @media (min-width: 37.5em) {
+            max-width: 67.5rem;
+        }
+    
+        @media (min-width: 90em) {
+            max-width: 77.5rem;
+        }
+        &:nth-child(2n) {
+            background: red;
+        }
+    }
+   
+
+.searchResultsLoading {
+    margin-top: 0.6rem;
+    left:0;
+    width: 100%;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    background: var(  --light-orange-background);
+    padding: 1.5rem;
+}
+
+.resultListItem {
+    padding: 0 1rem;
+    &:nth-child(2n) {
+        background: var(  --light-orange-background);
+    }
+}
+
+.noResultListItem {
+    direction:ltr;
+    display: flex;
+    text-align: left;
+}

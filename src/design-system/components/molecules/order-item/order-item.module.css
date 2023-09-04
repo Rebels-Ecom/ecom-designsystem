@@ -1,0 +1,57 @@
+.orderItem {
+    position: relative;
+}
+
+.linkContentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+}
+
+.tagsWrapper{
+    display: flex;
+    gap:0.5rem;
+}
+
+.title {
+    margin: 0;
+}
+
+.linkWrapper {
+    width: 100%;
+    height: 100%;
+    color: var(--text-default);
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.linkButton {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--color-text-orange);
+    z-index: 2;
+}
+
+.label {
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+    display: flex;
+}
+
+.box {
+    background: var(--background);
+    border: solid 0.063rem var(--border-grey);
+    border-radius: 4px;
+    padding: 0.5rem 1.125rem;
+    & > * {
+        padding: 0.5rem 0;
+    }
+}
