@@ -6,9 +6,15 @@
     flex-direction: column;
     padding: 1rem;
     background: var(--background);
+    
     @media(min-width: 64em) {
         padding: 1rem 3.75rem 2.5rem 3.75rem;
+        
+        &.onlyButton {
+            padding: 2rem 3.75rem;
+        }
     }
+    
 
     &.spacing-xs { gap: 0.3rem;}
     &.spacing-sm { gap: 0.5rem;}

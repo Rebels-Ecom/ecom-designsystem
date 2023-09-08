@@ -16,6 +16,11 @@ export interface IGroupWrapper {
   hasMaxWidth?: boolean
   withBorder?: boolean
   align?: TAlign
+  /**
+   * If true, applies an even vertical padding in order to vertically center the button
+   * @default false
+   */
+  onlyButton?: boolean
 }
 
 function BoxWrapper({
@@ -27,6 +32,7 @@ function BoxWrapper({
   align = 'left',
   hasMaxWidth = true,
   withBorder = true,
+  onlyButton = false,
 }: IGroupWrapper) {
   function getGroupElementsPosition(position: TGroupPosition) {
     switch (position) {
@@ -94,7 +100,8 @@ function BoxWrapper({
         styles[getGroupElementsSpacing(spacing)],
         hasMaxWidth ? styles.hasMaxWidth : '',
         withBorder ? styles.withBorder : '',
-        noWrap && styles.noWrap
+        noWrap && styles.noWrap,
+        onlyButton && styles.onlyButton,
       )}
     >
       {children}
