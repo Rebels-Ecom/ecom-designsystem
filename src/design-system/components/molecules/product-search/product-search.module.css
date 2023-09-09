@@ -118,8 +118,9 @@
 
 .resultListItem {
     padding: 0 1rem;
-    &:nth-child(2n) {
-        background: var(  --light-orange-background);
+    
+    &:not(:last-of-type) {
+        border-bottom: 1px solid var(--border-grey);
     }
 }
 

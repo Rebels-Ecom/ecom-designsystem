@@ -30,6 +30,7 @@ export { OrderConfirmationDetails } from './order-confirmation-details/order-con
 export { UserInfoSummary } from './user-info-summary/user-info-summary'
 export { DropdownList } from './dropdown-list/dropdown-list'
 export { UserProfileDropdown } from './user-profile-dropdown/user-profile-dropdown'
+export { UserProfileDropdownControlled } from './user-profile-dropdown/user-profile-dropdown-controlled'
 export { Tabs } from './tabs/tabs'
 export { LoadingBars } from './loading-bars/loading-bars'
 export { DeliveryDateInfo } from './delivery-date-info/delivery-date-info'

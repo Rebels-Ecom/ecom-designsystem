@@ -40,8 +40,13 @@
     height: 3.8rem;
     display: flex;
     align-items: center;
+    
     &:nth-child(2n) {
         background: rgba(251, 250, 249, 0.1);
+    }
+
+    .serchResultItemText {
+      font-weight: var(--font-weight-bold);
     }
   }
 
