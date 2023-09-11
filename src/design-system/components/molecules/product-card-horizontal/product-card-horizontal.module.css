@@ -12,7 +12,7 @@
     padding: 0;
   }
 
-  .picture {
+  & .picture {
     all: unset;
     width: 6rem;
     display: flex;
@@ -21,12 +21,12 @@
     justify-content: center;
   }
 
-  .image {
+  & .image {
     display: block;
     height: 11rem;
   }
 
-  .contentWrapper {
+  & .contentWrapper {
     width: 100%;
     
     @media (min-width: 48rem) {
@@ -34,7 +34,7 @@
       width: auto;
     }
 
-    .mainLink {
+    & .mainLink {
       text-decoration: none;
       color: var(--color-text-default);
 
@@ -43,26 +43,26 @@
       }  
     }
     
-    .heading {
+    & .heading {
       margin: 0;
       font-family: var(--font-family-secondary);
       font-weight: var(--font-weight-bold);
       line-height: 1.5rem;
     }
 
-    .subTitle {
+    & .subTitle {
       font-family: var(--font-family-secondary);
       margin: 0 0 0.5rem 0;
       color: var(--color-text-decorative-purple);
     }
 
-    .caption {
+    & .caption {
       margin: 0 0 0.5rem 0;
       color: var(--color-text-decorative-grey);
     }
   }
 
-  .buttonsWrapper {
+  & .buttonsWrapper {
     display: flex;
     align-items: flex-end;
     width: 100%;
@@ -72,16 +72,16 @@
       padding: 1rem 0;
     }
 
-    .iconLink {
+    & .iconLink {
       position: absolute;
       top: 0.5rem;
       right: 0.5rem;
     }
 
-    .productCardBtn {
+    & .productCardBtn {
       flex: 1;
       
-      .cartBtnIcon {
+      & .cartBtnIcon {
         margin-right: 1rem;
         
         @media (min-width: 48em) {
