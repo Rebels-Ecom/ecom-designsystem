@@ -36,7 +36,7 @@ const ProductCardHorizontal = ({
   onChangeQuantity,
   productQuantityDisabled,
   linkComponent: Link,
-  className,
+  className = "",
 }: IProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
     product
@@ -52,79 +52,87 @@ const ProductCardHorizontal = ({
   }
 
   return (
-    <div className={cx(styles.productCardHorizontal, className ? className : '')}>
-      {removingProduct ? (
-        <Loader visible={loading} text={'Loading'} />
+    <div className={cx(styles.productCardHorizontal, className)}
+    >
+      {removingProduct? (
+        <Loader visible text={'Loading'} />
       ) : (
         <>
           {loading ? (
-            <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
+            <>
+              <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
               <Placeholder type="image" />
-            </div>
+              </div>
+              <div className={styles.placeholderContent}>
+                <Placeholder type={'heading'} />
+                <DividerLines />
+                <Placeholder type={'p_short'} />
+                <Placeholder type={'p_short'} />
+                <Placeholder type={'p_long'} />
+              </div>
+            </>
           ) : (
-            <div className={styles.imageWrapper}>
+            <>
               <Picture
                 {...productImage}
-                classNamePicture={styles.cardPicture}
-                classNameImg={`${styles.cardImage}`}
+                classNamePicture={styles.picture}
+                classNameImg={`${styles.image}`}
                 fallbackImageUrl={fallbackProductImageUrl}
               />
-            </div>
-          )}
-          {loading ? (
-            <div className={styles.placeholderContent}>
-              <Placeholder type={'heading'} />
-              <DividerLines />
-              <Placeholder type={'p_short'} />
-              <Placeholder type={'p_short'} />
-              <Placeholder type={'p_long'} />
-            </div>
-          ) : (
-            <div className={styles.contentWrapper}>
-              {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
-              {productUrl && Link ? (
-                <Link to={productUrl} href={productUrl} className={styles.headingWrapper}>
+              <div className={styles.contentWrapper}>
+                {Array.isArray(tags) && tags.length ?
+                  <TagsList tagsList={tags} /> : null
+                }
+                
+                {productUrl && Link ? (
+                  <Link to={productUrl} href={productUrl} className={styles.mainLink}>
+                    <h5 className={styles.heading}>{productName}</h5>
+                  </Link>
+                ) : (
                   <h5 className={styles.heading}>{productName}</h5>
-                </Link>
-              ) : (
-                <h5 className={styles.heading}>{productName}</h5>
-              )}
-              <DividerLines />
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
-              {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country}`}</p>}
-              <ProductQuantityInput
-                className={styles.quantityInput}
-                salesUnit={salesUnit}
-                itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                totalPrice={totalPrice}
-                quantity={quantity}
-                quantityInputId={productId}
-                onChange={handleOnChangeQuantity}
-                disabled={productQuantityDisabled}
-              />
-            </div>
-          )}
-          <div className={styles.buttonsWrapper}>
-            {!hideRemoveButton && onClickRemoveProduct && (
-              <div className={styles.iconLink}>
-                <IconButton icon={'icon-x-circle'} onClick={() => handleRemoveProduct(productId)} isLink={false} isTransparent size="large"></IconButton>
+                )}
+
+                <DividerLines />
+                
+                <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
+                
+                {country !== '' && <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country}`}</p>}
+
+                <ProductQuantityInput
+                  className={styles.quantityInput}
+                  salesUnit={salesUnit}
+                  itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                  totalPrice={totalPrice}
+                  quantity={quantity}
+                  quantityInputId={productId}
+                  onChange={handleOnChangeQuantity}
+                  disabled={productQuantityDisabled}
+                />
               </div>
-            )}
-            {!hideCartButton ? (
-              <Button
-                {...addToCartButton}
-                className={!loading ? styles.productCardBtn : ''}
-                size={'x-small'}
-                onClick={() => addToCart(product)}
-                disabled={loading}
-              >
-                <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
-                <span className={styles.cartBtnText}>Lägg i kundvagn</span>
-              </Button>
-            ) : null}
-          </div>
+              <div className={styles.buttonsWrapper}>
+                {!hideRemoveButton && onClickRemoveProduct && (
+                  <div className={styles.iconLink}>
+                    <IconButton icon={'icon-x-circle'} onClick={() => handleRemoveProduct(productId)} isLink={false} isTransparent size="large"></IconButton>
+                  </div>
+                )}
+                {!hideCartButton ? (
+                  <Button
+                    {...addToCartButton}
+                    className={!loading ? styles.productCardBtn : ''}
+                    size={'x-small'}
+                    onClick={() => addToCart(product)}
+                    disabled={loading}
+                  >
+                    <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
+                    <span className={styles.cartBtnText}>Lägg i kundvagn</span>
+                  </Button>
+                ) : null}
+              </div>
+            </>
+          )}
         </>
-      )}
+      )
+      }
     </div>
   )
 }

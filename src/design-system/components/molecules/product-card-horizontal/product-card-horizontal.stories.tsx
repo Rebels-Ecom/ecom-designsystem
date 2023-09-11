@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ProductCardHorizontal } from './product-card-horizontal'
+import { IProductCardHorizontal, ProductCardHorizontal } from './product-card-horizontal'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct, dummyWineProduct } from '../product-card/dummy-product'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 
 const meta: Meta<typeof ProductCardHorizontal> = {
   title: 'Design System/Molecules/ProductCardHorizontal',
+  parameters: {
+    controls: { exclude: ['product', 'addToCartButton', 'addToCart', 'onClickRemoveProduct', 'onChangeQuantity', 'className'] },
+  },
   component: ProductCardHorizontal,
 }
 
@@ -33,7 +36,8 @@ const ProductCardHorizontalStoryTemplate: Story = {
     return (
       <ProductCardHorizontal
         {...args}
-        loading={loading}
+        removingProduct={args.removingProduct}
+        loading={args.loading ?? loading}
         addToCart={handleAddToCart}
         onChangeQuantity={handleQuantityChange}
         onClickRemoveProduct={handleRemoveProduct}

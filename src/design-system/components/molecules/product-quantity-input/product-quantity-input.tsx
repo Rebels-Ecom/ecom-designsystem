@@ -22,17 +22,14 @@ const ProductQuantityInput = ({
     disabled=false,
     onChange
 }: IProductQuantityInput) => {
-
-    function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-        if (onChange) {
-            onChange(e)
-        }
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.(e)
     }
 
     return (
         <div className = {`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
             <InputText id={quantityInputId} defaultValue ={quantity} placeholder={'1'} onChange={handleOnChange} disabled={disabled} type={'number'} className={styles.quantityInputField}/>
-            <div className={styles.textContainer}>
+            <div>
                 <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} stick)`}</p>
                 <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: (${totalPrice} kr)`}</p>
             </div>
