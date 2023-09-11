@@ -119,7 +119,9 @@ export const InfoSummaryBoxStory_DinaUppgifter = {
   args: {
     label: 'Dina uppgifter',
     linkLabel: 'Hantera/Ändra uppgifter',
-    onClick: () => {},
+    onClick: () => {
+      console.log('On click "Hantera/ändra uppgifter"')
+    },
     children: itemsListAdministrator,
   },
 }
