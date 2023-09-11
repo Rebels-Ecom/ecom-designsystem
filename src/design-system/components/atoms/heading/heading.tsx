@@ -42,10 +42,11 @@ function getHeadingAlignment(alignment: THeadingAlignment) {
 }
 
 function Heading({ children, order = 3, align = 'left', noMargin, className }: IHeading) {
+  const Tag  = getHeadingSize(order);
   return (
-    <h1 className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), noMargin ? styles.noMargin : '', className ? className : '')}>
+    <Tag className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), noMargin ? styles.noMargin : '', className ? className : '')}>
       {children}
-    </h1>
+    </Tag>
   )
 }
 
