@@ -48,3 +48,5 @@ export { ProductCardHorizontal} from './product-card-horizontal/product-card-hor
 export { ProductCardVertical} from './product-card-vertical/product-card-vertical'
 export { PopUp } from './pop-up/pop-up'
 export { ProductSearch } from './product-search/product-search'
+export { SortableList } from './sortable-list/sortable-list'
+export { SortableListItem } from './sortable-list-item/sortable-list-item'
