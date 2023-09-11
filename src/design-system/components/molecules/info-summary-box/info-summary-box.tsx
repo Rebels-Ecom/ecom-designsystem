@@ -11,10 +11,14 @@ export interface IInfoSummaryBox {
 }
 
 function InfoSummaryBox({ label, children, linkLabel, withBackground, onClick }: IInfoSummaryBox) {
+  function handleOnClick(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault()
+    onClick && onClick()
+  }
   return (
     <div className={styles.infoSummaryBox}>
       {linkLabel && onClick && (
-        <button type={'button'} onClick={() => onClick} className={cx(styles.linkButton, 'body')}>
+        <button type={'button'} onClick={handleOnClick} className={cx(styles.linkButton, 'body')}>
           {linkLabel}
         </button>
       )}
