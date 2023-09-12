@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './navigation.module.css'
 import { motion } from 'framer-motion'
 import { INavigationLink } from '../../../../types/links'
-import { Above, Below } from '../../layouts'
+import { Above, Below, ContentWrapper } from '../../layouts'
 import cx from 'classnames'
 import { NavigationList } from '../navigation-list/navigation-list'
 
@@ -35,23 +35,25 @@ const sidebar = {
 const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
   return (
     <div className={styles.navigation}>
-      {links?.length && (
-        <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
-          <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} isOpen />}</Above>
-        </nav>
-      )}
-      {links?.length && (
-        <Below breakpoint="lg">
-          {(matches: any) =>
-            matches && (
-              <>
-                <motion.div className={styles.background} variants={sidebar} />
-                <motion.nav>{links?.length && <NavigationList links={links} linkComponent={Link} mobile isOpen={isOpen} />}</motion.nav>
-              </>
-            )
-          }
-        </Below>
-      )}
+      <ContentWrapper padding="0">
+        {links?.length && (
+          <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
+            <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} isOpen />}</Above>
+          </nav>
+        )}
+        {links?.length && (
+          <Below breakpoint="lg">
+            {(matches: any) =>
+              matches && (
+                <>
+                  <motion.div className={styles.background} variants={sidebar} />
+                  <motion.nav>{links?.length && <NavigationList links={links} linkComponent={Link} mobile isOpen={isOpen} />}</motion.nav>
+                </>
+              )
+            }
+          </Below>
+        )}
+      </ContentWrapper>
     </div>
   )
 }

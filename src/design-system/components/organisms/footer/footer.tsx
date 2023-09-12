@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
 import styles from './footer.module.css'
 import { Logotype } from '../../molecules/logotype/logotype'
+import { ContentWrapper } from '../../layouts'
 
 export interface IFooter {
   footerTopBarLinks: Array<TNavLink>
@@ -102,8 +103,12 @@ const Footer = ({ footerTopBarLinks, logo, address, addressLabel, children, link
     <>
       <FooterTopBar footerTopBarLinks={footerTopBarLinks} linkComponent={Link}></FooterTopBar>
       <footer className={styles.footer}>
-        <FooterContent logo={logo} address={address} addressLabel={addressLabel} linkComponent={Link} showNewsletter={showNewsletter} newsletterId={newsletterId} newsletterPlaceholder={newsletterPlaceholder} children={children}/>
-        <FooterLinks footerLinks={links} linkComponent={Link}></FooterLinks>
+        <ContentWrapper>
+          <div className={styles.inner}>
+          <FooterContent logo={logo} address={address} addressLabel={addressLabel} linkComponent={Link} showNewsletter={showNewsletter} newsletterId={newsletterId} newsletterPlaceholder={newsletterPlaceholder} children={children}/>
+          <FooterLinks footerLinks={links} linkComponent={Link}></FooterLinks>
+          </div>
+        </ContentWrapper>
       </footer>
       <FooterBottomBar bottomBarText={bottomBarText}></FooterBottomBar>
     </>

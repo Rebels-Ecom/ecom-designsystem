@@ -1,3 +1,5 @@
+/* TODO: clean up/remove all max widths if we keep the ContentWrapper */
+
 .breadcrumbsContainer {
     position: relative;
     height: var(--breadcrumbs-container-height);
@@ -21,22 +23,25 @@
 }
 
 .textContainer {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
+    /* position: absolute; */
+    /* width: 100%; */
+    /* top: 50%;
+    transform: translateY(-50%); */
 }
 
 .title {
-    margin: 0 auto 0.5rem auto;
+    /* margin: 0 auto 0.5rem auto; */
     padding: 0 1rem;
+    
     @media (min-width: 48em) {
         width: var(--text-width-m);
     }
+
     @media (min-width: 64em) {
         padding: 0;
         &.wide {
-            width: var(--text-width-wide);
+            /* width: var(--text-width-wide); */
+            width: var(--content-max-width-md);
         }
         &.narrow {
             width: var(--text-width-narrow);
@@ -46,19 +51,22 @@
 
 .list {
     list-style: none;
-    margin: 0 auto;
-    padding: 0 1rem;
+    /* margin: 0 auto; */
+    /* padding: 0 1rem; */
     display: flex;
+    /* max-width: var(--content-max-width-md); */
+
     @media (min-width: 48em) {
         width: var(--text-width-m);
     }
     @media (min-width: 64em) {
         padding: 0;
         &.wide {
-            width: var(--text-width-wide);
+            /* width: var(--text-width-wide); */
+            /* width: var(--content-max-width-md); */
         }
         &.narrow {
-            width: var(--text-width-narrow);
+            /* width: var(--text-width-narrow); */
         }
     }
 }

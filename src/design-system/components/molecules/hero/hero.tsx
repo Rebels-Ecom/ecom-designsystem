@@ -3,6 +3,7 @@ import styles from './hero.module.css'
 import { IPicture, TPictureFetchPriority, TPictureLoading, Picture } from '../../atoms/picture/picture'
 import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
 import { IVideo, Video } from '../../atoms/video/video'
+import { ContentWrapper } from '../../layouts'
 
 export type alignContent = 'left' | 'right' | 'center'
 export type heroTheme = 'light' | 'dark'
