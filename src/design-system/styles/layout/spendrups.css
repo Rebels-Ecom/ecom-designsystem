@@ -18,7 +18,8 @@ html {
     --blog-card-fullwidth: 108rem;
     --product-card-width: 18.938rem; /* 303px */
     --product-card-height: 40rem; /* 640px */
-    --breadcrumbs-container-height: 13.438rem;
+    --breadcrumbs-container-height-mobile: 10rem;
+    --breadcrumbs-container-height-desktop: 13rem;
     --footer-top-bar-height-mobile: 4.25rem;
     --footer-top-bar-height-desktop: 6rem;
     --signup-teaser-max-width: 43.875rem;

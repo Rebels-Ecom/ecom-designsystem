@@ -27,16 +27,16 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
         <div className={cx(styles.breadcrumbsContainer, className ? className : '')}>
             { image && <Picture {...image} classNamePicture={styles.breadcrumbsPicture} classNameImg={styles.breadcrumbsImg} /> }
             <ContentWrapper>
-                <div className={styles.textContainer}>
+                <>
                     {title && <h2 className={cx(styles.title, styles[textWidth])} >{title}</h2>}
                     <ul className={cx(styles.list, styles[textWidth])}>
                         {breadcrumbs.map((breadcrumb)=>(
-                            <UILink {...breadcrumb} onSurface={'transparent'} size={'default'} className={cx(styles.listItem, location===breadcrumb.href ? styles.listItemActive : '')}>
+                            <UILink key={breadcrumb.href} {...breadcrumb} onSurface={'transparent'} size={'default'} className={cx(styles.listItem, location===breadcrumb.href ? styles.listItemActive : '')}>
                                 {breadcrumb.children}
                             </UILink>
                         ))}
                     </ul>
-                </div>
+                </>
             </ContentWrapper>
         </div>
     )
