@@ -28,6 +28,11 @@
             margin: 0;
             padding: 0;
 
+            & .navLink {
+                display: flex;
+                align-items: center;
+            }
+
             & .topNavLink {
                 display: block;
                 text-decoration: none;

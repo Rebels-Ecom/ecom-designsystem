@@ -56,7 +56,7 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=fal
             isAdmin 
             ?
             <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
-                {links.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
+                {links.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`} className={styles.navLink}>{renderLink(link)}</li>)}
                 <Below breakpoint="lg">{(matches: any) => matches && 
                   <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
                 </Below>
@@ -66,11 +66,11 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=fal
             <>
               <Above breakpoint="lg">{(matches: any) => matches && 
                 <ul className={cx(styles.navLinksWrapper, styles.navLinksLeft)}>
-                  {linksLeft.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
+                  {linksLeft.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`} className={styles.navLink}>{renderLink(link)}</li>)}
                 </ul>}
               </Above>
               <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
-                {linksRight.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
+                {linksRight.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`} className={styles.navLink}>{renderLink(link)}</li>)}
                 <Below breakpoint="lg">{(matches: any) => matches && 
                   <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
                 </Below>

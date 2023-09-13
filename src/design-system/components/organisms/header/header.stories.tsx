@@ -12,14 +12,14 @@ import { SearchNavBarLinks } from '../../molecules/search-nav-bar-links/search-n
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
-import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker } from '../../atoms'
+import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, MenuButton } from '../../atoms'
 import { DrawerSidebar, GroupWrapper, CartProduct, FormGroup } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { SearchNavBarLinksStory } from '../../molecules/search-nav-bar-links/search-nav-bar-links.stories'
-import { Above, Below } from '../../layouts'
+import { Above, Below, ContentWrapper, FlexContainer } from '../../layouts'
 import { TabsStory } from '../../molecules/tabs/tabs.stories'
 import { Tabs } from '../../molecules/tabs/tabs'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
@@ -63,7 +63,67 @@ const HeaderStoryTemplate: Story = {
         )))
     }, [query]);
 
-    return (
+    // TODO: refine is approved
+    return 1 > 0 ? (
+      <header style={{
+        backgroundColor: 'var(--sub-nav-background)',
+        position: 'sticky',
+        top: 0,
+        width: '100%',
+        zIndex: 99999,
+      }}>
+        <>
+          <TopNavBar {...args.topNavBar} onClick={onClickLogout} onSelectDate={setSelectedDate} isAdmin={args.isAdmin} hasActiveUser={activeUser?.name && activeUser?.name.length>0} />
+          
+          <Below breakpoint="lg">
+            {(matches) =>
+              matches && (
+                <>
+                <ContentWrapper padding={1}>
+                  <FlexContainer flexDirection='column'>
+                    <FlexContainer alignItems='center' justifyContent='space-between' stretch>
+                      <Logotype {...args.logotype} />
+                      <SearchNavBarLinks>
+                          <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                            <IconButton icon={'icon-settings'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+                        <MenuButton onClick={handleOnClick} isOpen={isOpen} />
+                      </SearchNavBarLinks>
+                    </FlexContainer>
+                    {/* TODO: remove? not reflecting the search bar being used in the application */}
+                    <SearchNavBar {...args.searchNavBar} isOpen={true}/>
+                  </FlexContainer>
+                </ContentWrapper>
+                <Tabs {...args.navigationTabs} isOpen={isOpen}></Tabs>
+                </>
+              )
+            }
+          </Below>
+  
+          <Above breakpoint="lg">
+            {(matches) => matches && (
+              <>
+                <ContentWrapper padding={[1, 0]}>
+                  <FlexContainer>
+                    <SearchNavBar {...args.searchNavBar} isOpen={isSearchbarOpen}/>
+                    <SearchNavBarLinks>
+                    <GroupWrapper position='apart' align='center' direction='row'>
+                    <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
+                    <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={onClickCartIcon ? ()=>onClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+                    </GroupWrapper>
+                    <GroupWrapper position='apart'>
+                        <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+                        <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
+                    </GroupWrapper>
+                  </SearchNavBarLinks>
+                  </FlexContainer>
+                </ContentWrapper>
+                <Navigation {...args.navigation} isOpen={isOpen} />
+              </>
+            )}
+          </Above>
+        </>
+      </header>
+    ) : (
       <>
       <Header isOpen={isOpen}>
         {({ Wrapper, MenuButton, GridArea }) => (
