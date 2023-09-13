@@ -67,6 +67,7 @@
   & .buttonsWrapper {
     display: flex;
     align-items: flex-end;
+    margin-left: auto;
     width: 100%;
     
     @media (min-width: 48rem) {

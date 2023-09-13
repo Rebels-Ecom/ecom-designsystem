@@ -66,6 +66,7 @@ function getProductList(productList: any): Array<IProduct> {
   const list = productList.map((productItem: any) => {
     const product = productItem.Variants[0]
     return {
+      cardDisplay: 'vertical',
       product: {
         productId: product.VariantId,
         productName: productItem.DisplayName,

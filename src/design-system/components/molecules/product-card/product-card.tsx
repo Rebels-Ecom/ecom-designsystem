@@ -6,29 +6,47 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { ProductCardHorizontal } from '../product-card-horizontal/product-card-horizontal'
 import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
+import { IPicture } from '../../atoms/picture/picture'
 
 export type TCardDisplayType = 'vertical' | 'horizontal'
-export interface IProductCard extends IProduct {
+
+export type TProductCardVertical = {
+  cardDisplay: 'vertical';
+  productImage: IPicture;
+  variantsOpen?: boolean;
+  handlePackageChange: CallableFunction;
+  selectedVariantId?: string;
+  onVariantsButtonClick: CallableFunction;
+}
+
+export type TProductCardHorizontal = {
+  cardDisplay: 'horizontal';
+  onClickRemoveProduct?: CallableFunction;
+  removingProduct?: boolean;
+}
+
+export interface IProductCard {
+  cardDisplay: TCardDisplayType
   product: IProduct
-  changePackagingButton: IButton
   addToCartButton: IButton
   addToCart: CallableFunction
   onChangeQuantity?: CallableFunction
   hideCartButton?: boolean
   loading: boolean
   linkComponent?: any
-  showLinkIcon?: boolean
-  cardDisplay?: TCardDisplayType
   hideRemoveButton?: boolean
   onRemoveProduct?: CallableFunction
   productQuantityDisabled?: boolean
   className?: string
+  changePackagingButton?: IButton;
 }
 
+// Depending on cardDisplay, only the necessary props will be required
+export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
+
 function ProductCard({
-  cardDisplay = 'vertical',
+  cardDisplay,
   product,
-  changePackagingButton,
   addToCartButton,
   addToCart,
   hideCartButton,
@@ -37,9 +55,15 @@ function ProductCard({
   hideRemoveButton,
   productQuantityDisabled,
   loading,
+  changePackagingButton,
   linkComponent: Link,
   className,
-}: IProductCard) {
+}: TProductCard) {
+  
+  if (!cardDisplay) {
+    throw new Error("cardDisplay must be assigned");
+  }
+
   const { productId, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
@@ -49,23 +73,20 @@ function ProductCard({
     totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (quantity ? parseInt(quantity) : 1)),
     selectedVariantId: productId,
   })
-  const didMount = useRef<boolean>(false)
 
   function handleOnChangeQuantity(productQuantity: number) {
-    setProduct((prevState) => ({
-      ...prevState,
-      quantity: productQuantity.toString(),
-      totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity),
-    }))
-  }
+    setProduct((prevState) => {
+      const newProduct = {
+        ...prevState,
+        quantity: productQuantity.toString(),
+        totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity)
+      }
+      console.log(newProduct)
+      onChangeQuantity?.(newProduct)
 
-  useEffect(() => {
-    if (!didMount.current) {
-      didMount.current = true
-      return
-    }
-    onChangeQuantity && onChangeQuantity(myProduct)
-  }, [myProduct.quantity])
+      return newProduct
+    })
+  }
 
   function handleVariantsButtonClick() {
     setVariantsListOpen(true)
@@ -97,6 +118,7 @@ function ProductCard({
   if (cardDisplay === 'horizontal') {
     return (
       <ProductCardHorizontal
+        cardDisplay='horizontal'
         loading={loading}
         product={myProduct}
         onChangeQuantity={handleOnChangeQuantity}
@@ -107,27 +129,34 @@ function ProductCard({
         linkComponent={Link}
         hideRemoveButton={hideRemoveButton}
         className={className}
+        hideCartButton={hideCartButton}
       />
     )
   }
-  return (
-    <ProductCardVertical
-      loading={loading}
-      product={myProduct}
-      productImage={myProduct.productImage}
-      onChangeQuantity={handleOnChangeQuantity}
-      productQuantityDisabled={productQuantityDisabled}
-      addToCartButton={addToCartButton}
-      addToCart={addToCart}
-      changePackagingButton={changePackagingButton}
-      onVariantsButtonClick={handleVariantsButtonClick}
-      variantsOpen={variantsListOpen}
-      selectedVariantId={myProduct.selectedVariantId}
-      handlePackageChange={handlePackageChange}
-      linkComponent={Link}
-      className={className}
-    />
-  )
+  if (cardDisplay === 'vertical') {
+    return (
+      <ProductCardVertical
+        cardDisplay='vertical'
+        loading={loading}
+        product={myProduct}
+        productImage={myProduct.productImage}
+        onChangeQuantity={handleOnChangeQuantity}
+        productQuantityDisabled={productQuantityDisabled}
+        addToCartButton={addToCartButton}
+        addToCart={addToCart}
+        changePackagingButton={changePackagingButton}
+        onVariantsButtonClick={handleVariantsButtonClick}
+        variantsOpen={variantsListOpen}
+        selectedVariantId={myProduct.selectedVariantId}
+        handlePackageChange={handlePackageChange}
+        linkComponent={Link}
+        className={className}
+        hideCartButton={hideCartButton}
+      />
+    )
+  }
+
+  return null;
 }
 
 export { ProductCard }

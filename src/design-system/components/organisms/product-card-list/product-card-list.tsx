@@ -1,9 +1,9 @@
-import { ProductCard, IProductCard } from '../../molecules/product-card/product-card'
+import { ProductCard, TProductCard } from '../../molecules/product-card/product-card'
 import styles from './product-card-list.module.css'
 import cx from 'classnames'
 
 export interface IProductCardList {
-  productCards: Array<IProductCard>
+  productCards: Array<TProductCard>
   addToCart: CallableFunction
   className?: string
 }
@@ -11,9 +11,9 @@ export interface IProductCardList {
 const ProductCardList = ({ productCards, addToCart, className }: IProductCardList) => {
   return (
     <ul className={cx(styles.list, className ? className : '')}>
-      {productCards.map((card: IProductCard, index) => (
-        <li key={`${card.productId}${index}`} className={styles.listItem}>
-          <ProductCard key={card.productId} {...card} addToCart={addToCart} />
+      {productCards.map((card: TProductCard, index) => (
+        <li key={`${card.product.productId}${index}`} className={styles.listItem}>
+          <ProductCard key={card.product.productId} {...card} addToCart={addToCart} />
         </li>
       ))}
     </ul>

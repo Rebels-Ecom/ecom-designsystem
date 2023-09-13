@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { IProductCardHorizontal, ProductCardHorizontal } from './product-card-horizontal'
+import { ProductCardHorizontal } from './product-card-horizontal'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct, dummyWineProduct } from '../product-card/dummy-product'
 import { convertNumToStr } from '../../../../helpers/format-helper'
