@@ -15,6 +15,10 @@
     flex-direction: row;
     position: static;
     padding: 0;
+    margin-left: -1.25rem;
+  }
+  
+  @media (min-width: 75em) {
     margin-left: -1.75rem;
   }
 }
@@ -58,9 +62,13 @@
     padding-left: 0.625rem;
 
     @media (min-width: 64em) {
-      padding: 0 1.75rem;
+      padding: 0 1.25rem;
       font-size: var(--body-desktop-font-size);
       line-height: var(--body-desktop-line-height);
+    }
+    
+    @media (min-width: 75em) {
+      padding: 0 1.75rem;
     }
   }
 }

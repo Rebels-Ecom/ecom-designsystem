@@ -31,6 +31,6 @@ const ContentWrapperStoryTemplate: Story = {
 export const ContentWrapperStory = {
   ...ContentWrapperStoryTemplate,
   args: {
-    padding: '1'
+    padding: 1
   }
 }

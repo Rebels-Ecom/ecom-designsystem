@@ -35,7 +35,7 @@ const sidebar = {
 const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
   return (
     <div className={styles.navigation}>
-      <ContentWrapper padding="0">
+      <ContentWrapper padding={0}>
         {links?.length && (
           <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
             <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} isOpen />}</Above>
