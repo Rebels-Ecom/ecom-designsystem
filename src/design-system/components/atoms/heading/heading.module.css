@@ -1,5 +1,6 @@
 .heading {
     display: flex;
+
     &.noMargin { margin: 0; }
     &.leftAlignment { justify-content: flex-start;}
     &.rightAlignment { justify-content: flex-end;}

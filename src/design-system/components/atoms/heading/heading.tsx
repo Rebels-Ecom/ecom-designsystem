@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from './heading.module.css'
 import cx from 'classnames'
 
@@ -11,6 +11,13 @@ export interface IHeading {
   align?: THeadingAlignment
   noMargin?: boolean
   className?: string
+  /**
+   * Sets the margin prop in rem
+   * Takes either a single number, e.g. 1 or an array of numbers, e.g. [1, 0] or [1, 0, 0, 1] (top, right, bottom, left)
+   * TODO: maybe remove this property after a proper design has been applied for our headings?
+   * @default '0'
+  */
+  margin?: Array<number> | number;
 }
 
 function getHeadingSize(size: TOrder) {
@@ -41,10 +48,24 @@ function getHeadingAlignment(alignment: THeadingAlignment) {
   }
 }
 
-function Heading({ children, order = 3, align = 'left', noMargin, className }: IHeading) {
+function Heading({ children, order = 3, align = 'left', noMargin, className, margin }: IHeading) {
+  const marginValue = useMemo(() => {
+    if (!margin && margin !== 0) {
+      return "";
+    }
+
+    if (typeof margin === "number") {
+      return `${margin}rem`;
+    }
+
+    return margin.map(p => `${p}rem`).join(' ');
+
+  }, [margin]);
+
   const Tag  = getHeadingSize(order);
+
   return (
-    <Tag className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), noMargin ? styles.noMargin : '', className ? className : '')}>
+    <Tag className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), noMargin ? styles.noMargin : '', className ? className : '')} style={{ margin: marginValue }}>
       {children}
     </Tag>
   )

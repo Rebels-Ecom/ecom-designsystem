@@ -13,7 +13,11 @@ type Story = StoryObj<typeof Heading>;
 const HeadingStoryTemplate: Story = {
     render: ({...args}) => (
         <div style={{ margin: 'auto', maxWidth: '1800px' }}>
-            <Heading order={args.order}>{args.children}</Heading>
+            <Heading order={1} margin={args.margin}>{args.children}</Heading>
+            <Heading order={2}>{args.children}</Heading>
+            <Heading order={3}>{args.children}</Heading>
+            <Heading order={4}>{args.children}</Heading>
+            <Heading order={5}>{args.children}</Heading>
         </div>
     )
 }
@@ -21,7 +25,8 @@ const HeadingStoryTemplate: Story = {
 export const HeadingStory = {
     ...HeadingStoryTemplate,
     args: {
-        children: 'Heading here'
+        children: 'Heading here',
+        margin: [2.5, 0]
     }
 }
 
