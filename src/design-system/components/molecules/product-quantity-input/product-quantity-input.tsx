@@ -28,7 +28,7 @@ const ProductQuantityInput = ({
 
     return (
         <div className = {`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
-            <InputText id={quantityInputId} defaultValue ={quantity} placeholder={'1'} onChange={handleOnChange} disabled={disabled} type={'number'} className={styles.quantityInputField}/>
+            <InputText id={quantityInputId} defaultValue ={quantity} placeholder={'0'} onChange={handleOnChange} disabled={disabled} type={'number'} className={styles.quantityInputField}/>
             <div>
                 <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} stick)`}</p>
                 <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: (${totalPrice} kr)`}</p>

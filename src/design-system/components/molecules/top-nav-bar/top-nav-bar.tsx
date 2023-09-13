@@ -28,12 +28,12 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=fal
       {link.isExternal
         ?
         <a href={link.isTelephoneLink ? `tel:${link.href}` : link.href} className={styles.topNavLink} target={'_blank'}>
-          <Icon className={styles.navIcon} icon={link.icon} />
+          {link.icon && <Icon className={styles.navIcon} icon={link.icon} />}
           <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
         </a>
         :
         <Link to={link.href} className={styles.topNavLink} title={link.children}>
-          <Icon icon={link.icon} className={styles.navIcon} />
+          {link.icon && <Icon icon={link.icon} className={styles.navIcon} />}
           <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
         </Link>
       }
