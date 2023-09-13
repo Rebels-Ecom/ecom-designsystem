@@ -3,10 +3,11 @@
     height: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 1rem 0;
+    padding: 1rem;
 
     @media (min-width: 48rem) {
         max-width: 680px;
+        padding: 1rem 0;
     }
 
     /* Update to 62rem according to our breakpoints? Or update our breakpoints to 64rem? */

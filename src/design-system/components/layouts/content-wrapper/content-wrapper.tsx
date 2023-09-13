@@ -12,7 +12,7 @@ type TContentWrapper = {
 }
 
 // TODO: rename to ResponsiveWrapper?
-const ContentWrapper = ({ padding, children, ...props}: PropsWithChildren<TContentWrapper>) => {
+const ContentWrapper = ({ padding = 0, children, ...props}: PropsWithChildren<TContentWrapper>) => {
     const paddingValue = useMemo(() => {
         if (!padding && padding !== 0) {
           return "";

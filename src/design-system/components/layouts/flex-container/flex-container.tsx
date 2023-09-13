@@ -34,6 +34,10 @@ export type TFlexContainer = {
    * @default flex-start
    */
   justifyContent?: 'flex-start' | 'center' | 'flex-end' | 'space-between';
+  /**
+   * sets align-self: stretch;
+   */
+  stretch?: boolean;
 };
 
 const FlexContainer = ({
@@ -43,6 +47,7 @@ const FlexContainer = ({
   wrap,
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
+  stretch,
   ...props
 }: PropsWithChildren<TFlexContainer>) => {
   const style: { [key: string]: string } = ({
@@ -57,18 +62,8 @@ const FlexContainer = ({
       className={classNames(className, styles.flexContainer, styles[flexDirection],
         {
           [styles.wrap]: wrap,
+          [styles.stretch]: stretch
         }
-      //   {
-      //   [`${rootClassName}--grow`]: props.grow,
-      //   [`${rootClassName}--grow-equal`]: props.growEqual,
-      //   [`${rootClassName}--center`]: props.center,
-      //   [`${rootClassName}--center-items`]: props.centerItems,
-      //   [`${rootClassName}--space-between`]: props.spaceBetween,
-      //   [`${rootClassName}--justify-content-${props.justifyContent}`]:
-      //     props.justifyContent !== undefined,
-      //   [`${rootClassName}--align-items-${props.alignItems}`]:
-      //     props.alignItems !== undefined,
-      // }
       )}
     >
       {props.children}

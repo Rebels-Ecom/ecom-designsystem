@@ -15,4 +15,8 @@
   &.wrap {
     flex-wrap: wrap;
   }
+  
+  &.stretch {
+    align-self: stretch;
+  }
 }
