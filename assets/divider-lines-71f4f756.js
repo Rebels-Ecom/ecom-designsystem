@@ -1,0 +1,2 @@
+import{j as d,a as e}from"./jsx-runtime-76c5c2e2.js";const v="_dividerWrapper_1vb86_1",s="_divLeft_1vb86_17",r="_divCenter_1vb86_21",t="_divRight_1vb86_25",i={dividerWrapper:v,divLeft:s,divCenter:r,divRight:t},n=()=>d("div",{className:i.dividerWrapper,children:[e("div",{className:i.divLeft}),e("div",{className:i.divCenter}),e("div",{className:i.divRight})]});export{n as D};
+//# sourceMappingURL=divider-lines-71f4f756.js.map
