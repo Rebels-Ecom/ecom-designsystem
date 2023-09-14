@@ -45,9 +45,9 @@
 .tertiaryButton {
   background-color: var(--cta-tertiary-default);
   color: var(--color-on-tertiary);
+  
   &:hover{
     background-color: var(--cta-tertiary-hover);
-    color: var(--color-on-tertiary-hover)
   }
   &.disabled,
   &:disabled {

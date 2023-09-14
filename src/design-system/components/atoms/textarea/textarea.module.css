@@ -10,6 +10,7 @@
   color: var(--color-text-input);
   min-height: 5rem;
   font-family: var(--font-family-primary);
+  resize: none;
 
   &:focus {
     outline:none;
@@ -36,10 +37,5 @@
   &::placeholder,
   &::-webkit-input-placeholder {
     color: var(--color-text-subdued);
-  }
-
-  @media (min-width: 48em) {
-    max-height: 8rem;
-    min-height: 8rem;
   }
 }

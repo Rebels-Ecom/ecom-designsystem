@@ -1,6 +1,7 @@
 import { TIconNavLink } from '../../../../types/links'
 import { Icon, TIcon } from '../../atoms/icon/icon'
 import { IUiDatePicker, UiDatePicker } from '../../atoms/ui-date-picker/ui-date-picker'
+import { ContentWrapper } from '../../layouts'
 import { Above } from '../../layouts/breakpoints/above'
 import { Below } from '../../layouts/breakpoints/below'
 import styles from './top-nav-bar.module.css'
@@ -27,12 +28,12 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=fal
       {link.isExternal
         ?
         <a href={link.isTelephoneLink ? `tel:${link.href}` : link.href} className={styles.topNavLink} target={'_blank'}>
-          <Icon className={styles.navIcon} icon={link.icon} />
+          {link.icon && <Icon className={styles.navIcon} icon={link.icon} />}
           <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
         </a>
         :
         <Link to={link.href} className={styles.topNavLink} title={link.children}>
-          <Icon icon={link.icon} className={styles.navIcon} />
+          {link.icon && <Icon icon={link.icon} className={styles.navIcon} />}
           <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
         </Link>
       }
@@ -49,34 +50,38 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=fal
 
   return(
     <div className={cx(styles.topNavBar, hasActiveUser ? styles.adminTopNavBar : styles.userTopNavBar)}>
-      {
-        isAdmin 
-        ?
-        <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
-            {links.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
-            <Below breakpoint="lg">{(matches: any) => matches && 
-              <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
-            </Below>
-            {userLoggedIn && btnText && onClick && <button className={cx(styles.topNavLink, styles.btn)} onClick={onClick}> {btnIcon && <Icon icon={btnIcon} className={styles.navIcon}/>}<span className={styles.btnText}>{btnText}</span></button>}
-        </ul>
-        :
-        <>
-          <Above breakpoint="lg">{(matches: any) => matches && 
-            <ul className={cx(styles.navLinksWrapper, styles.navLinksLeft)}>
-              {linksLeft.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
-            </ul>}
-          </Above>
-          <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
-            {linksRight.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`}>{renderLink(link)}</li>)}
-            <Below breakpoint="lg">{(matches: any) => matches && 
-              <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
-            </Below>
-            <Above breakpoint="lg">{(matches: any) => matches && 
-              <>{userLoggedIn && btnText && onClick && <button className={cx(styles.topNavLink, styles.btn)} onClick={onClick}> {btnIcon && <Icon icon={btnIcon} className={styles.navIcon}/>}<span className={styles.btnText}>{btnText}</span></button>}</>}
-            </Above>
-          </ul>
-        </>
-      }
+      <ContentWrapper>
+        <div className={styles.inner}>
+          {
+            isAdmin 
+            ?
+            <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
+                {links.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`} className={styles.navLink}>{renderLink(link)}</li>)}
+                <Below breakpoint="lg">{(matches: any) => matches && 
+                  <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
+                </Below>
+                {userLoggedIn && btnText && onClick && <button className={cx(styles.topNavLink, styles.btn)} onClick={onClick}> {btnIcon && <Icon icon={btnIcon} className={styles.navIcon}/>}<span className={styles.btnText}>{btnText}</span></button>}
+            </ul>
+            :
+            <>
+              <Above breakpoint="lg">{(matches: any) => matches && 
+                <ul className={cx(styles.navLinksWrapper, styles.navLinksLeft)}>
+                  {linksLeft.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`} className={styles.navLink}>{renderLink(link)}</li>)}
+                </ul>}
+              </Above>
+              <ul className={cx(styles.navLinksWrapper, styles.navLinksRight)}>
+                {linksRight.map((link: TIconNavLink, index)=> <li key={`${link.href}-${index}`} className={styles.navLink}>{renderLink(link)}</li>)}
+                <Below breakpoint="lg">{(matches: any) => matches && 
+                  <>{datePicker && onSelectDate && <UiDatePicker {...datePicker} onDateSelected={onSelectDate} className={styles.btnCalendar}></UiDatePicker>}</>}
+                </Below>
+                <Above breakpoint="lg">{(matches: any) => matches && 
+                  <>{userLoggedIn && btnText && onClick && <button className={cx(styles.topNavLink, styles.btn)} onClick={onClick}> {btnIcon && <Icon icon={btnIcon} className={styles.navIcon}/>}<span className={styles.btnText}>{btnText}</span></button>}</>}
+                </Above>
+              </ul>
+            </>
+          }
+        </div>
+      </ContentWrapper>
     </div>
   )
 }

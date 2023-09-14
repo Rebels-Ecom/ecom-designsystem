@@ -1,0 +1,26 @@
+.menuButton {
+  position: relative;
+  border: none;
+  background: transparent;
+  font-family: sf_sansregular;
+  font-size: var(--body-s-mobile-font-size);
+  color: var(--navigation-text-default);
+  cursor: pointer;
+  padding: 0;
+
+  &.open {
+    -webkit-text-stroke: 0.03125rem;
+    
+    & .icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  & svg path {
+    stroke: var(--action-primary-blue-default);
+  }
+}

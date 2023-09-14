@@ -1,4 +1,4 @@
-import { IProductCard, ProductCard } from '../product-card/product-card'
+import { TProductCard, ProductCard } from '../product-card/product-card'
 import styles from './featured-products.module.css'
 import { ProductCarousel } from '../product-carousel/product-carousel'
 import { Below } from '../../layouts/breakpoints/below'
@@ -11,18 +11,18 @@ export type TProductCardsNumber = '3' | '4'
 export interface IFeaturedProducts {
     title?: string
     link?: ILink
-    productCards: Array<IProductCard>
+    productCards: Array<TProductCard>
     addToCart: CallableFunction
     productCardsNumber?: TProductCardsNumber
     linkComponent: any
 }
 
-function renderProductCarousel(products: Array<IProductCard>, addProductToCart: CallableFunction){
+function renderProductCarousel(products: Array<TProductCard>, addProductToCart: CallableFunction){
     return <ProductCarousel productCards={products} addToCart={addProductToCart}></ProductCarousel>
 }
 
-function renderProductList(products: Array<IProductCard>, addProductToCart: CallableFunction){
-    return products.map((productCard: IProductCard, index: number) => <ProductCard key={index} {...productCard} addToCart={addProductToCart} />)
+function renderProductList(products: Array<TProductCard>, addProductToCart: CallableFunction){
+    return products.map((productCard: TProductCard, index: number) => <ProductCard key={index} {...productCard} addToCart={addProductToCart} />)
 }
 
 const FeaturedProducts = ({ title, link, productCards, addToCart, productCardsNumber='3', linkComponent: Link }: IFeaturedProducts) => {

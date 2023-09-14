@@ -1,6 +1,19 @@
 .breadcrumbsContainer {
     position: relative;
-    height: var(--breadcrumbs-container-height);
+    height: auto;
+    padding: 0 1rem;
+
+    &.minHeight {
+        height: var(--breadcrumbs-container-height-mobile);
+    }
+
+    @media (min-width: 64rem) {
+        padding: 0;
+
+        &.minHeight {
+            height: var(--breadcrumbs-container-height-desktop);
+        }
+    }
 }
 
 .breadcrumbsPicture {
@@ -20,23 +33,17 @@
     border: 0;
 }
 
-.textContainer {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .title {
-    margin: 0 auto 0.5rem auto;
-    padding: 0 1rem;
+    padding: 0;
+    margin: 1rem 0;
+    
     @media (min-width: 48em) {
         width: var(--text-width-m);
     }
+
     @media (min-width: 64em) {
-        padding: 0;
         &.wide {
-            width: var(--text-width-wide);
+            width: var(--content-max-width-md);
         }
         &.narrow {
             width: var(--text-width-narrow);
@@ -45,21 +52,12 @@
 }
 
 .list {
-    list-style: none;
-    margin: 0 auto;
-    padding: 0 1rem;
     display: flex;
+    list-style: none;
+    padding: 0;
+
     @media (min-width: 48em) {
         width: var(--text-width-m);
-    }
-    @media (min-width: 64em) {
-        padding: 0;
-        &.wide {
-            width: var(--text-width-wide);
-        }
-        &.narrow {
-            width: var(--text-width-narrow);
-        }
     }
 }
 

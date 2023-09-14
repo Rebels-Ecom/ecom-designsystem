@@ -1,129 +1,96 @@
 .productCardHorizontal {
-    width: 100%;
-    height: 12.5rem;
-    position: relative;
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  position: relative;
+
+  @media (min-width: 48rem) {
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0;
   }
-    
-  .imageWrapper {
-    width: 30%;
-    height:100%;
-    position: relative;
+
+  & .picture {
+    all: unset;
+    width: 6rem;
     display: flex;
     align-items: center;
-    @media (min-width: 48em) {
-      width: 20%;
-    }
+    align-self: center;
+    justify-content: center;
   }
 
-  .imageWrapperPlaceholder {
-    padding: 0 2rem;
-  }
-
-
-  .quantityInput {
-    width: 100%;
-    margin: 0.5rem 0;
-    align-items: baseline;
-    
-    
-    & > input {
-      &:disabled{
-        background: var(--surface-default);
-        border-color: var(--input-border-color);
-        color: var(--input-text-color);
-        font-weight: bold;
-      } 
-    } 
-    @media (min-width: 48em) {
-      & > div {
-        display: flex;
-        gap: 3rem;
-      }
-    }
-  }
-  
-  .contentWrapper, .placeholderContent {
-    width: 60%;
-    display: inline-block;
-    margin: auto 0;
-    overflow: hidden;
-  }
-
-  .headingWrapper {
-    text-decoration: none;
-    color: var(--color-text-default);
-  }
-  
-  .heading {
-    margin: 0.5rem 0;
-    font-family: var(--font-family-secondary);
-    font-weight: var(--font-weight-bold);
-  }
-  
-  .textGray {
-    margin: 0 0 0.5rem 0;
-    color: var(--color-text-decorative-grey);
-  }
-  
-  .textPurple {
-    font-family: var(--font-family-secondary);
-    margin: 0 0 0.5rem 0;
-    color: var(--color-text-decorative-purple);
-  }
-    
-  .cardPicture {
-    position: absolute;
-    z-index: 0;
-    height: 100%;
-    width:100%;
-  }
-  
-  .cardImage{
-    position: relative;
-    z-index: 1;
-    margin: auto;
+  & .image {
     display: block;
-    width: 100%;
-    height: 100%;
-    padding: 1.5rem 2rem 1.5rem 0;
+    height: 11rem;
+    width: 6rem;
     object-fit: contain;
   }
 
-  .buttonsWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    min-width: 10%;
-    height:100%;
-    padding-right: 0.5rem;
-    @media (min-width: 48em) {
-      min-width: 20%;
+  & .contentWrapper {
+    width: 100%;
+    
+    @media (min-width: 48rem) {
+      padding: 1rem 1rem 1rem 0;
+      width: auto;
+    }
+
+    & .mainLink {
+      text-decoration: none;
+      color: var(--color-text-default);
+
+      &:hover {
+        color: var(--interactive-default);
+      }  
+    }
+    
+    & .heading {
+      margin: 0;
+      font-family: var(--font-family-secondary);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.5rem;
+    }
+
+    & .subTitle {
+      font-family: var(--font-family-secondary);
+      margin: 0 0 0.5rem 0;
+      color: var(--color-text-decorative-purple);
+    }
+
+    & .caption {
+      margin: 0 0 0.5rem 0;
+      color: var(--color-text-decorative-grey);
     }
   }
 
-  .iconLink {
-    height:100%;
+  & .buttonsWrapper {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
+    align-items: flex-end;
+    margin-left: auto;
+    width: 100%;
+    
+    @media (min-width: 48rem) {
+      width: auto;
+      padding: 1rem 0;
+    }
 
-  .productCardBtn{
-    margin-top:1rem;
-}
+    & .iconLink {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+    }
 
-.cartBtnIcon {
-  @media (min-width: 48em) {
-    display: none;
+    & .productCardBtn {
+      flex: 1;
+      
+      & .cartBtnIcon {
+        margin-right: 1rem;
+        
+        @media (min-width: 48em) {
+          display: none;
+        }
+      }
+    }
   }
 }
-
-.cartBtnText {
-  display: none;
-  @media (min-width: 48em) {
-    display: flex;
-  }
-}
-  

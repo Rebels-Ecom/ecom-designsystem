@@ -13,7 +13,6 @@
 .linkContentWrapper {
     display: flex;
     flex-direction: column;
-    gap:0.5rem;
 }
 
 .tagsWrapper{
@@ -24,6 +23,7 @@
 
 .title {
     margin: 0;
+    font-size: var(--heading-xs-desktop-font-size);
 }
 
 .linkWrapper {

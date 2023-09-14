@@ -1,37 +1,18 @@
 import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
-import { IProduct } from '../../../../types/product'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { Picture, DividerLines, Loader, Placeholder, Button } from '../../atoms'
-import { IButton } from '../../atoms/button/button'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
-import { IPicture } from '../../atoms/picture/picture'
-
-export interface IProductCardVertical {
-  loading: boolean
-  product: IProduct
-  productImage: IPicture
-  addToCartButton: IButton
-  addToCart: CallableFunction
-  hideCartButton?: boolean
-  changePackagingButton: IButton
-  handlePackageChange: CallableFunction
-  selectedVariantId?: string
-  onChangeQuantity?: CallableFunction
-  productQuantityDisabled?: boolean
-  variantsOpen?: boolean
-  onVariantsButtonClick: CallableFunction
-  linkComponent?: any
-  className?: string
-}
+import { IProductCard, TProductCardVertical } from '../product-card/product-card'
 
 const ProductCardVertical = ({
   product,
   loading = false,
   addToCartButton,
+  hideCartButton,
   addToCart,
   onChangeQuantity,
   productQuantityDisabled,
@@ -43,7 +24,7 @@ const ProductCardVertical = ({
   changePackagingButton,
   onVariantsButtonClick,
   className,
-}: IProductCardVertical) => {
+}: IProductCard & TProductCardVertical) => {
   const {
     productId,
     productName,
@@ -62,7 +43,7 @@ const ProductCardVertical = ({
   const hideChangePackagingBtn = !productVariantList || productVariantList.length <= 1
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
-    const quantity = parseInt(e.target.value) || 1
+    const quantity = parseInt(e.target.value) || 0
     onChangeQuantity && onChangeQuantity(quantity)
   }
 
@@ -112,7 +93,7 @@ const ProductCardVertical = ({
             <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
           </div>
         )}
-        <Button
+        {changePackagingButton && <Button
           {...changePackagingButton}
           surface="secondary"
           iconRight={{ icon: 'icon-layers' }}
@@ -123,7 +104,7 @@ const ProductCardVertical = ({
           className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
         >
           Byt förpackning
-        </Button>
+        </Button>}
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'p_long'} />
@@ -141,9 +122,17 @@ const ProductCardVertical = ({
             onChange={handleOnChangeQuantity}
           />
         )}
-        <Button {...addToCartButton} className={!loading ? styles.productCardBtn : ''} fullWidth onClick={() => addToCart(product)} disabled={loading}>
-          Lägg i kundvagn
-        </Button>
+        {!hideCartButton &&
+          <Button
+            {...addToCartButton}
+            className={!loading ? styles.productCardBtn : ''}
+            fullWidth
+            onClick={() => addToCart(product)}
+            disabled={loading}
+          >
+            Lägg i kundvagn
+          </Button>
+        }
       </div>
     )
   }

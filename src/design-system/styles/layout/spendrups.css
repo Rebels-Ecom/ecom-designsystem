@@ -8,6 +8,7 @@ html {
     --max-width: 120rem;
     --content-max-width-wide: 103rem;
     --content-max-width-narrow: 73rem;
+    --content-max-width-md: 80rem;
     --product-listing-width-m: 37.5rem;
     --product-listing-width-l: 77.5rem;
     --text-width-m: 37.5rem;
@@ -17,7 +18,8 @@ html {
     --blog-card-fullwidth: 108rem;
     --product-card-width: 18.938rem; /* 303px */
     --product-card-height: 40rem; /* 640px */
-    --breadcrumbs-container-height: 13.438rem;
+    --breadcrumbs-container-height-mobile: 10rem;
+    --breadcrumbs-container-height-desktop: 13rem;
     --footer-top-bar-height-mobile: 4.25rem;
     --footer-top-bar-height-desktop: 6rem;
     --signup-teaser-max-width: 43.875rem;
@@ -31,6 +33,9 @@ html {
     --cta-width-lg: 16.875rem;
     --cta-width-default: 13.75rem;
     --search-bar-height-mobile: 3.125rem;
+    --content-width-sm: 42.5rem;
+    --content-width-md: 62.5rem;
+    --content-width-lg: 75rem;
 }
 
 body {

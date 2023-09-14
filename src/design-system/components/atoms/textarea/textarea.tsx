@@ -10,6 +10,10 @@ export interface ITextarea {
   defaultValue?: string
   onChange?: CallableFunction
   placeholder?: string
+  /**
+   * Sets the height of the text area field
+   * @default 5
+   */
   rows?: number
   cols?: number
   disabled?: boolean
@@ -19,7 +23,7 @@ export interface ITextarea {
 }
 
 const Textarea = forwardRef<HTMLTextAreaElement, ITextarea>(
-  ({ id, className, value, defaultValue, isErroneous, required, onChange, disabled, rows, cols, placeholder, other }, ref) => {
+  ({ id, className, value, defaultValue, isErroneous, required, onChange, disabled, rows = 5, cols, placeholder, other }, ref) => {
     function handleOnChange(e: React.FormEvent<HTMLTextAreaElement>) {
       if (onChange) {
         onChange(e)

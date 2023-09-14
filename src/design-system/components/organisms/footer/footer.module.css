@@ -1,13 +1,18 @@
 .footer {
+  width: 100%;
+  background-color: var(--footer-background-default);
+  
+  & .inner {
     display: flex;
+    align-items: flex-start;
     flex-direction: column;
-    width: 100%;
     padding: 2rem 1rem;
-    background-color: var(--footer-background-default);
+    
     @media (min-width: 64em) {
       flex-direction: row;
-      padding: 6rem 10%;
+      padding: 4rem 0;
     }
+  }
   }
   
   .footerLeft {

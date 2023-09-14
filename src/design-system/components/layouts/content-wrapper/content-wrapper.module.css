@@ -1,10 +1,21 @@
 .contentWrapper {
-    display:flex;
-    flex-direction:column;
-    gap: 3rem;
-    margin:0 auto 4rem auto;
-    max-width: var(--max-width);
-    @media (min-width: 48em) {
-        gap: 4rem;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+
+    @media (min-width: 48rem) {
+        max-width: var(--content-width-sm);
+        padding: 1rem 0;
+    }
+
+    /* Update to 62rem according to our breakpoints? Or update our breakpoints to 64rem? */
+    @media (min-width: 64rem) {
+        max-width: var(--content-width-md);
+    }
+    
+    @media (min-width: 75rem) {
+        max-width: var(--content-width-lg);
     }
 }

@@ -1,4 +1,4 @@
-import { IProductCard } from '../../molecules/product-card/product-card'
+import { TProductCard } from '../../molecules/product-card/product-card'
 import styles from './featured-products-carousel.module.css'
 import { ILink } from '../../../../types/links'
 import { ProductCarousel } from '../../molecules/product-carousel/product-carousel'
@@ -8,7 +8,7 @@ import { Icon } from '../../atoms/icon/icon'
 export interface IFeaturedProductsCarousel {
   title: string
   link: ILink
-  productCards: Array<IProductCard>
+  productCards: Array<TProductCard>
   addToCart: CallableFunction
   linkComponent: any
 }

@@ -2,11 +2,11 @@ import { useEffect, useState, useRef } from 'react'
 import styles from './product-carousel.module.css'
 import cx from 'classnames'
 import useSwipe from '../../../hooks/useSwipe'
-import { IProductCard, ProductCard } from '../product-card/product-card'
+import { ProductCard, TProductCard } from '../product-card/product-card'
 import { useCalculateSize } from '../../../hooks/useCalculateSize'
 
 export interface IProductCarousel { 
-    productCards: Array<IProductCard>
+    productCards: Array<TProductCard>
     addToCart: CallableFunction
 }
 
@@ -46,7 +46,7 @@ const ProductCarousel = ({ productCards, addToCart }: IProductCarousel) => {
      <div ref={carouselRef} className={styles.productCarousel} onMouseEnter={() => setAutoPlay(false)} onMouseLeave={() => setAutoPlay(true)}>
         <div className={styles.carouselContentWrapper} {...swipeHandlers}>
           <div className={styles.carouselContent} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-            {productCards.map((productCard: IProductCard, index: number) => {
+            {productCards.map((productCard: TProductCard, index: number) => {
               return <ProductCard key={index} {...productCard} addToCart={addToCart} />
             })}
           </div>
