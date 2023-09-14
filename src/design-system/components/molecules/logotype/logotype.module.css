@@ -15,13 +15,8 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    /* padding: 0 1rem 0 1rem; */
     height: 100%;
     width: fit-content;
-    
-    @media (min-width: 64em) {
-      /* padding: 0.906rem 0 1.813rem 3.5rem; */
-    }
 
     &:after {
         left: 0;

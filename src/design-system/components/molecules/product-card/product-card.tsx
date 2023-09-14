@@ -41,7 +41,6 @@ export interface IProductCard {
   changePackagingButton?: IButton;
 }
 
-// Depending on cardDisplay, only the necessary props will be required
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
 
 function ProductCard({

@@ -6,16 +6,16 @@
     padding: 1rem;
 
     @media (min-width: 48rem) {
-        max-width: 680px;
+        max-width: var(--content-width-sm);
         padding: 1rem 0;
     }
 
     /* Update to 62rem according to our breakpoints? Or update our breakpoints to 64rem? */
     @media (min-width: 64rem) {
-        max-width: 1000px;
+        max-width: var(--content-width-md);
     }
     
     @media (min-width: 75rem) {
-        max-width: 1200px;
+        max-width: var(--content-width-lg);
     }
 }

@@ -24,11 +24,19 @@ export interface IBreadcrumbs {
 
 const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth='wide' }: IBreadcrumbs ) => {
     return (
-        <div className={cx(styles.breadcrumbsContainer, className ? className : '')}>
+        <div
+            className={cx(
+                styles.breadcrumbsContainer,
+                className ? className : '',
+                {
+                    [styles.minHeight]: image?.src
+                }
+            )}
+        >
             { image && <Picture {...image} classNamePicture={styles.breadcrumbsPicture} classNameImg={styles.breadcrumbsImg} /> }
             <ContentWrapper>
                 <>
-                    {title && <h2 className={cx(styles.title, styles[textWidth])} >{title}</h2>}
+                    {image?.src && title && <h2 className={cx(styles.title, styles[textWidth])} >{title}</h2>}
                     <ul className={cx(styles.list, styles[textWidth])}>
                         {breadcrumbs.map((breadcrumb)=>(
                             <UILink key={breadcrumb.href} {...breadcrumb} onSurface={'transparent'} size={'default'} className={cx(styles.listItem, location===breadcrumb.href ? styles.listItemActive : '')}>

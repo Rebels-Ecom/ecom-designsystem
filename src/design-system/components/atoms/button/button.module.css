@@ -44,8 +44,8 @@
 
 .tertiaryButton {
   background-color: var(--cta-tertiary-default);
-  /* TODO: Update --color-on-tertiary instead? */
-  color: var(--color-on-primary);
+  color: var(--color-on-tertiary);
+  
   &:hover{
     background-color: var(--cta-tertiary-hover);
   }
