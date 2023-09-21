@@ -7,8 +7,10 @@ import { Below } from '../../layouts/breakpoints/below'
 import styles from './top-nav-bar.module.css'
 import cx from 'classnames'
 
+export type TTopNavLinks = Array<TIconNavLink>
+
 export interface ITopNavBar {
-  links: Array<TIconNavLink>
+  links: TTopNavLinks
   userLoggedIn: boolean
   isAdmin?: boolean
   hasActiveUser?: boolean

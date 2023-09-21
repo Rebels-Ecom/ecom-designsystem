@@ -1,7 +1,8 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { TopNavBar } from './top-nav-bar'
+import { TTopNavLinks, TopNavBar } from './top-nav-bar'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories';
+import { TNavLink } from '../../../../types/links';
 
 
 const meta: Meta<typeof TopNavBar> = {
@@ -23,7 +24,7 @@ const TopNavBarStoryTemplate: Story = {
   }
 };
 
-const topNavArgs = {
+export const topNavArgs = {
   links: [
     {
       href: '/kontakta-oss',
@@ -50,7 +51,7 @@ const topNavArgs = {
       children: 'Logga in',
       isExternal: false,
     }
-  ],
+  ] as TTopNavLinks,
   linkComponent: 'a'
 }
 

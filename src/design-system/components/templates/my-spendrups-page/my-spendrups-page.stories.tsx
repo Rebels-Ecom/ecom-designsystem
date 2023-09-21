@@ -1,26 +1,52 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import { MySpendrupsPage } from './my-spendrups-page'
-import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
+import type { Meta } from '@storybook/react'
+import { Standard_Header } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { BoxWrapperStory_MinSenasteOrder, BoxWrapperStory_MinaFavoriter, BoxWrapperStory_MinaOrdrar, BoxWrapperStory_MittSpendrups, BoxWrapperStory_ÖvrigaOrderTjänster, BoxWrapperStory_ÖvrigaTjänster } from '../../molecules/box-wrapper/box-wrapper.stories'
+import { ContentWrapper } from '../../layouts'
+import { BoxWrapper, GroupWrapper } from '../../molecules'
+import { Footer } from '../../organisms'
 
-const meta: Meta<typeof MySpendrupsPage> = {
+const meta: Meta = {
   title: 'Design System/Templates/MySpendrupsPage',
-  component: MySpendrupsPage,
+  parameters: {
+    controls: {
+      exclude:/.*/g,
+      hideNoControlsWarning: true
+    },
+  },
 }
 
 export default meta
-type Story = StoryObj<typeof MySpendrupsPage>
 
-const MySpendrupsPageStoryTemplate: Story = {
-  render: ({ ...args }) => <MySpendrupsPage {...args} />,
+// GUIDELINE for how to structure a my spendrups page
+const MySpendrupsPageStoryTemplate = {
+  render: ({ ...args }) => (
+    <>
+      {args.header && args.header()}
+      <ContentWrapper>
+        <GroupWrapper direction='default'>
+          <GroupWrapper direction='column'>
+            <BoxWrapper {...args.boxMittSpendrups} />
+            <BoxWrapper {...args.boxMinaFavoriter} />
+            <BoxWrapper {...args.boxOvrigaTjanster} />
+          </GroupWrapper> 
+          <GroupWrapper direction='column'>
+            <BoxWrapper {...args.boxMinSenasteOrder} />
+            <BoxWrapper {...args.boxMinaOrdrar} />
+            <BoxWrapper {...args.boxOvrigaOrderTjanster} />
+          </GroupWrapper>
+        </GroupWrapper> 
+      </ContentWrapper>
+      <Footer {...args.footer} />
+    </>
+  )
 }
 
 export const MySpendrupsPageTemplateStory = {
   ...MySpendrupsPageStoryTemplate,
   args: {
-    header: HeaderStory_Logged_In_User.args,
+    header: Standard_Header.render,
     boxMittSpendrups: BoxWrapperStory_MittSpendrups.args,
     boxMinaFavoriter: BoxWrapperStory_MinaFavoriter.args,
     boxOvrigaTjanster: BoxWrapperStory_ÖvrigaTjänster.args,

@@ -1,25 +1,35 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import { ContactPage } from './contact-page'
-import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
+import type { Meta } from '@storybook/react'
+import { Standard_Header } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
+import { Footer } from '../../organisms/footer/footer'
 
-const meta: Meta<typeof ContactPage> = {
+const meta: Meta = {
   title: 'Design System/Templates/ContactPage',
-  component: ContactPage,
+  parameters: {
+    controls: {
+      exclude:/.*/g,
+      hideNoControlsWarning: true
+    },
+  },
 }
 
 export default meta
-type Story = StoryObj<typeof ContactPage>
 
-const ContactPageStoryTemplate: Story = {
-  render: ({ ...args }) => <ContactPage {...args} />,
+// GUIDELINE for how to structure a contact page
+const ContactPageStoryTemplate = {
+  render: ({ ...args }) => (
+    <>
+      {args.header && args.header()}
+      <Footer {...args.footer} />
+    </>
+  ),
 }
 
 export const ContactPageTemplateStory = {
   ...ContactPageStoryTemplate,
   args: {
-    header: HeaderStory_Logged_In_User.args,
+    header: Standard_Header.render,
     footer: FooterStory.args,
   },
 }

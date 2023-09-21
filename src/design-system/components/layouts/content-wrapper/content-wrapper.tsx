@@ -6,13 +6,14 @@ type TContentWrapper = {
   /**
    * Sets the padding prop in rem
    * Takes either a single number, e.g. 1 or an array of numbers, e.g. [1, 0] or [1, 0, 0, 1] (top, right, bottom, left)
-   * @default '0'
+   * Default is undefined, and therefore decided by styles/css
+   * @default undefined
   */
   padding?: Array<number> | number;
 }
 
 // TODO: rename to ResponsiveWrapper?
-const ContentWrapper = ({ padding = 0, children, ...props}: PropsWithChildren<TContentWrapper>) => {
+const ContentWrapper = ({ padding, children, ...props}: PropsWithChildren<TContentWrapper>) => {
     const paddingValue = useMemo(() => {
         if (!padding && padding !== 0) {
           return "";
