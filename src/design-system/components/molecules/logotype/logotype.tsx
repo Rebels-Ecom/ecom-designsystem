@@ -6,7 +6,13 @@ export type INavigationLogo = {
   href: string
 } & IPicture
 
-const Logotype = ({ logo, linkComponent: Link, className = '' }: { logo: INavigationLogo, linkComponent: any, className: string }) => {
+export type TLogotype = {
+  logo: INavigationLogo,
+  linkComponent: any,
+  className: string
+}
+
+const Logotype = ({ logo, linkComponent: Link, className = '' }: TLogotype) => {
   return (
     <Link to={logo.href} className={cx(styles.linkLogo, className)}>
       <Picture {...logo} classNamePicture={styles.logoPicture} classNameImg={styles.logoImg} />

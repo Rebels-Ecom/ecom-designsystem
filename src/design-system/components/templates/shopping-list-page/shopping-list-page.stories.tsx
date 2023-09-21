@@ -1,25 +1,64 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { ShoppingListPage } from './shopping-list-page'
-import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories';
+import type { Meta } from '@storybook/react';
+import { Standard_Header } from '../../organisms/header/header.stories';
 import { FooterStory } from '../../organisms/footer/footer.stories';
+import { ContentWrapper } from '../../layouts';
+import { BoxWrapper, DeliveryDateInfo, InfoSummaryBox, OrderConfirmationDetails, ScrollableList } from '../../molecules';
+import { Button, Heading, IconLink, MessagePopup, Text } from '../../atoms';
+import { MessagePopupStory } from '../../atoms/message-popup/message-popup.stories';
+import { InfoSummaryBoxStory_ShoppingList } from '../../molecules/info-summary-box/info-summary-box.stories';
+import { ScrollableListListStory_WithFade_2_products } from '../../molecules/scrollable-list/scrollable-list.stories';
+import { OrderConfirmationDetailsStory_Pricing, OrderConfirmationDetailsStory_TotalPayment } from '../../molecules/order-confirmation-details/order-confirmation-details.stories';
+import { ButtonProductCardStory } from '../../atoms/button/button.stories';
+import { Footer } from '../../organisms';
 
-const meta: Meta<typeof ShoppingListPage> = {
+const meta: Meta = {
   title: 'Design System/Templates/ShoppingListPage',
-  component: ShoppingListPage
+  parameters: {
+    controls: {
+      exclude:/.*/g,
+      hideNoControlsWarning: true
+    },
+  },
 };
 
 export default meta;
-type Story = StoryObj<typeof ShoppingListPage>;
 
-const ShoppingListStoryTemplate: Story = {
-  render: ({ ...args }) => (<ShoppingListPage {...args} />)
+// GUIDELINE for how to structure a shopping list page
+const ShoppingListStoryTemplate = {
+  render: ({ ...args }) => {
+  const [isMessagePopupOpen, setIsMessagePopupOpen] = React.useState(true)
+
+    return (
+      <>
+        {args.header && args.header}
+        <ContentWrapper>
+
+            <BoxWrapper spacing={'xl'}>
+              <Heading order={3}>Vårfesten</Heading>
+              <Text>Senast sparad:</Text>
+              <DeliveryDateInfo dateLabel={'2022-06-10'} />
+              <MessagePopup isOpen={isMessagePopupOpen} onClose={() => setIsMessagePopupOpen(!isMessagePopupOpen)} {...MessagePopupStory.args} icon={'icon-info'} arrowPosition='center'></MessagePopup>
+              <InfoSummaryBox {...InfoSummaryBoxStory_ShoppingList.args} />
+              <Heading order={4} align='center'>Populära produkter som vi tror passar dig</Heading>
+              <ScrollableList {...ScrollableListListStory_WithFade_2_products.args}>{ScrollableListListStory_WithFade_2_products.args.children}</ScrollableList>
+              <IconLink icon={'icon-plus'} href={'/to-somewhere'} isExternal={true} linkComponent={'a'}>Visa alla rekommenderade produkter</IconLink>
+              <OrderConfirmationDetails {...OrderConfirmationDetailsStory_Pricing.args} withBackground />
+              <OrderConfirmationDetails {...OrderConfirmationDetailsStory_TotalPayment.args} withBackground={false} />
+              <Button {...ButtonProductCardStory.args} type={'button'} surface={'primary'} size='small' />
+            </BoxWrapper>
+
+        </ContentWrapper>
+        <Footer {...args.footer} />
+      </>
+    );
+  }
 }
 
 export const ShoppingListStory = {
   ...ShoppingListStoryTemplate,
   args: {
-    header: HeaderStory_Logged_In_User.args,
+    header: Standard_Header.render,
     footer:FooterStory.args
   }
 }

@@ -1,27 +1,42 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import { ContentPage } from './content-page'
-import { HeaderStory_Logged_In_User } from '../../organisms/header/header.stories'
+import type { Meta } from '@storybook/react'
+import { Standard_Header } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { BreadcrumbsStory_Sustainability } from '../../organisms/breadcrumbs/breadcrumbs.stories'
 import { RichTextStory, RichTextStory_Beer } from '../../organisms/rich-text/rich-text.stories'
+import { ContentWrapper } from '../../layouts'
+import { Breadcrumbs, Footer, RichText } from '../../organisms'
 
-const meta: Meta<typeof ContentPage> = {
+const meta: Meta = {
   title: 'Design System/Templates/ContentPage',
-  component: ContentPage,
+  parameters: {
+    controls: {
+      exclude:/.*/g,
+      hideNoControlsWarning: true
+    },
+  },
 }
 
 export default meta
-type Story = StoryObj<typeof ContentPage>
 
-const ContentPageStoryTemplate: Story = {
-  render: ({ ...args }) => <ContentPage {...args} />,
+// GUIDELINE for how to structure a content page
+const ContentPageStoryTemplate = {
+  render: ({ ...args }) => (
+    <>
+      {args.header && args.header()}
+      <ContentWrapper>
+        <Breadcrumbs textWidth='narrow' {...args.breadcrumbs} />
+          <RichText {...args.richText} />
+      </ContentWrapper>
+      <Footer {...args.footer} />
+    </>
+  ),
 }
 
 export const ContentPageTemplateStory = {
   ...ContentPageStoryTemplate,
   args: {
-    header: HeaderStory_Logged_In_User.args,
+    header: Standard_Header.render,
     breadcrumbs: BreadcrumbsStory_Sustainability.args,
     richText: RichTextStory.args,
     footer: FooterStory.args,
@@ -31,7 +46,7 @@ export const ContentPageTemplateStory = {
 export const ContentPageTemplateStory_Beer = {
   ...ContentPageStoryTemplate,
   args: {
-    header: HeaderStory_Logged_In_User.args,
+    header: Standard_Header.render,
     breadcrumbs: BreadcrumbsStory_Sustainability.args,
     richText: RichTextStory_Beer.args,
     footer: FooterStory.args,

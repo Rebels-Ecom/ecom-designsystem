@@ -1,7 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ContentWrapper } from './content-wrapper'
-import { spendrupsColorArray } from '../../../styles/themes/types';
 import { FlexContainer } from '../flex-container/flex-container';
 
 const meta: Meta<typeof ContentWrapper> = {
