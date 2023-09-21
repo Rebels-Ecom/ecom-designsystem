@@ -1,2 +1,0 @@
-import{c as i}from"./index-74f03c09.js";import{a as o}from"./jsx-runtime-76c5c2e2.js";const d="_maxWidth_75688_1",n="_narrow_75688_8",s="_wide_75688_12",t={maxWidth:d,narrow:n,wide:s},e=({children:a,contentMaxWidth:r})=>o("div",{className:i(t.maxWidth,t[r]),children:a});try{e.displayName="MaxWidth",e.__docgenInfo={description:"",displayName:"MaxWidth",props:{contentMaxWidth:{defaultValue:null,description:"",name:"contentMaxWidth",required:!0,type:{name:"enum",value:[{value:'"wide"'},{value:'"narrow"'}]}}}}}catch{}export{e as M};
-//# sourceMappingURL=max-width-7159fea8.js.map
