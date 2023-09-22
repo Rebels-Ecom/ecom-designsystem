@@ -1,11 +1,10 @@
 .tabs {
     background: var(--navigation-surface-subdued);
-    height: 5.625rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.875rem;
-    padding: 0 1.25rem;
+    
+    & .inner {
+        display: flex;
+        gap: 0.875rem;
+    }
 }
 
 .tabBtn {

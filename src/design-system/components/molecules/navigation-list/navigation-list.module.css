@@ -1,8 +1,5 @@
 .linkList {
-  position: absolute;
-  right: 0;
-  left: 0;
-  margin: 2.5rem 0;
+  margin: 1.5rem 0 2.5rem;
   padding: 0 1.25rem;
   list-style-type: none;
   display: flex;

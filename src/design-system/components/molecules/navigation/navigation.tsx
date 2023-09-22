@@ -34,27 +34,33 @@ const sidebar = {
 
 const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
   return (
-    <div className={styles.navigation}>
-      <ContentWrapper padding={0}>
-        {links?.length && (
-          <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
-            <Above breakpoint="md">{(matches: any) => matches && <NavigationList links={links} linkComponent={Link} isOpen />}</Above>
-          </nav>
-        )}
-        {links?.length && (
-          <Below breakpoint="lg">
-            {(matches: any) =>
-              matches && (
-                <>
-                  <motion.div className={styles.background} variants={sidebar} />
-                  <motion.nav>{links?.length && <NavigationList links={links} linkComponent={Link} mobile isOpen={isOpen} />}</motion.nav>
-                </>
-              )
-            }
+    <>
+      {links?.length &&
+        <>
+          <Below breakpoint='lg'>
+            {(matches: any) => matches && (
+              <>
+              <motion.div className={styles.background} variants={sidebar} />
+              <div className={styles.mobileNavContainer}>
+                <NavigationList links={links} linkComponent={Link} mobile isOpen={isOpen} />
+              </div>
+              </>
+            )}
           </Below>
-        )}
-      </ContentWrapper>
-    </div>
+          <Above breakpoint="md">
+            {(matches: any) => matches && (
+              <div className={styles.navigation}>
+                <ContentWrapper padding={0}>
+                  <nav className={cx(styles.bar, styles.largeDeviceMenuBar)}>
+                    <NavigationList links={links} linkComponent={Link} isOpen />
+                  </nav>
+                </ContentWrapper>
+              </div>
+            )}
+          </Above>
+        </>
+      }
+    </>
   )
 }
 
