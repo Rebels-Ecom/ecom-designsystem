@@ -25,10 +25,11 @@ export interface IInputText {
   other?: TOther
   autocomplete?: string
   iconRight?: IIcon
+  min?: string;
 }
 
 const InputText = forwardRef<HTMLInputElement, IInputText>(
-  ({ id, className, wrapperClassName, type = 'text', value, defaultValue, isErroneous, required, readonly, onChange, onBlur, disabled, placeholder, other, autocomplete, iconRight }, ref) => {
+  ({ id, className, wrapperClassName, type = 'text', value, defaultValue, isErroneous, required, readonly, onChange, onBlur, disabled, placeholder, other, autocomplete, iconRight, min }, ref) => {
     function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
       if (onChange) {
         onChange(e)
@@ -58,6 +59,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
           required={required}
           readOnly={readonly}
           autoComplete={autocomplete}
+          min={min}
           {...other}
         />
       </div>

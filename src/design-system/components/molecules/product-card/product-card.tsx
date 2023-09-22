@@ -28,6 +28,11 @@ export type TProductCardHorizontal = {
 export interface IProductCard {
   cardDisplay: TCardDisplayType
   product: IProduct
+  /**
+   * Sets a custom default quantity to start from
+   * @default 0
+   */
+  defaultQuantity?: string;
   addToCartButton: IButton
   addToCart: CallableFunction
   onChangeQuantity?: CallableFunction
@@ -57,6 +62,7 @@ function ProductCard({
   changePackagingButton,
   linkComponent: Link,
   className,
+  defaultQuantity,
 }: TProductCard) {
   
   if (!cardDisplay) {
@@ -69,7 +75,7 @@ function ProductCard({
     ...product,
     productImage: getProductPicture(productId, productImageUrl),
     quantity: quantity ? quantity : '1',
-    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (quantity ? parseInt(quantity) : 1)),
+    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * ((defaultQuantity ?? quantity) ? parseInt(defaultQuantity ?? quantity) : 0)),
     selectedVariantId: productId,
   })
 
@@ -80,7 +86,7 @@ function ProductCard({
         quantity: productQuantity.toString(),
         totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity)
       }
-      console.log(newProduct)
+
       onChangeQuantity?.(newProduct)
 
       return newProduct
@@ -129,6 +135,7 @@ function ProductCard({
         hideRemoveButton={hideRemoveButton}
         className={className}
         hideCartButton={hideCartButton}
+        defaultQuantity={defaultQuantity}
       />
     )
   }
@@ -151,6 +158,7 @@ function ProductCard({
         linkComponent={Link}
         className={className}
         hideCartButton={hideCartButton}
+        defaultQuantity={defaultQuantity}
       />
     )
   }

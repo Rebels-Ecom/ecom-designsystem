@@ -24,6 +24,7 @@ const ProductCardVertical = ({
   changePackagingButton,
   onVariantsButtonClick,
   className,
+  defaultQuantity
 }: IProductCard & TProductCardVertical) => {
   const {
     productId,
@@ -116,7 +117,7 @@ const ProductCardVertical = ({
             salesUnit={salesUnit}
             itemNumberPerSalesUnit={itemNumberPerSalesUnit}
             totalPrice={totalPrice}
-            quantity={quantity}
+            quantity={defaultQuantity ?? quantity}
             quantityInputId={productId}
             disabled={productQuantityDisabled}
             onChange={handleOnChangeQuantity}
