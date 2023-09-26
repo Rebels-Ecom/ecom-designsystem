@@ -54,6 +54,36 @@ export const ButtonStoryTertiary = {
   }
 };
 
+export const ButtonStoryX = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_x_1',
+    size: 'x-small',
+    disabled: false,
+    surface: 'x',
+    children: "Mitt Spendrups",
+    iconRight: {
+      icon: 'icon-settings'
+    },
+    onClick: action('clicked'),
+  }
+};
+
+export const ButtonStoryDropdown = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_x_1',
+    size: 'xx-small',
+    disabled: false,
+    surface: 'x',
+    children: "Land",
+    iconRight: {
+      icon: 'icon-chevron-down'
+    },
+    onClick: action('clicked'),
+  }
+};
+
 export const ButtonStoryTertiaryIconOnly = {
   ...ButtonStoryTemplate,
   args: {

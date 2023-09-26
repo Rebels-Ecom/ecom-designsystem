@@ -8,6 +8,10 @@ export type TButtonType = 'submit' | 'button'
 export interface IButton {
   children: React.ReactNode
   type: TButtonType
+  /**
+   * Decides the style of the button
+   * @default 'primary'
+   */
   surface: TButtonSurface
   iconLeft?: IIcon
   iconRight?: IIcon
@@ -32,8 +36,10 @@ export function getButtonSurface(surface: TButtonSurface) {
   }
 }
 
-export function getButtonSize(surface: TButtonSize) {
-  switch (surface) {
+export function getButtonSize(size: TButtonSize) {
+  switch (size) {
+    case 'xx-small':
+      return 'cta-xxs'
     case 'x-small':
       return 'cta-xs'
     case 'large':
@@ -46,7 +52,7 @@ export function getButtonSize(surface: TButtonSize) {
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { surface = 'primary', size = 'small', type = 'button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className },
+    { surface='primary', size='small', type='button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className },
     ref
   ) => {
     if(!children)
@@ -60,7 +66,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         className={cx(
           styles.buttonDefault,
           getButtonSize(size),
-          styles[getButtonSurface(surface)],
+          styles[surface],
           fullWidth && styles.fullWidth,
           rounded && styles.rounded,
           className

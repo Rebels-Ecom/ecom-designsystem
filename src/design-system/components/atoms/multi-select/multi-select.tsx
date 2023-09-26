@@ -35,32 +35,36 @@ const MultiSelect = (
       return selectedOption?.name;
     }
 
-    return (
-      <div className={styles.wrapper}>
-        {isOptionsPopulated() && (
-          <Button 
-            type={'button'} 
-            surface={'secondary'} 
-            className={styles.multiSelectDropdown} onClick={()=>handleClickOnDropdown()}
-            iconRight={icon}
-            rounded >
-                {(!selectedOptions || selectedOptions.length===0) ? name : (selectedOptions.length===1 ? `${name} (${getSelectedOptionName(options, selectedOptions[0])})` :`${name} (${selectedOptions.length} valda)`)}
-                {isDropdownOpen ? 
-                    <ul className={styles.multiSelectDropdownOptions}>
-                        {options.map(option => {
-                            const isSelected = selectedOptions && selectedOptions.some(item=>item===option.value)
-                            return (
-                                    <li key={option.value} className={styles.multiSelectDropdownOption}>
-                                    <input type="checkbox" checked={isSelected} onChange={() => onToggleOption(option)} className={styles.multiSelectDropdownOptionCheckbox}></input>
-                                    <span>{option.name}</span>
-                                </li>
-                            )
-                        })}
-                    </ul> : null}
-            </Button>
-        )}
-      </div>
-    )
+    return isOptionsPopulated() ? (
+      <Button
+        type='button' 
+        surface='x'
+        size='xx-small'
+        className={styles.multiSelectDropdown} onClick={()=>handleClickOnDropdown()}
+        iconRight={icon}
+      >
+        {(!selectedOptions || selectedOptions.length === 0) ?
+          name :
+          (selectedOptions.length === 1 ?
+            `${name} (${getSelectedOptionName(options, selectedOptions[0])})` :
+            `${name} (${selectedOptions.length} valda)`
+          )
+        }
+        {isDropdownOpen ? 
+          <ul className={styles.multiSelectDropdownOptions}>
+            {options.map(option => {
+              const isSelected = selectedOptions && selectedOptions.some(item=>item===option.value)
+              
+              return (
+                <li key={option.value} className={styles.multiSelectDropdownOption}>
+                  <input type="checkbox" checked={isSelected} onChange={() => onToggleOption(option)} className={styles.multiSelectDropdownOptionCheckbox}></input>
+                  <span>{option.name}</span>
+                </li>
+              )
+            })}
+          </ul> : null}
+      </Button>
+    ) : null
   }
 )
 

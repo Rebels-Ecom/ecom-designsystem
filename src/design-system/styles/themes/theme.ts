@@ -177,6 +177,7 @@ export const lightTheme = {
   '--border-on-secondary': '#003E51',
   '--border-on-secondary-hover': '#336574',
   '--border-on-secondary-disabled': '#547E8A',
+  '--border-on-x': '#B7B5B5',
 
 
   '--interactive-default': '#F08A00',

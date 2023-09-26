@@ -111,16 +111,16 @@
     }
     @media (min-width: 48rem) {
         background: #ffffff;
-        border-color: var(--border-on-secondary);
+        border-color: var(--border-on-x);
         margin-right: 1.5rem;
     }
-  }
-  
-  .buttonLinkText {
-    display: none;
-    @media (min-width: 64rem) {
-      display: flex;
-      align-self: flex-end;
-      margin-right: 0.6rem;
+
+
+    & span:first-of-type {
+        display: none;
+        
+        @media (min-width: 64rem) {
+            display: block;
+        }
     }
   }
