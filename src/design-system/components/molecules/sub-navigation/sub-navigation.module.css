@@ -19,6 +19,9 @@
     padding: 1rem 1rem 3rem 15%;
     display: none;
     min-height: 15rem;
+    max-height: calc(100vh - 268px);
+    overflow-y: scroll;
+    
     &.isVisible {
         display: flex;
         flex-direction: column;
