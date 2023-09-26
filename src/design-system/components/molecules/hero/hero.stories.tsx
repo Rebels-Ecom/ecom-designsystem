@@ -147,7 +147,7 @@ export const HeroStoryVideo = {
     heading: 'Pistonhead lager',
     preamble: 'Sedan starten för över 100 år sedan har vi vuxit till Sveriges ledande bryggeri Vi står i dag för en tredjedel av den svenska ölmarknaden',
     alignContent: 'center',
-    heroTheme: 'dark',
+    heroTheme: 'light',
   }
 }
 
