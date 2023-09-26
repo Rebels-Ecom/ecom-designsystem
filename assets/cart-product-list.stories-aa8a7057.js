@@ -1,7 +1,0 @@
-import{C as p}from"./cart-product-list-a1b9ae6a.js";import{c as i,d as e,b as n}from"./cart-product.stories-07861bbd.js";import{a as o}from"./jsx-runtime-76c5c2e2.js";import"./index-74f03c09.js";import"./index-6f814c40.js";import"./_commonjsHelpers-042e6b4d.js";import"./product-quantity-input-d6714380.js";import"./input-text-da894f75.js";import"./form-helper-ce65ae5e.js";import"./icon-7e598265.js";import"./picture-helper-86177d87.js";import"./picture-1385f78c.js";import"./icon-button-b8bc13de.js";import"./ui-link-edaab2a0.js";import"./divider-lines-71f4f756.js";import"./loader-2ea78344.js";import"./format-helper-6b4b1091.js";import"./icon-button.stories-e21e5d16.js";import"./chunk-OPEUWD42-0dc0813d.js";const E={title:"Design System/Organisms/CartProductList",component:p},u=[i.args,e.args,i.args,e.args],l={render:t=>{var a;return o("div",{style:{margin:"0 auto",maxWidth:"1254px"},children:o(p,{children:(a=t==null?void 0:t.children)==null?void 0:a.map(d=>o(n,{...d,onClickRemoveProduct:()=>{}},Math.random()))})})}},r={...l,args:{children:u}};var m,s,c;r.parameters={...r.parameters,docs:{...(m=r.parameters)==null?void 0:m.docs,source:{originalSource:`{
-  ...CartProductListStoryTemplate,
-  args: {
-    children: cartProducts
-  }
-}`,...(c=(s=r.parameters)==null?void 0:s.docs)==null?void 0:c.source}}};const M=["CartProductListStory"];export{r as CartProductListStory,M as __namedExportsOrder,E as default};
-//# sourceMappingURL=cart-product-list.stories-aa8a7057.js.map
