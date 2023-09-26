@@ -141,7 +141,7 @@
   --pagination-indicators-inactive: rgba(247, 249, 250, 0.15);
 
   /*Text */
-  --color-text-default:#000000;
+  --color-text-default:#1D1D1B;
   --color-text-white: #ffffff;
 
   --color-on-primary:#ffffff;
@@ -149,7 +149,7 @@
   --color-on-secondary:#003E51;
   --color-on-secondary-hover:#336574;
   --color-on-secondary-disabled:#547E8A;
-  --color-on-tertiary:#000000;
+  --color-on-tertiary:#1D1D1B;
   --color-on-tertiary-disabled:#8A8E8F;
 
   --color-text-on-primary: #ffffff;
@@ -385,7 +385,7 @@
   --information-blue:#277FE8;
   
   /*Background */
-  --background: #000000;
+  --background: #1D1D1B;
   --light-orange-background: #FFF9E8;
   --nav-bar-background: '#F2EFEA';
   --sub-nav-background: #FBFAF9;
@@ -396,7 +396,7 @@
   --pagination-indicators-inactive: rgba(247, 249, 250, 0.15);
 
   /*Text */
-  --color-text-default:#000000;
+  --color-text-default:#1D1D1B;
   --color-text-white: #ffffff;
 
   --color-on-primary:#ffffff;
@@ -404,7 +404,7 @@
   --color-on-secondary:#003E51;
   --color-on-secondary-hover:#336574;
   --color-on-secondary-disabled:#547E8A;
-  --color-on-tertiary:#000000;
+  --color-on-tertiary:#1D1D1B;
   --color-on-tertiary-disabled:#8A8E8F;
 
   --color-text-input: var(--blue-500);

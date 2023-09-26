@@ -48,7 +48,7 @@ export const lightTheme = {
   '--pagination-indicators-inactive':'rgba(247, 249, 250, 0.15)',
 
   /*Text */
-  '--color-text-default':'#000000',
+  '--color-text-default':'#1D1D1B',
   '--color-text-white': '#ffffff',
   '--color-text-blue': '#003E51',
   '--color-text-orange': '#DE9034',
@@ -59,7 +59,7 @@ export const lightTheme = {
   '--color-on-secondary':'#003E51',
   '--color-on-secondary-hover':'#336574',
   '--color-on-secondary-disabled':'#547E8A',
-  '--color-on-tertiary':'#000000',
+  '--color-on-tertiary':'#1D1D1B',
   '--color-on-tertiary-disabled':'#8A8E8F',
 
   '--color-text-on-primary': '#ffffff',
@@ -257,7 +257,7 @@ export const darkTheme = {
    '--information-blue':'#277FE8',
  
    /*Background */
-   '--background': '#000000',
+   '--background': '#1D1D1B',
    '--light-orange-background': '#FFF9E8',
    '--nav-bar-background': '#F2EFEA',
    '--sub-nav-background': '#FBFAF9',
@@ -268,7 +268,7 @@ export const darkTheme = {
    '--pagination-indicators-inactive':'rgba(247, 249, 250, 0.15)',
 
      /*Text */
-  '--color-text-default':'#000000',
+  '--color-text-default':'#1D1D1B',
   '--color-text-white': '#ffffff',
   '--color-text-blue': '#003E51',
   '--color-text-orange': '#DE9034',
@@ -279,11 +279,11 @@ export const darkTheme = {
   '--color-on-secondary':'#003E51',
   '--color-on-secondary-hover':'#336574',
   '--color-on-secondary-disabled':'#547E8A',
-  '--color-on-tertiary':'#000000',
+  '--color-on-tertiary':'#1D1D1B',
   '--color-on-tertiary-disabled':'#8A8E8F',
 
   '--color-text-on-primary': '#ffffff',
-  '--color-text-on-secondary': '#000000',
+  '--color-text-on-secondary': '#1D1D1B',
 
     /* Tag colors*/
   '--tag-green':'#3D5B49',
@@ -354,7 +354,7 @@ export const darkTheme = {
    /*Text */
   '--action-tertiary-default': '#555555',
   '--action-tertiary-hover': '#333333',
-  '--action-tertiary-pressed': '#000000',
+  '--action-tertiary-pressed': '#1D1D1B',
   '--action-tertiary-gradient-one': '#919191',
   '--action-tertiary-gradient-two': '#333333',
   '--surface-default': '#333333',
