@@ -59,7 +59,6 @@ function getProduct(productData: any): IProduct {
 const productNoVariantsArgs = getProduct(dummyProductNoVariants)
 const productWineArgs = getProduct(dummyWineProduct)
 
-
 const meta = {
   title: 'Design System/Molecules/ProductCard',
   component: ProductCard,
@@ -78,6 +77,7 @@ export const ProductCardStory: Story = {
   args: {
     cardDisplay: 'vertical',
     product: productWineArgs,
+    defaultQuantity: '',
     addToCart: () => {},
     addToCartButton: {
       children: 'Lägg till',
@@ -99,6 +99,7 @@ export const ProductCardStory_NoVariants: Story = {
   args: {
     cardDisplay: 'vertical',
     product: productNoVariantsArgs,
+    defaultQuantity: '4',
     addToCart: () => {},
     addToCartButton: {
       children: 'Lägg till',
@@ -139,6 +140,7 @@ export const ProductCardStory_Horizontal: Story = {
   args: {
     cardDisplay: 'horizontal',
     product: productNoVariantsArgs,
+    defaultQuantity: '',
     addToCart: () => {},
     addToCartButton: {
       children: 'Lägg till',

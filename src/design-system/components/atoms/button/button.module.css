@@ -4,7 +4,7 @@
   align-items: center;
   font-family: var(--font-family-secondaryBold);
   border: solid 0.063rem transparent;
-  border-radius: 0.125rem;
+  border-radius: 0.25rem;
   &:hover {
     cursor: pointer;
   }
@@ -14,7 +14,9 @@
   }
 }
 
-.primaryButton {
+/* SURFACES */
+
+.primary {
   background-color: var(--cta-primary-default);
   color: var(--color-on-primary);
   &:hover{
@@ -27,7 +29,7 @@
   }
 }
 
-.secondaryButton {
+.secondary {
   background-color: var(--cta-secondary-default);
   border-color: var(--border-on-secondary);
   color: var(--color-on-secondary);
@@ -42,7 +44,7 @@
   }
 }
 
-.tertiaryButton {
+.tertiary {
   background-color: var(--cta-tertiary-default);
   color: var(--color-on-tertiary);
   
@@ -54,6 +56,13 @@
     background-color: var(--cta-tertiary-disabled);
     color: var(--color-on-tertiary-disabled);
   }
+}
+
+/* TODO: this should replace secondary when approved */
+.x {
+  background-color: var(--cta-x-default);
+  border-radius: 0.25rem;
+  border-color: var(--border-on-x);
 }
 
 .rounded {

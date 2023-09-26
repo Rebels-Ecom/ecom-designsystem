@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styles from './tabs.module.css'
 import { Button } from '../../atoms/button/button';
+import { ContentWrapper } from '../../layouts';
 
 export interface ITab {
     id: string,
@@ -24,20 +25,22 @@ function Tabs({tabs, isOpen}: ITabs) {
         return null
 
     return (
-        <div className={styles.tabsWrapper}>
+        <>
             <div className={styles.tabs}>
-                {tabs.map((tab, i) =>
-                    <Button key={i} id={tab.id} className={styles.tabBtn} disabled={currentTab === `${tab.id}`} onClick={handleTabClick} type={'button'} surface={'secondary'} size={'large'} rounded>{tab.tabTitle}</Button>
-                )}
+                <ContentWrapper>
+                    <div className={styles.inner}>
+                        {tabs.map((tab, i) =>
+                            <Button key={i} id={tab.id} className={styles.tabBtn} disabled={currentTab === `${tab.id}`} onClick={handleTabClick} type={'button'} surface={'secondary'} size={'large'} rounded>{tab.tabTitle}</Button>
+                        )}
+                        </div>
+                </ContentWrapper>
             </div>
-            <div className={styles.tabContent}>
-                {tabs.map((tab, i) =>
-                    <div key={i}>
-                        {currentTab === `${tab.id}` && <div>{tab.content}</div>}
-                    </div>
-                )}
-            </div>
-        </div>
+            {tabs.map((tab, i) =>
+                <div key={i}> 
+                    {currentTab === `${tab.id}` && <div>{tab.content}</div>}
+                </div>
+            )}
+        </>
     )
 }
 

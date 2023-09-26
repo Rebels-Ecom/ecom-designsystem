@@ -19,7 +19,7 @@ function UserProfileDropdown({ children , isDropdownOpen} : IUserProfileDropdown
 
     return (
         <div className={styles.userProfileDropdown} ref={dropdownElement}>
-            <Button className={styles.button} type={'button'} surface={'primary'} rounded iconRight={{icon: 'icon-settings'}} onClick={()=>setIsOpen(!isOpen)}>Mitt spendrups</Button>
+            <Button className={styles.button} type='button' surface='primary' iconRight={{icon: 'icon-settings'}} onClick={()=>setIsOpen(!isOpen)}>Mitt spendrups</Button>
             { isOpen && <div  className={styles.dropdown}>{ children }</div> }
         </div>
     )

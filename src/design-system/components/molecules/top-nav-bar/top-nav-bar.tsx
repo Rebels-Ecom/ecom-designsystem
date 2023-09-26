@@ -29,7 +29,7 @@ const TopNavBar = ({ links, userLoggedIn=false, isAdmin=false, hasActiveUser=fal
       <>
       {link.isExternal
         ?
-        <a href={link.isTelephoneLink ? `tel:${link.href}` : link.href} className={styles.topNavLink} target={'_blank'}>
+        <a href={link.isTelephoneLink ? `tel:${link.href}` : link.isMailLink ? `mailto:${link.href}` : link.href} className={styles.topNavLink} target={'_blank'}>
           {link.icon && <Icon className={styles.navIcon} icon={link.icon} />}
           <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
         </a>

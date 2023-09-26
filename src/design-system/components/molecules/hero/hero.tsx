@@ -29,7 +29,7 @@ function getAlignContent(alignContent: string = 'left'): string {
 
 const Hero = ({ topHeading, heading, preamble, image, video, contentImage, alignContent, link, heroTheme='light', fetchPriority, loading, isVideo }: IHero) => {
   return (
-    <section className={styles.hero}>
+    <section className={cx(styles.hero, styles[heroTheme])}>
       {(isVideo && video)
         ?
         <Video {...video} videoWithOpacity={heroTheme}></Video>

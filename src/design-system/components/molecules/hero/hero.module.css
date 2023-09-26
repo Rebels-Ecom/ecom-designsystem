@@ -48,9 +48,22 @@
   & > header > h2 {
     color:var(--color-text-decorative-orange);
   }
-  
-  & > header > h1, & > p {
-    color: var(--color-text-white);
+}
+
+.dark {
+  & .content {
+    & > header > h1, & > p {
+      color: var(--color-text-white);
+    }
+  }
+}
+
+.light {
+  & .content {
+
+    & > header > h1, & > p {
+      color: var(--color-text-default);
+    }
   }
 }
 

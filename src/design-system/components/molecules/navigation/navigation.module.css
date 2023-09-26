@@ -6,12 +6,25 @@
   z-index: 9;
   top: 0;
   left: 0;
+  overflow: auto;
+
+  @media (min-width: 64em) {
+    overflow: visible;
+  }
 
   &.navigationOpen {
     @media (min-width: 64em) {
       height: auto;
+      overflow: visible;
     }
   }
+
+}
+
+.mobileNavContainer {
+  overflow-y: scroll;
+  /* TODO: store in global header height variable */
+  height: calc(100vh - 260px);
 }
 
 .bar {

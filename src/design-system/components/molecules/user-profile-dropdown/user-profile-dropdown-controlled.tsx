@@ -17,7 +17,7 @@ function UserProfileDropdownControlled({ children, isOpen, onClick} : IUserProfi
 
     return (
         <div className={styles.userProfileDropdown} ref={dropdownElement}>
-            <Button className={styles.button} type={'button'} surface={'primary'} rounded iconRight={{icon: 'icon-settings'}} onClick={onClick}>Mitt spendrups</Button>
+            <Button className={styles.button} type='button' surface='x' iconRight={{ icon: 'icon-settings' }} onClick={onClick}>Mitt spendrups</Button>
             {isOpen && <div className={styles.dropdown}>{children}</div>}
         </div>
     )

@@ -21,6 +21,7 @@ const ProductCardHorizontal = ({
   productQuantityDisabled,
   linkComponent: Link,
   className = "",
+  defaultQuantity
 }: IProductCard & TProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
     product
@@ -87,7 +88,7 @@ const ProductCardHorizontal = ({
                   salesUnit={salesUnit}
                   itemNumberPerSalesUnit={itemNumberPerSalesUnit}
                   totalPrice={totalPrice}
-                  quantity={quantity}
+                  quantity={defaultQuantity ?? quantity}
                   quantityInputId={productId}
                   onChange={handleOnChangeQuantity}
                   disabled={productQuantityDisabled}
