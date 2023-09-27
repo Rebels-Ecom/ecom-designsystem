@@ -10,6 +10,7 @@ export interface IMultiSelect {
   selectedOptions: Array<string>
   onToggleOption: CallableFunction
   icon?: IIcon
+  disabled?: boolean
 }
 
 export interface ISelectOption {
@@ -18,7 +19,7 @@ export interface ISelectOption {
 }
 
 const MultiSelect = (
-  ({ name, options, selectedOptions, onToggleOption, icon } : IMultiSelect) => {
+  ({ name, options, selectedOptions, onToggleOption, icon, disabled } : IMultiSelect) => {
     
     const[isDropdownOpen, setIsDropdownOpen] = useState(false)
 
@@ -42,6 +43,7 @@ const MultiSelect = (
         size='xx-small'
         className={styles.multiSelectDropdown} onClick={()=>handleClickOnDropdown()}
         iconRight={icon}
+        disabled={disabled}
       >
         {(!selectedOptions || selectedOptions.length === 0) ?
           name :

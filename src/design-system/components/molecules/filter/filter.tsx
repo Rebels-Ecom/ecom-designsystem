@@ -10,11 +10,12 @@ export interface IFilter {
     options: Array<ISelectOption>
     selectedOptions: Array<string>
     updateFilterSelection?: CallableFunction
+    disabled?: boolean;
 }
 
 export type TFilterType = 'single' | 'multi' | 'range'
 
-const Filter = ({id, name, filterType, options, selectedOptions, updateFilterSelection} : IFilter) => {
+const Filter = ({id, name, filterType, options, selectedOptions, updateFilterSelection, disabled} : IFilter) => {
 
     const handleMultiselectChange = (option : ISelectOption) => {
         updateFilterSelection && updateFilterSelection(option.value)
@@ -28,14 +29,14 @@ const Filter = ({id, name, filterType, options, selectedOptions, updateFilterSel
                 return <div>Range filter</div>
             case 'multi':
             default:
-                return <MultiSelect id={id} name={name} icon={{ icon: 'icon-chevron-down' }} options={options} selectedOptions={selectedOpt} onToggleOption={handleMultiselectChange}></MultiSelect>
+                return <MultiSelect id={id} name={name} icon={{ icon: 'icon-chevron-down' }} options={options} selectedOptions={selectedOpt} onToggleOption={handleMultiselectChange} disabled={disabled}></MultiSelect>
         }
     }
         
     if(!id || !filterType || !options) 
         return null
 
-    return(
+    return (
         <div className={styles.filter}>
             {getFilterPerType(id, name, filterType, options, selectedOptions)}
         </div>
