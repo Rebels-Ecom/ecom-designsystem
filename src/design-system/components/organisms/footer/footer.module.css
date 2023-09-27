@@ -45,8 +45,8 @@
     }
   
     @media (min-width: 64em) {
+      gap: 2rem;
       flex-direction: row;
-      justify-content: space-around;
       width: 70%;
     }
   }

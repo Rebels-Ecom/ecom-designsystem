@@ -27,13 +27,11 @@ function Tabs({tabs, isOpen}: ITabs) {
     return (
         <>
             <div className={styles.tabs}>
-                <ContentWrapper>
                     <div className={styles.inner}>
                         {tabs.map((tab, i) =>
                             <Button key={i} id={tab.id} className={styles.tabBtn} disabled={currentTab === `${tab.id}`} onClick={handleTabClick} type={'button'} surface={'secondary'} size={'large'} rounded>{tab.tabTitle}</Button>
                         )}
-                        </div>
-                </ContentWrapper>
+                    </div>
             </div>
             {tabs.map((tab, i) =>
                 <div key={i}> 
