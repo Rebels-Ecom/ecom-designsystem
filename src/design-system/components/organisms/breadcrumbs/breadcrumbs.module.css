@@ -1,15 +1,12 @@
 .breadcrumbsContainer {
     position: relative;
     height: auto;
-    padding: 0 1rem;
 
     &.minHeight {
         height: var(--breadcrumbs-container-height-mobile);
     }
 
     @media (min-width: 64rem) {
-        padding: 0;
-
         &.minHeight {
             height: var(--breadcrumbs-container-height-desktop);
         }
