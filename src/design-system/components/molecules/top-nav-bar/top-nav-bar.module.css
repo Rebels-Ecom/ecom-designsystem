@@ -1,11 +1,6 @@
 .topNavBar {
     width: 100%;
     height: 44px;
-    padding: 0 1rem;
-
-    @media (min-width: 64rem) {
-        padding: 0;
-    }
 
     &.adminTopNavBar {
         background: var(--decorative-purple);
@@ -51,6 +46,10 @@
                     -webkit-text-stroke: 0.03125rem;
                     color: var(--top-nav-text-focus);
                     background: none;
+                }
+
+                &::after {
+                    display: none;
                 }
             }
         }

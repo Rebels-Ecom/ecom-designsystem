@@ -6,7 +6,7 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    padding: 2rem 1rem;
+    padding: 2rem 0rem;
     
     @media (min-width: 64em) {
       flex-direction: row;
@@ -45,8 +45,8 @@
     }
   
     @media (min-width: 64em) {
+      gap: 2rem;
       flex-direction: row;
-      justify-content: space-around;
       width: 70%;
     }
   }

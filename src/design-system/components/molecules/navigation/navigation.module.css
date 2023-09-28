@@ -10,6 +10,7 @@
 
   @media (min-width: 64em) {
     overflow: visible;
+    border-bottom: 1px solid var(--border-grey);
   }
 
   &.navigationOpen {
@@ -91,9 +92,6 @@
 }
 
 .linkList {
-  position: absolute;
-  right: 0;
-  left: 0;
   margin: 2.5rem 0;
   padding: 0;
   list-style-type: none;

@@ -69,27 +69,24 @@ const FooterLinks = ({footerLinks, linkComponent: Link} : {footerLinks:Array<TFo
   else
     return(
       <ul className={styles.linkList}>
-        {footerLinks.map((list: TFooterLinksList, i: number) => (
+        {footerLinks.map((list: TFooterLinksList, i: number) => Array.isArray(list.links) && list.links?.length ? (
           <li key={`${list.title}-${i}`} className={styles.linkListItem}>
             <h5 className={styles.linkListTitle}>{list.title}</h5>
-            {Array.isArray(list.links) && list.links && (
-              <ul className={styles.links}>
-                {list.links.map((link:ILink, i:number) => (
-                  <li key={`${link.children}-${i}`} className={styles.linkItem}>
-                    {link.isExternal ? (
-                      <a href={link.href} target={link.target} className='body'>
-                        {link.children}
-                      </a>
-                    ) : (
-                      <Link to={link.href}>{link.children}</Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )
-          }
+            <ul className={styles.links}>
+              {list.links.map((link:ILink, i:number) => (
+                <li key={`${link.children}-${i}`} className={styles.linkItem}>
+                  {link.isExternal ? (
+                    <a href={link.href} target={link.target} className='body'>
+                      {link.children}
+                    </a>
+                  ) : (
+                    <Link to={link.href}>{link.children}</Link>
+                  )}
+                </li>
+              ))}
+            </ul>
           </li>
-        ))}
+        ) : null)}
       </ul>
     )
 }

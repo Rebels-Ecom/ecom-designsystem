@@ -4,10 +4,6 @@
         position: relative;
         margin: 0;
     }
-
-    @media (min-width: 85.375em) {
-        margin: 0 1rem;
-    }
 }
 
 .searchBar {
