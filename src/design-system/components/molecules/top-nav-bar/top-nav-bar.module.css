@@ -47,6 +47,10 @@
                     color: var(--top-nav-text-focus);
                     background: none;
                 }
+
+                &::after {
+                    display: none;
+                }
             }
         }
     }
