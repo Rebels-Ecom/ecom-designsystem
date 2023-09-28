@@ -8,8 +8,9 @@ import { ContentWrapper } from '../../layouts'
 export type TBreadcrumbsTextWidth = 'wide' | 'narrow'
 
 export type TBreadcrumb = {
-    children: string,
-    href: string,
+    children: string;
+    href: string;
+    active?: boolean;
 } 
 
 export interface IBreadcrumbs {
@@ -38,8 +39,15 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
                 <>
                     {image?.src && title && <h2 className={cx(styles.title, styles[textWidth])} >{title}</h2>}
                     <ul className={cx(styles.list, styles[textWidth])}>
-                        {breadcrumbs.map((breadcrumb)=>(
-                            <UILink key={breadcrumb.href} {...breadcrumb} onSurface={'transparent'} size={'default'} className={cx(styles.listItem, location===breadcrumb.href ? styles.listItemActive : '')}>
+                        {breadcrumbs.map((breadcrumb) => (
+                            <UILink
+                                key={breadcrumb.href}
+                                href={breadcrumb.active ? '' : breadcrumb.href}
+                                onSurface='transparent'
+                                isExternal={!breadcrumb.active}
+                                size={'default'}
+                                className={cx(styles.listItem, breadcrumb.active ? styles.listItemActive : '')}
+                            >
                                 {breadcrumb.children}
                             </UILink>
                         ))}
