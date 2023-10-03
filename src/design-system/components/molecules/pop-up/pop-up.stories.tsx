@@ -20,7 +20,17 @@ const PopUpStoryTemplate: Story = {
         <button onClick={() => setIsOpen(true)}>Open Modal</button>
 
         <PopUp {...args} open={isOpen}>
-          {args.children}
+          <GroupWrapper direction="column">
+            <Heading order={4}>Vill du spara dina ändringar?</Heading>
+            <GroupWrapper>
+              <Button type={'button'} surface={'primary'} onClick={() => setIsOpen(false)}>
+                Save
+              </Button>
+              <Button type={'button'} surface={'secondary'} onClick={() => setIsOpen(false)}>
+                Discard
+              </Button>
+            </GroupWrapper>
+          </GroupWrapper>
         </PopUp>
       </div>
     )
@@ -29,19 +39,5 @@ const PopUpStoryTemplate: Story = {
 
 export const PopUpStory = {
   ...PopUpStoryTemplate,
-  args: {
-    children: (
-      <GroupWrapper direction="column">
-        <Heading order={4}>Vill du spara dina ändringar?</Heading>
-        <GroupWrapper>
-          <Button type={'button'} surface={'primary'}>
-            Save
-          </Button>
-          <Button type={'button'} surface={'secondary'}>
-            Discard
-          </Button>
-        </GroupWrapper>
-      </GroupWrapper>
-    ),
-  },
+  args: {},
 }

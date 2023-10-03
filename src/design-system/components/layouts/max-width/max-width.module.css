@@ -3,6 +3,10 @@
     padding: 0 1rem;
     width:100%;
     max-width: var(--content-max-width-narrow);
+
+    &.noPadding {
+        padding: 0;
+    }
 }
 
 .narrow {
@@ -11,4 +15,8 @@
 
 .wide {
     max-width: var(--content-max-width-wide);
+}
+
+.text {
+    max-width: 52rem;
 }

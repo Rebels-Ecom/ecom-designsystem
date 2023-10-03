@@ -4,5 +4,5 @@
     &.noMargin { margin: 0; }
     &.leftAlignment { justify-content: flex-start;}
     &.rightAlignment { justify-content: flex-end;}
-    &.centerAlignment { justify-content: center;}
+    &.centerAlignment { justify-content: center; text-align: center;}
 }
