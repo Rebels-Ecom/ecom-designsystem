@@ -1,41 +1,36 @@
 import React from 'react'
 import styles from './message-banner.module.css'
 import { Icon } from '../icon/icon'
-import cx from 'classnames'
 
-export type TMessageBannerType = 'success' | 'information'
+export type TMessageBannerType = 'success' | 'information' | 'link'
 export interface IMessageBanner {
-    children: React.ReactNode
-    type: TMessageBannerType
+  children: React.ReactNode
+  type?: TMessageBannerType
+  color?: string
 }
 
-function getBannerIcon(type: TMessageBannerType){
-    switch (type) {
-        case 'information':
-          return 'icon-alert-circle'
-        case 'success':
-        default:
-          return 'icon-check-circle'
-    }
+const defaultBkg = 'rgba(255, 196, 22, 0.1)'
+
+function getBannerIcon(type: TMessageBannerType) {
+  switch (type) {
+    case 'information':
+      return 'icon-alert-circle'
+    case 'success':
+      return 'icon-check-circle'
+    case 'link':
+      return 'icon-arrow-right'
+    default:
+      return 'icon-check-circle'
+  }
 }
 
-function getBannerBackground(type: TMessageBannerType){
-    switch (type) {
-        case 'information':
-          return 'infoBkg'
-        case 'success':
-        default:
-          return 'successBkg'
-    }
-}
-
-function MessageBanner({children, type='success'}: IMessageBanner) {
-    return (
-        <div className={cx(styles.messageBanner, styles[getBannerBackground(type)])}>
-            <span>{children}</span>
-            <Icon icon={getBannerIcon(type)} className={styles.bannerIcon}></Icon>
-        </div>
-    )
+function MessageBanner({ children, type, color }: IMessageBanner) {
+  return (
+    <div className={styles.messageBanner} style={{ background: color ? color : defaultBkg, color: color && '#ffff' }}>
+      <span>{children}</span>
+      {type && <Icon icon={getBannerIcon(type)} className={styles.bannerIcon}></Icon>}
+    </div>
+  )
 }
 
 export { MessageBanner }

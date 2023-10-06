@@ -44,6 +44,9 @@ export type TIcon =
   | 'icon-message-circle'
   | 'icon-share'
   | 'icon-arrow-down-circle'
+  | 'icon-trash'
+  | 'icon-trash-2'
+  | 'icon-edit'
 
 export interface IIcon {
   icon: TIcon

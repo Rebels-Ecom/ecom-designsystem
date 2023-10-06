@@ -7,10 +7,6 @@
     padding: 0.5rem 1rem;
 }
 
-.infoBkg, .successBkg {
-    background-color: rgba(255, 196, 22, 0.1);
-}
-
 .bannerIcon {
     position: absolute;
     right: 1rem;
