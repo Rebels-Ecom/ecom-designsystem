@@ -1,8 +1,0 @@
-import{a as i,F as m}from"./featured-products.stories-1e1b8a40.js";import{S as p,a as l}from"./signup-teaser.stories-e50ab134.js";import{j as T,a as o}from"./jsx-runtime-76c5c2e2.js";const g="_customerTeaser_x4wwv_1",y={customerTeaser:g},a=({featuredProducts:r,signupTeaser:s,addToCart:e})=>{const c=r.productCards.slice(0,3);return T("section",{className:y.customerTeaser,children:[o(i,{...r,productCards:c,addToCart:e}),o(p,{...s})]})};try{a.displayName="CustomerTeaser",a.__docgenInfo={description:"",displayName:"CustomerTeaser",props:{featuredProducts:{defaultValue:null,description:"",name:"featuredProducts",required:!0,type:{name:"IFeaturedProducts"}},signupTeaser:{defaultValue:null,description:"",name:"signupTeaser",required:!0,type:{name:"ISignupTeaser"}},addToCart:{defaultValue:null,description:"",name:"addToCart",required:!0,type:{name:"CallableFunction"}}}}}catch{}const _={title:"Design System/Organisms/CustomerTeaser",component:a},S={render:r=>{function s(e){alert(`Adding to cart - ${e.productName} - ${e.packaging}. Quantity: ${e.quantity}, Total: ${e.totalPrice}`)}return o(a,{...r,addToCart:s})}},t={...S,args:{featuredProducts:m.args,signupTeaser:l.args}};var u,n,d;t.parameters={...t.parameters,docs:{...(u=t.parameters)==null?void 0:u.docs,source:{originalSource:`{
-  ...CustomerTeaserStoryTemplate,
-  args: {
-    featuredProducts: FeaturedProductsStory.args,
-    signupTeaser: SignupTeaserStory.args
-  }
-}`,...(d=(n=t.parameters)==null?void 0:n.docs)==null?void 0:d.source}}};const C=["CustomerTeaserStory"],j=Object.freeze(Object.defineProperty({__proto__:null,CustomerTeaserStory:t,__namedExportsOrder:C,default:_},Symbol.toStringTag,{value:"Module"}));export{t as C,a,j as c};
-//# sourceMappingURL=customer-teaser.stories-f95c6c4c.js.map
