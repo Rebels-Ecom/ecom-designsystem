@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from './box-wrapper.module.css'
 import cx from 'classnames'
 
@@ -21,6 +21,18 @@ export interface IGroupWrapper {
    * @default false
    */
   onlyButton?: boolean
+  /**
+   * If true, the default margin will be removed
+   * @default false
+   */
+  noMargin?: boolean;
+  /**
+   * Sets the padding prop in rem
+   * Takes either a single number, e.g. 1 or an array of numbers, e.g. [1, 0] or [1, 0, 0, 1] (top, right, bottom, left)
+   * Default is undefined, and therefore decided by styles/css
+   * @default undefined
+  */
+  padding?: Array<number> | number;
 }
 
 function BoxWrapper({
@@ -33,6 +45,8 @@ function BoxWrapper({
   hasMaxWidth = true,
   withBorder = true,
   onlyButton = false,
+  noMargin = false,
+  padding,
 }: IGroupWrapper) {
   function getGroupElementsPosition(position: TGroupPosition) {
     switch (position) {
@@ -90,6 +104,19 @@ function BoxWrapper({
     }
   }
 
+  const paddingValue = useMemo(() => {
+    if (!padding && padding !== 0) {
+      return "";
+    }
+
+    if (typeof padding === "number") {
+      return `${padding}rem`;
+    }
+
+    return padding.map(p => `${p}rem`).join(' ');
+
+  }, [padding]);
+
   return (
     <div
       className={cx(
@@ -98,11 +125,15 @@ function BoxWrapper({
         styles[getGroupElementsPosition(position)],
         styles[getGroupElementsAlignment(align)],
         styles[getGroupElementsSpacing(spacing)],
-        hasMaxWidth ? styles.hasMaxWidth : '',
-        withBorder ? styles.withBorder : '',
-        noWrap && styles.noWrap,
-        onlyButton && styles.onlyButton,
+        {
+          [styles.hasMaxWidth]: hasMaxWidth,
+          [styles.withBorder]: withBorder,
+          [styles.noWrap]: noWrap,
+          [styles.onlyButton]: onlyButton,
+          [styles.noMargin]: noMargin,
+        }
       )}
+      style={{ padding: paddingValue}}
     >
       {children}
     </div>
