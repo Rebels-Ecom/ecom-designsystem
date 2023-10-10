@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IButton } from '../../atoms/button/button'
 import { IProduct } from '../../../../types/product'
@@ -44,6 +44,10 @@ export interface IProductCard {
   productQuantityDisabled?: boolean
   className?: string
   changePackagingButton?: IButton;
+  campaign?: {
+    title: string;
+    color: 'primary' | 'secondary';
+  }
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -63,6 +67,7 @@ function ProductCard({
   linkComponent: Link,
   className,
   defaultQuantity,
+  campaign
 }: TProductCard) {
   
   if (!cardDisplay) {
@@ -136,6 +141,7 @@ function ProductCard({
         className={className}
         hideCartButton={hideCartButton}
         defaultQuantity={defaultQuantity}
+        campaign={campaign}
       />
     )
   }

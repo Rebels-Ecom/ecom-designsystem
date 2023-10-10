@@ -148,5 +148,9 @@ export const ProductCardStory_Horizontal: Story = {
       type: 'button',
     },
     loading: false,
+    campaign: {
+      title: 'Kampanj',
+      color: 'primary'
+    }
   },
 };
