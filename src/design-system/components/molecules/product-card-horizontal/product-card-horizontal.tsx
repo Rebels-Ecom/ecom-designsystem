@@ -91,7 +91,7 @@ const ProductCardHorizontal = ({
                 
                 <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
                 
-                {country !== '' && <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country}`}</p>}
+                {(country !== '' || productId !== '') && <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country ?? ''}`}</p>}
 
                 <ProductQuantityInput
                   className={styles.quantityInput}
