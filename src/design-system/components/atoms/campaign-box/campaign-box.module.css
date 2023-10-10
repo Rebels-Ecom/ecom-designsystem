@@ -3,11 +3,13 @@
   background-color: var(--campaign-box-color);
   color: var(--color-text-white);
   border-radius: 0.5rem;
+  word-break: break-word;
 
   & .title {
     text-transform: uppercase;
     font-family: var(--font-family-secondary);
     margin-top: 0;
+    margin-bottom: 1.25rem
   }
 
   & .description {
