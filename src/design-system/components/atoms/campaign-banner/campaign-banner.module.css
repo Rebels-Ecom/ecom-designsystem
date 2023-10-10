@@ -1,0 +1,46 @@
+.campaignsWrapper {
+  z-index: 101;
+  position: relative;
+
+  &.absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  & .campaignBanner {
+    background-color: var(--campaign-banner-color);
+
+
+    & button {
+      border: none;
+      background: none;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.75rem 0;
+      
+      &[disabled] {
+        cursor: not-allowed;
+        background-color: rgba(200, 200, 200, 0.5)
+      }
+      
+      & .title {
+        text-align: center;
+        color: var(--color-text-white);
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-family: var(--font-family-secondary);
+      }
+    }
+  }
+}
