@@ -7,11 +7,15 @@ export interface IMaxWidth {
     children: React.ReactNode,
     contentMaxWidth: TContentMaxWidth
     noPadding?: boolean;
+    noMargin?: boolean;
 }
 
-const MaxWidth = ({ children, contentMaxWidth, noPadding } : IMaxWidth ) => {
+const MaxWidth = ({ children, contentMaxWidth, noPadding, noMargin } : IMaxWidth ) => {
     return(
-        <div className={cx(styles.maxWidth, styles[contentMaxWidth], {[styles.noPadding]: noPadding})}>
+        <div className={cx(styles.maxWidth, styles[contentMaxWidth], {
+            [styles.noPadding]: noPadding,
+            [styles.noMargin]: noMargin,
+        })}>
             {children}
         </div>
     )

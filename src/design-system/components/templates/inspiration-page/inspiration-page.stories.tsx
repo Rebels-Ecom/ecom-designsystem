@@ -22,7 +22,7 @@ const meta: Meta = {
 
 export default meta
 
-// GUIDELINE for how to structure a inspiration page
+// GUIDELINE for how to structure an inspiration page
 const InspirationPageStoryTemplate = {
   render: ({ ...args }) => (
     <>
