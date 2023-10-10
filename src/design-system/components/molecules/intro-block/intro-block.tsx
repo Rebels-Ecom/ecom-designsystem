@@ -13,11 +13,11 @@ type TIntroBlock = {
 }
 
 const IntroBlock = ({ title, ingress, richText }: TIntroBlock) => (
-  <ContentWrapper padding={[2.5, 1, 1]}>
+  <ContentWrapper padding={[2.5, 1]}>
     <MaxWidth contentMaxWidth='text'>
       <FlexContainer flexDirection='column' gap={1}>
-        {title && <Heading order={2} margin={[0, 0, 1]} align='center'>{title}</Heading>}
-        {ingress && <Text upperCase align="center" className={styles.ingress}>{ingress}</Text>}
+        {title && <h1 className={styles.title}>{title}</h1>}
+        {ingress && <p className={styles.ingress}>{ingress}</p>}
         {richText && richText}
       </FlexContainer>
     </MaxWidth>

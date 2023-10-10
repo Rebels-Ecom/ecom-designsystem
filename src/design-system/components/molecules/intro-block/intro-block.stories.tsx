@@ -1,24 +1,24 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ProductBlock } from './product-block'
+import { IntroBlock } from './intro-block'
 
-const meta: Meta<typeof ProductBlock> = {
-    title: 'Design System/Organisms/ProductBlock',
-    component: ProductBlock
+const meta: Meta<typeof IntroBlock> = {
+    title: 'Design System/Molecules/IntroBlock',
+    component: IntroBlock
 };
 
 export default meta;
-type Story = StoryObj<typeof ProductBlock>;
+type Story = StoryObj<typeof IntroBlock>;
 
-const ProcutBlockStoryTemplate: Story = {
-  render: ({ ...args }) => (<ProductBlock {...args} />)
+const IntroBlockStoryTemplate: Story = {
+  render: ({ ...args }) => (<IntroBlock {...args} />)
 };
 
-export const ProcutBlockStory = {
-    ...ProcutBlockStoryTemplate,
+export const IntroBlockStory = {
+    ...IntroBlockStoryTemplate,
     args: {
-        headingTag: 'Rom',
         title: 'En extraordnär rom till choklad',
+        ingress: 'En trevlig ölupplevelse är mer än bara stunden då drycken når smaklökarna. Det är många delar som ska falla på plats. Från det första intrycket som ett perfekt upphällt öl med vacker skumkrona ger, till smaken av ölets sista droppar. För att helhetsupplevelsen ska få toppbetyg behöver alla detaljer ses över. En av dessa detaljer är valet av glas.',
         richText: (
           <section className="text-center">
             <div className="OutlineElement Ltr BCX9 SCXW202138125" style={{color: '#000000', backgroundColor: '#ffffff', margin: 0, padding: 0 }}>

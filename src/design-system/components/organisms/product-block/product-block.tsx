@@ -20,8 +20,7 @@ const ProductBlock = ({ headingTag, title, richText, products }: IProductBlock) 
         {title && <Heading className={styles.title} order={4} margin={[0.5, 0, 1.5]}>{title}</Heading>}
         {richText && richText}
       </MaxWidth>
-      {products?.length && products.map(item => {
-          console.log(item)
+      {products?.length ? products.map(item => {
           return (
             <BoxWrapper key={item.product.productId} noMargin padding={1}>
               <ProductCard
@@ -30,7 +29,7 @@ const ProductBlock = ({ headingTag, title, richText, products }: IProductBlock) 
               />
             </BoxWrapper>
           )
-        })}
+        }) : null}
     </FlexContainer>
   </ContentWrapper>
 )
