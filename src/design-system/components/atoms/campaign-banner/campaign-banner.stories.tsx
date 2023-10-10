@@ -23,6 +23,7 @@ const CampaignBannerStoryTemplate: Story = {
 export const CampaignBannerStory = {
   ...CampaignBannerStoryTemplate,
   args: {
+    animate: false,
     campaigns: [{
       title: 'Campaign Banner',
       color: '#9A576F',
@@ -32,8 +33,8 @@ export const CampaignBannerStory = {
       color: '#3D5B49',
       disabled: false,
     }, {
-      title: 'Campaign Banner 2',
-      color: '#3D5B49',
+      title: 'Campaign Banner 3',
+      color: '#1D1D1D',
       disabled: false,
     }]
   }

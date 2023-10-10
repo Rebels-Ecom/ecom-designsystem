@@ -14,21 +14,32 @@ type TCampaignBanner = {
   /**
    * sets positioning of the wrapper
    * @default 'absolute'
-   */
-  position?: 'absolute' | 'fixed' | 'relative';
+  */
+ position?: 'absolute' | 'fixed' | 'relative';
+ /**
+  * If true, each campaign will have an enter animation
+  * @default false
+  */
+ animate?: boolean;
 }
 
-const CampaignBanner = ({ campaigns, position = 'absolute' }: TCampaignBanner) => {
+const CampaignBanner = ({ campaigns, position = 'absolute', animate = false }: TCampaignBanner) => {
   
   return (
     <div className={cx(styles.campaignsWrapper, styles[position])}>
-      {campaigns.map(campaign => {
+      {campaigns.map((campaign, i) => {
         const style: { [key: string]: string } = ({
           '--campaign-banner-color': campaign.color,
         })
 
         return (
-          <div className={styles.campaignBanner} style={style}>
+          <motion.div
+            className={styles.campaignBanner}
+            style={style}
+            initial={animate ? { opacity: 0, translateY: '-50px' } : undefined}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ delay: (i+1) * 0.3, type: 'spring', duration: 0.3  }}
+          >
             <motion.button
               key={campaign.title}
               whileTap={!campaign.disabled ? {
@@ -40,7 +51,7 @@ const CampaignBanner = ({ campaigns, position = 'absolute' }: TCampaignBanner) =
             >
               <span className={styles.title}>{campaign.title}</span>
             </motion.button>
-          </div>
+          </motion.div>
         )
       })}
     </div>
