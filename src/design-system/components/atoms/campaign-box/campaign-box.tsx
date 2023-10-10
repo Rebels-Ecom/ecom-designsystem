@@ -1,14 +1,14 @@
 import { Heading } from '../heading/heading';
 import styles from './campaign-box.module.css'
 
-type TCampaignBox = {
+export type TCampaignBox = {
   title: string;
   description?: string;
   subDescription?: string;
   color?: string;
 }
 
-const CampaignBox = ({ title, description, subDescription, color = '#FFF' }: TCampaignBox) => {
+const CampaignBox = ({ title, description, subDescription, color = '#1D1D1B' }: TCampaignBox) => {
 
   const style: { [key: string]: string } = ({
     '--campaign-box-color': color,

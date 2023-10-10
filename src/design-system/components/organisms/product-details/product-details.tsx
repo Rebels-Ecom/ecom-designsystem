@@ -14,6 +14,7 @@ import { Above } from '../../layouts/breakpoints/above'
 import { LoadingBars } from '../../molecules'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 
 export interface IProductSpec {
     name: string
@@ -36,9 +37,10 @@ export interface IProductDetails extends IProduct {
     addToCartButton: IButton
     addToCart: CallableFunction
     className: string
+    campaign?: TCampaignBox
 }
 
-const ProductDetails = ({ productId, productName, productImageUrl, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, tags, productVariantList, productDetail, changePackagingButton, addToCartButton, addToCart, className }: IProductDetails ) => {
+const ProductDetails = ({ productId, productName, productImageUrl, packaging, priceStr, price, salesUnit, itemNumberPerSalesUnit, productVariantList, productDetail, changePackagingButton, addToCartButton, addToCart, campaign }: IProductDetails ) => {
     const [product, setProduct] = useState(
         {   productId,
             productName, 
@@ -117,21 +119,40 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
     else {
         return(
             <div className= {cx(styles.productDetails)}>
-                <div className={styles.imageOuterWrapper}>
-                    <Above breakpoint="md">{(matches: any) => matches &&productDetail?.loaderValues && productDetail.loaderValues.length>0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars}></LoadingBars>}</Above>
+                <div className={cx(styles.content, styles.leftContent)}>
+                    <Above breakpoint="md">{
+                        (matches: any) => matches && productDetail?.loaderValues && productDetail.loaderValues.length > 0 && (
+                            <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars} />
+                        )}
+                    </Above>
+
                     <div className={styles.imageWrapper}>
-                        <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Below>
-                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl}/> 
+                        <Below breakpoint="md">
+                            {(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}
+                        </Below>
+                        <Picture {...product.productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl} /> 
                     </div>
                 </div>
 
-                <div className={styles.contentWrapper}>
-                    <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags}/>}</Above>
-                    <h3 className={styles.heading}>{product.productName}</h3>
-                    <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
-                    {Array.isArray(productDetail.visibleSpecs) && productDetail.visibleSpecs.length>0 && productDetail.visibleSpecs.map((spec, index)=> <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
+                <div className={cx(styles.content, styles.rightContent)}>
+                    <Above breakpoint="md">
+                        {(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}
+                    </Above>
+                    <div>
+                        <h3 className={styles.heading}>{product.productName}</h3>
+                        <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
+                    </div>
+
+                    {campaign?.title && (
+                        <CampaignBox {...campaign} />
+                    )}
+
+                    <div className={styles.specs}>
+                        {Array.isArray(productDetail.visibleSpecs) && productDetail.visibleSpecs.length>0 && productDetail.visibleSpecs.map((spec, index)=> <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
+                    </div>
+
                     {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
-                    
+
                     {Array.isArray(product.productVariantList) && product.productVariantList.length>1 && 
                         <Button {...changePackagingButton} className={styles.btn} surface='secondary' iconRight={{icon:'icon-layers'}} rounded onClick={()=>handleVariantsButtonClick()}>Byt förpackning</Button>
                     }

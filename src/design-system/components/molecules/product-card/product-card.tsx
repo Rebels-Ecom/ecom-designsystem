@@ -44,6 +44,7 @@ export interface IProductCard {
   productQuantityDisabled?: boolean
   className?: string
   changePackagingButton?: IButton;
+  border?: boolean;
   campaign?: {
     title: string;
     color: string;
@@ -67,7 +68,8 @@ function ProductCard({
   linkComponent: Link,
   className,
   defaultQuantity,
-  campaign
+  campaign,
+  border
 }: TProductCard) {
   
   if (!cardDisplay) {
@@ -142,6 +144,7 @@ function ProductCard({
         hideCartButton={hideCartButton}
         defaultQuantity={defaultQuantity}
         campaign={campaign}
+        border={border}
       />
     )
   }

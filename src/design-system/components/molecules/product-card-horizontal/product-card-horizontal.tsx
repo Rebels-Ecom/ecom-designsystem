@@ -22,7 +22,8 @@ const ProductCardHorizontal = ({
   linkComponent: Link,
   className = "",
   defaultQuantity,
-  campaign
+  campaign,
+  border = false,
 }: IProductCard & TProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
     product
@@ -45,6 +46,7 @@ const ProductCardHorizontal = ({
     <div
       className={cx(styles.productCardHorizontal, className, {
         [styles.campaign]: campaign?.title,
+        [styles.border]: border,
       })}
       style={style}
     >

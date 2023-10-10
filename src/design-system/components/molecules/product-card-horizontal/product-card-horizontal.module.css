@@ -5,11 +5,20 @@
   gap: 1.5rem;
   padding: 1rem;
   position: relative;
+  background-color: #fff;
+  width: 100%;
+  max-width: var(--content-max-width-text);
 
   @media (min-width: 48rem) {
     flex-direction: row;
     align-items: flex-end;
     padding: 0;
+  }
+
+  &.border {
+    border: solid 0.063rem var(--border-grey);
+    border-radius: 0.5rem;
+    padding: 1rem;
   }
 
   &.campaign {

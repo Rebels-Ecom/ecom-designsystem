@@ -22,5 +22,5 @@
 }
 
 .text {
-    max-width: 52rem;
+    max-width: var(--content-max-width-text);
 }
