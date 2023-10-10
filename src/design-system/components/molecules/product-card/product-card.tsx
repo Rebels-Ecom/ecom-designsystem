@@ -46,7 +46,7 @@ export interface IProductCard {
   changePackagingButton?: IButton;
   campaign?: {
     title: string;
-    color: 'primary' | 'secondary';
+    color: string;
   }
 }
 
@@ -165,6 +165,7 @@ function ProductCard({
         className={className}
         hideCartButton={hideCartButton}
         defaultQuantity={defaultQuantity}
+        campaign={campaign}
       />
     )
   }

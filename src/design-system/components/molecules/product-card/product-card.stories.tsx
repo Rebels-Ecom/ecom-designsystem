@@ -89,6 +89,10 @@ export const ProductCardStory: Story = {
     onVariantsButtonClick: () => {},
     productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
     hideCartButton: false,
+    campaign: {
+      title: 'Kampanj',
+      color: '#9A576F'
+    }
   },
 };
 
@@ -110,6 +114,10 @@ export const ProductCardStory_NoVariants: Story = {
     loading: false,
     onVariantsButtonClick: () => {},
     productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
+    campaign: {
+      title: 'Kampanj',
+      color: '#9A576F'
+    }
   },
 };
 
@@ -150,7 +158,7 @@ export const ProductCardStory_Horizontal: Story = {
     loading: false,
     campaign: {
       title: 'Kampanj',
-      color: 'primary'
+      color: '#9A576F'
     }
   },
 };

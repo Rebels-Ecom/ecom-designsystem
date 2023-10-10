@@ -37,11 +37,17 @@ const ProductCardHorizontal = ({
     onChangeQuantity && onChangeQuantity(quantity)
   }
 
+  const style: { [key: string]: string } = ({
+    '--campaign-color': campaign?.color ?? '#FFF',
+  })
+
   return (
-    <div className={cx(styles.productCardHorizontal, className, {
-      [styles.campaign]: campaign?.title,
-      [styles[campaign?.color ?? 'primary']]: campaign?.color
-    })}>
+    <div
+      className={cx(styles.productCardHorizontal, className, {
+        [styles.campaign]: campaign?.title,
+      })}
+      style={style}
+    >
       {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
       {removingProduct? (
         <Loader visible text={'Loading'} />

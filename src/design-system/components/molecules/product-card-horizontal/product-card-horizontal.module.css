@@ -17,9 +17,13 @@
     padding: 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
+    border-color: var(--campaign-color);
 
     & .campaignBox {
       border: 2px solid transparent;
+      border-color: var(--campaign-color);
+      background-color: var(--campaign-color);
+      color: white;
       font-family: var(--font-family-secondary);
       border-bottom-left-radius: 0.5rem;
       border-top-width: 0;
@@ -30,38 +34,11 @@
       padding: 0.75rem 2.5rem 0.5rem 1rem
     }
 
-    &.primary {
-      border-color: var(--color-text-decorative-purple);
-      
-      & .iconLink {
-        & button {
-          color: white;
-        }
-      }
-
-      & .campaignBox {
-        background-color: var(--color-text-decorative-purple);
-        border-color: var(--color-text-decorative-purple);
+    & .iconLink {
+      & button {
         color: white;
       }
     }
-    
-    &.secondary {
-      border-color: var(--tag-green);
-      
-      & .iconLink {
-        & button {
-          color: white;
-        }
-      }
-
-      & .campaignBox {
-        background-color: var(--tag-green);
-        border-color: var(--tag-green);
-        color: white;
-      }
-    }
-
   }
 
 
