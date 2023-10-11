@@ -1,69 +1,30 @@
 .list {
-    margin: 0 auto;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    @media (min-width: 48em) {
-      width:var(--product-listing-width-m);
-      justify-content: center;
-    }
-    @media (min-width: 64em) {
-      width:var(--product-listing-width-l);
-    }
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (min-width: 64em) {
+    width:var(--product-listing-width-l);
   }
+}
   
-  .listItem {
-    margin-top: 2rem;
-    width: 100%;
-    margin: 1rem auto;
+.listItem {
+  width: 100%;
+  flex: 1;
 
-    @media (min-width: 48em) {
-      width: calc(50% - 1rem);
-      margin-top: 1.5rem;
-
-      &:nth-child(2n - 1) {
-        margin-right: 1rem;
-        margin-left: 0;
-      }
-
-      &:nth-child(2n) {
-        margin-right: 0;
-        margin-left: 1rem;
-      }
-    }
-
-    @media (min-width: 64em) {
-      width: calc(25% - 2rem);
-      margin-top: 3rem;
-
-      &:nth-child(4n - 3) {
-        margin-right: 1rem;
-        margin-left: 0;
-      }
-
-      &:nth-child(4n - 2) {
-        margin-left: 1rem;
-        margin-right: 1rem;
-      }
-
-      &:nth-child(4n - 1) {
-        margin-left: 1rem;
-        margin-right: 1rem;
-      }
-
-      &:nth-child(4n) {
-        margin-left: 1rem;
-        margin-right: 0;
-      }
-
-      &:nth-child(1),
-      &:nth-child(2),
-      &:nth-child(3),
-      &:nth-child(4) {
-        margin-top: 0;
-      }
-    }
+  @media (min-width: 48em) {
+    width: calc(50% - 0.75rem);
   }
-  
+
+  @media (min-width: 64em) {
+    width: calc(33% - 0.75rem);
+  }
+
+  @media (min-width: 75em) {
+    width: calc(25% - 0.75rem);
+  }
+}

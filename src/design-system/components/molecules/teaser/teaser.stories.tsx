@@ -1,8 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react'
 import { Teaser } from './teaser'
-import { PictureStory_Teaser_Beer, PictureStory_Teaser_Gin, PictureStory_Teaser_KockensVal } from '../../atoms/picture/picture.stories';
+import { PictureStoryPistonHead, PictureStory_Teaser_Beer, PictureStory_Teaser_Gin, PictureStory_Teaser_KockensVal } from '../../atoms/picture/picture.stories';
 import { TagStoryRound_S } from '../../atoms/tag/tag.stories';
+import { ContentWrapper } from '../../layouts/content-wrapper/content-wrapper'
 
 const meta: Meta<typeof Teaser> = {
     title: 'Design System/Molecules/Teaser',
@@ -14,17 +15,19 @@ type Story = StoryObj<typeof Teaser>;
 
 const TeaserStoryTemplate: Story = {
   render: ({ ...args }) => (
-        <div style={{ margin: '0 auto', maxWidth: '73rem' }}>
-            <Teaser {...args}/>
-        </div>
+        <ContentWrapper>
+            <Teaser {...args} />
+            <Teaser {...args} imagePosition='right' />
+        </ContentWrapper>
   )
 };
 
 export const TeaserStoryLeft1 = {
     ...TeaserStoryTemplate,
     args: {
-        image: PictureStory_Teaser_KockensVal.args,
+        image: PictureStoryPistonHead.args,
         imagePosition: 'left',
+        imageRound: true,
         tag: TagStoryRound_S.args, 
         tagPosition:'left',
         heading: 'Kockens naturliga val',
