@@ -33,3 +33,4 @@ export { ProductSearchResultItem } from './product-search-result-item/product-se
 export { MenuButton } from './menu-button/menu-button'
 export { CampaignBanner } from './campaign-banner/campaign-banner'
 export { CampaignBox } from './campaign-box/campaign-box'
+export { CampaignMessage} from './campaign-message/campaign-message'
