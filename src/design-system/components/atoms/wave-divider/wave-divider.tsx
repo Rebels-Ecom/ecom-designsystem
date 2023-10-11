@@ -4,7 +4,7 @@ import styles from './wave-divider.module.css'
 type TWaveDivider = {
   color?: string;
   /**
-   * sm = 25% | md = 33% | lg = 50% | xl = 75%
+   * sm = 20% | md = 30% | lg = 40% | xl = 50%
    * @default 'md'
    */
   size?: 'sm' | 'md' | 'lg' | 'xl';

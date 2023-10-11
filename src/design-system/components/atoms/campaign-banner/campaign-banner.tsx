@@ -34,6 +34,7 @@ const CampaignBanner = ({ campaigns, position = 'absolute', animate = false }: T
 
         return (
           <motion.div
+            key={`${campaign.title}-${i}`}
             className={styles.campaignBanner}
             style={style}
             initial={animate ? { opacity: 0, translateY: '-50px' } : undefined}

@@ -6,19 +6,19 @@
 
   @media (min-width: 64rem) {
     &.sm {
-      width: 25%;
+      width: 20%;
     }
     
     &.md {
-      width: 33%;
+      width: 30%;
     }
     
     &.lg {
-      width: 50%;
+      width: 40%;
     }
     
     &.xl {
-      width: 75%;
+      width: 50%;
     }
   }
 
