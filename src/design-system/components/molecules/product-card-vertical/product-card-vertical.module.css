@@ -5,11 +5,38 @@
     justify-content: space-between;
     width: var(--product-card-width);
     height: var(--product-card-height);
+    margin:auto;
+    padding: 1rem;  
+    
     &:hover, &:focus, &:active{
       box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
     }
-    margin:auto;
-    padding: 1rem;  
+
+    &.campaign {
+      border: 2px solid transparent;
+      padding: 3rem 1rem 1rem;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border-color: var(--campaign-color);
+  
+      & .campaignBox {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: var(--campaign-color);
+        color: white;
+        font-family: var(--font-family-secondary);
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+  
+      & .iconLink {
+        & button {
+          color: white;
+        }
+      }
+    }
   }
   
   .imageWrapper {

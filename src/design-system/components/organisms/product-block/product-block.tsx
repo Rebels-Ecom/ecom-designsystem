@@ -21,15 +21,15 @@ const ProductBlock = ({ headingTag, title, richText, products }: IProductBlock) 
         {richText && richText}
       </MaxWidth>
       {products?.length ? products.map(item => {
-          return (
-            <BoxWrapper key={item.product.productId} noMargin padding={1}>
-              <ProductCard
-                {...item}
-                hideRemoveButton
-              />
-            </BoxWrapper>
-          )
-        }) : null}
+        return (
+            <ProductCard
+              key={item.product.productId} 
+              {...item}
+              hideRemoveButton
+              border
+            />
+        )
+      }) : null}
     </FlexContainer>
   </ContentWrapper>
 )

@@ -8,6 +8,7 @@ html {
     --max-width: 120rem;
     --content-max-width-wide: 103rem;
     --content-max-width-narrow: 73rem;
+    --content-max-width-text: 52rem;
     --content-max-width-md: 80rem;
     --product-listing-width-m: 37.5rem;
     --product-listing-width-l: 77.5rem;
