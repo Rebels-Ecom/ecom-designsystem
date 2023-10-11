@@ -1,0 +1,31 @@
+.waveDivider {
+  margin: 2rem 0;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+
+  @media (min-width: 64rem) {
+    &.sm {
+      width: 25%;
+    }
+    
+    &.md {
+      width: 33%;
+    }
+    
+    &.lg {
+      width: 50%;
+    }
+    
+    &.xl {
+      width: 75%;
+    }
+  }
+
+  & .waveDividerPath {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-miterlimit: 10;
+  }
+}
