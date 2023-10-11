@@ -26,6 +26,7 @@ export const CampaignBoxStory = {
     title: 'Campaign Title',
     description: 'Campaign Description',
     subDescription: 'Campaign SubDescription',
-    color: '#9A576F'
+    color: '#9A576F',
+    onClick: () => console.log('clicked')
   }
 }

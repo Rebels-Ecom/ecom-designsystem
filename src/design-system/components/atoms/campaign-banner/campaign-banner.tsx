@@ -43,7 +43,7 @@ const CampaignBanner = ({ campaigns, position = 'absolute', animate = false }: T
             <motion.button
               key={campaign.title}
               whileTap={!campaign.disabled ? {
-                scale: 0.9
+                scale: 0.95
               } : undefined}
               className={styles.button}
               onClick={campaign.onClick}
