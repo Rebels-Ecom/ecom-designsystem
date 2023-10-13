@@ -17,9 +17,21 @@ export interface IText {
   weight?: TTextWeight
   size?: TTextSize
   className?: string
+  upperCase?: boolean;
 }
 
-function Text({ children, align = 'left', componentType, href, underline = false, borderBottom = false, weight, size = 'regular', className }: IText) {
+function Text({
+  children,
+  align = 'left',
+  componentType,
+  href,
+  underline = false,
+  borderBottom = false,
+  weight,
+  size = 'regular',
+  className,
+  upperCase
+}: IText) {
   function getTextAlignment(alignment: TTextAlignment) {
     switch (alignment) {
       case 'left':
@@ -55,12 +67,15 @@ function Text({ children, align = 'left', componentType, href, underline = false
       className={cx(
         styles.text,
         'p',
-        weight === 'bold' && styles.textBold,
-        underline && styles.textUnderlined,
-        borderBottom && styles.textWithBottomBorder,
         styles[getTextAlignment(align)],
-        size==='small' ? 'bodyS' : 'body',
-        className ? className : ''
+        size === 'small' ? 'bodyS' : 'body',
+        className ? className : '',
+        {
+          [styles.textBold]: weight === 'bold',
+          [styles.textUnderlined]: underline,
+          [styles.textWithBottomBorder]: borderBottom,
+          [styles.upperCase]: upperCase,
+        }
       )}
     >
       {children}

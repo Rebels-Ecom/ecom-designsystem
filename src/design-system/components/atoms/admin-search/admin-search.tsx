@@ -6,14 +6,9 @@ import { InputText } from '../inputs/input-text/input-text'
 import cx from 'classnames'
 import { Loader } from '../loader/loader'
 
-export interface ISearchNoResult {
-  text: React.ReactNode | string
-}
-
 export interface IResult {
   name: string
   companyName: string
-  companyId: number
   email: string
 }
 
@@ -27,7 +22,7 @@ export interface IAdminSearch {
   results: Array<IResult>
   onClickSearchResult: CallableFunction
   disabled?: boolean
-  noResultText: ISearchNoResult
+  noResultText: React.ReactNode | string
   placeholder?: string
   className?: string
 }
@@ -88,32 +83,29 @@ function AdminSearch({ className, id, isLoading=false, isOpen, setIsOpen, query,
           </button>
         )}
       </div>
-      {isOpen && query && isLoading &&(
-        <div className={styles.searchResultsLoading}>
-          <Loader visible={true} position='relative' color='orange' size='sm'/>
-        </div>
-      )}
-      {isOpen && query && !isLoading &&(
-        <div className={styles.searchResults}>
-          <ul aria-labelledby={id}>
-            {results.map((li: IResult, i: number) => (
-              <li key={`${id}_${i}`} className={styles.resultListItem}>
-                <button key={`${id}_${i}`} onClick={() => handleOnClickSearchResult(li)} className={styles.resultListItemBtn}>
-                  <span className={styles.serchResultItemText}>{li.name}</span>
-                  <span className={styles.serchResultItemText}>{li.companyName}</span>
-                  <span className={styles.serchResultItemText}>{li.companyId}</span>
-                  <span className={styles.serchResultItemText}>{li.email}</span>
-                </button>
-              </li>
-            ))}
-            {results.length === 0 && query.length ? (
-              <li key={`search_no_result_${id}`} className={styles.noResultListItem}>
-                <div >
-                  <span className={styles.serchResultItemText}>{noResultText.text}</span>
-                </div>
-              </li>
-            ) : null}
-          </ul>
+      {isOpen && query && (
+        <div className={styles.searchResultsContainer}>
+          {isLoading ?
+            <Loader visible={true} position='relative' color='orange' size='sm'/> :
+            (
+              <ul aria-labelledby={id}>
+                {results.map((li: IResult, i: number) => (
+                  <li key={`${id}_${i}`} className={styles.resultListItem}>
+                    <button key={`${id}_${i}`} onClick={() => handleOnClickSearchResult(li)} className={styles.resultListItemBtn}>
+                      <span className={styles.serchResultItemText}>{li.name}</span>
+                      <span className={styles.serchResultItemText}>{li.companyName}</span>
+                      <span className={styles.serchResultItemText}>{li.email}</span>
+                    </button>
+                  </li>
+                ))}
+                {results.length === 0 && query.length ? (
+                  <li key={`search_no_result_${id}`} className={styles.noResultListItem}>
+                    <span className={styles.serchResultItemText}>{noResultText}</span>
+                  </li>
+                ) : null}
+              </ul>
+            )
+          }
         </div>
       )}
     </div>

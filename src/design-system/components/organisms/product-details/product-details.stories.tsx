@@ -8,6 +8,7 @@ import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import { dummyProductBeerDetails, dummyProductWineDetails } from './dummy-product-details'
+import { ContentWrapper } from '../../layouts'
 
 const meta: Meta<typeof ProductDetails> = {
     title: 'Design System/Organisms/ProductDetails',
@@ -23,7 +24,11 @@ const ProductDetailsStoryTemplate: Story = {
         alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
     }
 
-    return(<ProductDetails {...args} addToCart={handleAddToCart}/>)
+    return (
+        <ContentWrapper>
+            <ProductDetails {...args} addToCart={handleAddToCart}/>
+        </ContentWrapper>
+    )
   }
 }
 
@@ -120,6 +125,11 @@ export const ProductDetailsStory = {
         productDetail: productDetailsArgs,
         changePackagingButton:ChangePackagingButtonStory.args,
         addToCart: ButtonProductCardStory.args,
+        campaign: {
+            title: 'Campaign',
+            description: 'Campaign description',
+            subDescription: 'Campaign sub description',
+        }
     }
 }
 

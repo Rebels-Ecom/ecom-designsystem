@@ -21,7 +21,9 @@ const ProductCardHorizontal = ({
   productQuantityDisabled,
   linkComponent: Link,
   className = "",
-  defaultQuantity
+  defaultQuantity,
+  campaign,
+  border = false,
 }: IProductCard & TProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
     product
@@ -36,9 +38,19 @@ const ProductCardHorizontal = ({
     onChangeQuantity && onChangeQuantity(quantity)
   }
 
+  const style: { [key: string]: string } = ({
+    '--campaign-color': campaign?.color ?? '#FFF',
+  })
+
   return (
-    <div className={cx(styles.productCardHorizontal, className)}
+    <div
+      className={cx(styles.productCardHorizontal, className, {
+        [styles.campaign]: campaign?.title,
+        [styles.border]: border,
+      })}
+      style={style}
     >
+      {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
       {removingProduct? (
         <Loader visible text={'Loading'} />
       ) : (
@@ -81,7 +93,7 @@ const ProductCardHorizontal = ({
                 
                 <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
                 
-                {country !== '' && <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country}`}</p>}
+                {(country !== '' || productId !== '') && <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country ?? ''}`}</p>}
 
                 <ProductQuantityInput
                   className={styles.quantityInput}

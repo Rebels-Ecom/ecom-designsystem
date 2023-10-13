@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { ProductCardList } from './product-card-list'
 import { ProductCardStory } from '../../molecules/product-card/product-card.stories'
 import { dummyBeerList } from './dummy-product-list-beer'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { IProduct } from '../../../../types/product'
+import { ContentWrapper } from '../../layouts'
 
 const meta: Meta<typeof ProductCardList> = {
   title: 'Design System/Organisms/ProductCardList',
@@ -25,9 +25,9 @@ const ProductCardListStoryTemplate: Story = {
     }
 
     return (
-      <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
+      <ContentWrapper>
         <ProductCardList productCards={cardList} addToCart={handleAddToCart} />
-      </div>
+      </ContentWrapper>
     )
   },
 }

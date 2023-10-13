@@ -1,0 +1,37 @@
+.campaignBox {
+  width: 100%;
+  padding: 1.5rem;
+  background-color: var(--campaign-box-color);
+  color: var(--color-text-white);
+  border: none;
+  border-radius: 0.5rem;
+  word-break: break-word;
+
+  &.isButton {
+    cursor: pointer;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  & .title {
+    text-transform: uppercase;
+    font-family: var(--font-family-secondary);
+    margin-top: 0;
+    margin-bottom: 1.25rem
+  }
+
+  & .description {
+    font-size: 1rem;
+  }
+
+  & .divider {
+    margin: 0.75rem 0;
+  }
+  
+  & .subDescription {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+  }
+}

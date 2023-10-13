@@ -5,61 +5,110 @@
     display: flex;
     flex-direction: column;
     background: var(--surface-default);
+    padding-bottom: 2rem;
+
     @media (min-width: 64em) {
         flex-direction: row;
+        align-items: center;
     }
-    @media (min-width: 85.375em) {
-        height: var(--product-details-height);
-    }
-  }
 
-.imageOuterWrapper {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    @media (min-width: 64em) {
-      width: 50%;
-  }
-}
+    & .content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+  
+      @media (min-width: 64em) {
+        flex: 1 1 50%;
+        max-width: var(--content-max-width-text)
+      }
 
-.loadingBars {
-  max-height: 70%;
-  @media (min-width: 64em) {
-    width: 50%;
-    max-height: 80%;
-    right: -40%;
-  } 
-}
-    
-  .imageWrapper {
-    width: 100%;
-    height:100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:before {
-      content: '';
-      display: block;
-      padding-bottom: 120%;
-    }
-    @media (min-width: 48em) {
-        &:before {
-            padding-bottom: 70%;
+      &.leftContent {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        & .loadingBars {
+          width: 30%;
+          padding-left: 1rem;
+          word-break: break-word;
         }
-    }
-    @media (min-width: 64em) {
-        width:50%;
-        &:before {
-            padding-bottom: 120%;
+        
+        & .imageWrapper {
+          padding: 2rem 4rem 2rem 0;
+          width: 70%;
+          overflow: hidden;
+          
+          &.variantsListOpen {
+            @media (max-width: 48em) {
+              display: none;
+            }
+          }
+
+          & .cardPicture {
+            display: block;
+            max-height: 50vh;
+            text-align: center;
+          }
+          
+          & .cardImage{
+            height: 100%;
+            width: 100%;
+            max-height: 50vh;
+            object-fit: contain;
+          }
         }
-    }
-    &.variantsListOpen {
-      @media (max-width: 48em) {
-        display: none;
+      }
+      &.rightContent {
+        & .quantityInput {
+          width: 100%;
+          margin: 0.5rem 0;
+        }
+      
+        & .productVariants {
+          @media (min-width: 64em) {
+            height: 80%;
+            margin: auto;
+          }
+      
+          & ul, & button {
+            width: 100%;
+            @media (min-width: 64em) {
+              width: 80%;
+            }
+          }
+        }
+        
+        & .heading {
+          margin: 0.5rem 0;
+          font-family: var(--font-family-secondary);
+          font-weight: var(--font-weight-bold);
+        }
+        
+        & .description {
+          margin: 0;
+        }
+        
+        & .specsText {
+          margin: 0 0 0.25rem;
+      
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+        
+        & .textPurple {
+          font-family: var(--font-family-secondary);
+          margin: 0;
+          color: var(--color-text-decorative-purple);
+        }
+      
+        & .btn {
+          width: 100%; 
+      
+          @media (min-width: 64em) {
+              width: auto;
+          }
+        }
       }
     }
   }
@@ -93,88 +142,4 @@
     width: 100%;
   }
 
-  .quantityInput {
-    width: 100%;
-    margin: 1rem 0 1rem 0;
-  }
-  
-  .contentWrapper {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    @media (min-width: 64em) {
-      position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        width: 50%;
-        max-width: var(--product-details-max-width);
-        padding: 1rem 1.25rem;
-        justify-content: center;
-    }
-  }
-
-  .productVariants {
-    @media (min-width: 64em) {
-      height: 80%;
-      margin: auto;
-    }
-
-    & ul, & button {
-      width: 100%;
-      @media (min-width: 64em) {
-        width: 80%;
-      }
-    }
-  }
-  
-  .heading {
-    margin: 0.5rem 0;
-    font-family: var(--font-family-secondary);
-    font-weight: var(--font-weight-bold);
-  }
-  
-  .specsText {
-    margin: 0 0 0.5rem 0;
-  }
-  
-  .textPurple {
-    font-family: var(--font-family-secondary);
-    margin: 0 0 0.5rem 0;
-    color: var(--color-text-decorative-purple);
-  }
-    
-  .cardPicture {
-    position: absolute;
-    z-index: 1;
-    height: 100%;
-    width:100%;
-    top: 2rem;
-    @media (min-width: 64em) {
-        width: 55%;
-        top: 0;
-    }
-  }
-  
-  .cardImage{
-    position: relative;
-    z-index: 1;
-    margin: auto;
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 2rem;
-    object-fit: contain;
-    @media (min-width: 85.375em) {
-      padding: 3rem;
-    }
-  }
-
-  .btn {
-    width: 100%; 
-    @media (min-width: 64em) {
-        width: auto;
-    }
-  }
   

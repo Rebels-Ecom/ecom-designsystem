@@ -10,8 +10,8 @@ export interface IPicture {
   id: string
   sources: Array<IPictureSource>
   src: string
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
   loading?: TPictureLoading
   decoding?: TPictureDecoding
   alt?: string

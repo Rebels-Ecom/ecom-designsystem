@@ -6,6 +6,7 @@
     flex-direction: column;
     padding: 1rem;
     background: var(--background);
+
     
     @media(min-width: 64em) {
         padding: 1rem 3.75rem 2.5rem 3.75rem;
@@ -15,6 +16,13 @@
         }
     }
     
+    &.noMargin {
+        margin: 0;
+    }
+    
+    &.noPadding {
+        padding: 0;
+    }
 
     &.spacing-xs { gap: 0.3rem;}
     &.spacing-sm { gap: 0.5rem;}
@@ -23,7 +31,7 @@
     &.spacing-xl { gap: 2rem;}
 
     &.noWrap {flex-wrap: nowrap;}
-    &.hasMaxWidth {max-width: 43.75rem;}
+    &.hasMaxWidth { max-width: 43.75rem; }
     &.withBorder { border: solid 0.063rem var(--border-grey); border-radius: 0.5rem; }
 }
 .groupWrapper {

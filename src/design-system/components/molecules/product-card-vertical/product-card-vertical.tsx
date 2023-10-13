@@ -24,7 +24,8 @@ const ProductCardVertical = ({
   changePackagingButton,
   onVariantsButtonClick,
   className,
-  defaultQuantity
+  defaultQuantity,
+  campaign
 }: IProductCard & TProductCardVertical) => {
   const {
     productId,
@@ -52,6 +53,10 @@ const ProductCardVertical = ({
     onVariantsButtonClick && onVariantsButtonClick()
   }
 
+  const style: { [key: string]: string } = ({
+    '--campaign-color': campaign?.color ?? '#FFF',
+  })
+
   if (variantsOpen && selectedVariantId) {
     return (
       <ProductVariantList
@@ -63,7 +68,13 @@ const ProductCardVertical = ({
     )
   } else {
     return (
-      <div className={cx(styles.productCardVertical, className ? className : '')}>
+      <div
+        className={cx(styles.productCardVertical, className ? className : '', {
+          [styles.campaign]: campaign?.title
+        })}
+        style={style}
+      >
+        {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
         {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
         {loading ? (
           <Placeholder type="image" />
