@@ -8,7 +8,7 @@ import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_ho
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
 import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, MenuButton, ExpandableWrapper } from '../../atoms'
-import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserProfileDropdownControlled, UserInfoSummary, DropdownList } from '../../molecules'
+import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserProfileDropdownControlled, UserInfoSummary, DropdownList, DesktopNavigation } from '../../molecules'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { ContentWrapper, FlexContainer } from '../../layouts'
 import { TabsStory } from '../../molecules/tabs/tabs.stories'
@@ -148,10 +148,10 @@ const HeaderStoryTemplate: Story = {
               { name: 'Link 2', href: "#" },
               { name: 'Link 3', href: "#" },
               { name: 'Link 4', href: "#" },
-              { name: 'Link with sub links', links: [
+              { name: 'Link with sub links', href: '#', links: [
                 { name: 'Sub link', href: '#' },
                 { name: 'Sub link 2', href: '#' },
-                { name: 'Sub link with third level links', links: [
+                { name: 'Sub link with third level links', href: '#', links: [
                   { name: 'Third level link', href: '#' },
                   { name: 'Third level link 2', href: '#' },
                   { name: 'Third level link 3', href: '#' }
@@ -177,7 +177,22 @@ const HeaderStoryTemplate: Story = {
             <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
           </>
         }
-        desktopNavigation={<Navigation {...NavigationStory.args} isOpen={isOpen} />}
+        desktopNavigation={<DesktopNavigation categories={[
+          { name: 'Link', href: "#" },
+          { name: 'Link 2', href: "#" },
+          { name: 'Link 3', href: "#" },
+          { name: 'Link 4', href: "#" },
+          { name: 'Link with sub links', href: '#', links: [
+            { name: 'Sub link', href: '#' },
+            { name: 'Sub link 2', href: '#' },
+            { name: 'Sub link with third level links', href: '#', links: [
+              { name: 'Third level link', href: '#' },
+              { name: 'Third level link 2', href: '#' },
+              { name: 'Third level link 3', href: '#' }
+            ] }
+          ]}
+        ]}
+        currentSlug='/' />}
       />
         
       <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
