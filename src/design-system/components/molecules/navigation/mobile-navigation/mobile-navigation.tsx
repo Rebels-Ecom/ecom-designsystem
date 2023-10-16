@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Fragment, useEffect, useState } from 'react';
-import { Button, Icon } from '../../../atoms';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { Button, Icon, IconButton } from '../../../atoms';
 import styles from './mobile-navigation.module.css';
+import cx from 'classnames';
 
 export type TNavLink = {
   // Link text / title
@@ -36,6 +37,7 @@ export interface INavigation {
   isAuthenticated?: boolean;
   signOutLabel?: string;
   onSignOut?: () => void;
+  actions?: JSX.Element;
 }
 
 
@@ -61,6 +63,7 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
       key={name}
       initial={{ opacity: 0, translateX: '10vw' }}
       whileInView={{ opacity: 1, translateX: 0, transition: { delay: delay ?? 0.3 } }}
+      viewport={{ once: true }}
       className={styles.menuListItem}
     >
       {isLink(link) ? (
@@ -77,7 +80,7 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
         >
           <span className={`${open ? styles.menuListItemLinkActive : ''}`}>{name}</span>
           {/* <Plus className={`stroke-black ${open ? 'rotate-45' : 'rotate-0'} transition-transform`} /> */}
-          <Icon icon={open ? 'icon-chevron-up' : 'icon-chevron-down'} />
+          <Icon className={styles.itemIcon} icon={open ? 'icon-chevron-up' : 'icon-chevron-down'} />
         </button>
       )}
       {!!links?.length ? (
@@ -87,7 +90,7 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
               {isLink(secondLink) ? (
                 <a className={styles.subMenuListItemLink} href={secondLink.href} target={secondLink.openInNewTab ? '_blank' : '_self'}>
                   {secondLink.name}
-                  <Icon icon='icon-arrow-right' />
+                  <Icon  className={styles.itemIcon} icon='icon-chevron-right' />
                 </a>
               ) : (
                 <button
@@ -97,7 +100,7 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
                   }}
                 >
                   <span className={`${activeSecondLevel === secondLink.name ? styles.subMenuListItemLinkActive : ''}`}>{secondLink.name}</span>
-                  <Icon icon={activeSecondLevel === secondLink.name ? 'icon-chevron-up' : 'icon-chevron-down'} />
+                  <Icon className={styles.itemIcon} icon={activeSecondLevel === secondLink.name ? 'icon-chevron-up' : 'icon-chevron-down'} />
                 </button>
               )}
               {isCategory(secondLink) && secondLink.links?.length ? (
@@ -111,7 +114,7 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
                       {isLink(thirdLink) ? (
                         <a className={styles.subMenuListItemLink} href={thirdLink.href} target={thirdLink.openInNewTab ? '_blank' : '_self'}>
                           {thirdLink.name}
-                          <Icon icon='icon-chevrons-right' />
+                          <Icon className={styles.itemIcon} icon='icon-chevron-right' />
                         </a>
                       ) : // TODO: add support for another level if needed
                       undefined}
@@ -127,8 +130,14 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
   );
 };
 
-const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut }: INavigation) => {
+const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut, actions }: INavigation) => {
   const [open, setOpen] = useState(false);
+  const [distanceTop, setDistanceTop] = useState(0);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDistanceTop((mobileNavRef.current?.offsetTop ?? 0) + (mobileNavRef.current?.clientHeight ?? 0));
+  }, [])
 
   useEffect(() => {
     const el = document.body;
@@ -143,10 +152,11 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
   }, [open]);
 
   return (
-    <div className={styles.mobileNavigation}>
+    <div className={styles.mobileNavigation} ref={mobileNavRef}>
       <div className={styles.top}>
-        {/* <Logo width="7rem" height="2.25rem" className="fill-black" /> */}
-        <h3>Logo</h3>
+        {actions && (
+          <div className={styles.actions}>{actions}</div>
+        )}
         <div className={styles.topInner}>
           {/* mode="wait" */}
           <AnimatePresence initial={false} exitBeforeEnter>
@@ -159,7 +169,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
                 onClick={() => setOpen(true)}
                 className={styles.menuButton}
               >
-                <Icon icon='icon-menu' />
+                <Icon className={styles.menuIcon} icon='icon-menu' />
               </motion.button>
             )}
 
@@ -172,7 +182,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
                 onClick={() => setOpen(false)}
                 className={styles.menuButton}
               >
-                <Icon className={styles.menuCloseIcon} icon='icon-plus' />
+                <Icon className={cx(styles.menuIcon, styles.menuCloseIcon)} icon='icon-plus' />
               </motion.button>
             )}
           </AnimatePresence>
@@ -180,24 +190,27 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
       </div>
       <motion.nav
         className={styles.content}
-        initial={{ translateX: '100vw' }}
-        animate={{ translateX: open ? '0' : '100vw' }}
+        initial={{ x: '100vw' }}
+        animate={{ x: open ? '0' : '100vw' }}
         transition={{ type: 'tween' }}
+        style={{ paddingTop: `${distanceTop}px` }}
       >
-        <ul className={styles.menuList}>
-          {categories.map((cat, i) => {
-            if (isCategory(cat)) {
-              return <ListItem key={cat.name} name={cat.name} links={cat.links} delay={i * 0.1} />;
-            } else if (isLink(cat)) {
-              return <ListItem key={cat.name} name={cat.name} link={cat} delay={i * 0.1} />;
-            }
-          })}
-        </ul>
-        {isAuthenticated && signOutLabel && onSignOut && (
-          <div className={styles.signOut}>
-            <Button children={signOutLabel} onClick={onSignOut} surface='x' type='button' />
-          </div>
-        )}
+        <div className={styles.menuListWrapper}>
+          <ul className={styles.menuList}>
+            {categories.map((cat, i) => {
+              if (isCategory(cat)) {
+                return <ListItem key={cat.name} name={cat.name} links={cat.links} delay={i * 0.1} />;
+              } else if (isLink(cat)) {
+                return <ListItem key={cat.name} name={cat.name} link={cat} delay={i * 0.1} />;
+              }
+            })}
+          </ul>
+          {isAuthenticated && signOutLabel && onSignOut && (
+            <div className={styles.signOut}>
+              <Button children={signOutLabel} onClick={onSignOut} surface='x' type='button' />
+            </div>
+          )}
+        </div>
       </motion.nav>
       <AnimatePresence>
         {open && (

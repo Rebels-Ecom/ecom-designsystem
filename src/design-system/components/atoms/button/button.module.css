@@ -60,9 +60,11 @@
 
 /* TODO: this should replace secondary when approved */
 .x {
-  background-color: var(--cta-x-default);
-  border-radius: 0.25rem;
-  border-color: var(--border-on-x);
+  @media (min-width: 48em) {
+    background-color: var(--cta-x-default);
+    border-radius: 0.25rem;
+    border-color: var(--border-on-x);
+  }
 }
 
 .rounded {

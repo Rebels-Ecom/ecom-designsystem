@@ -1,19 +1,18 @@
 import styles from './header.module.css'
 import { Above, Below, ContentWrapper, FlexContainer } from '../../layouts'
-import { Tabs } from '../../molecules'
+import { DropdownList, Tabs, UserInfoSummary, UserProfileDropdown } from '../../molecules'
+import {UserInfoSummaryStory } from '../../molecules/user-info-summary/user-info-summary.stories'
+import {DropdownListStory } from '../../molecules/dropdown-list/dropdown-list.stories'
 
 export interface IHeader {
   salesTool?: JSX.Element; // TODO: Create sales tool component
   topNavBar?: JSX.Element;
   logo?: JSX.Element;
-  searchBar?: JSX.Element;
+  mobileSearchBar?: JSX.Element;
   mobileActions?: JSX.Element;
+  mobileNavigation?: JSX.Element;
+  desktopSearchBar?: JSX.Element;
   desktopActions?: JSX.Element;
-  mobileNavigation?: {
-    isOpen: boolean;
-    tab1: JSX.Element;
-    tab2: JSX.Element;
-  },
   desktopNavigation?: JSX.Element;
 }
 
@@ -21,10 +20,11 @@ const Header = ({
   salesTool,
   topNavBar,
   logo,
-  searchBar,
+  mobileSearchBar,
   mobileActions,
-  desktopActions,
   mobileNavigation,
+  desktopSearchBar,
+  desktopActions,
   desktopNavigation
 }: IHeader) => {
   return (
@@ -33,41 +33,26 @@ const Header = ({
       {topNavBar && topNavBar}
       {(
         logo ||
-        searchBar ||
+        mobileSearchBar ||
         mobileActions ||
-        desktopActions ||
         mobileNavigation ||
+        desktopSearchBar ||
+        desktopActions ||
         desktopNavigation
       ) && (
         <>
           <Below breakpoint='lg'>
             {(matches) => matches && (
-              <>
-                <ContentWrapper>
-                  <FlexContainer flexDirection='column'>
-                    <FlexContainer alignItems='center' justifyContent='space-between' stretch>
-                      {logo && logo}
-                      {mobileActions && mobileActions}
-                    </FlexContainer>
-                    {searchBar && searchBar}
+              <ContentWrapper>
+                <FlexContainer flexDirection='column'>
+                  <FlexContainer alignItems='center' justifyContent='space-between' stretch>
+                    {logo && logo}
+                    {mobileActions && mobileActions}
+                    {mobileNavigation}
                   </FlexContainer>
-                </ContentWrapper>
-                <Tabs
-                  isOpen={!!mobileNavigation?.isOpen}
-                  tabs={[
-                    {
-                      id: '3',
-                      tabTitle: 'Meny',
-                      content: mobileNavigation?.tab1,
-                    },
-                    {
-                      id: '4',
-                      tabTitle: 'Mitt spendrups',
-                      content: mobileNavigation?.tab2,
-                    },
-                  ]}
-                />
-              </>
+                  {mobileSearchBar && mobileSearchBar}
+                </FlexContainer>
+              </ContentWrapper>
             )}
           </Below>
           <Above breakpoint='lg'>
@@ -76,7 +61,7 @@ const Header = ({
                 <ContentWrapper padding={[1, 0]}>
                   <FlexContainer alignItems='center'>
                     {logo && logo}
-                    {searchBar && searchBar}
+                    {desktopSearchBar && desktopSearchBar}
                     {desktopActions && desktopActions}
                   </FlexContainer>
                 </ContentWrapper>

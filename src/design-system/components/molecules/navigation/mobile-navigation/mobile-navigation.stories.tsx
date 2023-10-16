@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { MobileNavigation } from './mobile-navigation';
+import logotype_desktop_horizontal from '../../../../../logotypes/Spendrups_logo_mobile_vertical.svg'
+import logotype_mobile_vertical from '../../../../../logotypes/Spendrups_logo_mobile_vertical.svg'
 
 export default {
   title: 'Design System/Molecules/MobileNavigation',

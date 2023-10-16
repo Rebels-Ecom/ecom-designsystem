@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from './header'
 import { Navigation } from '../../molecules/navigation/navigation'
@@ -7,10 +7,10 @@ import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
-import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, MenuButton } from '../../atoms'
-import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype } from '../../molecules'
+import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, MenuButton, ExpandableWrapper } from '../../atoms'
+import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserProfileDropdownControlled, UserInfoSummary, DropdownList } from '../../molecules'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
-import { ContentWrapper } from '../../layouts'
+import { ContentWrapper, FlexContainer } from '../../layouts'
 import { TabsStory } from '../../molecules/tabs/tabs.stories'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
@@ -19,6 +19,9 @@ import { AdminSearchStory, itemsToFilterOn } from '../../atoms/admin-search/admi
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
+import { DefaultMobileNavigation } from '../../molecules/navigation/mobile-navigation/mobile-navigation.stories'
+import { UserInfoSummaryStory } from '../../molecules/user-info-summary/user-info-summary.stories'
+import { DropdownListStory } from '../../molecules/dropdown-list/dropdown-list.stories'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -37,6 +40,8 @@ const HeaderStoryTemplate: Story = {
     const [adminSearchResults, setAdminSearchResults] = React.useState<Array<any>>([])
     const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
+    const [showUserInfo, setShowUserInfo] = React.useState(false)
+    const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
     const handleOnClick = () => setIsOpen(!isOpen)
     const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
@@ -44,6 +49,10 @@ const HeaderStoryTemplate: Story = {
     const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
     const onClickLogout = () => { console.log('Handle logout...')}
     const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
+
+    const toggleUserInfo = () => {
+      setShowUserInfo(!showUserInfo);
+    }
 
     useEffect(() => {
       let pattern = new RegExp(query.toLowerCase(), 'i')
@@ -54,6 +63,8 @@ const HeaderStoryTemplate: Story = {
         (item.email && pattern.test(item.email.toLowerCase()))
         )))
     }, [query]);
+
+    console.log(isSearchbarOpen)
 
     return (
       <>
@@ -97,9 +108,9 @@ const HeaderStoryTemplate: Story = {
               ]  
             }}
         />}
-        searchBar={<SearchNavBar {...SearchNavBarStory.args} />}
+        mobileSearchBar={<ExpandableWrapper open={isSearchbarOpen}><SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} /></ExpandableWrapper>}
         mobileActions={
-          <>
+          <FlexContainer alignItems='center' justifyContent='flex-end' flex='1'>
             {activeUser?.name &&
               <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
             }
@@ -117,14 +128,45 @@ const HeaderStoryTemplate: Story = {
               isTransparent={true}
               onClick={onClickCartIcon}
             />
-            <MenuButton isOpen={isOpen} onClick={handleOnClick} />
-          </>
+            {/* TODO: convert to mobile navigation pattern? */}
+            {/* <IconButton icon='icon-settings' size='large' isLink={false} isTransparent={true} onClick={() => setIsUserProfileOpen(!isUserProfileOpen)} /> */}
+            <>
+              <IconButton onClick={toggleUserInfo} icon='icon-user' size='large' isTransparent isLink={false} />
+              <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
+
+                <UserInfoSummary {...UserInfoSummaryStory.args} />
+                <DropdownList {...DropdownListStory.args} />
+              </DrawerSidebar>
+            </>
+            {/* <MenuButton isOpen={isOpen} onClick={handleOnClick} /> */}
+          </FlexContainer>
         }
-        mobileNavigation={{
-          isOpen,
-          tab1: TabsStory.args.tabs[0].content,
-          tab2: TabsStory.args.tabs[1].content,
-        }}
+        mobileNavigation={(
+          <MobileNavigation
+            categories={[
+              { name: 'Link', href: "#" },
+              { name: 'Link 2', href: "#" },
+              { name: 'Link 3', href: "#" },
+              { name: 'Link 4', href: "#" },
+              { name: 'Link with sub links', links: [
+                { name: 'Sub link', href: '#' },
+                { name: 'Sub link 2', href: '#' },
+                { name: 'Sub link with third level links', links: [
+                  { name: 'Third level link', href: '#' },
+                  { name: 'Third level link 2', href: '#' },
+                  { name: 'Third level link 3', href: '#' }
+                ] }
+              ]}
+            ]}
+            currentSlug='/'
+            />
+          )}
+        // mobileNavigation={{
+        //   isOpen,
+        //   tab1: TabsStory.args.tabs[0].content,
+        //   tab2: TabsStory.args.tabs[1].content,
+        // }}
+        desktopSearchBar={<SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />}
         desktopActions={
           <>
             {activeUser?.name &&
