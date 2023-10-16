@@ -1,22 +1,22 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { MobileNavigation } from './mobile-navigation';
+import { DesktopNavigation } from './desktop-navigation';
 
 export default {
-  title: 'Design System/Molecules/MobileNavigation',
-  component: MobileNavigation,
+  title: 'Design System/Molecules/DesktopNavigation',
+  component: DesktopNavigation,
   tags: ['autodocs'],
   parameters: {
     padding: false,
   },
-} as Meta<typeof MobileNavigation>;
+} as Meta<typeof DesktopNavigation>;
 
-type Story = StoryObj<typeof MobileNavigation>;
+type Story = StoryObj<typeof DesktopNavigation>;
 
-export const DefaultMobileNavigation: Story = {
+export const DefaultDesktopNavigation: Story = {
   render: (args) => {
-    return <MobileNavigation {...args} />;
+    return <DesktopNavigation {...args} />;
   },
   args: {
     categories: [
@@ -26,18 +26,13 @@ export const DefaultMobileNavigation: Story = {
         openInNewTab: true,
       },
       {
-        name: 'Om oss',
-        href: '#',
-        openInNewTab: true,
-      },
-      {
         name: 'Mitt Spendrups',
         href: '#',
         links: [
           {
             name: 'Item 1',
-            subtitle: 'Information',
             href: '#',
+            subtitle: 'Information',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             links: [
               {
@@ -100,7 +95,16 @@ export const DefaultMobileNavigation: Story = {
               }
             ],
           },
+          {
+            name: 'Item 3',
+            href: '#'
+          }
         ],
+      },
+      {
+        name: 'Om oss',
+        href: '#',
+        openInNewTab: true,
       },
     ],
     isAuthenticated: true,

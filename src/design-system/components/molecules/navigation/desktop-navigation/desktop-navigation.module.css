@@ -1,0 +1,215 @@
+.desktopNavigation {
+  width: 100%;
+  background-color: var(--navigation-surface-default);
+
+  & .topLevel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    & .topLevelLinks {
+      margin: 0 auto;
+      width: 100%;
+
+      & .topLevelLinkList {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        
+        & .topLevelLinkInner {
+          position: relative;
+
+          & .topLevelLinkActive {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0.25rem;
+            width: calc(100% - 2rem);
+            background-color: var(--cta-tertiary-default);
+          }
+
+          & .topLevelLink {
+            position: relative;
+            height: 5rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem 1rem 0;
+            border: none;
+            background: none;
+            text-decoration: none;
+            color: var(--color-text-default);
+            cursor: pointer;
+            font-family: var(--font-family-secondary);
+            font-size: 1rem;
+
+            &.active {
+              color: var(--cta-tertiary-default);
+            }
+          }
+        }
+      }
+    }
+
+    & .secondLevel {
+      width: 100%;
+
+      & .secondLevelInner {
+        display: flex;
+        width: 100%;
+
+        & .logoWrapper {
+          height: 88px;
+        }
+
+        & .secondLevelLinkList {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+
+          & .secondLevelLinkItem {
+            position: relative;
+          }
+
+          & .secondLevelLinkActive {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0.25rem;
+            width: calc(100% - 2rem);
+            background-color: var(--cta-tertiary-default);
+          }
+
+          & .secondLevelLink {
+            height: 4rem;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem 1rem 0;
+            border: none;
+            background: none;
+            color: var(--color-text-default);
+            cursor: pointer;
+            text-decoration: none;
+            font-family: var(--font-family-secondary);
+            font-size: 0.875rem;
+
+            &.active {
+              color: var(--cta-tertiary-default);
+            }
+          }
+        }
+      }
+    }
+
+  }
+  & .thirdLevel {
+    margin: 0 auto;
+    width: 100%;
+    overflow: hidden;
+    padding: 1rem 0;
+
+    & .thirdLevelInner {
+      height: calc(100vh-160px);
+      overflow-y: scroll;
+      padding-bottom: 2rem;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      & .thirdLevelTextWrapper {
+        position: relative;
+        display: flex;
+        width: 100%;
+        align-items: start;
+        gap: 1rem; 
+        padding: 1rem 0;
+
+        & .titleWrapper {
+        }
+
+        & .title {
+          margin: 0;
+          font-size: 2rem;
+          font-family: var(--font-family-secondary);
+        }
+
+        & .description {
+          font-size: 1.25rem;
+        }
+
+      }
+    }
+
+    & .thirdLevelLinkList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin: 0;
+      padding: 0;
+
+      & .thirdLevelLinkItem {
+        position: relative;
+        display: flex;
+        flex: 0 1 auto;
+        cursor: pointer;
+        overflow: hidden;
+        background-color: var(--cta-primary-default);
+        transition: background-color 0.3s ease;
+      }
+
+      & .thirdLevelLinkActive {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        background-color: var(--cta-primary-hover);
+      }
+
+      & .thirdLevelLinkWrapper {
+        position: relative;
+        z-index: 10;
+        display: block;
+        height: 100%;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+
+        & .name {
+          font-size: 1rem;
+          font-weight: bold;
+          color: var(--action-secondary-default);
+          margin: 0;
+        }
+        
+        & .description {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+  
+  & .closeButton {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+    & .closeButtonIcon {
+      display: block;
+      transform: rotate(45deg);
+      font-size: 1.5rem;
+    }
+  }
+}

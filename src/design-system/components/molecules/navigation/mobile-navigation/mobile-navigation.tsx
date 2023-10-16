@@ -3,43 +3,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Button, Icon, IconButton } from '../../../atoms';
 import styles from './mobile-navigation.module.css';
 import cx from 'classnames';
-
-export type TNavLink = {
-  // Link text / title
-  name: string;
-  // Path to destination
-  href: string;
-  // Boolean for toggling target="_blank"
-  openInNewTab?: boolean;
-  // Descriptive text
-  description?: string;
-};
-
-export type TNavCategory = {
-  // Link text / title
-  name: string;
-  // Descriptive text
-  description?: string;
-  // Subtitle
-  subtitle?: string;
-  // Required sub level of links
-  links: Array<TNavLink | TNavCategory>;
-};
-
-export interface INavigation {
-  // Array of all your link objects
-  categories: Array<TNavLink | TNavCategory>;
-  // Active slug/path
-  currentSlug: string;
-  // inital active top level
-  initial?: string;
-  // User logged in status
-  isAuthenticated?: boolean;
-  signOutLabel?: string;
-  onSignOut?: () => void;
-  actions?: JSX.Element;
-}
-
+import { INavigation, TNavCategory, TNavLink } from '../types';
 
 // TODO: extract list item
 interface IListItemWithLinks extends TNavCategory {
@@ -199,7 +163,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
           <ul className={styles.menuList}>
             {categories.map((cat, i) => {
               if (isCategory(cat)) {
-                return <ListItem key={cat.name} name={cat.name} links={cat.links} delay={i * 0.1} />;
+                return <ListItem key={cat.name} name={cat.name} links={cat.links} delay={i * 0.1} href={cat.href} />;
               } else if (isLink(cat)) {
                 return <ListItem key={cat.name} name={cat.name} link={cat} delay={i * 0.1} />;
               }
