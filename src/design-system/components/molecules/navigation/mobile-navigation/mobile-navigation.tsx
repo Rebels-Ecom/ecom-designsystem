@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Button, Icon } from '../../../atoms';
 import styles from './mobile-navigation.module.css';
 import cx from 'classnames';
@@ -94,14 +94,13 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
   );
 };
 
-const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut, actions }: INavigation) => {
-  const [open, setOpen] = useState(false);
+const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut, actions, isOpen: open, setIsOpen: setOpen }: INavigation) => {
   const [distanceTop, setDistanceTop] = useState(0);
   const mobileNavRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setDistanceTop((mobileNavRef.current?.offsetTop ?? 0) + (((mobileNavRef.current?.clientHeight ?? 0) + 16) ?? 0));
-  }, [])
+    setDistanceTop((mobileNavRef.current?.getBoundingClientRect().y ?? 0) + (((mobileNavRef.current?.clientHeight ?? 0) + 16) ?? 0));
+  }, [open])
 
   useEffect(() => {
     const el = document.body;

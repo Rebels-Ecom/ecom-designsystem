@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { MobileNavigation } from './mobile-navigation';
 
@@ -16,7 +16,8 @@ type Story = StoryObj<typeof MobileNavigation>;
 
 export const DefaultMobileNavigation: Story = {
   render: (args) => {
-    return <MobileNavigation {...args} />;
+    const [isOpen, setIsOpen] = useState(false);
+    return <MobileNavigation {...args} isOpen={isOpen} setIsOpen={setIsOpen} />;
   },
   args: {
     currentSlug: '/',
@@ -118,24 +119,24 @@ export const DefaultMobileNavigation: Story = {
                 href: '#item-2-6',
               },
               {
-                name: 'Item 2-3',
+                name: 'Item 2-7',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                href: '#item-2-3',
+                href: '#item-2-7',
               },
               {
-                name: 'Item 2-4',
+                name: 'Item 2-8',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                href: '#item-2-4',
+                href: '#item-2-8',
               },
               {
-                name: 'Item 2-5',
+                name: 'Item 2-9',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                href: '#item-2-5',
+                href: '#item-2-9',
               },
               {
-                name: 'Item 2-6',
+                name: 'Item 2-10',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                href: '#item-2-6',
+                href: '#item-2-10',
               }
             ],
           },

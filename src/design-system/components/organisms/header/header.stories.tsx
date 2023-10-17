@@ -136,7 +136,6 @@ const HeaderStoryTemplate: Story = {
             <>
               <IconButton onClick={toggleUserInfo} icon='icon-user' size='large' isTransparent isLink={false} />
               <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
-
                 <UserInfoSummary {...UserInfoSummaryStory.args} />
                 <DropdownList {...DropdownListStory.args} />
               </DrawerSidebar>
@@ -147,6 +146,8 @@ const HeaderStoryTemplate: Story = {
         mobileNavigation={(
           <MobileNavigation
               {...DefaultMobileNavigation.args as INavigation}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
           />
         )}
         // mobileNavigation={{
