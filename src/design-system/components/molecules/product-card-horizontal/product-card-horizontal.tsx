@@ -106,14 +106,14 @@ const ProductCardHorizontal = ({
                   disabled={productQuantityDisabled}
                 />
               </div>
-              <div className={styles.buttonsWrapper}>
-                {!hideRemoveButton && onClickRemoveProduct && (
-                  <div className={styles.iconLink}>
-                    <IconButton icon={'icon-x-circle'} onClick={() => handleRemoveProduct(productId)} isLink={false} isTransparent size="large"></IconButton>
-                  </div>
-                )}
-                {/* TODO: replace this hc values with addToCartButton props? */}
-                {!hideCartButton ? (
+              {!hideRemoveButton && onClickRemoveProduct && (
+                <div className={styles.iconLink}>
+                  <IconButton icon={'icon-x-circle'} onClick={() => handleRemoveProduct(productId)} isLink={false} isTransparent size="large"></IconButton>
+                </div>
+              )}
+              {!hideCartButton ? (
+                <div className={styles.buttonsWrapper}>
+                  {/* TODO: replace this hc values with addToCartButton props? */}
                   <Button
                     {...addToCartButton}
                     className={!loading ? styles.productCardBtn : ''}
@@ -125,8 +125,8 @@ const ProductCardHorizontal = ({
                     {/* TODO: replace this hc copy with addToCartButton.children? */}
                     <span className={styles.cartBtnText}>Lägg i kundvagn</span>
                   </Button>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
             </>
           )}
         </>
