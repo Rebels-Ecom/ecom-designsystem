@@ -9,6 +9,8 @@
     outline: none;
     border: none;
     text-decoration: none;
+    padding: 0;
+    
     &:hover {
         color: rgba(0, 62, 81, 0.8);
     }

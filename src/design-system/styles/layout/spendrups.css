@@ -37,9 +37,18 @@ html {
     --content-width-sm: 42.5rem;
     --content-width-md: 62.5rem;
     --content-width-lg: 77.5rem;
+
+    /* Z-INDEX */
+    --menu-icon-z-index: 10;
+    --menu-z-index: 100;
+    --menu-backdrop-z-index: 99;
 }
 
 body {
   margin: 0;
   padding: 0;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
