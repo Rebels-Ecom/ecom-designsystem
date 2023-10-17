@@ -1,0 +1,152 @@
+.mobileNavigation {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.5rem;
+
+  & .top {
+    z-index: calc(var(--menu-z-index) + 1);
+    margin: 0 -0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* add drop shadow */
+
+    & .actions {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-right: 1rem;
+    }
+
+    & .topInner {
+      display: flex;
+
+      & .menuButton {
+        margin-left: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.125rem;
+        border-radius: 0.5rem;
+        border: none;
+        background: none;
+        padding: 0;
+
+        & .menuIcon {
+          font-size: 1.5rem;
+        }
+
+        & .menuCloseIcon {
+          transform: rotate(45deg);
+        }
+      }
+    }
+  }
+
+  & .content {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: var(--menu-z-index);
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    padding-top: 6rem;
+
+    & .menuListWrapper {
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    & .menuList {
+      display: flex;
+      flex-direction: column;
+      padding: 0 0 0.75rem;
+
+      & .menuListItem {
+        display: flex;
+        flex-direction: column;
+        color: var(--color-text-default);
+        
+        &:not(:last-of-type) {
+          border-bottom: 1px solid var(--color-text-default);
+        }
+
+        & .menuListItemLink {
+          display: flex;
+          cursor: pointer;
+          justify-content: space-between;
+          align-items: center;
+          border: none;
+          background: none;
+          text-decoration: none;
+          color: var(--color-text-default);
+          padding: 1rem 0;
+          font-size: 1rem;
+          font-family: var(--font-family-primary);
+
+          & .menuListItemLinkActive {
+            font-weight: bold; 
+            color: var(--color-text-orange);
+          }
+
+        }
+
+        & .subMenuList {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          padding-left: 1rem;
+          
+          
+          & .subMenuListItemLink {
+            display: flex;
+            cursor: pointer;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border: none;
+            background: none;
+            text-decoration: none;
+            color: var(--color-text-default);
+            font-size: 1rem;
+            font-family: var(--font-family-primary);
+            border-bottom: 1px solid var(--border-grey);
+
+            & .subMenuListItemLinkActive {
+              font-weight: bold;
+              color: var(--color-text-orange);
+            }
+          }
+        }
+      }
+      
+      & .itemIcon {
+        font-size: 1.5rem;
+      }
+    }
+
+    & .signOut {
+      display: flex;
+      justify-content: center;
+      padding: 0.25rem 1rem;
+    }
+  }
+
+  & .backDrop {
+    pointer-events: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: var(--menu-backdrop-z-index);
+    background-color: var(--color-text-default);
+  }
+}

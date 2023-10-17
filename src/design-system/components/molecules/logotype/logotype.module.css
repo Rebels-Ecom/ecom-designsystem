@@ -17,6 +17,7 @@
     cursor: pointer;
     height: 100%;
     width: fit-content;
+    z-index: 99999;
 
     &:after {
         left: 0;

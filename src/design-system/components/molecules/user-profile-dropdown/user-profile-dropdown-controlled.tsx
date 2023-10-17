@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import styles from './user-profile-dropdown.module.css'
 import useOnClickOutside from '../../../hooks/useOnClickOutside'
 import { Button } from '../../atoms/button/button'
-import { Icon, IconButton } from '../../atoms';
+import { Icon } from '../../atoms';
 
 export interface IUserProfileDropdown {
     children: React.ReactNode;
