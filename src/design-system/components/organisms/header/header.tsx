@@ -41,7 +41,7 @@ const Header = ({
         desktopNavigation
       ) && (
         <>
-          <Below breakpoint='lg'>
+          <Below breakpoint='md'>
             {(matches) => matches && (
               <ContentWrapper>
                 <FlexContainer flexDirection='column'>
@@ -55,7 +55,7 @@ const Header = ({
               </ContentWrapper>
             )}
           </Below>
-          <Above breakpoint='lg'>
+          <Above breakpoint='md'>
             {(matches) => matches && (
               <>
                 <ContentWrapper padding={[1, 0]}>
