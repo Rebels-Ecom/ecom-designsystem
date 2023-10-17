@@ -29,6 +29,9 @@
     &.green{
         background: var(--tag-green);
     }
+    &.black{
+        background: var(--tag-black);
+    }
 }
 
 .tagRectangular {
