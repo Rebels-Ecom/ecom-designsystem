@@ -42,10 +42,14 @@ const LinkButton = ({
   round,
   disabled
 }: ILinkButton) => {
-  const classNames = cx(styles.button, getButtonSize(size), styles[surface], {[styles.fullWidth]: fullWidth, [styles.rounded]: rounded, [styles.round]: round, [styles.disabled]: disabled}, className)
-
-  // TODO: simplify this component
-  const Tag = disabled ? 'button' : isExternal ? 'a' : Link
+  const classNames = cx(styles.button, getButtonSize(size), styles[surface], {
+    [styles.fullWidth]: fullWidth,
+    [styles.rounded]: rounded,
+    [styles.round]: round,
+    [styles.disabled]: disabled,
+  }, className)
+  
+  const Tag = isExternal ? 'a' : Link
   return (
     <Tag to={!isExternal ? href : undefined} href={isExternal ? href : undefined} target={target} title={title} className={classNames} id={id ? id : undefined}>
       {children}
