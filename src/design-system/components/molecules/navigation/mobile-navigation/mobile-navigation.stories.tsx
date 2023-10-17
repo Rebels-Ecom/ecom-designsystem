@@ -19,6 +19,7 @@ export const DefaultMobileNavigation: Story = {
     return <MobileNavigation {...args} />;
   },
   args: {
+    currentSlug: '/',
     categories: [
       {
         name: 'Spendrups',
@@ -31,7 +32,7 @@ export const DefaultMobileNavigation: Story = {
         openInNewTab: true,
       },
       {
-        name: 'Mitt Spendrups',
+        name: 'Hello',
         href: '#',
         links: [
           {
@@ -59,6 +60,24 @@ export const DefaultMobileNavigation: Story = {
                 name: 'Item 4',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 href: '#item-4',
+                links: [
+                  {
+                    name: 'Item 4-1',
+                    href: '#item-4-1'
+                  },
+                  {
+                    name: 'Item 4-2',
+                    href: '#item-4-2'
+                  },
+                  {
+                    name: 'Item 4-3',
+                    href: '#item-4-3'
+                  },
+                  {
+                    name: 'Item 4-4',
+                    href: '#item-4-4'
+                  },
+                ]
               }
             ],
           },
@@ -77,6 +96,26 @@ export const DefaultMobileNavigation: Story = {
                 name: 'Item 2-2',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 href: '#item-2-2',
+              },
+              {
+                name: 'Item 2-3',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                href: '#item-2-3',
+              },
+              {
+                name: 'Item 2-4',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                href: '#item-2-4',
+              },
+              {
+                name: 'Item 2-5',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                href: '#item-2-5',
+              },
+              {
+                name: 'Item 2-6',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                href: '#item-2-6',
               },
               {
                 name: 'Item 2-3',

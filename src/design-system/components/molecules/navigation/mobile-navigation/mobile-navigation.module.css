@@ -5,7 +5,7 @@
   padding: 0 0.5rem;
 
   & .top {
-    z-index: 20;
+    z-index: calc(var(--menu-z-index) + 1);
     margin: 0 -0.5rem;
     display: flex;
     align-items: center;
@@ -50,7 +50,7 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 10;
+    z-index: var(--menu-z-index);
     display: flex;
     height: 100vh;
     width: 100vw;
@@ -58,10 +58,10 @@
     justify-content: space-between;
     background-color: white;
     padding-top: 6rem;
-    overflow-y: auto;
 
     & .menuListWrapper {
       padding: 1rem;
+      overflow-y: auto;
     }
 
     & .menuList {
@@ -135,7 +135,6 @@
     & .signOut {
       display: flex;
       justify-content: center;
-      background-color: purple;
       padding: 0.25rem 1rem;
     }
   }
@@ -147,7 +146,7 @@
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
+    z-index: var(--menu-backdrop-z-index);
     background-color: var(--color-text-default);
   }
 }

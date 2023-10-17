@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Button, Icon, IconButton } from '../../../atoms';
+import { Button, Icon } from '../../../atoms';
 import styles from './mobile-navigation.module.css';
 import cx from 'classnames';
 import { INavigation, TNavCategory, TNavLink } from '../types';
@@ -100,7 +100,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
   const mobileNavRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setDistanceTop((mobileNavRef.current?.offsetTop ?? 0) + (mobileNavRef.current?.clientHeight ?? 0));
+    setDistanceTop((mobileNavRef.current?.offsetTop ?? 0) + (((mobileNavRef.current?.clientHeight ?? 0) + 16) ?? 0));
   }, [])
 
   useEffect(() => {
@@ -108,9 +108,9 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
 
     if (el) {
       if (open) {
-        el.classList.add('overflow-hidden');
+        el.classList.add('no-scroll');
       } else {
-        el.classList.remove('overflow-hidden');
+        el.classList.remove('no-scroll');
       }
     }
   }, [open]);
@@ -191,7 +191,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
 };
 
 const isLink = (obj: any): obj is TNavLink => {
-  return obj && 'href' in obj;
+  return obj && !isCategory(obj);
 };
 
 const isCategory = (obj: any): obj is TNavCategory => {

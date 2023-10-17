@@ -138,122 +138,128 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
             </motion.ul>
           </div>
           <motion.div initial={{ height: 0 }} animate={{ height: activeTop?.links?.length ? 'auto' : 0 }} className={styles.secondLevel}>
-            <div className={styles.secondLevelInner}>
-              <motion.ul className={styles.secondLevelLinkList}>
-                {isCategory(activeTop) ? (
-                  activeTop.links.map((link, i) => (
-                    <motion.li
-                      className={styles.secondLevelLinkItem}
-                      key={`${link.name}-${i}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      onHoverStart={() => {
-                        setHoveredSecondLevel(link);
-                      }}
-                      onHoverEnd={() => {
-                        const fallBackSecondLevel = getActiveSecondLevel();
-                        setHoveredSecondLevel(activeSecondLevel ?? fallBackSecondLevel);
-                      }}
-                    >
-                      {hoveredSecondLevel?.name === link.name && (
-                        <motion.div
-                          className={styles.secondLevelLinkActive}
-                          layoutId="activeChildLinkX"
-                          transition={{
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 20,
-                          }}
-                        />
-                      )}
-                      {isLink(link) && (
-                        <motion.a
-                          key={`${link.name}-${i}`}
-                          className={cx(styles.secondLevelLink, {[styles.active]: activeSecondLevel === link})}
-                          href={link.href}
-                          target={link.openInNewTab ? '_blank' : '_self'}
-                          onClick={() => {
-                            setActiveSecondLevel(link);
-                          }}
-                        >
-                          {link.name}
-                        </motion.a>
-                      )}
-                      {isCategory(link) && (
-                        <motion.button
-                          key={`${link.name}-${i}`}
-                          className={cx(styles.secondLevelLink, {[styles.active]: activeSecondLevel === link})}
-                          onClick={() => {
-                            setActiveSecondLevel(link);
-                            setActiveTopLevel(hoveredTopLevel);
-                          }}
-                        >
-                          {link.name}
-                          <Icon icon="icon-chevron-down" />
-                        </motion.button>
-                      )}
-                    </motion.li>
-                  ))
-                ) : (
-                  // <div style={{ height: '48px' }} />
-                  null
-                )}
-              </motion.ul>
-            </div>
+            <ContentWrapper padding={0}>
+              <div className={styles.secondLevelInner}>
+                <motion.ul className={styles.secondLevelLinkList}>
+                  {isCategory(activeTop) ? (
+                    activeTop.links.map((link, i) => (
+                      <motion.li
+                        className={styles.secondLevelLinkItem}
+                        key={`${link.name}-${i}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onHoverStart={() => {
+                          setHoveredSecondLevel(link);
+                        }}
+                        onHoverEnd={() => {
+                          const fallBackSecondLevel = getActiveSecondLevel();
+                          setHoveredSecondLevel(activeSecondLevel ?? fallBackSecondLevel);
+                        }}
+                      >
+                        {hoveredSecondLevel?.name === link.name && (
+                          <motion.div
+                            className={styles.secondLevelLinkActive}
+                            layoutId="activeChildLinkX"
+                            transition={{
+                              type: 'spring',
+                              stiffness: 200,
+                              damping: 20,
+                            }}
+                          />
+                        )}
+                        {isLink(link) && (
+                          <motion.a
+                            key={`${link.name}-${i}`}
+                            className={cx(styles.secondLevelLink, {[styles.active]: activeSecondLevel === link})}
+                            href={link.href}
+                            target={link.openInNewTab ? '_blank' : '_self'}
+                            onClick={() => {
+                              setActiveSecondLevel(link);
+                            }}
+                          >
+                            {link.name}
+                          </motion.a>
+                        )}
+                        {isCategory(link) && (
+                          <motion.button
+                            key={`${link.name}-${i}`}
+                            className={cx(styles.secondLevelLink, {[styles.active]: activeSecondLevel === link})}
+                            onClick={() => {
+                              setActiveSecondLevel(link);
+                              setActiveTopLevel(hoveredTopLevel);
+                            }}
+                          >
+                            {link.name}
+                            <Icon icon="icon-chevron-down" />
+                          </motion.button>
+                        )}
+                      </motion.li>
+                    ))
+                  ) : (
+                    // <div style={{ height: '48px' }} />
+                    null
+                  )}
+                </motion.ul>
+              </div>
+            </ContentWrapper>
           </motion.div>
         </motion.div>
         {isCategory(activeSecondLevel) ? (
           <div className={styles.thirdLevel}>
-            <motion.div
-              className={styles.thirdLevelInner}
-              initial={{ opacity: 0, translateY: '-100%' }}
-              animate={{ opacity: 1, translateY: 0 }}
-              exit={{ translateY: '-100%' }}
-            >
-              {isCategory(activeSecondLevel) && (
-                <div className={styles.thirdLevelTextWrapper}>
-                  <div className={activeSecondLevel?.subtitle ? styles.titleWrapper : undefined}>
-                    <h1 className={styles.title}>{activeSecondLevel?.name}</h1>
-                  </div>
-                </div>
-              )}
-              <button
-                className={styles.closeButton}
-                onClick={() => {
-                  setActiveSecondLevel(undefined);
-                  setHoveredSecondLevel(getActiveSecondLevel());
-                }}
+            <ContentWrapper padding={0}>
+              <motion.div
+                className={styles.thirdLevelInner}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0  }}
               >
-                <Icon icon='icon-plus' className={styles.closeButtonIcon} />
-              </button>
-              <motion.ul className={styles.thirdLevelLinkList} onHoverEnd={() => setHoveredThirdLevel(undefined)}>
-                {activeSecondLevel.links.map((thirdLevelLink, i) => {
-                  return isLink(thirdLevelLink) ? (
-                    <motion.li
-                      onHoverStart={() => setHoveredThirdLevel(thirdLevelLink.name)}
-                      key={`${thirdLevelLink.href}-${i}`}
-                      className={styles.thirdLevelLinkItem}
-                    >
-                      {hoveredThirdLevel === thirdLevelLink.name && (
-                        <motion.div
-                          layoutId="activeThirdLevel"
-                          className={styles.thirdLevelLinkActive}
-                          transition={{
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 20,
-                          }}
-                        />
-                      )}
-                      <a href={thirdLevelLink.href} className={styles.thirdLevelLinkWrapper}>
-                        <p className={styles.name}>{thirdLevelLink.name}</p>
-                      </a>
-                    </motion.li>
-                  ) : undefined;
-                })}
-              </motion.ul>
-            </motion.div>
+                {isCategory(activeSecondLevel) && (
+                  <div className={styles.thirdLevelTextWrapper}>
+                    <div className={activeSecondLevel?.subtitle ? styles.titleWrapper : undefined}>
+                      <h1 className={styles.title}>{activeSecondLevel?.name}</h1>
+                    </div>
+                  </div>
+                )}
+                <button
+                  className={styles.closeButton}
+                  onClick={() => {
+                    // setActiveTopLevel(undefined)
+                    // setHoveredTopLevel(undefined)
+                    setActiveSecondLevel(undefined);
+                    setHoveredSecondLevel(getActiveSecondLevel());
+                  }}
+                >
+                  <Icon icon='icon-plus' className={styles.closeButtonIcon} />
+                </button>
+                <motion.ul className={styles.thirdLevelLinkList} onHoverEnd={() => setHoveredThirdLevel(undefined)}>
+                  {activeSecondLevel.links.map((thirdLevelLink, i) => {
+                    return isLink(thirdLevelLink) ? (
+                      <motion.li
+                        onHoverStart={() => setHoveredThirdLevel(thirdLevelLink.name)}
+                        key={`${thirdLevelLink.href}-${i}`}
+                        className={styles.thirdLevelLinkItem}
+                      >
+                        {hoveredThirdLevel === thirdLevelLink.name && (
+                          <motion.div
+                            layoutId="activeThirdLevel"
+                            className={styles.thirdLevelLinkActive}
+                            transition={{
+                              type: 'spring',
+                              stiffness: 200,
+                              damping: 20,
+                            }}
+                          />
+                        )}
+                        <a href={thirdLevelLink.href} className={styles.thirdLevelLinkWrapper}>
+                          <p className={styles.name}>{thirdLevelLink.name}</p>
+                        </a>
+                      </motion.li>
+                    ) : undefined;
+                  })}
+                </motion.ul>
+              </motion.div>
+            </ContentWrapper>
           </div>
         ) : undefined}
       </ContentWrapper>

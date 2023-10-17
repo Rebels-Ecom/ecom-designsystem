@@ -1,6 +1,7 @@
 .desktopNavigation {
   width: 100%;
   background-color: var(--navigation-surface-default);
+  position: relative;
 
   & .topLevel {
     width: 100%;
@@ -42,7 +43,7 @@
             text-decoration: none;
             color: var(--navigation-text-default);
             cursor: pointer;
-            font-family: var(--font-family-secondary);
+            font-family: var(--font-family-primary);
             font-size: 1rem;
 
             &.active {
@@ -55,6 +56,10 @@
 
     & .secondLevel {
       width: 100%;
+      position: absolute;
+      top: 5rem;
+      left: 0;
+      background-color: var(--navigation-surface-default);
 
       & .secondLevelInner {
         display: flex;
@@ -97,7 +102,7 @@
             color: var(--navigation-text-default);
             cursor: pointer;
             text-decoration: none;
-            font-family: var(--font-family-secondary);
+            font-family: var(--font-family-primary);
             font-size: 0.875rem;
 
             &.active {
@@ -113,12 +118,16 @@
     margin: 0 auto;
     width: 100%;
     overflow: hidden;
-    padding: 1rem 0;
+    padding: 5rem 0 3rem;
+    position: absolute;
+    top: 5rem;
+    left: 0;
+    background-color: var(--navigation-surface-default);
 
     & .thirdLevelInner {
+      position: relative;
       height: calc(100vh-160px);
       overflow-y: scroll;
-      padding-bottom: 2rem;
       scrollbar-width: none;
 
       &::-webkit-scrollbar {
@@ -139,7 +148,7 @@
         & .title {
           margin: 0;
           font-size: 2rem;
-          font-family: var(--font-family-secondary);
+          font-family: var(--font-family-primary);
         }
 
         & .description {

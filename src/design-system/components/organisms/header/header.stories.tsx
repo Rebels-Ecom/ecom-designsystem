@@ -22,6 +22,7 @@ import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-pro
 import { DefaultMobileNavigation } from '../../molecules/navigation/mobile-navigation/mobile-navigation.stories'
 import { UserInfoSummaryStory } from '../../molecules/user-info-summary/user-info-summary.stories'
 import { DropdownListStory } from '../../molecules/dropdown-list/dropdown-list.stories'
+import { INavigation } from '../../molecules/navigation/types'
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Organisms/Header',
@@ -94,7 +95,8 @@ const HeaderStoryTemplate: Story = {
             hasActiveUser={false}
           />
         }
-        logo={<Logotype
+        logo={(
+          <Logotype
             className=''
             linkComponent='a'
             logo={{
@@ -107,7 +109,8 @@ const HeaderStoryTemplate: Story = {
                 { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
               ]  
             }}
-        />}
+          />
+        )}
         mobileSearchBar={<ExpandableWrapper open={isSearchbarOpen}><SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} /></ExpandableWrapper>}
         mobileActions={
           <FlexContainer alignItems='center' justifyContent='flex-end' flex='1'>
@@ -143,24 +146,9 @@ const HeaderStoryTemplate: Story = {
         }
         mobileNavigation={(
           <MobileNavigation
-            categories={[
-              { name: 'Link', href: "#" },
-              { name: 'Link 2', href: "#" },
-              { name: 'Link 3', href: "#" },
-              { name: 'Link 4', href: "#" },
-              { name: 'Link with sub links', href: '#', links: [
-                { name: 'Sub link', href: '#' },
-                { name: 'Sub link 2', href: '#' },
-                { name: 'Sub link with third level links', href: '#', links: [
-                  { name: 'Third level link', href: '#' },
-                  { name: 'Third level link 2', href: '#' },
-                  { name: 'Third level link 3', href: '#' }
-                ] }
-              ]}
-            ]}
-            currentSlug='/'
-            />
-          )}
+              {...DefaultMobileNavigation.args as INavigation}
+          />
+        )}
         // mobileNavigation={{
         //   isOpen,
         //   tab1: TabsStory.args.tabs[0].content,
