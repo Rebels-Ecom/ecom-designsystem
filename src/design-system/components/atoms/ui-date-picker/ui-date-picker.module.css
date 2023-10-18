@@ -100,9 +100,11 @@
     cursor: pointer;
     border-color: transparent;
     background: transparent;
+    
     &:last-child {
       margin-right: 0;
     }
+
     @media (max-width: 47.99rem) {
       height: 2.5rem;
       width: 2.5rem;
@@ -115,6 +117,10 @@
         margin-right: 1.5rem;
     }
 
+
+    & > span:last-of-type {
+        font-size: 1.125rem;
+    }
 
     & span:first-of-type {
         display: none;

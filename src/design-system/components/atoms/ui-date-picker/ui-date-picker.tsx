@@ -8,6 +8,8 @@ import { Button } from '../button/button'
 import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
 import { Icon } from '../icon/icon'
+import { Below } from '../../layouts'
+import { IconButton } from '../icon-button/icon-button'
 
 export interface IUiDatePicker {
   selectedDeliveryDate: string,
@@ -74,21 +76,22 @@ function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, heade
 
   return (
     <div className={styles.datePickerWrapper}>
-    <DatePicker 
-      selected={selectedDate} 
-      onChange={date => date && onClickSelectDate(date)}
-      includeDates={deliveryDates}
-      excludeDates={holidayDates}
-      locale={sv}
-      dateFormat="yyyy/MM/dd"
-      calendarClassName={styles.calendar}
-      calendarContainer={CustomCalendarContainer}
-      dayClassName={(date)=> cx(styles.day, styles[getDayCustomClass(date)])}
-      customInput={
-        <Button type='button' surface='x' size="x-small" className={cx(styles.datePickerBtn, className ? className : '')} iconRight={{ icon: 'icon-calendar' }}>
-            <span className={styles.buttonLinkText}>{selectedDate.toLocaleDateString()}</span>
-        </Button>}
-    />
+      <DatePicker 
+        selected={selectedDate} 
+        onChange={date => date && onClickSelectDate(date)}
+        includeDates={deliveryDates}
+        excludeDates={holidayDates}
+        locale={sv}
+        dateFormat="yyyy/MM/dd"
+        calendarClassName={styles.calendar}
+        calendarContainer={CustomCalendarContainer}
+        dayClassName={(date)=> cx(styles.day, styles[getDayCustomClass(date)])}
+        customInput={
+          <Button type='button' surface='x' size="x-small" className={cx(styles.datePickerBtn, className ? className : '')} iconRight={{ icon: 'icon-calendar' }}>
+              <span className={styles.buttonLinkText}>{selectedDate.toLocaleDateString()}</span>
+          </Button>
+        }
+      />
     </div>
   )
 }
