@@ -48,7 +48,16 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable }: 
         transition={{ duration: 0.3, ease: 'easeOut' }}
         exit={{ opacity: 0, transition: { duration: 0.3 } }}
       >
-        <IconButton className={styles.buttonClose} onClick={onClick} icon={'icon-x'} size="large" isTransparent isLink={false} linkComponent={undefined} />
+        <IconButton
+          type='button'
+          className={styles.buttonClose}
+          onClick={onClick}
+          icon='icon-x'
+          size="large"
+          isTransparent
+          noBorder
+          noPadding
+        />
         {children}
       </motion.div>
     )

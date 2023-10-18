@@ -21,13 +21,24 @@ const SearchNavBarLinksStoryTemplate: Story = {
       console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)
     }
     function handleClickAccountBtn(){ console.log(`Go to my spendrups page`)}
-    function handleClickCartIcon(){console.log('Open cart sidebar')}
 
     return(
       <SearchNavBarLinks>
          <GroupWrapper position='apart'>
-          <IconButton icon={'icon-heart'} isLink={false} linkComponent={undefined} size='medium' isTransparent></IconButton>
-          <IconButton icon={'icon-shopping-cart'} isLink={false} linkComponent={undefined} onClick={handleClickCartIcon ? ()=>handleClickCartIcon() : ()=>{}} size='medium' isTransparent></IconButton>
+          <IconButton
+            type='button'
+            icon='icon-heart'
+            size='medium'
+            isTransparent
+            onClick={() => console.log('favorite clicked')}
+          />
+          <IconButton
+            type='button'
+            icon='icon-shopping-cart'
+            onClick={() => console.log('Open cart sidebar')}
+            size='medium'
+            isTransparent
+          />
       </GroupWrapper>
       <GroupWrapper position='apart'>
           <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>

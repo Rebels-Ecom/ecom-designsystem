@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { IconButton } from './icon-button'
+import { IconButton, TIconButton } from './icon-button'
 import { action } from '@storybook/addon-actions';
 
 
@@ -13,16 +13,7 @@ export default meta;
 type Story = StoryObj<typeof IconButton>
 
 const IconButtonStoryTemplate: Story = {
-  render: (args) => {
-
-    function handleButtonClick(){
-      alert('Icon button clicked :)')
-    }
-
-    return(
-      <IconButton {...args} onClick={handleButtonClick}/>
-    )
-  }
+  render: (args) => <IconButton {...args} />
 }
 
 export const IconButtonStorySmallButton = {
@@ -30,65 +21,69 @@ export const IconButtonStorySmallButton = {
   args: {
     icon: 'icon-map-pin',
     size: 'small',
-    isLink: false,
-    onClick: action('clicked')
-  }
+    noPadding: false,
+    isTransparent: false,
+    noBorder: false,
+    notification: 2,
+    type: 'button',
+    onClick: action('clicked'),
+  } as TIconButton
 }
 
 export const IconButtonStoryLargeLink = {
   ...IconButtonStoryTemplate,
   args: {
+    type: 'link',
     icon: 'icon-map-pin',
     size: 'large',
-    isLink: true,
-    linkUrl: '/start'
-  }
+    linkUrl: '/start',
+  } as TIconButton
 }
 
 export const IconButtonStory_GoToProduct = {
   ...IconButtonStoryTemplate,
   args: {
+    type: 'link',
     icon: 'icon-chevrons-right',
     size: 'large',
-    isLink: true,
     isExternal: true,
     linkUrl: '/?path=/docs/design-system-templates-productpage--docs',
     linkComponent: 'a'
-  }
+  } as TIconButton
 }
 
 export const IconButtonStory_RemoveProduct = {
   ...IconButtonStoryTemplate,
   args: {
+    type: 'button',
     icon: 'icon-x-circle',
     size: 'large',
     isTransparent: true,
-    isLink: false,
     onClick: action('clicked')
-  }
+  } as TIconButton
 }
 
 export const IconButtonStory_CartEmpty = {
   ...IconButtonStoryTemplate,
   args: {
+    type: 'button',
     icon: 'icon-shopping-cart',
     size: 'large',
     isTransparent: true,
-    isLink: false,
     onClick: action('clicked')
-  }
+  } as TIconButton
 }
 
 export const IconButtonStory_CartWithProducts = {
   ...IconButtonStoryTemplate,
   args: {
+    type: 'button',
     icon: 'icon-shopping-cart',
     size: 'large',
     isTransparent: true,
-    isLink: false,
     children: <span>(7)</span>,
     onClick: action('clicked')
-  }
+  } as TIconButton
 }
 
 

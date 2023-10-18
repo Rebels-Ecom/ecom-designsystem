@@ -22,7 +22,14 @@ function MessagePopup({ children, isOpen, icon, position='relative', arrowPositi
     <div className={cx(styles.messagePopup, styles[arrowPosition], styles[position])}>
       {icon && <Icon icon={icon} className={styles.icon}></Icon>}
       {children}
-      <IconButton className={styles.iconBtnClose} onClick={onClose} icon={'icon-x'} size="large" isTransparent isLink={false} linkComponent={undefined}></IconButton>
+      <IconButton
+        type='button'
+        className={styles.iconBtnClose}
+        onClick={onClose}
+        icon='icon-x'
+        size="large"
+        isTransparent
+      />
     </div>
   )
 }

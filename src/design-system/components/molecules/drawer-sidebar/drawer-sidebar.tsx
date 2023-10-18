@@ -39,13 +39,14 @@ function DrawerSidebar({ children, isOpen = false, onClose }: IDrawerSidebar) {
             <div className={styles.contentWrapper}>
               <IconButton
                 className={styles.buttonClose}
+                type='button'
                 onClick={onClose}
-                icon={'icon-x'}
+                icon='icon-x'
                 size="large"
                 isTransparent
-                isLink={false}
-                linkComponent={LinkComponent}
-              ></IconButton>
+                noBorder
+                noPadding
+              />
               {children}
             </div>
           </motion.div>

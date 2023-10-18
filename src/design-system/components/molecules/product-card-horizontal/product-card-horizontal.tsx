@@ -108,7 +108,14 @@ const ProductCardHorizontal = ({
               </div>
               {!hideRemoveButton && onClickRemoveProduct && (
                 <div className={styles.iconLink}>
-                  <IconButton icon={'icon-x-circle'} onClick={() => handleRemoveProduct(productId)} isLink={false} isTransparent size="large"></IconButton>
+                  <IconButton
+                    type='button'
+                    icon='icon-x-circle'
+                    onClick={() => handleRemoveProduct(productId)}
+                    isTransparent
+                    noBorder
+                    size="large"
+                  />
                 </div>
               )}
               {!hideCartButton ? (

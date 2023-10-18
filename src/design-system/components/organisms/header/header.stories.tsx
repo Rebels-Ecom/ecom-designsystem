@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import { motion } from 'framer-motion'
 import { Header } from './header'
-import { Navigation } from '../../molecules/navigation/navigation'
-import { NavigationStory } from '../../molecules/navigation/navigation.stories'
 import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar.stories'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
@@ -11,7 +10,6 @@ import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, Me
 import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserProfileDropdownControlled, UserInfoSummary, DropdownList, DesktopNavigation } from '../../molecules'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { ContentWrapper, FlexContainer } from '../../layouts'
-import { TabsStory } from '../../molecules/tabs/tabs.stories'
 import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
 import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
@@ -20,6 +18,7 @@ import { CartProductList } from '../cart-product-list/cart-product-list'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
 import { DefaultMobileNavigation } from '../../molecules/navigation/mobile-navigation/mobile-navigation.stories'
+import { DefaultDesktopNavigation } from '../../molecules/navigation/desktop-navigation/desktop-navigation.stories'
 import { UserInfoSummaryStory } from '../../molecules/user-info-summary/user-info-summary.stories'
 import { DropdownListStory } from '../../molecules/dropdown-list/dropdown-list.stories'
 import { INavigation } from '../../molecules/navigation/types'
@@ -96,51 +95,65 @@ const HeaderStoryTemplate: Story = {
           />
         }
         logo={(
-          <Logotype
-            className=''
-            linkComponent='a'
-            logo={{
-              src: logotype_desktop_horizontal,
-              alt: 'logo',
-              href: '/',
-              id: 'logo',
-              sources: [
-                { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
-                { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
-              ]  
-            }}
-          />
+          <motion.div
+            style={{ zIndex: 9999}}
+            initial={{ x: '0vw' }}
+            animate={{ x: isOpen ? '10vw' : '0vw', transition: { delay: 0.1 } }}
+          >
+            <Logotype
+              className=''
+              linkComponent='a'
+              logo={{
+                src: logotype_desktop_horizontal,
+                alt: 'logo',
+                href: '/',
+                id: 'logo',
+                sources: [
+                  { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
+                  { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+                ]  
+              }}
+            />
+          </motion.div>
         )}
         mobileSearchBar={<ExpandableWrapper open={isSearchbarOpen}><SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} /></ExpandableWrapper>}
         mobileActions={
           <FlexContainer alignItems='center' justifyContent='flex-end' flex='1'>
             {activeUser?.name &&
-              <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+              <IconButton
+                type='button'
+                icon='icon-user'
+                onClick={()=>{}}
+                size='large'
+                isTransparent />
             }
             <IconButton
+              type='button'
               icon={isSearchbarOpen ? 'icon-x' : 'icon-search'}
-              isLink={false}
               size='large'
-              isTransparent={true}
+              isTransparent
               onClick={onClickSearchIcon}
             />
             <IconButton
+              type='button'
               icon='icon-shopping-cart'
-              isLink={false}
               size='large'
-              isTransparent={true}
+              isTransparent
               onClick={onClickCartIcon}
             />
-            {/* TODO: convert to mobile navigation pattern? */}
-            {/* <IconButton icon='icon-settings' size='large' isLink={false} isTransparent={true} onClick={() => setIsUserProfileOpen(!isUserProfileOpen)} /> */}
             <>
-              <IconButton onClick={toggleUserInfo} icon='icon-user' size='large' isTransparent isLink={false} />
+              <IconButton
+                type='button'
+                onClick={toggleUserInfo}
+                icon='icon-user'
+                size='large'
+                isTransparent
+              />
               <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
                 <UserInfoSummary {...UserInfoSummaryStory.args} />
                 <DropdownList {...DropdownListStory.args} />
               </DrawerSidebar>
             </>
-            {/* <MenuButton isOpen={isOpen} onClick={handleOnClick} /> */}
           </FlexContainer>
         }
         mobileNavigation={(
@@ -150,38 +163,29 @@ const HeaderStoryTemplate: Story = {
               setIsOpen={setIsOpen}
           />
         )}
-        // mobileNavigation={{
-        //   isOpen,
-        //   tab1: TabsStory.args.tabs[0].content,
-        //   tab2: TabsStory.args.tabs[1].content,
-        // }}
         desktopSearchBar={<SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />}
         desktopActions={
           <>
             {activeUser?.name &&
-              <IconButton icon={'icon-user'} isLink={false} linkComponent={undefined} onClick={()=>{}} size='large' isTransparent></IconButton>
+              <IconButton
+                type='button'
+                icon='icon-user'
+                onClick={()=>{}}
+                size='large'
+                isTransparent
+              />
             }
-            <IconButton icon='icon-shopping-cart' isLink={false} onClick={onClickCartIcon} size='medium' isTransparent />
+            <IconButton
+              type='button'
+              icon='icon-shopping-cart'
+              onClick={onClickCartIcon}
+              size='medium'
+            />
             <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-            <UserProfileDropdown  {...UserProfileDropdownStory.args}></UserProfileDropdown>
+            <UserProfileDropdown {...UserProfileDropdownStory.args}></UserProfileDropdown>
           </>
         }
-        desktopNavigation={<DesktopNavigation categories={[
-          { name: 'Link', href: "#" },
-          { name: 'Link 2', href: "#" },
-          { name: 'Link 3', href: "#" },
-          { name: 'Link 4', href: "#" },
-          { name: 'Link with sub links', href: '#', links: [
-            { name: 'Sub link', href: '#' },
-            { name: 'Sub link 2', href: '#' },
-            { name: 'Sub link with third level links', href: '#', links: [
-              { name: 'Third level link', href: '#' },
-              { name: 'Third level link 2', href: '#' },
-              { name: 'Third level link 3', href: '#' }
-            ] }
-          ]}
-        ]}
-        currentSlug='/' />}
+        desktopNavigation={<DesktopNavigation {...DefaultDesktopNavigation.args as INavigation} />}
       />
         
       <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
