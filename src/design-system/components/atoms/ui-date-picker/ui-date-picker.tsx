@@ -7,9 +7,6 @@ import sv from 'date-fns/locale/sv'
 import { Button } from '../button/button'
 import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
-import { Icon } from '../icon/icon'
-import { Below } from '../../layouts'
-import { IconButton } from '../icon-button/icon-button'
 
 export interface IUiDatePicker {
   selectedDeliveryDate: string,

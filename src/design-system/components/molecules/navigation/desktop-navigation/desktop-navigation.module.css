@@ -14,6 +14,7 @@
 
       & .topLevelLinkList {
         display: flex;
+        align-items: center;
         list-style: none;
         margin: 0;
         padding: 0;
@@ -60,10 +61,24 @@
       top: 5rem;
       left: 0;
       background-color: var(--navigation-surface-default);
+      background-color: rgba(255, 255, 255, 0.95);
+      overflow: hidden;
 
       & .secondLevelInner {
         display: flex;
         width: 100%;
+        padding-top: 2rem;
+        overflow: hidden;
+        position: relative;
+
+        & .endOfList {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 6.5rem;
+          background: linear-gradient(0deg, var(--navigation-surface-default) 70%, transparent 85%);
+          pointer-events: none;
+        }
 
         & .logoWrapper {
           height: 88px;
@@ -71,10 +86,15 @@
 
         & .secondLevelLinkList {
           display: flex;
+          justify-content: space-between;
+          width: 100%;
           list-style: none;
           margin: 0;
+          margin-bottom: 4.5rem;
           padding: 0;
-          overflow: hidden;
+          padding-bottom: 2rem;
+          gap: 1rem;
+          overflow-y: auto;
 
           & .secondLevelLinkItem {
             position: relative;
@@ -103,122 +123,60 @@
             cursor: pointer;
             text-decoration: none;
             font-family: var(--font-family-primary);
-            font-size: 0.875rem;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
 
             &.active {
+              color: var(--cta-tertiary-default);
+            }
+            
+            &:hover {
               color: var(--cta-tertiary-default);
             }
           }
         }
       }
     }
-
   }
-  & .thirdLevel {
-    margin: 0 auto;
-    width: 100%;
-    overflow: hidden;
-    padding: 5rem 0 3rem;
-    position: absolute;
-    top: 5rem;
-    left: 0;
-    background-color: var(--navigation-surface-default);
 
-    & .thirdLevelInner {
-      position: relative;
-      height: calc(100vh-160px);
-      overflow-y: scroll;
-      scrollbar-width: none;
+  & .thirdLevelList {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: calc(100% - 4rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
+    & .thirdLeveListItem {
+      padding: 0.5rem 0;
+      font-size: 1rem;
+      margin-right: 2.5rem;
 
-      & .thirdLevelTextWrapper {
-        position: relative;
-        display: flex;
-        width: 100%;
-        align-items: start;
-        gap: 1rem; 
-        padding: 1rem 0;
-
-        & .titleWrapper {
-        }
-
-        & .title {
-          margin: 0;
-          font-size: 2rem;
-          font-family: var(--font-family-primary);
-        }
-
-        & .description {
-          font-size: 1.25rem;
-        }
-
-      }
-    }
-
-    & .thirdLevelLinkList {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-      margin: 0;
-      padding: 0;
-
-      & .thirdLevelLinkItem {
-        position: relative;
-        display: flex;
-        flex: 0 1 auto;
-        cursor: pointer;
-        overflow: hidden;
-        background-color: var(--cta-primary-default);
-        transition: background-color 0.3s ease;
-      }
-
-      & .thirdLevelLinkActive {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 100%;
-        width: 100%;
-        background-color: var(--cta-primary-hover);
-      }
-
-      & .thirdLevelLinkWrapper {
-        position: relative;
-        z-index: 10;
-        display: block;
-        height: 100%;
-        padding: 0.5rem 1rem;
+      & .thirdLevelLink {
         text-decoration: none;
+        color: var(--navigation-text-default);
 
-        & .name {
-          font-size: 1rem;
-          font-weight: bold;
-          color: var(--action-secondary-default);
-          margin: 0;
-        }
-        
-        & .description {
-          font-size: 1rem;
+        &:hover {
+          color: var(--cta-tertiary-default)
         }
       }
     }
   }
   
   & .closeButton {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    
-    & .closeButtonIcon {
-      display: block;
-      transform: rotate(45deg);
-      font-size: 1.5rem;
+    margin-left: auto;
+    z-index: var(--menu-z-index);
+    transform-origin: center;
+
+    & .iconButton {
+      & > span {
+        display: block;
+        transform: rotate(45deg);
+        font-size: 1.5rem;
+      }
     }
+    
   }
 }
