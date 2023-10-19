@@ -15,7 +15,7 @@
     height: 2.5rem;
     
     @media (min-width: 64em) {
-        max-width: var(--content-max-width-text);
+        max-width: 24rem;
     }
 
     & input[type="text"] {
@@ -74,6 +74,7 @@
     position: absolute;
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-top: 0.75rem;
     left: 0;
     width: 100%;

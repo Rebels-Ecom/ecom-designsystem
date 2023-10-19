@@ -11,6 +11,7 @@ export interface ILinkButton extends ILink {
   fullWidth?: boolean
   rounded?: boolean
   round?: boolean
+  disabled?: boolean
 }
 
 export function getButtonSize(surface: TButtonSize) {
@@ -38,9 +39,16 @@ const LinkButton = ({
   isExternal,
   id,
   rounded,
-  round
+  round,
+  disabled
 }: ILinkButton) => {
-  const classNames = cx(styles.button, getButtonSize(size), styles[surface], fullWidth && styles.fullWidth, rounded && styles.rounded, round && styles.round, className)
+  const classNames = cx(styles.button, getButtonSize(size), styles[surface], {
+    [styles.fullWidth]: fullWidth,
+    [styles.rounded]: rounded,
+    [styles.round]: round,
+    [styles.disabled]: disabled,
+  }, className)
+  
   const Tag = isExternal ? 'a' : Link
   return (
     <Tag to={!isExternal ? href : undefined} href={isExternal ? href : undefined} target={target} title={title} className={classNames} id={id ? id : undefined}>

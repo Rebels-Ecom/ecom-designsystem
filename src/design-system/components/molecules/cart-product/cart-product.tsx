@@ -5,13 +5,13 @@ import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
-import { IconButton, IIconButton } from '../../atoms/icon-button/icon-button'
+import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
 import { DividerLines } from '../../atoms/divider-lines/divider-lines'
 import { Loader } from '../../atoms/loader/loader'
 
 export interface ICartProduct extends IProduct {
     product: IProduct
-    iconButton?: IIconButton
+    iconButton?: TIconButton
     onClickRemoveProduct?: CallableFunction
     className?: string
     loading: boolean
@@ -58,7 +58,11 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
                         />
                     </div>
                     {onClickRemoveProduct && iconButton && <div className={styles.iconLink}>
-                        <IconButton {...iconButton} onClick={()=> handleRemoveProduct(productId)}></IconButton>
+                        <IconButton
+                            {...iconButton}
+                            type='button'
+                            onClick={()=> handleRemoveProduct(productId)}
+                        />
                     </div>}
                 </>
             }

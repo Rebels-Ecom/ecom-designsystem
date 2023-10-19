@@ -26,6 +26,8 @@ export type TNavCategory = {
 };
 
 export interface INavigation {
+  isOpen: boolean;
+  setIsOpen: (val: boolean) => void;
   // Array of all your link objects
   categories: Array<TNavLink | TNavCategory>;
   // Active slug/path

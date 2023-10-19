@@ -1,8 +1,7 @@
 import React, { useRef } from 'react'
 import styles from './user-profile-dropdown.module.css'
 import useOnClickOutside from '../../../hooks/useOnClickOutside'
-import { Button } from '../../atoms/button/button'
-import { Icon } from '../../atoms';
+import { IconButton } from '../../atoms';
 
 export interface IUserProfileDropdown {
     children: React.ReactNode;
@@ -19,7 +18,7 @@ function UserProfileDropdownControlled({ children, isOpen, onClick} : IUserProfi
 
     return (
         <div className={styles.userProfileDropdown} ref={dropdownElement}>
-            <Button className={styles.button} type='button' surface='x' size='xx-small' onClick={onClick}><Icon icon='icon-menu' /></Button>
+            <IconButton type='button' icon='icon-user' onClick={onClick} size='medium' />
             {isOpen && <div className={styles.dropdown}>{children}</div>}
         </div>
     )

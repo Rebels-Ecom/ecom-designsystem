@@ -1,5 +1,5 @@
 .deliveryFormWrapper {
-  max-width: 570px;
+  max-width: var(--content-max-width-text);
 }
 
 .deliveryForm {
@@ -31,7 +31,7 @@
 }
 
 .summaryLabel {
-  margin: 0 0 0.125rem 0;
+  margin: 0 0 0.5rem 0;
   font-weight: 700;
   display: flex;
 }

@@ -6,7 +6,10 @@ import { GroupWrapper } from '../../molecules'
 
 const meta: Meta<typeof MessagePopup> = {
     title: 'Design System/Atoms/MessagePopup',
-    component: MessagePopup
+    component: MessagePopup,
+    parameters: {
+        controls: { exclude: ['children', 'icon'] },
+    },
 }
 
 export default meta;
@@ -33,6 +36,7 @@ export const MessagePopupStory = {
     ...MessagePopupStoryTemplate,
     args: {
         children: messageShoppingListEmpty,
-        icon: 'icon-info'
+        icon: 'icon-info',
+        isOpen: false
     }
 }

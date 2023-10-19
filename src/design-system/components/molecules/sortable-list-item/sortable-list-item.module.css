@@ -23,4 +23,5 @@
     top: 50%;
     bottom: 50%;
     margin: auto;
+    height: max-content;
 }

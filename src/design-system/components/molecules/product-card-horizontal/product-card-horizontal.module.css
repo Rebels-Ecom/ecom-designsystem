@@ -12,7 +12,6 @@
   @media (min-width: 48rem) {
     flex-direction: row;
     align-items: flex-end;
-    padding: 0;
   }
 
   &.border {
@@ -23,7 +22,7 @@
 
   &.campaign {
     border: 2px solid transparent;
-    padding: 1rem;
+    padding: 2rem 1rem 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     border-color: var(--campaign-color);
@@ -40,12 +39,13 @@
       position: absolute;
       top: 0;
       right: 0;
-      padding: 0.75rem 2.5rem 0.5rem 1rem
+      padding: 0.5rem 2.5rem 0.5rem 1rem
     }
 
     & .iconLink {
       & button {
         color: white;
+        padding: 0;
       }
     }
   }
@@ -71,7 +71,6 @@
     width: 100%;
     
     @media (min-width: 48rem) {
-      padding: 1rem 1rem 1rem 0;
       width: auto;
     }
 
@@ -103,6 +102,12 @@
     }
   }
 
+  & .iconLink {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
   & .buttonsWrapper {
     display: flex;
     align-items: flex-end;
@@ -112,12 +117,6 @@
     @media (min-width: 48rem) {
       width: auto;
       padding: 1rem 0;
-    }
-
-    & .iconLink {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
     }
 
     & .productCardBtn {

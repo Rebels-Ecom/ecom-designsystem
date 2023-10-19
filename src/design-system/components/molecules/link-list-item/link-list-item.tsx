@@ -41,7 +41,17 @@ function LinkListItem({
               <div className={styles.tagsWrapper}>
                 {date1 && <Tag text={date1} shape={'rectangular'} color={'grey'} />}
                 {date2 && <Tag text={date2} shape={'rectangular'} color={status ? getOrderStatusTagColor(status as TTagColor) : 'grey'} />}
-                {onDownloadClick && <IconButton icon={'icon-file'} isLink={false} onClick={onDownloadClick} size={'large'} />}
+                {onDownloadClick && (
+                  <IconButton
+                    type='button'
+                    icon='icon-file'
+                    onClick={onDownloadClick}
+                    size='large'
+                    isTransparent
+                    noBorder
+                    noPadding
+                  />
+                )}
                 {downloadLinkUrl && <IconLink href={downloadLinkUrl} linkComponent={Link} target={target} icon={'icon-file'} children={undefined}></IconLink>}
               </div>
             ) : null}

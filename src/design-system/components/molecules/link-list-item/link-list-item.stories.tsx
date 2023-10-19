@@ -177,7 +177,12 @@ export const LinkListItemStory_InvoiceListItem = {
         <Text>Fakturabelopp: 3192kr</Text>
         <Text>Betalt belopp: 0kr</Text>
         <Text>Kvar att betala: 3192kr</Text>
-        <IconButton icon={'icon-file'} isLink={false} size={'large'} onClick={() => console.log('Download invoice pdf clicked')}></IconButton>
+        <IconButton
+          type='button'
+          icon='icon-file'
+          size='large'
+          onClick={() => console.log('Download invoice pdf clicked')}
+        />
       </GroupWrapper>
     ),
     linkUrl: '/link-to-download',
