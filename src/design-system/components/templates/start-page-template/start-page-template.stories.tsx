@@ -55,7 +55,7 @@ export const StartPage_Guest_User = {
   args: {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
-    blogList_Why_Spendrups: BlogCardListStory_VarförSpendrups.args,
+    blogList_Why_Spendrups: BlogCardListStory_Equipmemt.args,
     featuredProducts: FeaturedProductsCarouselStory.args,
     offerCardsList: OfferCardListStory.args,
     blogList_Spendrups_Suppliers: BlogCardListStory_Samarbete.args,
@@ -65,7 +65,7 @@ export const StartPage_Guest_User = {
     blogList_Spendrups_Brewing: BlogCardListStory_Brewing.args,
     teaserLeft1: TeaserStoryLeft1.args,
     teaserLeft2: TeaserStoryLeft2.args,
-    blogList_Spendrups_Equipment: BlogCardListStory_Equipmemt.args,
+    blogList_Spendrups_Equipment: BlogCardListStory_VarförSpendrups.args,
     footer:FooterStory.args
   }
 }

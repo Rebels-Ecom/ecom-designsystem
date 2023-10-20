@@ -19,6 +19,7 @@ import {  BlogCardStory_AmericanBeer,
           BlogCardStoryPang,
           BlogCardStoryWisby,  } from '../../molecules/blog-card/blog-card.stories'
 import { PictureStoryMariestad_Blog } from '../../atoms/picture/picture.stories';
+import { ContentWrapper } from '../../layouts'
 
 const meta: Meta<typeof BlogCardList> = {
   title: 'Design System/Organisms/BlogCardList',
@@ -30,9 +31,9 @@ type Story = StoryObj<typeof BlogCardList>;
 
 const BlogCardListStoryTemplate: Story = {
   render: ( args ) => (
-    <div style={{ margin: '0 auto', maxWidth: '1800px' }}>
+    <ContentWrapper>
       <BlogCardList blogCards={args.blogCards} title={args.title}/>
-    </div>
+    </ContentWrapper>
   )
 };
 
@@ -76,6 +77,15 @@ const spendrupsBrewing = [
 ]
 
 const spendrupsEquipment = [
+  BlogCardStory_Oranges.args,
+  BlogCardStory_BeerEquipment.args,
+  BlogCardStory_BeerTap.args,
+  BlogCardStory_Oranges.args,
+  BlogCardStory_BeerEquipment.args,
+  BlogCardStory_BeerTap.args,
+  BlogCardStory_Oranges.args,
+  BlogCardStory_BeerEquipment.args,
+  BlogCardStory_BeerTap.args,
   BlogCardStory_Oranges.args,
   BlogCardStory_BeerEquipment.args,
   BlogCardStory_BeerTap.args,

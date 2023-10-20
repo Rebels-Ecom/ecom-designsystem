@@ -96,7 +96,7 @@ const HeaderStoryTemplate: Story = {
         }
         logo={(
           <motion.div
-            style={{ zIndex: 9999}}
+            style={{ zIndex: 101}}
             initial={{ x: '0vw' }}
             animate={{ x: isOpen ? '10vw' : '0vw', transition: { delay: 0.1 } }}
           >
@@ -146,8 +146,7 @@ const HeaderStoryTemplate: Story = {
                 type='button'
                 onClick={toggleUserInfo}
                 icon='icon-user'
-                size='large'
-                isTransparent
+                size='medium'
               />
               <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
                 <UserInfoSummary {...UserInfoSummaryStory.args} />
@@ -182,7 +181,18 @@ const HeaderStoryTemplate: Story = {
               size='medium'
             />
             <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-            <UserProfileDropdown {...UserProfileDropdownStory.args}></UserProfileDropdown>
+            <>
+              <IconButton
+                type='button'
+                onClick={toggleUserInfo}
+                icon='icon-user'
+                size='medium'
+              />
+              <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
+                <UserInfoSummary {...UserInfoSummaryStory.args} />
+                <DropdownList {...DropdownListStory.args} />
+              </DrawerSidebar>
+            </>
           </>
         }
         desktopNavigation={<DesktopNavigation {...DefaultDesktopNavigation.args as INavigation} />}
