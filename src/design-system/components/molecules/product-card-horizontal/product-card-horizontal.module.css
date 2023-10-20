@@ -11,7 +11,6 @@
 
   @media (min-width: 48rem) {
     flex-direction: row;
-    align-items: flex-end;
   }
 
   &.border {
@@ -22,7 +21,7 @@
 
   &.campaign {
     border: 2px solid transparent;
-    padding: 2rem 1rem 1rem;
+    padding: 2.5rem 1rem 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     border-color: var(--campaign-color);
@@ -67,8 +66,11 @@
     object-fit: contain;
   }
 
-  & .contentWrapper {
+  & .content {
     width: 100%;
+    max-width: 100%;
+    flex: 1;
+    overflow: hidden;
     
     @media (min-width: 48rem) {
       width: auto;
@@ -85,6 +87,7 @@
     
     & .heading {
       margin: 0;
+      margin-bottom: 0.5rem;
       font-family: var(--font-family-secondary);
       font-weight: var(--font-weight-bold);
       line-height: 1.5rem;
@@ -110,6 +113,7 @@
 
   & .buttonsWrapper {
     display: flex;
+    align-self: flex-end;
     align-items: flex-end;
     margin-left: auto;
     width: 100%;

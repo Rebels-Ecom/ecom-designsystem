@@ -1,7 +1,7 @@
 .cartDeliveryDetails {
     background: #ffffff;
     position: relative;
-    padding: 2rem 1rem;
+    padding: 0;
     
     @media (min-width: 64em) {
         padding: 1rem;

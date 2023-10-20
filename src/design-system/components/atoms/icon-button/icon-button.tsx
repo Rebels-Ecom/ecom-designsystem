@@ -47,6 +47,10 @@ export function getIconButtonSize(surface: TIconButtonSize, hasChildren: boolean
   }
 
 const IconButton = (props: TIconButton) => {
+  if (!props.type) {
+    throw new Error("type must be assigned");
+  }
+
   const renderLink = () => {
     if (props.type === 'button') {
       return;

@@ -13,9 +13,12 @@ export interface IBlogCard {
   text: string
   link?: ILink
   fullWidth?: boolean
+  maxChar?: number;
 }
 
-const BlogCard = ({ image, tag, heading, text, link, fullWidth }: IBlogCard) => {
+const BlogCard = ({ image, tag, heading, text, link, fullWidth, maxChar }: IBlogCard) => {
+  const trimmedText = maxChar && text.length > maxChar ? text.substring(0, maxChar).concat('...') : text;
+
   return (
     <div className={cx(styles.blogCard, fullWidth && styles.fullWidth)}>
       {image && (
@@ -24,10 +27,13 @@ const BlogCard = ({ image, tag, heading, text, link, fullWidth }: IBlogCard) => 
           {tag && <Tag {...tag} className={styles.tag}></Tag>}
         </div>
       )}
-      <div className={cx(styles.content, fullWidth && styles.centered)}>
-        <div>
+      <div className={cx(styles.content, {
+        [styles.centered]: fullWidth,
+        [styles.maxHeight]: !!maxChar,
+      })}>
+        <div className={styles.textContent}>
           {heading && <h4 className={styles.heading}>{heading}</h4>}
-          <p className={styles.text} dangerouslySetInnerHTML={{ __html: text }}></p>
+          <p className={styles.text} dangerouslySetInnerHTML={{ __html: trimmedText }}></p>
         </div>
         {link && (
           <UILink {...link} onSurface={'transparent'} size={'default'} className={styles.link}>

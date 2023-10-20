@@ -76,7 +76,7 @@ const ProductCardHorizontal = ({
                 classNameImg={`${styles.image}`}
                 fallbackImageUrl={fallbackProductImageUrl}
               />
-              <div className={styles.contentWrapper}>
+              <div className={styles.content}>
                 {Array.isArray(tags) && tags.length ?
                   <TagsList tagsList={tags} /> : null
                 }
@@ -88,8 +88,6 @@ const ProductCardHorizontal = ({
                 ) : (
                   <h5 className={styles.heading}>{productName}</h5>
                 )}
-
-                <DividerLines />
                 
                 <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
                 

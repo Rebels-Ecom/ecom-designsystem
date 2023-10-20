@@ -1,5 +1,20 @@
 .userInfoSummary {
-    & > * {
-        margin: 0.5rem 0;
+    padding: 6rem 0rem 2rem;
+
+    & .label {
+        font-size: 0.875rem;
+        font-weight: bold;
+        margin: 0 0 0.5rem;
+    }
+    
+    & .userName {
+        font-size: 1rem;
+        font-weight: bold;
+        margin: 0 0 0.5rem;
+    }
+
+    & .infoText {
+        font-size: 1rem;
+        margin: 0 0 0.5rem;
     }
 }
