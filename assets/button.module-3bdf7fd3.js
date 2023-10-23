@@ -1,0 +1,2 @@
+const t="_buttonDefault_1w1qr_1",n="_disabled_1w1qr_23",o="_primary_1w1qr_39",_="_secondary_1w1qr_65",r="_tertiary_1w1qr_95",e="_x_1w1qr_125",c="_rounded_1w1qr_141",s="_fullWidth_1w1qr_149",d="_buttonContent_1w1qr_163",a="_contentLeft_1w1qr_167",u="_contentRight_1w1qr_173",i={buttonDefault:t,disabled:n,primary:o,secondary:_,tertiary:r,x:e,rounded:c,fullWidth:s,buttonContent:d,contentLeft:a,contentRight:u};export{i as b};
+//# sourceMappingURL=button.module-3bdf7fd3.js.map
