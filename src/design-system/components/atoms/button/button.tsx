@@ -3,6 +3,7 @@ import cx from 'classnames'
 import { TButtonSize, TButtonSurface } from '../../../../types/button'
 import { Icon, IIcon } from '../icon/icon'
 import styles from './button.module.css'
+import { Loader } from '../loader/loader'
 
 export type TButtonType = 'submit' | 'button'
 export interface IButton {
@@ -22,6 +23,11 @@ export interface IButton {
   disabled?: boolean
   id?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
+  /**
+   * If true, displays a loading spinner and disables the button
+   * @default undefined
+   */
+  loading?: boolean;
 }
 
 export function getButtonSurface(surface: TButtonSurface) {
@@ -52,7 +58,7 @@ export function getButtonSize(size: TButtonSize) {
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { surface='primary', size='small', type='button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className },
+    { surface='primary', size='small', type='button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className, loading },
     ref
   ) => {
     if(!children)
@@ -71,12 +77,16 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
           rounded && styles.rounded,
           className
         )}
-        disabled={disabled}
+        disabled={disabled || loading}
         onClick={onClick}
       >
-        {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
-        {children && <span className={ cx(styles.buttonContent, iconLeft && styles.contentRight, iconRight && styles.contentLeft)}>{children}</span>}
-        {iconRight && <Icon icon={iconRight.icon}></Icon>}
+        {loading && size !== 'xx-small' ? <Loader visible size='xs' /> : 
+        <>
+          {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
+          {children && <span className={ cx(styles.buttonContent, iconLeft && styles.contentRight, iconRight && styles.contentLeft)}>{children}</span>}
+          {iconRight && <Icon icon={iconRight.icon}></Icon>}
+        </>
+        }
       </button>
     )
   }
