@@ -6,10 +6,6 @@ import { IProductVariant } from '../product-variant/product-variant'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 
-export interface ISearchNoResult {
-  text: React.ReactNode | string
-}
-
 export interface IResult {
   productId: string
   productName: string
@@ -27,7 +23,7 @@ export interface IProductSearch {
   results: Array<IResult>
   onClickSearchResult: CallableFunction
   disabled?: boolean
-  noResultText: ISearchNoResult
+  noResultText: React.ReactNode | string
   placeholder?: string
   className?: string
 }
@@ -127,7 +123,7 @@ function ProductSearch({
             {results.length === 0 && query.length ? (
               <li key={`search_no_result_${id}`} className={styles.noResultListItem}>
                 <div>
-                  <span className={styles.serchResultItemText}>{noResultText.text}</span>
+                  <span className={styles.serchResultItemText}>{noResultText}</span>
                 </div>
               </li>
             ) : null}

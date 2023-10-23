@@ -20,7 +20,7 @@ function UserInfoSummary({ label, infoSummary } : IUserInfoSummary) {
       {infoSummary.userName && <h5 className={styles.userName}>{infoSummary.userName.toUpperCase()}</h5>}
       {infoSummary.companyName && <p className={styles.infoText}> {infoSummary.companyName} </p>}
       {infoSummary.customerNumber && <p className={styles.infoText}> {infoSummary.customerNumber} </p>}
-      {infoSummary.role && <p className={styles.infoText}> {infoSummary.role} </p>}
+      {infoSummary.role && <p className={styles.infoText}>{infoSummary.role}</p>}
     </div>
   )
 }

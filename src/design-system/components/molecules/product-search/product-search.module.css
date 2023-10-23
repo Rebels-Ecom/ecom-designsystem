@@ -128,4 +128,5 @@
     direction:ltr;
     display: flex;
     text-align: left;
+    padding: 1rem;
 }

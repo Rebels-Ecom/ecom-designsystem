@@ -20,7 +20,7 @@ const infoSummaryText = {
     userName: 'Jon Johnsson',
     companyName: 'Gustav Grill & Bar',
     customerNumber: 'Kundnr: 186922',
-    role: 'Roll: Sales'
+    role: 'Roller: Sales'
 }
 
 
