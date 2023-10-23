@@ -46,6 +46,8 @@ function ProductSearchResultItem({ productId, productName, productImage, product
             icon={showVariants ? 'icon-chevron-up' : 'icon-chevron-down'}
             onClick={handleShowProductVariants}
             size="large"
+            isTransparent
+            noBorder
           ></IconButton>
         ) : (
           <IconButton
@@ -53,6 +55,8 @@ function ProductSearchResultItem({ productId, productName, productImage, product
             icon={'icon-plus-circle'}
             onClick={() => handleOnClickProduct(productId)}
             size="large"
+            isTransparent
+            noBorder
           />
         )}
       </div>
