@@ -23,6 +23,8 @@ const ProductCardHorizontal = ({
   className = "",
   defaultQuantity,
   campaign,
+  buttonLoading,
+  disabled,
   border = false,
 }: IProductCard & TProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
@@ -124,7 +126,8 @@ const ProductCardHorizontal = ({
                     className={!loading ? styles.productCardBtn : ''}
                     size={'x-small'}
                     onClick={() => addToCart(product)}
-                    disabled={loading || quantity <= '0'}
+                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
+                    loading={buttonLoading}
                   >
                     <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
                     {/* TODO: replace this hc copy with addToCartButton.children? */}
