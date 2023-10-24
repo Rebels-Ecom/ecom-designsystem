@@ -25,7 +25,9 @@ const ProductCardVertical = ({
   onVariantsButtonClick,
   className,
   defaultQuantity,
-  campaign
+  campaign,
+  disabled,
+  buttonLoading
 }: IProductCard & TProductCardVertical) => {
   const {
     productId,
@@ -140,7 +142,8 @@ const ProductCardVertical = ({
             className={!loading ? styles.productCardBtn : ''}
             fullWidth
             onClick={() => addToCart(product)}
-            disabled={loading}
+            disabled={buttonLoading || loading || disabled}
+            loading={buttonLoading}
           >
             Lägg i kundvagn
           </Button>

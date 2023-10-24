@@ -37,7 +37,6 @@ export interface IProductCard {
   addToCart: CallableFunction
   onChangeQuantity?: CallableFunction
   hideCartButton?: boolean
-  loading: boolean
   linkComponent?: any
   hideRemoveButton?: boolean
   onRemoveProduct?: CallableFunction
@@ -49,6 +48,9 @@ export interface IProductCard {
     title: string;
     color: string;
   }
+  loading: boolean;
+  buttonLoading?: boolean;
+  disabled?: boolean;
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -69,7 +71,9 @@ function ProductCard({
   className,
   defaultQuantity,
   campaign,
-  border
+  border,
+  disabled,
+  buttonLoading
 }: TProductCard) {
   
   if (!cardDisplay) {
@@ -145,6 +149,8 @@ function ProductCard({
         defaultQuantity={defaultQuantity}
         campaign={campaign}
         border={border}
+        disabled={disabled}
+        buttonLoading={buttonLoading}
       />
     )
   }
@@ -169,6 +175,8 @@ function ProductCard({
         hideCartButton={hideCartButton}
         defaultQuantity={defaultQuantity}
         campaign={campaign}
+        disabled={disabled}
+        buttonLoading={buttonLoading}
       />
     )
   }
