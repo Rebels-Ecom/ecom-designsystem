@@ -1,6 +1,8 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { LoginForm } from './login-form'
+import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
+import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 
 const meta: Meta<typeof LoginForm> = {
   title: 'Design System/Organisms/LoginForm',
@@ -34,6 +36,16 @@ export const LoginFormStory = {
     onSubmit: (e) => {},
     onPasswordChange: (e) => {},
     onUsernameChange: (e) => {},
+    logo: {
+      src: logotype_desktop_horizontal,
+      alt: 'logo',
+      href: '/',
+      id: 'logo',
+      sources: [
+        { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
+        { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+      ],
+    }
   },
 }
 

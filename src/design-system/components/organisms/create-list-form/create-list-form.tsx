@@ -1,28 +1,28 @@
 import styles from './create-list-form.module.css'
 import cx from 'classnames'
 import { FormGroup } from '../../molecules'
-import { Button, Icon, InputText, Textarea } from '../../atoms'
+import { Button, InputText, Textarea } from '../../atoms'
 import { LoadingOverlay } from '../../molecules/loading-overlay/loading-overlay'
-import { INavigationLogo, Logotype } from '../../molecules/logotype/logotype'
+import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 
 export interface ICreateListForm {
-  logo?: INavigationLogo
-  linkComponent: any
-  title: string
-  description?: string
-  nameLabel: string
-  name?: string
-  commentLabel: string
-  comment?: string
-  submitLabel: string
-  cancelLabel?: string
-  offerLinkLabel?: string
-  errorMessage?: string
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
-  onCancel: () => void
-  onNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onCommentChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  loading?: boolean 
+  logo?: TLogotype;
+  linkComponent: any;
+  title: string;
+  description?: string;
+  nameLabel: string;
+  name?: string;
+  commentLabel: string;
+  comment?: string;
+  submitLabel: string;
+  cancelLabel?: string;
+  offerLinkLabel?: string;
+  errorMessage?: string;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onCancel: () => void;
+  onNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCommentChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  loading?: boolean;
 }
 
 const CreateListForm = ({
@@ -47,7 +47,7 @@ const CreateListForm = ({
   return (
     <form className={styles.createListForm} onSubmit={onSubmit}>
       {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
-      {logo && <Logotype logo={logo} linkComponent={Link} className={styles.logo}/> }
+      {logo && <Logotype {...logo} classNamePicture={styles.logo} /> }
       <h1 className="h3">{title}</h1>
       {description && <p>{description}</p>}
       <FormGroup label={nameLabel} formElementId="name">

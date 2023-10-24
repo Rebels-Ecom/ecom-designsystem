@@ -3,23 +3,25 @@ import cx from 'classnames'
 import { FormGroup } from '../../molecules'
 import { Button, Icon, InputText, Loader, UILink } from '../../atoms'
 import { LoadingOverlay } from '../../molecules/loading-overlay/loading-overlay'
+import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 
 export interface ILoginForm {
-  title: string
-  description?: string
-  usernameLabel: string
-  username?: string
-  passwordLabel: string
-  password?: string
-  forgotPasswordLabel: string
-  primarySubmitLabel: string
-  secondarySubmitLabel?: string
-  offerLinkLabel?: string
-  errorMessage?: string
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
-  onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  loading?: boolean 
+  title: string;
+  description?: string;
+  usernameLabel: string;
+  username?: string;
+  passwordLabel: string;
+  password?: string;
+  forgotPasswordLabel: string;
+  primarySubmitLabel: string;
+  secondarySubmitLabel?: string;
+  offerLinkLabel?: string;
+  errorMessage?: string;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  loading?: boolean;
+  logo: TLogotype;
 }
 
 const LoginForm = ({
@@ -37,11 +39,13 @@ const LoginForm = ({
   errorMessage,
   onPasswordChange,
   onUsernameChange,
-  loading
+  loading,
+  logo
 }: ILoginForm) => {
   return (
     <form className={styles.loginForm} onSubmit={onSubmit}>
       {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
+      {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
       <h1 className="h3">{title}</h1>
       {description && <p>{description}</p>}
       <FormGroup label={usernameLabel} formElementId="email">

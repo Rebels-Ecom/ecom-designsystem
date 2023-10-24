@@ -21,6 +21,10 @@
   & button {
     margin: 24px 0;
   }
+
+  & .logo {
+    margin-bottom: 1rem;
+  }
 }
 
 .loginForm input[type="text"], input[type="password"] {
