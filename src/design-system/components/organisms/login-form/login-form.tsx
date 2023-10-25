@@ -79,7 +79,7 @@ const LoginForm = ({
     pattern: 'email',
     onControlledChange: onUsernameChange,
     required: true,
-    error: 'Ange en korrekt e-post e.g. mail@mail.com',
+    error: usernameError ?? 'Ange en korrekt e-post e.g. mail@mail.com', // TODO: store backup copy somewhere?
     size: 'full'
   }, {
     fieldType: 'input',
@@ -90,7 +90,7 @@ const LoginForm = ({
     pattern: 'password',
     onControlledChange: onPasswordChange,
     required: true,
-    error: 'Ange ett lösenord enligt formatet ...',
+    error: passwordError ?? 'Lösenord måste vara minst x tecken...', // TODO: store backup copy somewhere?
     size: 'full'
   }], [username, password])
 
