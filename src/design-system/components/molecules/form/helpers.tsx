@@ -13,7 +13,6 @@ export const validatePattern = (pattern: TPattern, val?: string) => {
 }
 
 export const validateField = (field: TFormInputType) => {
-  console.log(`${field.name}: ${!!(field.value ?? field.originalValue)}`)
   if (field.required) {
     if (field.pattern) {
       return !!validatePattern(field.pattern, (field.value ?? field.originalValue)) && !!(field.value ?? field.originalValue);

@@ -57,9 +57,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
   }, []);
 
   return (
-    // TODO: turn on autocomplete
-    <form ref={formRef} className={styles.form} onSubmit={handleSubmit} autoComplete='off'>
-      <input type='hidden' autoComplete='false' />
+    <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
       {formTitle && <Heading order={3} className={styles.formTitle}>{formTitle}</Heading>}
       {formSubtitle && <p className={styles.formSubtitle}>{formSubtitle}</p>}
       <FlexContainer wrap>

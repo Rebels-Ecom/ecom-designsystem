@@ -92,7 +92,7 @@ const LoginForm = ({
     required: true,
     error: passwordError ?? 'Lösenord måste vara minst x tecken...', // TODO: store backup copy somewhere?
     size: 'full'
-  }], [username, password])
+  }], [])
 
   // TODO: remove second part of ternary when tested properly
   return 1 > 0 ? (

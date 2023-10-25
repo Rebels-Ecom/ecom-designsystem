@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute, useCallback } from "react";
+import { FocusEventHandler, HTMLInputTypeAttribute, useCallback, useEffect, useRef } from "react";
 import { motion } from 'framer-motion';
 import styles from './input-field.module.css'
 import { IUILink, UILink } from "../../../atoms/ui-link/ui-link";
@@ -65,7 +65,6 @@ const InputField = ({onChange, onControlledChange, ...props}: IInputField) => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.persist();
-      // inputState.onChange(e);
 
       onChange?.(e.target.value, props.name);
       onControlledChange?.(e);
@@ -77,38 +76,28 @@ const InputField = ({onChange, onControlledChange, ...props}: IInputField) => {
     <div className={styles.inputField}>
       {props.label && <label className={styles.label}>{props.label}</label>}
       <input
-        // ref={forkedRef}
-        // data-isdirty={inputState.isDirty}
         data-isinvalid={props.dirty && !props.valid}
         type={props.type}
         name={props.name}
         inputMode={props.type === "number" ? "decimal" : undefined}
         placeholder={props.placeholder}
-        // defaultValue={props.originalValue}
         className={styles.input}
-        // className={classNames(`${rootClassName}__input`, {
-        //   [`${rootClassName}__input--${props.variant}`]: props.variant,
-        //   [`${rootClassName}__input--no-icon`]: props.hideValidationIcon,
-        //   [`${rootClassName}__input--has-left-icon`]: !!props.leftIcon,
-        // })}
         step="any"
+        onChange={handleChange}
+        value={props.value ?? props.originalValue}
+        min={props.min}
+        max={props.max}
+        disabled={props.disabled}
+        readOnly={props.readonly}
+        autoFocus={props.focusOnRender}
         // onKeyPress={props.onKeyPress}
         // onKeyDown={props.onKeyDown}
-        onChange={handleChange}
         // onChangeCapture={handleChange}
         // onClick={handleClick}
         // onInput={props.onInput}
         // onInputCapture={handleChange}
         // onBlur={handleBlur}
-        // onFocus={handleFocus}
-        value={props.value ?? props.originalValue}
-        min={props.min}
-        max={props.max}
         // maxLength={props.maxLength}
-        disabled={props.disabled}
-        readOnly={props.readonly}
-        autoFocus={props.focusOnRender}
-        autoComplete="off"
       />
       <div className={styles.errorWrapper}>
         <motion.label

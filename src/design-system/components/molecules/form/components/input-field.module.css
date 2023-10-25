@@ -18,6 +18,10 @@
       position: absolute;
       top: 0.125rem;
       left: 0.125rem;
+
+      &::first-letter {
+        text-transform: capitalize;
+      }
     }
   }
   
