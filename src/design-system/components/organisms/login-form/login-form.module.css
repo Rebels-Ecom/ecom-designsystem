@@ -1,13 +1,13 @@
 .loginForm {
-  padding: 20px;
+  padding: 1rem;
   width: 100%;
   max-width: 830px;
   background: white;
   border-radius: 10px;
   position: relative;
   
-  @media (min-width: 768px) {
-   padding: 50px;
+  @media (min-width: 48em) {
+   padding: 3rem;
   }
 
   & h1 {
@@ -28,7 +28,7 @@
 }
 
 .loginForm input[type="text"], input[type="password"] {
-  margin: 5px 0 22px 0;
+  /* margin: 5px 0 22px 0; */
 }
 
 .closeButton {

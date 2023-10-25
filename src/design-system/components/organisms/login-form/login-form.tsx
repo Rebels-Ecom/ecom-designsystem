@@ -1,9 +1,13 @@
 import styles from './login-form.module.css'
 import cx from 'classnames'
-import { FormGroup } from '../../molecules'
+import { Form, FormGroup } from '../../molecules'
 import { Button, Icon, InputText, Loader, UILink } from '../../atoms'
 import { LoadingOverlay } from '../../molecules/loading-overlay/loading-overlay'
 import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
+import { useMemo } from 'react'
+import { IButton, TButtonType } from '../../atoms/button/button'
+import { validateField } from '../../molecules/form/helpers'
+import { TFormFieldType } from '../../molecules/form/types'
 
 export interface ILoginForm {
   title: string;
@@ -16,7 +20,9 @@ export interface ILoginForm {
   primarySubmitLabel: string;
   secondarySubmitLabel?: string;
   offerLinkLabel?: string;
-  errorMessage?: string;
+  errorMessage?: any;
+  usernameError?: string;
+  passwordError?: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -37,24 +43,85 @@ const LoginForm = ({
   secondarySubmitLabel,
   offerLinkLabel,
   errorMessage,
+  usernameError,
+  passwordError,
   onPasswordChange,
   onUsernameChange,
   loading,
   logo
 }: ILoginForm) => {
-  return (
+  const actions: IButton[] = useMemo(() => {
+    const x: IButton[] = [{
+      children: primarySubmitLabel,
+      surface: 'primary',
+      type: 'submit',
+      size: 'small'
+    }];
+
+    if (secondarySubmitLabel) {
+      x.push({
+        children: secondarySubmitLabel,
+        surface: 'secondary',
+        type: 'button',
+        size: 'small'
+      })
+    }
+
+    return x;
+  }, [secondarySubmitLabel])
+
+  const fields: TFormFieldType[] = useMemo(() => [{
+    fieldType: 'input',
+    name: 'email',
+    label: usernameLabel,
+    originalValue: username ?? '',
+    type: 'text',
+    pattern: 'email',
+    onControlledChange: onUsernameChange,
+    required: true,
+    error: 'Ange en korrekt e-post e.g. mail@mail.com',
+    size: 'full'
+  }, {
+    fieldType: 'input',
+    name: 'password',
+    label: passwordLabel,
+    originalValue: password ?? '',
+    type: 'password',
+    pattern: 'password',
+    onControlledChange: onPasswordChange,
+    required: true,
+    error: 'Ange ett lösenord enligt formatet ...',
+    size: 'full'
+  }], [username, password])
+
+  // TODO: remove second part of ternary when tested properly
+  return 1 > 0 ? (
+    <div className={styles.loginForm}>
+      {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
+      <Form
+        formTitle={title}
+        formSubtitle={description}
+        fields={fields.map(field => {
+          return ({...field, valid: validateField(field)})})}
+        loading={!!loading}
+        onControlledSubmit={onSubmit}
+        actions={actions}
+        generalErrorMessage={errorMessage}
+        links={forgotPasswordLabel ? [{ name: forgotPasswordLabel, href: '#' }] : undefined}
+      />
+    </div>
+  ) : (
     <form className={styles.loginForm} onSubmit={onSubmit}>
       {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
       {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
       <h1 className="h3">{title}</h1>
       {description && <p>{description}</p>}
-      <FormGroup label={usernameLabel} formElementId="email">
+      <FormGroup label={usernameLabel} formElementId="email" errorText={usernameError}>
         <InputText id="email" value={username} autocomplete="username" onChange={onUsernameChange} />
       </FormGroup>
-      <FormGroup label={passwordLabel} formElementId="password">
+      <FormGroup label={passwordLabel} formElementId="password" errorText={passwordError}>
         <InputText id="password" type="password" autocomplete="current-password" value={password} onChange={onPasswordChange} />
       </FormGroup>
-      {errorMessage && <div className={cx(styles.errorMessage)}>{errorMessage}</div>}
       <UILink onSurface="transparent" size="default" href="#">
         {forgotPasswordLabel}
       </UILink>

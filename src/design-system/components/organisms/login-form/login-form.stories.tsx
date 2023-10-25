@@ -31,11 +31,14 @@ export const LoginFormStory = {
     password: 'lösenord123',
     forgotPasswordLabel: 'Glömt mitt lösenord?',
     primarySubmitLabel: 'Logga in',
-    secondarySubmitLabel: 'Skapa ett konto & bli e-handelskund',
+    secondarySubmitLabel: 'Bli e-handelskund',
     offerLinkLabel: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
     onSubmit: (e) => {},
     onPasswordChange: (e) => {},
     onUsernameChange: (e) => {},
+    errorMessage: `Det verkar som att du fyllt i fel uppgifter. 
+    <br>
+    Försök igen, beställ ett nytt lösenord eller kontakta e-handelssupport på <a href="mailto:ehandel@spendrups.se">ehandel@spendrups.se</a> eller <a href="tel:+46771494910">0771-49 49 10</a>.`,
     logo: {
       src: logotype_desktop_horizontal,
       alt: 'logo',
@@ -60,7 +63,7 @@ export const LoginFormStory_Loading = {
     password: 'lösenord123',
     forgotPasswordLabel: 'Glömt mitt lösenord?',
     primarySubmitLabel: 'Logga in',
-    secondarySubmitLabel: 'Skapa ett konto & bli e-handelskund',
+    secondarySubmitLabel: 'Bli e-handelskund',
     offerLinkLabel: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
     onSubmit: (e) => {},
     onPasswordChange: (e) => {},
