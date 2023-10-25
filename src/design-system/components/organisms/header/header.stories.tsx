@@ -6,12 +6,10 @@ import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
-import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, MenuButton, ExpandableWrapper } from '../../atoms'
-import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserProfileDropdownControlled, UserInfoSummary, DropdownList, DesktopNavigation } from '../../molecules'
+import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, ExpandableWrapper } from '../../atoms'
+import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserInfoSummary, DropdownList, DesktopNavigation } from '../../molecules'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { ContentWrapper, FlexContainer } from '../../layouts'
-import { UserProfileDropdown } from '../../molecules/user-profile-dropdown/user-profile-dropdown'
-import { UserProfileDropdownStory } from '../../molecules/user-profile-dropdown/user-profile-dropdown.stories'
 import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
 import { AdminSearchStory, itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
 import { CartProductList } from '../cart-product-list/cart-product-list'
@@ -41,8 +39,6 @@ const HeaderStoryTemplate: Story = {
     const [isSearchbarOpen, setIsSearchbarOpen] = React.useState(false)
     const [isCartSidebarOpen, setIsCartSidebarOpen] = React.useState(false)
     const [showUserInfo, setShowUserInfo] = React.useState(false)
-    const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
-    const handleOnClick = () => setIsOpen(!isOpen)
     const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
@@ -63,8 +59,6 @@ const HeaderStoryTemplate: Story = {
         (item.email && pattern.test(item.email.toLowerCase()))
         )))
     }, [query]);
-
-    console.log(isSearchbarOpen)
 
     return (
       <>
@@ -100,20 +94,17 @@ const HeaderStoryTemplate: Story = {
             initial={{ x: '0vw' }}
             animate={{ x: isOpen ? '10vw' : '0vw', transition: { delay: 0.1 } }}
           >
-            <Logotype
-              className=''
-              linkComponent='a'
-              logo={{
-                src: logotype_desktop_horizontal,
-                alt: 'logo',
-                href: '/',
-                id: 'logo',
-                sources: [
+            <a href="/" target="_self">
+              <Logotype
+                src={logotype_desktop_horizontal}
+                alt='logo'
+                id='logo'
+                sources={[
                   { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
                   { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
-                ]  
-              }}
-            />
+                ]}
+              />
+            </a>
           </motion.div>
         )}
         mobileSearchBar={<ExpandableWrapper open={isSearchbarOpen}><SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} /></ExpandableWrapper>}

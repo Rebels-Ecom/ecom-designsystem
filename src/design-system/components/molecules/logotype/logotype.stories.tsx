@@ -15,17 +15,14 @@ const LogotypeStoryTemplate: Story = {
 }
 
 const logotypeArgs = {
-  logo: {
-    src: '/logotypes/Spendrups_logo_horizontal.svg',
-    alt: 'logo',
-    href: '/',
-    id: 'logo',
-    sources: [
-      { srcset: '/logotypes/Spendrups_logo_vertical.svg', media: `(max-width: 767px)` },
-      { srcset: '/logotypes/Spendrups_logo_horizontal.svg', media: `(min-width: 768px)` },
-    ],
-  },
-  linkComponent: 'a',
+  src: '/logotypes/Spendrups_logo_horizontal.svg',
+  alt: 'logo',
+  href: '/',
+  id: 'logo',
+  sources: [
+    { srcset: '/logotypes/Spendrups_logo_vertical.svg', media: `(max-width: 767px)` },
+    { srcset: '/logotypes/Spendrups_logo_horizontal.svg', media: `(min-width: 768px)` },
+  ],
 }
 
 export const logotypeStory = {
