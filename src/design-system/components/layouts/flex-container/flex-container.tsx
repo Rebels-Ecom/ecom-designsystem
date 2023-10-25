@@ -15,6 +15,11 @@ export type TFlexContainer = {
    */
   flexDirection?: 'row' | 'column';
   /**
+   * sets the flex property, e.g. '1' or '1 0 auto'
+   * @default '1'
+   */
+  flex?: string;
+  /**
    * sets the gap property in rem
    * @default 1rem
    */
@@ -43,6 +48,7 @@ export type TFlexContainer = {
 const FlexContainer = ({
   className,
   flexDirection = 'row',
+  flex = '1',
   gap = 1,
   wrap,
   alignItems = 'flex-start',
@@ -51,6 +57,7 @@ const FlexContainer = ({
   ...props
 }: PropsWithChildren<TFlexContainer>) => {
   const style: { [key: string]: string } = ({
+    '--flex': flex,
     '--gap': `${gap.toString()}rem`,
     '--align-items': alignItems,
     '--justify-content': justifyContent,

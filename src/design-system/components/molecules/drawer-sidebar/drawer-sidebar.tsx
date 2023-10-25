@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import styles from './drawer-sidebar.module.css'
 import { IconButton } from '../../atoms'
@@ -31,6 +31,21 @@ function DrawerSidebar({ children, isOpen = false, onClose }: IDrawerSidebar) {
     onClose(e)
   }
 
+  useEffect(() => {
+    const el = document.body;
+
+    if (el) {
+      if (isOpen) {
+        el.classList.add('no-scroll');
+      } else {
+        el.classList.remove('no-scroll');
+      }
+    }
+
+    return () => el?.classList?.remove('no-scroll')
+  }, [isOpen]);
+
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -39,13 +54,14 @@ function DrawerSidebar({ children, isOpen = false, onClose }: IDrawerSidebar) {
             <div className={styles.contentWrapper}>
               <IconButton
                 className={styles.buttonClose}
+                type='button'
                 onClick={onClose}
-                icon={'icon-x'}
+                icon='icon-x'
                 size="large"
                 isTransparent
-                isLink={false}
-                linkComponent={LinkComponent}
-              ></IconButton>
+                noBorder
+                noPadding
+              />
               {children}
             </div>
           </motion.div>

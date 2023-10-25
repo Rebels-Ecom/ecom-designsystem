@@ -23,6 +23,8 @@ const ProductCardHorizontal = ({
   className = "",
   defaultQuantity,
   campaign,
+  buttonLoading,
+  disabled,
   border = false,
 }: IProductCard & TProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
@@ -76,7 +78,7 @@ const ProductCardHorizontal = ({
                 classNameImg={`${styles.image}`}
                 fallbackImageUrl={fallbackProductImageUrl}
               />
-              <div className={styles.contentWrapper}>
+              <div className={styles.content}>
                 {Array.isArray(tags) && tags.length ?
                   <TagsList tagsList={tags} /> : null
                 }
@@ -88,8 +90,6 @@ const ProductCardHorizontal = ({
                 ) : (
                   <h5 className={styles.heading}>{productName}</h5>
                 )}
-
-                <DividerLines />
                 
                 <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
                 
@@ -106,27 +106,35 @@ const ProductCardHorizontal = ({
                   disabled={productQuantityDisabled}
                 />
               </div>
-              <div className={styles.buttonsWrapper}>
-                {!hideRemoveButton && onClickRemoveProduct && (
-                  <div className={styles.iconLink}>
-                    <IconButton icon={'icon-x-circle'} onClick={() => handleRemoveProduct(productId)} isLink={false} isTransparent size="large"></IconButton>
-                  </div>
-                )}
-                {/* TODO: replace this hc values with addToCartButton props? */}
-                {!hideCartButton ? (
+              {!hideRemoveButton && onClickRemoveProduct && (
+                <div className={styles.iconLink}>
+                  <IconButton
+                    type='button'
+                    icon='icon-x-circle'
+                    onClick={() => handleRemoveProduct(productId)}
+                    isTransparent
+                    noBorder
+                    size="large"
+                  />
+                </div>
+              )}
+              {!hideCartButton ? (
+                <div className={styles.buttonsWrapper}>
+                  {/* TODO: replace this hc values with addToCartButton props? */}
                   <Button
                     {...addToCartButton}
                     className={!loading ? styles.productCardBtn : ''}
                     size={'x-small'}
                     onClick={() => addToCart(product)}
-                    disabled={loading || quantity <= '0'}
+                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
+                    loading={buttonLoading}
                   >
                     <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
                     {/* TODO: replace this hc copy with addToCartButton.children? */}
                     <span className={styles.cartBtnText}>Lägg i kundvagn</span>
                   </Button>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
             </>
           )}
         </>

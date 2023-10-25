@@ -4,21 +4,21 @@ import { Newsletter } from '../../molecules/newsletter/newsletter'
 import { useState } from 'react'
 import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
 import styles from './footer.module.css'
-import { Logotype } from '../../molecules/logotype/logotype'
+import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 import { ContentWrapper } from '../../layouts'
 
 export interface IFooter {
-  footerTopBarLinks: Array<TNavLink>
-  links: Array<TFooterLinksList>
-  linkComponent: any
-  logo: INavigationLogo
-  addressLabel: string
-  address: string
-  showNewsletter: boolean
-  newsletterId: string
-  newsletterPlaceholder: string
-  bottomBarText: string
-  children: React.ReactNode
+  footerTopBarLinks: Array<TNavLink>;
+  links: Array<TFooterLinksList>;
+  linkComponent: any;
+  logo: TLogotype;
+  addressLabel: string;
+  address: string;
+  showNewsletter: boolean;
+  newsletterId: string;
+  newsletterPlaceholder: string;
+  bottomBarText: string;
+  children: React.ReactNode;
 }
 
 export type INavigationLogo = {
@@ -30,7 +30,7 @@ export type TFooterLinksList = {
   links: Array<ILink>
 }
 
-const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, showNewsletter=false, newsletterId, newsletterPlaceholder }: {logo:INavigationLogo, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, showNewsletter:boolean, newsletterId:string, newsletterPlaceholder: string }) => {
+const FooterContent = ({logo, address, addressLabel, children, linkComponent: Link, showNewsletter=false, newsletterId, newsletterPlaceholder }: {logo: TLogotype, address:string, addressLabel:string, children: React.ReactNode, linkComponent: any, showNewsletter:boolean, newsletterId:string, newsletterPlaceholder: string }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [isErroneous, setIsErroneous] = useState<boolean>(false)
@@ -40,7 +40,7 @@ const FooterContent = ({logo, address, addressLabel, children, linkComponent: Li
   }
   return(
     <div className={styles.footerLeft}>
-      {logo && <Logotype logo={logo} linkComponent={Link} className={styles.logoLink}/> }
+      {logo && <Logotype {...logo} /> }
       {showNewsletter && 
         <Newsletter
           id={newsletterId}

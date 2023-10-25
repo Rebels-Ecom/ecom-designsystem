@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 export type TTagShape = 'rectangular' | 'round' | 'pill';
 export type TTagSize = 'sm' | 'md' | 'lg';
-export type TTagColor = 'green' | 'mint' | 'blue' | 'orange' | 'grey' | 'yellow' | 'purple';
+export type TTagColor = 'green' | 'mint' | 'blue' | 'orange' | 'grey' | 'yellow' | 'purple' | 'black';
 export interface ITag {
     text: string
     shape: TTagShape

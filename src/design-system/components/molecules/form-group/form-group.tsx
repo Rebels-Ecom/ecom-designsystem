@@ -21,7 +21,7 @@ export interface IFormGroup {
 
 const FormGroup = ({ label, formElementId, className, children, helperText, errorText, requiredText, labelRightText, isToggleBtnLabel=false }: IFormGroup) => {
   return (
-    <div className={className}>
+    <div className={cx(styles.formGroup, className)}>
       <label className={styles.labelWrapper} htmlFor={formElementId}>
         <span className={cx('body', styles.label, helperText && styles.hasHelpText, isToggleBtnLabel && styles.isToggleBtnLabel)}>
           <span>

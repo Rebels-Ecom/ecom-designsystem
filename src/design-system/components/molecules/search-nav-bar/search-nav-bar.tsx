@@ -1,18 +1,11 @@
 import { useState, useEffect } from 'react'
 import styles from './search-nav-bar.module.css'
 import { Search } from '../../atoms/search/search'
-import { motion } from 'framer-motion'
-import { Below, Above } from '../../layouts'
 
 export interface ISearchNavBar {
   linkComponent: any
   isOpen?: boolean
   itemsToFilterOn: Array<any>
-}
-
-const variants = {
-  open: { y: 0, opacity: 1, width: '100%' },
-  closed: { y: "-3.7rem", opacity: 0 },
 }
 
 const SearchNavBar = ({ itemsToFilterOn, isOpen=false }: ISearchNavBar) => {
@@ -44,15 +37,8 @@ const SearchNavBar = ({ itemsToFilterOn, isOpen=false }: ISearchNavBar) => {
   }
 
   return (
-    <div className={styles.innerSearchWrapper}>
-      <Below breakpoint="lg">{(matches: any) => matches && 
-        <motion.div initial={{opacity: 0}} animate={isOpen ? "open" : "closed"} transition={{duration: 1}} variants={variants}>
-          {renderSearchBar()}
-        </motion.div>}
-      </Below>
-      <Above breakpoint="lg">{(matches: any) => matches && 
-          <>{renderSearchBar()}</>}
-      </Above>
+    <div className={styles.innerSearchWrapper} style={{ overflow: 'hidden' }}>
+      {renderSearchBar()}
     </div>
   )
 }

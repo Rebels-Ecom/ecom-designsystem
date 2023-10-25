@@ -16,11 +16,11 @@ export interface IUserInfoSummary {
 function UserInfoSummary({ label, infoSummary } : IUserInfoSummary) {
   return (
     <div className={styles.userInfoSummary}>
-      { label && <p><b> {label} </b></p> }
-      { infoSummary.userName && <p><b> {infoSummary.userName.toUpperCase()} </b></p> }
-      { infoSummary.companyName && <p> {infoSummary.companyName} </p> }
-      { infoSummary.customerNumber && <p> {infoSummary.customerNumber} </p> }
-      { infoSummary.role && <p> {infoSummary.role} </p> }
+      {label && <p className={styles.label}>{label}</p>}
+      {infoSummary.userName && <h5 className={styles.userName}>{infoSummary.userName.toUpperCase()}</h5>}
+      {infoSummary.companyName && <p className={styles.infoText}> {infoSummary.companyName} </p>}
+      {infoSummary.customerNumber && <p className={styles.infoText}> {infoSummary.customerNumber} </p>}
+      {infoSummary.role && <p className={styles.infoText}>{infoSummary.role}</p>}
     </div>
   )
 }

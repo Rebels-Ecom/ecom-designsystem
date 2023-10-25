@@ -1,0 +1,32 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--input-background-default);
+
+  & .formTitle {
+    margin: 0 0 1rem;
+  }
+
+  & .field {
+    flex: 0 1 100%;
+
+    @media (min-width: 64em) {
+      &.half {
+        flex: 0 1 calc(50% - 0.5rem);
+      }
+      
+      &.full {
+        flex: 0 1 100%;
+      }
+    }
+
+  }
+
+  & .generalErrorMessage {
+    max-width: 25rem;
+    color: var(--error-red);
+    text-align: center;
+    word-break: break-all;
+  }
+}

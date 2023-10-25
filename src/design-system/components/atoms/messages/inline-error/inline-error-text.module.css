@@ -1,27 +1,18 @@
 .validationError {
-  padding: 0 0 0 1.75rem;
-  position: relative;
-}
-
-.text {
-  color: var(--color-text-critical);
-  width: calc(100% - 1.75rem);
-  display: inline-block;
-  vertical-align: top;
-
-  @media (min-width: 48em) {
-    margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  & .text {
+    color: var(--color-text-critical);
   }
-}
-
-.icon {
-  position: absolute;
-  z-index: 1;
-  left: 0.125rem;
-  top: 0.125rem;
-  color: var(--icon-critical);
-  font-size: 1.25rem;
-  line-height: 1.25rem;
-  height: 1.25rem;
-  width: 1.25rem;
-}
+  
+  & .icon {
+    z-index: 1;
+    color: var(--icon-critical);
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+}  

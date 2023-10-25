@@ -25,8 +25,22 @@ const SortingOption = ({ name, onClickUp, onClickDown }: ISortingOption) => {
   return (
     <div className={styles.sortingOption}>
       <div className={styles.optionName}>{name}</div>
-      <IconButton icon={'icon-chevron-up'} isLink={false} onClick={() => onClickUp()}></IconButton>
-      <IconButton icon={'icon-chevron-down'} isLink={false} onClick={() => onClickDown()}></IconButton>
+      <IconButton
+        type='button'
+        icon='icon-chevron-up'
+        onClick={() => onClickUp()}
+        noPadding
+        isTransparent
+        noBorder
+        />
+      <IconButton
+        type='button'
+        icon='icon-chevron-down'
+        onClick={() => onClickDown()}
+        noPadding
+        isTransparent
+        noBorder
+      />
     </div>
   )
 }

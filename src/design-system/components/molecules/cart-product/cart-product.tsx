@@ -5,13 +5,13 @@ import { IProduct } from '../../../../types/product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
-import { IconButton, IIconButton } from '../../atoms/icon-button/icon-button'
+import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
 import { DividerLines } from '../../atoms/divider-lines/divider-lines'
 import { Loader } from '../../atoms/loader/loader'
 
 export interface ICartProduct extends IProduct {
     product: IProduct
-    iconButton?: IIconButton
+    iconButton?: TIconButton
     onClickRemoveProduct?: CallableFunction
     className?: string
     loading: boolean
@@ -45,7 +45,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
                             <h5 className={styles.heading}>{productName}</h5>
                         }
                         <DividerLines/>
-                        <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
+                        <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
                         {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}
                         <ProductQuantityInput
                             className={styles.quantityInput}
@@ -58,7 +58,11 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
                         />
                     </div>
                     {onClickRemoveProduct && iconButton && <div className={styles.iconLink}>
-                        <IconButton {...iconButton} onClick={()=> handleRemoveProduct(productId)}></IconButton>
+                        <IconButton
+                            {...iconButton}
+                            type='button'
+                            onClick={()=> handleRemoveProduct(productId)}
+                        />
                     </div>}
                 </>
             }

@@ -42,13 +42,22 @@ function ProductSearchResultItem({ productId, productName, productImage, product
         <ProductItem productName={productName} productImage={productImage}></ProductItem>
         {productVariantList && productVariantList.length > 1 ? (
           <IconButton
+            type='button'
             icon={showVariants ? 'icon-chevron-up' : 'icon-chevron-down'}
-            isLink={false}
             onClick={handleShowProductVariants}
             size="large"
+            isTransparent
+            noBorder
           ></IconButton>
         ) : (
-          <IconButton icon={'icon-plus-circle'} isLink={false} onClick={() => handleOnClickProduct(productId)} size="large"></IconButton>
+          <IconButton
+            type='button'
+            icon={'icon-plus-circle'}
+            onClick={() => handleOnClickProduct(productId)}
+            size="large"
+            isTransparent
+            noBorder
+          />
         )}
       </div>
       {showVariants && productVariantList && productVariantList.length > 1 && (
@@ -58,7 +67,11 @@ function ProductSearchResultItem({ productId, productName, productImage, product
             return (
               <li className={styles.productItemWrapper} key={variant.variantId}>
                 <ProductItem productName={variant.variantName} productImage={variantImage}></ProductItem>
-                <IconButton icon={'icon-plus-circle'} isLink={false} onClick={() => handleOnClickProduct(variant.variantId)} size="large"></IconButton>
+                <IconButton
+                  icon='icon-plus-circle'
+                  type='button'
+                  onClick={() => handleOnClickProduct(variant.variantId)} size="large"
+                />
               </li>
             )
           })}

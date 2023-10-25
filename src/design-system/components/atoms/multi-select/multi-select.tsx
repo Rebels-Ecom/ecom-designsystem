@@ -41,7 +41,8 @@ const MultiSelect = (
         type='button' 
         surface='x'
         size='xx-small'
-        className={styles.multiSelectDropdown} onClick={()=>handleClickOnDropdown()}
+        className={styles.multiSelectDropdown}
+        onClick={() => handleClickOnDropdown()}
         iconRight={icon}
         disabled={disabled}
       >
