@@ -7,7 +7,6 @@ import { InputField } from './components/input-field';
 import { validateField } from './helpers';
 import cx from 'classnames'
 
-
 const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, ...props }: IFormTemplateProps) => {
   const [fields, setFields] = useState<Array<TFormFieldType>>(props.fields);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -94,8 +93,8 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             <Button
               key={`${action.type}-${i}`}
               {...action}
-              disabled={action.type === 'submit' && !isValid}
-              loading={loading}
+              disabled={action.type === 'submit' ? !isValid : loading}
+              loading={action.type === 'submit' && loading}
             />
           ))}
         </FlexContainer>
