@@ -1,9 +1,15 @@
+import { useCallback, useEffect, useState } from 'react';
+import { Heading, Icon, Loader } from '../../atoms';
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button';
 import styles from './table.module.css'
 import cx from 'classnames'
+import { Button, IButton } from '../../atoms/button/button';
+
+type TListItem = {[key: string]: string | TIconButton};
+type TListItems = Array<TListItem>;
 
 export interface ITable {
-  listItems: Array<{[key: string]: string | TIconButton}>
+  listItems: TListItems
   /**
    * If true, no column titles will be display
    * @default false
@@ -19,25 +25,73 @@ export interface ITable {
    * @default 0
    */
   listGap?: number;
+  /**
+   * What column title to sort by initially
+   * @default 'first column title'
+   */
+  initialSortBy?: string;
+  /**
+   * loading contacts indicator
+   * @default undefined
+  */
+  loading?: boolean;
+  /**
+   * Title to display on top of table
+   * @default undefined
+   */
+  title?: string;
+  action?: IButton;
 }
 
 const Table = ({
   listItems,
   hideColumnTitles = false,
   equalWidthColumns = false,
-  listGap = 0
+  listGap = 0,
+  loading,
+  initialSortBy,
+  title,
+  action
 }: ITable) => {
+  const [sortBy, setSortBy] = useState<{ by: string, dir: 'asc' | 'desc'}>();
+  const listItem = listItems?.sort((a,b) => Object.keys(b).length - Object.keys(a).length)[0];
+  const columnTitles = listItems.length ? Object.keys(listItem) : []
+
+  useEffect(() => {
+    setSortBy({ by: initialSortBy ?? columnTitles[0], dir: 'asc' })
+  }, [])
+
+  const handleSort = (a: TListItem,b: TListItem) => {
+    if (sortBy?.dir === 'asc') {
+      return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? 1 : -1
+    }
+    if (sortBy?.dir === 'desc') {
+      return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? -1 : 1
+    }
+
+    return 0
+  }
+  
   const renderIcon = (obj: TIconButton, i: string) => {
     return <IconButton key={i} {...obj} size='medium' noPadding isTransparent noBorder />
   }
-  const listItem = listItems?.sort((a,b) => Object.keys(b).length - Object.keys(a).length)[0];
-  const columnNames = listItems.length ? Object.keys(listItem) : []
+  
+  const renderList = (columnTitle: string) => {
+    return listItems.sort((a: TListItem,b: TListItem) => handleSort(a,b)).map((item, i) => {
+      return typeof item[columnTitle] === 'object' ? <div key={`${item[columnTitle]}-${i}`} className={cx(styles.item, styles.icon)}>{renderIcon(item[columnTitle] as TIconButton, i.toString())}</div> : <span key={`${item[columnTitle]}-${i}`} className={styles.item}>{item[columnTitle]}</span>
+    })
+  }
+  
   const style: { [key: string]: string } = ({
     '--list-gap': `${listGap}rem`,
   })
 
-  return (
+  return loading ? <Loader visible size='md' /> : (
     <div className={styles.table} style={style}>
+      <div className={styles.top}>
+        {title && <Heading order={5} children={title} />}
+        {action && <Button {...action} />}
+      </div>
       <div className={styles.mobile}>
         {listItems.map((item, i) => {
           const entries = Object.entries(item);
@@ -59,20 +113,35 @@ const Table = ({
       </div>
 
       <div className={styles.desktop}>
-        {columnNames?.map((item, i) => {
-          const noIcons = columnNames?.filter(col => !col.includes('icon'))
+        {columnTitles?.map((columnTitle, i) => {
+          const noIcons = columnTitles?.filter(col => !col.includes('icon'))
           return (
-            <div key={`${item}-${i}`} className={cx(styles.column, {
+            <div key={`${columnTitle}-${i}`} className={cx(styles.column, {
               [styles.equalWidthColumn]: equalWidthColumns,
-              [styles.textColumn]: !item.includes('icon'),
-              [styles.iconColumn]: item.includes('icon'),
-              [styles.lastTextColumn]: noIcons[noIcons?.length - 1] === item
+              [styles.textColumn]: !columnTitle.includes('icon'),
+              [styles.iconColumn]: columnTitle.includes('icon'),
+              [styles.lastTextColumn]: noIcons[noIcons?.length - 1] === columnTitle
             })}
             >
-              {!hideColumnTitles && <span className={cx(styles.item, styles.columnTitle, {[styles.icon]: item.includes('icon')})}>{item.includes('icon') ? '' : item}</span>}
-              {listItems.map((x, i) => {
-                return typeof x[item] === 'object' ? <div key={i} className={cx(styles.item, styles.icon)}>{renderIcon(x[item] as TIconButton, i.toString())}</div> : <span key={i} className={styles.item}>{x[item]}</span>
-              })}
+              {!hideColumnTitles && (
+                <span
+                  className={cx(styles.item, styles.columnTitle, {[styles.icon]: columnTitle.includes('icon')})}
+                >
+                  {!columnTitle.includes('icon') && (
+                    <>
+                      {columnTitle}
+                      <IconButton
+                        icon={sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'icon-chevron-down' : 'icon-chevron-up'}
+                        type='button'
+                        onClick={() => setSortBy({ by: columnTitle, dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc'})}
+                        isTransparent
+                        noBorder
+                      />
+                    </>
+                  )}
+                </span>
+              )}
+              {renderList(columnTitle)}
             </div>
           )
         })}
