@@ -7,53 +7,52 @@ import { Icon, TIcon } from '../icon/icon'
 export type TIconButtonSize = 'small' | 'medium' | 'large'
 
 type TWithLink = {
-    type: 'link';
-    linkUrl: string;
-    linkComponent?: any;
-    isExternal?: boolean;
+  type: 'link'
+  linkUrl: string
+  linkComponent?: any
+  isExternal?: boolean
 }
 type TWithoutLink = {
-    type: 'button';
-    onClick: (data?: any) => void;
+  type: 'button'
+  onClick: (data?: any) => void
 }
 
 export type TIconButton = {
-    type: 'link' | 'button';
-    icon: TIcon;
-    size?: TIconButtonSize
-    isTransparent?: boolean
-    className?: string
-    noPadding?: boolean;
-    noBorder?: boolean;
-    /**
-     * If a positive number (1-99) has been provided a number  will be displayed in a notification format
-     * @default undefined
-     */
-    notification?: number;
-} & (TWithLink | TWithoutLink); 
+  type: 'link' | 'button'
+  icon: TIcon
+  size?: TIconButtonSize
+  isTransparent?: boolean
+  className?: string
+  noPadding?: boolean
+  noBorder?: boolean
+  /**
+   * If a positive number (1-99) has been provided a number  will be displayed in a notification format
+   * @default undefined
+   */
+  notification?: number
+} & (TWithLink | TWithoutLink)
 
 export function getIconButtonSize(surface: TIconButtonSize, hasChildren: boolean) {
-    if(hasChildren)
-        return 'buttonRectangular'
-    switch (surface) {
-      case 'medium':
-        return 'buttonMedium'
-      case 'large':
-        return 'buttonLarge'
-      case 'small':
-      default:
-        return 'buttonSmall'
-    }
+  if (hasChildren) return 'buttonRectangular'
+  switch (surface) {
+    case 'medium':
+      return 'buttonMedium'
+    case 'large':
+      return 'buttonLarge'
+    case 'small':
+    default:
+      return 'buttonSmall'
   }
+}
 
 const IconButton = (props: TIconButton) => {
   if (!props.type) {
-    throw new Error("type must be assigned");
+    throw new Error('type must be assigned')
   }
 
   const renderLink = () => {
     if (props.type === 'button') {
-      return;
+      return
     }
 
     if (props.isExternal) {
@@ -65,14 +64,18 @@ const IconButton = (props: TIconButton) => {
             [styles.noBorder]: props.noBorder,
           })}
           href={props.linkUrl}
-          target='_blank'
+          target="_blank"
         >
           <Icon icon={props.icon} />
-          {props.notification && props.notification < 100 && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>{props.notification}</motion.span>}
+          {props.notification && props.notification < 100 && (
+            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
+              {props.notification < 100 ? props.notification : '99+'}
+            </motion.span>
+          )}
         </a>
       )
     } else {
-      const Link = props.linkComponent ?? LinkComponent;
+      const Link = props.linkComponent ?? LinkComponent
 
       return (
         <Link
@@ -84,7 +87,11 @@ const IconButton = (props: TIconButton) => {
           })}
         >
           <Icon icon={props.icon} />
-          {props.notification && props.notification < 100 && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>{props.notification}</motion.span>}
+          {props.notification && (
+            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
+              {props.notification < 100 ? props.notification : '99+'}
+            </motion.span>
+          )}
         </Link>
       )
     }
@@ -92,7 +99,7 @@ const IconButton = (props: TIconButton) => {
 
   const renderButton = () => {
     if (props.type === 'link') {
-      return;
+      return
     }
 
     return (
@@ -105,16 +112,16 @@ const IconButton = (props: TIconButton) => {
         onClick={props.onClick}
       >
         <Icon icon={props.icon} />
-        {!!props.notification && props.notification < 100 && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>{props.notification}</motion.span>}
+        {!!props.notification && (
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
+            {props.notification < 100 ? props.notification : '99+'}
+          </motion.span>
+        )}
       </button>
     )
   }
 
-  return (
-    <>
-      {props.type === 'link' ? renderLink() : renderButton()}
-    </>
-  )
+  return <>{props.type === 'link' ? renderLink() : renderButton()}</>
 }
 
 export { IconButton }

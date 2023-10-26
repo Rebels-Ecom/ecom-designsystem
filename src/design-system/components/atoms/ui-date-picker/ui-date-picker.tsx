@@ -7,9 +7,11 @@ import sv from 'date-fns/locale/sv'
 import { Button } from '../button/button'
 import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
+import { Icon } from '../icon/icon'
 
 export interface IUiDatePicker {
-  selectedDeliveryDate: string,
+  buttonLabel: string
+  selectedDeliveryDate: string
   deliveryDates: Array<Date>
   holidayDates: Array<Date>
   headerText?: string
@@ -17,75 +19,74 @@ export interface IUiDatePicker {
   className?: string
 }
 
-function UiDatePicker({ selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, className } : IUiDatePicker) {
+function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, className }: IUiDatePicker) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(selectedDeliveryDate))
   const deliveryDaysStrings = getDateStrings(deliveryDates)
   const holidayDaysStrings = getDateStrings(holidayDates)
   const customHeaderText = headerText ? headerText : 'Välj din leveransdag'
 
-  const CustomCalendarContainer = ({ className, children } : { className: any, children: React.ReactNode }) => {
+  const CustomCalendarContainer = ({ className, children }: { className: any; children: React.ReactNode }) => {
     return (
       <CalendarContainer className={cx(className, styles.customHeaderContainer)}>
-        <div className={styles.customHeaderTextWrapper}>
-          {customHeaderText}
-        </div>
-        <div style={{ position: "relative" }}>{children}</div>
+        <div className={styles.customHeaderTextWrapper}>{customHeaderText}</div>
+        <div style={{ position: 'relative' }}>{children}</div>
       </CalendarContainer>
     )
   }
 
-  function getDateStrings(dates:Array<Date>){
+  function getDateStrings(dates: Array<Date>) {
     return dates.map((date: any) => {
-      return getIsoString(date).split("+")[0]
+      return getIsoString(date).split('+')[0]
     })
   }
 
-  function onClickSelectDate(date:Date){
+  function onClickSelectDate(date: Date) {
     setSelectedDate(date)
     onDateSelected(date)
   }
 
-  function getDayCustomClass(date: Date){
-    const formatedDate = getIsoString(date).split("+")[0]
-    const selectedDay = selectedDate.toISOString().split(".")[0]
+  function getDayCustomClass(date: Date) {
+    const formatedDate = getIsoString(date).split('+')[0]
+    const selectedDay = selectedDate.toISOString().split('.')[0]
     const today = new Date()
 
-    if(getIsoString(date).split("T")[0] === today.toISOString().split("T")[0]) {
+    if (getIsoString(date).split('T')[0] === today.toISOString().split('T')[0]) {
       return 'currentDay'
-    }
-    else if(formatedDate===selectedDay) {
+    } else if (formatedDate === selectedDay) {
       return 'selectedDay'
-    }
-    else if(deliveryDaysStrings.includes(formatedDate)){
+    } else if (deliveryDaysStrings.includes(formatedDate)) {
       return 'deliveryDay'
-    }
-    else if(holidayDaysStrings.includes(formatedDate)){
+    } else if (holidayDaysStrings.includes(formatedDate)) {
       return 'holidayDay'
-    }
-    else if(today > date) {
+    } else if (today > date) {
       return 'pastDay'
     }
     return 'day'
   }
 
-  if(!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length===0 || !onDateSelected)
-    return null
+  if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) return null
 
   return (
     <div className={styles.datePickerWrapper}>
-      <DatePicker 
-        selected={selectedDate} 
-        onChange={date => date && onClickSelectDate(date)}
+      <DatePicker
+        selected={selectedDate}
+        onChange={(date) => date && onClickSelectDate(date)}
         includeDates={deliveryDates}
         excludeDates={holidayDates}
         locale={sv}
         dateFormat="yyyy/MM/dd"
         calendarClassName={styles.calendar}
         calendarContainer={CustomCalendarContainer}
-        dayClassName={(date)=> cx(styles.day, styles[getDayCustomClass(date)])}
+        dayClassName={(date) => cx(styles.day, styles[getDayCustomClass(date)])}
         customInput={
-          <Button type='button' surface='x' size="x-small" className={cx(styles.datePickerBtn, className ? className : '')} iconRight={{ icon: 'icon-calendar' }}>
-              <span className={styles.buttonLinkText}>{selectedDate.toLocaleDateString()}</span>
+          <Button type="button" surface="x" size="x-small" className={cx(styles.datePickerBtn, className ? className : '')}>
+            <span className={styles.buttonLabelWrapper}>
+              <span className={styles.buttonLabel}>{buttonLabel}</span>
+              <span className={styles.buttonIconWrapper}>
+                <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
+                <span className={styles.iconText}>Välj</span>
+              </span>
+            </span>
           </Button>
         }
       />

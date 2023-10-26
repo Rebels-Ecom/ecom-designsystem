@@ -1,19 +1,18 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { IconButton, TIconButton } from './icon-button'
-import { action } from '@storybook/addon-actions';
-
+import { action } from '@storybook/addon-actions'
 
 const meta: Meta<typeof IconButton> = {
-    title: 'Design System/Atoms/IconButton',
-    component: IconButton
+  title: 'Design System/Atoms/IconButton',
+  component: IconButton,
 }
 
-export default meta;
+export default meta
 type Story = StoryObj<typeof IconButton>
 
 const IconButtonStoryTemplate: Story = {
-  render: (args) => <IconButton {...args} />
+  render: (args) => <IconButton {...args} />,
 }
 
 export const IconButtonStorySmallButton = {
@@ -27,7 +26,21 @@ export const IconButtonStorySmallButton = {
     notification: 2,
     type: 'button',
     onClick: action('clicked'),
-  } as TIconButton
+  } as TIconButton,
+}
+
+export const IconButtonStoryOver100Products = {
+  ...IconButtonStoryTemplate,
+  args: {
+    icon: 'icon-map-pin',
+    size: 'small',
+    noPadding: false,
+    isTransparent: false,
+    noBorder: false,
+    notification: 102,
+    type: 'button',
+    onClick: action('clicked'),
+  } as TIconButton,
 }
 
 export const IconButtonStoryLargeLink = {
@@ -37,7 +50,7 @@ export const IconButtonStoryLargeLink = {
     icon: 'icon-map-pin',
     size: 'large',
     linkUrl: '/start',
-  } as TIconButton
+  } as TIconButton,
 }
 
 export const IconButtonStory_GoToProduct = {
@@ -48,8 +61,8 @@ export const IconButtonStory_GoToProduct = {
     size: 'large',
     isExternal: true,
     linkUrl: '/?path=/docs/design-system-templates-productpage--docs',
-    linkComponent: 'a'
-  } as TIconButton
+    linkComponent: 'a',
+  } as TIconButton,
 }
 
 export const IconButtonStory_RemoveProduct = {
@@ -59,8 +72,8 @@ export const IconButtonStory_RemoveProduct = {
     icon: 'icon-x-circle',
     size: 'large',
     isTransparent: true,
-    onClick: action('clicked')
-  } as TIconButton
+    onClick: action('clicked'),
+  } as TIconButton,
 }
 
 export const IconButtonStory_CartEmpty = {
@@ -70,8 +83,8 @@ export const IconButtonStory_CartEmpty = {
     icon: 'icon-shopping-cart',
     size: 'large',
     isTransparent: true,
-    onClick: action('clicked')
-  } as TIconButton
+    onClick: action('clicked'),
+  } as TIconButton,
 }
 
 export const IconButtonStory_CartWithProducts = {
@@ -82,10 +95,6 @@ export const IconButtonStory_CartWithProducts = {
     size: 'large',
     isTransparent: true,
     children: <span>(7)</span>,
-    onClick: action('clicked')
-  } as TIconButton
+    onClick: action('clicked'),
+  } as TIconButton,
 }
-
-
-
-
