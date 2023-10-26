@@ -7,7 +7,18 @@ import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_ho
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
 import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, ExpandableWrapper } from '../../atoms'
-import { DrawerSidebar, GroupWrapper, FormGroup, TopNavBar, SearchNavBar, Logotype, MobileNavigation, UserInfoSummary, DropdownList, DesktopNavigation } from '../../molecules'
+import {
+  DrawerSidebar,
+  GroupWrapper,
+  FormGroup,
+  TopNavBar,
+  SearchNavBar,
+  Logotype,
+  MobileNavigation,
+  UserInfoSummary,
+  DropdownList,
+  DesktopNavigation,
+} from '../../molecules'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { ContentWrapper, FlexContainer } from '../../layouts'
 import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
@@ -42,176 +53,141 @@ const HeaderStoryTemplate: Story = {
     const onClickSearchIcon = () => setIsSearchbarOpen(!isSearchbarOpen)
     const onClickCartIcon = () => setIsCartSidebarOpen(true)
     const onClickCloseCartSidebar = () => setIsCartSidebarOpen(false)
-    const setSelectedDate = (date:Date) => { console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)}
-    const onClickLogout = () => { console.log('Handle logout...')}
-    const onClickSearchResultItem = (customer:IResult) => {setActiveUser(customer)}
+    const setSelectedDate = (date: Date) => {
+      console.log(`Trigger set delivery day - ${date.toISOString().split('T')[0]}`)
+    }
+    const onClickLogout = () => {
+      console.log('Handle logout...')
+    }
+    const onClickSearchResultItem = (customer: IResult) => {
+      setActiveUser(customer)
+    }
 
     const toggleUserInfo = () => {
-      setShowUserInfo(!showUserInfo);
+      setShowUserInfo(!showUserInfo)
     }
 
     useEffect(() => {
       let pattern = new RegExp(query.toLowerCase(), 'i')
-      setAdminSearchResults(itemsToFilterOn.filter((item) => query && (
-        (item.name && pattern.test(item.name.toLowerCase())) ||
-        (item.companyName && pattern.test(item.companyName.toLowerCase())) ||
-        (item.companyId && pattern.test(item.companyId.toString().toLowerCase())) ||
-        (item.email && pattern.test(item.email.toLowerCase()))
-        )))
-    }, [query]);
+      setAdminSearchResults(
+        itemsToFilterOn.filter(
+          (item) =>
+            query &&
+            ((item.name && pattern.test(item.name.toLowerCase())) ||
+              (item.companyName && pattern.test(item.companyName.toLowerCase())) ||
+              (item.companyId && pattern.test(item.companyId.toString().toLowerCase())) ||
+              (item.email && pattern.test(item.email.toLowerCase())))
+        )
+      )
+    }, [query])
 
     return (
       <>
-      <Header
-        salesTool={
-          <ContentWrapper padding={[1, 0]}>
-            <AdminSearch
-              {...AdminSearchStory.args}
-              noResultText={{text: "No result"}}
-              query={query}
-              setQuery={setQuery}
-              results={adminSearchResults}
-              onClickSearchResult={onClickSearchResultItem}
-              isOpen={isAdminSearchbarOpen}
-              setIsOpen={setIsAdminSearchbarOpen}
-            />
-          </ContentWrapper>
-        }
-        topNavBar={
-          <TopNavBar
-            links={[{children: 'test', href: '', icon: 'icon-alert-circle' }]}
-            linkComponent='a'
-            userLoggedIn={false}
-            onClick={onClickLogout}
-            onSelectDate={setSelectedDate}
-            isAdmin={false}
-            hasActiveUser={false}
-          />
-        }
-        logo={(
-          <motion.div
-            style={{ zIndex: 101}}
-            initial={{ x: '0vw' }}
-            animate={{ x: isOpen ? '10vw' : '0vw', transition: { delay: 0.1 } }}
-          >
-            <a href="/" target="_self">
-              <Logotype
-                src={logotype_desktop_horizontal}
-                alt='logo'
-                id='logo'
-                sources={[
-                  { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
-                  { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
-                ]}
+        <Header
+          salesTool={
+            <ContentWrapper padding={[1, 0]}>
+              <AdminSearch
+                {...AdminSearchStory.args}
+                noResultText={{ text: 'No result' }}
+                query={query}
+                setQuery={setQuery}
+                results={adminSearchResults}
+                onClickSearchResult={onClickSearchResultItem}
+                isOpen={isAdminSearchbarOpen}
+                setIsOpen={setIsAdminSearchbarOpen}
               />
-            </a>
-          </motion.div>
-        )}
-        mobileSearchBar={<ExpandableWrapper open={isSearchbarOpen}><SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} /></ExpandableWrapper>}
-        mobileActions={
-          <FlexContainer alignItems='center' justifyContent='flex-end' flex='1'>
-            {activeUser?.name &&
-              <IconButton
-                type='button'
-                icon='icon-user'
-                onClick={()=>{}}
-                size='large'
-                isTransparent />
-            }
-            <IconButton
-              type='button'
-              icon={isSearchbarOpen ? 'icon-x' : 'icon-search'}
-              size='large'
-              isTransparent
-              onClick={onClickSearchIcon}
+            </ContentWrapper>
+          }
+          topNavBar={
+            <TopNavBar
+              links={[{ children: 'test', href: '', icon: 'icon-alert-circle' }]}
+              linkComponent="a"
+              userLoggedIn={false}
+              onClick={onClickLogout}
+              onSelectDate={setSelectedDate}
+              isAdmin={false}
+              hasActiveUser={false}
             />
-            <IconButton
-              type='button'
-              icon='icon-shopping-cart'
-              size='large'
-              isTransparent
-              onClick={onClickCartIcon}
-            />
+          }
+          logo={
+            <motion.div style={{ zIndex: 101 }} initial={{ x: '0vw' }} animate={{ x: isOpen ? '10vw' : '0vw', transition: { delay: 0.1 } }}>
+              <a href="/" target="_self">
+                <Logotype
+                  src={logotype_desktop_horizontal}
+                  alt="logo"
+                  id="logo"
+                  sources={[
+                    { srcset: logotype_mobile_vertical, media: `(max-width: 767px)` },
+                    { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
+                  ]}
+                />
+              </a>
+            </motion.div>
+          }
+          mobileSearchBar={
+            <ExpandableWrapper open={isSearchbarOpen}>
+              <SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />
+            </ExpandableWrapper>
+          }
+          mobileActions={
+            <FlexContainer alignItems="center" justifyContent="flex-end" flex="1">
+              {activeUser?.name && <IconButton type="button" icon="icon-user" onClick={() => {}} size="large" isTransparent />}
+              <IconButton type="button" icon={isSearchbarOpen ? 'icon-x' : 'icon-search'} size="large" isTransparent onClick={onClickSearchIcon} />
+              <IconButton type="button" icon="icon-shopping-cart" size="large" isTransparent onClick={onClickCartIcon} />
+              <>
+                <IconButton type="button" onClick={toggleUserInfo} icon="icon-user" size="medium" />
+                <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
+                  <UserInfoSummary {...UserInfoSummaryStory.args} />
+                  <DropdownList {...DropdownListStory.args} />
+                </DrawerSidebar>
+              </>
+            </FlexContainer>
+          }
+          mobileNavigation={<MobileNavigation {...(DefaultMobileNavigation.args as INavigation)} isOpen={isOpen} setIsOpen={setIsOpen} />}
+          mobileCalendar={<UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate} />}
+          desktopSearchBar={<SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />}
+          desktopActions={
             <>
-              <IconButton
-                type='button'
-                onClick={toggleUserInfo}
-                icon='icon-user'
-                size='medium'
-              />
-              <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
-                <UserInfoSummary {...UserInfoSummaryStory.args} />
-                <DropdownList {...DropdownListStory.args} />
-              </DrawerSidebar>
+              {activeUser?.name && <IconButton type="button" icon="icon-user" onClick={() => {}} size="large" isTransparent />}
+              <IconButton type="button" icon="icon-shopping-cart" onClick={onClickCartIcon} size="medium" />
+              <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
+              <>
+                <IconButton type="button" onClick={toggleUserInfo} icon="icon-user" size="medium" />
+                <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
+                  <UserInfoSummary {...UserInfoSummaryStory.args} />
+                  <DropdownList {...DropdownListStory.args} />
+                </DrawerSidebar>
+              </>
             </>
-          </FlexContainer>
-        }
-        mobileNavigation={(
-          <MobileNavigation
-              {...DefaultMobileNavigation.args as INavigation}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-          />
-        )}
-        desktopSearchBar={<SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />}
-        desktopActions={
-          <>
-            {activeUser?.name &&
-              <IconButton
-                type='button'
-                icon='icon-user'
-                onClick={()=>{}}
-                size='large'
-                isTransparent
-              />
-            }
-            <IconButton
-              type='button'
-              icon='icon-shopping-cart'
-              onClick={onClickCartIcon}
-              size='medium'
-            />
-            <UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate}></UiDatePicker>
-            <>
-              <IconButton
-                type='button'
-                onClick={toggleUserInfo}
-                icon='icon-user'
-                size='medium'
-              />
-              <DrawerSidebar isOpen={showUserInfo} onClose={toggleUserInfo}>
-                <UserInfoSummary {...UserInfoSummaryStory.args} />
-                <DropdownList {...DropdownListStory.args} />
-              </DrawerSidebar>
-            </>
-          </>
-        }
-        desktopNavigation={<DesktopNavigation {...DefaultDesktopNavigation.args as INavigation} />}
-      />
-        
-      <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
+          }
+          desktopNavigation={<DesktopNavigation {...(DefaultDesktopNavigation.args as INavigation)} />}
+        />
+
+        <DrawerSidebar onClose={onClickCloseCartSidebar} isOpen={isCartSidebarOpen}>
           <CartSidebar classNames={['light']}>
-              <GroupWrapper position='apart'>
-                  <Heading order={3}>Kundvagn</Heading>
-                  <Heading order={3}>1378,00 kr</Heading>
-              </GroupWrapper>
-              <GroupWrapper>
-                  <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{icon:'icon-layers'}} rounded onClick={()=>{}}/>
-                  <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{icon:'icon-package'}} rounded onClick={()=>{}}/>
-              </GroupWrapper>
-              <CartProductList>
-                {CartProductListStory.args?.children?.map((product: ICartProduct, i) => (
-                  <CartProduct key={i} {...product}></CartProduct>
-                ))}
-              </CartProductList>
-              <GroupWrapper>
-                  <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
+            <GroupWrapper position="apart">
+              <Heading order={3}>Kundvagn</Heading>
+              <Heading order={3}>1378,00 kr</Heading>
+            </GroupWrapper>
+            <GroupWrapper>
+              <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{ icon: 'icon-layers' }} rounded onClick={() => {}} />
+              <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{ icon: 'icon-package' }} rounded onClick={() => {}} />
+            </GroupWrapper>
+            <CartProductList>
+              {CartProductListStory.args?.children?.map((product: ICartProduct, i) => (
+                <CartProduct key={i} {...product}></CartProduct>
+              ))}
+            </CartProductList>
+            <GroupWrapper>
+              <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>
+                Go to cart
+              </LinkButton>
               <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
-                  <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
+                <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={() => {}}></ToggleSwitch>
               </FormGroup>
-              </GroupWrapper>
+            </GroupWrapper>
           </CartSidebar>
-      </DrawerSidebar>
+        </DrawerSidebar>
       </>
     )
   },

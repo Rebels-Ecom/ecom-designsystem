@@ -100,7 +100,7 @@
     cursor: pointer;
     border: solid 0.063rem var(--input-border-color);
     border-radius: 0;
-    padding: 1.5rem 0.5rem;
+    padding: 0.5rem 1rem;
     background: var(--light-orange-background);
     width: 100%;
     &:last-child {
@@ -109,7 +109,7 @@
 
     @media (min-width: 64rem) {
         display: block;
-        width: auto;
+        width: max-content;
         background: #ffffff;
         border-color: var(--border-on-x);
         border-radius: 0.25rem;
