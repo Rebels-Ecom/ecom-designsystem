@@ -28,9 +28,71 @@ export const TableStory = {
   ...TableStoryTemplate,
   args: {
     listItems: [
-      { name: 'Name 1', status: 'OK', id: '1' },
-      { name: 'Name 2', status: 'IN PROGRESS', id: '2' },
-      { name: 'Name 3', status: 'DONE', id: '3' },
+      {
+        name: 'Name 1',
+        status: 'OK',
+        id: '1',
+        "icon": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        },
+        "icon2": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        },
+      },
+      {
+        name: 'Name 2',
+        status: 'IN PROGRESS',
+        id: '2',
+        "icon": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        },
+      },
+      {
+        name: 'Name 3',
+        status: 'DONE',
+        id: '3',
+        "icon": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        }
+      },
+      {
+        name: 'Name 4',
+        status: 'DONE',
+        id: '4',
+        "icon": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        }
+      },
+      {
+        name: 'Name 5',
+        status: 'DONE',
+        id: '5',
+        "icon": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        }
+      },
+      {
+        name: 'Name 6',
+        status: 'DONE',
+        id: '6',
+        "icon": {
+          icon: 'icon-alert-circle',
+          onClick: () => console.log('clicked'),
+          type: 'button',
+        }
+      },
     ],
     hideColumnTitles: false,
     equalWidthColumns: false,

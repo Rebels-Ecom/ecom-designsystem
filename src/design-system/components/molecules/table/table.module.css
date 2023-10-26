@@ -3,32 +3,90 @@
   gap: var(--list-gap);
   overflow: auto;
 
-  & .column {
+  & .mobile {
     display: flex;
     flex-direction: column;
-
-    &.equalWidthColumn {
-      flex: 1;
-    }
-  }
-
-  & .item {
-    padding: 0.5rem 1rem;
-    background-color: var(--background);
-    min-width: 4rem;
-    max-width: 20rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    &:nth-of-type(odd) {
-      background-color: var(--grey-300);
+    flex: 1;
+    
+    @media (min-width: 48em) {
+      display: none;
     }
 
-    &.columnTitle {
-      font-weight: bold;
+    & .columnTitle {
       text-transform: capitalize;
-      background-color: var(--grey-400)
+      padding-right: 0.5rem;
+      font-weight: bold;
+    }
+
+    & .group {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-grey);
+
+      & .icons {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+      }
+    }
+
+    & .row {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      padding: 0.5rem 0;
+    }
+
+    & .item {
+      border: none;
     }
   }
+  
+  & .desktop {
+    display: none;
+
+    @media (min-width: 48em) {
+      display: flex;
+      flex: 1;
+      
+      & .column {
+        display: flex;
+        flex-direction: column;
+    
+        &.equalWidthColumn {
+          flex: 1;
+        }
+      }
+      
+      & .lastTextColumn {
+        flex: 1;
+      }
+      
+    
+      & .item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background-color: var(--background);
+        height: 3rem;
+        min-width: 4rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border-bottom: 1px solid var(--border-grey);
+    
+        &.columnTitle {
+          font-weight: bold;
+          text-transform: capitalize;
+          border: none;
+          border-bottom: 1px solid var(--border-on-x);
+        }
+    
+        &.icon {
+          padding: 0.75rem;
+          min-width: 2.5rem;
+        }
+      }
+    }
+  }
+
 }
