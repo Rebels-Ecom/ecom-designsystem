@@ -35,7 +35,7 @@ export const FormStory = {
       placeholder: 'Namn Namnsson',
       subtitle: 'subtitle',
       required: true,
-      error: 'This field is required'
+      error: 'This field is required',
     }, {
       label: 'Email',
       type: 'email',
