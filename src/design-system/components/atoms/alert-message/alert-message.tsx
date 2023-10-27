@@ -29,9 +29,11 @@ function AlertMessage({ children, type, isOpen, onClose }: IAlertMessage) {
   if (!isOpen) return null
   return (
     <div className={cx(styles.alertMessage, styles[type])}>
-      {type && <Icon icon={getAlertIcon(type)} />}
-      <span>{children}</span>
-      <IconButton type="button" onClick={onClose} icon="icon-x" size="large" isTransparent />
+      <div className={styles.contentWrapper}>
+        {type && <Icon icon={getAlertIcon(type)} />}
+        <span>{children}</span>
+        <IconButton type="button" onClick={onClose} icon="icon-x" size="large" isTransparent noBorder />
+      </div>
     </div>
   )
 }
