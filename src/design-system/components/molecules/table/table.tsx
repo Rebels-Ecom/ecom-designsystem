@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Heading, Icon, Loader } from '../../atoms';
+import { useEffect, useState } from 'react';
+import { Heading, Loader } from '../../atoms';
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button';
 import styles from './table.module.css'
 import cx from 'classnames'
