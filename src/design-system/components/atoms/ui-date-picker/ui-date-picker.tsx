@@ -56,7 +56,7 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
       return 'selectedDay'
     } else if (deliveryDaysStrings.includes(formatedDate)) {
       return 'deliveryDay'
-    } else if (holidayDaysStrings.includes(formatedDate)) {
+    } else if (holidayDaysStrings.includes(formatedDate) || date.getDay() === 0 || date.getDay() === 6) {
       return 'holidayDay'
     } else if (today > date) {
       return 'pastDay'
