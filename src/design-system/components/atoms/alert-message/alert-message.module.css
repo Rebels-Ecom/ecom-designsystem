@@ -1,0 +1,25 @@
+.alertMessage {
+    position: relative;
+    display: flex;
+    justify-content: center; 
+}
+
+.contentWrapper{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    @media (min-width: 64rem) {
+        max-width: calc(100% - 4rem);
+    }
+}
+
+.info {
+    background-color: #f9f1e4;
+}
+
+.warning, .error {
+    background-color: #edb4c3;
+}
+
