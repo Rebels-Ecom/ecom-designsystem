@@ -40,3 +40,14 @@ export const UiDatePickerStory = {
     holidayDates: getDates(deliveryDays.HollidayDates),
   },
 }
+
+export const UiDatePickerStoryDateLabel = {
+  ...UiDatePickerStoryTemplate,
+  args: {
+    buttonLabel: '2023/11/27',
+    selectedDeliveryDate: deliveryDays.SelectedDeliveryDate.toString(),
+    deliveryDates: getDates(deliveryDays.DeliveryDates),
+    holidayDates: getDates(deliveryDays.HollidayDates),
+    showDateLabel: true,
+  },
+}

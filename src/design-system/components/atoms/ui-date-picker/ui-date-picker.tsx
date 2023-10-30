@@ -16,10 +16,11 @@ export interface IUiDatePicker {
   holidayDates: Array<Date>
   headerText?: string
   onDateSelected: CallableFunction
+  showDateLabel?: boolean
   className?: string
 }
 
-function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, className }: IUiDatePicker) {
+function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, showDateLabel, className }: IUiDatePicker) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(selectedDeliveryDate))
   const deliveryDaysStrings = getDateStrings(deliveryDates)
   const holidayDaysStrings = getDateStrings(holidayDates)
@@ -79,12 +80,17 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
         calendarContainer={CustomCalendarContainer}
         dayClassName={(date) => cx(styles.day, styles[getDayCustomClass(date)])}
         customInput={
-          <Button type="button" surface="x" size="x-small" className={cx(styles.datePickerBtn, className ? className : '')}>
+          <Button
+            type="button"
+            surface="x"
+            size="x-small"
+            className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnOrange, className ? className : '')}
+          >
             <span className={styles.buttonLabelWrapper}>
               <span className={styles.buttonLabel}>{buttonLabel}</span>
               <span className={styles.buttonIconWrapper}>
                 <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
-                <span className={styles.iconText}>Välj</span>
+                {!showDateLabel && <span className={styles.iconText}>Välj</span>}
               </span>
             </span>
           </Button>

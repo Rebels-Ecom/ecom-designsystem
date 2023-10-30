@@ -95,18 +95,28 @@
 
 .datePickerBtn {
     position: relative;
+    background: #ffffff;
     display: flex;
     margin: 0 0.5rem 0 0;
     cursor: pointer;
-    border: solid 0.063rem var(--input-border-color);
-    border-radius: 0;
+    border: solid 0.063rem var(--border-on-x);
+    border-radius: 0.25rem;
     padding: 0.5rem 1rem;
-    background: var(--light-orange-background);
-    width: 100%;
     &:last-child {
       margin-right: 0;
     }
 
+    @media (min-width: 64rem) {
+        display: block;
+        margin-right: 1.5rem;
+    }
+}
+
+.datePickerBtnOrange {
+    border: solid 0.063rem var(--input-border-color);
+    background: var(--light-orange-background);
+    border-radius: 0;
+    width: 100%;
     @media (min-width: 64rem) {
         display: block;
         width: max-content;
@@ -115,7 +125,7 @@
         border-radius: 0.25rem;
         margin-right: 1.5rem;
     }
-  }
+}
 
 .buttonLabelWrapper {
     display: flex;
