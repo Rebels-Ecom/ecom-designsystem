@@ -46,6 +46,9 @@ export const lightTheme = {
   '--product-description-background': '#FBFAF9',
   '--pagination-indicators-active':'#003E51',
   '--pagination-indicators-inactive':'rgba(247, 249, 250, 0.15)',
+  '--alert-message-error-background': '#ffe6eb',
+  '--alert-message-warning-background': '#f8c98a',
+  '--alert-message-information-background': '#FFF9E8',
 
   /*Text */
   '--color-text-default':'#1D1D1B',
@@ -266,6 +269,9 @@ export const darkTheme = {
    '--product-description-background': '#FBFAF9',
    '--pagination-indicators-active':'#003E51',
    '--pagination-indicators-inactive':'rgba(247, 249, 250, 0.15)',
+   '--alert-message-error-background': '#ffe6eb',
+    '--alert-message-warning-background': '#f8c98a',
+    '--alert-message-information-background': '#FFF9E8',
 
      /*Text */
   '--color-text-default':'#1D1D1B',

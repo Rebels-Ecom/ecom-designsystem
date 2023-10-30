@@ -16,10 +16,14 @@
 }
 
 .info {
-    background-color: #f9f1e4;
+    background-color: var(--alert-message-information-background);
 }
 
-.warning, .error {
-    background-color: #edb4c3;
+.warning {
+    background-color: var(--alert-message-warning-background);
+}
+
+.error {
+    background-color: var(--alert-message-error-background);
 }
 
