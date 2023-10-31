@@ -1,14 +1,11 @@
 .form {
   display: flex;
   gap: 1rem;
+  flex-direction: column;
 
   &.formDirectionRow{
     flex-direction: row;
     align-items: flex-start;
-  }
-
-  &.formDirectionColumn{
-    flex-direction: column;
   }
 
   & .formTitle {
