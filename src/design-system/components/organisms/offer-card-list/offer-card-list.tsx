@@ -1,7 +1,7 @@
-import styles from './offer-card-list.module.css'
 import { IOfferCard, OfferCard } from '../../molecules/offer-card/offer-card'
 import { Above, Below, ContentWrapper } from '../../layouts'
 import { SwipeList, SwipeListItem } from '../swipe-list/swipe-list'
+import { Carousel, CarouselItem } from '../carousel/carousel'
 
 export interface IOfferCardList {
   list: Array<IOfferCard>
@@ -24,13 +24,13 @@ const OfferCardList = ({ list }: IOfferCardList) => {
       <Above breakpoint='md'>
         {(matches) => matches && (
           <ContentWrapper>
-            <ul className={styles.list}>
-              {list.slice(0, 4).map((listItem: IOfferCard, index: number) => (
-                <li key={index} className={styles.listItem}>
+            <Carousel>
+              {list.map((listItem: IOfferCard, index: number) => (
+                <CarouselItem>
                   <OfferCard {...listItem} />
-                </li>
+                </CarouselItem>
               ))}
-            </ul>
+            </Carousel>
           </ContentWrapper>
         )}
       </Above>

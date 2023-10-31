@@ -20,6 +20,8 @@ const offersList = [
     OfferCardStory2.args,
     OfferCardStory1.args,
     OfferCardStory2.args,
+    OfferCardStory1.args,
+    OfferCardStory2.args,
 ];
 
 export const OfferCardListStory = {

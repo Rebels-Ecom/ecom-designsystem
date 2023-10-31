@@ -1,0 +1,11 @@
+.carousel {
+  
+  & button {
+    opacity: 1; 
+    transition: opacity 0.3s ease;
+    
+    &:disabled {
+      opacity: 0;
+    }
+  }
+}

@@ -27,8 +27,7 @@
 
       @media (min-width: 48em) {
         margin-top: auto;
-        flex: 1 0 calc(33% - 0.75rem);
-        width: calc(33% - 0.75rem);
+        flex: 1;
 
         & > div {
           & > div:first-of-type {
@@ -68,22 +67,7 @@
           }
         }
       }
-
-      @media (min-width: 48em) {
-        flex: 1 0 calc(50% - 0.5rem);
-        width: calc(50% - 0.5rem);
-      }
-      
-      @media (min-width: 64em) {
-        flex: 1 0 calc(25% - 0.75rem);
-        width: calc(25% - 0.75rem);
-      }
     }
-  }
-
-  & .showMoreButton {
-    scroll-margin: 2rem;
-    margin: 2rem auto;
   }
 }
 
