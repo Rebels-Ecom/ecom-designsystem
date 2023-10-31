@@ -49,21 +49,21 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
       <Below breakpoint='md'>
         {(matches: any) => matches && (
           <SwipeList>
-            {list.map((card: IBlogCard, i: number) => (
+            {list.map((card: IBlogCard, i: number) => list.length > 1 ? (
               <SwipeListItem key={i}>
-                <motion.li
-                  key={i}
-                  className={cx(styles.listItem, getColumnsNumber(list.length))}
-                  initial={{ y: '-10%', opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                >
                   <BlogCard
                     {...card}
                     fullWidth={list.length === 1}
                     maxChar={list.length === 3 ? card.maxChar ?? 200 : undefined}
                   />
-                </motion.li>
                 </SwipeListItem>
+              ) : (
+                <BlogCard
+                  key={i}
+                  {...card}
+                  fullWidth={list.length === 1}
+                  maxChar={list.length === 3 ? card.maxChar ?? 200 : undefined}
+                />
               ))}
           </SwipeList>
         )}

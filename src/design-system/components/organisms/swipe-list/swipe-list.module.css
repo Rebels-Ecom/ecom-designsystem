@@ -9,8 +9,14 @@
   list-style: none;
   padding: 1rem;
   gap: 1rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   & .swipeListItem {
+    display: flex;
     width: calc(100vw - 3rem);
     scroll-snap-align: center;
   
