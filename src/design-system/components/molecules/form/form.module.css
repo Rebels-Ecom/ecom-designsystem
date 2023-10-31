@@ -1,8 +1,15 @@
 .form {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
-  background-color: var(--input-background-default);
+
+  &.formDirectionRow{
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  &.formDirectionColumn{
+    flex-direction: column;
+  }
 
   & .formTitle {
     margin: 0 0 1rem;
