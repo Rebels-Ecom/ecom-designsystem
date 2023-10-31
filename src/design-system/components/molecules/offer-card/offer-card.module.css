@@ -6,6 +6,10 @@
     align-items: center;
     text-align:center;
     padding: 3.75rem 1.625rem 2.813rem 1.625rem;
+    
+    @media (max-width: 48em) {
+        border: 1px solid var(--border-grey);
+    }
 }
 
 .icon {

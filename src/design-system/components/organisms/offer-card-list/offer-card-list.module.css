@@ -1,18 +1,23 @@
 .list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin: 0 auto;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 1rem;
+
+  & .listItem {
+    display: flex;
+    height: 100%;
+  }
 
   @media (min-width: 48em) {
     justify-content: center;
-  }
-}
 
-.listItem {
-  display: flex;
-  flex: 1;
+    & .listItem {
+      height: auto;
+      flex: 1;
+    }
+  }
 }
