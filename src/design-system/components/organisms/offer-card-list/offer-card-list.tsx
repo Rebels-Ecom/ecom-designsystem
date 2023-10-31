@@ -15,9 +15,7 @@ const OfferCardList = ({ list }: IOfferCardList) => {
           <SwipeList>
             {list.slice(0, 4).map((listItem: IOfferCard, index: number) => (
               <SwipeListItem key={index}>
-                {/* <li className={styles.listItem}> */}
-                  <OfferCard {...listItem} />
-                {/* </li> */}
+                <OfferCard {...listItem} />
               </SwipeListItem>
             ))}
           </SwipeList>
