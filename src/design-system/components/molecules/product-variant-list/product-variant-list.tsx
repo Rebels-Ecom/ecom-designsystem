@@ -23,7 +23,7 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
         onVariantSelect(selectedProduct, variantsList);
     }
 
-    return(
+    return (
         <div className={className ? className : ''}>
             <ul className={styles.variantsList}>
                 {variantsList.map((variant)=> (

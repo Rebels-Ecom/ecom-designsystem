@@ -8,9 +8,12 @@ import { ProductCardHorizontal } from '../product-card-horizontal/product-card-h
 import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
 import { IPicture } from '../../atoms/picture/picture'
 import { TProductCard } from './product-card'
-import { VerticalProductCard } from './vertical-card'
+import { VerticalProductCard } from './vertical-product-card'
+import { SlimProductCard } from './slim-product-card/slim-product-card'
+import { IProductVariantList } from '../product-variant-list/product-variant-list'
+import { IProductVariant } from '../product-variant/product-variant'
 
-export type TCardDisplayType = 'vertical' | 'horizontal';
+export type TCardDisplayType = 'vertical' | 'horizontal' | 'slim';
 
 export type TCardType = 'default' | 'category' | 'limited';
 
@@ -29,28 +32,34 @@ export type TProductCardHorizontal = {
   removingProduct?: boolean;
 }
 
-export interface IProductCard {
+export type TProductCardSlim = {
+  cardDisplay: 'slim';
+  onClickRemoveProduct?: CallableFunction;
+  removingProduct?: boolean;
+}
+
+export interface IProductCardShared {
   cardDisplay: TCardDisplayType
   // product: IProduct
   /**
    * Sets a custom default quantity to start from
    * @default 0
   */
- defaultQuantity?: string;
- addToCartButton: IButton
- addToCart: CallableFunction
- onChangeQuantity?: CallableFunction
- hideCartButton?: boolean
- linkComponent?: any
- hideRemoveButton?: boolean
- onRemoveProduct?: CallableFunction
- productQuantityDisabled?: boolean
- className?: string
- changePackagingButton?: IButton;
- border?: boolean;
- campaign?: {
-   title: string;
-   color: string;
+  defaultQuantity?: number;
+  addToCartButton: IButton
+  addToCart: CallableFunction
+  onChangeQuantity?: CallableFunction
+  hideCartButton?: boolean
+  linkComponent?: any
+  hideRemoveButton?: boolean
+  onRemoveProduct?: CallableFunction
+  productQuantityDisabled?: boolean
+  className?: string
+  changePackagingButton?: IButton;
+  border?: boolean;
+  campaign?: {
+    title: string;
+    color: string;
   }
   loading: boolean;
   buttonLoading?: boolean;
@@ -79,15 +88,11 @@ export interface IProductCard {
   /**
    * Base unit to display, e.g. 'KLI'
    */
-  baseUnit?: string;
+  salesUnit?: string;
   /**
    * Number to display after baseUnit
    */
-  baseUnitNumber?: number;
-  /**
-   * Article number
-   */
-  artNr?: string;
+  salesUnitNumber?: number;
   /**
    * What country the product is from, displayed after article number
   */
@@ -112,9 +117,13 @@ export interface IProductCard {
    * Unit to display, e.g. st, pcs, etc.
    */
   unit?: string;
+  /**
+   * 
+   */
+  productVariantList?: IProductVariant[]
 }
 
-export type TCategoryProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
+export type TCategoryProductCard = IProductCardShared & (TProductCardVertical | TProductCardHorizontal | TProductCardSlim)
 
 const CategoryProductCard = ({
   ...props
@@ -123,6 +132,10 @@ const CategoryProductCard = ({
   if (!props.cardDisplay) {
     throw new Error("cardDisplay must be assigned");
   }
+
+  console.log("HERE: ", props.productVariantList)
+
+  const [newQuantity, setNewQuantity] = useState(props.defaultQuantity)
 
   // const { productId, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
@@ -135,7 +148,8 @@ const CategoryProductCard = ({
     // selectedVariantId: productId,
   // })
 
-  function handleOnChangeQuantity(productQuantity: number) {
+  const handleOnChangeQuantity = (productQuantity: number) => {
+    setNewQuantity(productQuantity)
     // setProduct((prevState) => {
     //   const newProduct = {
     //     ...prevState,
@@ -201,6 +215,20 @@ const CategoryProductCard = ({
   //       currency={currency}
   //     />
   //   )
+  // }
+
+  if (props.cardDisplay === 'slim') {
+    return (
+      <SlimProductCard
+        {...props}
+        addToCart={props.addToCart}
+        onChangeQuantity={handleOnChangeQuantity}
+        defaultQuantity={newQuantity}
+      />
+    )
+  }
+  // if (props.cardDisplay === 'horizontal') {
+  //   return <VerticalProductCard {...props} />
   // }
   if (props.cardDisplay === 'vertical') {
     return (

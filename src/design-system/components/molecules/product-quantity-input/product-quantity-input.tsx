@@ -3,14 +3,16 @@ import { InputText } from '../../atoms'
 import styles from './product-quantity-input.module.css'
 
 export interface IProductQuantityInput {
-    className?: string
-    quantityInputId:string
-    quantity: string,
-    salesUnit: string
-    itemNumberPerSalesUnit: number
-    totalPrice: string
-    disabled?: boolean
-    onChange?: CallableFunction
+    className?: string;
+    quantityInputId:string;
+    quantity: number;
+    salesUnit: string;
+    itemNumberPerSalesUnit: number;
+    totalPrice: string;
+    disabled?: boolean;
+    onChange?: CallableFunction;
+    priceLabel?: string;
+    unit?: string;
 }
 
 const ProductQuantityInput = ({
@@ -21,7 +23,9 @@ const ProductQuantityInput = ({
     itemNumberPerSalesUnit,
     totalPrice,
     disabled=false,
-    onChange
+    onChange,
+    priceLabel,
+    unit
 }: IProductQuantityInput) => {
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(e)
@@ -31,7 +35,7 @@ const ProductQuantityInput = ({
         <div className = {`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
             <InputText
                 id={quantityInputId}
-                defaultValue={quantity}
+                defaultValue={quantity.toString()}
                 placeholder='0'
                 onChange={handleOnChange}
                 disabled={disabled}
@@ -50,10 +54,10 @@ const ProductQuantityInput = ({
                     }
                 }}
             />
-            <div>
-                <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} stick)`}</p>
-                <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>
-            </div>
+            {((salesUnit &&itemNumberPerSalesUnit) || totalPrice) && <div>
+                {salesUnit && itemNumberPerSalesUnit && <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} ${unit ?? 'st'})`}</p>}
+                {totalPrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`${priceLabel ?? 'Pris'}: ${totalPrice} kr`}</p>}
+            </div>}
         </div>
     )
 }

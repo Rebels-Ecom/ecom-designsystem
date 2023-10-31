@@ -50,7 +50,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
             price,
             salesUnit,
             itemNumberPerSalesUnit,
-            quantity: '1',
+            quantity: 1,
             totalPrice: convertNumToStr(price*itemNumberPerSalesUnit),
             productVariantList,
             selectedVariantId: productId
@@ -62,7 +62,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
         const quantity = parseInt(e.target.value) || 1;
         setProduct({
             ...product, 
-            quantity:quantity.toString(),
+            quantity,
             totalPrice: convertNumToStr(product.price * product.itemNumberPerSalesUnit * quantity)})
     }
 
@@ -71,7 +71,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
     }
 
     function handlePackageChange(selectedVariant:any){
-        const quantity = product.productId===selectedVariant.variantId ? parseInt(product.quantity) : 1;
+        const quantity = product.productId===selectedVariant.variantId ? product.quantity : 1;
         setProduct({
             ...product, 
             productId: selectedVariant.variantId,
@@ -82,7 +82,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
             salesUnit: selectedVariant.salesUnit,
             itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
             totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
-            quantity: quantity.toString(),
+            quantity: quantity,
             selectedVariantId: selectedVariant.variantId
         });
 

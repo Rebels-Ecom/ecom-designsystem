@@ -56,3 +56,4 @@ export { MobileNavigation } from './navigation/mobile-navigation/mobile-navigati
 export { DesktopNavigation } from './navigation/desktop-navigation/desktop-navigation'
 export { Form } from './form/form'
 export { Table } from './table/table'
+export { CategoryProductCard } from './product-card/category-product-card'

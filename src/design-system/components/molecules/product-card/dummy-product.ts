@@ -177,8 +177,8 @@ const dummyWineProduct = {
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
 		}, {
-			"Name": "75cl Engångsglas",
-			"VariantFullName": "75cl Engångsglas",
+			"Name": "50cl Engångsglas",
+			"VariantFullName": "50cl Engångsglas",
 			"VariantId": "2543814",
 			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/b2ded0dd-7eb5-4983-9d91-24b948468246",
 			"SalesUnit": "KLI",

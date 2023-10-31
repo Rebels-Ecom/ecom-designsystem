@@ -1,0 +1,175 @@
+.slimProductWrapper {
+  width: 100%;
+  position: relative;
+  transition: background-color 0.3s ease;
+  
+  &.variantsOpen {
+    background-color: white;
+  }
+}
+
+.slimProductCard {
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  z-index: 1;
+  background-color: var(--background);
+  transition: background-color 0.3s ease;
+  
+  &.variantsOpen {
+    background-color: white;
+  }
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--border-grey);
+  }
+
+  &.campaign {
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    border-color: var(--campaign-color);
+
+    & .campaignBox {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-bottom-left-radius: 0.75rem;
+      background-color: var(--campaign-color);
+      color: white;
+      font-family: var(--font-family-secondary);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 0.75rem 1rem;
+    }
+
+    & .iconLink {
+      & button {
+        color: white;
+      }
+    }
+  }
+
+  & .imagePlaceholder {
+    & > div {
+      height: 8rem;
+      width: 4rem;
+    }
+  }
+
+  & .picture {
+    height: 8rem;
+    width: 4rem;
+
+    & .image {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  & .placeholderContent {
+    width: 75%;
+  }
+  
+  & .content {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 1rem;
+    justify-content: space-between;
+
+    & .textContent {
+      & .headingLink {
+        text-decoration: none;
+      }
+  
+      & .heading {
+        color: var(--color-text-default);
+        margin: 0 0 0.25rem;
+      }
+  
+      & .artNr {
+        margin: 0 0 0.25rem;
+      }
+      
+      & .packaging {
+        margin: 0 0 0.25rem;
+        color: var(--color-text-decorative-purple);
+      }
+    }
+  }
+
+  & .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-self: flex-end;
+
+    & .variantsButton {
+      z-index: var(--menu-z-index);
+    }
+  }
+}
+
+.productVariants {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+
+  & .variantButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0 1rem;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid var(--border-grey);
+    }
+
+    &:hover {
+      background-color: var(--border-grey);
+    }
+
+  }
+  
+  & .closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  & .variant {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0.125rem 0;
+    color: var(--color-text-decorative-purple);
+    padding: 0.25rem 0;
+    padding-left: 1.5rem;
+
+    & > span {
+      font-size: 1.25rem;
+
+      &:last-of-type {
+        margin-left: auto;
+      }
+    }
+    
+    &.checked {
+      padding-left: 0;
+
+      & > span:first-of-type {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}

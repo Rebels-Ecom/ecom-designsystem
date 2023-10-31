@@ -49,11 +49,11 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className , lo
                         {country!=='' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>}
                         <ProductQuantityInput
                             className={styles.quantityInput}
-                            salesUnit = {salesUnit}
-                            itemNumberPerSalesUnit = {itemNumberPerSalesUnit}
-                            totalPrice = {totalPrice}
-                            quantity = {quantity}
-                            quantityInputId = {productId}
+                            salesUnit={salesUnit}
+                            itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                            totalPrice={totalPrice}
+                            quantity={Number(quantity ?? 0)}
+                            quantityInputId={productId}
                             disabled
                         />
                     </div>

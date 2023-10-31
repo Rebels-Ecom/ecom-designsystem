@@ -7,7 +7,8 @@ import { Picture, DividerLines, Loader, Placeholder, Button } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
-import { TCategoryProductCard, TProductCardVertical } from '../product-card/category-product-card'
+import { TCategoryProductCard, TProductCardVertical } from './category-product-card'
+import { getProductPicture } from '../../../../helpers/picture-helper'
 
 const VerticalProductCard = ({
   name,
@@ -19,7 +20,7 @@ const VerticalProductCard = ({
   handlePackageChange,
   className,
   loading,
-  productImage,
+  productImageUrl,
   changePackagingButton,
   hideCartButton,
   addToCart,
@@ -30,11 +31,10 @@ const VerticalProductCard = ({
   packaging,
   pricePerUnit,
   productUrl,
-  artNr,
   productId,
   country,
-  baseUnit,
-  baseUnitNumber,
+  salesUnit,
+  salesUnitNumber,
   defaultPrice,
   defaultQuantity,
   unit,
@@ -57,7 +57,7 @@ const VerticalProductCard = ({
   })
 
   // TODO: calc total price
-  const totalPrice = 0;
+  const productImage = getProductPicture(productId ?? 'x', productImageUrl)
 
   if (variantsOpen && selectedVariantId) {
     return (
@@ -103,8 +103,8 @@ const VerticalProductCard = ({
             ) : (
               <h5 className={styles.heading}>{name}</h5>
             )}
-            {(artNr || country) && <p className={cx(styles.textGray, 'bodyS')}>
-              {`${artNr ? 'Art.nr. ' + artNr : ''} ${artNr && country ? '-' : ''} ${country ?? ''}`}
+            {(productId || country) && <p className={cx(styles.textGray, 'bodyS')}>
+              {`${productId ? 'Art.nr. ' + productId : ''} ${productId && country ? '-' : ''} ${country ?? ''}`}
             </p>}
             {packaging && pricePerUnit && <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${pricePerUnit} kr/st`}</p>}
  
@@ -131,10 +131,10 @@ const VerticalProductCard = ({
           <div style={{ display: 'flex' }}>
             <ProductQuantityInput
               className={styles.productCardInput}
-              salesUnit={baseUnit ?? ''}
-              itemNumberPerSalesUnit={baseUnitNumber ?? 0}
+              salesUnit={salesUnit ?? 'xxx'}
+              itemNumberPerSalesUnit={salesUnitNumber ?? 0}
               totalPrice={defaultPrice}
-              quantity={defaultQuantity ?? 'quantity'} // TODO: add quantity to state
+              quantity={Number(defaultQuantity ?? 0)}
               quantityInputId={productId}
               disabled={false} // TODO: fix this
               onChange={handleOnChangeQuantity}

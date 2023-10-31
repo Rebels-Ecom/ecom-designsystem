@@ -3,6 +3,7 @@ import cx from 'classnames'
 import { motion } from 'framer-motion'
 import { LinkComponent } from '../ui-link/ui-link'
 import { Icon, TIcon } from '../icon/icon'
+import { Loader } from '../loader/loader'
 
 export type TIconButtonSize = 'small' | 'medium' | 'large'
 
@@ -30,6 +31,8 @@ export type TIconButton = {
      * @default undefined
      */
     notification?: number;
+    disabled?: boolean;
+    loading?: boolean;
 } & (TWithLink | TWithoutLink); 
 
 export function getIconButtonSize(surface: TIconButtonSize, hasChildren: boolean) {
@@ -103,9 +106,14 @@ const IconButton = (props: TIconButton) => {
           [styles.noBorder]: props.noBorder,
         })}
         onClick={props.onClick}
+        disabled={props.disabled || props.loading}
       >
-        <Icon icon={props.icon} />
-        {!!props.notification && props.notification < 100 && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>{props.notification}</motion.span>}
+        {props.loading ? <Loader visible size='xs' position='relative' /> : (
+          <>
+            <Icon icon={props.icon} />
+            {!!props.notification && props.notification < 100 && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>{props.notification}</motion.span>}
+          </>
+        )}
       </button>
     )
   }

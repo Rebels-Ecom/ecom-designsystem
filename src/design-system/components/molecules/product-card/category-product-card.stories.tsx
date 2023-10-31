@@ -1,39 +1,9 @@
-// import React from 'react'
-// import type { Meta, StoryObj } from '@storybook/react'
-// import { CategoryProductCard } from './category-product-card'
-
-// const meta: Meta<typeof CategoryProductCard> = {
-//   title: 'Design System/Molecules/Category Product Card',
-//   component: CategoryProductCard,
-// };
-
-// export default meta;
-// type Story = StoryObj<typeof CategoryProductCard>;
-
-// const CategoryProductCardStoryTemplate: Story = {
-//   render: (args) => {
-//     return (
-//       <>
-//         <CategoryProductCard {...args} />
-//       </>
-//     )
-//   }
-// };
-
-// export const CategoryProductCardStory = {
-//   ...CategoryProductCardStoryTemplate,
-//   args: {
-    
-//   }
-// }
-
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { CategoryProductCard } from './category-product-card'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { IProduct } from '../../../../types/product'
 import { dummyWineProduct, dummyProductNoVariants } from './dummy-product'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 
 function getProductTags(tags: Array<any>) {
   return tags.map((tag) => {
@@ -104,38 +74,43 @@ export const ProductCardStory: Story = {
     const handleAddToCart = (data) => {
       console.log(data)
     }
-    return <CategoryProductCard {...args} addToCart={handleAddToCart} />
+    return (
+      <>
+        <CategoryProductCard {...args} addToCart={handleAddToCart} />
+        <CategoryProductCard {...args} addToCart={handleAddToCart} />
+      </>
+    )
   },
   args: {
+    cardDisplay: 'slim',
     productUrl: '#',
     linkComponent: 'a',
     country: 'Spain',
     packaging: productWineArgs.packaging,
     pricePerUnit: productWineArgs.priceStr,
-    cardDisplay: 'vertical',
     name: productWineArgs.productName,
-    artNr: productWineArgs.productId,
-    baseUnit: 'ST',
-    baseUnitNumber: 1,
+    salesUnit: 'ST',
+    salesUnitNumber: 1,
     totalPriceLabel: 'Listpris',
     defaultPrice: productWineArgs.priceStr,
     productId: productWineArgs.productId,
     productImageUrl: productWineArgs.productImageUrl,
-    defaultQuantity: '',
+    defaultQuantity: 1,
     addToCart: () => {},
     addToCartButton: {
       children: 'Lägg till',
       surface: 'primary',
       type: 'button',
     },
-    handlePackageChange: () => {},
+    // handlePackageChange: () => {},
     loading: false,
-    onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
+    // onVariantsButtonClick: () => {},
+    // productImageUrl: productWineArgs.productImageUrl,
     hideCartButton: false,
     campaign: {
       title: 'Kampanj',
       color: '#9A576F'
-    }
+    },
+    productVariantList: productWineArgs.productVariantList
   },
 };

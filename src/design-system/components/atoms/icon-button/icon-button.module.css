@@ -71,4 +71,7 @@
             left: -0.5rem;
         }
     }
+    &[disabled] {
+        cursor: not-allowed;
+    }
 }

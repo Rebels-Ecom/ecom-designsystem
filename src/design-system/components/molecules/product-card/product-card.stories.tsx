@@ -57,7 +57,7 @@ function getProduct(productData: any): IProduct {
 }
 
 const productNoVariantsArgs = getProduct(dummyProductNoVariants)
-const productWineArgs = getProduct(dummyWineProduct)
+export const productWineArgs = getProduct(dummyWineProduct)
 
 const meta = {
   title: 'Design System/Molecules/ProductCard',
@@ -92,6 +92,12 @@ export const ProductCardStory: Story = {
     campaign: {
       title: 'Kampanj',
       color: '#9A576F'
+    },
+    changePackagingButton: {
+      children: 'Byt förpackning',
+      surface: 'secondary',
+      type: 'button',
+      
     }
   },
 };
