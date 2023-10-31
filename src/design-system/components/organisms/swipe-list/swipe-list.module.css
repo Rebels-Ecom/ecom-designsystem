@@ -1,0 +1,21 @@
+.swipeList {
+  width: 100vw;
+  display: grid;
+  align-content: flex-start;
+  grid-auto-flow: column;
+  overflow-y: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  list-style: none;
+  padding: 1rem;
+  gap: 1rem;
+
+  & .swipeListItem {
+    width: calc(100vw - 3rem);
+    scroll-snap-align: center;
+  
+    &.snapAlways {
+      scroll-snap-stop: always;
+    }
+  }
+}

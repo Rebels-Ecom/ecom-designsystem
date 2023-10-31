@@ -18,8 +18,6 @@ import {  BlogCardStory_AmericanBeer,
           BlogCardStoryMariestad,
           BlogCardStoryPang,
           BlogCardStoryWisby,  } from '../../molecules/blog-card/blog-card.stories'
-import { PictureStoryMariestad_Blog } from '../../atoms/picture/picture.stories';
-import { ContentWrapper } from '../../layouts'
 
 const meta: Meta<typeof BlogCardList> = {
   title: 'Design System/Organisms/BlogCardList',
@@ -31,9 +29,7 @@ type Story = StoryObj<typeof BlogCardList>;
 
 const BlogCardListStoryTemplate: Story = {
   render: ( args ) => (
-    <ContentWrapper>
       <BlogCardList blogCards={args.blogCards} title={args.title}/>
-    </ContentWrapper>
   )
 };
 

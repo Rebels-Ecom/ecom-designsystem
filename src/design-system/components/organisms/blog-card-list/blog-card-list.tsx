@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
 import { Button } from '../../atoms'
 import styles from './blog-card-list.module.css'
+import { SwipeList, SwipeListItem } from '../swipe-list/swipe-list'
+import { Above, Below, ContentWrapper } from '../../layouts'
 
 export interface IBlogCardList {
   title?: string
@@ -44,34 +46,62 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
     <div className={styles.blogCardList}>
       {title && <h3 className={styles.title}>{title}</h3>}
       
-      <ul className={styles.list}>
-        {list.map((card: IBlogCard, i: number) => (
-          <motion.li
-            key={i}
-            className={cx(styles.listItem, getColumnsNumber(list.length))}
-            initial={{ y: '-10%', opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-          >
-            <BlogCard
-              {...card}
-              fullWidth={list.length === 1}
-              maxChar={list.length === 3 ? card.maxChar ?? 200 : undefined}
-            />
-          </motion.li>
-        ))}
-      </ul>
+      <Below breakpoint='md'>
+        {(matches: any) => matches && (
+          <SwipeList>
+            {list.map((card: IBlogCard, i: number) => (
+              <SwipeListItem key={i}>
+                <motion.li
+                  key={i}
+                  className={cx(styles.listItem, getColumnsNumber(list.length))}
+                  initial={{ y: '-10%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                >
+                  <BlogCard
+                    {...card}
+                    fullWidth={list.length === 1}
+                    maxChar={list.length === 3 ? card.maxChar ?? 200 : undefined}
+                  />
+                </motion.li>
+                </SwipeListItem>
+              ))}
+          </SwipeList>
+        )}
+      </Below>
+      <Above breakpoint='md'>
+        {(matches) => matches && (
+          <ContentWrapper>
+            <ul className={styles.list}>
+              {list.map((card: IBlogCard, i: number) => (
+                <motion.li
+                  key={i}
+                  className={cx(styles.listItem, getColumnsNumber(list.length))}
+                  initial={{ y: '-10%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                >
+                  <BlogCard
+                    {...card}
+                    fullWidth={list.length === 1}
+                    maxChar={list.length === 3 ? card.maxChar ?? 200 : undefined}
+                  />
+                </motion.li>
+              ))}
+            </ul>
 
-      {blogCards.length > 4 && (
-        <Button
-          ref={buttonRef}
-          className={styles.showMoreButton}
-          type="button"
-          surface='primary'
-          onClick={handleShowMore}
-        >
-          {list.length === blogCards.length ? "Visa färre" : "Visa fler"}
-        </Button>
-      )}
+            {blogCards.length > 4 && (
+              <Button
+              ref={buttonRef}
+              className={styles.showMoreButton}
+              type="button"
+              surface='primary'
+              onClick={handleShowMore}
+              >
+                {list.length === blogCards.length ? "Visa färre" : "Visa fler"}
+              </Button>
+            )}
+          </ContentWrapper>
+        )}
+      </Above>
     </div>
   )
 }
