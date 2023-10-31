@@ -60,12 +60,8 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
   }, [])
 
   return (
-    <form
-      ref={formRef}
-      className={cx(styles.form, props.buttonPosition === 'row' ? styles.formDirectionRow : styles.formDirectionColumn)}
-      onSubmit={handleSubmit}
-    >
-      <FlexContainer>
+    <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit}>
+      <div>
         {formTitle && (
           <Heading order={3} className={styles.formTitle}>
             {formTitle}
@@ -100,7 +96,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             {props.generalErrorMessage && <p className={styles.generalErrorMessage} dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}></p>}
           </FlexContainer>
         </ExpandableWrapper>
-      </FlexContainer>
+      </div>
       {props.actions && (
         <FlexContainer justifyContent={props.alignActions ?? 'center'}>
           {props.actions.map((action, i) => (
