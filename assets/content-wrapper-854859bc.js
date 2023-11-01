@@ -1,4 +1,0 @@
-import{r as a}from"./index-6f814c40.js";import{c as p}from"./index-74f03c09.js";import{a as s}from"./jsx-runtime-76c5c2e2.js";const i="_contentWrapper_gqkdt_1",c={contentWrapper:i},r=({padding:e,children:t,...m})=>{const n=a.useMemo(()=>!e&&e!==0?"":typeof e=="number"?`${e}rem`:e.map(o=>`${o}rem`).join(" "),[e]);return s("div",{className:p(c.contentWrapper),style:{padding:n},children:t})};try{r.displayName="ContentWrapper",r.__docgenInfo={description:"",displayName:"ContentWrapper",props:{padding:{defaultValue:{value:"undefined"},description:`Sets the padding prop in rem
-Takes either a single number, e.g. 1 or an array of numbers, e.g. [1, 0] or [1, 0, 0, 1] (top, right, bottom, left)
-Default is undefined, and therefore decided by styles/css`,name:"padding",required:!1,type:{name:"number | number[]"}}}}}catch{}export{r as C};
-//# sourceMappingURL=content-wrapper-854859bc.js.map
