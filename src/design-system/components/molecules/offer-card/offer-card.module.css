@@ -10,6 +10,19 @@
     @media (max-width: 48em) {
         border: 1px solid var(--border-grey);
     }
+
+    & p {
+        color: var(--color-text-subdued);
+        margin:0;
+        word-break: break-word;
+        font-size: var(--body-mobile-font-size);
+        line-height: var(--body-mobile-line-height);
+
+        @media (min-width: 64em) {
+            font-size: var(--body-desktop-font-size);
+            line-height: var(--body-desktop-line-height);
+        }
+    }
 }
 
 .icon {
@@ -19,10 +32,4 @@
 
 .heading {
     margin: 1.5rem auto 1rem auto;
-}
-
-.text {
-    color: var(--color-text-subdued);
-    margin:0;
-    word-break: break-word;
 }

@@ -1,4 +1,5 @@
 import { ILink } from '../../../../types/links'
+import { RichTextProps } from '../../../../types/other'
 import { Icon } from '../../atoms/icon/icon'
 import { LinkButton } from '../../atoms/link-button/link-button'
 import { IPicture, Picture } from '../../atoms/picture/picture'
@@ -12,7 +13,7 @@ export type TTagPosition = 'left' | 'right'
 export interface ITeaser {
     heading: string
     preamble?: string
-    text: string
+    richText?: React.FC<RichTextProps>;
     image: IPicture
     imagePosition: TImagePosition
     imageRound?: boolean;
@@ -22,7 +23,7 @@ export interface ITeaser {
     fullWidth?: boolean
 }
 
-const Teaser = ({heading, preamble, text, image, imagePosition, tag, tagPosition, linkButton, imageRound, fullWidth}: ITeaser) => {
+const Teaser = ({heading, preamble, richText, image, imagePosition, tag, tagPosition, linkButton, imageRound, fullWidth}: ITeaser) => {
     return (
         <div className={`${styles.teaser} ${imagePosition === 'left' ? styles.teaserLeft : styles.teaserRight}`}>
             <div className={cx(styles.imageWrapper, {[styles.imageRound]: imageRound})}>
@@ -37,7 +38,9 @@ const Teaser = ({heading, preamble, text, image, imagePosition, tag, tagPosition
             <div className={`${styles.contentWrapper} ${imagePosition === 'left' ? styles.contentRight : styles.contentLeft}`}>
                 <h2 className={styles.heading}>{heading}</h2>
                 {preamble && <p className={styles.preamble}>{preamble}</p>}
-                <p className={cx(styles.text, imagePosition === 'right' && styles.textRight)} dangerouslySetInnerHTML={{ __html: text }}></p>
+                {richText && (
+                    <div className={cx(styles.text, imagePosition === 'right' && styles.textRight)}>{richText}</div>
+                )}
                 <LinkButton surface="primary" {...linkButton} className={styles.linkButton} />
             </div>
         </div>
