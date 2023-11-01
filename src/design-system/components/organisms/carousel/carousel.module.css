@@ -1,0 +1,94 @@
+.carousel {
+  display: grid;
+  padding-bottom: 2.5rem;
+
+  & .pagination {
+    padding: 0 4rem;
+
+    & .page {
+      background-color: var(--cta-primary-default);
+      opacity: 0.5;
+      
+      &[aria-selected=true] {
+        background-color: var(--cta-primary-default);
+        opacity: 1;
+      }
+    }  
+  }
+
+  & .arrow {
+    top: unset;
+    bottom: -0.75rem;
+    
+    &.left {
+      left: 1rem;
+    }
+    
+    &.right {
+      right: 1rem;
+    }
+
+    &.offset {
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    @media (min-width: 48em) {
+      &.left {
+        left: 4rem;
+      }
+      
+      &.right {
+        right: 4rem;
+      }
+  
+      &.offset {
+        &.left {
+          left: 2rem;
+        }
+        &.right {
+          right: 2rem;
+        }
+      }
+    }
+
+    @media (min-width: 64em) {
+      &.offset {
+        &.left {
+          left: 2rem;
+        }
+        &.right {
+          right: 2rem;
+        }
+      }
+    }
+
+    @media (min-width: 90rem) {
+      bottom: unset;
+      top: 50%;
+
+      &.offset {
+        &.left {
+          left: -4.5rem;
+        }
+        &.right {
+          right: -4.5rem;
+        }
+      }
+    }
+
+    &:focus {
+      outline: none;
+
+    }
+
+    &:disabled {
+      opacity: 0;
+    }
+  }
+}

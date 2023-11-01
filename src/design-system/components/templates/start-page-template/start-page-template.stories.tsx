@@ -30,8 +30,8 @@ const StartPageStoryTemplate = {
   render: ({ ...args }) => (
     <>
       {args.header && args.header()}
+      <HeroCarousel {...args.hero} />
       <ContentWrapper>
-        <HeroCarousel {...args.hero} />
         <BlogCardList {...args.blogList_Why_Spendrups} />
         <FeaturedProductsCarousel {...args.featuredProducts} />
         <OfferCardList {...args.offerCardsList} />

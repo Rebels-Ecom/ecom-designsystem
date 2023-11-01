@@ -75,6 +75,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
+    "@splidejs/react-splide": "^0.7.12",
     "react-datepicker": "^4.11.0",
     "vite-plugin-css-injected-by-js": "^2.1.1"
   }
