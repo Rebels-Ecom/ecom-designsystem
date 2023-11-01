@@ -12,6 +12,10 @@
     gap: 1rem;
     width: 100%;
     overflow: hidden;
+
+    @media (min-width: 48em) {
+      padding-bottom: 2rem;
+    }
   }
     
   & .listItem {
@@ -66,6 +70,14 @@
             padding-bottom: 0;
           }
         }
+      }
+
+      @media (min-width: 48em) {
+        flex: 1 1 calc(50% - 1rem);
+      }
+      
+      @media (min-width: 64em) {
+        flex: 1;
       }
     }
   }

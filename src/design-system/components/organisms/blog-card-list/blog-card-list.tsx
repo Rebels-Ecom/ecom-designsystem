@@ -24,7 +24,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
 
   const asCarousel = blogCards?.length > 3;
 
-  const renderDesktopItem = (card: IBlogCard) => {
+  const renderItem = (card: IBlogCard) => {
     return (
       <motion.li
         className={cx(styles.listItem, getColumnsNumber(blogCards.length))}
@@ -43,52 +43,53 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
   return (
     <div className={styles.blogCardList}>
       {title && <h3 className={styles.title}>{title}</h3>}
-      
-      <Below breakpoint='md'>
-        {(matches: any) => matches && (
-          <SwipeList>
-            {blogCards.map((card: IBlogCard, i: number) => blogCards.length > 1 ? (
-              <SwipeListItem key={i}>
-                <BlogCard
-                  {...card}
-                  fullWidth={blogCards.length === 1}
-                  maxChar={blogCards.length === 3 ? card.maxChar ?? 200 : undefined}
-                />
-              </SwipeListItem>
-            ) : (
-              <BlogCard
-                key={i}
-                {...card}
-                fullWidth={blogCards.length === 1}
-                maxChar={blogCards.length === 3 ? card.maxChar ?? 200 : undefined}
-              />
-            ))}
-          </SwipeList>
-        )}
-      </Below>
-      <Above breakpoint='md'>
-        {(matches) => matches && (
-          <ContentWrapper>
+      {
+        <ContentWrapper>
           {asCarousel ? (
-            <Carousel maxPerPage={blogCards.length > 3 ? 4 : 3} className={styles.list}>
+            <Carousel
+              breakpoints={{
+                lg: {
+                  perPage: 4,
+                },
+                md: {
+                  perPage: 2,
+                },
+              }}
+            >
               {blogCards.map((card: IBlogCard, i: number) => (
                 <CarouselItem>
-                  {renderDesktopItem(card)}
+                  {renderItem(card)}
                 </CarouselItem>
               ))}
             </Carousel>
           ) : (
-            <ul className={cx(styles.list, styles.static)}>
-              {blogCards.map((card: IBlogCard, i: number) => (
-                <Fragment key={i}>
-                  {renderDesktopItem(card)}
-                </Fragment>
-              ))}
-            </ul>
+            <>
+              <Below breakpoint='sm'>
+                {(matches) => matches && (
+                  <Carousel>
+                    {blogCards.map((card: IBlogCard, i: number) => (
+                      <CarouselItem>
+                        {renderItem(card)}
+                      </CarouselItem>
+                    ))}
+                  </Carousel>
+                )}
+              </Below>
+              <Above breakpoint='sm'>
+                {(matches) => matches && (
+                  <ul className={styles.list}>
+                    {blogCards.map((card: IBlogCard, i: number) => (
+                      <Fragment key={i}>
+                        {renderItem(card)}
+                      </Fragment>
+                    ))}
+                  </ul>
+                )}
+              </Above>
+            </>
           )}
-          </ContentWrapper>
-        )}
-      </Above>
+        </ContentWrapper>
+      }
     </div>
   )
 }

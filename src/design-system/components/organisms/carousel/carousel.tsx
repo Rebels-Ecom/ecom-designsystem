@@ -1,39 +1,53 @@
-import { Splide, SplideSlide, SplideProps } from '@splidejs/react-splide'
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css';
 import { PropsWithChildren } from 'react';
 import styles from './carousel.module.css';
 import cx from 'classnames';
+import { ICarousel } from './types';
 
 export const CarouselItem =  (props: PropsWithChildren<{}>) => <SplideSlide>{props.children}</SplideSlide>
 
-export interface ICarousel extends SplideProps {
-  maxPerPage?: number;
-}
-
-const Carousel = ({options, maxPerPage, className = '', ...props}: PropsWithChildren<ICarousel>) => {
+const Carousel = ({ className = '', breakpoints, ...props }: PropsWithChildren<ICarousel>) => {
   return (
     <Splide
+      hasTrack={!!props.splideProps?.hasTrack}
       className={cx(styles.carousel, className)}
       options={{
+        classes: {
+          arrow: cx('splide__arrow', styles.arrow),
+          next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right),
+          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left),
+          pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination),
+          page: cx('splide__pagination__page your-class-page', styles.page),
+        },
         mediaQuery: 'min',
-        perMove: 1,
-        gap: '1rem',
+        gap: props.splideProps?.options?.gap ?? '1rem',
         breakpoints: {
           1024: {
-            perPage: maxPerPage ?? 4,
+            perPage: breakpoints?.lg?.perPage ?? 4,
+            perMove: breakpoints?.lg?.perMove ?? 1,
+            arrows: !!!breakpoints?.lg?.hideArrows,
+            focus: breakpoints?.lg?.dotPerItem ? 0 : undefined
           },
           768: {
-            perPage: 2,
-        
+            perPage: breakpoints?.md?.perPage ?? 2,
+            perMove: breakpoints?.md?.perMove ?? 1,
+            arrows: !!!breakpoints?.md?.hideArrows,
+            focus: breakpoints?.md?.dotPerItem ? 0 : undefined
+            
           },
           576: {
-            perPage: 1,
-      
+            perPage: breakpoints?.sm?.perPage ?? 1,
+            perMove: breakpoints?.sm?.perMove ?? 1,
+            arrows: !!!breakpoints?.sm?.hideArrows,
+            focus: breakpoints?.sm?.dotPerItem ? 0 : undefined
           },
         }
       }}
     >
-      {props.children}
+      <SplideTrack>
+        {props.children}
+      </SplideTrack>
     </Splide>
   )
 }
