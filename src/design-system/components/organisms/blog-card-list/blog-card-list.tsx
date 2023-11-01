@@ -26,7 +26,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
 
   const renderItem = (card: IBlogCard) => {
     return (
-      <motion.li
+      <motion.div
         className={cx(styles.listItem, getColumnsNumber(blogCards.length))}
         initial={{ y: '-10%', opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -36,7 +36,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
           fullWidth={blogCards.length === 1}
           maxChar={blogCards.length === 3 ? card.maxChar ?? 200 : undefined}
         />
-      </motion.li>
+      </motion.div>
     )
   }
 
@@ -58,7 +58,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
               }}
             >
               {blogCards.map((card: IBlogCard, i: number) => (
-                <CarouselItem>
+                <CarouselItem key={i}>
                   {renderItem(card)}
                 </CarouselItem>
               ))}
