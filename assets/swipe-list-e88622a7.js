@@ -1,2 +1,0 @@
-import{a as t}from"./jsx-runtime-76c5c2e2.js";const a="_swipeList_10kzg_1",r="_swipeListItem_10kzg_18",c="_snapAlways_10kzg_23",p={swipeList:a,swipeListItem:r,snapAlways:c},e=s=>t("div",{className:p.swipeListItem,children:s.children}),i=s=>t("div",{className:p.swipeList,children:s.children});try{e.displayName="SwipeListItem",e.__docgenInfo={description:"",displayName:"SwipeListItem",props:{}}}catch{}try{i.displayName="SwipeList",i.__docgenInfo={description:"",displayName:"SwipeList",props:{}}}catch{}export{i as S,e as a};
-//# sourceMappingURL=swipe-list-e88622a7.js.map

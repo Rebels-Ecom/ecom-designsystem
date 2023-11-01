@@ -1,7 +1,0 @@
-import{O as n,a as l,b as d}from"./offer-card.stories-b199ba7f.js";import{S as _,a as O}from"./swipe-list-e88622a7.js";import{j as y,F as C,a as r}from"./jsx-runtime-76c5c2e2.js";import{B as g,A as u}from"./below-e3aa399e.js";import{C as L}from"./content-wrapper-854859bc.js";const S="_list_hery8_1",h="_listItem_hery8_10",f={list:S,listItem:h},t=({list:e})=>y(C,{children:[r(g,{breakpoint:"md",children:a=>a&&r(_,{children:e.slice(0,4).map((o,i)=>r(O,{children:r(n,{...o})},i))})}),r(u,{breakpoint:"md",children:a=>a&&r(L,{children:r("ul",{className:f.list,children:e.slice(0,4).map((o,i)=>r("li",{className:f.listItem,children:r(n,{...o})},i))})})})]});try{t.displayName="OfferCardList",t.__docgenInfo={description:"",displayName:"OfferCardList",props:{list:{defaultValue:null,description:"",name:"list",required:!0,type:{name:"IOfferCard[]"}}}}}catch{}const b={title:"Design System/Organisms/OfferCardList",component:t},I={render:({...e})=>r(t,{...e})},j=[l.args,d.args,l.args,d.args],s={...I,args:{list:j}};var c,m,p;s.parameters={...s.parameters,docs:{...(c=s.parameters)==null?void 0:c.docs,source:{originalSource:`{
-  ...OfferCardListStoryTemplate,
-  args: {
-    list: offersList
-  }
-}`,...(p=(m=s.parameters)==null?void 0:m.docs)==null?void 0:p.source}}};const x=["OfferCardListStory"],A=Object.freeze(Object.defineProperty({__proto__:null,OfferCardListStory:s,__namedExportsOrder:x,default:b},Symbol.toStringTag,{value:"Module"}));export{s as O,t as a,A as o};
-//# sourceMappingURL=offer-card-list.stories-8ff453e7.js.map
