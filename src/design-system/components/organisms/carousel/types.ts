@@ -28,5 +28,8 @@ export interface ICarousel {
   className?: string;
   splideProps?: SplideProps;
   breakpoints?: TCarouselBreakpoints;
-  navigateBy?: '';
+  /**
+   * Determines if arrows should be placed outside of carousel
+   */
+  offsetArrows?: boolean;
 }

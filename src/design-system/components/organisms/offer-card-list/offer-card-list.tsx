@@ -10,7 +10,10 @@ export interface IOfferCardList {
 const OfferCardList = ({ list }: IOfferCardList) => {
   return (
     <ContentWrapper>
-      <Carousel breakpoints={{ lg: { perPage: 4, perMove: 1, hideArrows: false }}}>
+      <Carousel
+        breakpoints={{ lg: { perPage: 4, perMove: 1 }}}
+        offsetArrows
+      >
         {list.map((listItem: IOfferCard, index: number) => (
           <CarouselItem key={index}>
             <OfferCard {...listItem} />

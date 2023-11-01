@@ -47,6 +47,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
         <ContentWrapper>
           {asCarousel ? (
             <Carousel
+              offsetArrows
               breakpoints={{
                 lg: {
                   perPage: 4,
@@ -66,7 +67,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
             <>
               <Below breakpoint='sm'>
                 {(matches) => matches && (
-                  <Carousel>
+                  <Carousel offsetArrows>
                     {blogCards.map((card: IBlogCard, i: number) => (
                       <CarouselItem>
                         {renderItem(card)}

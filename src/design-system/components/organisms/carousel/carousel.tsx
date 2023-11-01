@@ -7,21 +7,22 @@ import { ICarousel } from './types';
 
 export const CarouselItem =  (props: PropsWithChildren<{}>) => <SplideSlide>{props.children}</SplideSlide>
 
-const Carousel = ({ className = '', breakpoints, ...props }: PropsWithChildren<ICarousel>) => {
+const Carousel = ({ className = '', breakpoints, splideProps, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
   return (
     <Splide
-      hasTrack={!!props.splideProps?.hasTrack}
+      hasTrack={!!splideProps?.hasTrack}
       className={cx(styles.carousel, className)}
       options={{
+        ...splideProps?.options,
         classes: {
-          arrow: cx('splide__arrow', styles.arrow),
+          arrow: cx('splide__arrow', styles.arrow, {[styles.offset]: offsetArrows }),
           next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right),
           prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left),
           pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination),
           page: cx('splide__pagination__page your-class-page', styles.page),
         },
         mediaQuery: 'min',
-        gap: props.splideProps?.options?.gap ?? '1rem',
+        gap: splideProps?.options?.gap ?? '1rem',
         breakpoints: {
           1024: {
             perPage: breakpoints?.lg?.perPage ?? 4,
