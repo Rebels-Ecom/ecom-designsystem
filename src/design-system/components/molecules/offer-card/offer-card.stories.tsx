@@ -19,7 +19,7 @@ export const OfferCardStory1 = {
     args: {
         icon: 'icon-refresh-cw',
         heading: '24/7 Support',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.'
+        richText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.'
     }
 }
 export const OfferCardStory2 = {
@@ -27,6 +27,6 @@ export const OfferCardStory2 = {
     args: {
         icon: 'icon-mail',
         heading: 'Säkra leveranser',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.'
+        richText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.'
     }
 }

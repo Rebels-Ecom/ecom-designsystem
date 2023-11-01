@@ -1,9 +1,7 @@
 import React from 'react'
-import { Heading, Icon } from '../../atoms'
+import { Icon } from '../../atoms'
 import styles from './order-item.module.css'
-import cx from 'classnames'
-import { getOrderStatusTagColor } from '../../../../helpers/tag-helper'
-import { Tag, TTagColor } from '../../atoms/tag/tag'
+import { Tag } from '../../atoms/tag/tag'
 
 export interface IOrderItem {
   title?: string
@@ -25,9 +23,6 @@ function OrderItem({ title, children, orderDate, deliveryDate, orderStatus, link
             {orderDate || deliveryDate ? (
               <div className={styles.tagsWrapper}>
                 {orderDate && <Tag text={orderDate} shape={'rectangular'} color={'grey'} />}
-                {deliveryDate && (
-                  <Tag text={deliveryDate} shape={'rectangular'} color={orderStatus ? getOrderStatusTagColor(orderStatus as TTagColor) : 'grey'} />
-                )}
               </div>
             ) : null}
             {title && <h4 className={styles.title}>{title}</h4>}
