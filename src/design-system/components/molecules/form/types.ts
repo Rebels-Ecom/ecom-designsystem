@@ -105,5 +105,6 @@ export type IFormTemplateProps = {
     href: string
   }>
   alignActions?: 'flex-start' | 'center' | 'flex-end';
+  alignSubmitButtonHorizontally?: boolean
   generalErrorMessage?: any;
 };
