@@ -65,11 +65,14 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    display: grid;
-    
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .linksInTwoColumns {
     @media (min-width: 64em) {
-      grid-auto-flow: column;
-      grid-template-rows: repeat(7, auto);
+      column-count: 2;
     };
   }
   
