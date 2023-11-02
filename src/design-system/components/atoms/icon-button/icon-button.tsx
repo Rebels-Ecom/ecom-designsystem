@@ -33,19 +33,6 @@ export type TIconButton = {
   notification?: number
 } & (TWithLink | TWithoutLink)
 
-export function getIconButtonSize(surface: TIconButtonSize, hasChildren: boolean) {
-  if (hasChildren) return 'buttonRectangular'
-  switch (surface) {
-    case 'medium':
-      return 'buttonMedium'
-    case 'large':
-      return 'buttonLarge'
-    case 'small':
-    default:
-      return 'buttonSmall'
-  }
-}
-
 const IconButton = (props: TIconButton) => {
   if (!props.type) {
     throw new Error('type must be assigned')

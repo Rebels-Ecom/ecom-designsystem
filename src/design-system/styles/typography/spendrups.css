@@ -243,6 +243,11 @@ h5,
   & .buttonContent {
     flex: 1;
   }
+
+  @media (max-width: 32em) {
+    height: 2.5rem;
+    font-size: var(--cta-l-font-size);
+  }
 }
 
 .cta-xs {

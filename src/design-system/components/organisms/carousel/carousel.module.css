@@ -2,6 +2,10 @@
   display: grid;
   padding-bottom: 2.5rem;
 
+  & .slide {
+    display: flex;
+  }
+
   & .pagination {
     padding: 0 4rem;
 
