@@ -5,7 +5,7 @@ import styles from './carousel.module.css';
 import cx from 'classnames';
 import { ICarousel } from './types';
 
-export const CarouselItem =  (props: PropsWithChildren<{}>) => <SplideSlide>{props.children}</SplideSlide>
+export const CarouselItem =  (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
 
 const Carousel = ({ className = '', breakpoints, splideProps, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
   return (
@@ -20,6 +20,7 @@ const Carousel = ({ className = '', breakpoints, splideProps, offsetArrows, ...p
           prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left),
           pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination),
           page: cx('splide__pagination__page your-class-page', styles.page),
+        
         },
         mediaQuery: 'min',
         gap: splideProps?.options?.gap ?? '1rem',

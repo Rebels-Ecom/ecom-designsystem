@@ -1,6 +1,11 @@
-
 .multiSelectDropdown {
     position: relative;
+
+    & .button {
+        @media (max-width: 32em) {
+            width: 100%;
+        }
+    }
 }
 
 .multiSelectDropdownOptions{
@@ -18,6 +23,10 @@
     padding-left: 0px;
     border: solid 1px #eee;
     padding: 5px 0px;
+    
+    @media (max-width: 32em) {
+        width: 100%;
+    }
 }
 
 .multiSelectDropdownOption {

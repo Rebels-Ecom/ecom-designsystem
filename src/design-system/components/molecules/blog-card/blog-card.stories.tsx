@@ -21,7 +21,7 @@ export const BlogCardStory = {
     ...BlogCardStoryTemplate,
     args: {
         image: PictureStory.args,
-        tag: TagStoryRectangular_S.args,
+        tags: [TagStoryRectangular_S.args],
         heading: 'Blog Card Heading',
         text: '<p>Tillsammans med Sveriges främsta vin & ölexperter ger vi dig möjligheten att ta din och dina anställdas kunskaper till nya höjder.</p>',
         link: UILinkBlogStory.args
@@ -134,7 +134,8 @@ export const BlogCardStory_Oranges = {
         image: PictureStory_Oranges.args,
         heading: 'Blog Card Heading',
         text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur ',        
-        link: UILinkBlogStory.args
+        link: UILinkBlogStory.args,
+        tags: [TagStoryRectangular_S.args, TagStoryRectangular_S.args],
     }
 }
 

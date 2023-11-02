@@ -34,7 +34,7 @@ const BlogCardList = ({ title, blogCards }: IBlogCardList) => {
         <BlogCard
           {...card}
           fullWidth={blogCards.length === 1}
-          maxChar={blogCards.length === 3 ? card.maxChar ?? 200 : undefined}
+          maxChar={blogCards.length === 3 ? card.maxChar ?? 160 : undefined}
         />
       </motion.div>
     )
