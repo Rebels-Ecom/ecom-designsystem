@@ -29,7 +29,17 @@ const Filter = ({id, name, filterType, options, selectedOptions, updateFilterSel
                 return <div>Range filter</div>
             case 'multi':
             default:
-                return <MultiSelect id={id} name={name} icon={{ icon: 'icon-chevron-down' }} options={options} selectedOptions={selectedOpt} onToggleOption={handleMultiselectChange} disabled={disabled}></MultiSelect>
+                return (
+                    <MultiSelect
+                        id={id}
+                        name={name}
+                        icon={{ icon: 'icon-chevron-down' }}
+                        options={options}
+                        selectedOptions={selectedOpt}
+                        onToggleOption={handleMultiselectChange}
+                        disabled={disabled}
+                    />
+                )
         }
     }
         

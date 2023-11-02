@@ -35,6 +35,11 @@
         color: var(--cta-x-default);
         padding: 0.25rem;
     }
+
+    &.small {
+        height: 2.25rem;
+        min-width: 2.25rem;
+    }
     
     &.medium {
         padding: 0.625rem;

@@ -2,9 +2,10 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0rem 1.125rem;
+    padding: 0rem 0.5rem;
     font-family: var(--font-family-secondary);
     color: var(--tag-white);
+
     &.mint{
         background: var(--tag-mint);
         color: var(--tag-blue);
@@ -40,13 +41,23 @@
     border-radius: 0.125rem;
     font-size: var(--tag-rectangular-mobile-font-size);
     line-height: var(--tag-rectangular-mobile-line-height);
+    
     @media (min-width: 64em) {
         font-size: var(--tag-rectangular-desktop-font-size);
         line-height: var(--tag-rectangular-desktop-line-height);
     }
-    &.tagSmall {height: 1.25rem; font-size: 0.625rem}
-    &.tagMedium {height: 1.875rem; }
-    &.tagLarge {height: var( --tag-rectangular-height); }
+
+    &.tagSmall {
+        height: 1.25rem;
+        font-size: 0.625rem;
+    }
+    &.tagMedium {
+        height: 1.875rem;
+        font-size: 0.75rem;
+    }
+    &.tagLarge {
+        height: var(--tag-rectangular-height);
+    }
 }
 
 .tagRound {
