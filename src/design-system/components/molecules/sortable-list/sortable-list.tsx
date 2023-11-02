@@ -19,28 +19,15 @@ export interface ISortingOption {
   name: string
   onClickUp: CallableFunction
   onClickDown: CallableFunction
+  className?: string
 }
 
-const SortingOption = ({ name, onClickUp, onClickDown }: ISortingOption) => {
+const SortingOption = ({ name, onClickUp, onClickDown, className }: ISortingOption) => {
   return (
-    <div className={styles.sortingOption}>
+    <div className={cx(styles.sortingOption, className ? className : '')}>
       <div className={styles.optionName}>{name}</div>
-      <IconButton
-        type='button'
-        icon='icon-chevron-up'
-        onClick={() => onClickUp()}
-        noPadding
-        isTransparent
-        noBorder
-        />
-      <IconButton
-        type='button'
-        icon='icon-chevron-down'
-        onClick={() => onClickDown()}
-        noPadding
-        isTransparent
-        noBorder
-      />
+      <IconButton type="button" icon="icon-chevron-up" onClick={() => onClickUp()} noPadding isTransparent noBorder />
+      <IconButton type="button" icon="icon-chevron-down" onClick={() => onClickDown()} noPadding isTransparent noBorder />
     </div>
   )
 }
@@ -53,6 +40,7 @@ const SortingOptions = ({ sortingOptions }: { sortingOptions: Array<ISortingOpti
           <SortingOption {...option}></SortingOption>
         </li>
       ))}
+      <SortingOption className={styles.invisibleSpacerItem} {...sortingOptions[0]}></SortingOption>
     </ul>
   )
 }

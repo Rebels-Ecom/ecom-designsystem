@@ -13,18 +13,10 @@ function SortableListItem({ children, onClick }: ISortableListItem) {
   if (!children) return null
   return (
     <div className={styles.listItem}>
-      <div className={styles.itemWrapper}>{children}</div>
-      {onClick && (
-        <IconButton
-          type='button'
-          className={styles.iconButton}
-          onClick={onClick}
-          icon='icon-chevrons-right'
-          noPadding
-          isTransparent
-          noBorder
-        />
-      )}
+      <div className={styles.itemWrapper}>
+        {children}
+        {onClick && <IconButton type="button" className={styles.iconButton} onClick={onClick} icon="icon-chevrons-right" noPadding isTransparent noBorder />}
+      </div>
     </div>
   )
 }
