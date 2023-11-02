@@ -25,6 +25,7 @@ export type TIconButton = {
   className?: string
   noPadding?: boolean
   noBorder?: boolean
+  round?: boolean
   /**
    * If a positive number (1-99) has been provided a number  will be displayed in a notification format
    * @default undefined
@@ -62,6 +63,7 @@ const IconButton = (props: TIconButton) => {
             [styles.noPadding]: props.noPadding,
             [styles.transparent]: props.isTransparent,
             [styles.noBorder]: props.noBorder,
+            [styles.round]: props.round,
           })}
           href={props.linkUrl}
           target="_blank"
@@ -84,6 +86,7 @@ const IconButton = (props: TIconButton) => {
             [styles.noPadding]: props.noPadding,
             [styles.transparent]: props.isTransparent,
             [styles.noBorder]: props.noBorder,
+            [styles.round]: props.round,
           })}
         >
           <Icon icon={props.icon} />
@@ -108,6 +111,7 @@ const IconButton = (props: TIconButton) => {
           [styles.noPadding]: props.noPadding,
           [styles.transparent]: props.isTransparent,
           [styles.noBorder]: props.noBorder,
+          [styles.round]: props.round,
         })}
         onClick={props.onClick}
       >
