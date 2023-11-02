@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { SortableList } from './sortable-list'
 import { SortableListItem, ISortableListItem } from '../sortable-list-item/sortable-list-item'
 import { SortableListItem_EHandel, SortableListItem_Leverans } from '../sortable-list-item/sortable-list-item.stories'
+import { ContentWrapper } from '../../layouts/content-wrapper/content-wrapper'
 
 const meta: Meta<typeof SortableList> = {
   title: 'Design System/Molecules/SortableList',
@@ -27,9 +28,11 @@ const SortableListStoryTemplate: Story = {
     ]
     return (
       <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-        <SortableList {...args} sortingOptions={sortingOptions}>
-          {args.children}
-        </SortableList>
+        <ContentWrapper>
+          <SortableList {...args} sortingOptions={sortingOptions}>
+            {args.children}
+          </SortableList>
+        </ContentWrapper>
       </div>
     )
   },

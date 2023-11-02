@@ -1,7 +1,5 @@
 .tabs {
-    background: var(--navigation-surface-subdued);
-    padding: 1rem;
-    
+    padding: 1rem 0;
     & .inner {
         display: flex;
         gap: 0.875rem;
