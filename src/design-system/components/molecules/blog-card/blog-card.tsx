@@ -18,13 +18,21 @@ export interface IBlogCard {
   maxChar?: number;
 }
 
-function extractContent(s: string) {
-  var span = document.createElement('span');
-  span.innerHTML = s;
-  return span.textContent || span.innerText;
-};
-    
+
 const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxChar }: IBlogCard) => {
+  const extractContent = (s: string) => {
+    if (typeof document === 'undefined') return;
+
+    const span = document?.createElement('span');
+  
+    if (span) {
+      span.innerHTML = s;
+      return span.textContent || span.innerText;
+    } else {
+      return s;
+    }
+  };
+
   const extractedRichTextValue = extractContent(text ?? '');
   const trimmedText = maxChar && (extractedRichTextValue?.length ?? 0) > maxChar ? extractedRichTextValue?.substring(0, maxChar).concat('...') : extractedRichTextValue;
 
