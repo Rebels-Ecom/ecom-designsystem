@@ -18,6 +18,7 @@ import {
   UserInfoSummary,
   DropdownList,
   DesktopNavigation,
+  DeliveryInfoBar,
 } from '../../molecules'
 import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.stories'
 import { ContentWrapper, FlexContainer } from '../../layouts'
@@ -108,6 +109,9 @@ const HeaderStoryTemplate: Story = {
               isAdmin={false}
               hasActiveUser={false}
             />
+          }
+          deliveryInfoBar={
+            <DeliveryInfoBar exists={true} infoText={'Kom ihåg att lämna tillbaka era tomfat!'} onClick={() => console.log('DeliveryInfoBar clicked')} />
           }
           logo={
             <motion.div style={{ zIndex: 101 }} initial={{ x: '0vw' }} animate={{ x: isOpen ? '10vw' : '0vw', transition: { delay: 0.1 } }}>
