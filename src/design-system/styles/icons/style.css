@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('fonts/icomoon.woff?ff71p6') format('woff');
+  src: url('fonts/icomoon.woff?j410ba') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -23,6 +23,12 @@
 
 .icon-alert-circle:before {
   content: "\e900";
+}
+.icon-alert-octagon:before {
+  content: "\e96e";
+}
+.icon-alert-triangle:before {
+  content: "\e96f";
 }
 .icon-archive:before {
   content: "\e901";
@@ -258,6 +264,9 @@
 .icon-plus-circle:before {
   content: "\e94e";
 }
+.icon-printer:before {
+  content: "\e970";
+}
 .icon-refresh-ccw:before {
   content: "\e96c";
 }
@@ -306,6 +315,9 @@
 .icon-trash-2:before {
   content: "\e95c";
 }
+.icon-truck:before {
+  content: "\e971";
+}
 .icon-twitter:before {
   content: "\e95d";
 }
@@ -320,6 +332,18 @@
 }
 .icon-user:before {
   content: "\e961";
+}
+.icon-user-check:before {
+  content: "\e972";
+}
+.icon-user-minus:before {
+  content: "\e973";
+}
+.icon-user-plus:before {
+  content: "\e974";
+}
+.icon-user-x:before {
+  content: "\e975";
 }
 .icon-users:before {
   content: "\e962";
@@ -336,11 +360,23 @@
 .icon-volume-x:before {
   content: "\e966";
 }
+.icon-wifi:before {
+  content: "\e976";
+}
+.icon-wifi-off:before {
+  content: "\e977";
+}
 .icon-x:before {
   content: "\e967";
 }
 .icon-x-circle:before {
   content: "\e968";
+}
+.icon-x-octagon:before {
+  content: "\e978";
+}
+.icon-x-square:before {
+  content: "\e979";
 }
 .icon-youtube:before {
   content: "\e969";
