@@ -7,7 +7,7 @@ import { ICarousel } from './types';
 
 export const CarouselItem =  (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
 
-const Carousel = ({ className = '', breakpoints, splideProps, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
+const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
@@ -16,14 +16,15 @@ const Carousel = ({ className = '', breakpoints, splideProps, offsetArrows, ...p
         ...splideProps?.options,
         classes: {
           arrow: cx('splide__arrow', styles.arrow, {[styles.offset]: offsetArrows }),
-          next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right),
-          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left),
+          next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, {[styles.hasPadding]: !!padding}),
+          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, {[styles.hasPadding]: !!padding}),
           pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination),
           page: cx('splide__pagination__page your-class-page', styles.page),
         
         },
         mediaQuery: 'min',
         gap: splideProps?.options?.gap ?? '1rem',
+        padding: padding,
         breakpoints: {
           1024: {
             perPage: breakpoints?.lg?.perPage ?? 4,

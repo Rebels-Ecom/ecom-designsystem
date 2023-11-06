@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState} from 'react'
+import { Fragment } from 'react'
 import cx from 'classnames'
 import { motion } from 'framer-motion'
 import { BlogCard, IBlogCard } from '../../molecules/blog-card/blog-card'
@@ -19,10 +19,6 @@ export interface IBlogCardList {
    * If true, flex items will fill available width
    */
   stretchItems?: boolean;
-}
-
-function getColumnsNumber(columnsNumber: number) {
-  return columnsNumber === 1 ? styles.fullWidth : (columnsNumber === 3 ? styles.maxColumnsThree : styles.maxColumnsFour);
 }
 
 const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBlogCardList) => {
@@ -83,110 +79,64 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
   return (
     <div className={styles.blogCardList}>
       {title && <h3 className={styles.title}>{title}</h3>}
-      {
-        <ContentWrapper>
-          <Below breakpoint='md'>
-            {(matches) => matches && (
-              <>
-                {swipe ? (
-                  <Carousel offsetArrows>
-                    {blogCards.map((card: IBlogCard, i: number) => (
-                      <CarouselItem>
-                        {renderCarouselItem(card)}
-                      </CarouselItem>
-                    ))}
-                  </Carousel>
-                ) : (
-                  <ul className={styles.list}>
-                    {blogCards.map((card: IBlogCard, i: number) => (
-                      <Fragment key={i}>
-                        {renderFlexItem(card)}
-                      </Fragment>
-                    ))}
-                  </ul>
-                )}
-              </>
+      <Below breakpoint='md'>
+        {(matches) => matches && (
+          <>
+            {swipe ? (
+              <Carousel offsetArrows padding='2rem'>
+                {blogCards.map((card: IBlogCard, i: number) => (
+                  <CarouselItem>
+                    {renderCarouselItem(card)}
+                  </CarouselItem>
+                ))}
+              </Carousel>
+            ) : (
+              <ContentWrapper>
+                <ul className={styles.list}>
+                  {blogCards.map((card: IBlogCard, i: number) => (
+                    <Fragment key={i}>
+                      {renderFlexItem(card)}
+                    </Fragment>
+                  ))}
+                </ul>
+              </ContentWrapper>
             )}
-          </Below>
-          <Above breakpoint='md'>
-            {(matches) => matches && (
-              <>
-                {swipe && asCarousel ? (
-                  <Carousel
-                    offsetArrows
-                    breakpoints={{
-                      lg: {
-                        perPage: 4,
-                      },
-                      md: {
-                        perPage: 2,
-                      },
-                    }}
-                  >
-                    {blogCards.map((card: IBlogCard, i: number) => (
-                      <CarouselItem key={i}>
-                        {renderCarouselItem(card)}
-                      </CarouselItem>
-                    ))}
-                  </Carousel>
-                ) : (
-                  <FlexContainer wrap className={styles.list}>
-                    {blogCards.map((card: IBlogCard, i: number) => (
-                      <Fragment key={i}>
-                        {oddHeights ? renderSpecialItem(card, i % 2 == 0) : renderFlexItem(card)}
-                      </Fragment>
-                    ))}
-                  </FlexContainer>
-                )}
-              </>
+          </>
+        )}
+      </Below>
+      <Above breakpoint='md'>
+        {(matches) => matches && (
+          <ContentWrapper>
+            {swipe && asCarousel ? (
+              <Carousel
+                offsetArrows
+                breakpoints={{
+                  lg: {
+                    perPage: 4,
+                  },
+                  md: {
+                    perPage: 2,
+                  },
+                }}
+              >
+                {blogCards.map((card: IBlogCard, i: number) => (
+                  <CarouselItem key={i}>
+                    {renderCarouselItem(card)}
+                  </CarouselItem>
+                ))}
+              </Carousel>
+            ) : (
+              <FlexContainer wrap className={styles.list}>
+                {blogCards.map((card: IBlogCard, i: number) => (
+                  <Fragment key={i}>
+                    {oddHeights ? renderSpecialItem(card, i % 2 == 0) : renderFlexItem(card)}
+                  </Fragment>
+                ))}
+              </FlexContainer>
             )}
-          </Above>
-          {/* {asCarousel ? (
-            <Carousel
-              offsetArrows
-              breakpoints={{
-                lg: {
-                  perPage: 4,
-                },
-                md: {
-                  perPage: 2,
-                },
-              }}
-            >
-              {blogCards.map((card: IBlogCard, i: number) => (
-                <CarouselItem key={i}>
-                  {renderItem(card)}
-                </CarouselItem>
-              ))}
-            </Carousel>
-          ) : (
-            <>
-              <Below breakpoint='sm'>
-                {(matches) => matches && (
-                  <Carousel offsetArrows>
-                    {blogCards.map((card: IBlogCard, i: number) => (
-                      <CarouselItem>
-                        {renderItem(card)}
-                      </CarouselItem>
-                    ))}
-                  </Carousel>
-                )}
-              </Below>
-              <Above breakpoint='sm'>
-                {(matches) => matches && (
-                  <ul className={styles.list}>
-                    {blogCards.map((card: IBlogCard, i: number) => (
-                      <Fragment key={i}>
-                        {renderItem(card)}
-                      </Fragment>
-                    ))}
-                  </ul>
-                )}
-              </Above>
-            </>
-          )} */}
-        </ContentWrapper>
-      }
+          </ContentWrapper>
+        )}
+      </Above>
     </div>
   )
 }

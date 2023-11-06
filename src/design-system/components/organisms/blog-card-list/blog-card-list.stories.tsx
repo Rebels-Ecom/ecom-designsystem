@@ -9,6 +9,7 @@ import {
   BlogCardStory_BeerTap,
   BlogCardStoryFullWidth,
 } from '../../molecules/blog-card/blog-card.stories'
+import { ContentWrapper } from '../../layouts';
 
 const meta: Meta<typeof BlogCardList> = {
   title: 'Design System/Organisms/BlogCardList',
@@ -20,6 +21,7 @@ type Story = StoryObj<typeof BlogCardList>;
 
 const BlogCardListStoryTemplate: Story = {
   render: ( args ) => (
+    <ContentWrapper>
       <BlogCardList
         blogCards={args.blogCards}
         title={args.title}
@@ -27,6 +29,7 @@ const BlogCardListStoryTemplate: Story = {
         stretchItems={args.stretchItems}
         swipe={args.swipe}
       />
+    </ContentWrapper>
   )
 };
 
