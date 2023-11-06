@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta } from '@storybook/react'
 import { HeroCarouselStory } from '../../organisms/hero-carousel/hero-carousel.stories'
-import { BlogCardListStory_VarförSpendrups, BlogCardListStory_Brewing, BlogCardListStory_Samarbete, BlogCardListStory_Equipmemt } from '../../organisms/blog-card-list/blog-card-list.stories'
+import { Three_Cards, Four_Cards, Full_Width } from '../../organisms/blog-card-list/blog-card-list.stories'
 import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-list.stories'
 import { TeaserStoryLeft1, TeaserStoryRight, TeaserStoryLeft2 } from '../../molecules/teaser/teaser.stories'
 import { Standard_Header } from '../../organisms/header/header.stories'
@@ -55,17 +55,17 @@ export const StartPage_Guest_User = {
   args: {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
-    blogList_Why_Spendrups: BlogCardListStory_Equipmemt.args,
+    blogList_Why_Spendrups: Three_Cards.args,
     featuredProducts: FeaturedProductsCarouselStory.args,
     offerCardsList: OfferCardListStory.args,
-    blogList_Spendrups_Suppliers: BlogCardListStory_Samarbete.args,
+    blogList_Spendrups_Suppliers: Four_Cards.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     customerTeaser: CustomerTeaserStory.args,
     teaserRight: TeaserStoryRight.args,
-    blogList_Spendrups_Brewing: BlogCardListStory_Brewing.args,
+    blogList_Spendrups_Brewing: Full_Width.args,
     teaserLeft1: TeaserStoryLeft1.args,
     teaserLeft2: TeaserStoryLeft2.args,
-    blogList_Spendrups_Equipment: BlogCardListStory_VarförSpendrups.args,
+    blogList_Spendrups_Equipment: Four_Cards.args,
     footer:FooterStory.args
   }
 }
@@ -75,17 +75,17 @@ export const StartPage_Logged_In_User = {
   args: {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
-    blogList_Why_Spendrups: BlogCardListStory_VarförSpendrups.args,
+    blogList_Why_Spendrups: Three_Cards.args,
     featuredProducts: FeaturedProductsCarouselStory.args,
     offerCardsList: OfferCardListStory.args,
-    blogList_Spendrups_Suppliers: BlogCardListStory_Samarbete.args,
+    blogList_Spendrups_Suppliers: Four_Cards.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     customerTeaser: CustomerTeaserStory.args,
     teaserRight: TeaserStoryRight.args,
-    blogList_Spendrups_Brewing: BlogCardListStory_Brewing.args,
+    blogList_Spendrups_Brewing: Full_Width.args,
     teaserLeft1: TeaserStoryLeft1.args,
     teaserLeft2: TeaserStoryLeft2.args,
-    blogList_Spendrups_Equipment: BlogCardListStory_Equipmemt.args,
+    blogList_Spendrups_Equipment: Four_Cards.args,
     footer:FooterStory.args
   }
 }
@@ -95,17 +95,17 @@ export const StartPage_Admin_User = {
   args: {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
-    blogList_Why_Spendrups: BlogCardListStory_VarförSpendrups.args,
-    featuredProducts: FeaturedProductsCarouselStory.args,
+    blogList_Why_Spendrups: Four_Cards.args,
+    featuredProducts: Three_Cards.args,
     offerCardsList: OfferCardListStory.args,
-    blogList_Spendrups_Suppliers: BlogCardListStory_Samarbete.args,
+    blogList_Spendrups_Suppliers: Four_Cards.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     customerTeaser: CustomerTeaserStory.args,
     teaserRight: TeaserStoryRight.args,
-    blogList_Spendrups_Brewing: BlogCardListStory_Brewing.args,
+    blogList_Spendrups_Brewing: Full_Width.args,
     teaserLeft1: TeaserStoryLeft1.args,
     teaserLeft2: TeaserStoryLeft2.args,
-    blogList_Spendrups_Equipment: BlogCardListStory_Equipmemt.args,
+    blogList_Spendrups_Equipment: Four_Cards.args,
     footer:FooterStory.args
   }
 }
