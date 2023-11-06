@@ -6,7 +6,7 @@ const Below = ({ breakpoint, children }: { breakpoint: Breakpoint; children: (ma
   const maxWidth = breakpoints[breakpoint]
   const matches = useMediaQuery({ maxWidth })
   if (typeof children === 'function') {
-    return <MediaQuery maxWidth={maxWidth}>{(matches) => children(matches) as ReactElement}</MediaQuery>
+    return <MediaQuery maxWidth={maxWidth - 1}>{(matches) => children(matches) as ReactElement}</MediaQuery>
   }
   return matches ? (children as ReactElement) : null
 }
