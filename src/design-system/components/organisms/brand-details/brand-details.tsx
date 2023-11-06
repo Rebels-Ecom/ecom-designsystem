@@ -22,7 +22,6 @@ type TSharedBrandDetails = {
     alt?: string;
   }
   tags?: ITag[];
-  // richText?: React.FC<RichTextProps>;
   link?: {
     url: string;
     text: string;
