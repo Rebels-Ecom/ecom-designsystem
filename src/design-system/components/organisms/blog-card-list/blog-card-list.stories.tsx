@@ -1,23 +1,15 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { BlogCardList } from './blog-card-list'
-import {  BlogCardStory_AmericanBeer, 
-          BlogCardStory_Pang, 
-          BlogCardStory_SummerWine, 
-          BlogCardStory_GeorgianWine, 
-          BlogCardStory_Suppliers, 
-          BlogCardStory_EHandel,
-          BlogCardStory_Cooperation,
-          BlogCardStory_BrewingFeeling,
-          BlogCardStory_BrewInPeace,
-          BlogCardStory_DarkLightBeer,
-          BlogCardStory_Oranges,
-          BlogCardStory_BeerEquipment,
-          BlogCardStory_BeerTap,
-          BlogCardStoryFullWidth,
-          BlogCardStoryMariestad,
-          BlogCardStoryPang,
-          BlogCardStoryWisby,  } from '../../molecules/blog-card/blog-card.stories'
+import {
+  BlogCardStory_AmericanBeer, 
+  BlogCardStory_Pang,
+  BlogCardStory_Oranges,
+  BlogCardStory_BeerEquipment,
+  BlogCardStory_BeerTap,
+  BlogCardStoryFullWidth,
+} from '../../molecules/blog-card/blog-card.stories'
+import { ContentWrapper } from '../../layouts';
 
 const meta: Meta<typeof BlogCardList> = {
   title: 'Design System/Organisms/BlogCardList',
@@ -29,47 +21,31 @@ type Story = StoryObj<typeof BlogCardList>;
 
 const BlogCardListStoryTemplate: Story = {
   render: ( args ) => (
-      <BlogCardList blogCards={args.blogCards} title={args.title}/>
+    <ContentWrapper>
+      <BlogCardList
+        blogCards={args.blogCards}
+        title={args.title}
+        oddHeights={!!args.oddHeights}
+        stretchItems={args.stretchItems}
+        swipe={args.swipe}
+      />
+    </ContentWrapper>
   )
 };
-
-const cardList = [
-  BlogCardStory_AmericanBeer.args, 
-  BlogCardStory_Pang.args, 
-  BlogCardStory_SummerWine.args, 
-  BlogCardStory_GeorgianWine.args, 
-  BlogCardStory_Suppliers.args, 
-  BlogCardStory_EHandel.args,
-  BlogCardStory_Cooperation.args,
-  BlogCardStory_BrewingFeeling.args,
-  BlogCardStory_BrewInPeace.args,
-  BlogCardStory_DarkLightBeer.args,
-  BlogCardStory_Oranges.args,
-  BlogCardStory_BeerEquipment.args,
-  BlogCardStory_BeerTap.args,
-]
 
 const oneCardList = [
   BlogCardStoryFullWidth.args
 ]
 
-const whySpendrupsList = [
+const twoCardList = [
   BlogCardStory_AmericanBeer.args, 
   BlogCardStory_Pang.args, 
-  BlogCardStory_SummerWine.args, 
-  BlogCardStory_GeorgianWine.args,
 ]
 
-const spendrupsCooperation = [
-  BlogCardStory_Suppliers.args, 
-  BlogCardStory_EHandel.args,
-  BlogCardStory_Cooperation.args,
-]
-
-const spendrupsBrewing = [
-  BlogCardStory_BrewingFeeling.args,
-  BlogCardStory_BrewInPeace.args,
-  BlogCardStory_DarkLightBeer.args,
+const threeCardList = [
+  BlogCardStory_AmericanBeer.args, 
+  BlogCardStory_Pang.args, 
+  BlogCardStory_Oranges.args,
 ]
 
 const spendrupsEquipment = [
@@ -87,52 +63,46 @@ const spendrupsEquipment = [
   BlogCardStory_BeerTap.args,
 ]
 
-const brandPromoPage_Blog = [
-  BlogCardStoryMariestad.args,
-  BlogCardStoryWisby.args,
-  BlogCardStoryPang.args,
-]
-
-export const BlogCardListStory_Fullwidth = {
+export const Full_Width = {
   ...BlogCardListStoryTemplate,
   args: {
     blogCards: oneCardList
   }
 }
 
-export const BlogCardListStory_VarförSpendrups = {
+export const One_Card = {
+  ...BlogCardListStoryTemplate,
+  args: {
+    blogCards: oneCardList.map(x => ({...x, fullWidth: false})),
+    stretchItems: false
+  }
+}
+
+export const Two_Cards = {
   ...BlogCardListStoryTemplate,
   args: {
     title: 'Varför Spendrups',
-    blogCards: whySpendrupsList
+    blogCards: twoCardList,
+    stretchItems: false
   }
 }
 
-export const BlogCardListStory_Samarbete = {
+export const Three_Cards = {
   ...BlogCardListStoryTemplate,
   args: {
-    blogCards: spendrupsCooperation
+    title: 'Varför Spendrups',
+    blogCards: threeCardList,
+    oddHeights: true,
+    stretchItems: false
   }
 }
 
-export const BlogCardListStory_Brewing = {
+export const Four_Cards = {
   ...BlogCardListStoryTemplate,
   args: {
-    blogCards: spendrupsBrewing
+    blogCards: spendrupsEquipment,
+    swipe: false,
+    stretchItems: false
   }
 }
 
-export const BlogCardListStory_Equipmemt = {
-  ...BlogCardListStoryTemplate,
-  args: {
-    blogCards: spendrupsEquipment
-  }
-}
-
-export const BlogCardListStory_Likande_Varumarken = {
-  ...BlogCardListStoryTemplate,
-  args: {
-    title: 'Likande varumärken',
-    blogCards: brandPromoPage_Blog
-  }
-}

@@ -33,18 +33,7 @@
         margin-top: auto;
         flex: 1;
 
-        & > div {
-          & > div:first-of-type {
-            &:before {
-              display: block;
-              content: "";
-              padding-top: calc((6 / 5) * 100%);
-              padding-bottom: 0;
-            }
-          }
-        }
-        
-        &:nth-child(3n + 2) {
+        &.odd {
           & > div {
             & > div {
               &:before {
@@ -53,30 +42,6 @@
             }
           }
         }
-      }
-    }
-  
-    &.maxColumnsFour {
-      flex: 1 0 100%;
-      width: 100%;
-
-      & > div {
-        & > div:first-of-type {
-          &:before {
-            display: block;
-            content: "";
-            padding-top: calc((6 / 5) * 100%);
-            padding-bottom: 0;
-          }
-        }
-      }
-
-      @media (min-width: 48em) {
-        flex: 1 1 calc(50% - 1rem);
-      }
-      
-      @media (min-width: 64em) {
-        flex: 1;
       }
     }
   }

@@ -17,7 +17,11 @@
         background-color: var(--cta-primary-default);
         opacity: 1;
       }
-    }  
+    }
+
+    & li:focus-visible {
+      outline: none;
+    }
   }
 
   & .arrow {
@@ -39,6 +43,16 @@
 
       &.right {
         right: 0;
+      }
+    }
+    
+    &.hasPadding {
+      &.left {
+        left: 1rem;
+      }
+
+      &.right {
+        right: 1rem;
       }
     }
 
@@ -88,7 +102,6 @@
 
     &:focus {
       outline: none;
-
     }
 
     &:disabled {

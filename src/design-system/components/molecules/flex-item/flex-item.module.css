@@ -1,0 +1,11 @@
+.flexItem {
+  flex: var(--flex-sm);
+
+  @media (min-width: 48em) {
+    flex: var(--flex-md);
+  }
+
+  @media (min-width: 64em) {
+    flex: var(--flex-lg);
+  }
+}
