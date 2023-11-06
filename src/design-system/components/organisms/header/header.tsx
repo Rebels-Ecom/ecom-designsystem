@@ -4,6 +4,7 @@ import { Above, Below, ContentWrapper, FlexContainer } from '../../layouts'
 export interface IHeader {
   salesTool?: JSX.Element // TODO: Create sales tool component
   topNavBar?: JSX.Element
+  deliveryInfoBar?: JSX.Element
   logo?: JSX.Element
   mobileSearchBar?: JSX.Element
   mobileActions?: JSX.Element
@@ -17,6 +18,7 @@ export interface IHeader {
 const Header = ({
   salesTool,
   topNavBar,
+  deliveryInfoBar,
   logo,
   mobileSearchBar,
   mobileActions,
@@ -30,6 +32,7 @@ const Header = ({
     <>
       {salesTool && salesTool}
       {topNavBar && topNavBar}
+      {deliveryInfoBar && deliveryInfoBar}
       <header className={styles.header}>
         {(logo || mobileSearchBar || mobileActions || mobileNavigation || desktopSearchBar || desktopActions || desktopNavigation) && (
           <>

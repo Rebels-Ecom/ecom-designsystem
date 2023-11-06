@@ -56,3 +56,4 @@ export { MobileNavigation } from './navigation/mobile-navigation/mobile-navigati
 export { DesktopNavigation } from './navigation/desktop-navigation/desktop-navigation'
 export { Form } from './form/form'
 export { Table } from './table/table'
+export { DeliveryInfoBar } from './delivery-info-bar/delivery-info-bar'

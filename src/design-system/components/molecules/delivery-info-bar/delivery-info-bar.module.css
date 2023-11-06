@@ -1,0 +1,32 @@
+.deliveryInfoBar {
+    position: relative;
+    & button {
+        border: none;
+        background: none;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+        padding: 0.75rem 0;
+
+        &:hover .icon, &:hover .text{
+            color: var(--color-text-orange);
+        }
+
+        & .text {
+            text-align: center;
+            color: var(--color-text-default);
+            font-size: 1rem;
+            font-family: var(--font-family-secondary);
+        }
+
+        & .icon {
+            font-size: 1.5rem;
+            color: var(--color-text-default);
+        }
+    }
+}
+  
+  
