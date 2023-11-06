@@ -18,7 +18,6 @@ export interface IBlogCard {
   maxChar?: number;
 }
 
-
 const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxChar }: IBlogCard) => {
   const extractContent = (s: string) => {
     if (typeof document === 'undefined') return;
@@ -37,9 +36,9 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
   const trimmedText = maxChar && (extractedRichTextValue?.length ?? 0) > maxChar ? extractedRichTextValue?.substring(0, maxChar).concat('...') : extractedRichTextValue;
 
   return (
-    <div className={cx(styles.blogCard, fullWidth && styles.fullWidth)}>
+    <div className={cx(styles.blogCard, {[styles.fullWidth]: fullWidth})}>
       {image && (
-        <div className={cx(styles.pictureWrapper, fullWidth && styles.smallHeight)}>
+        <div className={cx(styles.pictureWrapper, {[styles.smallHeight]: fullWidth})}>
           <Picture {...image} classNamePicture={styles.picture} classNameImg={styles.image} />
           {tags?.length && (
             <div className={styles.tags}>

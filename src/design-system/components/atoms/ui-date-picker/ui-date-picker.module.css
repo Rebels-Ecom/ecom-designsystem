@@ -1,6 +1,6 @@
 :global .react-datepicker__day-name {
     width: 3rem;
-    @media(min-width: 64rem){
+    @media(min-width: 48em){
         width: 4.3rem;
     }
 }
@@ -42,7 +42,7 @@
     font-weight: bold;
     width: 3rem;
     height:3rem;
-    @media(min-width: 64rem){
+    @media(min-width: 48rem){
         width: 4.3rem;
         height: 4.3rem;
     }
@@ -106,7 +106,7 @@
       margin-right: 0;
     }
 
-    @media (min-width: 64rem) {
+    @media (min-width: 48em) {
         display: block;
         margin-right: 1.5rem;
     }
@@ -117,7 +117,7 @@
     background: var(--light-orange-background);
     border-radius: 0;
     width: 100%;
-    @media (min-width: 64rem) {
+    @media (min-width: 48em) {
         display: block;
         width: max-content;
         background: #ffffff;
@@ -145,7 +145,7 @@
 }
 
 .iconText{
-    @media (min-width: 64rem) {
+    @media (min-width: 48em) {
         display: none;
     }
 }
