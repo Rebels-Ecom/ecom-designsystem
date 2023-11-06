@@ -12,6 +12,8 @@ import { BlogCard, FeaturedProducts, Hero } from '../../molecules'
 import { RichText } from '../../organisms/rich-text/rich-text'
 import { BlogCardList } from '../../organisms/blog-card-list/blog-card-list'
 import { Footer } from '../../organisms/footer/footer'
+import { BrandDetails } from '../../organisms'
+import { BrandDetailsStory } from '../../organisms/brand-details/brand-details.stories'
 
 const meta: Meta = {
   title: 'Design System/Templates/BrandPage',
@@ -32,28 +34,11 @@ const BrandPageStoryTemplate = {
       <>
         {args.header()}
         <ContentWrapper>
+          <BrandDetails {...BrandDetailsStory.args} />
           {args.hero && <Hero {...args.hero} />}
-          {args.blogFullwidth &&
-            <BlogCard {...args.blogFullwidth} />
-          }
           {args.featuredProducts1 &&
             <MaxWidth contentMaxWidth={'narrow'}>
               <FeaturedProducts {...args.featuredProducts1} />
-            </MaxWidth>
-          }
-          {args.featuredProducts2 &&
-            <MaxWidth contentMaxWidth={'narrow'}>
-              <FeaturedProducts {...args.featuredProducts2} />
-            </MaxWidth>
-          }
-          {args.richText &&
-            <MaxWidth contentMaxWidth={'wide'}>
-              <RichText {...args.richText} />
-            </MaxWidth>
-          }
-          {args.blogList &&
-            <MaxWidth contentMaxWidth={'wide'}>
-              <BlogCardList {...args.blogList} />
             </MaxWidth>
           }
         </ContentWrapper>
@@ -67,12 +52,7 @@ export const BrandPageTemplateStory = {
   ...BrandPageStoryTemplate,
   args: {
     header: Standard_Header.render,
-    hero: HeroStoryPistonhead.args,
-    blogFullwidth: BlogCardStoryPistonhead.args,
     featuredProducts1: FeaturedProductsStory_PromoBrands1.args,
-    featuredProducts2: FeaturedProductsStory_PromoBrands2.args,
-    richText: RichTextStory.args,
-    blogList: BlogCardListStory_Likande_Varumarken.args,
     footer: FooterStory.args,
   },
 }
