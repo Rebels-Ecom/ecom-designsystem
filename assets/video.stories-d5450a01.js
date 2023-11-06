@@ -1,9 +1,0 @@
-import{r as s}from"./index-6f814c40.js";import{c}from"./index-74f03c09.js";import{j as m,F as y,a as t}from"./jsx-runtime-76c5c2e2.js";const _="_video_17lz7_1",g="_opacityLayer_17lz7_9",f="_withLightBackground_17lz7_16",h="_withDarkBackground_17lz7_20",a={video:_,opacityLayer:g,withLightBackground:f,withDarkBackground:h},i=({videoUrl:o,videoWithOpacity:n,className:d})=>{const e=s.useRef(null);return s.useEffect(()=>{e.current&&(e.current.autoplay=!0,e.current.defaultMuted=!0,e.current.muted=!0,e.current.loop=!0)},[e]),m(y,{children:[t("video",{ref:e,playsInline:!0,className:c(a.video,d&&d),children:t("source",{src:o,type:"video/mp4"})}),n&&t("div",{className:c(a.opacityLayer,n==="light"?a.withLightBackground:a.withDarkBackground)})]})};try{i.displayName="Video",i.__docgenInfo={description:"",displayName:"Video",props:{videoUrl:{defaultValue:null,description:"",name:"videoUrl",required:!0,type:{name:"string"}},videoWithOpacity:{defaultValue:null,description:"",name:"videoWithOpacity",required:!1,type:{name:"string"}},className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}const v=""+new URL("beerVideo-fb3d840b.mp4",import.meta.url).href,V={title:"Design System/Atoms/Video",component:i},k={render:({...o})=>t("div",{style:{margin:"1rem"},children:t(i,{...o})})},r={...k,args:{id:"videoOne",videoUrl:v,alt:"Video beer taps"}};var l,u,p;r.parameters={...r.parameters,docs:{...(l=r.parameters)==null?void 0:l.docs,source:{originalSource:`{
-  ...VideoStoryTemplate,
-  args: {
-    id: 'videoOne',
-    videoUrl: beerVideo,
-    alt: 'Video beer taps'
-  }
-}`,...(p=(u=r.parameters)==null?void 0:u.docs)==null?void 0:p.source}}};const b=["VideoStory"],S=Object.freeze(Object.defineProperty({__proto__:null,VideoStory:r,__namedExportsOrder:b,default:V},Symbol.toStringTag,{value:"Module"}));export{i as V,r as a,S as v};
-//# sourceMappingURL=video.stories-d5450a01.js.map
