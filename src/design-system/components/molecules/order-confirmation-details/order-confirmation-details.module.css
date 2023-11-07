@@ -6,10 +6,31 @@
     @media(min-width: 48rem){
         padding: 0.5rem 3rem;
     }
+    &.padding-sm {
+        @media(min-width: 48rem){
+            padding: 0.5rem 1rem;
+        }
+    }
+    &.padding-md {
+        @media(min-width: 48rem){
+            padding: 0.5rem 3rem;
+        }
+    }
+    &.padding-lg {
+        @media(min-width: 48rem){
+            padding: 0.5rem 4rem;
+        }
+    }
 }
 
 .withBackground {
     background: linear-gradient(0deg, #FFFDF8, #FFFDF8), #003E51;
+    /*background: #FFF9E8;*/
+}
+
+.withBorder {
+    border: solid 0.063rem var(--border-grey);
+    border-radius: 0.25rem
 }
 
 .detailItem {
