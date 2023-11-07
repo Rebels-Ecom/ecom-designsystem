@@ -19,6 +19,7 @@
     margin: 0 0 0.5rem 0;
     font-weight: 700;
     display: flex;
+    word-break: break-all;
 }
 
 .box {
