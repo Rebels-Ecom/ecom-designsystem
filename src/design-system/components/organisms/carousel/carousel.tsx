@@ -28,13 +28,13 @@ const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArr
         breakpoints: {
           1024: {
             perPage: breakpoints?.lg?.perPage ?? 4,
-            perMove: breakpoints?.lg?.perMove ?? 1,
+            perMove: breakpoints?.lg?.perMove ?? 4,
             arrows: !!!breakpoints?.lg?.hideArrows,
             focus: breakpoints?.lg?.dotPerItem ? 0 : undefined
           },
           768: {
             perPage: breakpoints?.md?.perPage ?? 2,
-            perMove: breakpoints?.md?.perMove ?? 1,
+            perMove: breakpoints?.md?.perMove ?? 2,
             arrows: !!!breakpoints?.md?.hideArrows,
             focus: breakpoints?.md?.dotPerItem ? 0 : undefined
             

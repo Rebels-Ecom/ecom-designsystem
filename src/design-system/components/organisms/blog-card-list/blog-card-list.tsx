@@ -38,7 +38,7 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
         <BlogCard
           {...card}
           fullWidth={card.fullWidth}
-          maxChar={160}
+          maxChar={200}
         />
       </motion.div>
     )

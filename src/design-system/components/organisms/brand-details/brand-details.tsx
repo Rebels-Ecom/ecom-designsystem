@@ -1,8 +1,6 @@
 import { RichTextProps } from "../../../../types/other";
 import { Heading, Picture, Text, UILink } from "../../atoms"
-import { ITag } from "../../atoms/tag/tag";
 import { FlexContainer, MaxWidth } from "../../layouts"
-import { TagsList } from "../../molecules"
 
 type TWithRichText = {
   richText: React.FC<RichTextProps>;
@@ -21,7 +19,6 @@ type TSharedBrandDetails = {
     mobileUrl?: string;
     alt?: string;
   }
-  tags?: ITag[];
   link?: {
     url: string;
     text: string;
@@ -30,7 +27,7 @@ type TSharedBrandDetails = {
 
 export type TBrandDetails = TSharedBrandDetails & (TWithRichText | TWithText)
 
-const BrandDetails = ({ title, image, tags, link, ...props }: TBrandDetails) => {
+const BrandDetails = ({ title, image, link, ...props }: TBrandDetails) => {
   return (
     <FlexContainer flexDirection='column' alignItems='center'>
       <Picture
@@ -43,8 +40,6 @@ const BrandDetails = ({ title, image, tags, link, ...props }: TBrandDetails) => 
           { srcset: `${image.url}`, media: `(min-width: 768px)` },
         ]}
       />
-
-      {tags?.length && <TagsList tagsList={tags} />}
 
       <Heading order={3} margin={[0, 0, 0.5]}>{title}</Heading>
 
