@@ -1,5 +1,5 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Icon } from './icon'
 
 const icons = [
@@ -16,7 +16,8 @@ const icons = [
   'icon-award',
   'icon-package',
   'icon-users',
-  'icon-clipboard'
+  'icon-clipboard',
+  'icon-share-2',
 ]
 
 const meta: Meta<typeof Icon> = {
@@ -28,18 +29,18 @@ const meta: Meta<typeof Icon> = {
       control: { type: 'radio' },
     },
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof Icon>;
+export default meta
+type Story = StoryObj<typeof Icon>
 
 const IconStoryTemplate: Story = {
-  render: ({ ...args }) => (<Icon {...args} />)
-};
+  render: ({ ...args }) => <Icon {...args} />,
+}
 
 export const IconStory = {
   ...IconStoryTemplate,
   args: {
     icon: 'icon-map-pin',
-  }
+  },
 }

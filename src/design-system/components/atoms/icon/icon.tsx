@@ -48,6 +48,7 @@ export type TIcon =
   | 'icon-trash-2'
   | 'icon-edit'
   | 'icon-truck'
+  | 'icon-share-2'
 
 export interface IIcon {
   icon: TIcon

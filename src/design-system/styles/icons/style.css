@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('fonts/icomoon.woff?j410ba') format('woff');
+  src: url('fonts/icomoon.woff?f38clb') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -287,6 +287,9 @@
 }
 .icon-share:before {
   content: "\e953";
+}
+.icon-share-2:before {
+  content: "\e97a";
 }
 .icon-shopping-cart:before {
   content: "\e954";
