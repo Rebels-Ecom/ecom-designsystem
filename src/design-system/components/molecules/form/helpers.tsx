@@ -1,11 +1,13 @@
 import { TFormInputType, TPattern } from "./types";
 
-export const validatePattern = (pattern: TPattern, val?: string) => {
+export const validatePattern = (pattern: TPattern, val?: string, regex?: string) => {
   switch(pattern) {
     case 'email':
-      return val && isEmail(val)
+      return val && isEmail(val);
     case 'password':
-      return val && isPassword(val)
+      return val && isPassword(val);
+    // case 'regex':
+    //   return val && regex && new RegExp(regex, val);
     default:
       // TODO: add all patterns
       return true;
@@ -28,6 +30,7 @@ export const validateField = (field: TFormInputType) => {
 
 export const isEmail = (val?: string) => {
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  // const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,17}$/;
 
   return val && emailRegex.test(val);
 }

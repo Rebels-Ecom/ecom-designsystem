@@ -6,12 +6,12 @@ export type TFormSelectItem = {
   value: string;
 };
 
-export type TPattern = 'email' | 'phone' | 'password';
+export type TPattern = 'email' | 'phone' | 'password' | 'regex';
 
 export type TFormInputType = Omit<IInputField, "onChange" | "value"> &
   {
     /** decides what type of form field to render and what value types to use */
-    fieldType: 'input';
+    fieldType: 'input' | 'textarea';
     /** prefilled default value used to compare with the state controlled value in order to detect changes to the form */
     originalValue: string;
     /** value is a form template controlled property updated by internal form template state */
