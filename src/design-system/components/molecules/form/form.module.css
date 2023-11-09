@@ -32,6 +32,10 @@
       cursor: crosshair;
       color: var(--grey-700);
     }
+
+    &:after {
+      content: none;
+    }
   }
 
   & .generalErrorMessage {
