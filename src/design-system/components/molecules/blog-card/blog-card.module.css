@@ -31,7 +31,7 @@
         &.smallHeight {
             &:before {
                 @media (min-width: 48em) {
-                    padding-top: calc((6 / 16) * 100%);
+                    padding-top: calc((4 / 18) * 100%);
                 }
             }
         }
