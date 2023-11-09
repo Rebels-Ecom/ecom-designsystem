@@ -51,7 +51,7 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
         flex={card.fullWidth ?
           { lg: '1' } :
           {
-            sm: `${flexValues} auto`,
+            sm: `${flexValues} 100%`,
             md: `${flexValues} calc(33% - 1rem)`,
             lg: `${flexValues} calc(25% - 1rem)`
           }

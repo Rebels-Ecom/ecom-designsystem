@@ -25,12 +25,7 @@
         &:before {
             display: block;
             content: "";
-            padding-top: 100%;
-            padding-bottom: 0;
-            
-            @media (min-width: 48em) {
-                padding-top: calc((6 / 5) * 100%);
-            }
+            padding-top: calc((6 / 5) * 100%);
         }
     
         &.smallHeight {
