@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { LoginForm } from './login-form'
+import { ILoginForm, LoginForm } from './login-form'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 
@@ -13,9 +13,9 @@ export default meta
 type Story = StoryObj<typeof LoginForm>
 
 const LoginFormStoryTemplate: Story = {
-  render: ({ ...args }) => (
+  render: ({ ...args }: ILoginForm & { success?: boolean } ) => (
     <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-      <LoginForm {...args} success={args.success} loading={args.loading} />
+      <LoginForm {...args} responseMessage={ args.success ? { title: 'Success!', message: 'Success message...'} : undefined} loading={args.loading} />
     </div>
   ),
 }

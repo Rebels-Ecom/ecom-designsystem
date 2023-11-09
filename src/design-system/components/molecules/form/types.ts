@@ -1,4 +1,5 @@
 import { IButton } from "../../atoms/button/button";
+import { TIcon } from "../../atoms/icon/icon";
 import { IInputField } from "./components/input-field";
 
 export type TFormSelectItem = {
@@ -108,5 +109,9 @@ export type IFormTemplateProps = {
   alignSubmitButtonHorizontally?: boolean
   generalErrorMessage?: any;
   /** If true, a check will be displayed */
-  success?: boolean;
+  responseMessage?: {
+    icon?: TIcon;
+    title?: string;
+    message: string;
+  }
 };

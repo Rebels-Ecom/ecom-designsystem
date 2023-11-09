@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Button, ExpandableWrapper, Heading, Icon, Loader } from '../../atoms';
+import { motion } from 'framer-motion';
+import { Button, ExpandableWrapper, Heading, Icon, Text } from '../../atoms';
 import styles from './form.module.css';
 import { FlexContainer } from '../../layouts';
 import { IFormTemplateProps, TFormFieldType } from './types';
@@ -8,7 +8,7 @@ import { InputField } from './components/input-field';
 import { validateField } from './helpers';
 import cx from 'classnames';
 
-const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, success, ...props }: IFormTemplateProps) => {
+const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, responseMessage, ...props }: IFormTemplateProps) => {
   const [fields, setFields] = useState<Array<TFormFieldType>>(props.fields)
   const [isValid, setIsValid] = useState(false)
 
@@ -57,13 +57,16 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     })
   }, [])
 
-  return success ? (
-    <div className={styles.loaderContainer}>
-      <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: success ? 1 : 0, scale: success ? 1 : 0.2  }}>
-        <Icon icon='icon-check' className={styles.successIcon} />
-      </motion.div>
-    </div>
-    ) : (
+  // TODO: extract success message to separate component
+  return responseMessage ? (
+    <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2  }}>
+      <div className={styles.loaderContainer}>
+        <Icon icon={responseMessage.icon ?? 'icon-check'} className={styles.successIcon} />
+        {responseMessage.title && <Heading order={3} noMargin>{responseMessage.title}</Heading>}
+        <Text align='center'>{responseMessage.message}</Text>
+      </div>
+    </motion.div>
+  ) : (
     <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit}>
       <div>
         {formTitle && (

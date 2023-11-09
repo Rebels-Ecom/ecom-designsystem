@@ -3,7 +3,7 @@ import { Form } from '../../molecules'
 import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
-import { TFormFieldType } from '../../molecules/form/types'
+import { IFormTemplateProps, TFormFieldType } from '../../molecules/form/types'
 import styles from './reset-password-form.module.css'
 
 type ILink = {
@@ -11,18 +11,17 @@ type ILink = {
   href: string;
 }
 
-export interface ILoginForm {
+export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> {
   title: string;
   description?: string;
-  usernameLabel: string;
-  username?: string;
+  fieldLabel: string;
+  fieldName?: string;
   primarySubmitLabel: string;
-  errorMessage?: any;
-  usernameError?: string;
+  fieldError?: string;
+  generalError?: string;
   onSubmit: (data: TFormFieldType[]) => void;
   loading?: boolean;
   logo: TLogotype;
-  success?: boolean;
   becomeClient?: {
     name: string;
     link: string;
@@ -32,15 +31,15 @@ export interface ILoginForm {
 const ResetPasswordForm = ({
   title,
   description,
-  usernameLabel,
-  username,
+  fieldLabel,
+  fieldName,
   onSubmit,
   primarySubmitLabel,
-  errorMessage,
-  usernameError,
+  generalError,
+  fieldError,
   loading,
   logo,
-  success,
+  responseMessage,
   becomeClient
 }: ILoginForm) => {
   const actions: IButton[] = useMemo(() => {
@@ -69,12 +68,12 @@ const ResetPasswordForm = ({
   const fields: TFormFieldType[] = useMemo(() => [{
     fieldType: 'input',
     name: 'email',
-    label: usernameLabel,
-    originalValue: username ?? '',
+    label: fieldLabel,
+    originalValue: fieldName ?? '',
     type: 'text',
     pattern: 'email',
     required: true,
-    error: usernameError ?? 'Ange en korrekt e-post e.g. mail@mail.com', // TODO: store backup copy somewhere?
+    error: fieldError ?? 'Ange en korrekt e-post e.g. mail@mail.com', // TODO: store backup copy somewhere?
     size: 'full'
   }], [])
 
@@ -88,8 +87,8 @@ const ResetPasswordForm = ({
         loading={!!loading}
         onSubmit={onSubmit}
         actions={actions}
-        generalErrorMessage={errorMessage}
-        success={success}
+        generalErrorMessage={generalError}
+        responseMessage={responseMessage}
         links={links}
       />
     </div>

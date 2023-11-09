@@ -4,14 +4,14 @@ import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 import { useMemo } from 'react'
 import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
-import { TFormFieldType } from '../../molecules/form/types'
+import { IFormTemplateProps, TFormFieldType } from '../../molecules/form/types'
 
 type ILink = {
   name: string;
   href: string;
 }
 
-export interface ILoginForm {
+export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> {
   title: string;
   description?: string;
   usernameLabel: string;
@@ -36,7 +36,6 @@ export interface ILoginForm {
   onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading?: boolean;
   logo: TLogotype;
-  success?: boolean;
 }
 
 const LoginForm = ({
@@ -58,7 +57,7 @@ const LoginForm = ({
   onUsernameChange,
   loading,
   logo,
-  success
+  responseMessage
 }: ILoginForm) => {
   const actions: IButton[] = useMemo(() => {
     const x: IButton[] = [{
@@ -131,7 +130,7 @@ const LoginForm = ({
         actions={actions}
         generalErrorMessage={errorMessage}
         links={links}
-        success={success}
+        responseMessage={responseMessage}
       />
     </div>
   )
