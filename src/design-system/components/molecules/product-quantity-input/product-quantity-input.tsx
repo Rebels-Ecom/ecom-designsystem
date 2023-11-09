@@ -40,7 +40,7 @@ const ProductQuantityInput = ({
                 min='0'
                 other={{
                     onKeyDown: (e: React.KeyboardEvent) => {
-                        const illegalChars = ['-', '+', '.', ',']
+                        const illegalChars = ['-', '+', '.', ',', 'e', 'E']
                         if (illegalChars.find(p => p === e.key)) {
                             e.preventDefault()
                         }

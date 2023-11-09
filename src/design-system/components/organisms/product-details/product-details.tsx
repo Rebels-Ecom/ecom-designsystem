@@ -59,7 +59,7 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
     const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
 
     function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
-        const quantity = parseInt(e.target.value) || 1;
+        const quantity = parseInt(e.target.value);
         setProduct({
             ...product, 
             quantity:quantity.toString(),
@@ -165,7 +165,14 @@ const ProductDetails = ({ productId, productName, productImageUrl, packaging, pr
                         quantityInputId = {product.productId}
                         onChange={handleOnChangeQuantity}
                     />
-                    <Button {...addToCartButton} className={styles.btn} size='large' onClick={()=>addToCart(product)}>Lägg i kundvagn</Button>
+                    {/* TODO: clean up, and let props control this more */}
+                    <Button
+                        {...addToCartButton}
+                        className={styles.btn}
+                        size='large'
+                        onClick={()=>addToCart(product)}
+                        disabled={product.quantity === '0'}
+                    >Lägg i kundvagn</Button>
                 </div>
                 
             </div>

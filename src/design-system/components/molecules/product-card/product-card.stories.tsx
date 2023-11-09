@@ -77,7 +77,6 @@ export const ProductCardStory: Story = {
   args: {
     cardDisplay: 'vertical',
     product: productWineArgs,
-    defaultQuantity: '',
     addToCart: () => {},
     addToCartButton: {
       children: 'Lägg till',
@@ -148,7 +147,6 @@ export const ProductCardStory_Horizontal: Story = {
   args: {
     cardDisplay: 'horizontal',
     product: productNoVariantsArgs,
-    defaultQuantity: '',
     addToCart: () => {},
     addToCartButton: {
       children: 'Lägg till',
