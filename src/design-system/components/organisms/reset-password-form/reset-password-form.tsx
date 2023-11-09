@@ -1,10 +1,10 @@
-import styles from './login-form.module.css'
+import { useMemo } from 'react'
 import { Form } from '../../molecules'
 import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
-import { useMemo } from 'react'
 import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
 import { TFormFieldType } from '../../molecules/form/types'
+import styles from './reset-password-form.module.css'
 
 type ILink = {
   name: string;
@@ -16,49 +16,32 @@ export interface ILoginForm {
   description?: string;
   usernameLabel: string;
   username?: string;
-  passwordLabel: string;
-  password?: string;
-  forgotPassword: {
-    name: string;
-    href: string;
-  };
   primarySubmitLabel: string;
-  secondarySubmitLabel?: string;
-  offerLink?: {
-    name: string;
-    href: string;
-  };
   errorMessage?: any;
   usernameError?: string;
-  passwordError?: string;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (data: TFormFieldType[]) => void;
   loading?: boolean;
   logo: TLogotype;
   success?: boolean;
+  becomeClient?: {
+    name: string;
+    link: string;
+  }
 }
 
-const LoginForm = ({
+const ResetPasswordForm = ({
   title,
   description,
   usernameLabel,
   username,
-  passwordLabel,
-  password,
-  forgotPassword,
   onSubmit,
   primarySubmitLabel,
-  secondarySubmitLabel,
-  offerLink,
   errorMessage,
   usernameError,
-  passwordError,
-  onPasswordChange,
-  onUsernameChange,
   loading,
   logo,
-  success
+  success,
+  becomeClient
 }: ILoginForm) => {
   const actions: IButton[] = useMemo(() => {
     const x: IButton[] = [{
@@ -68,31 +51,20 @@ const LoginForm = ({
       size: 'small'
     }];
 
-    if (secondarySubmitLabel) {
-      x.push({
-        children: secondarySubmitLabel,
-        surface: 'secondary',
-        type: 'button',
-        size: 'small'
-      })
-    }
-
     return x;
-  }, [primarySubmitLabel, secondarySubmitLabel])
+  }, [primarySubmitLabel])
 
   const links: ILink[] = useMemo(() => {
     const x: ILink[] = [];
     
-    if (forgotPassword) {
-      x.push(forgotPassword)
+    if (becomeClient) {
+      x.push({
+        name: becomeClient.name,
+        href: becomeClient.link
+      })
     }
-
-    if (offerLink) {
-      x.push(offerLink)
-    }
-
     return x;
-  }, [forgotPassword, offerLink])
+  }, [becomeClient])
 
   const fields: TFormFieldType[] = useMemo(() => [{
     fieldType: 'input',
@@ -101,40 +73,27 @@ const LoginForm = ({
     originalValue: username ?? '',
     type: 'text',
     pattern: 'email',
-    onControlledChange: onUsernameChange,
     required: true,
     error: usernameError ?? 'Ange en korrekt e-post e.g. mail@mail.com', // TODO: store backup copy somewhere?
-    size: 'full'
-  }, {
-    fieldType: 'input',
-    name: 'password',
-    label: passwordLabel,
-    originalValue: password ?? '',
-    type: 'password',
-    pattern: 'password',
-    onControlledChange: onPasswordChange,
-    required: true,
-    error: passwordError ?? 'Lösenord måste vara minst x tecken...', // TODO: store backup copy somewhere?
     size: 'full'
   }], [])
 
   return (
-    <div className={styles.loginForm}>
+    <div className={styles.resetPasswordForm}>
       {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
       <Form
         formTitle={title}
         formSubtitle={description}
-        fields={fields.map(field => {
-          return ({...field, valid: validateField(field)})})}
+        fields={fields.map(field => ({...field, valid: validateField(field)}))}
         loading={!!loading}
-        onControlledSubmit={onSubmit}
+        onSubmit={onSubmit}
         actions={actions}
         generalErrorMessage={errorMessage}
-        links={links}
         success={success}
+        links={links}
       />
     </div>
   )
 }
 
-export { LoginForm }
+export { ResetPasswordForm }

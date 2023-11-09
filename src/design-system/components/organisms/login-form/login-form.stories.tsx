@@ -29,10 +29,16 @@ export const LoginFormStory = {
     username: 'John@doe.se',
     passwordLabel: 'Lösenord',
     password: 'lösenord123',
-    forgotPasswordLabel: 'Glömt mitt lösenord?',
+    forgotPassword: {
+      name: 'Glömt mitt lösenord?',
+      href: '#'
+    },
     primarySubmitLabel: 'Logga in',
     secondarySubmitLabel: 'Bli e-handelskund',
-    offerLinkLabel: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
+    offerLink: {
+      name: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
+      href: '#'
+    },
     onSubmit: (e) => {},
     onPasswordChange: (e) => {},
     onUsernameChange: (e) => {},
