@@ -1,13 +1,15 @@
 import styles from './login-form.module.css'
-import cx from 'classnames'
-import { Form, FormGroup } from '../../molecules'
-import { Button, Icon, InputText, Loader, UILink } from '../../atoms'
-import { LoadingOverlay } from '../../molecules/loading-overlay/loading-overlay'
+import { Form } from '../../molecules'
 import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 import { useMemo } from 'react'
-import { IButton, TButtonType } from '../../atoms/button/button'
+import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
 import { TFormFieldType } from '../../molecules/form/types'
+
+type ILink = {
+  name: string;
+  href: string;
+}
 
 export interface ILoginForm {
   title: string;
@@ -28,6 +30,7 @@ export interface ILoginForm {
   onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading?: boolean;
   logo: TLogotype;
+  success?: boolean;
 }
 
 const LoginForm = ({
@@ -48,7 +51,8 @@ const LoginForm = ({
   onPasswordChange,
   onUsernameChange,
   loading,
-  logo
+  logo,
+  success
 }: ILoginForm) => {
   const actions: IButton[] = useMemo(() => {
     const x: IButton[] = [{
@@ -68,7 +72,27 @@ const LoginForm = ({
     }
 
     return x;
-  }, [secondarySubmitLabel])
+  }, [primarySubmitLabel, secondarySubmitLabel])
+
+  const links: ILink[] = useMemo(() => {
+    const x: ILink[] = [];
+    
+    if (forgotPasswordLabel) {
+      x.push({
+        name: forgotPasswordLabel,
+        href: '#'
+      })
+    }
+
+    if (offerLinkLabel) {
+      x.push({
+        name: offerLinkLabel,
+        href: '#'
+      })
+    }
+
+    return x;
+  }, [forgotPasswordLabel, offerLinkLabel])
 
   const fields: TFormFieldType[] = useMemo(() => [{
     fieldType: 'input',
@@ -94,8 +118,7 @@ const LoginForm = ({
     size: 'full'
   }], [])
 
-  // TODO: remove second part of ternary when tested properly
-  return 1 > 0 ? (
+  return (
     <div className={styles.loginForm}>
       {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
       <Form
@@ -107,38 +130,10 @@ const LoginForm = ({
         onControlledSubmit={onSubmit}
         actions={actions}
         generalErrorMessage={errorMessage}
-        links={forgotPasswordLabel ? [{ name: forgotPasswordLabel, href: '#' }] : undefined}
+        links={links}
+        success={success}
       />
     </div>
-  ) : (
-    <form className={styles.loginForm} onSubmit={onSubmit}>
-      {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
-      {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
-      <h1 className="h3">{title}</h1>
-      {description && <p>{description}</p>}
-      <FormGroup label={usernameLabel} formElementId="email" errorText={usernameError}>
-        <InputText id="email" value={username} autocomplete="username" onChange={onUsernameChange} />
-      </FormGroup>
-      <FormGroup label={passwordLabel} formElementId="password" errorText={passwordError}>
-        <InputText id="password" type="password" autocomplete="current-password" value={password} onChange={onPasswordChange} />
-      </FormGroup>
-      <UILink onSurface="transparent" size="default" href="#">
-        {forgotPasswordLabel}
-      </UILink>
-      <Button type="submit" surface="primary" size="small" fullWidth>
-        {primarySubmitLabel}
-      </Button>
-      {secondarySubmitLabel && (
-        <Button type="submit" surface="secondary" size="small" fullWidth>
-          {secondarySubmitLabel}
-        </Button>
-      )}
-      {offerLinkLabel && (
-        <UILink onSurface="transparent" size="default" href="#">
-          {offerLinkLabel}
-        </UILink>
-      )}
-    </form>
   )
 }
 

@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, ExpandableWrapper, Heading, Text } from '../../atoms'
-import styles from './form.module.css'
-import { FlexContainer } from '../../layouts'
-import { IFormTemplateProps, TFormFieldType } from './types'
-import { InputField } from './components/input-field'
-import { validateField } from './helpers'
-import cx from 'classnames'
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Button, ExpandableWrapper, Heading, Icon, Loader } from '../../atoms';
+import styles from './form.module.css';
+import { FlexContainer } from '../../layouts';
+import { IFormTemplateProps, TFormFieldType } from './types';
+import { InputField } from './components/input-field';
+import { validateField } from './helpers';
+import cx from 'classnames';
 
-const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, ...props }: IFormTemplateProps) => {
+const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, success, ...props }: IFormTemplateProps) => {
   const [fields, setFields] = useState<Array<TFormFieldType>>(props.fields)
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [isValid, setIsValid] = useState(false)
 
   const formRef = useRef<HTMLFormElement>(null)
@@ -28,8 +28,6 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
       event.preventDefault()
       onSubmit?.(fields)
       onControlledSubmit?.(event)
-
-      setIsSubmitted(true)
     },
     [fields, onSubmit]
   )
@@ -59,7 +57,13 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     })
   }, [])
 
-  return (
+  return success ? (
+    <div className={styles.loaderContainer}>
+      <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: success ? 1 : 0, scale: success ? 1 : 0.2  }}>
+        <Icon icon='icon-check' className={styles.successIcon} />
+      </motion.div>
+    </div>
+    ) : (
     <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit}>
       <div>
         {formTitle && (
@@ -93,7 +97,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         </FlexContainer>
         <ExpandableWrapper open={!!props.generalErrorMessage}>
           <FlexContainer alignItems="center" justifyContent="center">
-            {props.generalErrorMessage && <p className={styles.generalErrorMessage} dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}></p>}
+            {props.generalErrorMessage && <p className={cx(styles.generalErrorMessage, {[styles.generalErrorMessageDisabled]: loading})} dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}></p>}
           </FlexContainer>
         </ExpandableWrapper>
       </div>
@@ -110,9 +114,9 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         </FlexContainer>
       )}
       {props.links && (
-        <FlexContainer justifyContent={props.alignActions ?? 'center'}>
+        <FlexContainer alignItems={props.alignActions ?? 'center'} flexDirection='column'>
           {props.links.map((link, i) => (
-            <a className={styles.link} key={`${link.name}-${i}`} href={link.href} target="_blank">
+            <a className={cx(styles.link, {[styles.linkDisabled]: loading})} key={`${link.name}-${i}`} href={link.href} target="_blank">
               {link.name}
             </a>
           ))}

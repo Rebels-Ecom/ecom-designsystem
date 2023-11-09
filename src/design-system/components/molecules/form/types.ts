@@ -107,4 +107,6 @@ export type IFormTemplateProps = {
   alignActions?: 'flex-start' | 'center' | 'flex-end';
   alignSubmitButtonHorizontally?: boolean
   generalErrorMessage?: any;
+  /** If true, a check will be displayed */
+  success?: boolean;
 };

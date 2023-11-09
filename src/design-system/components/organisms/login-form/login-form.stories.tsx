@@ -15,7 +15,7 @@ type Story = StoryObj<typeof LoginForm>
 const LoginFormStoryTemplate: Story = {
   render: ({ ...args }) => (
     <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-      <LoginForm {...args} />
+      <LoginForm {...args} success={args.success} loading={args.loading} />
     </div>
   ),
 }
@@ -48,7 +48,9 @@ export const LoginFormStory = {
         { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
         { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
       ],
-    }
+    },
+    success: false,
+    loading: false,
   },
 }
 
