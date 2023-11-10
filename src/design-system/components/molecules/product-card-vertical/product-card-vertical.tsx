@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, DividerLines, Loader, Placeholder, Button } from '../../atoms'
+import { Picture, DividerLines, Loader, Placeholder, Button, IconButton } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -27,7 +27,10 @@ const ProductCardVertical = ({
   defaultQuantity,
   campaign,
   disabled,
-  buttonLoading
+  buttonLoading,
+  showFavoriteIcon,
+  isFavoriteIconActive,
+  onFavoriteIconClick,
 }: IProductCard & TProductCardVertical) => {
   const {
     productId,
@@ -55,9 +58,9 @@ const ProductCardVertical = ({
     onVariantsButtonClick && onVariantsButtonClick()
   }
 
-  const style: { [key: string]: string } = ({
+  const style: { [key: string]: string } = {
     '--campaign-color': campaign?.color ?? '#FFF',
-  })
+  }
 
   if (variantsOpen && selectedVariantId) {
     return (
@@ -72,7 +75,7 @@ const ProductCardVertical = ({
     return (
       <div
         className={cx(styles.productCardVertical, className ? className : '', {
-          [styles.campaign]: campaign?.title
+          [styles.campaign]: campaign?.title,
         })}
         style={style}
       >
@@ -107,18 +110,20 @@ const ProductCardVertical = ({
             <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
           </div>
         )}
-        {changePackagingButton && <Button
-          {...changePackagingButton}
-          surface="secondary"
-          iconRight={{ icon: 'icon-layers' }}
-          rounded
-          fullWidth
-          onClick={() => handleVariantBtnClick()}
-          disabled={loading}
-          className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
-        >
-          Byt förpackning
-        </Button>}
+        {changePackagingButton && (
+          <Button
+            {...changePackagingButton}
+            surface="secondary"
+            iconRight={{ icon: 'icon-layers' }}
+            rounded
+            fullWidth
+            onClick={() => handleVariantBtnClick()}
+            disabled={loading}
+            className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
+          >
+            Byt förpackning
+          </Button>
+        )}
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'p_long'} />
@@ -136,18 +141,31 @@ const ProductCardVertical = ({
             onChange={handleOnChangeQuantity}
           />
         )}
-        {!hideCartButton &&
-          <Button
-            {...addToCartButton}
-            className={!loading ? styles.productCardBtn : ''}
-            fullWidth
-            onClick={() => addToCart(product)}
-            disabled={buttonLoading || loading || disabled}
-            loading={buttonLoading}
-          >
-            Lägg i kundvagn
-          </Button>
-        }
+        {!hideCartButton && (
+          <div className={styles.cartButtonWrapper}>
+            <Button
+              {...addToCartButton}
+              className={!loading ? styles.productCardBtn : ''}
+              fullWidth
+              onClick={() => addToCart(product)}
+              disabled={buttonLoading || loading || disabled}
+              loading={buttonLoading}
+            >
+              Lägg i kundvagn
+            </Button>
+            {showFavoriteIcon && onFavoriteIconClick && (
+              <IconButton
+                type="button"
+                icon={'icon-heart'}
+                className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
+                onClick={() => onFavoriteIconClick()}
+                size="large"
+                isTransparent
+                noBorder
+              />
+            )}
+          </div>
+        )}
       </div>
     )
   }

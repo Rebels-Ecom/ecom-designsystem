@@ -93,10 +93,12 @@ export const ProductCardVerticalStory_NoVariants = {
   },
 }
 
-export const ProductCardVerticalStory_Loading = {
+export const ProductCardVerticalStory_Favorite = {
   ...ProductCardVerticalStoryTemplate,
   args: {
-    product: productNoVariantsArgs,
-    loading: true,
+    product: productWineArgs,
+    productImage: productImage,
+    showFavoriteIcon: true,
+    isFavoriteIconActive: true,
   },
 }
