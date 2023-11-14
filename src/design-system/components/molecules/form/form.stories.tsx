@@ -20,7 +20,7 @@ const FormStoryTemplate: Story = {
   },
 };
 
-export const FormStory = {
+export const Standard_Form = {
   ...FormStoryTemplate,
   args: {
     formTitle: 'Form Title',
@@ -47,6 +47,42 @@ export const FormStory = {
       required: true,
       pattern: 'email',
       error: 'Email is required, e.g. mail@mail.com',
+    }],
+    actions: [{
+      children: 'Save',
+      surface: 'primary',
+      type: 'submit',
+    }],
+    alignActions: 'center'
+  } as IFormTemplateProps,
+};
+
+export const Compare_Two_Fields = {
+  ...FormStoryTemplate,
+  args: {
+    formTitle: 'Form Title',
+    loading: false,
+    onSubmit: () => console.log('submit'),
+    fields: [{
+      label: 'Nytt lösenord',
+      type: 'password',
+      fieldType: 'input',
+      name: 'new-password',
+      originalValue: '',
+      placeholder: '*',
+      required: true,
+      error: 'Du måste ange ett lösenord',
+      betaField: 'confirm-password',
+    }, {
+      label: 'Upprepa lösenord',
+      type: 'password',
+      fieldType: 'input',
+      name: 'confirm-password',
+      originalValue: '',
+      placeholder: '*',
+      required: true,
+      error: 'Lösenord matchar inte',
+      alphaField: 'new-password',
     }],
     actions: [{
       children: 'Save',

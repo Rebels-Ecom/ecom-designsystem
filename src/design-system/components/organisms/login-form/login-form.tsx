@@ -36,6 +36,8 @@ export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> 
   onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading?: boolean;
   logo: TLogotype;
+  captcha?: JSX.Element;
+  submitDisabled?: boolean;
 }
 
 const LoginForm = ({
@@ -57,14 +59,17 @@ const LoginForm = ({
   onUsernameChange,
   loading,
   logo,
-  responseMessage
+  responseMessage,
+  captcha,
+  submitDisabled
 }: ILoginForm) => {
   const actions: IButton[] = useMemo(() => {
     const x: IButton[] = [{
       children: primarySubmitLabel,
       surface: 'primary',
       type: 'submit',
-      size: 'small'
+      size: 'small',
+      disabled: submitDisabled
     }];
 
     if (secondarySubmitLabel) {
@@ -77,7 +82,7 @@ const LoginForm = ({
     }
 
     return x;
-  }, [primarySubmitLabel, secondarySubmitLabel])
+  }, [primarySubmitLabel, secondarySubmitLabel, submitDisabled])
 
   const links: ILink[] = useMemo(() => {
     const x: ILink[] = [];
@@ -131,6 +136,7 @@ const LoginForm = ({
         generalErrorMessage={errorMessage}
         links={links}
         responseMessage={responseMessage}
+        captcha={captcha}
       />
     </div>
   )

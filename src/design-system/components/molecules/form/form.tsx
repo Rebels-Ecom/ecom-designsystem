@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button, ExpandableWrapper, Heading, Icon, Text } from '../../atoms';
 import styles from './form.module.css';
 import { FlexContainer } from '../../layouts';
-import { IFormTemplateProps, TFormFieldType } from './types';
+import { IFormTemplateProps, TFormFieldType, TFormInputType } from './types';
 import { InputField } from './components/input-field';
 import { validateField } from './helpers';
 import cx from 'classnames';
@@ -42,6 +42,16 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     setFields((prevFields) => {
       const updatedFields = prevFields.map((field) => {
         if (field.name === fieldName) {
+          if (field.alphaField) {
+            const fieldToMatch = prevFields.find(x => x.name === field.alphaField);
+            return {
+              ...field,
+              dirty: true,
+              valid: fieldToMatch?.value === value,
+              value,
+            }
+          }
+
           return {
             ...field,
             dirty: true,
@@ -49,6 +59,14 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             value,
           }
         } else {
+          if (field.alphaField) {
+            return {
+              ...field,
+              dirty: field.dirty,
+              valid: field.value === value,
+              value: field.name === fieldName ? value : field.value,
+            }
+          }
           return field
         }
       })
@@ -61,7 +79,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
   return responseMessage ? (
     <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2  }}>
       <div className={styles.loaderContainer}>
-        <Icon icon={responseMessage.icon ?? 'icon-check'} className={styles.successIcon} />
+        {responseMessage.icon && <Icon icon={responseMessage.icon} className={styles.successIcon} />}
         {responseMessage.title && <Heading order={3} noMargin>{responseMessage.title}</Heading>}
         <Text align='center'>{responseMessage.message}</Text>
       </div>
@@ -104,13 +122,18 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
           </FlexContainer>
         </ExpandableWrapper>
       </div>
+      {props.captcha && (
+        <FlexContainer justifyContent='center' alignItems='center'>
+          {props.captcha}
+        </FlexContainer>
+      )}
       {props.actions && (
         <FlexContainer justifyContent={props.alignActions ?? 'center'}>
           {props.actions.map((action, i) => (
             <Button
               key={`${action.type}-${i}`}
               {...action}
-              disabled={action.type === 'submit' ? !isValid : loading}
+              disabled={action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading)}
               loading={action.type === 'submit' && loading}
             />
           ))}
