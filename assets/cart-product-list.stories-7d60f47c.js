@@ -1,7 +1,0 @@
-import{C as p}from"./cart-product-list-a1b9ae6a.js";import{c as i,d as m,b as n}from"./cart-product.stories-26f3c763.js";import{a as o}from"./jsx-runtime-76c5c2e2.js";import"./index-74f03c09.js";import"./index-6f814c40.js";import"./_commonjsHelpers-042e6b4d.js";import"./product-quantity-input-f910863c.js";import"./input-text-6ee421c5.js";import"./form-helper-ce65ae5e.js";import"./icon-99d60fba.js";import"./picture-helper-86177d87.js";import"./picture-097a8d40.js";import"./icon-button-603f0809.js";import"./ui-link-6f166a3e.js";import"./motion-354a1bac.js";import"./divider-lines-71f4f756.js";import"./loader-ce89f5e5.js";import"./format-helper-6b4b1091.js";import"./icon-button.stories-7a413972.js";import"./chunk-OPEUWD42-0dc0813d.js";const M={title:"Design System/Organisms/CartProductList",component:p},u=[i.args,m.args,i.args,m.args],l={render:t=>{var a;return o("div",{style:{margin:"0 auto",maxWidth:"1254px"},children:o(p,{children:(a=t==null?void 0:t.children)==null?void 0:a.map(d=>o(n,{...d,onClickRemoveProduct:()=>{}},Math.random()))})})}},r={...l,args:{children:u}};var e,s,c;r.parameters={...r.parameters,docs:{...(e=r.parameters)==null?void 0:e.docs,source:{originalSource:`{
-  ...CartProductListStoryTemplate,
-  args: {
-    children: cartProducts
-  }
-}`,...(c=(s=r.parameters)==null?void 0:s.docs)==null?void 0:c.source}}};const R=["CartProductListStory"];export{r as CartProductListStory,R as __namedExportsOrder,M as default};
-//# sourceMappingURL=cart-product-list.stories-7d60f47c.js.map
