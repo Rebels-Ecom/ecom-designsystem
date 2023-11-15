@@ -20,12 +20,14 @@ const ProductCardHorizontal = ({
   onChangeQuantity,
   productQuantityDisabled,
   linkComponent: Link,
-  className = "",
+  className = '',
   defaultQuantity,
   campaign,
   buttonLoading,
   disabled,
   border = false,
+  showAddToPurchaseListIcon,
+  onSaveToPurchaseListClick,
 }: IProductCard & TProductCardHorizontal) => {
   const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
     product
@@ -40,9 +42,9 @@ const ProductCardHorizontal = ({
     onChangeQuantity && onChangeQuantity(quantity)
   }
 
-  const style: { [key: string]: string } = ({
+  const style: { [key: string]: string } = {
     '--campaign-color': campaign?.color ?? '#FFF',
-  })
+  }
 
   return (
     <div
@@ -53,14 +55,14 @@ const ProductCardHorizontal = ({
       style={style}
     >
       {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
-      {removingProduct? (
+      {removingProduct ? (
         <Loader visible text={'Loading'} />
       ) : (
         <>
           {loading ? (
             <>
               <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
-              <Placeholder type="image" />
+                <Placeholder type="image" />
               </div>
               <div className={styles.placeholderContent}>
                 <Placeholder type={'heading'} />
@@ -72,17 +74,10 @@ const ProductCardHorizontal = ({
             </>
           ) : (
             <>
-              <Picture
-                {...productImage}
-                classNamePicture={styles.picture}
-                classNameImg={`${styles.image}`}
-                fallbackImageUrl={fallbackProductImageUrl}
-              />
+              <Picture {...productImage} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />
               <div className={styles.content}>
-                {Array.isArray(tags) && tags.length ?
-                  <TagsList tagsList={tags} /> : null
-                }
-                
+                {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+
                 {productUrl && Link ? (
                   <Link to={productUrl} href={productUrl} className={styles.mainLink}>
                     <h5 className={styles.heading}>{productName}</h5>
@@ -90,10 +85,12 @@ const ProductCardHorizontal = ({
                 ) : (
                   <h5 className={styles.heading}>{productName}</h5>
                 )}
-                
+
                 <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
-                
-                {(country !== '' || productId !== '') && <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country ?? ''}`}</p>}
+
+                {(country !== '' || productId !== '') && (
+                  <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country ?? ''}`}</p>
+                )}
 
                 <ProductQuantityInput
                   className={styles.quantityInput}
@@ -108,18 +105,24 @@ const ProductCardHorizontal = ({
               </div>
               {!hideRemoveButton && onClickRemoveProduct && (
                 <div className={styles.iconLink}>
-                  <IconButton
-                    type='button'
-                    icon='icon-x-circle'
-                    onClick={() => handleRemoveProduct(productId)}
-                    isTransparent
-                    noBorder
-                    size="large"
-                  />
+                  <IconButton type="button" icon="icon-x-circle" onClick={() => handleRemoveProduct(productId)} isTransparent noBorder size="large" />
                 </div>
               )}
               {!hideCartButton ? (
                 <div className={styles.buttonsWrapper}>
+                  {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+                    <Button
+                      {...addToCartButton}
+                      className={!loading ? styles.productCardBtn : ''}
+                      size={'x-small'}
+                      onClick={() => onSaveToPurchaseListClick()}
+                      loading={buttonLoading}
+                    >
+                      <Icon icon={'icon-file-text'} className={styles.cartBtnIcon}></Icon>
+                      {/* TODO: replace this hc copy with addToCartButton.children? */}
+                      <span className={styles.cartBtnText}>Lägg i inköpslista</span>
+                    </Button>
+                  )}
                   {/* TODO: replace this hc values with addToCartButton props? */}
                   <Button
                     {...addToCartButton}
@@ -138,8 +141,7 @@ const ProductCardHorizontal = ({
             </>
           )}
         </>
-      )
-      }
+      )}
     </div>
   )
 }

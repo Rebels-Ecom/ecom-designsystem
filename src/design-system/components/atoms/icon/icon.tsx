@@ -49,6 +49,9 @@ export type TIcon =
   | 'icon-edit'
   | 'icon-truck'
   | 'icon-share-2'
+  | 'icon-heart-o'
+  | 'icon-heart1'
+  | 'icon-file-plus'
 
 export interface IIcon {
   icon: TIcon

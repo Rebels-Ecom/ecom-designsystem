@@ -54,6 +54,8 @@ export interface IProductCard {
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
   onFavoriteIconClick?: CallableFunction
+  showAddToPurchaseListIcon?: boolean
+  onSaveToPurchaseListClick?: CallableFunction
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -80,6 +82,8 @@ function ProductCard({
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
+  showAddToPurchaseListIcon,
+  onSaveToPurchaseListClick,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -159,6 +163,8 @@ function ProductCard({
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}
+        showAddToPurchaseListIcon={showAddToPurchaseListIcon}
+        onSaveToPurchaseListClick={onSaveToPurchaseListClick}
       />
     )
   }
@@ -188,6 +194,8 @@ function ProductCard({
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}
+        showAddToPurchaseListIcon={showAddToPurchaseListIcon}
+        onSaveToPurchaseListClick={onSaveToPurchaseListClick}
       />
     )
   }

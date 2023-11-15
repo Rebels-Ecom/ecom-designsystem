@@ -125,16 +125,12 @@
     align-items: center;
   }
 
-  .favoriteIcon {
+  .favoriteIcon, .purchaseListIcon {
     margin-top:1rem;
-
-    &.isActive {
-      background: orange;
-    }
   }
 
   .favoriteIconActive {
-    color: orange;
+    color: var(--orange-500);
   }
   
   

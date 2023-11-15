@@ -31,6 +31,8 @@ const ProductCardVertical = ({
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
+  showAddToPurchaseListIcon,
+  onSaveToPurchaseListClick,
 }: IProductCard & TProductCardVertical) => {
   const {
     productId,
@@ -153,10 +155,21 @@ const ProductCardVertical = ({
             >
               Lägg i kundvagn
             </Button>
+            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+              <IconButton
+                type="button"
+                icon={'icon-file-plus'}
+                className={styles.purchaseListIcon}
+                onClick={() => onSaveToPurchaseListClick()}
+                size="large"
+                isTransparent
+                noBorder
+              />
+            )}
             {showFavoriteIcon && onFavoriteIconClick && (
               <IconButton
                 type="button"
-                icon={'icon-heart'}
+                icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
                 className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
                 onClick={() => onFavoriteIconClick()}
                 size="large"

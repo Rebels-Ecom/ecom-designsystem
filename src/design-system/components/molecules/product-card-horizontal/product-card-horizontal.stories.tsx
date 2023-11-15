@@ -136,3 +136,16 @@ export const ProductCardHorizontal_OrderConfirmation_Wine = {
     linkComponent: 'a',
   },
 }
+
+export const ProductCardHorizontal_AddToPurchaseList = {
+  ...ProductCardHorizontalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    loading: false,
+    linkComponent: 'a',
+    showAddToPurchaseListIcon: true,
+    onSaveToPurchaseListClick: () => {
+      console.log('Add to purchase list...')
+    },
+  },
+}

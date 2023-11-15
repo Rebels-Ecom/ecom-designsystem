@@ -93,12 +93,36 @@ export const ProductCardVerticalStory_NoVariants = {
   },
 }
 
-export const ProductCardVerticalStory_Favorite = {
+export const ProductCardVerticalStory_Favorite_Active = {
   ...ProductCardVerticalStoryTemplate,
   args: {
     product: productWineArgs,
     productImage: productImage,
     showFavoriteIcon: true,
     isFavoriteIconActive: true,
+  },
+}
+
+export const ProductCardVerticalStory_Favorite = {
+  ...ProductCardVerticalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    productImage: productImage,
+    showFavoriteIcon: true,
+    isFavoriteIconActive: false,
+  },
+}
+
+export const ProductCardVerticalStory_AddToPurchaseList = {
+  ...ProductCardVerticalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    productImage: productImage,
+    showFavoriteIcon: true,
+    isFavoriteIconActive: true,
+    showAddToPurchaseListIcon: true,
+    onSaveToPurchaseListClick: () => {
+      console.log('Add to purchase list...')
+    },
   },
 }
