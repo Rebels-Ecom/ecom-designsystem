@@ -1,5 +1,76 @@
 .orderItem {
     position: relative;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: border-color 0.1s ease;
+    
+    &.border {
+        border: 1px solid var(--border-grey);
+    }
+
+    
+    & .firstRow {
+        display: flex;
+        justify-content: space-between;
+        
+        & a {
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        & .orderNumber {
+            color: var(--cta-primary-default);
+            margin: 0;
+            
+            &:hover {
+                color: var(--interactive-hover);
+            }
+        }
+
+        & .statusWrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            & .status {
+                display: block;
+                color: var(--color-text-default);
+                padding: 0 0.5rem;
+                background-color: var(--tag-grey);
+                line-height: 1.75rem;
+                font-size: 0.875rem;
+                font-family: var(--font-family-secondary);
+                text-transform: uppercase;
+                font-weight: bold;
+                letter-spacing: 0.125rem;
+            }
+            
+            & .icon {
+                color: var(--cta-primary-default);
+                font-size: 1.375rem;
+                cursor: pointer;
+
+                &:hover {
+                    color: var(--interactive-hover);
+                }
+            }
+        }
+        
+    }
+
+    & .secondRow {
+        display: flex;
+
+        & .deliveryDate {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.375rem;
+            color: var(--color-text-default);
+        }
+    }
 }
 
 .linkContentWrapper {
