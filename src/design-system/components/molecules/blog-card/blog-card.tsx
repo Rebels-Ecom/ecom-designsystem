@@ -57,7 +57,7 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
           {richText && richText}
         </div>
         {link && (
-          <UILink {...link} onSurface={'transparent'} size={'default'} className={styles.link}>
+          <UILink {...link} onSurface={'transparent'} className={styles.link}>
             {link?.children}
           </UILink>
         )}

@@ -45,7 +45,6 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
                                 href={breadcrumb.active ? '' : breadcrumb.href}
                                 onSurface='transparent'
                                 isExternal={!breadcrumb.active}
-                                size={'default'}
                                 className={cx(styles.listItem, breadcrumb.active ? styles.listItemActive : '')}
                             >
                                 {breadcrumb.children}

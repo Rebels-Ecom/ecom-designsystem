@@ -57,7 +57,6 @@ const BrandDetails = ({ title, image, tags, link, ...props }: TBrandDetails) => 
           linkComponent='a'
           isExternal
           href={link.url}
-          size='default'
         >
           {link.text}
         </UILink>
