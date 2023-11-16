@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('fonts/icomoon.woff?f38clb') format('woff');
+  src: url('fonts/icomoon.woff?l0zufz') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -21,6 +21,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-heart-o:before {
+  content: "\e97b";
+}
+.icon-heart1:before {
+  content: "\e97c";
+}
 .icon-alert-circle:before {
   content: "\e900";
 }
@@ -158,6 +164,12 @@
 }
 .icon-file:before {
   content: "\e92b";
+}
+.icon-file-minus:before {
+  content: "\e97d";
+}
+.icon-file-plus:before {
+  content: "\e97e";
 }
 .icon-file-text:before {
   content: "\e92c";

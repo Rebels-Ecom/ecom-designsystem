@@ -118,5 +118,19 @@
       width: 20%;
     }
   }
+
+  .cartButtonWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .favoriteIcon, .purchaseListIcon {
+    margin-top:1rem;
+  }
+
+  .favoriteIconActive {
+    color: var(--orange-500);
+  }
   
   

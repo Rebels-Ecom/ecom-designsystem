@@ -21,6 +21,10 @@ const ScrollableList = ({ children, loading, visibleItemsNumber, hasFade, classN
     setListFade(!bottom)
   }
 
+  function getItemsNumber(itemsNumber: number, selectedItemsNumber: number) {
+    return itemsNumber < selectedItemsNumber ? itemsNumber : selectedItemsNumber
+  }
+
   useEffect(() => {
     ref?.current?.clientHeight && setHeight(ref.current.clientHeight)
   }, [])
@@ -35,7 +39,7 @@ const ScrollableList = ({ children, loading, visibleItemsNumber, hasFade, classN
         <ul
           onScroll={hasFade ? handleScroll : undefined}
           className={cx(styles.list, listHasFade && visibleItemsNumber ? styles.listFade : '')}
-          style={visibleItemsNumber ? { height: height * visibleItemsNumber } : { height: height * children.length }}
+          style={visibleItemsNumber ? { height: height * getItemsNumber(children.length, visibleItemsNumber) } : { height: height * children.length }}
         >
           {children?.map((item: React.ReactNode) => (
             <li key={Math.random()} ref={ref} className={styles.listItem}>
