@@ -47,9 +47,9 @@ html {
 
   /* Body - ?/? mobile - 16/31 desktop */
   --body-mobile-font-size: 1rem;
-  --body-mobile-line-height: 1.313rem;
+  --body-mobile-line-height: 1.25rem;
   --body-desktop-font-size: 1rem;
-  --body-desktop-line-height: 1.313rem;
+  --body-desktop-line-height: 1.25rem;
   
   /* Body S ?/? mobile - 14/18 desktop */
   --body-s-mobile-font-size: 0.875rem;

@@ -33,7 +33,7 @@ export type TFlexContainer = {
    * sets the alignItems property
    * @default flex-start
    */
-  alignItems?: 'flex-start' | 'center' | 'flex-end';
+  alignItems?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   /**
    * sets the justifyContent property
    * @default flex-start
@@ -43,6 +43,11 @@ export type TFlexContainer = {
    * sets align-self: stretch;
    */
   stretch?: boolean;
+  /**
+   * defines a min height in rem
+   * @default 0
+   */
+  minHeight?: number; 
 };
 
 const FlexContainer = ({
@@ -54,6 +59,7 @@ const FlexContainer = ({
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
   stretch,
+  minHeight = 0,
   ...props
 }: PropsWithChildren<TFlexContainer>) => {
   const style: { [key: string]: string } = ({
@@ -61,6 +67,7 @@ const FlexContainer = ({
     '--gap': `${gap.toString()}rem`,
     '--align-items': alignItems,
     '--justify-content': justifyContent,
+    '--min-height': `${minHeight}rem`,
   })
     
   return (

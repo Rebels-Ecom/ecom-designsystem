@@ -122,7 +122,7 @@ const LoginForm = ({
       <FormGroup label={passwordLabel} formElementId="password" errorText={passwordError}>
         <InputText id="password" type="password" autocomplete="current-password" value={password} onChange={onPasswordChange} />
       </FormGroup>
-      <UILink onSurface="transparent" size="default" href="#">
+      <UILink onSurface="transparent" href="#">
         {forgotPasswordLabel}
       </UILink>
       <Button type="submit" surface="primary" size="small" fullWidth>
@@ -134,7 +134,7 @@ const LoginForm = ({
         </Button>
       )}
       {offerLinkLabel && (
-        <UILink onSurface="transparent" size="default" href="#">
+        <UILink onSurface="transparent" href="#">
           {offerLinkLabel}
         </UILink>
       )}

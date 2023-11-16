@@ -4,6 +4,7 @@
   gap: var(--gap);
   align-items: var(--align-items);
   justify-content: var(--justify-content);
+  min-height: var(--min-height);
   
   &.row {
     flex-direction: row;

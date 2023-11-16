@@ -33,6 +33,7 @@ export interface IGroupWrapper {
    * @default undefined
   */
   padding?: Array<number> | number;
+  backgroundColor?: 'light';
 }
 
 function BoxWrapper({
@@ -47,6 +48,7 @@ function BoxWrapper({
   onlyButton = false,
   noMargin = false,
   padding,
+  backgroundColor,
 }: IGroupWrapper) {
   function getGroupElementsPosition(position: TGroupPosition) {
     switch (position) {
@@ -126,6 +128,7 @@ function BoxWrapper({
         styles[getGroupElementsAlignment(align)],
         styles[getGroupElementsSpacing(spacing)],
         {
+          [styles[backgroundColor ?? '']]: backgroundColor,
           [styles.hasMaxWidth]: hasMaxWidth,
           [styles.withBorder]: withBorder,
           [styles.noWrap]: noWrap,

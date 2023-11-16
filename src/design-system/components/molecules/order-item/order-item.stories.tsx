@@ -113,6 +113,20 @@ const summaryItemArgs_MinaOrdrar_2 = (
   </>
 )
 
+export const Default_Order_Item = {
+  ...OrderItemStoryTemplate,
+  args: {
+    orderNumber: '1423569',
+    orderNumberLabel: 'Ordernr.',
+    orderStatus: 'Behandlas',
+    deliveryDate: '2023-06-07',
+    deliveryDateLabel: 'Leverans:',
+    linkComponent: 'a',
+    downloadLabel: 'faktura.pdf',
+    onDownload: () => console.log('download'),
+  }
+}
+
 export const OrderItemStory_Processing = {
   ...OrderItemStoryTemplate,
   args: {

@@ -1,0 +1,64 @@
+.selectListWrapper {
+  position: relative;
+  align-self: flex-start;
+
+  & .selectList {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    display: inline-block;
+    background-color: var(--cta-x-default);
+    border: 1px solid var(--border-grey);
+    border-radius: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 12rem;
+    z-index: var(--select-list-z-index);
+  
+    & .selectItem {
+      display: flex;
+      align-items: center;
+
+      &:not(:last-of-type) {
+        border-bottom: 1px solid var(--border-grey);
+      }
+
+      & .selectItemButton {
+        display: flex;
+        flex: 1;
+        gap: 0.5rem;
+        align-items: center;
+        padding: 0.625rem 0.75rem;
+        margin: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--border-grey);
+        }
+
+        & .radio {
+          cursor: pointer;
+          margin: 0;
+          pointer-events: none;
+        }
+        
+        & .label {
+          font-size: 1rem;
+          line-height: 1rem;
+          font-family: var(--font-family-primary);
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          
+          & .radio {
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+}

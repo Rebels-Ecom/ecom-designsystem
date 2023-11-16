@@ -67,11 +67,11 @@ const MultiSelect = (
         </Button>
           {isDropdownOpen ? 
             <ul className={styles.multiSelectDropdownOptions}>
-              {options.map(option => {
+              {options.map((option, i) => {
                 const isSelected = selectedOptions && selectedOptions.some(item=>item===option.value)
                 
                 return (
-                  <li key={option.value} className={styles.multiSelectDropdownOption}>
+                  <li key={`${option.value}-${i}`} className={styles.multiSelectDropdownOption}>
                     <input type="checkbox" checked={isSelected} onChange={() => handleToggleOption(option)} className={styles.multiSelectDropdownOptionCheckbox}></input>
                     <span>{option.name}</span>
                   </li>

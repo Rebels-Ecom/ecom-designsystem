@@ -1,90 +1,46 @@
 .link {
+  display: inline-block;
   position: relative;
   text-decoration: none;
-  border-bottom: 0.1875rem solid transparent;
-  padding-bottom: 0.125rem;
+  font-size: var(--body-mobile-font-size);
+  line-height: var(--body-mobile-line-height);
+  text-underline-position: under;
 
-  &a:focus,
-  &a:active {
+  @media (min-width: 48em) {
+    font-size: var(--body-desktop-font-size);
+    line-height: var(--body-desktop-line-height);
+  }
+
+  &:focus,
+  &:active {
     outline: none;
-    border-bottom: 0.1875rem solid;
     color: var(--interactive-hover);
   }
-}
 
-.transparent {
-  color: var(--interactive-default);
-  &:hover {
-    color: var(--interactive-hover);
-  }
-}
+  &.transparent {
+    color: var(--interactive-default);
 
-.decorativeOne {
-  color: var(--interactive-decorative-one);
-  &:hover {
-    color: var(--interactive-decorative-one-hover);
-  }
-}
-
-.decorativeTwo {
-  color: var(--interactive-decorative-two);
-  &:hover {
-    color: var(--interactive-decorative-two-hover);
-  }
-}
-
-.large {
-  font-size: var(--body-mobile-font-size);
-  line-height: var(--body-mobile-line-height);
-
-  &.withIconLeft {
-    padding-left: 1.6875rem;
-  }
-  &.withIconRight {
-    padding-right: 1.6875rem;
+    &:hover {
+      color: var(--interactive-hover);
+    }
   }
 
+  & .linkText {
+    display: inline;
+    text-decoration: underline;
+  }
+  
   & .icon {
-    font-size: 1.6875rem;
+    vertical-align: middle;
+    font-size: 1rem;
+    font-weight: bold;
+
+    &.left {
+      margin-right: 0.25rem;
+    }
+    
+    &.right {
+      margin-left: 0.25rem;
+    }
   }
-
-  @media (min-width: 48em) {
-    font-size: var(--body-desktop-font-size);
-    line-height: var(--body-desktop-line-height);
-  }
-}
-
-.default {
-  font-size: var(--body-mobile-font-size);
-  line-height: var(--body-mobile-line-height);
-
-  &.withIconLeft {
-    padding-left: 1.5rem;
-  }
-  &.withIconRight {
-    padding-right: 1.5rem;
-  }
-
-  @media (min-width: 48em) {
-    font-size: var(--body-desktop-font-size);
-    line-height: var(--body-desktop-line-height);
-  }
-}
-
-.iconLeft {
-  margin-right: 0.375rem;
-  & .icon {
-    left: 0;
-  }
-}
-
-.iconRight {
-  margin-left: 0.375rem;
-}
-
-.icon {
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.5rem;
-  position: absolute;
 }
