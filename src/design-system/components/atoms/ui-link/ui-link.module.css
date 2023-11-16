@@ -4,6 +4,7 @@
   text-decoration: none;
   font-size: var(--body-mobile-font-size);
   line-height: var(--body-mobile-line-height);
+  text-underline-position: under;
 
   @media (min-width: 48em) {
     font-size: var(--body-desktop-font-size);
