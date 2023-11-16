@@ -1,7 +1,0 @@
-import{S as l}from"./social-media-link-7e881d4b.js";import{a as o}from"./jsx-runtime-76c5c2e2.js";import{SocialMediaLinkStoryFacebook as d,SocialMediaLinkStoryInstagram as m,SocialMediaLinkStoryLinkedin as p}from"./social-media-link.stories-7142e40b.js";import"./link-button-688965c9.js";import"./index-74f03c09.js";import"./ui-link-e11fce58.js";import"./icon-456a804f.js";import"./index-6f814c40.js";import"./_commonjsHelpers-042e6b4d.js";const S="_socialMediaLinksList_1s86l_1",L={socialMediaLinksList:S},e=({socialMediaLinks:i})=>!Array.isArray(i)||!i.length?null:o("ul",{className:L.socialMediaLinksList,children:i.map((r,c)=>o(l,{...r},`${r.title}-${c}`))});try{e.displayName="SocialMediaLinks",e.__docgenInfo={description:"",displayName:"SocialMediaLinks",props:{socialMediaLinks:{defaultValue:null,description:"",name:"socialMediaLinks",required:!0,type:{name:"TSocialMediaLink[]"}}}}}catch{}const N={title:"Design System/Molecules/SocialMediaLinks",component:e},k={render:i=>o(e,{...i})},a={...k,args:{socialMediaLinks:[d.args,m.args,p.args]}};var s,t,n;a.parameters={...a.parameters,docs:{...(s=a.parameters)==null?void 0:s.docs,source:{originalSource:`{
-  ...SocialMediaLinksTemplate,
-  args: {
-    socialMediaLinks: [SocialMediaLinkStoryFacebook.args, SocialMediaLinkStoryInstagram.args, SocialMediaLinkStoryLinkedin.args]
-  }
-}`,...(n=(t=a.parameters)==null?void 0:t.docs)==null?void 0:n.source}}};const T=["SocialMediaStory"];export{a as SocialMediaStory,T as __namedExportsOrder,N as default};
-//# sourceMappingURL=social-media-links.stories-27934d22.js.map
