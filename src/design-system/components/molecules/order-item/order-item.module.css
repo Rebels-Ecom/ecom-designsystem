@@ -1,14 +1,25 @@
 .orderItem {
     position: relative;
-    padding: 1rem;
-    border-radius: 0.5rem;
+    padding: 1rem 0;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     transition: border-color 0.1s ease;
+
+    &:not(:only-of-type){
+        &:not(:last-of-type) {
+            border-bottom: 1px solid var(--border-grey);
+        }
+    }
     
     &.border {
+        padding: 1rem;
+        border-radius: 0.5rem;
         border: 1px solid var(--border-grey);
+
+        &:not(:last-of-type) {
+            margin-bottom: 0.5rem;
+        }
     }
 
     
@@ -63,12 +74,24 @@
 
     & .secondRow {
         display: flex;
+        justify-content: space-between;
+        padding-right: 2.25rem;
 
         & .deliveryDate {
             margin: 0;
             font-size: 1rem;
             line-height: 1.375rem;
             color: var(--color-text-default);
+        }
+
+        & .downloadButton {
+            background-color: transparent;
+            border: none;
+            color: var(--cta-primary-default);
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            font-size: var(--body-desktop-font-size);
         }
     }
 }

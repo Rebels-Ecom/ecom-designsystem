@@ -121,7 +121,9 @@ export const Default_Order_Item = {
     orderStatus: 'Behandlas',
     deliveryDate: '2023-06-07',
     deliveryDateLabel: 'Leverans:',
-    linkComponent: 'a'
+    linkComponent: 'a',
+    downloadLabel: 'faktura.pdf',
+    onDownload: () => console.log('download'),
   }
 }
 

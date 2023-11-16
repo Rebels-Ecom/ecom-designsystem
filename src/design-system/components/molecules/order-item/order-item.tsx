@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from '../../atoms'
+import { Icon, IconLink, UILink } from '../../atoms'
 import styles from './order-item.module.css'
 import { Tag } from '../../atoms/tag/tag'
 import cx from 'classnames';
@@ -11,9 +11,12 @@ export interface IOrderItem {
   deliveryDate?: string
   deliveryDateLabel?: string;
   linkComponent: any;
-  linkUrl: string
+  linkUrl: string;
+  downloadUrl?: string;
   // Defines if border should be added
   border?: boolean;
+  onDownload?: () => void;
+  downloadLabel?: string;
 
 
   title?: string
@@ -22,18 +25,36 @@ export interface IOrderItem {
   onClick?: () => void
 }
 
-const OrderItem = ({ orderNumber, orderNumberLabel, title, children, orderDate, deliveryDate, deliveryDateLabel, orderStatus, linkUrl, linkComponent: Link, onClick, border }: IOrderItem) => {
+const OrderItem = ({
+  orderNumber,
+  orderNumberLabel,
+  title,
+  children,
+  orderDate,
+  deliveryDate,
+  deliveryDateLabel,
+  orderStatus,
+  linkUrl,
+  linkComponent: Link,
+  onClick,
+  onDownload,
+  downloadLabel,
+  border
+}: IOrderItem) => {
   return 1 > 0 ? (
     <div className={cx(styles.orderItem, {[styles.border]: border })}>
       <div className={styles.firstRow}>
-        {orderNumber && orderNumberLabel && <Link to={linkUrl}><h4 className={styles.orderNumber}>{`${orderNumberLabel} ${orderNumber}`}</h4></Link>}
+        {orderNumber && orderNumberLabel && <Link to={linkUrl}><h4 className={styles.orderNumber} onClick={onClick}>{`${orderNumberLabel} ${orderNumber}`}</h4></Link>}
         <div className={styles.statusWrapper}>
           {orderStatus && <span className={styles.status}>{orderStatus}</span>}
-          <Icon className={styles.icon} icon={'icon-chevrons-right'}></Icon>
+          <Link to={linkUrl}><h4 className={styles.orderNumber} onClick={onClick}></h4><Icon className={styles.icon} icon={'icon-chevrons-right'}></Icon></Link>
         </div>
       </div>
       <div className={styles.secondRow}>
         {deliveryDate && deliveryDateLabel &&  <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
+        {onDownload && downloadLabel && (
+          <button className={styles.downloadButton} onClick={onDownload} type='button'>{downloadLabel}</button>
+        )}
       </div>
     </div>
   ) : (
