@@ -2,3 +2,8 @@
   display: flex;
   color: inherit;
 }
+
+.icon-small { font-size: 1rem;}
+.icon-medium { font-size: 1.25rem;}
+.icon-large { font-size: 1.5rem;}
+.icon-xlarge { font-size: 1.75rem;}

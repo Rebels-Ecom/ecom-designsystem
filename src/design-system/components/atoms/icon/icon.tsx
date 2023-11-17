@@ -1,5 +1,6 @@
 import styles from './icon.module.css'
 import cx from 'classnames'
+export type TIconSize = 'small' | 'medium' | 'large' | 'xlarge'
 export type TIcon =
   | 'icon-alert-circle'
   | 'icon-bell'
@@ -52,14 +53,16 @@ export type TIcon =
   | 'icon-heart-o'
   | 'icon-heart1'
   | 'icon-file-plus'
+  | 'icon-eye'
 
 export interface IIcon {
   icon: TIcon
+  size?: TIconSize
   className?: CSSModuleClasses | string
 }
 
-const Icon = ({ icon, className }: IIcon) => {
-  return <span className={cx('icomoon', icon, className ? className : styles.defaultStyling)} />
+const Icon = ({ icon, size, className }: IIcon) => {
+  return <span className={cx('icomoon', icon, className ? className : styles.defaultStyling, size && styles[`icon-${size}`])} />
 }
 
 export { Icon }

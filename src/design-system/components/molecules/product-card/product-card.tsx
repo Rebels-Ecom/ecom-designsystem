@@ -51,6 +51,7 @@ export interface IProductCard {
   loading: boolean
   buttonLoading?: boolean
   disabled?: boolean
+  limitedProductText?: string
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
   onFavoriteIconClick?: CallableFunction
@@ -79,6 +80,7 @@ function ProductCard({
   border,
   disabled,
   buttonLoading,
+  limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
@@ -160,6 +162,7 @@ function ProductCard({
         border={border}
         disabled={disabled}
         buttonLoading={buttonLoading}
+        limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}
@@ -191,6 +194,7 @@ function ProductCard({
         campaign={campaign}
         disabled={disabled}
         buttonLoading={buttonLoading}
+        limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}

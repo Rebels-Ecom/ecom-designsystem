@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, DividerLines, Loader, Placeholder, Button, IconButton } from '../../atoms'
+import { Picture, DividerLines, Loader, Placeholder, Button, IconButton, Icon } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -28,6 +28,7 @@ const ProductCardVertical = ({
   campaign,
   disabled,
   buttonLoading,
+  limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
@@ -47,7 +48,11 @@ const ProductCardVertical = ({
     salesUnit,
     itemNumberPerSalesUnit,
     tags,
+    isLimitedProduct,
+    sellerOnly,
+    isAccessoryPotItem,
   } = product
+  //const isLimitedProduct = true
 
   const hideChangePackagingBtn = !productVariantList || productVariantList.length <= 1
 
@@ -62,6 +67,7 @@ const ProductCardVertical = ({
 
   const style: { [key: string]: string } = {
     '--campaign-color': campaign?.color ?? '#FFF',
+    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
   }
 
   if (variantsOpen && selectedVariantId) {
@@ -76,13 +82,29 @@ const ProductCardVertical = ({
   } else {
     return (
       <div
-        className={cx(styles.productCardVertical, className ? className : '', {
-          [styles.campaign]: campaign?.title,
-        })}
+        className={cx(
+          styles.productCardVertical,
+          className ? className : '',
+          {
+            [styles.campaign]: campaign?.title,
+          },
+          {
+            [styles.limitedProduct]: !campaign && isLimitedProduct && limitedProductText,
+          }
+        )}
         style={style}
       >
         {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
-        {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
+        {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
+        <div className={styles.tagsWrapper}>
+          {sellerOnly && <Icon icon={'icon-eye'} size={'large'}></Icon>}
+          {isAccessoryPotItem && (
+            <span>
+              <b style={{ fontSize: '1.2rem' }}>S</b>
+            </span>
+          )}
+          {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
+        </div>
         {loading ? (
           <Placeholder type="image" />
         ) : (
