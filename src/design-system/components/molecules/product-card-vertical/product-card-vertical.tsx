@@ -108,9 +108,27 @@ const ProductCardVertical = ({
         {loading ? (
           <Placeholder type="image" />
         ) : (
-          <div className={styles.imageWrapper}>
-            <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl} />
-          </div>
+          <>
+            {productUrl && Link ? (
+              <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
+                <Picture
+                  {...productImage}
+                  classNamePicture={styles.cardPicture}
+                  classNameImg={`${styles.cardImage}`}
+                  fallbackImageUrl={fallbackProductImageUrl}
+                />
+              </Link>
+            ) : (
+              <div className={styles.imageWrapper}>
+                <Picture
+                  {...productImage}
+                  classNamePicture={styles.cardPicture}
+                  classNameImg={`${styles.cardImage}`}
+                  fallbackImageUrl={fallbackProductImageUrl}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {loading ? (
