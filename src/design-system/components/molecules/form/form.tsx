@@ -60,7 +60,11 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
   }, [])
 
   return (
-    <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit}>
+    <form
+      ref={formRef}
+      className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')}
+      onSubmit={handleSubmit}
+    >
       <div>
         {formTitle && (
           <Heading order={3} className={styles.formTitle}>

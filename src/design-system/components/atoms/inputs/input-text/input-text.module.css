@@ -1,5 +1,29 @@
 .inputWrapper {
   position: relative;
+
+  & input[type=number] {
+    &:disabled {
+      &::-webkit-inner-spin-button, 
+      &::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+      }
+    }
+  
+    &:not(:disabled) {
+      width: 4rem;
+      padding-right: 0;
+      padding-left: 0.25rem;
+  
+      &::-webkit-inner-spin-button, 
+      &::-webkit-outer-spin-button { 
+        height: 3rem;
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .inputText {
@@ -37,30 +61,6 @@
     border-color: var(--border-critical);
   }
 }
-input[type=number] {
-  &:disabled {
-    &::-webkit-inner-spin-button, 
-    &::-webkit-outer-spin-button { 
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      margin: 0; 
-    }
-  }
-
-  &:not(:disabled) {
-    width: 4rem;
-    padding-right: 0;
-    padding-left: 0.25rem;
-
-    &::-webkit-inner-spin-button, 
-    &::-webkit-outer-spin-button { 
-      height: 3rem;
-      opacity: 1;
-    }
-  }
-}
-
 
 .iconRight {
   position: absolute;

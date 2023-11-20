@@ -1,0 +1,98 @@
+.sliderWrapper {
+  position: relative;
+  padding: 1rem;
+  margin: 0.5rem;
+  min-width: 12rem;
+  
+  & .inputRange {
+    height: 1rem;
+    position: relative;
+    width: 100%;
+  }
+  & .track {
+    background: #eeeeee;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    display: block;
+    height: 0.3rem;
+    position: relative;
+    transition: left 0.3s ease-out, width 0.3s ease-out;
+    left: 0;
+    margin-top: -0.15rem;
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+  & .activeTrack {
+    background: var(--cta-tertiary-default);
+    left: 0;
+    margin-top: 0;
+    position: relative;
+    right: 0;
+    top: 0;
+  }
+  & .sliderContainer {
+    transition: left 0.3s ease-out;
+  }
+  & .valueLabel {
+    position: absolute;
+    top: -1.8rem;
+    color: #aaaaaa;
+    font-family: "Helvetica Neue", san-serif;
+    font-size: 0.8rem;
+    transform: translateZ(0);
+    white-space: nowrap;
+  }
+  & .slider {
+    appearance: none;
+    background: var(--cta-tertiary-default);
+    border: 2px solid var(--color-text-white);
+    border-radius: 100%;
+    cursor: pointer;
+    display: block;
+    height: 1rem;
+    margin-left: -0.5rem;
+    margin-top: -0.65rem;
+    outline: none;
+    position: absolute;
+    top: 50%;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    width: 1rem;
+  }
+
+  & .maxLabel,
+  & .minLabel {
+    color: #aaaaaa;
+    font-family: "Helvetica Neue", san-serif;
+    font-size: 0.8rem;
+    transform: translateZ(0);
+    white-space: nowrap;
+  }
+
+  & .labelContainer {
+    left: -50%;
+    position: relative;
+  }
+
+  & .maxLabel {
+    right: 0;
+    bottom: -1.4rem;
+    position: absolute;
+
+    & .labelContainer {
+      left: 50%;
+    }
+  }
+
+  & .minLabel {
+    left: 0;
+    bottom: -1.4rem;
+    position: absolute;
+  }
+
+  & .fieldsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

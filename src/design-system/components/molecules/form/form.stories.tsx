@@ -56,3 +56,28 @@ export const FormStory = {
     alignActions: 'center'
   } as IFormTemplateProps,
 };
+
+export const Form_Number_Story = {
+  ...FormStoryTemplate,
+  args: {
+    formTitle: 'Form Title',
+    loading: false,
+    onSubmit: () => console.log('submit'),
+    fields: [{
+      label: 'Number',
+      type: 'number',
+      fieldType: 'input',
+      name: 'number',
+      originalValue: '',
+      placeholder: '0',
+      min: 0,
+      max: 20
+    }],
+    actions: [{
+      children: 'Save',
+      surface: 'primary',
+      type: 'submit',
+    }],
+    alignActions: 'center'
+  } as IFormTemplateProps,
+};

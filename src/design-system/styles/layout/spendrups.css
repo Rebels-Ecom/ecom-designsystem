@@ -43,6 +43,8 @@ html {
     --menu-z-index: 100;
     --menu-backdrop-z-index: 99;
     --select-list-z-index: 10;
+    --drawer-overlay-z-index: 50;
+    --drawer-content-z-index: 51;
 }
 
 body {
