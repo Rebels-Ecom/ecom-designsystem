@@ -63,12 +63,27 @@ const meta = {
   title: 'Design System/Molecules/ProductCard',
   component: ProductCard,
   parameters: {
-    controls: { exclude: ['product', 'addToCart', 'addToCartButton', 'onChangeQuantity', 'handlePackageChange', 'onVariantsButtonClick', 'productImage', 'linkComponent', 'onRemoveProduct', 'className', 'changePackagingButton', 'selectedVariantId', 'onClickRemoveProduct'] },
+    controls: {
+      exclude: [
+        'product',
+        'addToCart',
+        'addToCartButton',
+        'onChangeQuantity',
+        'handlePackageChange',
+        'onVariantsButtonClick',
+        'productImage',
+        'linkComponent',
+        'onRemoveProduct',
+        'className',
+        'selectedVariantId',
+        'onClickRemoveProduct',
+      ],
+    },
   },
-} satisfies Meta<typeof ProductCard>;
+} satisfies Meta<typeof ProductCard>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const ProductCardStory: Story = {
   render: (args) => {
@@ -90,10 +105,10 @@ export const ProductCardStory: Story = {
     hideCartButton: false,
     campaign: {
       title: 'Kampanj',
-      color: '#9A576F'
-    }
+      color: '#9A576F',
+    },
   },
-};
+}
 
 export const ProductCardStory_NoVariants: Story = {
   render: (args) => {
@@ -115,10 +130,10 @@ export const ProductCardStory_NoVariants: Story = {
     productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
     campaign: {
       title: 'Kampanj',
-      color: '#9A576F'
-    }
+      color: '#9A576F',
+    },
   },
-};
+}
 
 export const ProductCardStory_Loading: Story = {
   render: (args) => {
@@ -138,7 +153,7 @@ export const ProductCardStory_Loading: Story = {
     onVariantsButtonClick: () => {},
     productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
   },
-};
+}
 
 export const ProductCardStory_Horizontal: Story = {
   render: (args) => {
@@ -156,7 +171,7 @@ export const ProductCardStory_Horizontal: Story = {
     loading: false,
     campaign: {
       title: 'Kampanj',
-      color: '#9A576F'
-    }
+      color: '#9A576F',
+    },
   },
-};
+}

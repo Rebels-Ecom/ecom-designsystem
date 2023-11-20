@@ -21,7 +21,6 @@ const ProductCardVertical = ({
   handlePackageChange,
   selectedVariantId,
   productImage,
-  changePackagingButton,
   onVariantsButtonClick,
   className,
   defaultQuantity,
@@ -152,20 +151,18 @@ const ProductCardVertical = ({
             <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
           </div>
         )}
-        {changePackagingButton && (
-          <Button
-            {...changePackagingButton}
-            surface="secondary"
-            iconRight={{ icon: 'icon-layers' }}
-            rounded
-            fullWidth
-            onClick={() => handleVariantBtnClick()}
-            disabled={loading}
-            className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
-          >
-            Byt förpackning
-          </Button>
-        )}
+        <Button
+          type={'button'}
+          surface="secondary"
+          iconRight={{ icon: 'icon-layers' }}
+          rounded
+          fullWidth
+          onClick={() => handleVariantBtnClick()}
+          disabled={loading}
+          className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
+        >
+          Byt förpackning
+        </Button>
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'p_long'} />

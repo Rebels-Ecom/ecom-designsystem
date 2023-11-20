@@ -42,7 +42,6 @@ export interface IProductCard {
   onRemoveProduct?: CallableFunction
   productQuantityDisabled?: boolean
   className?: string
-  changePackagingButton?: IButton
   border?: boolean
   campaign?: {
     title: string
@@ -72,7 +71,6 @@ function ProductCard({
   hideRemoveButton,
   productQuantityDisabled,
   loading,
-  changePackagingButton,
   linkComponent: Link,
   className,
   defaultQuantity,
@@ -182,7 +180,6 @@ function ProductCard({
         productQuantityDisabled={productQuantityDisabled}
         addToCartButton={addToCartButton}
         addToCart={addToCart}
-        changePackagingButton={changePackagingButton}
         onVariantsButtonClick={handleVariantsButtonClick}
         variantsOpen={variantsListOpen}
         selectedVariantId={myProduct.selectedVariantId}
