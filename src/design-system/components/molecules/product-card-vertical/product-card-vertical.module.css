@@ -3,16 +3,16 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: var(--product-card-width);
-    height: var(--product-card-height);
-    height:37rem;
+    width: var(--product-card-width-vertical);
+    height: var(--product-card-height-vertical);
     margin:auto;
-    padding: 0.3rem 1rem 1rem 1rem;  
+    padding: 1rem;  
     gap: 0.5rem;
     
     &:hover, &:focus, &:active{
       box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
     }
+
 
     &.campaign {
       border: 2px solid transparent;
@@ -66,15 +66,34 @@
       }
     }
   }
+
+  .cardTopWrapper {
+    display: flex;
+
+  }
+
+  .imageContainer {
+    width: 30%;
+  }
+
+  .infoContainer {
+    width: 70%;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
   
   .imageWrapper {
     width: 100%;
-    height:60%;
-    max-height: 17.5rem;
+    height:100%;
     position: relative;
     display: flex;
-    align-items: end;
+    align-items: center;
     justify-content: center;
+  }
+
+  .imagePlaceholderWrapper{
+    padding:1rem;
   }
   
   .cardPicture {
@@ -91,19 +110,26 @@
     display: block;
     width: 100%;
     height: 100%;
-    max-height: 17.5rem;
-    padding: 3rem 1.5rem 0.5rem 1.5rem;
+    padding:1rem;
     object-fit: contain;
   }
   
   .cardContent, .placeholderContent {
-    padding: 1rem 0.5rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    @media (min-width: 48em) {
-      padding: 1rem 1rem 0.5rem 1rem;
+    gap:0.5rem;
+    height: calc(4 * var(--heading-xs-mobile-line-height));
+    @media (min-width: 64em) {
+      height: calc(4 * var(--heading-xs-desktop-line-height));
     }
+  }
+
+  .tagsWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: var(--tag-rectangular-mobile-line-height);
+    min-height: var(--tag-rectangular-mobile-line-height);
   }
   
   .headingWrapper {
@@ -113,6 +139,10 @@
   
   .heading {
     margin:0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
   
   .textGray {
@@ -163,13 +193,6 @@
     color: var(--orange-500);
   }
 
-  .tagsWrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    position: absolute;
-    height: 2.875rem;
-    min-height: 2.875rem;
-  }
+  
   
   

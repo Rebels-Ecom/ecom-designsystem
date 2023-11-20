@@ -94,7 +94,73 @@ const ProductCardVertical = ({
       >
         {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
         {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
-        <div className={styles.tagsWrapper}>
+        <div className={styles.cardTopWrapper}>
+          <div className={styles.imageContainer}>
+            {loading ? (
+              <div className={styles.imagePlaceholderWrapper}>
+                <Placeholder type="image" />
+              </div>
+            ) : (
+              <>
+                {productUrl && Link ? (
+                  <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
+                    <Picture
+                      {...productImage}
+                      classNamePicture={styles.cardPicture}
+                      classNameImg={`${styles.cardImage}`}
+                      fallbackImageUrl={fallbackProductImageUrl}
+                    />
+                  </Link>
+                ) : (
+                  <div className={styles.imageWrapper}>
+                    <Picture
+                      {...productImage}
+                      classNamePicture={styles.cardPicture}
+                      classNameImg={`${styles.cardImage}`}
+                      fallbackImageUrl={fallbackProductImageUrl}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <div className={styles.infoContainer}>
+            <div className={styles.tagsWrapper}>
+              {sellerOnly && <Icon icon={'icon-eye'} size={'large'}></Icon>}
+              {isAccessoryPotItem && (
+                <span>
+                  <b style={{ fontSize: '1.2rem' }}>S</b>
+                </span>
+              )}
+              {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+            </div>
+            {loading ? (
+              <div className={styles.placeholderContent}>
+                <Placeholder type={'heading'} />
+                <Placeholder type={'heading'} />
+                <Placeholder type={'heading'} />
+                <Placeholder type={'p_long'} />
+              </div>
+            ) : (
+              <div className={`${styles.cardContent}`}>
+                {productUrl && Link ? (
+                  <Link to={productUrl} href={productUrl} className={styles.headingWrapper}>
+                    <h5 className={styles.heading}>{productName}</h5>
+                  </Link>
+                ) : (
+                  <h5 className={styles.heading}>{productName}</h5>
+                )}
+                <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>
+              </div>
+            )}
+          </div>
+        </div>
+        <DividerLines />
+        <div className={styles.cardBottomWrapper}>
+          <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
+        </div>
+
+        {/* <div className={styles.tagsWrapper}>
           {sellerOnly && <Icon icon={'icon-eye'} size={'large'}></Icon>}
           {isAccessoryPotItem && (
             <span>
@@ -127,9 +193,9 @@ const ProductCardVertical = ({
               </div>
             )}
           </>
-        )}
+        )} */}
 
-        {loading ? (
+        {/* {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'heading'} />
             <Placeholder type={'p_short'} />
@@ -149,7 +215,7 @@ const ProductCardVertical = ({
             <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>
             <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
           </div>
-        )}
+        )} */}
         <Button
           type={'button'}
           surface="secondary"

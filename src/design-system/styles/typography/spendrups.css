@@ -41,7 +41,7 @@ html {
 
   /* Heading XS - ?/? mobile - 18/23 desktop */
   --heading-xs-mobile-font-size: 1.125rem;
-  --heading-xs-mobie-line-height: 1.438rem;
+  --heading-xs-mobile-line-height: 1.438rem;
   --heading-xs-desktop-font-size: 1.125rem;
   --heading-xs-desktop-line-height: 1.438rem;
 
@@ -66,8 +66,8 @@ html {
   --cta-l-letter-spacing: 0.03rem;
 
   /* Tag rectangular */
-  --tag-rectangular-mobile-font-size: 0.625rem;
-  --tag-rectangular-mobile-line-height: 1.875rem;
+  --tag-rectangular-mobile-font-size: 0.75rem;
+  --tag-rectangular-mobile-line-height: 1.25rem;
   --tag-rectangular-desktop-font-size: 1rem;
   --tag-rectangular-desktop-line-height: 1.875rem;
 
