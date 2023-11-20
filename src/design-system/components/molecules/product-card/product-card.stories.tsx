@@ -67,7 +67,6 @@ const meta = {
       exclude: [
         'product',
         'addToCart',
-        'addToCartButton',
         'onChangeQuantity',
         'handlePackageChange',
         'onVariantsButtonClick',
@@ -93,11 +92,6 @@ export const ProductCardStory: Story = {
     cardDisplay: 'vertical',
     product: productWineArgs,
     addToCart: () => {},
-    addToCartButton: {
-      children: 'Lägg till',
-      surface: 'primary',
-      type: 'button',
-    },
     handlePackageChange: () => {},
     loading: false,
     onVariantsButtonClick: () => {},
@@ -119,11 +113,6 @@ export const ProductCardStory_NoVariants: Story = {
     product: productNoVariantsArgs,
     defaultQuantity: '4',
     addToCart: () => {},
-    addToCartButton: {
-      children: 'Lägg till',
-      surface: 'primary',
-      type: 'button',
-    },
     handlePackageChange: () => {},
     loading: false,
     onVariantsButtonClick: () => {},
@@ -143,11 +132,6 @@ export const ProductCardStory_Loading: Story = {
     cardDisplay: 'vertical',
     product: productNoVariantsArgs,
     addToCart: () => {},
-    addToCartButton: {
-      children: 'Lägg till',
-      surface: 'primary',
-      type: 'button',
-    },
     handlePackageChange: () => {},
     loading: true,
     onVariantsButtonClick: () => {},
@@ -163,11 +147,6 @@ export const ProductCardStory_Horizontal: Story = {
     cardDisplay: 'horizontal',
     product: productNoVariantsArgs,
     addToCart: () => {},
-    addToCartButton: {
-      children: 'Lägg till',
-      surface: 'primary',
-      type: 'button',
-    },
     loading: false,
     campaign: {
       title: 'Kampanj',

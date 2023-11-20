@@ -8,7 +8,7 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 const meta: Meta<typeof ProductCardHorizontal> = {
   title: 'Design System/Molecules/ProductCardHorizontal',
   parameters: {
-    controls: { exclude: ['product', 'addToCartButton', 'addToCart', 'onClickRemoveProduct', 'onChangeQuantity', 'className'] },
+    controls: { exclude: ['product', 'addToCart', 'onClickRemoveProduct', 'onChangeQuantity', 'className'] },
   },
   component: ProductCardHorizontal,
 }

@@ -11,7 +11,6 @@ import { IProductCard, TProductCardHorizontal } from '../product-card/product-ca
 const ProductCardHorizontal = ({
   product,
   loading = false,
-  addToCartButton,
   addToCart,
   hideCartButton,
   onClickRemoveProduct,
@@ -112,7 +111,8 @@ const ProductCardHorizontal = ({
                 <div className={styles.buttonsWrapper}>
                   {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
                     <Button
-                      {...addToCartButton}
+                      type={'button'}
+                      surface={'primary'}
                       className={!loading ? styles.productCardBtn : ''}
                       size={'x-small'}
                       onClick={() => onSaveToPurchaseListClick()}
@@ -125,7 +125,8 @@ const ProductCardHorizontal = ({
                   )}
                   {/* TODO: replace this hc values with addToCartButton props? */}
                   <Button
-                    {...addToCartButton}
+                    type={'button'}
+                    surface={'primary'}
                     className={!loading ? styles.productCardBtn : ''}
                     size={'x-small'}
                     onClick={() => addToCart(product)}

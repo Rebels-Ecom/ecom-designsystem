@@ -11,7 +11,6 @@ import { IProductCard, TProductCardVertical } from '../product-card/product-card
 const ProductCardVertical = ({
   product,
   loading = false,
-  addToCartButton,
   hideCartButton,
   addToCart,
   onChangeQuantity,
@@ -183,7 +182,8 @@ const ProductCardVertical = ({
         {!hideCartButton && (
           <div className={styles.cartButtonWrapper}>
             <Button
-              {...addToCartButton}
+              type={'button'}
+              surface={'primary'}
               className={!loading ? styles.productCardBtn : ''}
               fullWidth
               onClick={() => addToCart(product)}

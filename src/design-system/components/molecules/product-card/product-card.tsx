@@ -28,34 +28,34 @@ export type TProductCardHorizontal = {
 export interface IProductCard {
   cardDisplay: TCardDisplayType
   product: IProduct
+  loading: boolean
+  buttonLoading?: boolean
+  disabled?: boolean
+  addToCart: CallableFunction
+  addToCartBtnLabel: string
+  hideCartButton?: boolean
+  onChangeQuantity?: CallableFunction
+  productQuantityDisabled?: boolean
   /**
    * Sets a custom default quantity to start from
    * @default 0
    */
   defaultQuantity?: string
-  addToCartButton: IButton
-  addToCart: CallableFunction
-  onChangeQuantity?: CallableFunction
-  hideCartButton?: boolean
-  linkComponent?: any
-  hideRemoveButton?: boolean
   onRemoveProduct?: CallableFunction
-  productQuantityDisabled?: boolean
-  className?: string
-  border?: boolean
+  hideRemoveButton?: boolean
   campaign?: {
     title: string
     color: string
   }
-  loading: boolean
-  buttonLoading?: boolean
-  disabled?: boolean
   limitedProductText?: string
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
   onFavoriteIconClick?: CallableFunction
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
+  border?: boolean
+  linkComponent?: any
+  className?: string
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -63,27 +63,27 @@ export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHo
 function ProductCard({
   cardDisplay,
   product,
-  addToCartButton,
+  loading,
+  buttonLoading,
+  disabled,
   addToCart,
+  addToCartBtnLabel,
   hideCartButton,
   onChangeQuantity,
+  productQuantityDisabled,
+  defaultQuantity,
   onRemoveProduct,
   hideRemoveButton,
-  productQuantityDisabled,
-  loading,
-  linkComponent: Link,
-  className,
-  defaultQuantity,
   campaign,
-  border,
-  disabled,
-  buttonLoading,
   limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
+  border,
+  linkComponent: Link,
+  className,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -144,28 +144,28 @@ function ProductCard({
     return (
       <ProductCardHorizontal
         cardDisplay="horizontal"
-        loading={loading}
         product={myProduct}
+        loading={loading}
+        buttonLoading={buttonLoading}
+        disabled={disabled}
+        addToCart={addToCart}
+        addToCartBtnLabel={addToCartBtnLabel}
+        hideCartButton={hideCartButton}
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
-        addToCartButton={addToCartButton}
-        addToCart={addToCart}
-        onClickRemoveProduct={handleRemoveProduct}
-        linkComponent={Link}
-        hideRemoveButton={hideRemoveButton}
-        className={className}
-        hideCartButton={hideCartButton}
         defaultQuantity={defaultQuantity}
+        onClickRemoveProduct={handleRemoveProduct}
+        hideRemoveButton={hideRemoveButton}
         campaign={campaign}
-        border={border}
-        disabled={disabled}
-        buttonLoading={buttonLoading}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
+        border={border}
+        linkComponent={Link}
+        className={className}
       />
     )
   }
@@ -173,30 +173,30 @@ function ProductCard({
     return (
       <ProductCardVertical
         cardDisplay="vertical"
-        loading={loading}
         product={myProduct}
         productImage={myProduct.productImage}
+        loading={loading}
+        buttonLoading={buttonLoading}
+        disabled={disabled}
+        variantsOpen={variantsListOpen}
+        onVariantsButtonClick={handleVariantsButtonClick}
+        handlePackageChange={handlePackageChange}
+        selectedVariantId={myProduct.selectedVariantId}
+        addToCart={addToCart}
+        addToCartBtnLabel={addToCartBtnLabel}
+        hideCartButton={hideCartButton}
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
-        addToCartButton={addToCartButton}
-        addToCart={addToCart}
-        onVariantsButtonClick={handleVariantsButtonClick}
-        variantsOpen={variantsListOpen}
-        selectedVariantId={myProduct.selectedVariantId}
-        handlePackageChange={handlePackageChange}
-        linkComponent={Link}
-        className={className}
-        hideCartButton={hideCartButton}
         defaultQuantity={defaultQuantity}
         campaign={campaign}
-        disabled={disabled}
-        buttonLoading={buttonLoading}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
+        linkComponent={Link}
+        className={className}
       />
     )
   }
