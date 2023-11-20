@@ -212,7 +212,13 @@ const ProductDetails = ({
             quantityInputId={product.productId}
             onChange={handleOnChangeQuantity}
           />
-          <Button {...addToCartButton} className={styles.btn} size="large" onClick={() => addToCart(product)}>
+          <Button
+            {...addToCartButton}
+            className={styles.btn}
+            size="large"
+            onClick={() => addToCart(product)}
+            disabled={product.quantity === '0'}
+          >
             Lägg i kundvagn
           </Button>
         </div>

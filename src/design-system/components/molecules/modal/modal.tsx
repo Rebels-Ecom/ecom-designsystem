@@ -13,9 +13,10 @@ export interface IModal {
   onClose: () => void
   backdropType?: TModalBackdrop
   dismissable?: boolean /** If true clicking outside the modal closes the modal.*/
+  hideCloseButton?: boolean;
 }
 
-function Modal({ open, children, onClose, backdropType = 'dark', dismissable }: IModal) {
+function Modal({ open, children, onClose, backdropType = 'dark', dismissable, hideCloseButton }: IModal) {
   const [selector, setSelector] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -48,16 +49,18 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable }: 
         transition={{ duration: 0.3, ease: 'easeOut' }}
         exit={{ opacity: 0, transition: { duration: 0.3 } }}
       >
-        <IconButton
-          type='button'
-          className={styles.buttonClose}
-          onClick={onClick}
-          icon='icon-x'
-          size="large"
-          isTransparent
-          noBorder
-          noPadding
-        />
+        {!hideCloseButton && (
+          <IconButton
+            type='button'
+            className={styles.buttonClose}
+            onClick={onClick}
+            icon='icon-x'
+            size="large"
+            isTransparent
+            noBorder
+            noPadding
+          />
+        )}
         {children}
       </motion.div>
     )

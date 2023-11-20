@@ -1,4 +1,5 @@
 import { IButton } from "../../atoms/button/button";
+import { TIcon } from "../../atoms/icon/icon";
 import { IInputField } from "./components/input-field";
 
 export type TFormSelectItem = {
@@ -23,6 +24,14 @@ export type TFormInputType = Omit<IInputField, "onChange" | "value"> &
     subtitle?: string;
     pattern?: TPattern;
     valid?: boolean;
+    /**
+     * Field name to compare value with, e.g. confirm-password wants to match value with new-password
+     */
+    alphaField?: string;
+    /**
+     * Field name to re-validate, e.g. trigger confirm-password validation when new-password value updates
+     */
+    betaField?: string;
     /**
      * Decides if a field should span 50% or 100% of parent width
      * @default 'half'
@@ -86,6 +95,17 @@ export type TFormFieldType = {
   // | TFormAssetsType
 );
 
+export type TFormLink = {
+  name: string;
+  href: string;
+}
+
+export type TFormResponseMessage = {
+  message: string;
+  title?: string;
+  icon?: TIcon;
+}
+
 export type IFormTemplateProps = {
   /** descriptive title to display on top of form */
   formTitle: string;
@@ -100,11 +120,11 @@ export type IFormTemplateProps = {
   /** all fields to be rendered inside the form */
   fields: TFormFieldType[];
   actions?: IButton[];
-  links?: Array<{
-    name: string;
-    href: string
-  }>
+  links?: TFormLink[];
   alignActions?: 'flex-start' | 'center' | 'flex-end';
   alignSubmitButtonHorizontally?: boolean
   generalErrorMessage?: any;
+  /** If true, a message will be displayed after submit response */
+  responseMessage?: TFormResponseMessage;
+  captcha?: JSX.Element;
 };

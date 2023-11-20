@@ -190,7 +190,7 @@ const ProductCardVertical = ({
               className={!loading ? styles.productCardBtn : ''}
               fullWidth
               onClick={() => addToCart(product)}
-              disabled={buttonLoading || loading || disabled}
+              disabled={buttonLoading || loading || disabled || quantity === '0'}
               loading={buttonLoading}
             >
               Lägg i kundvagn

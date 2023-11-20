@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { LoginForm } from './login-form'
+import { ILoginForm, LoginForm } from './login-form'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_horiontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 
@@ -13,9 +13,9 @@ export default meta
 type Story = StoryObj<typeof LoginForm>
 
 const LoginFormStoryTemplate: Story = {
-  render: ({ ...args }) => (
+  render: ({ ...args }: ILoginForm & { success?: boolean } ) => (
     <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-      <LoginForm {...args} />
+      <LoginForm {...args} responseMessage={ args.success ? { title: 'Success!', message: 'Success message...'} : undefined} loading={args.loading} />
     </div>
   ),
 }
@@ -29,10 +29,16 @@ export const LoginFormStory = {
     username: 'John@doe.se',
     passwordLabel: 'Lösenord',
     password: 'lösenord123',
-    forgotPasswordLabel: 'Glömt mitt lösenord?',
+    forgotPassword: {
+      name: 'Glömt mitt lösenord?',
+      href: '#'
+    },
     primarySubmitLabel: 'Logga in',
     secondarySubmitLabel: 'Bli e-handelskund',
-    offerLinkLabel: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
+    offerLink: {
+      name: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
+      href: '#'
+    },
     onSubmit: (e) => {},
     onPasswordChange: (e) => {},
     onUsernameChange: (e) => {},
@@ -48,7 +54,9 @@ export const LoginFormStory = {
         { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
         { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
       ],
-    }
+    },
+    success: false,
+    loading: false,
   },
 }
 

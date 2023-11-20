@@ -60,7 +60,7 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
         <BlogCard
           {...card}
           fullWidth={card.fullWidth}
-          maxChar={200}
+          maxChar={card.fullWidth ? 600 : 200}
         />
       </FlexItem>
     )
