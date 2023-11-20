@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, DividerLines, Loader, Placeholder, Button } from '../../atoms'
+import { Picture, DividerLines, Loader, Placeholder, Button, IconButton, Icon } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -27,7 +27,13 @@ const ProductCardVertical = ({
   defaultQuantity,
   campaign,
   disabled,
-  buttonLoading
+  buttonLoading,
+  limitedProductText,
+  showFavoriteIcon,
+  isFavoriteIconActive,
+  onFavoriteIconClick,
+  showAddToPurchaseListIcon,
+  onSaveToPurchaseListClick,
 }: IProductCard & TProductCardVertical) => {
   const {
     productId,
@@ -42,7 +48,11 @@ const ProductCardVertical = ({
     salesUnit,
     itemNumberPerSalesUnit,
     tags,
+    isLimitedProduct,
+    sellerOnly,
+    isAccessoryPotItem,
   } = product
+  //const isLimitedProduct = true
 
   const hideChangePackagingBtn = !productVariantList || productVariantList.length <= 1
 
@@ -55,9 +65,10 @@ const ProductCardVertical = ({
     onVariantsButtonClick && onVariantsButtonClick()
   }
 
-  const style: { [key: string]: string } = ({
+  const style: { [key: string]: string } = {
     '--campaign-color': campaign?.color ?? '#FFF',
-  })
+    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
+  }
 
   if (variantsOpen && selectedVariantId) {
     return (
@@ -71,19 +82,53 @@ const ProductCardVertical = ({
   } else {
     return (
       <div
-        className={cx(styles.productCardVertical, className ? className : '', {
-          [styles.campaign]: campaign?.title
-        })}
+        className={cx(
+          styles.productCardVertical,
+          className ? className : '',
+          {
+            [styles.campaign]: campaign?.title,
+          },
+          {
+            [styles.limitedProduct]: !campaign && isLimitedProduct && limitedProductText,
+          }
+        )}
         style={style}
       >
         {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
-        {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
+        {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
+        <div className={styles.tagsWrapper}>
+          {sellerOnly && <Icon icon={'icon-eye'} size={'large'}></Icon>}
+          {isAccessoryPotItem && (
+            <span>
+              <b style={{ fontSize: '1.2rem' }}>S</b>
+            </span>
+          )}
+          {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
+        </div>
         {loading ? (
           <Placeholder type="image" />
         ) : (
-          <div className={styles.imageWrapper}>
-            <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl} />
-          </div>
+          <>
+            {productUrl && Link ? (
+              <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
+                <Picture
+                  {...productImage}
+                  classNamePicture={styles.cardPicture}
+                  classNameImg={`${styles.cardImage}`}
+                  fallbackImageUrl={fallbackProductImageUrl}
+                />
+              </Link>
+            ) : (
+              <div className={styles.imageWrapper}>
+                <Picture
+                  {...productImage}
+                  classNamePicture={styles.cardPicture}
+                  classNameImg={`${styles.cardImage}`}
+                  fallbackImageUrl={fallbackProductImageUrl}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {loading ? (
@@ -107,18 +152,20 @@ const ProductCardVertical = ({
             <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
           </div>
         )}
-        {changePackagingButton && <Button
-          {...changePackagingButton}
-          surface="secondary"
-          iconRight={{ icon: 'icon-layers' }}
-          rounded
-          fullWidth
-          onClick={() => handleVariantBtnClick()}
-          disabled={loading}
-          className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
-        >
-          Byt förpackning
-        </Button>}
+        {changePackagingButton && (
+          <Button
+            {...changePackagingButton}
+            surface="secondary"
+            iconRight={{ icon: 'icon-layers' }}
+            rounded
+            fullWidth
+            onClick={() => handleVariantBtnClick()}
+            disabled={loading}
+            className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
+          >
+            Byt förpackning
+          </Button>
+        )}
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'p_long'} />
@@ -136,18 +183,42 @@ const ProductCardVertical = ({
             onChange={handleOnChangeQuantity}
           />
         )}
-        {!hideCartButton &&
-          <Button
-            {...addToCartButton}
-            className={!loading ? styles.productCardBtn : ''}
-            fullWidth
-            onClick={() => addToCart(product)}
-            disabled={buttonLoading || loading || disabled || quantity === '0'}
-            loading={buttonLoading}
-          >
-            Lägg i kundvagn
-          </Button>
-        }
+        {!hideCartButton && (
+          <div className={styles.cartButtonWrapper}>
+            <Button
+              {...addToCartButton}
+              className={!loading ? styles.productCardBtn : ''}
+              fullWidth
+              onClick={() => addToCart(product)}
+              disabled={buttonLoading || loading || disabled || quantity === '0'}
+              loading={buttonLoading}
+            >
+              Lägg i kundvagn
+            </Button>
+            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+              <IconButton
+                type="button"
+                icon={'icon-file-plus'}
+                className={styles.purchaseListIcon}
+                onClick={() => onSaveToPurchaseListClick()}
+                size="large"
+                isTransparent
+                noBorder
+              />
+            )}
+            {showFavoriteIcon && onFavoriteIconClick && (
+              <IconButton
+                type="button"
+                icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
+                className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
+                onClick={() => onFavoriteIconClick()}
+                size="large"
+                isTransparent
+                noBorder
+              />
+            )}
+          </div>
+        )}
       </div>
     )
   }

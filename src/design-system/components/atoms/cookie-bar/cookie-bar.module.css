@@ -1,0 +1,43 @@
+.cookieBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: var(--background);
+  z-index: var(--menu-z-index);
+  box-shadow: 0px 0px 4px 0px var(--border-grey);
+  
+  & .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  & .icon {
+    font-size: 2rem;
+    color: var(--color-text-default);
+  }
+
+  & .text {
+    color: var(--color-text-default);
+    max-width: var(--content-max-width-text);
+    text-align: center;
+    font-size: 0.875rem;
+    margin: 0;
+    margin-right: 1rem;
+
+    @media (min-width: 48em) {
+      text-align: left;
+    }
+  }
+
+  & .link {
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

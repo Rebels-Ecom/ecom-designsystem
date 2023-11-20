@@ -17,14 +17,14 @@ export type TFilterType = 'single' | 'multi' | 'range'
 
 const Filter = ({id, name, filterType, options, selectedOptions, updateFilterSelection, disabled} : IFilter) => {
 
-    const handleMultiselectChange = (option : ISelectOption) => {
-        updateFilterSelection && updateFilterSelection(option.value)
+    const handleChange = (option : ISelectOption) => {
+        updateFilterSelection && updateFilterSelection(option.value, option.name)
     }
 
     function getFilterPerType( id: string, name: string, filterType: TFilterType, options: Array<ISelectOption>, selectedOpt: Array<string> ) {
         switch(filterType){
             case 'single':
-                return <SingleSelect id={id} name={name} options={options} onChange={handleMultiselectChange}/>
+                return <SingleSelect id={id} name={name} options={options} onChange={handleChange} />
             case 'range':
                 return <div>Range filter</div>
             case 'multi':
@@ -36,7 +36,7 @@ const Filter = ({id, name, filterType, options, selectedOptions, updateFilterSel
                         icon={{ icon: 'icon-chevron-down' }}
                         options={options}
                         selectedOptions={selectedOpt}
-                        onToggleOption={handleMultiselectChange}
+                        onToggleOption={handleChange}
                         disabled={disabled}
                     />
                 )

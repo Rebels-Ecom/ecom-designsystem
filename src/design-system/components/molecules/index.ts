@@ -57,3 +57,4 @@ export { DesktopNavigation } from './navigation/desktop-navigation/desktop-navig
 export { Form } from './form/form'
 export { Table } from './table/table'
 export { DeliveryInfoBar } from './delivery-info-bar/delivery-info-bar'
+export { SelectList } from './select-list/select-list'

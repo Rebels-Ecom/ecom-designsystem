@@ -34,7 +34,6 @@ export const UILinkStory = {
     isExternal: true,
     target: null,
     title: 'Go to some page',
-    size: 'default',
     onSurface: 'transparent',
   }
 }
@@ -47,7 +46,6 @@ export const UILinkBlogStory = {
     isExternal: true,
     target: null,
     title: 'Läs mer',
-    size: 'default',
     onSurface: 'transparent',
   }
 }

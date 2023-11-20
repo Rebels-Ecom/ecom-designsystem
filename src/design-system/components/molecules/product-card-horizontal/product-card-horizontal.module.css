@@ -113,18 +113,22 @@
 
   & .buttonsWrapper {
     display: flex;
+    flex-direction: column;
     align-self: flex-end;
     align-items: flex-end;
     margin-left: auto;
+    gap: 0.5rem;
     width: 100%;
     
     @media (min-width: 48rem) {
+      flex-direction: row;
       width: auto;
       padding: 1rem 0;
     }
 
     & .productCardBtn {
       flex: 1;
+      width: 100%;
       
       & .cartBtnIcon {
         margin-right: 1rem;

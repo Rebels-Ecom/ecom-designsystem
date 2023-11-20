@@ -1,21 +1,63 @@
 import React from 'react'
-import { Icon } from '../../atoms'
+import { Icon, IconLink, UILink } from '../../atoms'
 import styles from './order-item.module.css'
 import { Tag } from '../../atoms/tag/tag'
+import cx from 'classnames';
 
 export interface IOrderItem {
+  orderNumber?: string; // TODO: make required?
+  orderNumberLabel?: string; // TODO: make required?
+  orderStatus?: string; // TODO: make required?
+  deliveryDate?: string
+  deliveryDateLabel?: string;
+  linkComponent: any;
+  linkUrl: string;
+  downloadUrl?: string;
+  // Defines if border should be added
+  border?: boolean;
+  onDownload?: () => void;
+  downloadLabel?: string;
+
+
   title?: string
   children: React.ReactNode
   orderDate?: string
-  deliveryDate?: string
-  orderStatus?: string
-  linkUrl?: string
-  linkComponent: any
   onClick?: () => void
 }
 
-function OrderItem({ title, children, orderDate, deliveryDate, orderStatus, linkUrl, linkComponent: Link, onClick }: IOrderItem) {
-  return (
+const OrderItem = ({
+  orderNumber,
+  orderNumberLabel,
+  title,
+  children,
+  orderDate,
+  deliveryDate,
+  deliveryDateLabel,
+  orderStatus,
+  linkUrl,
+  linkComponent: Link,
+  onClick,
+  onDownload,
+  downloadLabel,
+  border
+}: IOrderItem) => {
+  return 1 > 0 ? (
+    <div className={cx(styles.orderItem, {[styles.border]: border })}>
+      <div className={styles.firstRow}>
+        {orderNumber && orderNumberLabel && <Link to={linkUrl}><h4 className={styles.orderNumber} onClick={onClick}>{`${orderNumberLabel} ${orderNumber}`}</h4></Link>}
+        <div className={styles.statusWrapper}>
+          {orderStatus && <span className={styles.status}>{orderStatus}</span>}
+          <Link to={linkUrl}><h4 className={styles.orderNumber} onClick={onClick}></h4><Icon className={styles.icon} icon={'icon-chevrons-right'}></Icon></Link>
+        </div>
+      </div>
+      <div className={styles.secondRow}>
+        {deliveryDate && deliveryDateLabel &&  <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
+        {onDownload && downloadLabel && (
+          <button className={styles.downloadButton} onClick={onDownload} type='button'>{downloadLabel}</button>
+        )}
+      </div>
+    </div>
+  ) : (
     <div className={styles.orderItem}>
       {linkUrl ? (
         <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick}>
@@ -28,7 +70,7 @@ function OrderItem({ title, children, orderDate, deliveryDate, orderStatus, link
             {title && <h4 className={styles.title}>{title}</h4>}
             <div>{children}</div>
           </div>
-          {linkUrl && <Icon icon={'icon-chevrons-right'}></Icon>}
+          {linkUrl && <Link to={linkUrl}><Icon icon={'icon-chevrons-right'}></Icon></Link>}
         </Link>
       ) : (
         <div>{children}</div>

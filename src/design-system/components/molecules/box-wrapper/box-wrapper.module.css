@@ -7,6 +7,9 @@
     padding: 1rem;
     background: var(--background);
 
+    &.light {
+        background-color: var(--cta-x-default);
+    }
     
     @media(min-width: 64em) {
         padding: 1rem 3.75rem 2.5rem 3.75rem;

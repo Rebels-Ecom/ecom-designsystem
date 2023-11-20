@@ -11,18 +11,18 @@ import { IPicture } from '../../atoms/picture/picture'
 export type TCardDisplayType = 'vertical' | 'horizontal'
 
 export type TProductCardVertical = {
-  cardDisplay: 'vertical';
-  productImage: IPicture;
-  variantsOpen?: boolean;
-  handlePackageChange: CallableFunction;
-  selectedVariantId?: string;
-  onVariantsButtonClick: CallableFunction;
+  cardDisplay: 'vertical'
+  productImage: IPicture
+  variantsOpen?: boolean
+  handlePackageChange: CallableFunction
+  selectedVariantId?: string
+  onVariantsButtonClick: CallableFunction
 }
 
 export type TProductCardHorizontal = {
-  cardDisplay: 'horizontal';
-  onClickRemoveProduct?: CallableFunction;
-  removingProduct?: boolean;
+  cardDisplay: 'horizontal'
+  onClickRemoveProduct?: CallableFunction
+  removingProduct?: boolean
 }
 
 export interface IProductCard {
@@ -32,7 +32,7 @@ export interface IProductCard {
    * Sets a custom default quantity to start from
    * @default 0
    */
-  defaultQuantity?: string;
+  defaultQuantity?: string
   addToCartButton: IButton
   addToCart: CallableFunction
   onChangeQuantity?: CallableFunction
@@ -42,15 +42,21 @@ export interface IProductCard {
   onRemoveProduct?: CallableFunction
   productQuantityDisabled?: boolean
   className?: string
-  changePackagingButton?: IButton;
-  border?: boolean;
+  changePackagingButton?: IButton
+  border?: boolean
   campaign?: {
-    title: string;
-    color: string;
+    title: string
+    color: string
   }
-  loading: boolean;
-  buttonLoading?: boolean;
-  disabled?: boolean;
+  loading: boolean
+  buttonLoading?: boolean
+  disabled?: boolean
+  limitedProductText?: string
+  showFavoriteIcon?: boolean
+  isFavoriteIconActive?: boolean
+  onFavoriteIconClick?: CallableFunction
+  showAddToPurchaseListIcon?: boolean
+  onSaveToPurchaseListClick?: CallableFunction
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -73,11 +79,16 @@ function ProductCard({
   campaign,
   border,
   disabled,
-  buttonLoading
+  buttonLoading,
+  limitedProductText,
+  showFavoriteIcon,
+  isFavoriteIconActive,
+  onFavoriteIconClick,
+  showAddToPurchaseListIcon,
+  onSaveToPurchaseListClick,
 }: TProductCard) {
-  
   if (!cardDisplay) {
-    throw new Error("cardDisplay must be assigned");
+    throw new Error('cardDisplay must be assigned')
   }
 
   const { productId, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
@@ -86,7 +97,7 @@ function ProductCard({
     ...product,
     productImage: getProductPicture(productId, productImageUrl),
     quantity: quantity ? quantity : '1',
-    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * ((defaultQuantity ?? quantity) ? parseInt(defaultQuantity ?? quantity) : 0)),
+    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
     selectedVariantId: productId,
   })
 
@@ -95,7 +106,7 @@ function ProductCard({
       const newProduct = {
         ...prevState,
         quantity: productQuantity.toString(),
-        totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity)
+        totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity),
       }
 
       onChangeQuantity?.(newProduct)
@@ -134,7 +145,7 @@ function ProductCard({
   if (cardDisplay === 'horizontal') {
     return (
       <ProductCardHorizontal
-        cardDisplay='horizontal'
+        cardDisplay="horizontal"
         loading={loading}
         product={myProduct}
         onChangeQuantity={handleOnChangeQuantity}
@@ -151,13 +162,19 @@ function ProductCard({
         border={border}
         disabled={disabled}
         buttonLoading={buttonLoading}
+        limitedProductText={limitedProductText}
+        showFavoriteIcon={showFavoriteIcon}
+        isFavoriteIconActive={isFavoriteIconActive}
+        onFavoriteIconClick={onFavoriteIconClick}
+        showAddToPurchaseListIcon={showAddToPurchaseListIcon}
+        onSaveToPurchaseListClick={onSaveToPurchaseListClick}
       />
     )
   }
   if (cardDisplay === 'vertical') {
     return (
       <ProductCardVertical
-        cardDisplay='vertical'
+        cardDisplay="vertical"
         loading={loading}
         product={myProduct}
         productImage={myProduct.productImage}
@@ -177,11 +194,17 @@ function ProductCard({
         campaign={campaign}
         disabled={disabled}
         buttonLoading={buttonLoading}
+        limitedProductText={limitedProductText}
+        showFavoriteIcon={showFavoriteIcon}
+        isFavoriteIconActive={isFavoriteIconActive}
+        onFavoriteIconClick={onFavoriteIconClick}
+        showAddToPurchaseListIcon={showAddToPurchaseListIcon}
+        onSaveToPurchaseListClick={onSaveToPurchaseListClick}
       />
     )
   }
 
-  return null;
+  return null
 }
 
 export { ProductCard }

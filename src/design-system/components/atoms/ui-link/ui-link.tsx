@@ -4,12 +4,9 @@ import { Icon, TIcon } from '../icon/icon'
 import { ILink } from '../../../../types/links'
 import { TSurface } from '../../../../types/surface'
 
-export type TSize = 'default' | 'large'
-
 export interface IUILink extends ILink {
   iconLeft?: TIcon
   iconRight?: TIcon
-  size: TSize
   onSurface: TSurface
   children: React.ReactNode
 }
@@ -24,9 +21,8 @@ const UILink = ({
   isExternal,
   title,
   className,
-  iconLeft: IconLeft,
-  iconRight: IconRight,
-  size = 'default',
+  iconLeft,
+  iconRight,
   onSurface = 'transparent',
 }: IUILink) => {
   const Tag = isExternal ? 'a' : Link
@@ -36,19 +32,15 @@ const UILink = ({
       href={isExternal ? href : undefined}
       target={target}
       title={title}
-      className={cx(styles.link, styles[size], styles[onSurface], IconLeft && styles.withIconLeft, IconRight && styles.withIconRight, className)}
+      className={cx(
+        styles.link,
+        styles[onSurface],
+        className
+      )}
     >
-      {IconLeft && (
-        <span className={styles.iconLeft}>
-          <Icon icon={IconLeft} className={styles.icon} />
-        </span>
-      )}
+      {iconLeft && <Icon icon={iconLeft} className={cx(styles.icon, styles.left)} />}
       <span className={styles.linkText}>{children}</span>
-      {IconRight && (
-        <span className={styles.iconRight}>
-          <Icon icon={IconRight} className={styles.icon} />
-        </span>
-      )}
+      {iconRight && <Icon icon={iconRight} className={cx(styles.icon, styles.right)} />}
     </Tag>
   )
 }
