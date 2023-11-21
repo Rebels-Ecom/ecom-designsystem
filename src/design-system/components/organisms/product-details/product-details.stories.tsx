@@ -130,6 +130,7 @@ export const ProductDetailsStory = {
       description: 'Campaign description',
       subDescription: 'Campaign sub description',
     },
+    addToCartBtnLabel: 'Lägg i varukorg',
   },
 }
 
@@ -140,6 +141,7 @@ export const ProductDetailsStory_Wine = {
     productDetail: productDetailsArgsWine,
     changePackagingButton: ChangePackagingButtonStory.args,
     addToCart: ButtonProductCardStory.args,
+    addToCartBtnLabel: 'Lägg i varukorg',
   },
 }
 
@@ -150,6 +152,7 @@ export const ProductDetailsStory_Wine_NoVariants = {
     productDetail: productDetailsArgsWine,
     changePackagingButton: ChangePackagingButtonStory.args,
     addToCart: ButtonProductCardStory.args,
+    addToCartBtnLabel: 'Lägg i varukorg',
   },
 }
 
@@ -160,5 +163,6 @@ export const ProductDetailsStory_Wine_VariantFallbackImg = {
     productDetail: productDetailsArgsWine,
     changePackagingButton: ChangePackagingButtonStory.args,
     addToCart: ButtonProductCardStory.args,
+    addToCartBtnLabel: 'Lägg i varukorg',
   },
 }

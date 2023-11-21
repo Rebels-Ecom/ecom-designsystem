@@ -36,6 +36,7 @@ export interface IProductDetails extends IProduct {
   changePackagingButton: IButton
   addToCartButton: IButton
   addToCart: CallableFunction
+  addToCartBtnLabel: string
   className: string
   campaign?: TCampaignBox
   limitedProduct?: TCampaignBox
@@ -55,6 +56,7 @@ const ProductDetails = ({
   changePackagingButton,
   addToCartButton,
   addToCart,
+  addToCartBtnLabel,
   campaign,
   limitedProduct,
 }: IProductDetails) => {
@@ -75,7 +77,7 @@ const ProductDetails = ({
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
-    const quantity = parseInt(e.target.value) || 1
+    const quantity = parseInt(e.target.value) || 0
     setProduct({
       ...product,
       quantity: quantity.toString(),
@@ -212,14 +214,8 @@ const ProductDetails = ({
             quantityInputId={product.productId}
             onChange={handleOnChangeQuantity}
           />
-          <Button
-            {...addToCartButton}
-            className={styles.btn}
-            size="large"
-            onClick={() => addToCart(product)}
-            disabled={product.quantity === '0'}
-          >
-            Lägg i kundvagn
+          <Button {...addToCartButton} className={styles.btn} size="large" onClick={() => addToCart(product)} disabled={product.quantity === '0'}>
+            {addToCartBtnLabel}
           </Button>
         </div>
       </div>
