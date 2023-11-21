@@ -128,7 +128,7 @@ function ProductCard({
     setProduct((prevState) => ({
       ...prevState,
       productId: selectedVariant.variantId,
-      productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
+      productImage: selectedVariant.image ?? fallbackProductImageUrl,
       country: selectedVariant.country,
       packaging: selectedVariant.variantName,
       priceStr: selectedVariant.listPricePerUnitString,

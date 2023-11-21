@@ -42,7 +42,7 @@ function ProductSearchResultItem({ productId, productName, productImage, product
         <ProductItem productName={productName} productImage={productImage}></ProductItem>
         {productVariantList && productVariantList.length > 1 ? (
           <IconButton
-            type='button'
+            type="button"
             icon={showVariants ? 'icon-chevron-up' : 'icon-chevron-down'}
             onClick={handleShowProductVariants}
             size="large"
@@ -50,28 +50,16 @@ function ProductSearchResultItem({ productId, productName, productImage, product
             noBorder
           ></IconButton>
         ) : (
-          <IconButton
-            type='button'
-            icon={'icon-plus-circle'}
-            onClick={() => handleOnClickProduct(productId)}
-            size="large"
-            isTransparent
-            noBorder
-          />
+          <IconButton type="button" icon={'icon-plus-circle'} onClick={() => handleOnClickProduct(productId)} size="large" isTransparent noBorder />
         )}
       </div>
       {showVariants && productVariantList && productVariantList.length > 1 && (
         <ul className={styles.productVariantsList}>
           {productVariantList.map((variant) => {
-            const variantImage = getProductPicture(variant.variantId, variant.imageUrl)
             return (
               <li className={styles.productItemWrapper} key={variant.variantId}>
-                <ProductItem productName={variant.variantName} productImage={variantImage}></ProductItem>
-                <IconButton
-                  icon='icon-plus-circle'
-                  type='button'
-                  onClick={() => handleOnClickProduct(variant.variantId)} size="large"
-                />
+                <ProductItem productName={variant.variantName} productImage={variant.image}></ProductItem>
+                <IconButton icon="icon-plus-circle" type="button" onClick={() => handleOnClickProduct(variant.variantId)} size="large" />
               </li>
             )
           })}
