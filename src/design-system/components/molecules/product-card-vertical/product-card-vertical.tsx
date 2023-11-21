@@ -23,6 +23,7 @@ const ProductCardVertical = ({
   onVariantsButtonClick,
   className,
   defaultQuantity,
+  listPriceLabel,
   campaign,
   disabled,
   buttonLoading,
@@ -46,13 +47,13 @@ const ProductCardVertical = ({
     salesUnit,
     itemNumberPerSalesUnit,
     tags,
-    isLimitedProduct,
+    //isLimitedProduct,
     sellerOnly,
     isAccessoryPotItem,
   } = product
-  //const isLimitedProduct = true
+  const isLimitedProduct = product.productId === '1109611' || product.productId === '1174411' ? true : false
 
-  const hideChangePackagingBtn = !productVariantList || productVariantList.length <= 1
+  const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
@@ -132,7 +133,8 @@ const ProductCardVertical = ({
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'heading'} />
-            <Placeholder type={'p_short'} />
+            <Placeholder type={'heading'} />
+            <Placeholder type={'heading'} />
             <Placeholder type={'p_long'} />
             <Placeholder type={'p_long'} />
           </div>
@@ -146,7 +148,7 @@ const ProductCardVertical = ({
               <h5 className={styles.heading}>{productName}</h5>
             )}
             <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
+            <p className={cx(styles.textPurple, 'bodyS')}>{`${listPriceLabel ? listPriceLabel : 'Listpris'}: ${priceStr} kr/st`}</p>
           </div>
         )}
         <Button
@@ -156,9 +158,9 @@ const ProductCardVertical = ({
           rounded
           fullWidth
           onClick={() => handleVariantBtnClick()}
-          disabled={loading}
+          disabled={loading || packageBtnDisabled}
         >
-          Byt förpackning
+          {packaging}
         </Button>
         {loading ? (
           <div className={styles.placeholderContent}>

@@ -43,6 +43,7 @@ export interface IProductCard {
   defaultQuantity?: string
   onRemoveProduct?: CallableFunction
   hideRemoveButton?: boolean
+  listPriceLabel?: string
   campaign?: {
     title: string
     color: string
@@ -74,6 +75,7 @@ function ProductCard({
   defaultQuantity,
   onRemoveProduct,
   hideRemoveButton,
+  listPriceLabel,
   campaign,
   limitedProductText,
   showFavoriteIcon,
@@ -188,6 +190,7 @@ function ProductCard({
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
+        listPriceLabel={listPriceLabel}
         campaign={campaign}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}

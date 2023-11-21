@@ -1,9 +1,9 @@
 .tagsList {
     display: flex;
-    flex-wrap: wrap;
     gap: 0.25rem;
     list-style: none;
     white-space: nowrap;
+    overflow-x: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
     margin: 0.5rem 0;
