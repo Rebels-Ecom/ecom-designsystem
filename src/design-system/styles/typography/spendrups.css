@@ -172,7 +172,7 @@ h4,
 .headingS {
   font-weight: var(--font-weight-bold);
   font-size: var(--heading-s-mobile-font-size);
-  line-height: var(--heading-s-mobie-line-height);
+  line-height: var(--heading-s-mobile-line-height);
 
   @media (min-width: 64em) {
     font-size: var(--heading-s-desktop-font-size);

@@ -8,12 +8,16 @@
     flex-direction: column;
     padding: 2rem 0rem;
     
-    @media (min-width: 64em) {
+    @media (min-width: 64rem) {
+      gap: 3rem;
+    }
+    @media (min-width: 85.375rem) {
       flex-direction: row;
       padding: 4rem 0;
+      gap: 0;
     }
   }
-  }
+}
   
   .footerLeft {
     width:100%;
