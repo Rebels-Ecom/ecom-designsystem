@@ -129,7 +129,6 @@ function ProductCard({
       ...prevState,
       productId: selectedVariant.variantId,
       productImage: selectedVariant.image ?? fallbackProductImageUrl,
-      country: selectedVariant.country,
       packaging: selectedVariant.variantName,
       priceStr: selectedVariant.listPricePerUnitString,
       price: selectedVariant.price,

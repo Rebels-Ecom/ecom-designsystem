@@ -19,6 +19,7 @@
   
       @media (min-width: 64em) {
         flex: 1 1 50%;
+        height: 100%;
         max-width: var(--content-max-width-text)
       }
 
@@ -46,35 +47,28 @@
 
           & .cardPicture {
             display: block;
-            max-height: 50vh;
+            max-height: 27rem;
             text-align: center;
           }
           
           & .cardImage{
             height: 100%;
             width: 100%;
-            max-height: 50vh;
+            max-height: 27rem;
             object-fit: contain;
           }
         }
       }
       &.rightContent {
+        padding-right: 10%;
         & .quantityInput {
           width: 100%;
           margin: 0.5rem 0;
         }
       
         & .productVariants {
-          @media (min-width: 64em) {
-            height: 80%;
-            margin: auto;
-          }
-      
-          & ul, & button {
+          & ul{
             width: 100%;
-            @media (min-width: 64em) {
-              width: 80%;
-            }
           }
         }
         
@@ -106,7 +100,7 @@
           width: 100%; 
       
           @media (min-width: 64em) {
-              width: auto;
+              width: fit-content;
           }
         }
       }
@@ -140,6 +134,16 @@
   .tagsList::-webkit-scrollbar {
     position: relative;
     width: 100%;
+  }
+
+  .buttonsWrapper{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .favoriteIconActive {
+    color: var(--orange-500);
   }
 
   

@@ -47,11 +47,11 @@ const ProductCardVertical = ({
     salesUnit,
     itemNumberPerSalesUnit,
     tags,
-    //isLimitedProduct,
+    isLimitedProduct,
     sellerOnly,
     isAccessoryPotItem,
   } = product
-  const isLimitedProduct = product.productId === '1109611' || product.productId === '1174411' ? true : false
+  //const isLimitedProduct = product.productId === '1109611' || product.productId === '1174411' ? true : false
 
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
@@ -197,7 +197,7 @@ const ProductCardVertical = ({
                 type="button"
                 icon={'icon-file-plus'}
                 className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick()}
+                onClick={() => onSaveToPurchaseListClick(productId)}
                 size="large"
                 isTransparent
                 noBorder
@@ -208,7 +208,7 @@ const ProductCardVertical = ({
                 type="button"
                 icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
                 className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick()}
+                onClick={() => onFavoriteIconClick(productId)}
                 size="large"
                 isTransparent
                 noBorder

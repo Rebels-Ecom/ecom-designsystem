@@ -15,6 +15,7 @@ import { LoadingBars } from '../../molecules'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
+import { IconButton } from '../../atoms/icon-button/icon-button'
 
 export interface IProductSpec {
   name: string
@@ -40,6 +41,11 @@ export interface IProductDetails extends IProduct {
   className: string
   campaign?: TCampaignBox
   limitedProduct?: TCampaignBox
+  showFavoriteIcon?: boolean
+  isFavoriteIconActive?: boolean
+  onFavoriteIconClick?: CallableFunction
+  showAddToPurchaseListIcon?: boolean
+  onSaveToPurchaseListClick?: CallableFunction
 }
 
 const ProductDetails = ({
@@ -53,12 +59,15 @@ const ProductDetails = ({
   itemNumberPerSalesUnit,
   productVariantList,
   productDetail,
-  changePackagingButton,
-  addToCartButton,
   addToCart,
   addToCartBtnLabel,
   campaign,
   limitedProduct,
+  showFavoriteIcon,
+  isFavoriteIconActive,
+  onFavoriteIconClick,
+  showAddToPurchaseListIcon,
+  onSaveToPurchaseListClick,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     productId,
@@ -91,10 +100,10 @@ const ProductDetails = ({
 
   function handlePackageChange(selectedVariant: any) {
     const quantity = product.productId === selectedVariant.variantId ? parseInt(product.quantity) : 1
-    setProduct({
-      ...product,
+    setProduct((prevState) => ({
+      ...prevState,
       productId: selectedVariant.variantId,
-      productImage: getProductPicture(selectedVariant.variantId, selectedVariant.imageUrl ? selectedVariant.imageUrl : fallbackProductImageUrl),
+      productImage: selectedVariant.image ?? fallbackProductImageUrl,
       packaging: selectedVariant.variantName,
       priceStr: selectedVariant.listPricePerUnitString,
       price: selectedVariant.price,
@@ -103,7 +112,7 @@ const ProductDetails = ({
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
-    })
+    }))
 
     setVariantsListOpen(false)
   }
@@ -125,7 +134,7 @@ const ProductDetails = ({
   if (variantsListOpen) {
     return (
       <div className={cx(styles.productDetails)}>
-        <div className={styles.imageOuterWrapper}>
+        <div className={cx(styles.content, styles.leftContent)}>
           <Above breakpoint="md">
             {(matches: any) =>
               matches &&
@@ -143,12 +152,14 @@ const ProductDetails = ({
             />
           </div>
         </div>
-        <ProductVariantList
-          className={cx(styles.contentWrapper, styles.productVariants)}
-          variantsList={product.productVariantList}
-          onVariantSelect={handlePackageChange}
-          selectedVariantId={product.selectedVariantId}
-        />
+        <div className={cx(styles.content, styles.rightContent)}>
+          <ProductVariantList
+            className={cx(styles.contentWrapper, styles.productVariants)}
+            variantsList={product.productVariantList}
+            onVariantSelect={handlePackageChange}
+            selectedVariantId={product.selectedVariantId}
+          />
+        </div>
       </div>
     )
   } else {
@@ -179,6 +190,7 @@ const ProductDetails = ({
           <div>
             <h3 className={styles.heading}>{product.productName}</h3>
             <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
+            <p className={cx(styles.textGrey, 'bodyS')}>{`Artikelnummer: ${product.productId}`}</p>
           </div>
 
           {campaign?.title && <CampaignBox {...campaign} />}
@@ -195,14 +207,14 @@ const ProductDetails = ({
 
           {Array.isArray(product.productVariantList) && product.productVariantList.length > 1 && (
             <Button
-              {...changePackagingButton}
+              type={'button'}
               className={styles.btn}
-              surface="secondary"
+              surface={'secondary'}
               iconRight={{ icon: 'icon-layers' }}
               rounded
               onClick={() => handleVariantsButtonClick()}
             >
-              Byt förpackning
+              {product.packaging}
             </Button>
           )}
           <ProductQuantityInput
@@ -214,9 +226,36 @@ const ProductDetails = ({
             quantityInputId={product.productId}
             onChange={handleOnChangeQuantity}
           />
-          <Button {...addToCartButton} className={styles.btn} size="large" onClick={() => addToCart(product)} disabled={product.quantity === '0'}>
-            {addToCartBtnLabel}
-          </Button>
+          <div className={styles.buttonsWrapper}>
+            <Button
+              className={styles.btn}
+              type={'button'}
+              surface={'primary'}
+              size="large"
+              onClick={() => addToCart(product)}
+              disabled={product.quantity === '0'}
+            >
+              {addToCartBtnLabel}
+            </Button>
+            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+              <IconButton
+                type="button"
+                icon={'icon-file-plus'}
+                className={styles.purchaseListIcon}
+                onClick={() => onSaveToPurchaseListClick(product.productId)}
+                size="large"
+              />
+            )}
+            {showFavoriteIcon && onFavoriteIconClick && (
+              <IconButton
+                type="button"
+                icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
+                className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
+                onClick={() => onFavoriteIconClick(product.productId)}
+                size="large"
+              />
+            )}
+          </div>
         </div>
       </div>
     )
