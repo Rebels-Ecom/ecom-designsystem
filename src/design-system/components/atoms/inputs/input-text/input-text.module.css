@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.fullWidth {
+  width: 100%;
+}
+
 .inputText {
   appearance: none;
   border-width: 0.063rem;
