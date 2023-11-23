@@ -18,6 +18,7 @@ export interface IHeading {
    * @default '0'
   */
   margin?: Array<number> | number;
+  color?: 'error'; // TODO: add more options if needed
 }
 
 function getHeadingSize(size: TOrder) {
@@ -48,7 +49,7 @@ function getHeadingAlignment(alignment: THeadingAlignment) {
   }
 }
 
-function Heading({ children, order = 3, align = 'left', noMargin, className, margin }: IHeading) {
+function Heading({ children, order = 3, align = 'left', noMargin, className = '', margin, color }: IHeading) {
   const marginValue = useMemo(() => {
     if (!margin && margin !== 0) {
       return "";
@@ -65,7 +66,19 @@ function Heading({ children, order = 3, align = 'left', noMargin, className, mar
   const Tag  = getHeadingSize(order);
 
   return (
-    <Tag className={cx(styles.heading, styles[getHeadingAlignment(align)], getHeadingSize(order), noMargin ? styles.noMargin : '', className ? className : '')} style={{ margin: marginValue }}>
+    <Tag
+      className={cx(
+        styles.heading,
+        styles[getHeadingAlignment(align)],
+        getHeadingSize(order),
+        {
+          [styles.noMargin]: noMargin,
+          [styles[color ?? '']]: color
+        },
+        className
+      )}
+      style={{ margin: marginValue }}
+    >
       {children}
     </Tag>
   )
