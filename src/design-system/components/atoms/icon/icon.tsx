@@ -54,6 +54,7 @@ export type TIcon =
   | 'icon-heart1'
   | 'icon-file-plus'
   | 'icon-eye'
+  | 'icon-save'
 
 export interface IIcon {
   icon: TIcon
