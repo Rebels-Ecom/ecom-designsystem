@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, DividerLines, Loader, Placeholder, Button, IconButton, Icon } from '../../atoms'
+import { Picture, Placeholder, Button, IconButton, Icon } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -13,6 +13,7 @@ const ProductCardVertical = ({
   loading = false,
   hideCartButton,
   addToCart,
+  addToCartBtnLabel,
   onChangeQuantity,
   productQuantityDisabled,
   linkComponent: Link,
@@ -154,7 +155,7 @@ const ProductCardVertical = ({
         <Button
           type={'button'}
           surface="secondary"
-          iconRight={{ icon: 'icon-layers' }}
+          iconRight={packageBtnDisabled ? undefined : { icon: 'icon-layers' }}
           rounded
           fullWidth
           onClick={() => handleVariantBtnClick()}
@@ -190,7 +191,7 @@ const ProductCardVertical = ({
               disabled={buttonLoading || loading || disabled || quantity === '0'}
               loading={buttonLoading}
             >
-              Lägg i kundvagn
+              {addToCartBtnLabel}
             </Button>
             {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
               <IconButton
@@ -201,6 +202,7 @@ const ProductCardVertical = ({
                 size="large"
                 isTransparent
                 noBorder
+                noPadding
               />
             )}
             {showFavoriteIcon && onFavoriteIconClick && (
@@ -212,6 +214,7 @@ const ProductCardVertical = ({
                 size="large"
                 isTransparent
                 noBorder
+                noPadding
               />
             )}
           </div>

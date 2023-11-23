@@ -1,4 +1,3 @@
-import { DividerLines } from '../../atoms/divider-lines/divider-lines'
 import { RadioButton } from '../../atoms/inputs/radio-button/radio-button'
 import { IPicture, Picture } from '../../atoms/picture/picture'
 import styles from './product-variant.module.css'
@@ -23,10 +22,9 @@ const ProductVariant = ({ image, productName, variantName, variantId, country, l
       <div className={styles.imageWrapper}>
         <Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />{' '}
       </div>
-      <div className={`${styles.content}`}>
+      <div className={`${styles.contentWrapper}`}>
         <p className={styles.heading}>{productName}</p>
         <p className={styles.heading}>{variantName}</p>
-        <DividerLines />
         <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${variantId} - ${country}`}</p>
         <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${listPricePerUnitString} kr/st`}</p>
       </div>
