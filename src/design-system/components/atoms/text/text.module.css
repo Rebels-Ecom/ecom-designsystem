@@ -7,6 +7,9 @@
     &.textUnderlined {text-decoration: underline;}
     &.textWithBottomBorder {border-bottom: 0.063rem solid #F1F1F1;}
     &.upperCase { text-transform: uppercase; }
+    &.error {
+        color: var(--error-red);
+    }
 }
 
 .linkText {

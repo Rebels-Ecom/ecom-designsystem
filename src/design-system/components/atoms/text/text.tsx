@@ -18,6 +18,7 @@ export interface IText {
   size?: TTextSize
   className?: string
   upperCase?: boolean;
+  color?: 'error'; // TODO: add more options if needed
 }
 
 function Text({
@@ -29,8 +30,9 @@ function Text({
   borderBottom = false,
   weight,
   size = 'regular',
-  className,
-  upperCase
+  className = '',
+  upperCase,
+  color
 }: IText) {
   function getTextAlignment(alignment: TTextAlignment) {
     switch (alignment) {
@@ -52,11 +54,14 @@ function Text({
           styles.text,
           styles.linkText,
           'p',
-          weight === 'bold' && styles.textBold,
-          underline && styles.textUnderlined,
-          borderBottom && styles.textWithBottomBorder,
           styles[getTextAlignment(align)],
-          className ? className : ''
+          {
+            [styles.textBold]: weight === 'bold',
+            [styles.textUnderlined]: underline,
+            [styles.textWithBottomBorder]: borderBottom,
+            [styles[color ?? '']]: color
+          },
+          className
         )}
       >
         {children}
@@ -69,12 +74,13 @@ function Text({
         'p',
         styles[getTextAlignment(align)],
         size === 'small' ? 'bodyS' : 'body',
-        className ? className : '',
+        className,
         {
           [styles.textBold]: weight === 'bold',
           [styles.textUnderlined]: underline,
           [styles.textWithBottomBorder]: borderBottom,
           [styles.upperCase]: upperCase,
+          [styles[color ?? '']]: color
         }
       )}
     >
