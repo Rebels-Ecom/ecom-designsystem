@@ -244,6 +244,9 @@ const ProductDetails = ({
                 className={styles.purchaseListIcon}
                 onClick={() => onSaveToPurchaseListClick(product.productId)}
                 size="large"
+                isTransparent
+                noBorder
+                noPadding
               />
             )}
             {showFavoriteIcon && onFavoriteIconClick && (
@@ -253,6 +256,9 @@ const ProductDetails = ({
                 className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
                 onClick={() => onFavoriteIconClick(product.productId)}
                 size="large"
+                isTransparent
+                noBorder
+                noPadding
               />
             )}
           </div>

@@ -35,32 +35,43 @@
         }
         
         & .imageWrapper {
-          padding: 2rem 4rem 2rem 0;
+          padding: 2rem;
           width: 70%;
           overflow: hidden;
+          @media (min-width: 64em) {
+            padding: 2rem 4rem 2rem 0;
+          }
           
           &.variantsListOpen {
-            @media (max-width: 48em) {
+            @media (min-width: 48em) {
               display: none;
             }
           }
 
           & .cardPicture {
             display: block;
-            max-height: 27rem;
+            max-height: 15rem;
             text-align: center;
+            @media (min-width: 64em) {
+              max-height: 27rem;
+            }
           }
           
           & .cardImage{
             height: 100%;
             width: 100%;
-            max-height: 27rem;
+            max-height: 15rem;
             object-fit: contain;
+            @media (min-width: 64em) {
+              max-height: 27rem;
+            }
           }
         }
       }
       &.rightContent {
-        padding-right: 10%;
+        @media (min-width: 64em) {
+          padding-right: 10%;
+      }
         & .quantityInput {
           width: 100%;
           margin: 0.5rem 0;
@@ -138,6 +149,7 @@
 
   .buttonsWrapper{
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     gap: 0.5rem;
   }
