@@ -15,12 +15,14 @@
     & .content {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1rem;
   
       @media (min-width: 64em) {
         flex: 1 1 50%;
         height: 100%;
-        max-width: var(--content-max-width-text)
+        /* max-width: var(--content-max-width-text); */
+        max-width: 50%;
+        gap: 0.5rem;
       }
 
       &.leftContent {
@@ -69,17 +71,26 @@
         }
       }
       &.rightContent {
+        
         @media (min-width: 64em) {
+          /* position: absolute;
+          max-height: 35rem; */
+          width: 50%;
+          top: 0;
+          bottom: 0;
+          right: 0;
           padding-right: 10%;
-      }
+        }
         & .quantityInput {
           width: 100%;
           margin: 0.5rem 0;
         }
       
         & .productVariants {
+          padding: 2rem 0;
           & ul{
             width: 100%;
+            max-height: 25rem;
           }
         }
         
@@ -106,6 +117,10 @@
           margin: 0;
           color: var(--color-text-decorative-purple);
         }
+
+        &.textGrey {
+          margin: 0.5rem 0;
+        }
       
         & .btn {
           width: 100%; 
@@ -121,24 +136,21 @@
   .tagsList {
     width: 100%;
     padding: 0 1rem;
-    position: absolute;
-    top: 1rem;
+    position: relative;
     display: flex;
     list-style: none;
     overflow-x: auto;
     white-space: nowrap;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    margin: 0.5rem 1rem;
+    margin: 1rem 0 0 0;
     & li {
       margin-right: 0.5rem;
       display: flex;
     }
     @media (min-width: 64em) {
-        position: relative;
-        margin: 0 0 1rem 0;
-        top: 0;
-        padding: 0;
+      position: relative;
+      padding: 0;
     }
   }
 

@@ -131,141 +131,115 @@ const ProductDetails = ({
     )
   }
 
-  if (variantsListOpen) {
-    return (
-      <div className={cx(styles.productDetails)}>
-        <div className={cx(styles.content, styles.leftContent)}>
-          <Above breakpoint="md">
-            {(matches: any) =>
-              matches &&
-              productDetail?.loaderValues &&
-              productDetail.loaderValues.length > 0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars}></LoadingBars>
-            }
-          </Above>
-          <div className={cx(styles.imageWrapper, styles.variantsListOpen)}>
-            <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
-            <Picture
-              {...product.productImage}
-              classNamePicture={styles.cardPicture}
-              classNameImg={`${styles.cardImage}`}
-              fallbackImageUrl={fallbackProductImageUrl}
-            />
-          </div>
+  return (
+    <div className={cx(styles.productDetails)}>
+      <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
+
+      <div className={cx(styles.content, styles.leftContent)}>
+        {productDetail?.loaderValues && productDetail.loaderValues.length > 0 && (
+          <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars} />
+        )}
+        <div className={styles.imageWrapper}>
+          <Picture
+            {...product.productImage}
+            classNamePicture={styles.cardPicture}
+            classNameImg={`${styles.cardImage}`}
+            fallbackImageUrl={fallbackProductImageUrl}
+          />
         </div>
-        <div className={cx(styles.content, styles.rightContent)}>
+      </div>
+
+      <div className={cx(styles.content, styles.rightContent)}>
+        {variantsListOpen ? (
           <ProductVariantList
             className={cx(styles.contentWrapper, styles.productVariants)}
             variantsList={product.productVariantList}
             onVariantSelect={handlePackageChange}
             selectedVariantId={product.selectedVariantId}
           />
-        </div>
-      </div>
-    )
-  } else {
-    return (
-      <div className={cx(styles.productDetails)}>
-        <div className={cx(styles.content, styles.leftContent)}>
-          <Above breakpoint="md">
-            {(matches: any) =>
-              matches &&
-              productDetail?.loaderValues &&
-              productDetail.loaderValues.length > 0 && <LoadingBars loadingBars={productDetail.loaderValues} className={styles.loadingBars} />
-            }
-          </Above>
+        ) : (
+          <>
+            <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Above>
+            <div>
+              <h3 className={styles.heading}>{product.productName}</h3>
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
+              <p className={cx(styles.textGrey, 'bodyS')}>{`Artikelnummer: ${product.productId}`}</p>
+            </div>
 
-          <div className={styles.imageWrapper}>
-            <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
-            <Picture
-              {...product.productImage}
-              classNamePicture={styles.cardPicture}
-              classNameImg={`${styles.cardImage}`}
-              fallbackImageUrl={fallbackProductImageUrl}
+            {campaign?.title && <CampaignBox {...campaign} />}
+
+            {!campaign && limitedProduct && <CampaignBox {...limitedProduct} />}
+
+            <div className={styles.specs}>
+              {Array.isArray(productDetail.visibleSpecs) &&
+                productDetail.visibleSpecs.length > 0 &&
+                productDetail.visibleSpecs.map((spec, index) => <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
+            </div>
+
+            {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
+
+            {Array.isArray(product.productVariantList) && product.productVariantList.length > 1 && (
+              <Button
+                type={'button'}
+                className={styles.btn}
+                surface={'secondary'}
+                iconRight={{ icon: 'icon-layers' }}
+                rounded
+                onClick={() => handleVariantsButtonClick()}
+              >
+                {product.packaging}
+              </Button>
+            )}
+            <ProductQuantityInput
+              className={styles.quantityInput}
+              salesUnit={product.salesUnit}
+              itemNumberPerSalesUnit={product.itemNumberPerSalesUnit}
+              totalPrice={product.totalPrice}
+              quantity={product.quantity}
+              quantityInputId={product.productId}
+              onChange={handleOnChangeQuantity}
             />
-          </div>
-        </div>
-
-        <div className={cx(styles.content, styles.rightContent)}>
-          <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Above>
-          <div>
-            <h3 className={styles.heading}>{product.productName}</h3>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
-            <p className={cx(styles.textGrey, 'bodyS')}>{`Artikelnummer: ${product.productId}`}</p>
-          </div>
-
-          {campaign?.title && <CampaignBox {...campaign} />}
-
-          {!campaign && limitedProduct && <CampaignBox {...limitedProduct} />}
-
-          <div className={styles.specs}>
-            {Array.isArray(productDetail.visibleSpecs) &&
-              productDetail.visibleSpecs.length > 0 &&
-              productDetail.visibleSpecs.map((spec, index) => <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
-          </div>
-
-          {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
-
-          {Array.isArray(product.productVariantList) && product.productVariantList.length > 1 && (
-            <Button
-              type={'button'}
-              className={styles.btn}
-              surface={'secondary'}
-              iconRight={{ icon: 'icon-layers' }}
-              rounded
-              onClick={() => handleVariantsButtonClick()}
-            >
-              {product.packaging}
-            </Button>
-          )}
-          <ProductQuantityInput
-            className={styles.quantityInput}
-            salesUnit={product.salesUnit}
-            itemNumberPerSalesUnit={product.itemNumberPerSalesUnit}
-            totalPrice={product.totalPrice}
-            quantity={product.quantity}
-            quantityInputId={product.productId}
-            onChange={handleOnChangeQuantity}
-          />
-          <div className={styles.buttonsWrapper}>
-            <Button
-              className={styles.btn}
-              type={'button'}
-              surface={'primary'}
-              size="large"
-              onClick={() => addToCart(product)}
-              disabled={product.quantity === '0'}
-            >
-              {addToCartBtnLabel}
-            </Button>
-            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-              <IconButton
-                type="button"
-                icon={'icon-file-plus'}
-                className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick(product.productId)}
+            <div className={styles.buttonsWrapper}>
+              <Button
+                className={styles.btn}
+                type={'button'}
+                surface={'primary'}
                 size="large"
-                isTransparent
-                noBorder
-                noPadding
-              />
-            )}
-            {showFavoriteIcon && onFavoriteIconClick && (
-              <IconButton
-                type="button"
-                icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
-                className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(product.productId)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-              />
-            )}
-          </div>
-        </div>
+                onClick={() => addToCart(product)}
+                disabled={product.quantity === '0'}
+              >
+                {addToCartBtnLabel}
+              </Button>
+              {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+                <IconButton
+                  type="button"
+                  icon={'icon-file-plus'}
+                  className={styles.purchaseListIcon}
+                  onClick={() => onSaveToPurchaseListClick(product.productId)}
+                  size="large"
+                  isTransparent
+                  noBorder
+                  noPadding
+                />
+              )}
+              {showFavoriteIcon && onFavoriteIconClick && (
+                <IconButton
+                  type="button"
+                  icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
+                  className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
+                  onClick={() => onFavoriteIconClick(product.productId)}
+                  size="large"
+                  isTransparent
+                  noBorder
+                  noPadding
+                />
+              )}
+            </div>
+          </>
+        )}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export { ProductDetails }
