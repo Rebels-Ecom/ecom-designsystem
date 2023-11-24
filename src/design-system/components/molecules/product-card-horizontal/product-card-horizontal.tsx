@@ -65,10 +65,9 @@ const ProductCardHorizontal = ({
               </div>
               <div className={styles.placeholderContent}>
                 <Placeholder type={'heading'} />
-                <DividerLines />
-                <Placeholder type={'p_short'} />
-                <Placeholder type={'p_short'} />
                 <Placeholder type={'p_long'} />
+                <Placeholder type={'p_short'} />
+                <Placeholder type={'p_short'} />
               </div>
             </>
           ) : (
