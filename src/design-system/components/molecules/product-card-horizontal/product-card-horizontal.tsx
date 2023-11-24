@@ -12,6 +12,7 @@ const ProductCardHorizontal = ({
   product,
   loading = false,
   addToCart,
+  addToCartBtnLabel,
   hideCartButton,
   onClickRemoveProduct,
   hideRemoveButton,
@@ -110,18 +111,16 @@ const ProductCardHorizontal = ({
               {!hideCartButton ? (
                 <div className={styles.buttonsWrapper}>
                   {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-                    <Button
-                      type={'button'}
-                      surface={'primary'}
-                      className={!loading ? styles.productCardBtn : ''}
-                      size={'x-small'}
-                      onClick={() => onSaveToPurchaseListClick()}
-                      loading={buttonLoading}
-                    >
-                      <Icon icon={'icon-file-text'} className={styles.cartBtnIcon}></Icon>
-                      {/* TODO: replace this hc copy with addToCartButton.children? */}
-                      <span className={styles.cartBtnText}>Lägg i inköpslista</span>
-                    </Button>
+                    <IconButton
+                      type="button"
+                      icon={'icon-file-plus'}
+                      className={styles.purchaseListIcon}
+                      onClick={() => onSaveToPurchaseListClick(productId)}
+                      size="large"
+                      isTransparent
+                      noBorder
+                      noPadding
+                    />
                   )}
                   {/* TODO: replace this hc values with addToCartButton props? */}
                   <Button
@@ -135,7 +134,7 @@ const ProductCardHorizontal = ({
                   >
                     <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
                     {/* TODO: replace this hc copy with addToCartButton.children? */}
-                    <span className={styles.cartBtnText}>Lägg i kundvagn</span>
+                    <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
                   </Button>
                 </div>
               ) : null}
