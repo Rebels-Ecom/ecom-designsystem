@@ -45,7 +45,8 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
                                 href={breadcrumb.active ? '' : breadcrumb.href}
                                 onSurface='transparent'
                                 isExternal={!breadcrumb.active}
-                                className={cx(styles.listItem, breadcrumb.active ? styles.listItemActive : '')}
+                                className={cx(styles.listItem, {[styles.listItemActive]: breadcrumb.active })}
+                                noUnderline={breadcrumb.active}
                             >
                                 {breadcrumb.children}
                             </UILink>

@@ -41,7 +41,9 @@ export interface ISubNavigation {
     isMobile?: boolean
     linkComponent?: any
 }
-
+/**
+ * @deprecated
+ */
 function SubNavigation({navLink, subNavLinks, linkComponent: Link, isOpen, exitSubNav, isMobile}: ISubNavigation) {
     return (
         <>

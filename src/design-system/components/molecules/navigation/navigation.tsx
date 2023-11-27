@@ -32,6 +32,9 @@ const sidebar = {
   }),
 }
 
+/**
+ * @deprecated Should use DesktopNavigation and MobileNavigation instead
+ */
 const Navigation = ({ links, linkComponent: Link, isOpen }: INavigation) => {
   return (
     <>

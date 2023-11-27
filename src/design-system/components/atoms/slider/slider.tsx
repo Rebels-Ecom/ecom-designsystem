@@ -8,6 +8,10 @@ import { InputField } from '../../molecules/form/components/input-field';
 type TSlider = {
   min: number;
   max: number;
+  // Defines a different pre selected min value
+  defaultMinVal?: number;
+  // Defines a different pre selected max value
+  defaultMaxVal?: number;
   onChange?: (range: number | Range) => void;
   // Unit to display after min and max values
   formatLabel? :string;
@@ -20,10 +24,11 @@ type TSlider = {
   maxLabel?: string;
   allowSameValues?: boolean;
   step?: number;
+  disabled?: boolean;
 }
 
-const Slider = ({ onChange, formatLabel, min, max, withFields, minLabel, maxLabel, allowSameValues, step }: TSlider) => {
-  const [value, setValue] = useState<number | Range>({ min: min, max: max })
+const Slider = ({ onChange, formatLabel, min, max, defaultMinVal, defaultMaxVal, withFields, minLabel, maxLabel, allowSameValues, step, disabled }: TSlider) => {
+  const [value, setValue] = useState<number | Range>({ min: defaultMinVal ?? min, max: defaultMaxVal ?? max })
   if (typeof value !== 'object'){
     return null;
   }
@@ -47,7 +52,7 @@ const Slider = ({ onChange, formatLabel, min, max, withFields, minLabel, maxLabe
   }
 
   return (
-    <div className={styles.sliderWrapper}>
+    <div className={cx(styles.sliderWrapper, {[styles.disabled]: disabled})}>
       {withFields && (
         <div className={styles.fieldsContainer}>
           <InputField
@@ -59,6 +64,7 @@ const Slider = ({ onChange, formatLabel, min, max, withFields, minLabel, maxLabe
             min={min}
             max={allowSameValues ? value.max : value.max - 1}
             height='sm'
+            disabled={disabled}
           />
           <InputField
             label={maxLabel}
@@ -69,6 +75,7 @@ const Slider = ({ onChange, formatLabel, min, max, withFields, minLabel, maxLabe
             min={allowSameValues ? value.min : value.min + 1}
             max={max}
             height='sm'
+            disabled={disabled}
           />
         </div>
       )}
@@ -81,6 +88,7 @@ const Slider = ({ onChange, formatLabel, min, max, withFields, minLabel, maxLabe
         value={value}
         onChange={handleChange}
         onChangeComplete={handleChangeComplete}
+        disabled={disabled}
         classNames={
           {
             activeTrack: cx(styles.track, styles.activeTrack),

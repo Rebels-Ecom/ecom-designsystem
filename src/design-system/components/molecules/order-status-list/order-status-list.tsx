@@ -14,6 +14,9 @@ export interface IOrderStatusList {
   orderStatusList: Array<IOrderStatus>
 }
 
+/**
+ * @deprecated
+ */
 function OrderStatusList({ orderStatusList } : IOrderStatusList) {
   return (
     <ul className={styles.tagsList}>

@@ -1,13 +1,14 @@
 .sliderWrapper {
   position: relative;
-  padding: 1rem;
-  margin: 0.5rem;
+  padding: 1rem 0;
+  margin: 0.5rem 0;
   min-width: 12rem;
   
   & .inputRange {
     height: 1rem;
     position: relative;
-    width: 100%;
+    width: calc(100% - 1rem);
+    margin: 0 0.5rem;
   }
   & .track {
     background: #eeeeee;
@@ -94,5 +95,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  &.disabled {
+    margin: 0.5rem;
+
+    & .activeTrack,
+    & .slider {
+      background: var(--border-grey);
+    }
   }
 }

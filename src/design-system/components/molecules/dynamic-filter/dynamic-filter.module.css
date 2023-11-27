@@ -1,4 +1,12 @@
 .dynamicFilter {
+  font-family: var(--font-family-primary);
+
+  & .filterCategory {
+    &:not(:last-of-type) {
+      border-bottom: 1px solid var(--border-grey);
+    }
+  }
+  
   & .filterItem {
     display: flex;
     justify-content: space-between;
@@ -21,15 +29,26 @@
   }
 
   & .checkboxItem {
+    font-family: var(--font-family-primary);
+    width: 100%;
     border: none;
     background: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.5rem 0;
+    cursor: pointer;
+
+    &:last-of-type {
+      margin-bottom: 1rem;
+    }
 
     & .checkbox {
-      margin: 0;
-      padding: 0;
+      margin-left: 0.25rem;
+    }
+
+    & .label {
+      font-size: 1rem;
     }
   }
 }

@@ -5,10 +5,11 @@ import { ILink } from '../../../../types/links'
 import { TSurface } from '../../../../types/surface'
 
 export interface IUILink extends ILink {
-  iconLeft?: TIcon
-  iconRight?: TIcon
-  onSurface: TSurface
-  children: React.ReactNode
+  iconLeft?: TIcon;
+  iconRight?: TIcon;
+  onSurface: TSurface;
+  children: React.ReactNode;
+  noUnderline?: boolean;
 }
 
 export const LinkComponent = ({ children, ...props }: any) => <div {...props}>{children}</div>
@@ -24,6 +25,7 @@ const UILink = ({
   iconLeft,
   iconRight,
   onSurface = 'transparent',
+  noUnderline,
 }: IUILink) => {
   const Tag = isExternal ? 'a' : Link
   return (
@@ -39,7 +41,7 @@ const UILink = ({
       )}
     >
       {iconLeft && <Icon icon={iconLeft} className={cx(styles.icon, styles.left)} />}
-      <span className={styles.linkText}>{children}</span>
+      <span className={cx(styles.linkText, {[styles.noUnderline]: noUnderline })}>{children}</span>
       {iconRight && <Icon icon={iconRight} className={cx(styles.icon, styles.right)} />}
     </Tag>
   )

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { DynamicFilter } from './dynamic-filter'
-import { Button } from '../../atoms';
+import { DynamicFilter, TSelected } from './dynamic-filter'
+import { Button, Heading } from '../../atoms';
+import { FlexContainer } from '../../layouts';
 
 const meta: Meta<typeof DynamicFilter> = {
   title: 'Design System/Molecules/Dynamic Filter',
@@ -13,19 +14,33 @@ type Story = StoryObj<typeof DynamicFilter>;
 
 const DynamicFilterStoryTemplate: Story = {
   render: (args) => {
+    const [filters, setFilters] = useState<TSelected[]>();
     const [isOpen, setIsOpen] = useState(false);
     const handleOpen = () => setIsOpen(true);
     const handleClose = () => setIsOpen(false);
-    const handleUpdate = (updateFilters) => console.log(updateFilters);
-
+    const handleUpdate = (_, updatedFilters) => {
+      setFilters(updatedFilters)
+    };
+    const filtersToDisplay = filters ?? args.preSelected ?? [];
     return (
       <>
         <Button type='button' surface='primary' onClick={handleOpen}>{isOpen ? 'Close' : 'Open'}</Button>
+        <FlexContainer>
+          {filtersToDisplay?.map(filter => (
+            <FlexContainer flexDirection='column' key={filter.name}>
+              <Heading order={4} noMargin>{filter.name.toLocaleUpperCase()}</Heading>
+              <FlexContainer flexDirection='column'>
+                {filter.selectedOptions.map(selectedOption => <p key={selectedOption.value}>{selectedOption.value}</p>)}
+              </FlexContainer>
+            </FlexContainer>
+          ))}
+        </FlexContainer>
         <DynamicFilter
           onUpdate={handleUpdate}
           isOpen={isOpen}
           onClose={handleClose}
           title='Filter'
+          preSelected={args.preSelected}
           filters={[
             {
               name: 'Listpris',
@@ -105,6 +120,20 @@ const DynamicFilterStoryTemplate: Story = {
                   value: 'birra-moretti'
                 },
               ]
+            },
+            {
+              name: 'Single Select',
+              type: 'radio',
+              options: [
+                {
+                  name: 'Endast dryck',
+                  value: 'drink-only'
+                },
+                {
+                  name: 'Allt',
+                  value: 'all'
+                },
+              ]
             }
           ]}
         />
@@ -113,7 +142,33 @@ const DynamicFilterStoryTemplate: Story = {
   }
 };
 
-export const DynamicFilterStory = {
+export const Dynamic_Filter_Default = {
   ...DynamicFilterStoryTemplate,
   args: {}
+}
+
+export const Dynamic_Filter_With_Pre_Selected = {
+  ...DynamicFilterStoryTemplate,
+  args: {
+    preSelected: [
+      {
+        name: 'Listpris',
+        selectedOptions: [
+          {
+            name: 'range-id',
+            value: 'range-id_20-60'
+          },
+        ]
+      },
+      {
+        name: 'Land',
+        selectedOptions: [
+          {
+            name: 'Italy',
+            value: 'italy'
+          },
+        ]
+      }
+    ]
+  }
 }

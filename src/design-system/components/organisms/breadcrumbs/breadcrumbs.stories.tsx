@@ -24,7 +24,7 @@ export const BreadcrumbsStoryWithBackground = {
         image: PictureStoryField.args,
         breadcrumbs: [
             { href: '/SE-sv/', children: 'Start', isExternal: true},
-            { href: '/SE-sv/c/ol', children: 'Öl', isExternal: true}
+            { href: '/SE-sv/c/ol', children: 'Öl', isExternal: true, active: true }
         ],
         location: '/SE-sv/c/ol'
     }

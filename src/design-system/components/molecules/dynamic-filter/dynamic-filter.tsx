@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { DrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
 import styles from './dynamic-filter.module.css'
-import { ExpandableWrapper, Icon, Slider } from '../../atoms';
+import { Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
 
 type TCheckbox = {
   type: 'checkbox';
@@ -19,7 +19,7 @@ type TOptionType = {
   value: string;
 }
 
-type TSelected = {
+export type TSelected = {
   name: string,
   selectedOptions: TOptionType[]
 }
@@ -36,7 +36,9 @@ interface IDynamicFilter {
   filters: TFilterType[];
   preSelected: TSelected[];
   title?: string;
-  onUpdate?: (data: TSelected[]) => void;
+  onUpdate?: (option: TOptionType, filters?: TSelected[]) => void;
+  loading?: boolean;
+  hideSliderFields?: boolean;
 }
 
 const getMinAndMaxValues = (options: TOptionType[]) => {
@@ -55,7 +57,7 @@ const getMinAndMaxValues = (options: TOptionType[]) => {
   }
 }
 
-const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate }: IDynamicFilter) => {
+const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate, loading, hideSliderFields }: IDynamicFilter) => {
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
   const [selectedFilters, setSelectedFilters] = useState<TSelected[]>(preSelected ?? []);
   const handleClickFilterItem = (name: string) => {
@@ -70,7 +72,7 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate 
   const handleChangeRange = (name: string, id: string, range: { min: number, max: number }) => {
     handleUpdateFilter({ name: id, value: `${id}_${range.min}-${range.max}` }, name, true)
   }
-  const handleUpdateFilter = (optionToUpdate: TOptionType, name: string, range?: boolean) => {
+  const handleUpdateFilter = (optionToUpdate: TOptionType, name: string, singleSelect?: boolean) => {
     setSelectedFilters(prevSelectedFilters => {
       const prevFilters = prevSelectedFilters;
       
@@ -88,20 +90,23 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate 
         updatedFilters = [
           ...prevFilters.map(x => {
             if (x.name === filterTypeExists.name) {
+              // If single select, only assign incoming option to selected options
+              if (singleSelect) {
+                console.log('2')
+                return {
+                  ...filterTypeExists,
+                  selectedOptions: [optionToUpdate],
+                }
+              }
+
               // Add incoming optionToUpdate
               if (!existingOption) {
+                console.log('1')
                 return {
                   ...filterTypeExists,
                   selectedOptions: [...filterTypeExists.selectedOptions, optionToUpdate]
                 }
               } else {
-                // Update existing range optionToUpdate
-                if (range) {
-                  return {
-                    ...filterTypeExists,
-                    selectedOptions: [optionToUpdate],
-                  }
-                }
                 // Remove incoming optionToUpdate
                 return {
                   ...filterTypeExists,
@@ -115,23 +120,31 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate 
         ]
       }
       
-      onUpdate?.(updatedFilters);
+      onUpdate?.(optionToUpdate, updatedFilters);
       return updatedFilters;
     })
   }
 
   return (
-    <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='sm'>
+    <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='md'>
       <div className={styles.dynamicFilter}>
         {title && <h4 className={styles.title}>{title}</h4>}
         {filters.map(filter => {
+          // TODO: extract helpers
           const isSelected = openFilters.includes(filter.name);
+          const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
+          const preSelectedSliderObj = preSelectedSlider?.selectedOptions?.find(y => y.value);
+          const preSelectedSliderValues = preSelectedSliderObj?.value?.split('_')[1]?.split('-').map(x => Number(x))
+          console.log("isSelected: ", isSelected);
+          console.log("preSelectedSlider: ", preSelectedSlider);
+          console.log("preSelectedSliderObj: ", preSelectedSliderObj);
+          console.log("preSelectedSliderValues: ", preSelectedSliderValues)
           return (
-            <Fragment key={filter.name}>
+            <div className={styles.filterCategory} key={filter.name}>
               <button
                 className={styles.filterItem}
                 onClick={() => handleClickFilterItem(filter.name)}
-              >
+                >
                 <span className={styles.filterName}>{filter.name}</span>
                 <Icon className={styles.filterItemIcon} icon={isSelected ? 'icon-chevron-up' : 'icon-chevron-down'} />
               </button>
@@ -142,12 +155,35 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate 
                     key={filter.name}
                     min={getMinAndMaxValues(filter.options)?.min ?? 0}
                     max={getMinAndMaxValues(filter.options)?.max ?? 10}
-                    withFields
+                    defaultMinVal={preSelectedSliderValues?.[0]}
+                    defaultMaxVal={preSelectedSliderValues?.[1]}
+                    withFields={!hideSliderFields}
                     step={10}
                     onChange={(range) => handleChangeRange(filter.name, filter.id, typeof range === 'object' ? range : { min: 0, max: 0 })}
+                    disabled={loading}
                   />
-                ) : <>{filter.options.map(option => {
+                  ) : <>{filter.options.map(option => {
+                  const activeCategory = selectedFilters.find(x => x.name === filter.name);
+                  const isActiveOption = activeCategory?.selectedOptions.find(y => y.value === option.value);
                   switch(filter.type) {
+                    case 'radio':
+                      return (
+                        <button
+                          key={option.name}
+                          className={styles.checkboxItem}
+                          onClick={() => handleUpdateFilter(option, filter.name, true)}
+                          disabled={loading}
+                        >
+                          <RadioButton
+                            checked={!!isActiveOption}
+                            id={option.value}
+                            name={option.value}
+                            className={styles.radio}
+                            disabled={loading}
+                          />
+                          <span className={styles.label}>{option.name}</span>
+                        </button>
+                      )
                     case 'checkbox':
                     default:
                       return (
@@ -155,13 +191,14 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate 
                           key={option.name}
                           className={styles.checkboxItem}
                           onClick={() => handleUpdateFilter(option, filter.name)}
-                          // disabled={disabled}
+                          disabled={loading}
                         >
-                          <input
-                            type="checkbox"
-                            // checked={option.name === selected?.name}
+                          <Checkbox
+                            checked={!!isActiveOption}
+                            id={option.value}
+                            name={option.value}
                             className={styles.checkbox}
-                            readOnly
+                            disabled={loading}
                           />
                           <span className={styles.label}>{option.name}</span>
                         </button>
@@ -169,7 +206,7 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate 
                   }
                 })}</>}
               </ExpandableWrapper>
-            </Fragment>
+            </div>
           )
         })}
       </div>
