@@ -82,6 +82,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         {responseMessage.icon && <Icon icon={responseMessage.icon} className={styles.successIcon} />}
         {responseMessage.title && <Heading order={3} noMargin>{responseMessage.title}</Heading>}
         <Text align='center'>{responseMessage.message}</Text>
+        {responseMessage.onClose && <Button type='button' surface='primary' onClick={responseMessage.onClose}>{responseMessage.closeLabel ?? 'Stäng'}</Button>}
       </div>
     </motion.div>
   ) : (

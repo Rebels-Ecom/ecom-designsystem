@@ -6,6 +6,8 @@ export const validatePattern = (pattern: TPattern, val?: string) => {
       return val && isEmail(val)
     case 'password':
       return val && isPassword(val)
+    case 'age-verification':
+      return val && Number(val) > 19;
     default:
       // TODO: add all patterns
       return true;
