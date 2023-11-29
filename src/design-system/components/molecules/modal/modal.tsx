@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePortal } from '../../../hooks'
 import { IconButton } from '../../atoms'
@@ -30,7 +30,7 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable, hi
       <motion.div
         className={cx(styles.backdrop, styles[backdropType])}
         onClick={onClick}
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
@@ -39,12 +39,12 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable, hi
     )
   }
 
-  const Dialog = ({ children, onClick }: { children: any; onClick: () => void }) => {
+  const Dialog = useCallback(({ children, onClick }: { children: any; onClick: () => void }) => {
     return (
       <motion.div
         className={styles.modal}
         onClick={(e) => e.stopPropagation()}
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         exit={{ opacity: 0, transition: { duration: 0.3 } }}
@@ -64,11 +64,11 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable, hi
         {children}
       </motion.div>
     )
-  }
+  }, [])
 
   return (
     <Portal>
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open ? (
           <Backdrop
             onClick={() => {

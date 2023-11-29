@@ -1,7 +1,5 @@
-import { FormEvent, useState } from 'react';
-import { Button, Heading, Text } from '../../atoms';
+import { Heading, Text } from '../../atoms';
 import { FlexContainer } from '../../layouts';
-import { InputField } from '../form/components/input-field';
 import styles from './age-verification-form.module.css';
 import { Form } from '../form/form';
 import { IFormTemplateProps, TFormFieldType } from '../form/types';
@@ -11,34 +9,23 @@ type TAgeVerificationForm = {
   onSubmit?: () => void;
   title: string;
   description: string;
+  label: string;
+  loading?: boolean;
 } & Pick<IFormTemplateProps, 'responseMessage'>;
 
-const AgeVerificationForm = ({ open, onSubmit, title, description, responseMessage }: TAgeVerificationForm) => {
-  const [verified, setVerified] = useState(false);
-  const [age, setAge] = useState<number | undefined>();
+const AgeVerificationForm = ({ onSubmit, title, description, responseMessage, loading, label }: TAgeVerificationForm) => {
   const handleSubmit = (data: TFormFieldType[]) => {
-    // e?.preventDefault();
     console.log('SUBMITTED: ', data[0]?.value)
     if (Number(data[0]?.value ?? 0) > 19) {
       console.log('VERIFIED AND SUBMITTED')
       onSubmit?.();
     }
   }
-  const handleChange = (val: string) => {
-    if (!val) {
-      return;
-    }
-    if (Number(val) > 19 && !verified) {
-      setVerified(true);
-    }
-    if (Number(val) <= 19 && verified) {
-      setVerified(false);
-    }
-  }
   return (
-    <FlexContainer flexDirection='column' justifyContent='center' alignItems='center'>
+    <FlexContainer className={styles.ageVerificationForm} flexDirection='column' justifyContent='center' alignItems='center'>
       {title && !responseMessage && <Heading order={3} noMargin align='center'>{title}</Heading>}
-      {description && !responseMessage && <Text align='center'>{description}</Text>}
+      {description && !responseMessage && <Text className={styles.description} align='center'>{description}</Text>}
+      {label && !responseMessage && <Text className={styles.description} align='center'>{label}</Text>}
       <FlexContainer>
         <Form
           fields={[{
@@ -52,13 +39,14 @@ const AgeVerificationForm = ({ open, onSubmit, title, description, responseMessa
             pattern: 'age-verification',
           }]}
           formTitle=''
-          loading={false}
+          loading={!!loading}
           actions={[
             {
               children: 'OK',
               surface: 'primary',
               type: 'submit',
               size: 'large',
+              disabled: loading
             }
           ]}
           onSubmit={handleSubmit}

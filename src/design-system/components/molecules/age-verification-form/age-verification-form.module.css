@@ -1,3 +1,5 @@
 .ageVerificationForm {
-
+  & .description {
+    max-width: 40rem;
+  }
 }

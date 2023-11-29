@@ -17,10 +17,15 @@ type Story = StoryObj<typeof AgeVerificationForm>;
 const AgeVerificationFormStoryTemplate: Story = {
   render: (args) => {
     const [open, setOpen] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [verified, setVerified] = useState(false);
     const handleSubmit = () => {
       console.log('SUBMITTED FROM PARENT')
-      setVerified(true);
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setVerified(true);
+      }, 3000)
     }
     const handleClose = () => {
       setOpen(false);
@@ -40,17 +45,19 @@ const AgeVerificationFormStoryTemplate: Story = {
                 { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
               ]}
             />
-          <AgeVerificationForm
-            open={open}
-            title='Title'
-            description='description'
-            onSubmit={handleSubmit}
-            responseMessage={verified ? {
-              title: 'Welcome',
-              message: 'You are old enought to enter this website',
-              onClose: handleClose,
-              closeLabel: 'OK'
-            } : undefined}
+            <AgeVerificationForm
+              label='Ange ålder'
+              open={open}
+              title='Title'
+              description='description'
+              onSubmit={handleSubmit}
+              loading={loading}
+              responseMessage={verified ? {
+                title: 'Welcome',
+                message: 'You are old enought to enter this website',
+                onClose: handleClose,
+                closeLabel: 'OK'
+              } : undefined}
             />
             </FlexContainer>
         </Modal>
