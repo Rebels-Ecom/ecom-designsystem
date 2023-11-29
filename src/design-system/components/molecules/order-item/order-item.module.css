@@ -84,7 +84,7 @@
             color: var(--color-text-default);
         }
 
-        & .downloadButton {
+        & .downloadLink {
             background-color: transparent;
             border: none;
             color: var(--cta-primary-default);
@@ -92,6 +92,9 @@
             cursor: pointer;
             padding: 0;
             font-size: var(--body-desktop-font-size);
+            &:hover {
+                color: var(--cta-primary-hover);
+            }
         }
     }
 }
