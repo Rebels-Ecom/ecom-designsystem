@@ -7,7 +7,7 @@ export type TFormSelectItem = {
   value: string;
 };
 
-export type TPattern = 'email' | 'phone' | 'password';
+export type TPattern = 'email' | 'phone' | 'password' | 'age-verification';
 
 export type TFormInputType = Omit<IInputField, "onChange" | "value"> &
   {
@@ -104,6 +104,8 @@ export type TFormResponseMessage = {
   message: string;
   title?: string;
   icon?: TIcon;
+  onClose?: () => void;
+  closeLabel?: string;
 }
 
 export type IFormTemplateProps = {

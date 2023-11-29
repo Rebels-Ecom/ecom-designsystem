@@ -41,6 +41,10 @@
 
     height: 3rem;
 
+    &[type=number] {
+      text-align: center;
+    }
+
     &:focus {
       /* background: var(--input-background-focused); */
       border-color: var(--input-border-color);
