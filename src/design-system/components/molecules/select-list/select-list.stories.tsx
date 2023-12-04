@@ -23,14 +23,15 @@ const SelectListStoryTemplate: Story = {
 export const SelectListStory = {
   ...SelectListStoryTemplate,
   args: {
+    placeholder: 'Sortera',
     options: [
       {
-        name: 'Beer',
-        value: 'Beer'
+        name: 'Fallande',
+        value: 'fallande'
       },
       {
-        name: 'Wine',
-        value: 'Wine'
+        name: 'Stigande',
+        value: 'stigande'
       },
     ]
   }

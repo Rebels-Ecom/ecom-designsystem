@@ -71,18 +71,19 @@
   }
 
   & .labelContainer {
-    left: -50%;
     position: relative;
+  }
+
+  & .sliderContainer:last-of-type {
+    & .labelContainer {
+      left: -100%;
+    }
   }
 
   & .maxLabel {
     right: 0;
     bottom: -1.4rem;
     position: absolute;
-
-    & .labelContainer {
-      left: 50%;
-    }
   }
 
   & .minLabel {

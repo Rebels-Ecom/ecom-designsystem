@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useState } from 'react'
 import { DrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
 import styles from './dynamic-filter.module.css'
-import { Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
+import { Button, Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
+import { FlexContainer } from '../../layouts';
 
 type TCheckbox = {
   type: 'checkbox';
@@ -14,7 +15,7 @@ type TRadio = {
   type: 'radio';
 }
 
-type TOptionType = {
+export type TOptionType = {
   name: string;
   value: string;
 }
@@ -24,7 +25,7 @@ export type TSelected = {
   selectedOptions: TOptionType[]
 }
 
-type TFilterType = {
+export type TFilterType = {
   type: 'checkbox' | 'range' | 'radio';
   name: string;
   options: TOptionType[];
@@ -36,9 +37,20 @@ interface IDynamicFilter {
   filters: TFilterType[];
   preSelected: TSelected[];
   title?: string;
-  onUpdate?: (option: TOptionType, filters?: TSelected[]) => void;
+  onUpdate?: (option?: TOptionType, filters?: TSelected[]) => void;
   loading?: boolean;
   hideSliderFields?: boolean;
+  /**
+   * Defines if selected filters should be hidden
+   * @default false
+   */
+  hideFilters?: boolean;
+  /**
+   * Defines how many options to display
+   * The remaining will be hidden in a ExpandableWrapper (show more / show less)
+   * @default 6
+   */
+  maxOptionsToShow?: number;
 }
 
 const getMinAndMaxValues = (options: TOptionType[]) => {
@@ -57,9 +69,21 @@ const getMinAndMaxValues = (options: TOptionType[]) => {
   }
 }
 
-const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate, loading, hideSliderFields }: IDynamicFilter) => {
+const DynamicFilter = ({
+  isOpen,
+  onClose,
+  filters,
+  title,
+  preSelected,
+  onUpdate,
+  loading,
+  hideSliderFields,
+  hideFilters,
+  maxOptionsToShow = 6
+}: IDynamicFilter) => {
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
   const [selectedFilters, setSelectedFilters] = useState<TSelected[]>(preSelected ?? []);
+  const [showMore, setShowMore] = useState(false);
   const handleClickFilterItem = (name: string) => {
     setOpenFilters(prevOpenFilters => {
       if (prevOpenFilters.includes(name)) {
@@ -119,98 +143,173 @@ const DynamicFilter = ({ isOpen, onClose, filters, title, preSelected, onUpdate,
           })
         ]
       }
+
+      const updatedFiltersWithValues = updatedFilters.filter(x => !!x.selectedOptions.length);
       
-      onUpdate?.(optionToUpdate, updatedFilters);
-      return updatedFilters;
+      onUpdate?.(optionToUpdate, updatedFiltersWithValues);
+      return updatedFiltersWithValues;
     })
   }
 
-  return (
-    <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='md'>
-      <div className={styles.dynamicFilter}>
-        {title && <h4 className={styles.title}>{title}</h4>}
-        {filters.map(filter => {
-          // TODO: extract helpers
-          const isSelected = openFilters.includes(filter.name);
-          const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
-          const preSelectedSliderObj = preSelectedSlider?.selectedOptions?.find(y => y.value);
-          const preSelectedSliderValues = preSelectedSliderObj?.value?.split('_')[1]?.split('-').map(x => Number(x))
-          console.log("isSelected: ", isSelected);
-          console.log("preSelectedSlider: ", preSelectedSlider);
-          console.log("preSelectedSliderObj: ", preSelectedSliderObj);
-          console.log("preSelectedSliderValues: ", preSelectedSliderValues)
-          return (
-            <div className={styles.filterCategory} key={filter.name}>
-              <button
-                className={styles.filterItem}
-                onClick={() => handleClickFilterItem(filter.name)}
-                >
-                <span className={styles.filterName}>{filter.name}</span>
-                <Icon className={styles.filterItemIcon} icon={isSelected ? 'icon-chevron-up' : 'icon-chevron-down'} />
-              </button>
+  const handleRemoveFilter = (optionToRemove: TOptionType) => {
+    setSelectedFilters(prevFilters => {
+      const list = prevFilters;
+      const updatedOptionsInFilters = list?.map(x => {
+        return {
+          ...x,
+          selectedOptions: x.selectedOptions.filter(y => y.name !== optionToRemove.name)
+        }
+      });
 
-              <ExpandableWrapper open={isSelected}>
-                {filter.type === 'range' ? (
-                  <Slider
-                    key={filter.name}
-                    min={getMinAndMaxValues(filter.options)?.min ?? 0}
-                    max={getMinAndMaxValues(filter.options)?.max ?? 10}
-                    defaultMinVal={preSelectedSliderValues?.[0]}
-                    defaultMaxVal={preSelectedSliderValues?.[1]}
-                    withFields={!hideSliderFields}
-                    step={10}
-                    onChange={(range) => handleChangeRange(filter.name, filter.id, typeof range === 'object' ? range : { min: 0, max: 0 })}
-                    disabled={loading}
-                  />
-                  ) : <>{filter.options.map(option => {
-                  const activeCategory = selectedFilters.find(x => x.name === filter.name);
-                  const isActiveOption = activeCategory?.selectedOptions.find(y => y.value === option.value);
-                  switch(filter.type) {
-                    case 'radio':
-                      return (
-                        <button
-                          key={option.name}
-                          className={styles.checkboxItem}
-                          onClick={() => handleUpdateFilter(option, filter.name, true)}
-                          disabled={loading}
-                        >
-                          <RadioButton
-                            checked={!!isActiveOption}
-                            id={option.value}
-                            name={option.value}
-                            className={styles.radio}
-                            disabled={loading}
-                          />
-                          <span className={styles.label}>{option.name}</span>
-                        </button>
-                      )
-                    case 'checkbox':
-                    default:
-                      return (
-                        <button
-                          key={option.name}
-                          className={styles.checkboxItem}
-                          onClick={() => handleUpdateFilter(option, filter.name)}
-                          disabled={loading}
-                        >
-                          <Checkbox
-                            checked={!!isActiveOption}
-                            id={option.value}
-                            name={option.value}
-                            className={styles.checkbox}
-                            disabled={loading}
-                          />
-                          <span className={styles.label}>{option.name}</span>
-                        </button>
-                      )
-                  }
-                })}</>}
-              </ExpandableWrapper>
-            </div>
-          )
-        })}
-      </div>
-    </DrawerSidebar>
+      const updatedFilters = updatedOptionsInFilters.filter(x => !!x.selectedOptions.length);
+
+      onUpdate?.(undefined, updatedFilters);
+      return updatedFilters
+    })
+  }
+
+  const handleRemoveAllFilters = () => {
+    setSelectedFilters([]);
+    onUpdate?.(undefined, [])
+  }
+
+  useEffect(() => {
+    if (!isOpen) {
+      setShowMore(false)
+    }
+  }, [isOpen]);
+
+  const filterItems = (filter: TFilterType) => filter.options.map(option => {
+    const activeCategory = selectedFilters.find(x => x.name === filter.name);
+    const isActiveOption = activeCategory?.selectedOptions.find(y => y.value === option.value);
+    switch(filter.type) {
+      case 'radio':
+        return (
+          <button
+            key={option.name}
+            className={styles.checkboxItem}
+            onClick={() => handleUpdateFilter(option, filter.name, true)}
+            disabled={loading}
+          >
+            <RadioButton
+              checked={!!isActiveOption}
+              id={option.value}
+              name={option.value}
+              className={styles.radio}
+              disabled={loading}
+            />
+            <span className={styles.label}>{option.name}</span>
+          </button>
+        )
+      case 'checkbox':
+      default:
+        return (
+          <button
+            key={option.name}
+            className={styles.checkboxItem}
+            onClick={() => handleUpdateFilter(option, filter.name)}
+            disabled={loading}
+          >
+            <Checkbox
+              checked={!!isActiveOption}
+              id={option.value}
+              name={option.value}
+              className={styles.checkbox}
+              disabled={loading}
+            />
+            <span className={styles.label}>{option.name}</span>
+          </button>
+        )
+    }
+  })
+
+  return (
+    <>
+      <FlexContainer>
+        {!hideFilters && (
+          <>
+            {selectedFilters.map(selectedFilter => {
+              {
+                return selectedFilter.selectedOptions.map(selectedOption => {
+                  return (
+                    <button
+                      className={styles.selectedFilter}
+                      onClick={() => handleRemoveFilter(selectedOption)}
+                    >
+                      {selectedOption.name}
+                      <Icon icon='icon-x' />
+                    </button>
+                  )
+                })
+              }
+            })}
+            {!!selectedFilters.length && (
+              <button
+                className={styles.selectedFilter}
+                onClick={handleRemoveAllFilters}
+              >Rensa <Icon icon='icon-x' /></button>
+            )}
+          </>
+        )}
+      </FlexContainer>
+      <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='md'>
+        <div className={styles.dynamicFilter}>
+          {title && <h4 className={styles.title}>{title}</h4>}
+          {filters.map(filter => {
+            // TODO: extract helpers
+            const isSelected = openFilters.includes(filter.name);
+            const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
+            const preSelectedSliderObj = preSelectedSlider?.selectedOptions?.find(y => y.value);
+            const preSelectedSliderValues = preSelectedSliderObj?.value?.split('_')[1]?.split('-').map(x => Number(x))
+            return (
+              <div className={styles.filterCategory} key={filter.name}>
+                <button
+                  className={styles.filterItem}
+                  onClick={() => handleClickFilterItem(filter.name)}
+                  >
+                  <span className={styles.filterName}>{filter.name}</span>
+                  <Icon className={styles.filterItemIcon} icon={isSelected ? 'icon-chevron-up' : 'icon-chevron-down'} />
+                </button>
+
+                <ExpandableWrapper open={isSelected} className={styles.expandableWrapper}>
+                  {filter.type === 'range' ? (
+                    <Slider
+                      key={filter.name}
+                      min={getMinAndMaxValues(filter.options)?.min ?? 0}
+                      max={getMinAndMaxValues(filter.options)?.max ?? 10}
+                      defaultMinVal={preSelectedSliderValues?.[0]}
+                      defaultMaxVal={preSelectedSliderValues?.[1]}
+                      withFields={!hideSliderFields}
+                      formatLabel='kr'
+                      step={10}
+                      onChange={(range) => handleChangeRange(filter.name, filter.id, typeof range === 'object' ? range : { min: 0, max: 0 })}
+                      disabled={loading}
+                    />
+                    ) : <>{filterItems(filter).slice(0, maxOptionsToShow)}</>}
+                    {filterItems(filter).length > maxOptionsToShow && filter.type !== 'range' ? (
+                      <>
+                        <ExpandableWrapper open={showMore} >
+                          {filterItems(filter).slice(maxOptionsToShow, filterItems(filter).length)}
+                        </ExpandableWrapper>
+                        <FlexContainer alignItems='center' justifyContent='center'>
+                          <Button
+                            type='button'
+                            surface='x'
+                            size='x-small'
+                            iconRight={{ icon: showMore ? 'icon-chevron-up' : 'icon-chevron-down'}}
+                            onClick={() => setShowMore(!showMore)}
+                            className={styles.showMoreButton}
+                          >{showMore ? 'Se mindre' : 'Se mer'}</Button>
+                        </FlexContainer>
+                      </>
+                    ) : null}
+                </ExpandableWrapper>
+              </div>
+            )
+          })}
+        </div>
+      </DrawerSidebar>
+    </>
   )
 }
 

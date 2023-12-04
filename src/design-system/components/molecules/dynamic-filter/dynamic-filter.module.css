@@ -1,5 +1,6 @@
 .dynamicFilter {
   font-family: var(--font-family-primary);
+  margin-top: 6rem;
 
   & .filterCategory {
     &:not(:last-of-type) {
@@ -28,6 +29,18 @@
     }
   }
 
+  & .expandableWrapper {
+    & > * {
+      &:last-child {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+
+  & .showMoreButton {
+    margin-top: 1rem;
+  }
+
   & .checkboxItem {
     font-family: var(--font-family-primary);
     width: 100%;
@@ -39,10 +52,6 @@
     padding: 0.5rem 0;
     cursor: pointer;
 
-    &:last-of-type {
-      margin-bottom: 1rem;
-    }
-
     & .checkbox {
       margin-left: 0.25rem;
     }
@@ -51,4 +60,17 @@
       font-size: 1rem;
     }
   }
+}
+
+.selectedFilter {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-family-primary);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
