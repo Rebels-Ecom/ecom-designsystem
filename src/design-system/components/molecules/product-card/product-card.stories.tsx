@@ -24,7 +24,7 @@ function getVariantsList(productName: string, variantsList: any) {
       variantName: variant.Name,
       variantId: variant.VariantId,
       country: Array.isArray(variant.ShortTexts) && variant.ShortTexts.length ? variant.ShortTexts[0] : '',
-      listPricePerUnitString: variant.ListPricePerUnitString,
+      priceStr: variant.ListPricePerUnitString,
       price: variant.ListPricePerUnit,
       salesUnit: variant.SalesUnit,
       itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,

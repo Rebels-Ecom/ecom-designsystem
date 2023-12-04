@@ -148,7 +148,7 @@ const ProductCardVertical = ({
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>
+            <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} ${country && `- ${country}`}`}</p>
             <p className={cx(styles.textPurple, 'bodyS')}>{`${listPriceLabel ? listPriceLabel : 'Listpris'}: ${priceStr} kr/st`}</p>
           </div>
         )}

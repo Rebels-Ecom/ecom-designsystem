@@ -19,4 +19,16 @@ export interface IProduct {
     sellerOnly?: boolean
     isLimitedProduct?: boolean
     isAccessoryPotItem?: boolean
+
+    //Translation labels
+    productIdLabel?: string
+    pieceLabel?: string
+    currencyLabel?: string
+    priceLabel?: string
+    addToCartLabel?: string
+    quantityPerPackageLabel?: string
+    aLabel?: string
+    packagePerPalletLabel1?: string
+    packagePerPalletLabel2?: string
+
 }

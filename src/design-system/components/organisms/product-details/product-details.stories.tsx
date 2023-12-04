@@ -81,7 +81,7 @@ function getVariantsList(productName: string, variantsList: any) {
       variantName: variant.Name,
       variantId: variant.VariantId,
       country: Array.isArray(variant.ShortTexts) && variant.ShortTexts.length ? variant.ShortTexts[0] : '',
-      listPricePerUnitString: variant.ListPricePerUnitString,
+      priceStr: variant.ListPricePerUnitString,
       price: variant.ListPricePerUnit,
       salesUnit: variant.SalesUnit,
       itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
@@ -108,6 +108,7 @@ function getProduct(productData: any): IProduct {
     quantity: '1',
     totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
     productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
+    priceLabel: 'Listpris',
   }
 }
 
@@ -131,6 +132,13 @@ export const ProductDetailsStory = {
       subDescription: 'Campaign sub description',
     },
     addToCartBtnLabel: 'Lägg i varukorg',
+    productIdLabel: 'Artikelnummer:',
+    quantityPerPackageLabel: 'Antal/kolli',
+    pieceLabel: 'styck',
+    currencyLabel: 'kr',
+    aLabel: 'a',
+    packagePerPalletLabel1: 'Det går',
+    packagePerPalletLabel2: 'kolli på en pall',
   },
 }
 

@@ -130,13 +130,14 @@ function ProductCard({
       productId: selectedVariant.variantId,
       productImage: selectedVariant.image ?? fallbackProductImageUrl,
       packaging: selectedVariant.variantName,
-      priceStr: selectedVariant.listPricePerUnitString,
+      priceStr: selectedVariant.priceStr,
       price: selectedVariant.price,
       salesUnit: selectedVariant.salesUnit,
       itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
+      productUrl: `/Product/${selectedVariant.variantId}`,
     }))
     setVariantsListOpen(false)
   }

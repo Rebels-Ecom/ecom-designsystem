@@ -29,7 +29,7 @@ export const ProductVariantStory = {
     variantName: '50cl Returglas',
     variantId: '1105101',
     country: 'Sverige',
-    listPricePerUnitString: '22,68',
+    priceStr: '22,68',
     salesUnit: 'KLI',
     image: getProductPicture('1105101', variantImage ? variantImage : fallbackProductImageUrl),
   },

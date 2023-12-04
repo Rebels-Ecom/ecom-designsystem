@@ -9,14 +9,29 @@ export interface IProductVariant {
   variantName: string
   variantId: string
   country: string
-  listPricePerUnitString: string
+  priceStr: string
   salesUnit: string
   image: IPicture
   onChange: CallableFunction
   checked: boolean
+  productIdLabel: string
+  pieceLabel: string
+  currencyLabel: string
 }
 
-const ProductVariant = ({ image, productName, variantName, variantId, country, listPricePerUnitString, onChange, checked }: IProductVariant) => {
+const ProductVariant = ({
+  image,
+  productName,
+  variantName,
+  variantId,
+  country,
+  priceStr,
+  onChange,
+  checked,
+  productIdLabel,
+  currencyLabel,
+  pieceLabel,
+}: IProductVariant) => {
   return (
     <label className={styles.productVariant}>
       <div className={styles.imageWrapper}>
@@ -25,8 +40,8 @@ const ProductVariant = ({ image, productName, variantName, variantId, country, l
       <div className={`${styles.contentWrapper}`}>
         <p className={styles.heading}>{productName}</p>
         <p className={styles.heading}>{variantName}</p>
-        <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${variantId} - ${country}`}</p>
-        <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${listPricePerUnitString} kr/st`}</p>
+        <p className={cx(styles.textGray, 'bodyS')}>{`${productIdLabel} ${variantId} ${country && `- ${country}`}`}</p>
+        <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${pieceLabel}`}</p>
       </div>
       <div className={styles.radioWrapper}>
         <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />

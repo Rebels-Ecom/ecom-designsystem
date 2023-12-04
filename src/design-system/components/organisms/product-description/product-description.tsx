@@ -44,6 +44,23 @@ function ProductDescription({ productDescriptionItems }: IProductDescription) {
     }
   }
 
+  function getProductSpecs(specs: any) {
+    if (specs && Array.isArray(specs) && specs.length > 0) {
+      return specs.map((spec, index) => {
+        return (
+          spec.value &&
+          spec.value !== 'False' && (
+            <p key={index} className={cx(styles.specsText, 'bodyS')}>
+              <span className={styles.specTitle}>{spec.name}</span>
+              {`: ${spec.value}`}
+            </p>
+          )
+        )
+      })
+    }
+    return null
+  }
+
   return (
     <div className={styles.productDescription}>
       <div className={styles.buttonsWrapper}>
@@ -72,14 +89,7 @@ function ProductDescription({ productDescriptionItems }: IProductDescription) {
                   {currentTab === `${item.id}` && (
                     <div className={styles.content}>
                       {item.descriptionContent?.invisibleDescription && <p className={styles.description}> {item.descriptionContent.invisibleDescription}</p>}
-                      {Array.isArray(item.descriptionContent.invisibleSpecs) &&
-                        item.descriptionContent.invisibleSpecs.length > 0 &&
-                        item.descriptionContent.invisibleSpecs.map((spec, index) => (
-                          <p key={index} className={cx(styles.specsText, 'bodyS')}>
-                            <span className={styles.specTitle}>{spec.name}</span>
-                            {` : ${spec.value}`}
-                          </p>
-                        ))}
+                      {item.descriptionContent.invisibleSpecs && getProductSpecs(item.descriptionContent.invisibleSpecs)}
                     </div>
                   )}
                 </motion.div>

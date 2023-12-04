@@ -23,7 +23,7 @@ export interface IProductSpec {
 }
 
 export interface IProductDetail {
-  visibleSpecs: Array<IProductSpec>
+  visibleSpecs?: Array<IProductSpec>
   visibleDescription: string
   invisibleSpecs: Array<IProductSpec>
   invisibleDescription: string
@@ -35,9 +35,7 @@ export interface IProductDetails extends IProduct {
   product: IProduct
   productDetail: IProductDetail
   changePackagingButton: IButton
-  addToCartButton: IButton
   addToCart: CallableFunction
-  addToCartBtnLabel: string
   className: string
   campaign?: TCampaignBox
   limitedProduct?: TCampaignBox
@@ -46,6 +44,7 @@ export interface IProductDetails extends IProduct {
   onFavoriteIconClick?: CallableFunction
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
+  onPackageChange?: CallableFunction
 }
 
 const ProductDetails = ({
@@ -60,7 +59,6 @@ const ProductDetails = ({
   productVariantList,
   productDetail,
   addToCart,
-  addToCartBtnLabel,
   campaign,
   limitedProduct,
   showFavoriteIcon,
@@ -68,6 +66,16 @@ const ProductDetails = ({
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
+  productIdLabel,
+  pieceLabel,
+  currencyLabel,
+  priceLabel,
+  addToCartLabel,
+  quantityPerPackageLabel,
+  aLabel,
+  packagePerPalletLabel1,
+  packagePerPalletLabel2,
+  onPackageChange,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     productId,
@@ -79,18 +87,21 @@ const ProductDetails = ({
     salesUnit,
     itemNumberPerSalesUnit,
     quantity: '1',
-    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit),
+    totalPrice: price ? convertNumToStr(price) : '',
     productVariantList,
     selectedVariantId: productId,
+    priceLabel,
+    currencyLabel,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
+  const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
     setProduct({
       ...product,
       quantity: quantity.toString(),
-      totalPrice: convertNumToStr(product.price * product.itemNumberPerSalesUnit * quantity),
+      totalPrice: convertNumToStr(product.price * quantity),
     })
   }
 
@@ -98,22 +109,17 @@ const ProductDetails = ({
     setVariantsListOpen(true)
   }
 
-  function handlePackageChange(selectedVariant: any) {
-    const quantity = product.productId === selectedVariant.variantId ? parseInt(product.quantity) : 1
-    setProduct((prevState) => ({
-      ...prevState,
-      productId: selectedVariant.variantId,
-      productImage: selectedVariant.image ?? fallbackProductImageUrl,
-      packaging: selectedVariant.variantName,
-      priceStr: selectedVariant.listPricePerUnitString,
-      price: selectedVariant.price,
-      salesUnit: selectedVariant.salesUnit,
-      itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
-      totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
-      quantity: quantity.toString(),
-      selectedVariantId: selectedVariant.variantId,
-    }))
+  function getProductSpecs(specs: Array<IProductSpec>) {
+    if (specs && Array.isArray(specs) && specs.length > 0) {
+      return specs.map((spec, index) => {
+        return spec.value && spec.value !== 'False' && <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>
+      })
+    }
+    return null
+  }
 
+  function handlePackageChange(selectedVariant: any) {
+    onPackageChange && onPackageChange(selectedVariant.variantId)
     setVariantsListOpen(false)
   }
 
@@ -130,6 +136,7 @@ const ProductDetails = ({
       </ul>
     )
   }
+  if (!productDetail) return null
 
   return (
     <div className={cx(styles.productDetails)}>
@@ -162,19 +169,18 @@ const ProductDetails = ({
             <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Above>
             <div>
               <h3 className={styles.heading}>{product.productName}</h3>
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${product.packaging}: ${product.priceStr} kr/st`}</p>
-              <p className={cx(styles.textGrey, 'bodyS')}>{`Artikelnummer: ${product.productId}`}</p>
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${product.priceLabel}: ${product.priceStr} ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
+              <p className={cx(styles.textGrey, 'bodyS')}>
+                {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${pieceLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
+              </p>
+              <p className={cx(styles.textGrey, 'bodyS')}>{`${productIdLabel} ${product.productId}`}</p>
             </div>
 
             {campaign?.title && <CampaignBox {...campaign} />}
 
             {!campaign && limitedProduct && <CampaignBox {...limitedProduct} />}
 
-            <div className={styles.specs}>
-              {Array.isArray(productDetail.visibleSpecs) &&
-                productDetail.visibleSpecs.length > 0 &&
-                productDetail.visibleSpecs.map((spec, index) => <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>)}
-            </div>
+            <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>
 
             {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
 
@@ -199,6 +205,9 @@ const ProductDetails = ({
               quantityInputId={product.productId}
               onChange={handleOnChangeQuantity}
             />
+            {packagePerPallet && (
+              <p className={cx(styles.textGrey, 'bodyS')}>{`${packagePerPalletLabel1} ${packagePerPallet.value} ${packagePerPalletLabel2}`}</p>
+            )}
             <div className={styles.buttonsWrapper}>
               <Button
                 className={styles.btn}
@@ -208,7 +217,7 @@ const ProductDetails = ({
                 onClick={() => addToCart(product)}
                 disabled={product.quantity === '0'}
               >
-                {addToCartBtnLabel}
+                {addToCartLabel}
               </Button>
               {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
                 <IconButton
