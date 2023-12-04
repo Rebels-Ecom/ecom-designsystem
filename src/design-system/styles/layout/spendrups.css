@@ -17,8 +17,10 @@ html {
     --text-width-wide: 77.5rem;
     --blog-card-max-width: 36rem;
     --blog-card-fullwidth: 108rem;
-    --product-card-width: 18.938rem; /* 303px */
-    --product-card-height: 40rem; /* 640px */
+    --product-card-width-vertical: 18.938rem; /* 303px */
+    --product-card-height-vertical: 30.5rem; /* 488px */
+    --product-card-width-horizontal: 18.938rem; /* 303px */
+    --product-card-height-horizontal: 40rem; /* 640px */
     --breadcrumbs-container-height-mobile: 10rem;
     --breadcrumbs-container-height-desktop: 13rem;
     --footer-top-bar-height-mobile: 4.25rem;

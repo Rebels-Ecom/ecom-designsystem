@@ -123,8 +123,9 @@ export const Default_Order_Item = {
     deliveryDateLabel: 'Leverans:',
     linkComponent: 'a',
     downloadLabel: 'faktura.pdf',
+    downloadUrl: 'http://google.com/',
     onDownload: () => console.log('download'),
-  }
+  },
 }
 
 export const OrderItemStory_Processing = {

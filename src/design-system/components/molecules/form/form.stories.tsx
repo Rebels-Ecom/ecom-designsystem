@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import { Form } from '../../molecules'
 import { IFormTemplateProps } from './types';
 
@@ -20,7 +19,7 @@ const FormStoryTemplate: Story = {
   },
 };
 
-export const FormStory = {
+export const Standard_Form = {
   ...FormStoryTemplate,
   args: {
     formTitle: 'Form Title',
@@ -57,21 +56,32 @@ export const FormStory = {
   } as IFormTemplateProps,
 };
 
-export const Form_Number_Story = {
+export const Compare_Two_Fields = {
   ...FormStoryTemplate,
   args: {
     formTitle: 'Form Title',
     loading: false,
     onSubmit: () => console.log('submit'),
     fields: [{
-      label: 'Number',
-      type: 'number',
+      label: 'Nytt lösenord',
+      type: 'password',
       fieldType: 'input',
-      name: 'number',
+      name: 'new-password',
       originalValue: '',
-      placeholder: '0',
-      min: 0,
-      max: 20
+      placeholder: '*',
+      required: true,
+      error: 'Du måste ange ett lösenord',
+      betaField: 'confirm-password',
+    }, {
+      label: 'Upprepa lösenord',
+      type: 'password',
+      fieldType: 'input',
+      name: 'confirm-password',
+      originalValue: '',
+      placeholder: '*',
+      required: true,
+      error: 'Lösenord matchar inte',
+      alphaField: 'new-password',
     }],
     actions: [{
       children: 'Save',

@@ -10,7 +10,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20%;
+    width: 25%;
+}
+
+.contentWrapper {
+    width: 60%;
 }
 
 .picture {
@@ -52,4 +56,5 @@
 
 .radioWrapper {
     align-self: flex-start;
+    width: 15%;
 }

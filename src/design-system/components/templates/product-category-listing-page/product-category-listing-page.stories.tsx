@@ -85,14 +85,15 @@ const ProductCategoryListingPageStoryTemplate = {
         <ContentWrapper>
           <FlexContainer flexDirection='column'>
             <Breadcrumbs {...args.breadcrumbs} />
-            <FlexContainer>
-              <Button 
-                type='button'
-                surface='x'
-                size='xx-small'
-                iconRight={{ icon: filterOpen ? 'icon-chevron-left' : 'icon-chevron-right' }}
-                onClick={() => setFilterOpen(true)}
-              >Filtrera</Button>
+            <FlexContainer justifyContent='space-between' stretch>
+              <FlexContainer>
+                <Button 
+                  type='button'
+                  surface='x'
+                  size='xx-small'
+                  onClick={() => setFilterOpen(true)}
+                >Filtrera</Button>
+              </FlexContainer>
               <SelectList
                 placeholder='Sortera'
                 options={[{
@@ -107,6 +108,7 @@ const ProductCategoryListingPageStoryTemplate = {
               />
             </FlexContainer>
             <DynamicFilter
+              title='Filter'
               {...Dynamic_Filter_Default.args}
               onUpdate={handleUpdate}
               isOpen={filterOpen}

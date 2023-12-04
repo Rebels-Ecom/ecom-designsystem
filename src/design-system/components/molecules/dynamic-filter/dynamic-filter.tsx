@@ -3,6 +3,7 @@ import { DrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
 import styles from './dynamic-filter.module.css'
 import { Button, Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
 import { FlexContainer } from '../../layouts';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type TCheckbox = {
   type: 'checkbox';
@@ -163,7 +164,7 @@ const DynamicFilter = ({
 
       const updatedFilters = updatedOptionsInFilters.filter(x => !!x.selectedOptions.length);
 
-      onUpdate?.(undefined, updatedFilters);
+      onUpdate?.(optionToRemove, updatedFilters);
       return updatedFilters
     })
   }
@@ -179,14 +180,14 @@ const DynamicFilter = ({
     }
   }, [isOpen]);
 
-  const filterItems = (filter: TFilterType) => filter.options.map(option => {
+  const filterItems = (filter: TFilterType) => filter.options.map((option, i) => {
     const activeCategory = selectedFilters.find(x => x.name === filter.name);
     const isActiveOption = activeCategory?.selectedOptions.find(y => y.value === option.value);
     switch(filter.type) {
       case 'radio':
         return (
           <button
-            key={option.name}
+            key={`${option.name}-${i}`}
             className={styles.checkboxItem}
             onClick={() => handleUpdateFilter(option, filter.name, true)}
             disabled={loading}
@@ -205,7 +206,7 @@ const DynamicFilter = ({
       default:
         return (
           <button
-            key={option.name}
+            key={`${option.name}-${i}`}
             className={styles.checkboxItem}
             onClick={() => handleUpdateFilter(option, filter.name)}
             disabled={loading}
@@ -225,44 +226,54 @@ const DynamicFilter = ({
 
   return (
     <>
-      <FlexContainer>
+      <FlexContainer alignItems='center'>
         {!hideFilters && (
           <>
             {selectedFilters.map(selectedFilter => {
               {
-                return selectedFilter.selectedOptions.map(selectedOption => {
+                return selectedFilter.selectedOptions.map((selectedOption, i) => {
                   return (
-                    <button
+                    <AnimatePresence exitBeforeEnter presenceAffectsLayout initial={false}>
+                    <motion.button
+                      key={`${selectedOption.value}-${i}`}
                       className={styles.selectedFilter}
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.25, opacity: 0 }}
                       onClick={() => handleRemoveFilter(selectedOption)}
-                    >
+                      >
                       {selectedOption.name}
                       <Icon icon='icon-x' />
-                    </button>
+                    </motion.button>
+                    </AnimatePresence>
                   )
                 })
               }
             })}
             {!!selectedFilters.length && (
               <button
-                className={styles.selectedFilter}
+                className={styles.clearFilter}
                 onClick={handleRemoveAllFilters}
               >Rensa <Icon icon='icon-x' /></button>
             )}
           </>
         )}
       </FlexContainer>
-      <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='md'>
+      <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='md' hideOverlay>
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
-          {filters.map(filter => {
+          {filters.map((filter, i) => {
             // TODO: extract helpers
             const isSelected = openFilters.includes(filter.name);
             const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
             const preSelectedSliderObj = preSelectedSlider?.selectedOptions?.find(y => y.value);
             const preSelectedSliderValues = preSelectedSliderObj?.value?.split('_')[1]?.split('-').map(x => Number(x))
+            console.log('isSelected: ', isSelected)
+            console.log('preSelectedSlider: ', preSelectedSlider)
+            console.log('preSelectedSliderObj: ', preSelectedSliderObj)
+            console.log('preSelectedSliderValues: ', preSelectedSliderValues)
             return (
-              <div className={styles.filterCategory} key={filter.name}>
+              <div className={styles.filterCategory} key={`${filter.name}-${i}`}>
                 <button
                   className={styles.filterItem}
                   onClick={() => handleClickFilterItem(filter.name)}
@@ -274,7 +285,6 @@ const DynamicFilter = ({
                 <ExpandableWrapper open={isSelected} className={styles.expandableWrapper}>
                   {filter.type === 'range' ? (
                     <Slider
-                      key={filter.name}
                       min={getMinAndMaxValues(filter.options)?.min ?? 0}
                       max={getMinAndMaxValues(filter.options)?.max ?? 10}
                       defaultMinVal={preSelectedSliderValues?.[0]}
@@ -292,14 +302,32 @@ const DynamicFilter = ({
                           {filterItems(filter).slice(maxOptionsToShow, filterItems(filter).length)}
                         </ExpandableWrapper>
                         <FlexContainer alignItems='center' justifyContent='center'>
-                          <Button
-                            type='button'
-                            surface='x'
-                            size='x-small'
-                            iconRight={{ icon: showMore ? 'icon-chevron-up' : 'icon-chevron-down'}}
-                            onClick={() => setShowMore(!showMore)}
-                            className={styles.showMoreButton}
-                          >{showMore ? 'Se mindre' : 'Se mer'}</Button>
+                          {showMore && (
+                            <motion.button
+                              key='open'
+                              initial={{ scale: 0.5 }}
+                              animate={{ scale: !showMore ? 0 : 1 }}
+                              exit={{ scale: 0.5 }}
+                              onClick={() => setShowMore(false)}
+                              className={styles.showMoreButton}
+                            >
+                              <span className={styles.showMoreLabel}>{showMore ? 'Se mindre' : 'Se mer'}</span>
+                              <Icon icon={showMore ? 'icon-x-circle' : 'icon-plus-circle'} />
+                            </motion.button>
+                          )}
+                          {!showMore && (
+                            <motion.button
+                              key='close'
+                              initial={{ scale: 0.5 }}
+                              animate={{ scale: showMore ? 0 : 1 }}
+                              exit={{ scale: 0.5 }}
+                              onClick={() => setShowMore(true)}
+                              className={styles.showMoreButton}
+                            >
+                              <span className={styles.showMoreLabel}>{showMore ? 'Se mindre' : 'Se mer'}</span>
+                              <Icon icon={showMore ? 'icon-x-circle' : 'icon-plus-circle'} />
+                            </motion.button>
+                          )}
                         </FlexContainer>
                       </>
                     ) : null}

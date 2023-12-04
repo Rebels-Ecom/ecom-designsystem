@@ -1,12 +1,5 @@
 .dynamicFilter {
   font-family: var(--font-family-primary);
-  margin-top: 6rem;
-
-  & .filterCategory {
-    &:not(:last-of-type) {
-      border-bottom: 1px solid var(--border-grey);
-    }
-  }
   
   & .filterItem {
     display: flex;
@@ -14,7 +7,7 @@
     align-items: center;
     gap: 0.5rem;
     width: 100%;
-    padding: 0.625rem 0;
+    padding: 0.875rem 0;
     margin: 0;
     border: none;
     background: none;
@@ -38,7 +31,20 @@
   }
 
   & .showMoreButton {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
     margin-top: 1rem;
+    font-family: var(--font-family-primary);
+    font-size: 1rem;
+    color: var(--cta-primary-default);
+    cursor: pointer;
+
+    & .showMoreLabel {
+      text-decoration: underline;
+    }
   }
 
   & .checkboxItem {
@@ -63,6 +69,21 @@
 }
 
 .selectedFilter {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-family-primary);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: var(--border-grey);
+  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  border-radius: 1rem;
+  border: none;
+}
+
+.clearFilter {
   display: flex;
   align-items: center;
   gap: 0.25rem;

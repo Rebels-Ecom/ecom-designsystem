@@ -18,9 +18,14 @@ export interface IDrawerSidebar {
    * @default 'lg'
    */
   width?: 'md' | 'lg';
+  /**
+   * Defines if backdrop should be hidden
+   * @default false
+   */
+  hideOverlay?: boolean;
 }
 
-function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', width = 'lg' }: IDrawerSidebar) {
+function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', width = 'lg', hideOverlay = false }: IDrawerSidebar) {
   const overlay = {
     hidden: { opacity: 0 },
     show: {
@@ -59,7 +64,7 @@ function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', widt
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.aside className={styles.sidebar} variants={overlay} initial="hidden" animate="show" exit="hidden" onClick={handleOnClose}>
+        <motion.aside className={cx(styles.sidebar, {[styles.hideOverlay]: hideOverlay })} variants={overlay} initial="hidden" animate="show" exit="hidden" onClick={handleOnClose}>
           <motion.div className={cx(styles.sidebarContent, styles[from], styles[width])} variants={sidebar} animate="show" initial="hidden" exit="hidden" transition={{ ease: 'easeIn' }}>
             <div className={styles.contentWrapper}>
               <IconButton

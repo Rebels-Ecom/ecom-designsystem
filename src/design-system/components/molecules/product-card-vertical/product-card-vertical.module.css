@@ -3,24 +3,26 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: var(--product-card-width);
-    height: var(--product-card-height);
+    width: var(--product-card-width-vertical);
+    height: var(--product-card-height-vertical);
     margin:auto;
     padding: 1rem;  
+    gap: 0.8rem;
     
     &:hover, &:focus, &:active{
       box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
     }
 
+
     &.campaign {
       border: 2px solid transparent;
-      padding: 3rem 1rem 1rem;
+      /* padding: 3rem 1rem 1rem; */
       border-radius: 0.5rem;
       overflow: hidden;
       border-color: var(--campaign-color);
   
       & .campaignBox {
-        width: 100%;
+        width: 40%;
         position: absolute;
         top: 0;
         right: 0;
@@ -28,7 +30,43 @@
         color: white;
         font-family: var(--font-family-secondary);
         text-align: center;
-        padding: 0.75rem 0;
+        /* padding: 0.75rem 0; */
+        padding: 1rem 0.3rem;
+        border-radius: 0 0 0 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      & .iconLink {
+        & button {
+          color: white;
+        }
+      }
+    }
+
+    &.limitedProduct {
+      border: 2px solid transparent;
+      /* padding: 3rem 1rem 1rem; */
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border-color: var(--limited-product-color);
+  
+      & .limitedBox {
+        width: 40%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: var(--limited-product-color);
+        color: white;
+        font-family: var(--font-family-secondary);
+        text-align: center;
+        padding: 1rem 0.3rem;
+        border-radius: 0 0 0 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
   
       & .iconLink {
@@ -41,7 +79,9 @@
   
   .imageWrapper {
     width: 100%;
-    height:60%;
+    height:35%;
+    min-height: 35%;
+    max-height: 35%;
     position: relative;
     display: flex;
     align-items: center;
@@ -62,31 +102,46 @@
     display: block;
     width: 100%;
     height: 100%;
-    padding: 1rem;
+    padding:0.5rem 1rem;
     object-fit: contain;
   }
   
   .cardContent, .placeholderContent {
-    padding: 1rem 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    @media (min-width: 48em) {
-      padding: 1rem 1.25rem;
+    gap:0.5rem;
+    height: calc(4 * var(--heading-xs-mobile-line-height));
+    @media (min-width: 64em) {
+      height: calc(4 * var(--heading-xs-desktop-line-height));
     }
+  }
+
+  .tagsWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: var(--tag-rectangular-mobile-line-height);
+    min-height: var(--tag-rectangular-mobile-line-height);
   }
   
   .headingWrapper {
     text-decoration: none;
+    text-align: center;
     color: var(--color-text-default);
   }
   
   .heading {
     margin:0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
   }
   
   .textGray {
-    margin: 0 0 0.5rem 0;
+    margin: 0;
     color: var(--color-text-decorative-grey);
   }
   
@@ -97,11 +152,11 @@
   }
   
   .productCardInput {
-    margin-top:0.813rem;
+    /* margin-top:0.813rem; */
   }
   
   .productCardBtn{
-      margin-top:1rem;
+      /* margin-top:1rem; */
   }
 
   .hiddenPackagingBtn{
@@ -123,14 +178,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .favoriteIcon, .purchaseListIcon {
-    margin-top:1rem;
+    gap: 0.5rem;
   }
 
   .favoriteIconActive {
     color: var(--orange-500);
   }
+
+  
   
   

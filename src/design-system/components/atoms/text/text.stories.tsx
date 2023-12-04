@@ -23,7 +23,15 @@ const TextStoryTemplate: Story = {
 export const TextStory = {
     ...TextStoryTemplate,
     args: {
-        children: `Hello! Here's some text`
+        children: `Hello! Here's some text`,
+    }
+}
+
+export const TextStoryError = {
+    ...TextStoryTemplate,
+    args: {
+        children: `Hello! Here's some text`,
+        color: 'error'
     }
 }
 

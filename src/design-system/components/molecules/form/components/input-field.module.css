@@ -40,9 +40,8 @@
     outline:none;
     height: 3rem;
 
-    &:-webkit-autofill {
-      animation-name: onAutoFillStart;
-      transition: background-color 50000s ease-in-out 0s;
+    &[type=number] {
+      text-align: center;
     }
 
     &:focus {

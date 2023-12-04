@@ -41,7 +41,7 @@ html {
 
   /* Heading XS - ?/? mobile - 18/23 desktop */
   --heading-xs-mobile-font-size: 1.125rem;
-  --heading-xs-mobie-line-height: 1.438rem;
+  --heading-xs-mobile-line-height: 1.438rem;
   --heading-xs-desktop-font-size: 1.125rem;
   --heading-xs-desktop-line-height: 1.438rem;
 
@@ -66,8 +66,8 @@ html {
   --cta-l-letter-spacing: 0.03rem;
 
   /* Tag rectangular */
-  --tag-rectangular-mobile-font-size: 0.625rem;
-  --tag-rectangular-mobile-line-height: 1.875rem;
+  --tag-rectangular-mobile-font-size: 0.75rem;
+  --tag-rectangular-mobile-line-height: 1.25rem;
   --tag-rectangular-desktop-font-size: 1rem;
   --tag-rectangular-desktop-line-height: 1.875rem;
 
@@ -172,7 +172,7 @@ h4,
 .headingS {
   font-weight: var(--font-weight-bold);
   font-size: var(--heading-s-mobile-font-size);
-  line-height: var(--heading-s-mobie-line-height);
+  line-height: var(--heading-s-mobile-line-height);
 
   @media (min-width: 64em) {
     font-size: var(--heading-s-desktop-font-size);
@@ -226,57 +226,6 @@ h5,
 
 .fontBold {
   font-weight: 700;
-}
-
-
-/* TODO: Move these styles to button.module.css */
-.cta-xxs {
-  font-size: var(--cta-s-font-size);
-  line-height: var(--cta-s-line-height);
-  letter-spacing: var(--cta-s-letter-spacing);
-  height: 2.25rem;
-  min-width: auto;
-  width: auto;
-  padding: 0 0.25rem 0 0.75rem;
-  justify-content: flex-start;
-  
-  & .buttonContent {
-    flex: 1;
-  }
-
-  @media (max-width: 32em) {
-    height: 2.5rem;
-    font-size: var(--cta-l-font-size);
-  }
-}
-
-.cta-xs {
-  font-size: var(--cta-s-font-size);
-  line-height: var(--cta-s-line-height);
-  letter-spacing: var(--cta-s-letter-spacing);
-  height: 2.5rem;
-  min-width: 2.5rem;
-  width: max-content;
-  padding: 0.625rem 1rem;
-}
-
-.cta-s {
-  font-size: var(--cta-s-font-size);
-  line-height: var(--cta-s-line-height);
-  letter-spacing: var(--cta-s-letter-spacing);
-  height: 2.5rem;
-  min-width: 7.5rem;
-  width: var(--cta-width-default);
-  padding: 0.625rem 2rem;
-}
-
-.cta-l {
-  font-size: var(--cta-l-font-size);
-  line-height: var(--cta-l-line-height);
-  letter-spacing: var(--cta-l-letter-spacing);
-  height: 3rem;
-  min-width: 8.125rem;
-  padding: 1rem 2rem;
 }
 
 /* .h1 {

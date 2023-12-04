@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePortal } from '../../../hooks'
 import { IconButton } from '../../atoms'
@@ -13,9 +13,10 @@ export interface IModal {
   onClose: () => void
   backdropType?: TModalBackdrop
   dismissable?: boolean /** If true clicking outside the modal closes the modal.*/
+  hideCloseButton?: boolean;
 }
 
-function Modal({ open, children, onClose, backdropType = 'dark', dismissable }: IModal) {
+function Modal({ open, children, onClose, backdropType = 'dark', dismissable, hideCloseButton }: IModal) {
   const [selector, setSelector] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -29,7 +30,7 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable }: 
       <motion.div
         className={cx(styles.backdrop, styles[backdropType])}
         onClick={onClick}
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
@@ -38,34 +39,36 @@ function Modal({ open, children, onClose, backdropType = 'dark', dismissable }: 
     )
   }
 
-  const Dialog = ({ children, onClick }: { children: any; onClick: () => void }) => {
+  const Dialog = useCallback(({ children, onClick }: { children: any; onClick: () => void }) => {
     return (
       <motion.div
         className={styles.modal}
         onClick={(e) => e.stopPropagation()}
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         exit={{ opacity: 0, transition: { duration: 0.3 } }}
       >
-        <IconButton
-          type='button'
-          className={styles.buttonClose}
-          onClick={onClick}
-          icon='icon-x'
-          size="large"
-          isTransparent
-          noBorder
-          noPadding
-        />
+        {!hideCloseButton && (
+          <IconButton
+            type='button'
+            className={styles.buttonClose}
+            onClick={onClick}
+            icon='icon-x'
+            size="large"
+            isTransparent
+            noBorder
+            noPadding
+          />
+        )}
         {children}
       </motion.div>
     )
-  }
+  }, [])
 
   return (
     <Portal>
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open ? (
           <Backdrop
             onClick={() => {

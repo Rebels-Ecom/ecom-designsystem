@@ -123,7 +123,8 @@
     @media (min-width: 48rem) {
       flex-direction: row;
       width: auto;
-      padding: 1rem 0;
+      justify-content: space-between;
+      align-items: center;
     }
 
     & .productCardBtn {
@@ -138,5 +139,16 @@
         }
       }
     }
+  }
+
+  & .imageWrapperPlaceholder {
+    display: block;
+    height: 11rem;
+    width: 6rem;
+    padding-top: 2rem;
+  }
+
+  & .placeholderContent {
+    width: 100%;
   }
 }

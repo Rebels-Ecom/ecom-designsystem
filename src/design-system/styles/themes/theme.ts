@@ -182,7 +182,7 @@ export const lightTheme = {
   '--border-on-primary':'transparent',
   '--border-on-secondary': '#003E51',
   '--border-on-secondary-hover': '#336574',
-  '--border-on-secondary-disabled': '#547E8A',
+  '--border-on-secondary-disabled': '#B0C3C9',
   '--border-on-x': '#B7B5B5',
 
 
@@ -361,6 +361,12 @@ export const darkTheme = {
   '--action-secondary-focused': 'rgba(255, 196, 22, 0.1)',
   '--action-secondary-focused-border': '#E28F33',
   '--action-secondary-focused-shadow': '#FFF9E8',
+
+  '--border-on-primary':'transparent',
+  '--border-on-secondary': '#003E51',
+  '--border-on-secondary-hover': '#336574',
+  '--border-on-secondary-disabled': '#B0C3C9',
+  '--border-on-x': '#B7B5B5',
 
  
    /*Text */

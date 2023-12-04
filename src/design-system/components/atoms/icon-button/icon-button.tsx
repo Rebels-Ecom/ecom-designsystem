@@ -26,6 +26,7 @@ export type TIconButton = {
   noPadding?: boolean
   noBorder?: boolean
   round?: boolean
+  disabled?: boolean
   /**
    * If a positive number (1-99) has been provided a number  will be displayed in a notification format
    * @default undefined
@@ -51,11 +52,12 @@ const IconButton = (props: TIconButton) => {
             [styles.transparent]: props.isTransparent,
             [styles.noBorder]: props.noBorder,
             [styles.round]: props.round,
+            [styles.disabled]: props.disabled,
           })}
           href={props.linkUrl}
           target="_blank"
         >
-          <Icon icon={props.icon} />
+          <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
           {props.notification && props.notification < 100 && (
             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
               {props.notification < 100 ? props.notification : '99+'}
@@ -74,9 +76,10 @@ const IconButton = (props: TIconButton) => {
             [styles.transparent]: props.isTransparent,
             [styles.noBorder]: props.noBorder,
             [styles.round]: props.round,
+            [styles.disabled]: props.disabled,
           })}
         >
-          <Icon icon={props.icon} />
+          <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
           {props.notification && (
             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
               {props.notification < 100 ? props.notification : '99+'}
@@ -99,10 +102,11 @@ const IconButton = (props: TIconButton) => {
           [styles.transparent]: props.isTransparent,
           [styles.noBorder]: props.noBorder,
           [styles.round]: props.round,
+          [styles.disabled]: props.disabled,
         })}
         onClick={props.onClick}
       >
-        <Icon icon={props.icon} />
+        <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
         {!!props.notification && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
             {props.notification < 100 ? props.notification : '99+'}

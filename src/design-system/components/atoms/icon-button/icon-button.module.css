@@ -79,4 +79,12 @@
     &.round {
         border-radius:50%;
     }
+    &.disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+}
+
+.iconDisabled {
+    color: var(--color-on-secondary-disabled)
 }

@@ -11,8 +11,8 @@ import { IProductCard, TProductCardHorizontal } from '../product-card/product-ca
 const ProductCardHorizontal = ({
   product,
   loading = false,
-  addToCartButton,
   addToCart,
+  addToCartBtnLabel,
   hideCartButton,
   onClickRemoveProduct,
   hideRemoveButton,
@@ -66,10 +66,9 @@ const ProductCardHorizontal = ({
               </div>
               <div className={styles.placeholderContent}>
                 <Placeholder type={'heading'} />
-                <DividerLines />
-                <Placeholder type={'p_short'} />
-                <Placeholder type={'p_short'} />
                 <Placeholder type={'p_long'} />
+                <Placeholder type={'p_short'} />
+                <Placeholder type={'p_short'} />
               </div>
             </>
           ) : (
@@ -111,21 +110,21 @@ const ProductCardHorizontal = ({
               {!hideCartButton ? (
                 <div className={styles.buttonsWrapper}>
                   {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-                    <Button
-                      {...addToCartButton}
-                      className={!loading ? styles.productCardBtn : ''}
-                      size={'x-small'}
-                      onClick={() => onSaveToPurchaseListClick()}
-                      loading={buttonLoading}
-                    >
-                      <Icon icon={'icon-file-text'} className={styles.cartBtnIcon}></Icon>
-                      {/* TODO: replace this hc copy with addToCartButton.children? */}
-                      <span className={styles.cartBtnText}>Lägg i inköpslista</span>
-                    </Button>
+                    <IconButton
+                      type="button"
+                      icon={'icon-file-plus'}
+                      className={styles.purchaseListIcon}
+                      onClick={() => onSaveToPurchaseListClick(productId)}
+                      size="large"
+                      isTransparent
+                      noBorder
+                      noPadding
+                    />
                   )}
                   {/* TODO: replace this hc values with addToCartButton props? */}
                   <Button
-                    {...addToCartButton}
+                    type={'button'}
+                    surface={'primary'}
                     className={!loading ? styles.productCardBtn : ''}
                     size={'x-small'}
                     onClick={() => addToCart(product)}
@@ -134,7 +133,7 @@ const ProductCardHorizontal = ({
                   >
                     <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
                     {/* TODO: replace this hc copy with addToCartButton.children? */}
-                    <span className={styles.cartBtnText}>Lägg i kundvagn</span>
+                    <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
                   </Button>
                 </div>
               ) : null}

@@ -16,4 +16,7 @@ export interface IProduct {
     totalPrice: string,
     productVariantList: Array<IProductVariant>
     tags?: Array<ITag>
+    sellerOnly?: boolean
+    isLimitedProduct?: boolean
+    isAccessoryPotItem?: boolean
 }

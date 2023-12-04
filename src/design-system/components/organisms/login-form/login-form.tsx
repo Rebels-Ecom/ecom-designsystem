@@ -1,25 +1,33 @@
 import styles from './login-form.module.css'
-import cx from 'classnames'
-import { Form, FormGroup } from '../../molecules'
-import { Button, Icon, InputText, Loader, UILink } from '../../atoms'
-import { LoadingOverlay } from '../../molecules/loading-overlay/loading-overlay'
+import { Form } from '../../molecules'
 import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 import { useMemo } from 'react'
-import { IButton, TButtonType } from '../../atoms/button/button'
+import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
-import { TFormFieldType } from '../../molecules/form/types'
+import { IFormTemplateProps, TFormFieldType } from '../../molecules/form/types'
 
-export interface ILoginForm {
+type ILink = {
+  name: string;
+  href: string;
+}
+
+export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> {
   title: string;
   description?: string;
   usernameLabel: string;
   username?: string;
   passwordLabel: string;
   password?: string;
-  forgotPasswordLabel: string;
+  forgotPassword: {
+    name: string;
+    href: string;
+  };
   primarySubmitLabel: string;
   secondarySubmitLabel?: string;
-  offerLinkLabel?: string;
+  offerLink?: {
+    name: string;
+    href: string;
+  };
   errorMessage?: any;
   usernameError?: string;
   passwordError?: string;
@@ -28,6 +36,8 @@ export interface ILoginForm {
   onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading?: boolean;
   logo: TLogotype;
+  captcha?: JSX.Element;
+  submitDisabled?: boolean;
 }
 
 const LoginForm = ({
@@ -37,25 +47,29 @@ const LoginForm = ({
   username,
   passwordLabel,
   password,
-  forgotPasswordLabel,
+  forgotPassword,
   onSubmit,
   primarySubmitLabel,
   secondarySubmitLabel,
-  offerLinkLabel,
+  offerLink,
   errorMessage,
   usernameError,
   passwordError,
   onPasswordChange,
   onUsernameChange,
   loading,
-  logo
+  logo,
+  responseMessage,
+  captcha,
+  submitDisabled
 }: ILoginForm) => {
   const actions: IButton[] = useMemo(() => {
     const x: IButton[] = [{
       children: primarySubmitLabel,
       surface: 'primary',
       type: 'submit',
-      size: 'small'
+      size: 'small',
+      disabled: submitDisabled
     }];
 
     if (secondarySubmitLabel) {
@@ -68,7 +82,21 @@ const LoginForm = ({
     }
 
     return x;
-  }, [secondarySubmitLabel])
+  }, [primarySubmitLabel, secondarySubmitLabel, submitDisabled])
+
+  const links: ILink[] = useMemo(() => {
+    const x: ILink[] = [];
+    
+    if (forgotPassword) {
+      x.push(forgotPassword)
+    }
+
+    if (offerLink) {
+      x.push(offerLink)
+    }
+
+    return x;
+  }, [forgotPassword, offerLink])
 
   const fields: TFormFieldType[] = useMemo(() => [{
     fieldType: 'input',
@@ -94,8 +122,7 @@ const LoginForm = ({
     size: 'full'
   }], [])
 
-  // TODO: remove second part of ternary when tested properly
-  return 1 > 0 ? (
+  return (
     <div className={styles.loginForm}>
       {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
       <Form
@@ -107,38 +134,11 @@ const LoginForm = ({
         onControlledSubmit={onSubmit}
         actions={actions}
         generalErrorMessage={errorMessage}
-        links={forgotPasswordLabel ? [{ name: forgotPasswordLabel, href: '#' }] : undefined}
+        links={links}
+        responseMessage={responseMessage}
+        captcha={captcha}
       />
     </div>
-  ) : (
-    <form className={styles.loginForm} onSubmit={onSubmit}>
-      {loading && <LoadingOverlay isVisible={loading} position='absolute' className={styles.overlay} loaderSize='md'></LoadingOverlay>}
-      {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
-      <h1 className="h3">{title}</h1>
-      {description && <p>{description}</p>}
-      <FormGroup label={usernameLabel} formElementId="email" errorText={usernameError}>
-        <InputText id="email" value={username} autocomplete="username" onChange={onUsernameChange} />
-      </FormGroup>
-      <FormGroup label={passwordLabel} formElementId="password" errorText={passwordError}>
-        <InputText id="password" type="password" autocomplete="current-password" value={password} onChange={onPasswordChange} />
-      </FormGroup>
-      <UILink onSurface="transparent" href="#">
-        {forgotPasswordLabel}
-      </UILink>
-      <Button type="submit" surface="primary" size="small" fullWidth>
-        {primarySubmitLabel}
-      </Button>
-      {secondarySubmitLabel && (
-        <Button type="submit" surface="secondary" size="small" fullWidth>
-          {secondarySubmitLabel}
-        </Button>
-      )}
-      {offerLinkLabel && (
-        <UILink onSurface="transparent" href="#">
-          {offerLinkLabel}
-        </UILink>
-      )}
-    </form>
   )
 }
 

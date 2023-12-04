@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, DividerLines, Loader, Placeholder, Button, IconButton } from '../../atoms'
+import { Picture, Placeholder, Button, IconButton, Icon } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -11,9 +11,9 @@ import { IProductCard, TProductCardVertical } from '../product-card/product-card
 const ProductCardVertical = ({
   product,
   loading = false,
-  addToCartButton,
   hideCartButton,
   addToCart,
+  addToCartBtnLabel,
   onChangeQuantity,
   productQuantityDisabled,
   linkComponent: Link,
@@ -21,13 +21,14 @@ const ProductCardVertical = ({
   handlePackageChange,
   selectedVariantId,
   productImage,
-  changePackagingButton,
   onVariantsButtonClick,
   className,
   defaultQuantity,
+  listPriceLabel,
   campaign,
   disabled,
   buttonLoading,
+  limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
@@ -47,9 +48,13 @@ const ProductCardVertical = ({
     salesUnit,
     itemNumberPerSalesUnit,
     tags,
+    isLimitedProduct,
+    sellerOnly,
+    isAccessoryPotItem,
   } = product
+  //const isLimitedProduct = product.productId === '1109611' || product.productId === '1174411' ? true : false
 
-  const hideChangePackagingBtn = !productVariantList || productVariantList.length <= 1
+  const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
@@ -62,6 +67,7 @@ const ProductCardVertical = ({
 
   const style: { [key: string]: string } = {
     '--campaign-color': campaign?.color ?? '#FFF',
+    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
   }
 
   if (variantsOpen && selectedVariantId) {
@@ -76,25 +82,60 @@ const ProductCardVertical = ({
   } else {
     return (
       <div
-        className={cx(styles.productCardVertical, className ? className : '', {
-          [styles.campaign]: campaign?.title,
-        })}
+        className={cx(
+          styles.productCardVertical,
+          className ? className : '',
+          {
+            [styles.campaign]: campaign?.title,
+          },
+          {
+            [styles.limitedProduct]: !campaign && isLimitedProduct && limitedProductText,
+          }
+        )}
         style={style}
       >
         {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
-        {Array.isArray(tags) && tags.length ? <>{loading ? <Placeholder type="tags" /> : <TagsList tagsList={tags} />}</> : null}
+        {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
+        <div className={styles.tagsWrapper}>
+          {sellerOnly && <Icon icon={'icon-eye'} size={'large'}></Icon>}
+          {isAccessoryPotItem && (
+            <span>
+              <b style={{ fontSize: '1.2rem' }}>S</b>
+            </span>
+          )}
+          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+        </div>
         {loading ? (
           <Placeholder type="image" />
         ) : (
-          <div className={styles.imageWrapper}>
-            <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} fallbackImageUrl={fallbackProductImageUrl} />
-          </div>
+          <>
+            {productUrl && Link ? (
+              <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
+                <Picture
+                  {...productImage}
+                  classNamePicture={styles.cardPicture}
+                  classNameImg={`${styles.cardImage}`}
+                  fallbackImageUrl={fallbackProductImageUrl}
+                />
+              </Link>
+            ) : (
+              <div className={styles.imageWrapper}>
+                <Picture
+                  {...productImage}
+                  classNamePicture={styles.cardPicture}
+                  classNameImg={`${styles.cardImage}`}
+                  fallbackImageUrl={fallbackProductImageUrl}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'heading'} />
-            <Placeholder type={'p_short'} />
+            <Placeholder type={'heading'} />
+            <Placeholder type={'heading'} />
             <Placeholder type={'p_long'} />
             <Placeholder type={'p_long'} />
           </div>
@@ -107,25 +148,21 @@ const ProductCardVertical = ({
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <DividerLines />
             <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} - ${country}`}</p>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging}: ${priceStr} kr/st`}</p>
+            <p className={cx(styles.textPurple, 'bodyS')}>{`${listPriceLabel ? listPriceLabel : 'Listpris'}: ${priceStr} kr/st`}</p>
           </div>
         )}
-        {changePackagingButton && (
-          <Button
-            {...changePackagingButton}
-            surface="secondary"
-            iconRight={{ icon: 'icon-layers' }}
-            rounded
-            fullWidth
-            onClick={() => handleVariantBtnClick()}
-            disabled={loading}
-            className={hideChangePackagingBtn ? styles.hiddenPackagingBtn : ''}
-          >
-            Byt förpackning
-          </Button>
-        )}
+        <Button
+          type={'button'}
+          surface="secondary"
+          iconRight={packageBtnDisabled ? undefined : { icon: 'icon-layers' }}
+          rounded
+          fullWidth
+          onClick={() => handleVariantBtnClick()}
+          disabled={loading || packageBtnDisabled}
+        >
+          {packaging}
+        </Button>
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'p_long'} />
@@ -146,24 +183,26 @@ const ProductCardVertical = ({
         {!hideCartButton && (
           <div className={styles.cartButtonWrapper}>
             <Button
-              {...addToCartButton}
+              type={'button'}
+              surface={'primary'}
               className={!loading ? styles.productCardBtn : ''}
               fullWidth
               onClick={() => addToCart(product)}
-              disabled={buttonLoading || loading || disabled}
+              disabled={buttonLoading || loading || disabled || quantity === '0'}
               loading={buttonLoading}
             >
-              Lägg i kundvagn
+              {addToCartBtnLabel}
             </Button>
             {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
               <IconButton
                 type="button"
                 icon={'icon-file-plus'}
                 className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick()}
+                onClick={() => onSaveToPurchaseListClick(productId)}
                 size="large"
                 isTransparent
                 noBorder
+                noPadding
               />
             )}
             {showFavoriteIcon && onFavoriteIconClick && (
@@ -171,10 +210,11 @@ const ProductCardVertical = ({
                 type="button"
                 icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
                 className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick()}
+                onClick={() => onFavoriteIconClick(productId)}
                 size="large"
                 isTransparent
                 noBorder
+                noPadding
               />
             )}
           </div>

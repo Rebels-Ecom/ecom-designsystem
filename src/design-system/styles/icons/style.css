@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('fonts/icomoon.woff?l0zufz') format('woff');
+  src: url('fonts/icomoon.woff?kl0apr') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -225,6 +225,9 @@
 .icon-map-pin:before {
   content: "\e93d";
 }
+.icon-maximize-2:before {
+  content: "\e97f";
+}
 .icon-menu:before {
   content: "\e93e";
 }
@@ -276,6 +279,9 @@
 .icon-plus-circle:before {
   content: "\e94e";
 }
+.icon-plus-square:before {
+  content: "\e980";
+}
 .icon-printer:before {
   content: "\e970";
 }
@@ -290,6 +296,9 @@
 }
 .icon-rotate-cw:before {
   content: "\e950";
+}
+.icon-save:before {
+  content: "\e981";
 }
 .icon-search:before {
   content: "\e951";

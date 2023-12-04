@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, ExpandableWrapper, Heading, Text } from '../../atoms'
-import styles from './form.module.css'
-import { FlexContainer } from '../../layouts'
-import { IFormTemplateProps, TFormFieldType } from './types'
-import { InputField } from './components/input-field'
-import { validateField } from './helpers'
-import cx from 'classnames'
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Button, ExpandableWrapper, Heading, Icon, Text } from '../../atoms';
+import styles from './form.module.css';
+import { FlexContainer } from '../../layouts';
+import { IFormTemplateProps, TFormFieldType, TFormInputType } from './types';
+import { InputField } from './components/input-field';
+import { validateField } from './helpers';
+import cx from 'classnames';
 
-const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, ...props }: IFormTemplateProps) => {
+const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, responseMessage, ...props }: IFormTemplateProps) => {
   const [fields, setFields] = useState<Array<TFormFieldType>>(props.fields)
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [isValid, setIsValid] = useState(false)
 
   const formRef = useRef<HTMLFormElement>(null)
@@ -28,8 +28,6 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
       event.preventDefault()
       onSubmit?.(fields)
       onControlledSubmit?.(event)
-
-      setIsSubmitted(true)
     },
     [fields, onSubmit]
   )
@@ -44,6 +42,16 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     setFields((prevFields) => {
       const updatedFields = prevFields.map((field) => {
         if (field.name === fieldName) {
+          if (field.alphaField) {
+            const fieldToMatch = prevFields.find(x => x.name === field.alphaField);
+            return {
+              ...field,
+              dirty: true,
+              valid: fieldToMatch?.value === value,
+              value,
+            }
+          }
+
           return {
             ...field,
             dirty: true,
@@ -51,6 +59,14 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             value,
           }
         } else {
+          if (field.alphaField) {
+            return {
+              ...field,
+              dirty: field.dirty,
+              valid: field.value === value,
+              value: field.name === fieldName ? value : field.value,
+            }
+          }
           return field
         }
       })
@@ -59,12 +75,18 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     })
   }, [])
 
-  return (
-    <form
-      ref={formRef}
-      className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')}
-      onSubmit={handleSubmit}
-    >
+  // TODO: extract success message to separate component
+  return responseMessage ? (
+    <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2  }}>
+      <div className={styles.loaderContainer}>
+        {responseMessage.icon && <Icon icon={responseMessage.icon} className={styles.successIcon} />}
+        {responseMessage.title && <Heading order={3} noMargin>{responseMessage.title}</Heading>}
+        <Text align='center'>{responseMessage.message}</Text>
+        {responseMessage.onClose && <Button type='button' surface='primary' onClick={responseMessage.onClose}>{responseMessage.closeLabel ?? 'Stäng'}</Button>}
+      </div>
+    </motion.div>
+  ) : (
+    <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit}>
       <div>
         {formTitle && (
           <Heading order={3} className={styles.formTitle}>
@@ -97,26 +119,31 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         </FlexContainer>
         <ExpandableWrapper open={!!props.generalErrorMessage}>
           <FlexContainer alignItems="center" justifyContent="center">
-            {props.generalErrorMessage && <p className={styles.generalErrorMessage} dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}></p>}
+            {props.generalErrorMessage && <p className={cx(styles.generalErrorMessage, {[styles.generalErrorMessageDisabled]: loading})} dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}></p>}
           </FlexContainer>
         </ExpandableWrapper>
       </div>
+      {props.captcha && (
+        <FlexContainer justifyContent='center' alignItems='center'>
+          {props.captcha}
+        </FlexContainer>
+      )}
       {props.actions && (
         <FlexContainer justifyContent={props.alignActions ?? 'center'}>
           {props.actions.map((action, i) => (
             <Button
               key={`${action.type}-${i}`}
               {...action}
-              disabled={action.type === 'submit' ? !isValid : loading}
+              disabled={action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading)}
               loading={action.type === 'submit' && loading}
             />
           ))}
         </FlexContainer>
       )}
       {props.links && (
-        <FlexContainer justifyContent={props.alignActions ?? 'center'}>
+        <FlexContainer alignItems={props.alignActions ?? 'center'} flexDirection='column'>
           {props.links.map((link, i) => (
-            <a className={styles.link} key={`${link.name}-${i}`} href={link.href} target="_blank">
+            <a className={cx(styles.link, {[styles.linkDisabled]: loading})} key={`${link.name}-${i}`} href={link.href} target="_blank">
               {link.name}
             </a>
           ))}
