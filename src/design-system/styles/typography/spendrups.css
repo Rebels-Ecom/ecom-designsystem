@@ -228,6 +228,51 @@ h5,
   font-weight: 700;
 }
 
+.cta-xxs {
+  font-size: var(--cta-s-font-size);
+  line-height: var(--cta-s-line-height);
+  letter-spacing: var(--cta-s-letter-spacing);
+  height: 2.25rem;
+  min-width: auto;
+  width: auto;
+  padding: 0 0.75rem;
+  justify-content: flex-start;
+
+  @media (max-width: 32em) {
+    height: 2.5rem;
+    font-size: var(--cta-l-font-size);
+  }
+}
+
+.cta-xs {
+  font-size: var(--cta-s-font-size);
+  line-height: var(--cta-s-line-height);
+  letter-spacing: var(--cta-s-letter-spacing);
+  height: 2.5rem;
+  min-width: 2.5rem;
+  width: max-content;
+  padding: 0.625rem 1rem;
+}
+
+.cta-s {
+  font-size: var(--cta-s-font-size);
+  line-height: var(--cta-s-line-height);
+  letter-spacing: var(--cta-s-letter-spacing);
+  height: 2.5rem;
+  min-width: 7.5rem;
+  width: var(--cta-width-default);
+  padding: 0.625rem 2rem;
+}
+
+.cta-l {
+  font-size: var(--cta-l-font-size);
+  line-height: var(--cta-l-line-height);
+  letter-spacing: var(--cta-l-letter-spacing);
+  height: 3rem;
+  min-width: 8.125rem;
+  padding: 1rem 2rem;
+}
+
 /* .h1 {
   margin: 2.4375rem 0 1.625rem 0;
   @media (min-width: 85.375em) {

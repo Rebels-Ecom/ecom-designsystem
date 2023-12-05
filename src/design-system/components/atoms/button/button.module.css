@@ -20,7 +20,6 @@
 }
 
 /* SIZES */
-/* TODO: Move these styles to button.module.css */
 .xxs {
   font-size: var(--cta-s-font-size);
   line-height: var(--cta-s-line-height);
