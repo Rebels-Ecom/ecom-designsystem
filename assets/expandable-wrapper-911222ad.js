@@ -1,2 +1,0 @@
-import{a as r}from"./jsx-runtime-76c5c2e2.js";import{m as n}from"./motion-354a1bac.js";const t="_expandableWrapper_1ygkl_1",o={expandableWrapper:t},a=({open:e,children:p})=>r(n.div,{className:o.expandableWrapper,initial:{height:0},animate:{height:e?"auto":0},children:p});try{a.displayName="ExpandableWrapper",a.__docgenInfo={description:"",displayName:"ExpandableWrapper",props:{open:{defaultValue:null,description:"",name:"open",required:!0,type:{name:"boolean"}}}}}catch{}export{a as E};
-//# sourceMappingURL=expandable-wrapper-911222ad.js.map

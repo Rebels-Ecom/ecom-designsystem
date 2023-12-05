@@ -1,5 +1,0 @@
-import{a as t}from"./jsx-runtime-76c5c2e2.js";import"./index-6f814c40.js";import"./_commonjsHelpers-042e6b4d.js";const c="_swipeList_10kzg_1",m="_swipeListItem_10kzg_18",d="_snapAlways_10kzg_23",n={swipeList:c,swipeListItem:m,snapAlways:d},r=e=>t("div",{className:n.swipeListItem,children:e.children}),i=e=>t("div",{className:n.swipeList,children:e.children});try{r.displayName="SwipeListItem",r.__docgenInfo={description:"",displayName:"SwipeListItem",props:{}}}catch{}try{i.displayName="SwipeList",i.__docgenInfo={description:"",displayName:"SwipeList",props:{}}}catch{}const y={title:"Design System/Organisms/Swipe List",component:i},_={render:e=>t("div",{style:{width:"500px",margin:"0 auto"},children:t(i,{})})},s={..._,args:{}};var p,a,o;s.parameters={...s.parameters,docs:{...(p=s.parameters)==null?void 0:p.docs,source:{originalSource:`{
-  ...SwipeListStoryTemplate,
-  args: {}
-}`,...(o=(a=s.parameters)==null?void 0:a.docs)==null?void 0:o.source}}};const S=["SwipeListStory"];export{s as SwipeListStory,S as __namedExportsOrder,y as default};
-//# sourceMappingURL=swipe-list.stories-c4041322.js.map
