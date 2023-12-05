@@ -10,7 +10,7 @@ import { CartProduct, FormGroup, GroupWrapper } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { DeliveryForm } from '../../organisms/delivery-form/delivery-form'
-import { ButtonPlaceOrderStory } from '../../atoms/button/button.stories'
+import { Button_Small_Icon_Right } from '../../atoms/button/button.stories'
 import { DeliveryFormStory } from '../../organisms/delivery-form/delivery-form.stories'
 import { Text } from '../../atoms/text/text'
 import { Heading_DeliveryForm_Story } from '../../atoms/heading/heading.stories'
@@ -41,7 +41,7 @@ const CartStoryTemplate: Story = {
                         </FormGroup>
                         <Text>Genom att klicka på "Lägg beställning" godkänner jag Villkor för Spendrups Shoppingtjänst och bekräftar att jag har läst Spendrups Dataskyddsinformation och Cookiepolicy. Jag godkänner villkoren för Spendrups AB.</Text>
                         <Text componentType='a' href='/kopevillkor' underline>Spendrups köpevillkor</Text>
-                        <Button {...ButtonPlaceOrderStory.args} type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
+                        <Button children='Button' type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
                     </CartDeliveryDetails>
                     <CartOrderDetails>
                         {isLoading

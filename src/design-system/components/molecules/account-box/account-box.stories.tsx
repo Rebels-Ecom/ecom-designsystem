@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { AccountBox } from './account-box'
-import { ButtonChooseAcountStory } from '../../atoms/button/button.stories'
+import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
 import { action } from '@storybook/addon-actions'
 
 const meta: Meta<typeof AccountBox> = {
@@ -31,7 +31,7 @@ export const AccountBoxStory = {
     address: 'Granängsringen 3',
     zipcode: '135 44',
     city: 'Tyresö',
-    chooseAccountBtn: ButtonChooseAcountStory.args,
+    chooseAccountBtn: Button_Large_Icon_Right.args,
     onClickChooseAccount: action('clicked'),
   },
 }
@@ -44,7 +44,7 @@ export const AccountBoxStory_2 = {
     address: 'Granängsringen 3',
     zipcode: '135 44',
     city: 'Tyresö',
-    chooseAccountBtn: ButtonChooseAcountStory.args,
+    chooseAccountBtn: Button_Large_Icon_Right.args,
     onClickChooseAccount: action('clicked'),
   },
 }

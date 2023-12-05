@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CartSidebar } from './cart-sidebar'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ButtonGoToCart, LatestOrderButtonStory, ShoppingListButtonStory } from '../../atoms/button/button.stories'
+import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
 import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { DrawerSidebar } from '../../molecules/drawer-sidebar/drawer-sidebar'
@@ -69,10 +69,10 @@ export const CartSidebarStory = {
         totalAmount: '1378,70',
         productsNumber: 7,
         text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
-        shoppingListButton: ShoppingListButtonStory.args,
-        latestOrderButton: LatestOrderButtonStory.args,
+        shoppingListButton: Button_Large_Icon_Right.args,
+        latestOrderButton: Button_Large_Icon_Right.args,
         cartProductsList: CartProductListStory.args,
-        goToCartButton: ButtonGoToCart.args,
+        goToCartButton: Button_Large_Icon_Right.args,
         toggleSwitchLabel: 'Spara som inköpslista',
         suggestedProductsList: FeaturedProductsStory.args
     }
@@ -85,10 +85,10 @@ export const CartSidebarStoryNoProducts = {
         totalAmount: '1378,70',
         productsNumber: 7,
         text: '<p><b>Du kan snabbt addera produkter till din beställning genom att hämta från dina inköpslistor eller senaste order</b></p>',
-        shoppingListButton: ShoppingListButtonStory.args,
-        latestOrderButton: LatestOrderButtonStory.args,
+        shoppingListButton: Button_Large_Icon_Right.args,
+        latestOrderButton: Button_Large_Icon_Right.args,
         cartProductsList: [],
-        goToCartButton: ButtonGoToCart.args,
+        goToCartButton: Button_Large_Icon_Right.args,
         toggleSwitchLabel: 'Spara som inköpslista',
         suggestedProductsList: FeaturedProductsStory.args
     }

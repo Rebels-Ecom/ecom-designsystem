@@ -9,7 +9,6 @@ import { MessagePopupStory } from '../../atoms/message-popup/message-popup.stori
 import { InfoSummaryBoxStory_ShoppingList } from '../../molecules/info-summary-box/info-summary-box.stories';
 import { ScrollableListListStory_WithFade_2_products } from '../../molecules/scrollable-list/scrollable-list.stories';
 import { OrderConfirmationDetailsStory_Pricing, OrderConfirmationDetailsStory_TotalPayment } from '../../molecules/order-confirmation-details/order-confirmation-details.stories';
-import { ButtonProductCardStory } from '../../atoms/button/button.stories';
 import { Footer } from '../../organisms';
 
 const meta: Meta = {
@@ -38,14 +37,14 @@ const ShoppingListStoryTemplate = {
               <Heading order={3}>Vårfesten</Heading>
               <Text>Senast sparad:</Text>
               <DeliveryDateInfo dateLabel={'2022-06-10'} />
-              <MessagePopup isOpen={isMessagePopupOpen} onClose={() => setIsMessagePopupOpen(!isMessagePopupOpen)} {...MessagePopupStory.args} icon={'icon-info'} arrowPosition='center'></MessagePopup>
+              <MessagePopup onClose={() => setIsMessagePopupOpen(!isMessagePopupOpen)} {...MessagePopupStory.args} icon={'icon-info'} arrowPosition='center' isOpen={isMessagePopupOpen}></MessagePopup>
               <InfoSummaryBox {...InfoSummaryBoxStory_ShoppingList.args} />
               <Heading order={4} align='center'>Populära produkter som vi tror passar dig</Heading>
               <ScrollableList {...ScrollableListListStory_WithFade_2_products.args}>{ScrollableListListStory_WithFade_2_products.args.children}</ScrollableList>
               <IconLink icon={'icon-plus'} href={'/to-somewhere'} isExternal={true} linkComponent={'a'}>Visa alla rekommenderade produkter</IconLink>
               <OrderConfirmationDetails {...OrderConfirmationDetailsStory_Pricing.args} withBackground />
               <OrderConfirmationDetails {...OrderConfirmationDetailsStory_TotalPayment.args} withBackground={false} />
-              <Button {...ButtonProductCardStory.args} type={'button'} surface={'primary'} size='small' />
+              <Button children='Button' type={'button'} surface={'primary'} size='small' />
             </BoxWrapper>
 
         </ContentWrapper>

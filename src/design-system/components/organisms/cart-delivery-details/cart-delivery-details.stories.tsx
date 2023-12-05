@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CartDeliveryDetails } from './cart-delivery-details'
 import type { Meta, StoryObj } from '@storybook/react';
 import { DeliveryFormStory } from '../delivery-form/delivery-form.stories';
-import { ButtonPlaceOrderStory } from '../../atoms/button/button.stories';
 import { DeliveryForm } from '../delivery-form/delivery-form';
 import { Button } from '../../atoms/button/button';
 import { FormGroup } from '../../molecules/form-group/form-group';
@@ -36,7 +35,7 @@ const CartDeliveryDetailsStoryTemplate: Story = {
                     </FormGroup>
                     <Text>Genom att klicka på "Lägg beställning" godkänner jag Villkor för Spendrups Shoppingtjänst och bekräftar att jag har läst Spendrups Dataskyddsinformation och Cookiepolicy. Jag godkänner villkoren för Spendrups AB.</Text>
                     <Text componentType='a' href='/kopevillkor' underline>Spendrups köpevillkor</Text>
-                    <Button {...ButtonPlaceOrderStory.args} type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
+                    <Button children='Button' type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
                 </CartDeliveryDetails>
             </div>
         )
@@ -49,6 +48,5 @@ export const CartDeliveryDetailsStory = {
         loading: false,
         ...Heading_DeliveryForm_Story.args,
         ...DeliveryFormStory.args,
-        ...ButtonPlaceOrderStory.args
     }
 }
