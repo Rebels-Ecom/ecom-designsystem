@@ -25,7 +25,6 @@ export default meta;
 // GUIDELINE for how to structure a product category listing page
 const ProductCategoryListingPageStoryTemplate = {
   render: ({ ...args }) => {
-    const [filterOpen, setFilterOpen] = useState(false);
     const [sortBy, setSortBy] = useState<string | undefined>();
     const [dataToDisplay, setDataToDisplay] = useState([]);
     function handleAddToCart(product:any) {
@@ -86,14 +85,12 @@ const ProductCategoryListingPageStoryTemplate = {
           <FlexContainer flexDirection='column'>
             <Breadcrumbs {...args.breadcrumbs} />
             <FlexContainer justifyContent='space-between' stretch>
-              <FlexContainer>
-                <Button 
-                  type='button'
-                  surface='x'
-                  size='xx-small'
-                  onClick={() => setFilterOpen(true)}
-                >Filtrera</Button>
-              </FlexContainer>
+              <DynamicFilter
+                title='Filter'
+                {...Dynamic_Filter_Default.args}
+                onUpdate={handleUpdate}
+                preSelected={[]}
+              />
               <SelectList
                 placeholder='Sortera'
                 options={[{
@@ -107,14 +104,6 @@ const ProductCategoryListingPageStoryTemplate = {
                 onClickItem={handleSorting}
               />
             </FlexContainer>
-            <DynamicFilter
-              title='Filter'
-              {...Dynamic_Filter_Default.args}
-              onUpdate={handleUpdate}
-              isOpen={filterOpen}
-              preSelected={[]}
-              onClose={() => setFilterOpen(false)}
-            />
             {productCardList}
           </FlexContainer>
         </ContentWrapper>

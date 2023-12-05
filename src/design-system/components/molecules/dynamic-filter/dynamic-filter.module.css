@@ -72,26 +72,29 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-family: var(--font-family-primary);
+  font-family: var(--font-family-secondary);
   font-size: 0.875rem;
   margin: 0;
   padding: 0;
   cursor: pointer;
-  background: var(--border-grey);
+  color: var(--cta-primary-default);
   padding: 0.25rem 0.5rem 0.25rem 0.75rem;
   border-radius: 1rem;
-  border: none;
-}
-
-.clearFilter {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-family: var(--font-family-primary);
-  font-size: 0.875rem;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  background: none;
-  border: none;
+  font-weight: bold;
+  border: 1px solid transparent;
+  
+  & span {
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.375rem;
+  }
+  
+  &.active {
+    background: var(--border-grey);
+  }
+  
+  &.clear {
+    background: none;
+    border: 1px solid var(--border-on-x);
+  }
 }

@@ -4,6 +4,7 @@ import styles from './dynamic-filter.module.css'
 import { Button, Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
 import { FlexContainer } from '../../layouts';
 import { AnimatePresence, motion } from 'framer-motion';
+import cx from 'classnames';
 
 type TCheckbox = {
   type: 'checkbox';
@@ -33,8 +34,6 @@ export type TFilterType = {
 } & (TCheckbox | TRange | TRadio)
 
 interface IDynamicFilter {
-  isOpen: boolean;
-  onClose: () => void;
   filters: TFilterType[];
   preSelected: TSelected[];
   title?: string;
@@ -71,8 +70,6 @@ const getMinAndMaxValues = (options: TOptionType[]) => {
 }
 
 const DynamicFilter = ({
-  isOpen,
-  onClose,
   filters,
   title,
   preSelected,
@@ -82,6 +79,7 @@ const DynamicFilter = ({
   hideFilters,
   maxOptionsToShow = 6
 }: IDynamicFilter) => {
+  const [open, setOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
   const [selectedFilters, setSelectedFilters] = useState<TSelected[]>(preSelected ?? []);
   const [showMore, setShowMore] = useState(false);
@@ -174,11 +172,13 @@ const DynamicFilter = ({
     onUpdate?.(undefined, [])
   }
 
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
-    if (!isOpen) {
+    if (!open) {
       setShowMore(false)
     }
-  }, [isOpen]);
+  }, [open]);
 
   const filterItems = (filter: TFilterType) => filter.options.map((option, i) => {
     const activeCategory = selectedFilters.find(x => x.name === filter.name);
@@ -227,39 +227,50 @@ const DynamicFilter = ({
   return (
     <>
       <FlexContainer alignItems='center'>
+        {/* TODO: add translation */}
+          <Button 
+            type='button'
+            surface='x'
+            size='xx-small'
+            onClick={() => setOpen(true)}
+          >Filtrera</Button>
         {!hideFilters && (
           <>
             {selectedFilters.map(selectedFilter => {
-              {
-                return selectedFilter.selectedOptions.map((selectedOption, i) => {
-                  return (
-                    <AnimatePresence exitBeforeEnter presenceAffectsLayout initial={false}>
+              return selectedFilter.selectedOptions.map((selectedOption, i) => {
+                let name = selectedOption.name;
+                if (filters.find(x => (x.type === 'range') && (x.options.find(y => y.value === selectedOption.name)))) {
+                  name = selectedFilter.name;
+                }
+                return (
+                  <AnimatePresence exitBeforeEnter presenceAffectsLayout initial={false}>
                     <motion.button
                       key={`${selectedOption.value}-${i}`}
-                      className={styles.selectedFilter}
+                      className={cx(styles.selectedFilter, styles.active)}
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.25, opacity: 0 }}
                       onClick={() => handleRemoveFilter(selectedOption)}
                       >
-                      {selectedOption.name}
+                      <span>{name}</span>
                       <Icon icon='icon-x' />
                     </motion.button>
-                    </AnimatePresence>
-                  )
-                })
-              }
+                  </AnimatePresence>
+                )
+              })
             })}
             {!!selectedFilters.length && (
               <button
-                className={styles.clearFilter}
+              className={cx(styles.selectedFilter, styles.clear)}
                 onClick={handleRemoveAllFilters}
-              >Rensa <Icon icon='icon-x' /></button>
+              >
+                <span>Rensa</span>
+                <Icon icon='icon-x' /></button>
             )}
           </>
         )}
       </FlexContainer>
-      <DrawerSidebar isOpen={isOpen} onClose={onClose} from='left' width='md' hideOverlay>
+      <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md' hideOverlay>
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
           {filters.map((filter, i) => {
@@ -268,10 +279,10 @@ const DynamicFilter = ({
             const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
             const preSelectedSliderObj = preSelectedSlider?.selectedOptions?.find(y => y.value);
             const preSelectedSliderValues = preSelectedSliderObj?.value?.split('_')[1]?.split('-').map(x => Number(x))
-            console.log('isSelected: ', isSelected)
-            console.log('preSelectedSlider: ', preSelectedSlider)
-            console.log('preSelectedSliderObj: ', preSelectedSliderObj)
-            console.log('preSelectedSliderValues: ', preSelectedSliderValues)
+            // console.log('isSelected: ', isSelected)
+            // console.log('preSelectedSlider: ', preSelectedSlider)
+            // console.log('preSelectedSliderObj: ', preSelectedSliderObj)
+            // console.log('preSelectedSliderValues: ', preSelectedSliderValues)
             return (
               <div className={styles.filterCategory} key={`${filter.name}-${i}`}>
                 <button

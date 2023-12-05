@@ -13,6 +13,10 @@
   &:disabled {
     cursor: not-allowed;
   }
+
+  &.bold {
+    font-weight: bold;
+  }
 }
 
 /* SIZES */

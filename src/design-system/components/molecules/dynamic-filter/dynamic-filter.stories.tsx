@@ -37,9 +37,6 @@ const random_data = [{
 const DynamicFilterStoryTemplate: Story = {
   render: (args) => {
     const [filters, setFilters] = useState<TSelected[]>();
-    const [isOpen, setIsOpen] = useState(false);
-    const handleOpen = () => setIsOpen(true);
-    const handleClose = () => setIsOpen(false);
     const handleUpdate = (_, updatedFilters) => {
       setFilters(updatedFilters)
     };
@@ -56,11 +53,8 @@ const DynamicFilterStoryTemplate: Story = {
 
     return (
       <>
-        <Button type='button' surface='primary' onClick={handleOpen}>{isOpen ? 'Close' : 'Open'}</Button>
         <DynamicFilter
           onUpdate={handleUpdate}
-          isOpen={isOpen}
-          onClose={handleClose}
           title='Filter'
           preSelected={filtersToDisplay.length ? filtersToDisplay : args.preSelected}
           filters={args.filters}
@@ -80,7 +74,7 @@ export const Dynamic_Filter_Default = {
       {
         name: 'Listpris',
         type: 'range',
-        id: 'range-id',
+        id: 'rangefilter*V16062',
         options: [
           {
               name: "0",

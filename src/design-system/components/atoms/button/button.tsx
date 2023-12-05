@@ -28,6 +28,7 @@ export interface IButton {
    * @default undefined
    */
   loading?: boolean;
+  weight?: 'normal' | 'bold';
 }
 
 export function getButtonSurface(surface: TButtonSurface) {
@@ -58,7 +59,22 @@ export function getButtonSize(size: TButtonSize) {
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { surface='primary', size='small', type='button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className, loading },
+    {
+      surface='primary',
+      size='small',
+      type='button',
+      children,
+      iconLeft,
+      iconRight,
+      fullWidth,
+      rounded,
+      disabled,
+      onClick,
+      id,
+      className,
+      loading,
+      weight = 'normal'
+    },
     ref
   ) => {
     if(!children)
@@ -73,6 +89,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
           styles.buttonDefault,
           styles[getButtonSize(size)],
           styles[surface],
+          styles[weight],
           {
             [styles.fullWidth]: fullWidth,
             [styles.rounded]: rounded,
