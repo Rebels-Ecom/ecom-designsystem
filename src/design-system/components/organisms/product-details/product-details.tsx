@@ -54,6 +54,8 @@ const ProductDetails = ({
   packaging,
   priceStr,
   price,
+  packagePriceString,
+  packagePrice,
   salesUnit,
   itemNumberPerSalesUnit,
   productVariantList,
@@ -84,10 +86,12 @@ const ProductDetails = ({
     packaging,
     priceStr,
     price,
+    packagePriceString,
+    packagePrice,
     salesUnit,
     itemNumberPerSalesUnit,
     quantity: '1',
-    totalPrice: price ? convertNumToStr(price) : '',
+    totalPrice: packagePrice ? convertNumToStr(packagePrice) : '',
     productVariantList,
     selectedVariantId: productId,
     priceLabel,
@@ -101,7 +105,7 @@ const ProductDetails = ({
     setProduct({
       ...product,
       quantity: quantity.toString(),
-      totalPrice: convertNumToStr(product.price * quantity),
+      totalPrice: convertNumToStr(product.packagePrice * quantity),
     })
   }
 
@@ -169,7 +173,9 @@ const ProductDetails = ({
             <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Above>
             <div>
               <h3 className={styles.heading}>{product.productName}</h3>
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${product.priceLabel}: ${product.priceStr} ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${product.priceLabel}: ${
+                product.packagePriceString
+              } ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
               <p className={cx(styles.textGrey, 'bodyS')}>
                 {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${pieceLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
               </p>

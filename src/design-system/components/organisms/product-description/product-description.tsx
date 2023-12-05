@@ -51,8 +51,8 @@ function ProductDescription({ productDescriptionItems }: IProductDescription) {
           spec.value &&
           spec.value !== 'False' && (
             <p key={index} className={cx(styles.specsText, 'bodyS')}>
-              <span className={styles.specTitle}>{spec.name}</span>
-              {`: ${spec.value}`}
+              <span className={styles.specTitle}>{`${spec.name}: `}</span>
+              {spec.value}
             </p>
           )
         )

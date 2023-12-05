@@ -10,6 +10,8 @@ export interface IProduct {
     packaging: string,
     priceStr: string,
     price:number,
+    packagePriceString: string,
+    packagePrice: number,
     salesUnit:string,
     itemNumberPerSalesUnit: number,
     quantity: string,
