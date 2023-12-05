@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ProductVariantList } from './product-variant-list'
-import { ButtonProductCardStory } from '../../atoms/button/button.stories'
+import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
 import { dummyBeerProduct } from '../product-card/dummy-product'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { getProductPicture } from '../../../../helpers/picture-helper'
@@ -47,6 +47,6 @@ export const ProductVariantListStory = {
   args: {
     selectedVariantId: dummyBeerProduct.Variants[0].VariantId,
     variantsList: getVariantsList(dummyBeerProduct.DisplayName, dummyBeerProduct.Variants),
-    button: ButtonProductCardStory.args,
+    button: Button_Large_Icon_Right.args,
   },
 }

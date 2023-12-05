@@ -9,6 +9,9 @@ export const SwipeListItem = (props: PropsWithChildren<{}>) => (
   <div className={styles.swipeListItem}>{props.children}</div>
 )
 
+/**
+ * @deprecated Should use Carousel instead
+ */
 const SwipeList = (props: PropsWithChildren<{}>) => {
   return (
     <div className={styles.swipeList}>

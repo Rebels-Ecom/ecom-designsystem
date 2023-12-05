@@ -28,6 +28,10 @@
   & .linkText {
     display: inline;
     text-decoration: underline;
+    
+    &.noUnderline {
+      text-decoration: none;
+    }
   }
   
   & .icon {

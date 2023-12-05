@@ -3,7 +3,7 @@ import type { Meta } from '@storybook/react'
 import { HeroCarouselStory } from '../../organisms/hero-carousel/hero-carousel.stories'
 import { Three_Cards, Four_Cards, Full_Width } from '../../organisms/blog-card-list/blog-card-list.stories'
 import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-list.stories'
-import { TeaserStoryLeft1, TeaserStoryRight, TeaserStoryLeft2 } from '../../molecules/teaser/teaser.stories'
+import { Teaser_Round, Teaser_Square } from '../../molecules/teaser/teaser.stories'
 import { Standard_Header } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { FeaturedProductsCarouselStory } from '../../organisms/featured-products-carousel/featured-products-carousel.stories'
@@ -61,10 +61,10 @@ export const StartPage_Guest_User = {
     blogList_Spendrups_Suppliers: Four_Cards.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     customerTeaser: CustomerTeaserStory.args,
-    teaserRight: TeaserStoryRight.args,
+    teaserRight: Teaser_Round.args,
     blogList_Spendrups_Brewing: Full_Width.args,
-    teaserLeft1: TeaserStoryLeft1.args,
-    teaserLeft2: TeaserStoryLeft2.args,
+    teaserLeft1: Teaser_Square.args,
+    teaserLeft2: Teaser_Square.args,
     blogList_Spendrups_Equipment: Four_Cards.args,
     footer:FooterStory.args
   }
@@ -81,10 +81,10 @@ export const StartPage_Logged_In_User = {
     blogList_Spendrups_Suppliers: Four_Cards.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     customerTeaser: CustomerTeaserStory.args,
-    teaserRight: TeaserStoryRight.args,
+    teaserRight: Teaser_Round.args,
     blogList_Spendrups_Brewing: Full_Width.args,
-    teaserLeft1: TeaserStoryLeft1.args,
-    teaserLeft2: TeaserStoryLeft2.args,
+    teaserLeft1: Teaser_Square.args,
+    teaserLeft2: Teaser_Square.args,
     blogList_Spendrups_Equipment: Four_Cards.args,
     footer:FooterStory.args
   }
@@ -101,10 +101,10 @@ export const StartPage_Admin_User = {
     blogList_Spendrups_Suppliers: Four_Cards.args,
     blogFullwidth: BlogCardStoryFullWidth.args,
     customerTeaser: CustomerTeaserStory.args,
-    teaserRight: TeaserStoryRight.args,
+    teaserRight: Teaser_Round.args,
     blogList_Spendrups_Brewing: Full_Width.args,
-    teaserLeft1: TeaserStoryLeft1.args,
-    teaserLeft2: TeaserStoryLeft2.args,
+    teaserLeft1: Teaser_Square.args,
+    teaserLeft2: Teaser_Square.args,
     blogList_Spendrups_Equipment: Four_Cards.args,
     footer:FooterStory.args
   }

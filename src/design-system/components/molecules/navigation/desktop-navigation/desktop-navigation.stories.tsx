@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DesktopNavigation } from './desktop-navigation';
 
-export const categories = [
+const categories = [
   {
     name: 'Drycker',
     href: '#',

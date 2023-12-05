@@ -28,6 +28,7 @@ export interface IButton {
    * @default undefined
    */
   loading?: boolean;
+  weight?: 'normal' | 'bold';
 }
 
 export function getButtonSurface(surface: TButtonSurface) {
@@ -45,20 +46,35 @@ export function getButtonSurface(surface: TButtonSurface) {
 export function getButtonSize(size: TButtonSize) {
   switch (size) {
     case 'xx-small':
-      return 'cta-xxs'
+      return 'xxs'
     case 'x-small':
-      return 'cta-xs'
+      return 'xs'
     case 'large':
-      return 'cta-l'
+      return 'l'
     case 'small':
     default:
-      return 'cta-s'
+      return 's'
   }
 }
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
-    { surface='primary', size='small', type='button', children, iconLeft, iconRight, fullWidth, rounded, disabled, onClick, id, className, loading },
+    {
+      surface='primary',
+      size='small',
+      type='button',
+      children,
+      iconLeft,
+      iconRight,
+      fullWidth,
+      rounded,
+      disabled,
+      onClick,
+      id,
+      className,
+      loading,
+      weight = 'normal'
+    },
     ref
   ) => {
     if(!children)
@@ -71,10 +87,15 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         type={type}
         className={cx(
           styles.buttonDefault,
-          getButtonSize(size),
+          styles[getButtonSize(size)],
           styles[surface],
-          fullWidth && styles.fullWidth,
-          rounded && styles.rounded,
+          styles[weight],
+          {
+            [styles.fullWidth]: fullWidth,
+            [styles.rounded]: rounded,
+            [styles.iconRight]: !!iconRight?.icon,
+            [styles.iconLeft]: !!iconLeft?.icon,
+          },
           className
         )}
         disabled={disabled || loading}

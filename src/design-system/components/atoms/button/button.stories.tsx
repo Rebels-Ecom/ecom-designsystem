@@ -20,7 +20,127 @@ const ButtonStoryTemplate: Story = {
   },
 };
 
-export const ButtonPrimary = {
+export const Button_XX_Small = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_secondary_2',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button secondary',
+    size: 'xx-small',
+    onClick: action('clicked'),
+  }
+};
+
+export const Button_XX_Small_Icon_Right = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_secondary_2',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button secondary',
+    size: 'xx-small',
+    onClick: action('clicked'),
+    iconRight: {
+      icon: 'icon-users'
+    }
+  }
+};
+
+export const Button_XX_Small_Icon_Left = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_secondary_2',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button secondary',
+    size: 'xx-small',
+    onClick: action('clicked'),
+    iconLeft: {
+      icon: 'icon-users'
+    }
+  }
+};
+
+export const Button_XX_Small_Icon_Only = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_tertiary_icon_only',
+    disabled: false,
+    surface: 'primary',
+    size: 'xx-small',
+    children: <Icon icon="icon-layers"/>,
+    onClick: action('clicked'),
+  },
+};
+
+export const Button_X_Small = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_secondary_2',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button secondary',
+    size: 'x-small',
+    onClick: action('clicked'),
+  }
+};
+
+export const Button_X_Small_Icon_Right = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_secondary_2',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button secondary',
+    size: 'x-small',
+    onClick: action('clicked'),
+    iconRight: {
+      icon: 'icon-users'
+    }
+  }
+};
+
+export const Button_X_Small_Icon_Left = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_secondary_2',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button secondary',
+    size: 'x-small',
+    onClick: action('clicked'),
+    iconLeft: {
+      icon: 'icon-users'
+    }
+  }
+};
+
+export const Button_X_Small_Icon_Only = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_tertiary_icon_only',
+    disabled: false,
+    surface: 'primary',
+    size: 'x-small',
+    children: <Icon icon="icon-layers"/>,
+    onClick: action('clicked'),
+  },
+};
+
+export const Button_Small = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_primary_1',
+    disabled: false,
+    surface: 'primary',
+    children: 'Button primary',
+    size: 'small',
+    onClick: action('clicked'),
+  },
+};
+
+export const Button_Small_Icon_Right = {
   ...ButtonStoryTemplate,
   args: {
     id: 'button_primary_1',
@@ -28,155 +148,89 @@ export const ButtonPrimary = {
     surface: 'primary',
     children: 'Button primary',
     onClick: action('clicked'),
+    size: 'small',
+    iconRight: {
+      icon: 'icon-users'
+    }
   },
 };
 
-export const ButtonSecondary = {
+export const Button_Small_Icon_Left = {
   ...ButtonStoryTemplate,
   args: {
-    id: 'button_secondary_2',
+    id: 'button_primary_1',
     disabled: false,
-    surface: 'secondary',
-    children: 'Button secondary',
+    surface: 'primary',
+    children: 'Button primary',
     onClick: action('clicked'),
-  }
+    size: 'small',
+    iconLeft: {
+      icon: 'icon-users'
+    }
+  },
 };
 
-export const ButtonStoryTertiary = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'button_tertiary_3',
-    disabled: false,
-    rounded:true,
-    surface: 'tertiary',
-    children: <>Byt förpacking&nbsp; &nbsp; <Icon icon="icon-layers"/></>,
-    onClick: action('clicked'),
-  }
-};
-
-export const ButtonStoryX = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'button_x_1',
-    size: 'x-small',
-    disabled: false,
-    surface: 'x',
-    children: "Mitt Spendrups",
-    iconRight: {
-      icon: 'icon-settings'
-    },
-    onClick: action('clicked'),
-  }
-};
-
-export const ButtonStoryDropdown = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'button_x_1',
-    size: 'xx-small',
-    disabled: false,
-    surface: 'x',
-    children: "Land",
-    iconRight: {
-      icon: 'icon-chevron-down'
-    },
-    onClick: action('clicked'),
-  }
-};
-
-export const ButtonStoryTertiaryIconOnly = {
+export const Button_Small_Icon_Only = {
   ...ButtonStoryTemplate,
   args: {
     id: 'button_tertiary_icon_only',
     disabled: false,
-    rounded:true,
-    surface: 'tertiary',
+    surface: 'primary',
+    size: 'small',
     children: <Icon icon="icon-layers"/>,
     onClick: action('clicked'),
   },
 };
 
-
-export const ButtonProductCardStory = {
+export const Button_Large = {
   ...ButtonStoryTemplate,
   args: {
-    id: 'ButtonID_ProductCard',
-    disabled: false,
-    size: 'small',
-    children: 'Lägg i kundvagn',
-    onClick: action('clicked'),
-  },
-};
-
-export const ChangePackagingButtonStory = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'Button_Change_Packaging',
-    disabled: false,
-    size: 'small',
-    surface: 'secondary',
-    children: 'Byt förpackning',
-    iconRight: {icon:'icon-layers'},
-    rounded:true,
-    onClick: action('clicked'),
-  },
-};
-
-export const ShoppingListButtonStory = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'Button_Get_Shopping_list',
-    disabled: false,
-    size: 'small',
-    surface: 'secondary',
-    children: 'Hämta inköpslista',
-    iconRight: {icon:'icon-clipboard'},
-    rounded:true,
-    onClick: action('clicked'),
-  },
-};
-
-export const LatestOrderButtonStory = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'Button_Latest_Order',
-    disabled: false,
-    size: 'small',
-    surface: 'secondary',
-    children: 'Senaste order',
-    iconRight: {icon:'icon-package'},
-    rounded:true,
-    onClick: action('clicked'),
-  },
-};
-
-export const ButtonGoToCart = {
-  ...ButtonStoryTemplate,
-  args: {
-    id: 'button_Go_To_Cart',
+    id: 'button_secondary_2',
     disabled: false,
     surface: 'primary',
-    children: 'Gå till kassan',
+    children: 'Button secondary',
+    size: 'large',
     onClick: action('clicked'),
-  },
+  }
 };
 
-export const ButtonPlaceOrderStory = {
+export const Button_Large_Icon_Right = {
   ...ButtonStoryTemplate,
   args: {
-    id: 'button_Place_Order',
+    id: 'button_secondary_2',
     disabled: false,
     surface: 'primary',
-    children: 'Lägg beställning',
-  },
+    children: 'Button secondary',
+    size: 'large',
+    onClick: action('clicked'),
+    iconRight: {
+      icon: 'icon-users'
+    }
+  }
 };
 
-export const ButtonChooseAcountStory = {
+export const Button_Large_Icon_Left = {
   ...ButtonStoryTemplate,
   args: {
-    id: 'button_Choose_Account',
+    id: 'button_secondary_2',
     disabled: false,
     surface: 'primary',
-    children: 'Välj konto',
+    children: 'Button secondary',
+    size: 'large',
+    onClick: action('clicked'),
+    iconLeft: {
+      icon: 'icon-users'
+    }
+  }
+};
+export const Button_Large_Icon_Only = {
+  ...ButtonStoryTemplate,
+  args: {
+    id: 'button_tertiary_icon_only',
+    disabled: false,
+    surface: 'primary',
+    size: 'large',
+    children: <Icon icon="icon-layers"/>,
+    onClick: action('clicked'),
   },
 };
