@@ -120,6 +120,38 @@ export const Dynamic_Filter_Default = {
               name: "100",
               value: "rangefilter*V16062"
           },
+          {
+              name: "200",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "300",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "400",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "500",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "1000",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "1500",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "2000",
+              value: "rangefilter*V16062"
+          },
+          {
+              name: "2466",
+              value: "rangefilter*V16062"
+          },
         ]
       },
       {
