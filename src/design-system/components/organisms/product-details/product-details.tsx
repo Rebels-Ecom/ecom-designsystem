@@ -61,6 +61,7 @@ const ProductDetails = ({
   productVariantList,
   productDetail,
   addToCart,
+  productDescription,
   campaign,
   limitedProduct,
   showFavoriteIcon,
@@ -188,7 +189,7 @@ const ProductDetails = ({
 
             <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>
 
-            {productDetail?.visibleDescription && <p className={styles.description}>{productDetail.visibleDescription}</p>}
+            {productDescription && <p className={styles.description}>{productDescription}</p>}
 
             {Array.isArray(product.productVariantList) && product.productVariantList.length > 1 && (
               <Button

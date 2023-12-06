@@ -6,6 +6,7 @@ export interface IProduct {
     productName: string,
     productUrl?: string,
     productImageUrl: string,
+    productDescription?: string
     country?: string,
     packaging: string,
     priceStr: string,
