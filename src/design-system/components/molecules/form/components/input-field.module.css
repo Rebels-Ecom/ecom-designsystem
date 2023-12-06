@@ -71,6 +71,7 @@
 
     &[type=number] {
       text-align: center;
+      width: 4rem;
       
       &:disabled {
         &::-webkit-inner-spin-button, 
@@ -83,7 +84,6 @@
       }
     
       &:not(:disabled) {
-        width: 4rem;
         padding-right: 0;
         padding-left: 0.25rem;
     
@@ -100,7 +100,6 @@
 
       &[type=number] {
         &:not(:disabled) {
-          width: 4rem;
           padding-right: 0;
           padding-left: 0.25rem;
       

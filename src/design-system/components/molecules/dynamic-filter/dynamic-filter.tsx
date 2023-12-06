@@ -57,7 +57,7 @@ const getMinAndMaxValues = (options: TOptionType[]) => {
   if (!options || !Array.isArray(options)) {
     return;
   }
-  const values = options.map(option => {
+  const values = options?.map(option => {
     return Number(option.name);
   });
   const max = Math.max(...values);
@@ -100,7 +100,7 @@ const DynamicFilter = ({
       const prevFilters = prevSelectedFilters;
       
       let updatedFilters = [];
-      const filterTypeExists = prevFilters.find(x => x.name === name);
+      const filterTypeExists = prevFilters?.find(x => x.name === name);
       // Add new filter type including incoming optionToUpdate
       if (!filterTypeExists) {
         updatedFilters = [...prevFilters, {
@@ -109,13 +109,12 @@ const DynamicFilter = ({
         }];
       } else {
         // Update existing filter type and its selectedOptions
-        const existingOption = filterTypeExists.selectedOptions.find(x => x.name === optionToUpdate.name);
+        const existingOption = filterTypeExists.selectedOptions?.find(x => x.name === optionToUpdate.name);
         updatedFilters = [
-          ...prevFilters.map(x => {
+          ...prevFilters?.map(x => {
             if (x.name === filterTypeExists.name) {
               // If single select, only assign incoming option to selected options
               if (singleSelect) {
-                console.log('2')
                 return {
                   ...filterTypeExists,
                   selectedOptions: [optionToUpdate],
@@ -124,7 +123,6 @@ const DynamicFilter = ({
 
               // Add incoming optionToUpdate
               if (!existingOption) {
-                console.log('1')
                 return {
                   ...filterTypeExists,
                   selectedOptions: [...filterTypeExists.selectedOptions, optionToUpdate]
@@ -180,9 +178,9 @@ const DynamicFilter = ({
     }
   }, [open]);
 
-  const filterItems = (filter: TFilterType) => filter.options.map((option, i) => {
-    const activeCategory = selectedFilters.find(x => x.name === filter.name);
-    const isActiveOption = activeCategory?.selectedOptions.find(y => y.value === option.value);
+  const filterItems = (filter: TFilterType) => filter.options?.map((option, i) => {
+    const activeCategory = selectedFilters?.find(x => x.name === filter.name);
+    const isActiveOption = activeCategory?.selectedOptions?.find(y => y.value === option.value);
     switch(filter.type) {
       case 'radio':
         return (
@@ -236,10 +234,10 @@ const DynamicFilter = ({
           >Filtrera</Button>
         {!hideFilters && (
           <>
-            {selectedFilters.map(selectedFilter => {
-              return selectedFilter.selectedOptions.map((selectedOption, i) => {
+            {selectedFilters?.map(selectedFilter => {
+              return selectedFilter.selectedOptions?.map((selectedOption, i) => {
                 let name = selectedOption.name;
-                if (filters.find(x => (x.type === 'range') && (x.options.find(y => y.value === selectedOption.name)))) {
+                if (filters?.find(x => (x.type === 'range') && (x.options?.find(y => y.value === selectedOption.name)))) {
                   name = selectedFilter.name;
                 }
                 return (
@@ -273,16 +271,14 @@ const DynamicFilter = ({
       <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md' hideOverlay>
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
-          {filters.map((filter, i) => {
+          {filters?.map((filter, i) => {
             // TODO: extract helpers
             const isSelected = openFilters.includes(filter.name);
             const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
-            const preSelectedSliderObj = preSelectedSlider?.selectedOptions?.find(y => y.value);
-            const preSelectedSliderValues = preSelectedSliderObj?.value?.split('_')[1]?.split('-').map(x => Number(x))
-            // console.log('isSelected: ', isSelected)
-            // console.log('preSelectedSlider: ', preSelectedSlider)
-            // console.log('preSelectedSliderObj: ', preSelectedSliderObj)
-            // console.log('preSelectedSliderValues: ', preSelectedSliderValues)
+            const preSelectedSliderOptions = preSelectedSlider?.selectedOptions?.[0]?.value?.split('-');
+            const defMin = preSelectedSliderOptions?.[0] ? Number(preSelectedSliderOptions?.[0]) : undefined;
+            const defMax = preSelectedSliderOptions?.[1] ? Number(preSelectedSliderOptions?.[1]) : undefined;
+
             return (
               <div className={styles.filterCategory} key={`${filter.name}-${i}`}>
                 <button
@@ -298,8 +294,8 @@ const DynamicFilter = ({
                     <Slider
                       min={getMinAndMaxValues(filter.options)?.min ?? 0}
                       max={getMinAndMaxValues(filter.options)?.max ?? 10}
-                      defaultMinVal={preSelectedSliderValues?.[0]}
-                      defaultMaxVal={preSelectedSliderValues?.[1]}
+                      defaultMinVal={defMin}
+                      defaultMaxVal={defMax}
                       withFields={!hideSliderFields}
                       formatLabel='kr'
                       step={10}
