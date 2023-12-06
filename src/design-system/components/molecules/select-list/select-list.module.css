@@ -1,6 +1,22 @@
 .selectListWrapper {
   position: relative;
   align-self: flex-start;
+  width: 100%;
+  
+  @media (min-width: 48em) {
+    width: auto;
+  }
+  
+  
+  & button:first-of-type {
+    width: 100%;
+    height: 3rem;
+    
+    @media (min-width: 48em) {
+      width: auto;
+      height: 2.25rem;
+    }
+  }
 
   & .selectList {
     position: absolute;

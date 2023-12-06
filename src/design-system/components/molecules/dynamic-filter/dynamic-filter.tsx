@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { DrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
 import styles from './dynamic-filter.module.css'
 import { Button, Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
-import { FlexContainer } from '../../layouts';
+import { Above, Below, FlexContainer } from '../../layouts';
 import { AnimatePresence, motion } from 'framer-motion';
 import cx from 'classnames';
 
@@ -83,6 +83,7 @@ const DynamicFilter = ({
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
   const [selectedFilters, setSelectedFilters] = useState<TSelected[]>(preSelected ?? []);
   const [showMore, setShowMore] = useState(false);
+  const [showSelectedFilters, setShowSelectedFilters] = useState(false);
   const handleClickFilterItem = (name: string) => {
     setOpenFilters(prevOpenFilters => {
       if (prevOpenFilters.includes(name)) {
@@ -222,52 +223,86 @@ const DynamicFilter = ({
     }
   })
 
+  const renderSelectedFilters = useMemo(() => {
+    return (
+      <div className={styles.selectedFilters}>
+        {selectedFilters?.map(selectedFilter => {
+          return selectedFilter.selectedOptions?.map((selectedOption, i) => {
+            let name = selectedOption.name;
+            if (filters?.find(x => (x.type === 'range') && (x.options?.find(y => y.value === selectedOption.name)))) {
+              name = selectedFilter.name;
+            }
+            return (
+              <AnimatePresence exitBeforeEnter presenceAffectsLayout initial={false}>
+                <motion.button
+                  key={`${selectedOption.value}-${i}`}
+                  className={cx(styles.selectedFilter, styles.active)}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.25, opacity: 0 }}
+                  onClick={() => handleRemoveFilter(selectedOption)}
+                  >
+                  <span>{name}</span>
+                  <Icon icon='icon-x' />
+                </motion.button>
+              </AnimatePresence>
+            )
+          })
+        })}
+        {!!selectedFilters.length && (
+          <button
+          className={cx(styles.selectedFilter, styles.clear)}
+            onClick={handleRemoveAllFilters}
+          >
+            <span>Rensa</span>
+            <Icon icon='icon-x' /></button>
+        )}
+      </div>
+    )
+  }, [selectedFilters, filters])
+
+  const numberOfSelectedFilters = selectedFilters?.flatMap(x => x?.selectedOptions)?.length; 
+
   return (
     <>
-      <FlexContainer alignItems='center'>
+      <div className={styles.filtersWrapper}>
         {/* TODO: add translation */}
           <Button 
             type='button'
             surface='x'
             size='xx-small'
             onClick={() => setOpen(true)}
+            className={styles.filterButton}
           >Filtrera</Button>
-        {!hideFilters && (
+        {!hideFilters && selectedFilters.length > 0 && (
           <>
-            {selectedFilters?.map(selectedFilter => {
-              return selectedFilter.selectedOptions?.map((selectedOption, i) => {
-                let name = selectedOption.name;
-                if (filters?.find(x => (x.type === 'range') && (x.options?.find(y => y.value === selectedOption.name)))) {
-                  name = selectedFilter.name;
-                }
-                return (
-                  <AnimatePresence exitBeforeEnter presenceAffectsLayout initial={false}>
-                    <motion.button
-                      key={`${selectedOption.value}-${i}`}
-                      className={cx(styles.selectedFilter, styles.active)}
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.25, opacity: 0 }}
-                      onClick={() => handleRemoveFilter(selectedOption)}
-                      >
-                      <span>{name}</span>
-                      <Icon icon='icon-x' />
-                    </motion.button>
-                  </AnimatePresence>
-                )
-              })
-            })}
-            {!!selectedFilters.length && (
-              <button
-              className={cx(styles.selectedFilter, styles.clear)}
-                onClick={handleRemoveAllFilters}
-              >
-                <span>Rensa</span>
-                <Icon icon='icon-x' /></button>
-            )}
+            <Below breakpoint="md">
+              {(matches: any) => matches && (
+                <>
+                <Button 
+                  type='button'
+                  surface='x'
+                  size='xx-small'
+                  onClick={() => setShowSelectedFilters(!showSelectedFilters)}
+                  className={styles.filterButton}
+                  iconRight={{ icon: showSelectedFilters ? 'icon-chevron-up' : 'icon-chevron-down' }}
+                >{
+                  numberOfSelectedFilters > 0 ? `Valda filter (${numberOfSelectedFilters})` : 'Valda filter'
+                }</Button>
+                <ExpandableWrapper open={showSelectedFilters}>
+                  {renderSelectedFilters}
+                </ExpandableWrapper>
+                </>
+              )}
+            </Below>
+            <Above breakpoint="md">
+              {(matches: any) => matches && (  
+                <>{renderSelectedFilters}</>
+              )}
+            </Above>
           </>
         )}
-      </FlexContainer>
+      </div>
       <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md' hideOverlay>
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
