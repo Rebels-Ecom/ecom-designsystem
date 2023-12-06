@@ -38,7 +38,6 @@
     font-family: var(--font-family-primary);
     box-shadow: none;
     outline:none;
-
     height: 3rem;
 
     &[type=number] {
@@ -69,5 +68,52 @@
     &[data-isinvalid=true] {
       border-color: var(--error-red);
     }
+
+    &[type=number] {
+      text-align: center;
+      width: 4rem;
+      
+      &:disabled {
+        &::-webkit-inner-spin-button, 
+        &::-webkit-outer-spin-button { 
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          margin: 0; 
+        }
+      }
+    
+      &:not(:disabled) {
+        padding-right: 0;
+        padding-left: 0.25rem;
+    
+        &::-webkit-inner-spin-button, 
+        &::-webkit-outer-spin-button { 
+          height: 3rem;
+          opacity: 1;
+        }
+      }
+    }
+
+    &.sm {
+      height: 2.5rem;
+
+      &[type=number] {
+        &:not(:disabled) {
+          padding-right: 0;
+          padding-left: 0.25rem;
+      
+          &::-webkit-inner-spin-button, 
+          &::-webkit-outer-spin-button { 
+            height: 2.5rem;
+          }
+        }
+      }
+    }
   }
+}
+
+@keyframes onAutoFillStart {
+  from {/**/}
+  to {/**/}
 }

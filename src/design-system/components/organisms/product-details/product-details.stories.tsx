@@ -4,7 +4,7 @@ import { IProductDetail, ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct, dummyWineProduct, dummyWineProductNoVariants, dummyWineProduct_VariantDefaultImg } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
-import { ButtonProductCardStory, ChangePackagingButtonStory } from '../../atoms/button/button.stories'
+import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import { dummyProductBeerDetails, dummyProductWineDetails } from './dummy-product-details'
@@ -124,8 +124,8 @@ export const ProductDetailsStory = {
   args: {
     ...productArgs,
     productDetail: productDetailsArgs,
-    changePackagingButton: ChangePackagingButtonStory.args,
-    addToCart: ButtonProductCardStory.args,
+    changePackagingButton: Button_Large_Icon_Right.args,
+    addToCart: Button_Large_Icon_Right.args,
     campaign: {
       title: 'Campaign',
       description: 'Campaign description',
@@ -147,8 +147,8 @@ export const ProductDetailsStory_Wine = {
   args: {
     ...productArgsWine,
     productDetail: productDetailsArgsWine,
-    changePackagingButton: ChangePackagingButtonStory.args,
-    addToCart: ButtonProductCardStory.args,
+    changePackagingButton: Button_Large_Icon_Right.args,
+    addToCart: Button_Large_Icon_Right.args,
     addToCartBtnLabel: 'Lägg i varukorg',
   },
 }
@@ -158,8 +158,8 @@ export const ProductDetailsStory_Wine_NoVariants = {
   args: {
     ...productArgsWineNoVariants,
     productDetail: productDetailsArgsWine,
-    changePackagingButton: ChangePackagingButtonStory.args,
-    addToCart: ButtonProductCardStory.args,
+    changePackagingButton: Button_Large_Icon_Right.args,
+    addToCart: Button_Large_Icon_Right.args,
     addToCartBtnLabel: 'Lägg i varukorg',
   },
 }
@@ -169,8 +169,8 @@ export const ProductDetailsStory_Wine_VariantFallbackImg = {
   args: {
     ...productArgsWine_VariantDefaultImg,
     productDetail: productDetailsArgsWine,
-    changePackagingButton: ChangePackagingButtonStory.args,
-    addToCart: ButtonProductCardStory.args,
+    changePackagingButton: Button_Large_Icon_Right.args,
+    addToCart: Button_Large_Icon_Right.args,
     addToCartBtnLabel: 'Lägg i varukorg',
   },
 }

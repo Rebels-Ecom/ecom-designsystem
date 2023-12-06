@@ -2,15 +2,30 @@ import React, { useEffect } from 'react'
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import styles from './drawer-sidebar.module.css'
 import { IconButton } from '../../atoms'
-import { LinkComponent } from '../../atoms/ui-link/ui-link'
+import cx from 'classnames';
 
 export interface IDrawerSidebar {
   children: any
   isOpen: boolean
   onClose: (e: React.SyntheticEvent) => void
+  /**
+   * Defines what direction the sidebar should appear from
+   * @default 'right'
+   */
+  from?: 'left' | 'right';
+  /**
+   * Defines the width of the sidebar content
+   * @default 'lg'
+   */
+  width?: 'md' | 'lg';
+  /**
+   * Defines if backdrop should be hidden
+   * @default false
+   */
+  hideOverlay?: boolean;
 }
 
-function DrawerSidebar({ children, isOpen = false, onClose }: IDrawerSidebar) {
+function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', width = 'lg', hideOverlay = false }: IDrawerSidebar) {
   const overlay = {
     hidden: { opacity: 0 },
     show: {
@@ -22,7 +37,7 @@ function DrawerSidebar({ children, isOpen = false, onClose }: IDrawerSidebar) {
   }
 
   const sidebar = {
-    hidden: { x: '100%' },
+    hidden: { x: from === 'left' ? '-100%' : '100%' },
     show: { x: 0 },
   }
 
@@ -49,8 +64,8 @@ function DrawerSidebar({ children, isOpen = false, onClose }: IDrawerSidebar) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.aside className={styles.sidebar} variants={overlay} initial="hidden" animate="show" exit="hidden" onClick={handleOnClose}>
-          <motion.div className={styles.sidebarContent} variants={sidebar} animate="show" initial="hidden" exit="hidden" transition={{ ease: 'easeIn' }}>
+        <motion.aside className={cx(styles.sidebar, {[styles.hideOverlay]: hideOverlay })} variants={overlay} initial="hidden" animate="show" exit="hidden" onClick={handleOnClose}>
+          <motion.div className={cx(styles.sidebarContent, styles[from], styles[width])} variants={sidebar} animate="show" initial="hidden" exit="hidden" transition={{ ease: 'easeIn' }}>
             <div className={styles.contentWrapper}>
               <IconButton
                 className={styles.buttonClose}

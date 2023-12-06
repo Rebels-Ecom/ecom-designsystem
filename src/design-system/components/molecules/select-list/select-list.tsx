@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../../atoms';
 import styles from './select-list.module.css';
-import { useOnClickOutside } from '../../../hooks';
+import cx from 'classnames';
 
 type TSelectItem = {
   name: string;
@@ -28,7 +28,9 @@ const SelectList = ({
   disabled,
   placeholder
 }: ISelectList) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState<'left' | 'right'>('left');
   const [selected, setSelected] = useState<TSelectItem | undefined>(preSelected);
   const selectListRef = useRef<HTMLDivElement>(null);
   const handleClick = () => {
@@ -45,10 +47,29 @@ const SelectList = ({
       setIsOpen(false);
     }
   }
-  useOnClickOutside({ ref: selectListRef, onClose: () => setIsOpen(false) })
+
+  function handleResize() {
+    let right = (window.innerWidth - (buttonRef?.current?.getBoundingClientRect()?.right ?? 0));
+    if (right <= 32) {
+      setPosition('right');
+    } else {
+      if (position !== 'left') {
+        setPosition('left');
+      }      
+    }
+  }
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [])
+
   return (
     <div ref={selectListRef} className={styles.selectListWrapper}>
       <Button
+        ref={buttonRef}
         type='button'
         surface='x'
         size='xx-small'
@@ -60,7 +81,7 @@ const SelectList = ({
       </Button>
       <AnimatePresence>
         {isOpen && (
-          <motion.ul className={styles.selectList}>
+          <motion.ul className={cx(styles.selectList, styles[position])}>
             {options?.map((option, i) => {
               return (
                 <motion.li

@@ -7,6 +7,11 @@
     left: 0; 
     z-index: 999999;
     backdrop-filter: blur(10px);
+
+    &.hideOverlay {
+        backdrop-filter: unset;
+        background: none;
+    }
 }
 
 .sidebarContent {
@@ -18,9 +23,19 @@
     max-width: 90%;
     height: 100%;
 
-    @media(min-width: 64em) {
-        max-width: 640px;
+    &.left {
+        margin-left: 0;
+        margin-right: auto;
     }
+
+    @media(min-width: 64em) {
+        max-width: 40rem;
+        
+        &.md {
+            max-width: 25rem;
+        }
+    }
+
 }
 
 .contentWrapper {
@@ -31,17 +46,38 @@
     height: 100%;
     padding: 1rem;
     overflow: auto;
+
+
     @media(min-width: 64em) {
         padding: 3rem 2.5rem;
     }
 }
 
-.buttonClose {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+.sidebarContent {
+    & .buttonClose {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        align-self: flex-end;
+        
+        @media(min-width: 64em) {
+            top: 2rem;
+            right: 2.5rem;
+        }
+    }
+
     @media(min-width: 64em) {
-        top: 2rem;
-        right: 2.5rem;
+        &.md {
+            & .contentWrapper {
+                padding: 0 1.5rem;
+            }
+
+            & .buttonClose {
+                @media(min-width: 64em) {
+                    right: 1.5rem;
+                }
+            }
+        }
     }
 }
+

@@ -1,51 +1,28 @@
-import { FocusEventHandler, HTMLInputTypeAttribute, useCallback, useEffect, useRef } from 'react'
+import { HTMLInputTypeAttribute, useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import styles from './input-field.module.css'
 import { IUILink, UILink } from '../../../atoms/ui-link/ui-link'
+import cx from 'classnames';
 
 export interface IInputField {
-  name: string
-  label?: string
-  className?: string
-  // rightIcon?: React.ReactElement;
-  // leftIcon?: React.ReactElement;
-  // iconIgnoresFocus?: boolean;
-  type: HTMLInputTypeAttribute
-  value?: string | number
-  originalValue?: string
-  placeholder?: string
-  min?: number
-  max?: number
-  // rules?: IRules;
-  // serverValidatedRules?: IServerValidatedRules;
-  disabled?: boolean
-  readonly?: boolean
-  // variant?: myEpirocInputVariantsType;
-  // useClearButton?: boolean;
+  name: string;
+  label?: string;
+  className?: string;
+  type: HTMLInputTypeAttribute;
+  value?: string | number;
+  originalValue?: string;
+  placeholder?: string;
+  min?: number;
+  max?: number;
+  disabled?: boolean;
+  readonly?: boolean;
   focusOnRender?: boolean
-  // hideValidationIcon?: true;
-  // disableValidationOnBlur?: true;
-  // maxLength?: number;
   /**
-   * size of the input. big = height 48px, small = height 36px, mini = height 24px.
-   * @default "big" for mobile
-   * @default "small" for desktop
+   * height of the input. sm = height 2.5rem, md = 3rem
+   * @default "md" for mobile
    */
-  // size?: InputSizeType;
-  /** option to scroll to input field on focus
-   * @default mobile: true, desktop: false
-   */
-  // scrollToOnFocus?: boolean;
-  /** the unit of the inputs value, e.g: "m" or "kg". Will be suffixed to the end of the input */
-  // unit?: string;
-
-  /** opt out of errors component, which reserves space in the forms */
-  // omitErrors?: boolean;
+  height?: 'sm' | 'md';
   maxWidth?: string
-  /** whether the input should start in a dirty state, useful when adding new inputs in runtime */
-  // startDirty?: boolean;
-  /** whether the input should start in a touched state */
-  // startTouched?: boolean;
   onChange?: (newVal: string, name: string) => void
   onControlledChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onClick?: (e?: React.MouseEvent | React.KeyboardEvent) => void
@@ -61,12 +38,24 @@ export interface IInputField {
   action?: IUILink
 }
 
-const InputField = ({ onChange, onBlur, onControlledChange, ...props }: IInputField) => {
+const InputField = ({
+  onChange,
+  onBlur,
+  onControlledChange,
+  height,
+  ...props
+}: IInputField) => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.persist()
-
-      onChange?.(e.target.value, props.name)
+      if (props.type === 'number' && (props.min || props.max)) {
+        if (Number(e.target.value) >= (props.min ?? 0) && Number(e.target.value) <= (props.max ?? 10000)) {
+          onChange?.(e.target.value, props.name)
+        }
+      } else {
+        onChange?.(e.target.value, props.name)
+      }
+      
       onControlledChange?.(e)
     },
     [props.name, onChange]
@@ -91,7 +80,9 @@ const InputField = ({ onChange, onBlur, onControlledChange, ...props }: IInputFi
         name={props.name}
         inputMode={props.type === 'number' ? 'decimal' : undefined}
         placeholder={props.placeholder}
-        className={styles.input}
+        className={cx(styles.input, {
+          [styles[height ?? '']]: height,
+        })}
         step="any"
         onChange={handleChange}
         value={props.value ?? props.originalValue}
@@ -100,14 +91,7 @@ const InputField = ({ onChange, onBlur, onControlledChange, ...props }: IInputFi
         disabled={props.disabled}
         readOnly={props.readonly}
         autoFocus={props.focusOnRender}
-        // onKeyPress={props.onKeyPress}
-        // onKeyDown={props.onKeyDown}
-        // onChangeCapture={handleChange}
-        // onClick={handleClick}
-        // onInput={props.onInput}
-        // onInputCapture={handleChange}
         onBlur={handleBlur}
-        // maxLength={props.maxLength}
       />
       <div className={styles.errorWrapper}>
         <motion.label
