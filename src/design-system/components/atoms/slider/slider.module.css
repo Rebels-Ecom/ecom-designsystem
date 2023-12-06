@@ -97,9 +97,20 @@
     justify-content: space-between;
     align-items: center;
   }
+  & > div[aria-disabled=true] {
+    height: 5rem;
+
+    & .maxLabel {
+      display: none;
+    }
+  
+    & .minLabel {
+      display: none;
+    }
+  }
   &.disabled {
     margin: 0.5rem;
-
+    
     & .activeTrack,
     & .slider {
       background: var(--border-grey);
