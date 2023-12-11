@@ -42,7 +42,7 @@ function getProductTags(tags: Array<any>) {
 
 function getVariantsList(productName: string, variantsList: any) {
   const firstVariantId = variantsList[0].VariantId
-  return variantsList.map((variant:any) => {
+  return variantsList.map((variant: any) => {
     return {
       productName: productName,
       variantName: variant.Name,
@@ -63,7 +63,7 @@ function getVariantsList(productName: string, variantsList: any) {
 function getProduct(productData: any): IProduct {
   const product = productData.Variants[0]
   return {
-    productId: product.VariantId,
+    partNo: product.VariantId,
     productName: productData.DisplayName,
     productUrl: productData.ProductUrl,
     productImageUrl: product.PrimaryImageUrl,
@@ -89,7 +89,7 @@ export const CartProductStoryBeer = {
     product: productBeerArgs,
     iconButton: IconButtonStory_RemoveProduct.args,
     loading: false,
-    linkComponent: 'a'
+    linkComponent: 'a',
   },
 }
 
@@ -99,7 +99,7 @@ export const CartProductStoryWine = {
     product: productWineArgs,
     iconButton: IconButtonStory_RemoveProduct.args,
     loading: true,
-    linkComponent: 'a'
+    linkComponent: 'a',
   },
 }
 
@@ -108,7 +108,7 @@ export const CartProduct_OrderConfirmation_Beer = {
   args: {
     product: productBeerArgs,
     loading: false,
-    linkComponent: 'a'
+    linkComponent: 'a',
   },
 }
 
@@ -117,6 +117,6 @@ export const CartProduct_OrderConfirmation_Wine = {
   args: {
     product: productWineArgs,
     loading: false,
-    linkComponent: 'a'
+    linkComponent: 'a',
   },
 }

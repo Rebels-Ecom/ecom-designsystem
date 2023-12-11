@@ -48,7 +48,7 @@ export interface IProductDetails extends IProduct {
 }
 
 const ProductDetails = ({
-  productId,
+  partNo,
   productName,
   productImageUrl,
   packaging,
@@ -69,7 +69,7 @@ const ProductDetails = ({
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
-  productIdLabel,
+  partNoLabel,
   pieceLabel,
   currencyLabel,
   priceLabel,
@@ -81,9 +81,9 @@ const ProductDetails = ({
   onPackageChange,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
-    productId,
+    partNo,
     productName,
-    productImage: getProductPicture(productId, productImageUrl ? productImageUrl : fallbackProductImageUrl),
+    productImage: getProductPicture(partNo, productImageUrl ? productImageUrl : fallbackProductImageUrl),
     packaging,
     priceStr,
     price,
@@ -94,7 +94,7 @@ const ProductDetails = ({
     quantity: '1',
     totalPrice: packagePrice ? convertNumToStr(packagePrice) : '',
     productVariantList,
-    selectedVariantId: productId,
+    selectedVariantId: partNo,
     priceLabel,
     currencyLabel,
   })
@@ -180,7 +180,7 @@ const ProductDetails = ({
               <p className={cx(styles.textGrey, 'bodyS')}>
                 {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${pieceLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
               </p>
-              <p className={cx(styles.textGrey, 'bodyS')}>{`${productIdLabel} ${product.productId}`}</p>
+              <p className={cx(styles.textGrey, 'bodyS')}>{`${partNoLabel} ${product.partNo}`}</p>
             </div>
 
             {campaign?.title && <CampaignBox {...campaign} />}
@@ -209,7 +209,7 @@ const ProductDetails = ({
               itemNumberPerSalesUnit={product.itemNumberPerSalesUnit}
               totalPrice={product.totalPrice}
               quantity={product.quantity}
-              quantityInputId={product.productId}
+              quantityInputId={product.partNo}
               onChange={handleOnChangeQuantity}
             />
             {packagePerPallet && (
@@ -231,7 +231,7 @@ const ProductDetails = ({
                   type="button"
                   icon={'icon-file-plus'}
                   className={styles.purchaseListIcon}
-                  onClick={() => onSaveToPurchaseListClick(product.productId)}
+                  onClick={() => onSaveToPurchaseListClick(product.partNo)}
                   size="large"
                   isTransparent
                   noBorder
@@ -243,7 +243,7 @@ const ProductDetails = ({
                   type="button"
                   icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
                   className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                  onClick={() => onFavoriteIconClick(product.productId)}
+                  onClick={() => onFavoriteIconClick(product.partNo)}
                   size="large"
                   isTransparent
                   noBorder

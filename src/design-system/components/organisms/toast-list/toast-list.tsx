@@ -22,7 +22,7 @@ function ToastList({ toastList, autoCloseDelay = 1000, position = 'top-right' }:
   useEffect(() => {
     const interval = setInterval(() => {
       if (toastList.length && list.length) {
-        removeToast(toastList[0].product.productId)
+        removeToast(toastList[0].product.partNo)
       }
     }, autoCloseDelay)
 
@@ -32,8 +32,8 @@ function ToastList({ toastList, autoCloseDelay = 1000, position = 'top-right' }:
   }, [toastList, list])
 
   const removeToast = (id: string) => {
-    const listItemIndex = list.findIndex((e) => e.product.productId === id)
-    const toastListItem = toastList.findIndex((e) => e.product.productId === id)
+    const listItemIndex = list.findIndex((e) => e.product.partNo === id)
+    const toastListItem = toastList.findIndex((e) => e.product.partNo === id)
     list.splice(listItemIndex, 1)
     toastList.splice(toastListItem, 1)
     setList([...list])

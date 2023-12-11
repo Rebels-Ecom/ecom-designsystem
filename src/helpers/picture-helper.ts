@@ -1,8 +1,8 @@
 import { IPicture } from '../design-system/components/atoms/picture/picture';
 
-export function getProductPicture(productId: string, productImageUrl:string): IPicture {
+export function getProductPicture(partNo: string, productImageUrl:string): IPicture {
     return {
-        id: `product_${productId}`,
+        id: `product_${partNo}`,
         src: productImageUrl,
         alt: 'Placholder',
         loading: 'eager',

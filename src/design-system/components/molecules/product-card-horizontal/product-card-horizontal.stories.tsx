@@ -79,7 +79,7 @@ function getVariantsList(productName: string, variantsList: any) {
 function getProduct(productData: any): IProduct {
   const product = productData.Variants[0]
   return {
-    productId: product.VariantId,
+    partNo: product.VariantId,
     productName: productData.DisplayName,
     productUrl: productData.ProductUrl,
     productImageUrl: product.PrimaryImageUrl,

@@ -14,7 +14,7 @@ export interface IProductVariant {
   image: IPicture
   onChange: CallableFunction
   checked: boolean
-  productIdLabel: string
+  partNoLabel: string
   pieceLabel: string
   currencyLabel: string
 }
@@ -28,7 +28,7 @@ const ProductVariant = ({
   priceStr,
   onChange,
   checked,
-  productIdLabel,
+  partNoLabel,
   currencyLabel,
   pieceLabel,
 }: IProductVariant) => {
@@ -40,7 +40,7 @@ const ProductVariant = ({
       <div className={`${styles.contentWrapper}`}>
         <p className={styles.heading}>{productName}</p>
         <p className={styles.heading}>{variantName}</p>
-        <p className={cx(styles.textGray, 'bodyS')}>{`${productIdLabel} ${variantId} ${country && `- ${country}`}`}</p>
+        <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
         <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${pieceLabel}`}</p>
       </div>
       <div className={styles.radioWrapper}>

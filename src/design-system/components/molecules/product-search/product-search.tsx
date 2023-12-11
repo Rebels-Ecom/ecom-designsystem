@@ -7,7 +7,7 @@ import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 
 export interface IResult {
-  productId: string
+  partNo: string
   productName: string
   productImageUrl: string
   productVariantList: Array<IProductVariant>
@@ -106,12 +106,12 @@ function ProductSearch({
         <div className={styles.searchResults}>
           <ul aria-labelledby={id} className={styles.searchResultsList}>
             {results.map((li: IResult, i: number) => {
-              const productImage = getProductPicture(li.productId, li.productImageUrl)
+              const productImage = getProductPicture(li.partNo, li.productImageUrl)
               return (
                 <li key={`${id}_${i}`} className={styles.resultListItem}>
                   <ProductSearchResultItem
-                    key={`${id}_${li.productId}`}
-                    productId={li.productId}
+                    key={`${id}_${li.partNo}`}
+                    partNo={li.partNo}
                     productName={li.productName}
                     productImage={productImage}
                     productVariantList={li.productVariantList}

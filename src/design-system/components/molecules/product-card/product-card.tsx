@@ -91,14 +91,14 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { productId, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
+  const { partNo, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(productId, productImageUrl),
+    productImage: getProductPicture(partNo, productImageUrl),
     quantity: quantity ? quantity : '1',
     totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
-    selectedVariantId: productId,
+    selectedVariantId: partNo,
   })
 
   function handleOnChangeQuantity(productQuantity: number) {
@@ -124,10 +124,10 @@ function ProductCard({
   }
 
   function handlePackageChange(selectedVariant: any) {
-    const quantity = myProduct.productId === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
+    const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
     setProduct((prevState) => ({
       ...prevState,
-      productId: selectedVariant.variantId,
+      partNo: selectedVariant.variantId,
       productImage: selectedVariant.image ?? fallbackProductImageUrl,
       packaging: selectedVariant.variantName,
       priceStr: selectedVariant.priceStr,

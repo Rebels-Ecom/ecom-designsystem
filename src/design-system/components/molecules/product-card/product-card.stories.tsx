@@ -39,7 +39,7 @@ function getVariantsList(productName: string, variantsList: any) {
 function getProduct(productData: any): IProduct {
   const product = productData.Variants[0]
   return {
-    productId: product.VariantId,
+    partNo: product.VariantId,
     productUrl: productData.ProductUrl,
     productName: productData.DisplayName,
     productImageUrl: product.PrimaryImageUrl,
@@ -95,7 +95,7 @@ export const ProductCardStory: Story = {
     handlePackageChange: () => {},
     loading: false,
     onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
+    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.productImageUrl),
     hideCartButton: false,
     campaign: {
       title: 'Kampanj',
@@ -116,7 +116,7 @@ export const ProductCardStory_NoVariants: Story = {
     handlePackageChange: () => {},
     loading: false,
     onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
+    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.productImageUrl),
     campaign: {
       title: 'Kampanj',
       color: '#9A576F',
@@ -135,7 +135,7 @@ export const ProductCardStory_Loading: Story = {
     handlePackageChange: () => {},
     loading: true,
     onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.productId, productWineArgs.productImageUrl),
+    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.productImageUrl),
   },
 }
 

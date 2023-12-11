@@ -1,393 +1,449 @@
 const dummyBeerProduct = {
-    "FirstVariantName": "",
-		"ListPricePerUnit": 22.677,
-		"ListPricePerUnitString": "22,68",
-		"DisplayName": "Norrlands Guld Export 5,3",
-		"ProductUrl": "/Product/1105101",
-		"IsHit": true,
-		"IsProduct": true,
-		"PrimaryImageUrl": "https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb",
-		"ExternalId": "1105101",
-		"LimitedProduct": false,
-		"CampaignProduct": false,
-		"ActiveCampaign": null,
-		"Tags": [],
-		"SellerOnly": false,
-		"ShortTexts": ["Sverige"],
-		"Variants": [{
+	"FirstVariantName": "50cl Returglas",
+	"PricePerUnit": 24.627,
+	"PricePerUnitString": "24,63",
+	"Name": "Norrlands Guld Export 5,3",
+	"ProductUrl": "/Product/1105101",
+	"IsHit": true,
+	"IsProduct": true,
+	"PrimaryImageUrl": "https://spendrups.cdn.storm.io/95aad95e-e89d-4f61-ad23-63295ff180fe",
+	"PartNo": "1105101",
+	"LimitedProduct": false,
+	"CampaignProduct": false,
+	"ActiveCampaign": null,
+	"Tags": [],
+	"SellerOnly": false,
+	"ShortTexts": [
+		"Sverige"
+	],
+	"Variants": [
+		{
 			"Name": "50cl Returglas",
 			"VariantFullName": "50cl Returglas",
-			"VariantId": "1105101",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb",
-			"SalesUnit": "KLI",
+			"PartNo": "1105101",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/95aad95e-e89d-4f61-ad23-63295ff180fe",
+			"SalesUnit": "Kolli",
 			"UnitsPerBaseUnit": 15,
 			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 22.677,
-			"ListPricePerUnitString": "22,68",
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 24.627,
+			"PricePerUnitString": "24,63",
 			"SellerOnly": false,
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
-		}, {
+		},
+		{
 			"Name": "33cl Engångsglas",
 			"VariantFullName": "33cl Engångsglas",
-			"VariantId": "1105111",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/fca77f23-eacc-4b53-b1b4-9df3620154b4",
-			"SalesUnit": "KLI",
+			"PartNo": "1105111",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/86b1a64a-aab6-49da-9393-73550434c5f7",
+			"SalesUnit": "Kolli",
 			"UnitsPerBaseUnit": 24,
 			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 16.209,
-			"ListPricePerUnitString": "16,21",
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 17.588,
+			"PricePerUnitString": "17,59",
 			"SellerOnly": false,
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
-		}, {
+		},
+		{
 			"Name": "33cl PET",
 			"VariantFullName": "33cl PET",
-			"VariantId": "1152339",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/57aafd54-e882-418f-8f2f-f43e98bf75e6",
-			"SalesUnit": "KLI",
+			"PartNo": "1152339",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/cd93d939-d5e4-4c36-a963-7b4682f04655",
+			"SalesUnit": "Kolli",
 			"UnitsPerBaseUnit": 24,
 			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 16.219,
-			"ListPricePerUnitString": "16,22",
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 17.598,
+			"PricePerUnitString": "17,60",
 			"SellerOnly": false,
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
-		}, {
+		},
+		{
 			"Name": "50cl PET",
 			"VariantFullName": "50cl PET",
-			"VariantId": "1152340",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/c873d755-c034-44b2-b599-b45eb67e5c71",
-			"SalesUnit": "KLI",
+			"PartNo": "1152340",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/edffc69f-094d-4b9c-ba0c-e83ef0d0782e",
+			"SalesUnit": "Kolli",
 			"UnitsPerBaseUnit": 24,
 			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 23.645,
-			"ListPricePerUnitString": "23,65",
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 25.666,
+			"PricePerUnitString": "25,67",
 			"SellerOnly": false,
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
-		}, {
-			"Name": "30l FAT",
-			"VariantFullName": "30l FAT",
-			"VariantId": "1105191",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/09a0cd7a-ea94-4730-a46d-a36ef0669ec7",
-			"SalesUnit": "KLI",
-			"UnitsPerBaseUnit": 1,
-			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 1404.44,
-			"ListPricePerUnitString": "1404,44",
-			"SellerOnly": false,
-			"AccessoryPotVariant": false,
-			"ActiveCampaign": null
-		}, {
+		},
+		{
 			"Name": "33cl Burk",
 			"VariantFullName": "33cl Burk",
-			"VariantId": "1147921",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/a9a46999-1348-480e-909a-c33a8cb7974c",
-			"SalesUnit": "KLI",
+			"PartNo": "1147921",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/b87afb1e-20b6-42a1-894d-5275c89e2d83",
+			"SalesUnit": "Kolli",
 			"UnitsPerBaseUnit": 24,
 			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 15.561,
-			"ListPricePerUnitString": "15,56",
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 17.38,
+			"PricePerUnitString": "17,38",
 			"SellerOnly": false,
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
-		}, {
+		},
+		{
 			"Name": "50cl Burk",
 			"VariantFullName": "50cl Burk",
-			"VariantId": "1146323",
-			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/985e24c0-c1de-4a30-9d2b-5928c858b514",
-			"SalesUnit": "KLI",
+			"PartNo": "1146323",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/052d5601-6e47-4fbe-9ac1-18bc2a5c64c0",
+			"SalesUnit": "Kolli",
 			"UnitsPerBaseUnit": 24,
 			"Tags": [],
-			"ShortTexts": ["Sverige"],
-			"ListPricePerUnit": 22.933,
-			"ListPricePerUnitString": "22,93",
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 25.381,
+			"PricePerUnitString": "25,38",
 			"SellerOnly": false,
 			"AccessoryPotVariant": false,
 			"ActiveCampaign": null
-		}],
-		"Desc": "",
-		"SalesUnit": "KLI",
-		"UnitsPerBaseUnit": 15,
-		"AccessoryPotItem": false,
-		"ModelName": "50cl Returglas",
-		"CategoryName": "Öl",
-		"BrandName": "Norrlands Guld"
-};
+		},
+		{
+			"Name": "30l ",
+			"VariantFullName": "30l ",
+			"PartNo": "1105191",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/f40fd058-e6f7-490b-9f72-fd3d09030259",
+			"SalesUnit": "Kolli",
+			"UnitsPerBaseUnit": 1,
+			"Tags": [],
+			"ShortTexts": [
+				"Sverige"
+			],
+			"PricePerUnit": 1554.0,
+			"PricePerUnitString": "1554",
+			"SellerOnly": false,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		}
+	],
+	"Desc": "",
+	"SalesUnit": "Kolli",
+	"UnitsPerBaseUnit": 15,
+	"AccessoryPotItem": false,
+	"ModelName": "50cl Returglas",
+	"CategoryName": "Öl",
+	"BrandName": "Spendrups"
+}
 
 const dummyWineProduct = {
-	"FirstVariantName":"",
-	"ListPricePerUnit":132,
-	"ListPricePerUnitString":"132",
-	"DisplayName":"Torre Del Falasco Valpolicella Ripasso Superiore DOC",
-	"ProductUrl":"/Product/2489224",
-	"IsHit":true,
-	"IsProduct":true,
-	"PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-	"ExternalId":"2489224",
-	"LimitedProduct":false,
-	"CampaignProduct":false,
-	"ActiveCampaign":null,
-	"Tags":[
-	   {
-		  "Text":"Vegan",
-		  "Class":"purple",
-		  "ExternalId":"16267"
-	   }
+	"FirstVariantName": "75cl Engångsglas",
+	"PricePerUnit": 99.9,
+	"PricePerUnitString": "99,90",
+	"Name": "Valpolicella Valpantena Superiore DOC Nytt",
+	"ProductUrl": "/Product/2454124",
+	"IsHit": true,
+	"IsProduct": true,
+	"PrimaryImageUrl": "https://spendrups.cdn.storm.io/0d08251a-d6df-4e2d-bbb6-858999e1d460",
+	"PartNo": "2454124",
+	"LimitedProduct": false,
+	"CampaignProduct": false,
+	"ActiveCampaign": null,
+	"Tags": [
+		{
+			"Text": "Eko",
+			"Class": "green",
+			"ExternalId": "10755"
+		},
+		{
+			"Text": "Fairtrade",
+			"Class": "blue",
+			"ExternalId": "10756"
+		},
+		{
+			"Text": "Vegan",
+			"Class": "purple",
+			"ExternalId": "16267"
+		}
 	],
-	"SellerOnly":true,
-	"ShortTexts":[
-	   "Italien"
+	"SellerOnly": true,
+	"ShortTexts": [
+		"Argentina"
 	],
-	"Variants":[
-	   {
-		  "Name":"75cl Engångsglas",
-		  "VariantFullName":"75cl Engångsglas",
-		  "VariantId":"2489224",
-		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-		  "SalesUnit":"ST",
-		  "UnitsPerBaseUnit":1,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":132,
-		  "ListPricePerUnitString":"132",
-		  "SellerOnly":true,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   },
-	   {
-		  "Name":"75cl Engångsglas",
-		  "VariantFullName":"75cl Engångsglas",
-		  "VariantId":"2489214",
-		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-		  "SalesUnit":"KLI",
-		  "UnitsPerBaseUnit":6,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":132,
-		  "ListPricePerUnitString":"132",
-		  "SellerOnly":false,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   },
-	   {
-		  "Name":"150cl Engångsglas",
-		  "VariantFullName":"150cl Engångsglas",
-		  "VariantId":"2527326",
-		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/1704f06e-d5c2-419c-8dc4-c60e9665664a",
-		  "SalesUnit":"ST",
-		  "UnitsPerBaseUnit":1,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":280,
-		  "ListPricePerUnitString":"280",
-		  "SellerOnly":false,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   }
+	"Variants": [
+		{
+			"Name": "75cl Engångsglas",
+			"VariantFullName": "75cl Engångsglas",
+			"PartNo": "2454124",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/0d08251a-d6df-4e2d-bbb6-858999e1d460",
+			"SalesUnit": "Styck",
+			"UnitsPerBaseUnit": 1,
+			"Tags": [
+				{
+					"Text": "Eko",
+					"Class": "green",
+					"ExternalId": "10755"
+				},
+				{
+					"Text": "Fairtrade",
+					"Class": "blue",
+					"ExternalId": "10756"
+				},
+				{
+					"Text": "Vegan",
+					"Class": "purple",
+					"ExternalId": "16267"
+				}
+			],
+			"ShortTexts": [
+				"Argentina"
+			],
+			"PricePerUnit": 99.9,
+			"PricePerUnitString": "99,90",
+			"SellerOnly": true,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		},
+		{
+			"Name": "75cl Engångsglas",
+			"VariantFullName": "75cl Engångsglas",
+			"PartNo": "2454114",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/0d08251a-d6df-4e2d-bbb6-858999e1d460",
+			"SalesUnit": "Kolli",
+			"UnitsPerBaseUnit": 6,
+			"Tags": [
+				{
+					"Text": "Eko",
+					"Class": "green",
+					"ExternalId": "10755"
+				},
+				{
+					"Text": "Fairtrade",
+					"Class": "blue",
+					"ExternalId": "10756"
+				},
+				{
+					"Text": "Vegan",
+					"Class": "purple",
+					"ExternalId": "16267"
+				}
+			],
+			"ShortTexts": [
+				"Argentina"
+			],
+			"PricePerUnit": 99.9,
+			"PricePerUnitString": "99,90",
+			"SellerOnly": false,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		}
 	],
-	"Desc":"",
-	"SalesUnit":"ST",
-	"UnitsPerBaseUnit":1,
-	"AccessoryPotItem":false,
-	"ModelName":"75cl Engångsglas",
-	"CategoryName":"Vin",
-	"BrandName":"Spendrups"
+	"Desc": "",
+	"SalesUnit": "Styck",
+	"UnitsPerBaseUnit": 1,
+	"AccessoryPotItem": false,
+	"ModelName": "75cl Engångsglas",
+	"CategoryName": "Vin",
+	"BrandName": "Spendrups"
 }
 
 const dummyWineProductNoVariants = {
-
-	"FirstVariantName":"",
-	"ListPricePerUnit":132,
-	"ListPricePerUnitString":"132",
-	"DisplayName":"Torre Del Falasco Valpolicella Ripasso Superiore DOC",
-	"ProductUrl":"/Product/2489224",
-	"IsHit":true,
-	"IsProduct":true,
-	"PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-	"ExternalId":"2489224",
-	"LimitedProduct":false,
-	"CampaignProduct":false,
-	"ActiveCampaign":null,
-	"Tags":[
-	   {
-		  "Text":"Vegan",
-		  "Class":"purple",
-		  "ExternalId":"16267"
-	   }
+	"FirstVariantName": "75cl Engångsglas",
+	"PricePerUnit": 99.9,
+	"PricePerUnitString": "99,90",
+	"Name": "Valpolicella Valpantena Superiore DOC Nytt",
+	"ProductUrl": "/Product/2454124",
+	"IsHit": true,
+	"IsProduct": true,
+	"PrimaryImageUrl": "https://spendrups.cdn.storm.io/0d08251a-d6df-4e2d-bbb6-858999e1d460",
+	"PartNo": "2454124",
+	"LimitedProduct": false,
+	"CampaignProduct": false,
+	"ActiveCampaign": null,
+	"Tags": [
+		{
+			"Text": "Eko",
+			"Class": "green",
+			"ExternalId": "10755"
+		},
+		{
+			"Text": "Fairtrade",
+			"Class": "blue",
+			"ExternalId": "10756"
+		},
+		{
+			"Text": "Vegan",
+			"Class": "purple",
+			"ExternalId": "16267"
+		}
 	],
-	"SellerOnly":true,
-	"ShortTexts":[
-	   "Italien"
+	"SellerOnly": true,
+	"ShortTexts": [
+		"Argentina"
 	],
-	"Variants":[
-	   {
-		  "Name":"75cl Engångsglas",
-		  "VariantFullName":"75cl Engångsglas",
-		  "VariantId":"2489224",
-		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-		  "SalesUnit":"ST",
-		  "UnitsPerBaseUnit":1,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":132,
-		  "ListPricePerUnitString":"132",
-		  "SellerOnly":true,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   }
+	"Variants": [
+		{
+			"Name": "75cl Engångsglas",
+			"VariantFullName": "75cl Engångsglas",
+			"PartNo": "2454124",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/0d08251a-d6df-4e2d-bbb6-858999e1d460",
+			"SalesUnit": "Styck",
+			"UnitsPerBaseUnit": 1,
+			"Tags": [
+				{
+					"Text": "Eko",
+					"Class": "green",
+					"ExternalId": "10755"
+				},
+				{
+					"Text": "Fairtrade",
+					"Class": "blue",
+					"ExternalId": "10756"
+				},
+				{
+					"Text": "Vegan",
+					"Class": "purple",
+					"ExternalId": "16267"
+				}
+			],
+			"ShortTexts": [
+				"Argentina"
+			],
+			"PricePerUnit": 99.9,
+			"PricePerUnitString": "99,90",
+			"SellerOnly": true,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		},
 	],
-	"Desc":"",
-	"SalesUnit":"ST",
-	"UnitsPerBaseUnit":1,
-	"AccessoryPotItem":false,
-	"ModelName":"75cl Engångsglas",
-	"CategoryName":"Vin",
-	"BrandName":"Spendrups"
-
+	"Desc": "",
+	"SalesUnit": "Styck",
+	"UnitsPerBaseUnit": 1,
+	"AccessoryPotItem": false,
+	"ModelName": "75cl Engångsglas",
+	"CategoryName": "Vin",
+	"BrandName": "Spendrups"
 }
 
 const dummyWineProduct_VariantDefaultImg = {
-	"FirstVariantName":"",
-	"ListPricePerUnit":132,
-	"ListPricePerUnitString":"132",
-	"DisplayName":"Torre Del Falasco Valpolicella Ripasso Superiore DOC",
-	"ProductUrl":"/Product/2489224",
-	"IsHit":true,
-	"IsProduct":true,
-	"PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-	"ExternalId":"2489224",
-	"LimitedProduct":false,
-	"CampaignProduct":false,
-	"ActiveCampaign":null,
-	"Tags":[
-	   {
-		  "Text":"Vegan",
-		  "Class":"purple",
-		  "ExternalId":"16267"
-	   }
+	"FirstVariantName": "75cl Engångsglas",
+	"PricePerUnit": 99.9,
+	"PricePerUnitString": "99,90",
+	"Name": "Valpolicella Valpantena Superiore DOC Nytt",
+	"ProductUrl": "/Product/2454124",
+	"IsHit": true,
+	"IsProduct": true,
+	"PrimaryImageUrl": "https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
+	"PartNo": "2454124",
+	"LimitedProduct": false,
+	"CampaignProduct": false,
+	"ActiveCampaign": null,
+	"Tags": [
+		{
+			"Text": "Eko",
+			"Class": "green",
+			"ExternalId": "10755"
+		},
+		{
+			"Text": "Fairtrade",
+			"Class": "blue",
+			"ExternalId": "10756"
+		},
+		{
+			"Text": "Vegan",
+			"Class": "purple",
+			"ExternalId": "16267"
+		}
 	],
-	"SellerOnly":true,
-	"ShortTexts":[
-	   "Italien"
+	"SellerOnly": true,
+	"ShortTexts": [
+		"Argentina"
 	],
-	"Variants":[
-	   {
-		  "Name":"75cl Engångsglas",
-		  "VariantFullName":"75cl Engångsglas",
-		  "VariantId":"2489224",
-		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
-		  "SalesUnit":"ST",
-		  "UnitsPerBaseUnit":1,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":132,
-		  "ListPricePerUnitString":"132",
-		  "SellerOnly":true,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   },
-	   {
-		  "Name":"75cl Engångsglas",
-		  "VariantFullName":"75cl Engångsglas",
-		  "VariantId":"2489214",
-		  "PrimaryImageUrl":"",
-		  "SalesUnit":"KLI",
-		  "UnitsPerBaseUnit":6,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":132,
-		  "ListPricePerUnitString":"132",
-		  "SellerOnly":false,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   },
-	   {
-		  "Name":"150cl Engångsglas",
-		  "VariantFullName":"150cl Engångsglas",
-		  "VariantId":"2527326",
-		  "PrimaryImageUrl":"https://spendrups.cdn.storm.io/1704f06e-d5c2-419c-8dc4-c60e9665664a",
-		  "SalesUnit":"ST",
-		  "UnitsPerBaseUnit":1,
-		  "Tags":[
-			 {
-				"Text":"Vegan",
-				"Class":"purple",
-				"ExternalId":"16267"
-			 }
-		  ],
-		  "ShortTexts":[
-			 "Italien"
-		  ],
-		  "ListPricePerUnit":280,
-		  "ListPricePerUnitString":"280",
-		  "SellerOnly":false,
-		  "AccessoryPotVariant":false,
-		  "ActiveCampaign":null
-	   }
+	"Variants": [
+		{
+			"Name": "75cl Engångsglas",
+			"VariantFullName": "75cl Engångsglas",
+			"PartNo": "2454124",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
+			"SalesUnit": "Styck",
+			"UnitsPerBaseUnit": 1,
+			"Tags": [
+				{
+					"Text": "Eko",
+					"Class": "green",
+					"ExternalId": "10755"
+				},
+				{
+					"Text": "Fairtrade",
+					"Class": "blue",
+					"ExternalId": "10756"
+				},
+				{
+					"Text": "Vegan",
+					"Class": "purple",
+					"ExternalId": "16267"
+				}
+			],
+			"ShortTexts": [
+				"Argentina"
+			],
+			"PricePerUnit": 99.9,
+			"PricePerUnitString": "99,90",
+			"SellerOnly": true,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		},
+		{
+			"Name": "75cl Engångsglas",
+			"VariantFullName": "75cl Engångsglas",
+			"PartNo": "2454114",
+			"PrimaryImageUrl": "https://spendrups.cdn.storm.io/3d7badb2-7b39-45d2-b64d-fbfb8544d5c8",
+			"SalesUnit": "Kolli",
+			"UnitsPerBaseUnit": 6,
+			"Tags": [
+				{
+					"Text": "Eko",
+					"Class": "green",
+					"ExternalId": "10755"
+				},
+				{
+					"Text": "Fairtrade",
+					"Class": "blue",
+					"ExternalId": "10756"
+				},
+				{
+					"Text": "Vegan",
+					"Class": "purple",
+					"ExternalId": "16267"
+				}
+			],
+			"ShortTexts": [
+				"Argentina"
+			],
+			"PricePerUnit": 99.9,
+			"PricePerUnitString": "99,90",
+			"SellerOnly": false,
+			"AccessoryPotVariant": false,
+			"ActiveCampaign": null
+		}
 	],
-	"Desc":"",
-	"SalesUnit":"ST",
-	"UnitsPerBaseUnit":1,
-	"AccessoryPotItem":false,
-	"ModelName":"75cl Engångsglas",
-	"CategoryName":"Vin",
-	"BrandName":"Spendrups"
+	"Desc": "",
+	"SalesUnit": "Styck",
+	"UnitsPerBaseUnit": 1,
+	"AccessoryPotItem": false,
+	"ModelName": "75cl Engångsglas",
+	"CategoryName": "Vin",
+	"BrandName": "Spendrups"
 }
 
 export { dummyBeerProduct, dummyWineProduct, dummyWineProductNoVariants, dummyWineProduct_VariantDefaultImg } 

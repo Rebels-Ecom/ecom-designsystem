@@ -68,7 +68,7 @@ function getProductList(productList: any): Array<IProduct> {
     return {
       cardDisplay: 'vertical',
       product: {
-        productId: product.VariantId,
+        partNo: product.VariantId,
         productName: productItem.DisplayName,
         productUrl: productItem.ProductUrl,
         productImageUrl: product.PrimaryImageUrl,

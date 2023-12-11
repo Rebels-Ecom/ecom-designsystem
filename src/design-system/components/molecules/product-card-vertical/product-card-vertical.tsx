@@ -36,7 +36,7 @@ const ProductCardVertical = ({
   onSaveToPurchaseListClick,
 }: IProductCard & TProductCardVertical) => {
   const {
-    productId,
+    partNo,
     productName,
     productUrl,
     productVariantList,
@@ -52,7 +52,7 @@ const ProductCardVertical = ({
     sellerOnly,
     isAccessoryPotItem,
   } = product
-  //const isLimitedProduct = product.productId === '1109611' || product.productId === '1174411' ? true : false
+  //const isLimitedProduct = product.partNo === '1109611' || product.partNo === '1174411' ? true : false
 
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
@@ -148,7 +148,7 @@ const ProductCardVertical = ({
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${productId} ${country && `- ${country}`}`}</p>
+            <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${partNo} ${country && `- ${country}`}`}</p>
             <p className={cx(styles.textPurple, 'bodyS')}>{`${listPriceLabel ? listPriceLabel : 'Listpris'}: ${priceStr} kr/st`}</p>
           </div>
         )}
@@ -175,7 +175,7 @@ const ProductCardVertical = ({
             itemNumberPerSalesUnit={itemNumberPerSalesUnit}
             totalPrice={totalPrice}
             quantity={defaultQuantity ?? quantity}
-            quantityInputId={productId}
+            quantityInputId={partNo}
             disabled={productQuantityDisabled}
             onChange={handleOnChangeQuantity}
           />
@@ -198,7 +198,7 @@ const ProductCardVertical = ({
                 type="button"
                 icon={'icon-file-plus'}
                 className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick(productId)}
+                onClick={() => onSaveToPurchaseListClick(partNo)}
                 size="large"
                 isTransparent
                 noBorder
@@ -210,7 +210,7 @@ const ProductCardVertical = ({
                 type="button"
                 icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
                 className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(productId)}
+                onClick={() => onFavoriteIconClick(partNo)}
                 size="large"
                 isTransparent
                 noBorder

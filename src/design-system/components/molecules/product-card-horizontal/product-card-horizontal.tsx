@@ -29,9 +29,9 @@ const ProductCardHorizontal = ({
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
 }: IProductCard & TProductCardHorizontal) => {
-  const { productId, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
+  const { partNo, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
     product
-  const productImage = getProductPicture(productId, productImageUrl)
+  const productImage = getProductPicture(partNo, productImageUrl)
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -87,8 +87,8 @@ const ProductCardHorizontal = ({
 
                 <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
 
-                {(country !== '' || productId !== '') && (
-                  <p className={cx(styles.caption, 'bodyS')}>{`${productId ? `Art.nr. ${productId} -` : ''} ${country ?? ''}`}</p>
+                {(country !== '' || partNo !== '') && (
+                  <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `Art.nr. ${partNo} -` : ''} ${country ?? ''}`}</p>
                 )}
 
                 <ProductQuantityInput
@@ -97,14 +97,14 @@ const ProductCardHorizontal = ({
                   itemNumberPerSalesUnit={itemNumberPerSalesUnit}
                   totalPrice={totalPrice}
                   quantity={defaultQuantity ?? quantity}
-                  quantityInputId={productId}
+                  quantityInputId={partNo}
                   onChange={handleOnChangeQuantity}
                   disabled={productQuantityDisabled}
                 />
               </div>
               {!hideRemoveButton && onClickRemoveProduct && (
                 <div className={styles.iconLink}>
-                  <IconButton type="button" icon="icon-x-circle" onClick={() => handleRemoveProduct(productId)} isTransparent noBorder size="large" />
+                  <IconButton type="button" icon="icon-x-circle" onClick={() => handleRemoveProduct(partNo)} isTransparent noBorder size="large" />
                 </div>
               )}
               {!hideCartButton ? (
@@ -114,7 +114,7 @@ const ProductCardHorizontal = ({
                       type="button"
                       icon={'icon-file-plus'}
                       className={styles.purchaseListIcon}
-                      onClick={() => onSaveToPurchaseListClick(productId)}
+                      onClick={() => onSaveToPurchaseListClick(partNo)}
                       size="large"
                       isTransparent
                       noBorder

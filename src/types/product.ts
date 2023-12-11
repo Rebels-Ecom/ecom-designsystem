@@ -2,7 +2,7 @@ import { IProductVariant } from '../design-system/components/molecules/product-v
 import { ITag } from '../design-system/components/atoms/tag/tag'
 
 export interface IProduct {
-    productId: string,
+    partNo: string,
     productName: string,
     productUrl?: string,
     productImageUrl: string,
@@ -24,7 +24,7 @@ export interface IProduct {
     isAccessoryPotItem?: boolean
 
     //Translation labels
-    productIdLabel?: string
+    partNoLabel?: string
     pieceLabel?: string
     currencyLabel?: string
     priceLabel?: string

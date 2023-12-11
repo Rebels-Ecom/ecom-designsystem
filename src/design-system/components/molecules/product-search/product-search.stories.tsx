@@ -58,7 +58,7 @@ const productSuggestions = listOfSuggestions.map((product) => {
       }
     })
   return {
-    productId: product.ExternalId,
+    partNo: product.ExternalId,
     productName: product.DisplayName,
     productImageUrl: product.PrimaryImageUrl,
     productVariantList: productHasVariants ? productVariants : [],

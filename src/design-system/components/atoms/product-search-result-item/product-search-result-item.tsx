@@ -7,7 +7,7 @@ import { IPicture, Picture } from '../picture/picture'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 
 export interface IResultItem {
-  productId: string
+  partNo: string
   productName: string
   productImage: IPicture
   productVariantList: Array<IProductVariant>
@@ -15,7 +15,7 @@ export interface IResultItem {
   className?: string
 }
 
-function ProductSearchResultItem({ productId, productName, productImage, productVariantList, onClick, className }: IResultItem) {
+function ProductSearchResultItem({ partNo, productName, productImage, productVariantList, onClick, className }: IResultItem) {
   const [showVariants, setShowVariants] = useState<boolean>(false)
 
   function handleOnClickProduct(id: string) {
@@ -50,7 +50,7 @@ function ProductSearchResultItem({ productId, productName, productImage, product
             noBorder
           ></IconButton>
         ) : (
-          <IconButton type="button" icon={'icon-plus-circle'} onClick={() => handleOnClickProduct(productId)} size="large" isTransparent noBorder />
+          <IconButton type="button" icon={'icon-plus-circle'} onClick={() => handleOnClickProduct(partNo)} size="large" isTransparent noBorder />
         )}
       </div>
       {showVariants && productVariantList && productVariantList.length > 1 && (

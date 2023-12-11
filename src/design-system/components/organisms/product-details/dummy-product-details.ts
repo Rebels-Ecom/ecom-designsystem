@@ -1,45 +1,66 @@
 const dummyProductBeerDetails = {
     "SellerOnly": false,
-    "ProductImageUrl": "https://spendrups.cdn.storm.io/91692ba3-8d4c-4b00-8aba-882da8e33c47",
-    "ProductName": "Wisby Kloster 5,0",
-    "SalesPriceString": "545,57",
-    "SalesUnit": "KLI",
-    "SalesPricePerUnitString": "22,73",
+    "PartNo": "1176511",
+    "PrimaryImageUrl": "https://spendrups.cdn.storm.io/8ff98016-841c-4aac-88e1-f35144241076",
+    "Name": "Wisby Lager 4,7",
+    "PackagePriceString": "537,14",
+    "SalesUnit": "Kolli",
+    "PricePerUnitString": "22,38",
     "UnitsPerBaseUnit": 24,
     "VisibleInfo": {
         "Specifications": [
+            {
+                "Item1": "Klimatsmart Förpackning",
+                "Item2": "False"
+            },
+            {
+                "Item1": "Varumärke",
+                "Item2": "Gotlands Bryggeri"
+            },
             {
                 "Item1": "Land",
                 "Item2": "Sverige"
             },
             {
-                "Item1": "Typ",
-                "Item2": "Färsköl"
-            },
-            {
-                "Item1": "Alkoholhalt",
-                "Item2": "5 %"
-            },
-            {
-                "Item1": "Doft",
-                "Item2": "Välbalanserad malt- och humlearomatisk doft med tydlig fruktighet."
+                "Item1": "Alkoholfri",
+                "Item2": "False"
             }
         ],
-        "FullDescription": "Wisby Klosteröl är stilbildaren från S:t Hansgatan 47 i Visby. Sveriges första färsköl – smakfullt ofiltrerat och frisk. Lika populär idag som när den såg dagens ljus 1995. Passar utmärkt till husmanskost."
+        "FullDescription": "Vår moderna bärnstensfärgade lager med en lätt, maltig karaktär och rund monroehumle för smakfullhetens skull. Det har tagit sin tid att ta fram vår lager. Resultatet är ett friskt och välsmakande öl värt sin väntan."
     },
     "InvisibleInfo": {
         "Specifications": [
+            {
+                "Item1": "Typ",
+                "Item2": "Craft Lager"
+            },
+            {
+                "Item1": "Alkoholhalt",
+                "Item2": "4.7 %"
+            },
+            {
+                "Item1": "Doft",
+                "Item2": "Röda bär"
+            },
             {
                 "Item1": "Ekologisk",
                 "Item2": "False"
             },
             {
+                "Item1": "Fairtrade",
+                "Item2": "False"
+            },
+            {
+                "Item1": "Förslutning FD",
+                "Item2": "Kronkork"
+            },
+            {
                 "Item1": "Fyllighet",
-                "Item2": "06"
+                "Item2": "05"
             },
             {
                 "Item1": "Humle",
-                "Item2": "Perle, Tettnanger och Amarillohumle"
+                "Item2": "Magnum, Spalter Select och Monroehumle"
             },
             {
                 "Item1": "Hållbarhetscertifierade",
@@ -47,35 +68,43 @@ const dummyProductBeerDetails = {
             },
             {
                 "Item1": "Malt",
-                "Item2": "Pilsner, Vete, Caraplus och Crystalmalt"
+                "Item2": "Pale Ale, Bohemian Pils och Carabohemmalt"
+            },
+            {
+                "Item1": "Nyhet",
+                "Item2": "2018"
             },
             {
                 "Item1": "Passar till",
-                "Item2": "Halstrad gravlax med krämig örtsås och färskpotatis."
+                "Item2": "Det mesta! Testa gärna till klassisk svensk husmanskost."
             },
             {
                 "Item1": "Producent",
                 "Item2": "Gotlands Bryggeri"
             },
             {
+                "Item1": "Vegansk",
+                "Item2": "False"
+            },
+            {
                 "Item1": "Sötma",
-                "Item2": "02"
+                "Item2": "03"
             },
             {
                 "Item1": "Typ1",
-                "Item2": "Ale"
+                "Item2": "Lager"
             },
             {
                 "Item1": "Typ2",
-                "Item2": "Pale Ale"
+                "Item2": "Ljus Lager"
             },
             {
                 "Item1": "DescriptionAdditional1Prid31Crc32",
-                "Item2": "2055835545"
+                "Item2": "866287716"
             },
             {
                 "Item1": "DescriptionAdditional4Prid46Crc32",
-                "Item2": "383493463"
+                "Item2": "1700635503"
             },
             {
                 "Item1": "ItemClPerPieceInternal",
@@ -95,7 +124,7 @@ const dummyProductBeerDetails = {
             },
             {
                 "Item1": "Listpris",
-                "Item2": "22.732"
+                "Item2": "22.381"
             }
         ],
         "FullDescription": null
@@ -103,32 +132,52 @@ const dummyProductBeerDetails = {
     "Tags": [],
     "Specifications": [
         {
+            "Item1": "Klimatsmart Förpackning",
+            "Item2": "False"
+        },
+        {
+            "Item1": "Varumärke",
+            "Item2": "Gotlands Bryggeri"
+        },
+        {
             "Item1": "Land",
             "Item2": "Sverige"
         },
         {
+            "Item1": "Alkoholfri",
+            "Item2": "False"
+        },
+        {
             "Item1": "Typ",
-            "Item2": "Färsköl"
+            "Item2": "Craft Lager"
         },
         {
             "Item1": "Alkoholhalt",
-            "Item2": "5 %"
+            "Item2": "4.7 %"
         },
         {
             "Item1": "Doft",
-            "Item2": "Välbalanserad malt- och humlearomatisk doft med tydlig fruktighet."
+            "Item2": "Röda bär"
         },
         {
             "Item1": "Ekologisk",
             "Item2": "False"
         },
         {
+            "Item1": "Fairtrade",
+            "Item2": "False"
+        },
+        {
+            "Item1": "Förslutning FD",
+            "Item2": "Kronkork"
+        },
+        {
             "Item1": "Fyllighet",
-            "Item2": "06"
+            "Item2": "05"
         },
         {
             "Item1": "Humle",
-            "Item2": "Perle, Tettnanger och Amarillohumle"
+            "Item2": "Magnum, Spalter Select och Monroehumle"
         },
         {
             "Item1": "Hållbarhetscertifierade",
@@ -136,35 +185,43 @@ const dummyProductBeerDetails = {
         },
         {
             "Item1": "Malt",
-            "Item2": "Pilsner, Vete, Caraplus och Crystalmalt"
+            "Item2": "Pale Ale, Bohemian Pils och Carabohemmalt"
+        },
+        {
+            "Item1": "Nyhet",
+            "Item2": "2018"
         },
         {
             "Item1": "Passar till",
-            "Item2": "Halstrad gravlax med krämig örtsås och färskpotatis."
+            "Item2": "Det mesta! Testa gärna till klassisk svensk husmanskost."
         },
         {
             "Item1": "Producent",
             "Item2": "Gotlands Bryggeri"
         },
         {
+            "Item1": "Vegansk",
+            "Item2": "False"
+        },
+        {
             "Item1": "Sötma",
-            "Item2": "02"
+            "Item2": "03"
         },
         {
             "Item1": "Typ1",
-            "Item2": "Ale"
+            "Item2": "Lager"
         },
         {
             "Item1": "Typ2",
-            "Item2": "Pale Ale"
+            "Item2": "Ljus Lager"
         },
         {
             "Item1": "DescriptionAdditional1Prid31Crc32",
-            "Item2": "2055835545"
+            "Item2": "866287716"
         },
         {
             "Item1": "DescriptionAdditional4Prid46Crc32",
-            "Item2": "383493463"
+            "Item2": "1700635503"
         },
         {
             "Item1": "ItemClPerPieceInternal",
@@ -184,21 +241,21 @@ const dummyProductBeerDetails = {
         },
         {
             "Item1": "Listpris",
-            "Item2": "22.732"
+            "Item2": "22.381"
         }
     ],
     "ClockValues": [
         {
             "Key": "Beska",
-            "Value": "6"
+            "Value": "5"
         },
         {
             "Key": "Sötma",
-            "Value": "2"
+            "Value": "3"
         },
         {
             "Key": "Fyllighet",
-            "Value": "6"
+            "Value": "5"
         }
     ],
     "IsSales": false,
