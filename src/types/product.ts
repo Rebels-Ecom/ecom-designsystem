@@ -5,7 +5,7 @@ export interface IProduct {
     partNo: string,
     productName: string,
     productUrl?: string,
-    productImageUrl: string,
+    primaryImageUrl: string,
     productDescription?: string
     country?: string,
     packaging: string,

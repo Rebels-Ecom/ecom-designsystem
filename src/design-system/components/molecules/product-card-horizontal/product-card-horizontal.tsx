@@ -35,7 +35,7 @@ const ProductCardHorizontal = ({
     partNoLabel,
     productName,
     productUrl,
-    productImageUrl,
+    primaryImageUrl,
     tags,
     country,
     packaging,
@@ -49,7 +49,7 @@ const ProductCardHorizontal = ({
     unitLabel,
   } = product
 
-  const productImage = getProductPicture(partNo, productImageUrl)
+  const productImage = getProductPicture(partNo, primaryImageUrl)
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)

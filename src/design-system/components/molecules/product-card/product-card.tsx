@@ -91,11 +91,11 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { partNo, productImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity } = product
+  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(partNo, productImageUrl),
+    productImage: getProductPicture(partNo, primaryImageUrl),
     quantity: quantity ? quantity : '1',
     totalPrice: convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
     selectedVariantId: partNo,

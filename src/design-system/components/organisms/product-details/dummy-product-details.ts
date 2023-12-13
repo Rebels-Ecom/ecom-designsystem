@@ -278,7 +278,7 @@ const dummyProductBeerDetails = {
 
 const dummyProductWineDetails = {
     "SellerOnly": false,
-    "ProductImageUrl": "https://spendrups.cdn.storm.io/063cb59d-b81f-454a-a1e5-9b0e3dfeb957",
+    "PrimaryImageUrl": "https://spendrups.cdn.storm.io/063cb59d-b81f-454a-a1e5-9b0e3dfeb957",
     "ProductName": "Vilosell EKO",
     "SalesPriceString": "768",
     "SalesUnit": "KLI",

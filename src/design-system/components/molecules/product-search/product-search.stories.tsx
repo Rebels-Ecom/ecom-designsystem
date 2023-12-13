@@ -60,7 +60,7 @@ const productSuggestions = listOfSuggestions.map((product) => {
   return {
     partNo: product.ExternalId,
     productName: product.DisplayName,
-    productImageUrl: product.PrimaryImageUrl,
+    primaryImageUrl: product.PrimaryImageUrl,
     productVariantList: productHasVariants ? productVariants : [],
   }
 })

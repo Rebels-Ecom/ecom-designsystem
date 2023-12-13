@@ -42,7 +42,7 @@ function getProduct(productData: any): IProduct {
     partNo: product.VariantId,
     productUrl: productData.ProductUrl,
     productName: productData.DisplayName,
-    productImageUrl: product.PrimaryImageUrl,
+    primaryImageUrl: product.PrimaryImageUrl,
     country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
     packaging: product.VariantFullName,
     priceStr: product.ListPricePerUnitString,
@@ -95,7 +95,7 @@ export const ProductCardStory: Story = {
     handlePackageChange: () => {},
     loading: false,
     onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.productImageUrl),
+    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.primaryImageUrl),
     hideCartButton: false,
     campaign: {
       title: 'Kampanj',
@@ -116,7 +116,7 @@ export const ProductCardStory_NoVariants: Story = {
     handlePackageChange: () => {},
     loading: false,
     onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.productImageUrl),
+    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.primaryImageUrl),
     campaign: {
       title: 'Kampanj',
       color: '#9A576F',
@@ -135,7 +135,7 @@ export const ProductCardStory_Loading: Story = {
     handlePackageChange: () => {},
     loading: true,
     onVariantsButtonClick: () => {},
-    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.productImageUrl),
+    productImage: getProductPicture(productWineArgs.partNo, productWineArgs.primaryImageUrl),
   },
 }
 

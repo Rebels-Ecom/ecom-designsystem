@@ -18,8 +18,8 @@ export interface ICartProduct extends IProduct {
 }
 
 const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link }: ICartProduct) => {
-  const { partNo, productName, productUrl, productImageUrl, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } = product
-  const productImage = getProductPicture(partNo, productImageUrl)
+  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } = product
+  const productImage = getProductPicture(partNo, primaryImageUrl)
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)

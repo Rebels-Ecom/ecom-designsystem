@@ -50,7 +50,7 @@ export interface IProductDetails extends IProduct {
 const ProductDetails = ({
   partNo,
   productName,
-  productImageUrl,
+  primaryImageUrl,
   packaging,
   priceStr,
   price,
@@ -83,7 +83,7 @@ const ProductDetails = ({
   const [product, setProduct] = useState({
     partNo,
     productName,
-    productImage: getProductPicture(partNo, productImageUrl ? productImageUrl : fallbackProductImageUrl),
+    productImage: getProductPicture(partNo, primaryImageUrl ? primaryImageUrl : fallbackProductImageUrl),
     packaging,
     priceStr,
     price,
