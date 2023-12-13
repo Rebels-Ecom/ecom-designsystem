@@ -1,8 +1,0 @@
-import{r as e,a as d,j as r}from"./jsx-runtime-a3a6c0b8.js";import{P as p}from"./product-toast-64188b52.js";import{C as l}from"./cart-product.stories-e757ffbb.js";import{A as u}from"./index-4058f88b.js";import"./_commonjsHelpers-de833af9.js";import"./index-a587463d.js";import"./text-6742cc3c.js";import"./motion-54668070.js";import"./product-quantity-input-701dd205.js";import"./input-text-03d26b16.js";import"./form-helper-ce65ae5e.js";import"./icon-b918f330.js";import"./picture-helper-86177d87.js";import"./picture-78f09330.js";import"./icon-button-b65e8e62.js";import"./ui-link-90f48b0d.js";import"./loader-72deb8c4.js";import"./format-helper-6b4b1091.js";import"./icon-button.stories-78addfdd.js";import"./chunk-WFFRPTHA-a68c42c5.js";import"./preview-errors-dde4324f.js";import"./index-356e4a49.js";const z={title:"Design System/Molecules/ProductToast",component:p},g={render:({...m})=>{const[n,o]=e.useState(!1);return e.useEffect(()=>{const c=setInterval(()=>{o(!1)},3e3);return()=>{clearInterval(c)}},[]),d("div",{children:[r("button",{onClick:()=>o(!0),children:"Add toast"}),r(u,{children:n&&r(p,{...m})})]})}},t={...g,args:{cartProduct:l.args,position:"top-right",label:"Tillagd i varukorgen"}};var a,s,i;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:`{
-  ...ProductToastStoryTemplate,
-  args: {
-    cartProduct: CartProductStoryBeer.args,
-    position: 'top-right',
-    label: 'Tillagd i varukorgen'
-  }
-}`,...(i=(s=t.parameters)==null?void 0:s.docs)==null?void 0:i.source}}};const F=["ProductToastStory"];export{t as ProductToastStory,F as __namedExportsOrder,z as default};
