@@ -6,7 +6,6 @@ import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
-import { DividerLines } from '../../atoms/divider-lines/divider-lines'
 import { Loader } from '../../atoms/loader/loader'
 
 export interface ICartProduct extends IProduct {
@@ -44,7 +43,6 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <DividerLines />
             <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
             {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${partNo} - ${country}`}</p>}
             <ProductQuantityInput

@@ -24,7 +24,6 @@ const ProductCardVertical = ({
   onVariantsButtonClick,
   className,
   defaultQuantity,
-  listPriceLabel,
   campaign,
   disabled,
   buttonLoading,
@@ -37,6 +36,7 @@ const ProductCardVertical = ({
 }: IProductCard & TProductCardVertical) => {
   const {
     partNo,
+    partNoLabel,
     productName,
     productUrl,
     productVariantList,
@@ -51,6 +51,9 @@ const ProductCardVertical = ({
     isLimitedProduct,
     sellerOnly,
     isAccessoryPotItem,
+    priceLabel,
+    currencyLabel,
+    unitLabel,
   } = product
   //const isLimitedProduct = product.partNo === '1109611' || product.partNo === '1174411' ? true : false
 
@@ -148,8 +151,8 @@ const ProductCardVertical = ({
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${partNo} ${country && `- ${country}`}`}</p>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${listPriceLabel ? listPriceLabel : 'Listpris'}: ${priceStr} kr/st`}</p>
+            <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${partNo} ${country && `- ${country}`}`}</p>
+            <p className={cx(styles.textPurple, 'bodyS')}>{`${priceLabel}: ${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}`}</p>
           </div>
         )}
         <Button
