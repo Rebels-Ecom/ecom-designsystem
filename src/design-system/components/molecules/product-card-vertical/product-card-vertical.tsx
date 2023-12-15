@@ -18,7 +18,7 @@ const ProductCardVertical = ({
   productQuantityDisabled,
   linkComponent: Link,
   variantsOpen,
-  handlePackageChange,
+  onPackageChange,
   selectedVariantId,
   productImage,
   onVariantsButtonClick,
@@ -62,7 +62,7 @@ const ProductCardVertical = ({
   }
 
   function handleVariantBtnClick() {
-    onVariantsButtonClick && onVariantsButtonClick()
+    onVariantsButtonClick?.();
   }
 
   const style: { [key: string]: string } = {
@@ -70,12 +70,12 @@ const ProductCardVertical = ({
     '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
   }
 
-  if (variantsOpen && selectedVariantId) {
+  if (variantsOpen && selectedVariantId && onPackageChange) {
     return (
       <ProductVariantList
         className={styles.productCardVertical}
         variantsList={productVariantList}
-        onVariantSelect={handlePackageChange}
+        onVariantSelect={onPackageChange}
         selectedVariantId={selectedVariantId}
       />
     )

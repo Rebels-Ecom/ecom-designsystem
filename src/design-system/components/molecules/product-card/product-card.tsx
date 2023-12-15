@@ -14,7 +14,6 @@ export type TProductCardVertical = {
   cardDisplay: 'vertical'
   productImage: IPicture
   variantsOpen?: boolean
-  handlePackageChange: CallableFunction
   selectedVariantId?: string
   onVariantsButtonClick: CallableFunction
 }
@@ -57,6 +56,7 @@ export interface IProductCard {
   border?: boolean
   linkComponent?: any
   className?: string
+  onPackageChange?: CallableFunction
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -86,6 +86,7 @@ function ProductCard({
   border,
   linkComponent: Link,
   className,
+  onPackageChange
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -125,7 +126,15 @@ function ProductCard({
 
   function handlePackageChange(selectedVariant: any) {
     const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
-    setProduct((prevState) => ({
+    setProduct((prevState) => {
+      onPackageChange?.({
+        prevId: prevState.partNo,
+        productName: selectedVariant.productName,
+        id: selectedVariant.variantId,
+        variantName: selectedVariant.variantName
+      });
+
+      return ({
       ...prevState,
       partNo: selectedVariant.variantId,
       productImage: selectedVariant.image ?? fallbackProductImageUrl,
@@ -138,7 +147,8 @@ function ProductCard({
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
       productUrl: `/Product/${selectedVariant.variantId}`,
-    }))
+    })})
+    
     setVariantsListOpen(false)
   }
 
@@ -182,7 +192,7 @@ function ProductCard({
         disabled={disabled}
         variantsOpen={variantsListOpen}
         onVariantsButtonClick={handleVariantsButtonClick}
-        handlePackageChange={handlePackageChange}
+        onPackageChange={handlePackageChange}
         selectedVariantId={myProduct.selectedVariantId}
         addToCart={addToCart}
         addToCartBtnLabel={addToCartBtnLabel}

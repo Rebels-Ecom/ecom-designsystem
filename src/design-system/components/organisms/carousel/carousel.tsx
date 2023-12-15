@@ -7,11 +7,12 @@ import { ICarousel } from './types';
 
 export const CarouselItem =  (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
 
-const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
+const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, onChange, ...props }: PropsWithChildren<ICarousel>) => {
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
       className={cx(styles.carousel, className)}
+      onMoved={onChange}
       options={{
         ...splideProps?.options,
         classes: {
