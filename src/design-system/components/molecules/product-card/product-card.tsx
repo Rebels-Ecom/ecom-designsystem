@@ -30,6 +30,7 @@ export interface IProductCard {
   loading: boolean
   buttonLoading?: boolean
   disabled?: boolean
+  hidePrice?: boolean
   addToCart: CallableFunction
   addToCartBtnLabel: string
   hideCartButton?: boolean
@@ -42,7 +43,6 @@ export interface IProductCard {
   defaultQuantity?: string
   onRemoveProduct?: CallableFunction
   hideRemoveButton?: boolean
-  listPriceLabel?: string
   campaign?: {
     title: string
     color: string
@@ -70,12 +70,12 @@ function ProductCard({
   addToCart,
   addToCartBtnLabel,
   hideCartButton,
+  hidePrice,
   onChangeQuantity,
   productQuantityDisabled,
   defaultQuantity,
   onRemoveProduct,
   hideRemoveButton,
-  listPriceLabel,
   campaign,
   limitedProductText,
   showFavoriteIcon,
@@ -92,13 +92,13 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { partNo, productImageUrl, price, itemNumberPerSalesUnit, quantity } = product
+  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(partNo, productImageUrl),
+    productImage: getProductPicture(partNo, primaryImageUrl),
     quantity: quantity ? quantity : '1',
-    totalPrice: convertNumToStr(price * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
+    totalPrice: convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
     selectedVariantId: partNo,
   })
 
@@ -107,7 +107,7 @@ function ProductCard({
       const newProduct = {
         ...prevState,
         quantity: productQuantity.toString(),
-        totalPrice: convertNumToStr(myProduct.price * myProduct.itemNumberPerSalesUnit * productQuantity),
+        totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
       }
 
       onChangeQuantity?.(newProduct)
@@ -139,8 +139,12 @@ function ProductCard({
       partNo: selectedVariant.variantId,
       productImage: selectedVariant.image ?? fallbackProductImageUrl,
       packaging: selectedVariant.variantName,
-      priceStr: selectedVariant.priceStr,
       price: selectedVariant.price,
+      priceStr: selectedVariant.priceStr,
+
+      pricePerUnit: selectedVariant.pricePerUnit,
+      pricePerUnitString: selectedVariant.pricePerUnitString,
+
       salesUnit: selectedVariant.salesUnit,
       itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
@@ -163,6 +167,7 @@ function ProductCard({
         addToCart={addToCart}
         addToCartBtnLabel={addToCartBtnLabel}
         hideCartButton={hideCartButton}
+        hidePrice={hidePrice}
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
@@ -197,10 +202,10 @@ function ProductCard({
         addToCart={addToCart}
         addToCartBtnLabel={addToCartBtnLabel}
         hideCartButton={hideCartButton}
+        hidePrice={hidePrice}
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
-        listPriceLabel={listPriceLabel}
         campaign={campaign}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}

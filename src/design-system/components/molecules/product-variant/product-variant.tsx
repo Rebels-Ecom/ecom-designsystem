@@ -15,7 +15,7 @@ export interface IProductVariant {
   onChange: CallableFunction
   checked: boolean
   partNoLabel: string
-  pieceLabel: string
+  unitLabel: string
   currencyLabel: string
 }
 
@@ -30,7 +30,7 @@ const ProductVariant = ({
   checked,
   partNoLabel,
   currencyLabel,
-  pieceLabel,
+  unitLabel,
 }: IProductVariant) => {
   return (
     <label className={styles.productVariant}>
@@ -41,7 +41,7 @@ const ProductVariant = ({
         <p className={styles.heading}>{productName}</p>
         <p className={styles.heading}>{variantName}</p>
         <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
-        <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${pieceLabel}`}</p>
+        <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>
       </div>
       <div className={styles.radioWrapper}>
         <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />

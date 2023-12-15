@@ -50,7 +50,7 @@ export interface IProductDetails extends IProduct {
 const ProductDetails = ({
   partNo,
   productName,
-  productImageUrl,
+  primaryImageUrl,
   packaging,
   priceStr,
   price,
@@ -70,9 +70,9 @@ const ProductDetails = ({
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
   partNoLabel,
-  pieceLabel,
-  currencyLabel,
   priceLabel,
+  currencyLabel,
+  unitLabel,
   addToCartLabel,
   quantityPerPackageLabel,
   aLabel,
@@ -83,7 +83,7 @@ const ProductDetails = ({
   const [product, setProduct] = useState({
     partNo,
     productName,
-    productImage: getProductPicture(partNo, productImageUrl ? productImageUrl : fallbackProductImageUrl),
+    productImage: getProductPicture(partNo, primaryImageUrl ? primaryImageUrl : fallbackProductImageUrl),
     packaging,
     priceStr,
     price,
@@ -96,6 +96,7 @@ const ProductDetails = ({
     productVariantList,
     selectedVariantId: partNo,
     priceLabel,
+    unitLabel,
     currencyLabel,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
@@ -178,7 +179,7 @@ const ProductDetails = ({
                 product.packagePriceString
               } ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
               <p className={cx(styles.textGrey, 'bodyS')}>
-                {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${pieceLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
+                {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
               </p>
               <p className={cx(styles.textGrey, 'bodyS')}>{`${partNoLabel} ${product.partNo}`}</p>
             </div>

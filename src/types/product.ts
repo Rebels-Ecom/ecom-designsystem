@@ -5,14 +5,16 @@ export interface IProduct {
     partNo: string,
     productName: string,
     productUrl?: string,
-    productImageUrl: string,
+    primaryImageUrl: string,
     productDescription?: string
     country?: string,
     packaging: string,
-    priceStr: string,
     price:number,
-    packagePriceString: string,
+    priceStr: string,
+    pricePerUnit: number,
+    pricePerUnitString: string,
     packagePrice: number,
+    packagePriceString: string,
     salesUnit:string,
     itemNumberPerSalesUnit: number,
     quantity: string,
@@ -25,7 +27,7 @@ export interface IProduct {
 
     //Translation labels
     partNoLabel?: string
-    pieceLabel?: string
+    unitLabel?: string
     currencyLabel?: string
     priceLabel?: string
     addToCartLabel?: string

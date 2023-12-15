@@ -59,7 +59,7 @@ function getProduct(productData: any): IProduct {
     partNo: product.VariantId,
     productUrl: productData.ProductUrl,
     productName: productData.DisplayName,
-    productImageUrl: product.PrimaryImageUrl,
+    primaryImageUrl: product.PrimaryImageUrl,
     country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
     packaging: product.VariantFullName,
     priceStr: product.ListPricePerUnitString,

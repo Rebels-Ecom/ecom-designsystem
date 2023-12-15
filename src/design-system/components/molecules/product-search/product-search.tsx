@@ -9,7 +9,7 @@ import cx from 'classnames'
 export interface IResult {
   partNo: string
   productName: string
-  productImageUrl: string
+  primaryImageUrl: string
   productVariantList: Array<IProductVariant>
 }
 
@@ -106,7 +106,7 @@ function ProductSearch({
         <div className={styles.searchResults}>
           <ul aria-labelledby={id} className={styles.searchResultsList}>
             {results.map((li: IResult, i: number) => {
-              const productImage = getProductPicture(li.partNo, li.productImageUrl)
+              const productImage = getProductPicture(li.partNo, li.primaryImageUrl)
               return (
                 <li key={`${id}_${i}`} className={styles.resultListItem}>
                   <ProductSearchResultItem

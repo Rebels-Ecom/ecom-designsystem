@@ -3,7 +3,7 @@ import styles from './product-card-horizontal.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, IconButton, DividerLines, Loader, Placeholder, Button, Icon } from '../../atoms'
+import { Picture, IconButton, Loader, Placeholder, Button, Icon } from '../../atoms'
 import cx from 'classnames'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
@@ -14,6 +14,7 @@ const ProductCardHorizontal = ({
   addToCart,
   addToCartBtnLabel,
   hideCartButton,
+  hidePrice,
   onClickRemoveProduct,
   hideRemoveButton,
   removingProduct,
@@ -29,9 +30,26 @@ const ProductCardHorizontal = ({
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
 }: IProductCard & TProductCardHorizontal) => {
-  const { partNo, productName, productUrl, productImageUrl, tags, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } =
-    product
-  const productImage = getProductPicture(partNo, productImageUrl)
+  const {
+    partNo,
+    partNoLabel,
+    productName,
+    productUrl,
+    primaryImageUrl,
+    tags,
+    country,
+    packaging,
+    priceStr,
+    totalPrice,
+    quantity,
+    salesUnit,
+    itemNumberPerSalesUnit,
+    priceLabel,
+    currencyLabel,
+    unitLabel,
+  } = product
+
+  const productImage = getProductPicture(partNo, primaryImageUrl)
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -85,10 +103,14 @@ const ProductCardHorizontal = ({
                   <h5 className={styles.heading}>{productName}</h5>
                 )}
 
-                <p className={cx(styles.subTitle, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
+                {!hidePrice && (
+                  <p className={cx(styles.subTitle, 'bodyS')}>{`${priceLabel}: ${
+                    priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
+                  }`}</p>
+                )}
 
                 {(country !== '' || partNo !== '') && (
-                  <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `Art.nr. ${partNo} -` : ''} ${country ?? ''}`}</p>
+                  <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
                 )}
 
                 <ProductQuantityInput

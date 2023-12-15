@@ -71,7 +71,7 @@ function getProductList(productList: any): Array<IProduct> {
         partNo: product.VariantId,
         productName: productItem.DisplayName,
         productUrl: productItem.ProductUrl,
-        productImageUrl: product.PrimaryImageUrl,
+        primaryImageUrl: product.PrimaryImageUrl,
         country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
         packaging: product.VariantFullName,
         priceStr: product.ListPricePerUnitString,
