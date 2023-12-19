@@ -54,6 +54,7 @@
             content-visibility: auto;
             border: 0;
             object-fit: cover;
+            object-position: bottom;
         }
         
         & .tags {
