@@ -76,6 +76,24 @@
       width: auto;
     }
 
+    & .headingButton {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      color: var(--color-text-default);
+      text-align: left;
+  
+      
+      &.headingButtonPointer {
+        cursor: pointer;
+        
+        &:hover {
+          color: var(--interactive-default);
+        }
+      }
+    }
+
     & .mainLink {
       text-decoration: none;
       color: var(--color-text-default);

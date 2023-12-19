@@ -33,6 +33,7 @@ const ProductCardVertical = ({
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
+  onClick
 }: IProductCard & TProductCardVertical) => {
   const {
     partNo,
@@ -66,6 +67,11 @@ const ProductCardVertical = ({
 
   function handleVariantBtnClick() {
     onVariantsButtonClick?.();
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    e?.stopPropagation();
+    onClick?.();
   }
 
   const style: { [key: string]: string } = {
@@ -114,21 +120,25 @@ const ProductCardVertical = ({
           <>
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
-                <Picture
-                  {...productImage}
-                  classNamePicture={styles.cardPicture}
-                  classNameImg={`${styles.cardImage}`}
-                  fallbackImageUrl={fallbackProductImageUrl}
-                />
+                <button onClick={handleClick} className={cx(styles.imageButton, styles.imageButtonPointer )}>
+                  <Picture
+                    {...productImage}
+                    classNamePicture={styles.cardPicture}
+                    classNameImg={`${styles.cardImage}`}
+                    fallbackImageUrl={fallbackProductImageUrl}
+                  />
+                </button>
               </Link>
             ) : (
               <div className={styles.imageWrapper}>
-                <Picture
-                  {...productImage}
-                  classNamePicture={styles.cardPicture}
-                  classNameImg={`${styles.cardImage}`}
-                  fallbackImageUrl={fallbackProductImageUrl}
-                />
+                <button onClick={handleClick} className={cx(styles.imageButton, {[styles.imageButtonPointer]: !!onClick})}>
+                  <Picture
+                    {...productImage}
+                    classNamePicture={styles.cardPicture}
+                    classNameImg={`${styles.cardImage}`}
+                    fallbackImageUrl={fallbackProductImageUrl}
+                    />
+                </button>
               </div>
             )}
           </>
@@ -146,10 +156,14 @@ const ProductCardVertical = ({
           <div className={`${styles.cardContent}`}>
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.headingWrapper}>
-                <h5 className={styles.heading}>{productName}</h5>
+                <button onClick={handleClick} className={cx(styles.headingButton, styles.headingButtonPointer )}>
+                  <h5 className={styles.heading}>{productName}</h5>
+                </button>
               </Link>
             ) : (
-              <h5 className={styles.heading}>{productName}</h5>
+              <button onClick={handleClick} className={cx(styles.headingButton, {[styles.headingButtonPointer]: !!onClick})}>
+                <h5 className={styles.heading}>{productName}</h5>
+              </button>
             )}
             <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${partNo} ${country && `- ${country}`}`}</p>
             <p className={cx(styles.textPurple, 'bodyS')}>{`${priceLabel}: ${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}`}</p>

@@ -76,8 +76,23 @@
       }
     }
   }
+
+  .imageButton {
+    background: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    &.imageButtonPointer {
+      cursor: pointer;
+    }
+  }
   
   .imageWrapper {
+    background: none;
+    border: none;
     width: 100%;
     height:35%;
     min-height: 35%;
@@ -93,6 +108,8 @@
     z-index: 1;
     height: 100%;
     width:100%;
+    top: 0;
+    left: 0;
   }
     
   .cardImage{
@@ -123,6 +140,22 @@
     gap: 0.5rem;
     height: var(--tag-rectangular-mobile-line-height);
     min-height: var(--tag-rectangular-mobile-line-height);
+  }
+
+  .headingButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+
+    &.headingButtonPointer {
+      cursor: pointer;
+
+      &:hover {
+        color: var(--interactive-default);
+      }
+    }
   }
   
   .headingWrapper {

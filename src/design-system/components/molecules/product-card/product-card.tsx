@@ -57,6 +57,7 @@ export interface IProductCard {
   linkComponent?: any
   className?: string
   onPackageChange?: CallableFunction
+  onClick?: CallableFunction
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -86,7 +87,8 @@ function ProductCard({
   border,
   linkComponent: Link,
   className,
-  onPackageChange
+  onPackageChange,
+  onClick
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -183,6 +185,7 @@ function ProductCard({
         border={border}
         linkComponent={Link}
         className={className}
+        onClick={onClick}
       />
     )
   }
@@ -215,6 +218,7 @@ function ProductCard({
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
         linkComponent={Link}
         className={className}
+        onClick={onClick}
       />
     )
   }

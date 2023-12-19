@@ -29,6 +29,7 @@ const ProductCardHorizontal = ({
   border = false,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
+  onClick
 }: IProductCard & TProductCardHorizontal) => {
   const {
     partNo,
@@ -58,6 +59,11 @@ const ProductCardHorizontal = ({
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
     onChangeQuantity && onChangeQuantity(quantity)
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    e?.stopPropagation();
+    onClick?.();
   }
 
   const style: { [key: string]: string } = {
@@ -97,10 +103,14 @@ const ProductCardHorizontal = ({
 
                 {productUrl && Link ? (
                   <Link to={productUrl} href={productUrl} className={styles.mainLink}>
-                    <h5 className={styles.heading}>{productName}</h5>
+                    <button onClick={handleClick} className={cx(styles.headingButton, styles.headingButtonPointer)}>
+                      <h5 className={styles.heading}>{productName}</h5>
+                    </button>
                   </Link>
                 ) : (
-                  <h5 className={styles.heading}>{productName}</h5>
+                  <button onClick={handleClick} className={cx(styles.headingButton, {[styles.headingButtonPointer]: !!onClick})}>
+                    <h5 className={styles.heading}>{productName}</h5>
+                  </button>
                 )}
 
                 {!hidePrice && (
