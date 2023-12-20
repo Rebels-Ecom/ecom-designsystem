@@ -30,6 +30,8 @@
     
         &.smallHeight {
             &:before {
+                padding-top: calc((9 / 16) * 100%);
+
                 @media (min-width: 48em) {
                     padding-top: calc((4 / 18) * 100%);
                 }
