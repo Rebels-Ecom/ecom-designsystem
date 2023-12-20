@@ -89,7 +89,6 @@ const topNavArgsLoggedIn = {
 
 const topNavArgs_Admin = {
   userLoggedIn: true,
-  isAdmin: true,
   userName: 'Jon Johnson',
   btnIcon: 'icon-x-circle',
   btnText: 'Logga ut',
@@ -107,7 +106,6 @@ const topNavArgs_Admin = {
 
 const topNavArgs_Admin_HasActiveUser = {
   userLoggedIn: true,
-  isAdmin: true,
   hasActiveUser: true,
   userName: 'Jon Johnson',
   btnIcon: 'icon-x-circle',

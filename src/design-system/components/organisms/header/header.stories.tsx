@@ -106,7 +106,6 @@ const HeaderStoryTemplate: Story = {
               userLoggedIn={false}
               onClick={onClickLogout}
               onSelectDate={setSelectedDate}
-              isAdmin={false}
               hasActiveUser={false}
             />
           }
