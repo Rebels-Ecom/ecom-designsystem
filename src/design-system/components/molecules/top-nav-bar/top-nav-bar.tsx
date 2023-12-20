@@ -61,7 +61,7 @@ const TopNavBar = ({
   }
 
   const linksLeft = links.slice(0, Math.ceil(links.length / 2))
-  const linksRight = links.slice(- Math.floor(links.length / 2))
+  const linksRight = linksLeft.length > 1 ? links.slice(- Math.floor(links.length / 2)) : [];
 
   const renderLeftLinks = useCallback(() => {
     return linksLeft?.map((link: TIconNavLink, index) => (
@@ -123,6 +123,7 @@ const TopNavBar = ({
                     <span className={styles.btnText}>{btnText}</span>
                   </button>
                 )}
+                {userName && <li className={cx(styles.navLink, 'bodyS')}>{userName}</li>}
               </ul>
             </div>
           )}
