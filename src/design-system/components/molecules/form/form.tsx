@@ -129,7 +129,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         </FlexContainer>
       )}
       {props.actions && (
-        <FlexContainer justifyContent={props.alignActions ?? 'center'}>
+        <FlexContainer justifyContent={props.alignActions ?? 'center'} className={styles.actionsWrapper}>
           {props.actions.map((action, i) => (
             <Button
               key={`${action.type}-${i}`}
