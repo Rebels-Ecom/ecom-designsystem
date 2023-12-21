@@ -24,6 +24,9 @@ function AccountBox({
   chooseAccountBtn,
   onClickChooseAccount
 }: IAccountBox) {
+  const handleClick = () => {
+    onClickChooseAccount();
+  }
   return (
     <div className={styles.accountBox}>
       <div>
@@ -38,7 +41,7 @@ function AccountBox({
           {address}, {zipcode}, {city}
         </p>
       </div>
-      <Button {...chooseAccountBtn} type={'button'} surface={'primary'} onClick={() => onClickChooseAccount(accountNumber)}></Button>
+      <Button {...chooseAccountBtn} type={'button'} surface={'primary'} onClick={handleClick}></Button>
     </div>
   )
 }
