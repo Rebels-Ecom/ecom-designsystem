@@ -72,13 +72,6 @@
         width: var(--tag-size-round-large); 
     }
     border-radius: 50%;
-    font-size: var(--tag-round-mobile-font-size);
-    line-height: var(--tag-round-mobile-line-height);
-    @media (min-width: 64em) {
-        font-size: var(--tag-round-desktop-font-size);
-        line-height: var(--tag-round-desktop-line-height);
-    }
-
 }
 
 .tagPill {

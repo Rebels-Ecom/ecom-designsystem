@@ -14,19 +14,34 @@ export interface IAccountBox {
   onClickChooseAccount: CallableFunction
 }
 
-function AccountBox({ companyName, accountNumber, contactPerson, address, zipcode, city, chooseAccountBtn, onClickChooseAccount }: IAccountBox) {
+function AccountBox({
+  companyName,
+  accountNumber,
+  contactPerson,
+  address,
+  zipcode,
+  city,
+  chooseAccountBtn,
+  onClickChooseAccount
+}: IAccountBox) {
+  const handleClick = () => {
+    onClickChooseAccount();
+  }
   return (
     <div className={styles.accountBox}>
       <div>
-        <p>
+        <p className={styles.companyName}>
           <b>{companyName}</b>
         </p>
-        <p>{contactPerson}</p>
+        <p className={styles.accountNumber}>
+          {accountNumber}
+        </p>
+        {contactPerson && <p>{contactPerson}</p>}
         <p>
           {address}, {zipcode}, {city}
         </p>
       </div>
-      <Button {...chooseAccountBtn} type={'button'} surface={'primary'} onClick={() => onClickChooseAccount(accountNumber)}></Button>
+      <Button {...chooseAccountBtn} type={'button'} surface={'primary'} onClick={handleClick}></Button>
     </div>
   )
 }

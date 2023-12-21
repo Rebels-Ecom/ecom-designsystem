@@ -26,6 +26,15 @@
     }
   }
 
+  & .actionsWrapper {
+    flex-direction: column;
+    align-items: center;
+    
+    @media (min-width: 48em) {
+      flex-direction: row;
+    }
+  }
+
   & .link {
     &.linkDisabled {
       pointer-events: none;
