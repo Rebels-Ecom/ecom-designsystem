@@ -9,11 +9,13 @@
     align-items: flex-start;
     flex: 1;
     gap: 0.625rem;
+    
     @media(min-width: 64em){
         width: 22.5rem;
     }
     
-    & > p {
+    & .companyName,
+    & .accountNumber {
       margin: 0;
     }
 }
