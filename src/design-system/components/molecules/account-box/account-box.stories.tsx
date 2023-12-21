@@ -26,7 +26,7 @@ export const AccountBoxStory = {
   ...AccountBoxStoryTemplate,
   args: {
     companyName: 'Beer Fest',
-    accountNumber: '186922',
+    accountNumber: 'Kundnr: 186922',
     contactPerson: 'Jon Jonsson',
     address: 'Granängsringen 3',
     zipcode: '135 44',
@@ -40,7 +40,7 @@ export const AccountBoxStory_2 = {
   ...AccountBoxStoryTemplate,
   args: {
     companyName: 'Beer Fest',
-    accountNumber: '186922',
+    accountNumber: 'Kundnr: 186922',
     address: 'Granängsringen 3',
     zipcode: '135 44',
     city: 'Tyresö',
