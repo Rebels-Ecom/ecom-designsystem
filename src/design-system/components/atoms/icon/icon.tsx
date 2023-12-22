@@ -60,10 +60,21 @@ export interface IIcon {
   icon: TIcon
   size?: TIconSize
   className?: CSSModuleClasses | string
+  /**
+   * optional color
+   */
+  color?: 'error';
 }
 
-const Icon = ({ icon, size, className }: IIcon) => {
-  return <span className={cx('icomoon', icon, className ? className : styles.defaultStyling, size && styles[`icon-${size}`])} />
+const Icon = ({ icon, size, className, color }: IIcon) => {
+  return (
+    <span
+      className={cx('icomoon', icon, className ? className : styles.defaultStyling, {
+        [styles[`icon-${size}`]]: !!size,
+        [styles[color ?? '']]: !!color,
+      })}
+    />
+  )
 }
 
 export { Icon }
