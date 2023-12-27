@@ -154,6 +154,20 @@ export const OrderItemStory_Delivered = {
   },
 }
 
+export const OrderItemStory_Returned = {
+  ...OrderItemStoryTemplate,
+  args: {
+    orderDate: '2023-06-01',
+    deliveryDate: '2023-06-07',
+    orderStatus: 'Returned',
+    statusIcon: 'success',
+    title: 'Order nummer: 1423569',
+    children: <Text>22 artiklar</Text>,
+    linkUrl: '/link-to-somewhere',
+    linkComponent: 'a',
+  },
+}
+
 export const OrderItem_Sommarfest = {
   ...OrderItemStoryTemplate,
   args: {

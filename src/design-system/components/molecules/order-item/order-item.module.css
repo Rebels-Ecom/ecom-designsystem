@@ -48,16 +48,24 @@
 
             & .status {
                 display: block;
+                background-color: var(--tag-grey);
                 color: var(--color-text-default);
                 padding: 0 0.5rem;
-                background-color: var(--tag-grey);
                 line-height: 1.75rem;
                 font-size: 0.875rem;
                 font-family: var(--font-family-secondary);
                 text-transform: uppercase;
                 font-weight: bold;
                 letter-spacing: 0.125rem;
-            }
+                
+                & .statusIcon {
+                    display: inline-block;
+                    margin-left: 0.5rem;
+                    font-size: 1rem;
+                    line-height: 1.75rem;
+                    font-weight: bold;
+                }
+             }
             
             & .icon {
                 color: var(--cta-primary-default);
