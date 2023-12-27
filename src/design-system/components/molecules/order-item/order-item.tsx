@@ -3,11 +3,18 @@ import { Icon, UILink } from '../../atoms'
 import styles from './order-item.module.css'
 import { Tag } from '../../atoms/tag/tag'
 import cx from 'classnames'
+import { IIcon, TIcon } from '../../atoms/icon/icon'
 
+type TStatusIcon = 'success' | 'warning' | 'error';
 export interface IOrderItem {
   orderNumber?: string // TODO: make required?
   orderNumberLabel?: string // TODO: make required?
   orderStatus?: string // TODO: make required?
+  /**
+   * Defines the background color of the status label
+   * @default 'default'
+   */
+  statusIcon?: TStatusIcon
   deliveryDate?: string
   deliveryDateLabel?: string
   linkComponent: any
@@ -39,7 +46,19 @@ const OrderItem = ({
   downloadLabel,
   downloadUrl,
   border,
+  statusIcon
 }: IOrderItem) => {
+  const getIcon = (): TIcon => {
+    switch (statusIcon) {
+      case 'warning':
+        return 'icon-alert-circle'
+      case 'error':
+        return 'icon-alert-triangle';
+      case 'success':
+      default:
+        return 'icon-check';
+    }
+  }
   return 1 > 0 ? (
     <div className={cx(styles.orderItem, { [styles.border]: border })}>
       <div className={styles.firstRow}>
@@ -49,7 +68,10 @@ const OrderItem = ({
           </Link>
         )}
         <div className={styles.statusWrapper}>
-          {orderStatus && <span className={styles.status}>{orderStatus}</span>}
+          {orderStatus && <span className={styles.status}>
+            {orderStatus}
+            {statusIcon && <Icon className={styles.statusIcon} icon={getIcon()} />}
+          </span>}
           <Link to={linkUrl}>
             <h4 className={styles.orderNumber} onClick={onClick}></h4>
             <Icon className={styles.icon} icon={'icon-chevrons-right'}></Icon>
