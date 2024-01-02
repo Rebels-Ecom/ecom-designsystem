@@ -106,7 +106,7 @@ const ProductCardVertical = ({
               <b style={{ fontSize: '1.2rem' }}>S</b>
             </span>
           )}
-          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={campaign ? tags.slice(0, 3) : tags} /> : null}
         </div>
         {loading ? (
           <Placeholder type="image" />

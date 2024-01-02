@@ -118,6 +118,18 @@ export const ProductCardHorizontalStoryWine = {
   },
 }
 
+export const ProductCardHorizontalStoryWithCampaign = {
+  ...ProductCardHorizontalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    linkComponent: 'a',
+    campaign: {
+      title: 'Kampanj',
+      color: '#9A576F',
+    },
+  },
+}
+
 export const ProductCardHorizontal_OrderConfirmation_Beer = {
   ...ProductCardHorizontalStoryTemplate,
   args: {
