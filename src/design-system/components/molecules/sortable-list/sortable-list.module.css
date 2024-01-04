@@ -10,7 +10,7 @@
 }
 
 .listHeading{
-    background: var(--light-orange-background);
+    background: var(--nav-bar-background);
     padding: 1rem 0.5rem;
 }
 
@@ -44,13 +44,14 @@
     display: grid;
     grid-template-columns: 48% auto auto auto;
     align-items: center;
-    gap:0.5rem;
+    gap: 1rem;
     width: 100%;
     padding: 0;
     margin: 0;
     list-style-type: none;
     overflow: hidden;
     @media (min-width: 64em) { 
+        gap:0.5rem;
         padding: 0.5rem;
         grid-template-columns: 50% auto auto 5%;
     }
@@ -75,5 +76,10 @@
 
 .invisibleSpacerItem{
     visibility: hidden;
+}
+
+.arrowButtonsWrapper {
+    display: flex;
+    gap: 0.2rem;
 }
 

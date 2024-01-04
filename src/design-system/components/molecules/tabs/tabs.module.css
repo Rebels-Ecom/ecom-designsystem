@@ -7,14 +7,14 @@
 }
 
 .tabBtn {
-    flex: 1;
-    width: auto;
-    min-width: auto;
+    width: 50%;
     &.disabled,
     &:disabled {
-        background: #FFF9E8;
-        color: #DE9034;
-        border-color: #DE9034;
+        background-color: var(--cta-primary-default);
+        color: var(--color-on-primary);
+    }
+    @media (min-width: 64em) { 
+        width: 25%;
     }
 }
 
