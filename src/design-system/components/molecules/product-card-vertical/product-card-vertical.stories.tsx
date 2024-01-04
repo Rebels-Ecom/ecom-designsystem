@@ -85,6 +85,18 @@ export const ProductCardVerticalStory = {
   },
 }
 
+export const ProductCardVerticalStoryWithCampaign = {
+  ...ProductCardVerticalStoryTemplate,
+  args: {
+    product: productWineArgs,
+    productImage: productImage,
+    campaign: {
+      title: 'Kampanj',
+      color: '#9A576F',
+    },
+  },
+}
+
 export const ProductCardVerticalStory_NoVariants = {
   ...ProductCardVerticalStoryTemplate,
   args: {

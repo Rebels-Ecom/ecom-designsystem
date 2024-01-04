@@ -138,7 +138,7 @@ const dummyWineProduct = {
 		"Tags": [{
 			"Text": "Eko",
 			"Class": "green",
-			"ExternalId": "10755"
+			"ExternalId": "10756"
 		}, {
 			"Text": "Fairtrade",
 			"Class": "blue",
@@ -147,6 +147,14 @@ const dummyWineProduct = {
 			"Text": "Vegan",
 			"Class": "purple",
 			"ExternalId": "16267"
+		}, {
+			"Text": "Le Tag",
+			"Class": "purple",
+			"ExternalId": "16269"
+		}, {
+			"Text": "Eko",
+			"Class": "purple",
+			"ExternalId": "16269"
 		}],
 		"SellerOnly": true,
 		"ShortTexts": ["Argentina"],
@@ -158,7 +166,7 @@ const dummyWineProduct = {
 			"SalesUnit": "ST",
 			"UnitsPerBaseUnit": 1,
 			"Tags": [{
-				"Text": "Eko",
+				"Text": "Alkoholfri",
 				"Class": "green",
 				"ExternalId": "10755"
 			}, {
@@ -166,9 +174,18 @@ const dummyWineProduct = {
 				"Class": "blue",
 				"ExternalId": "10756"
 			}, {
-				"Text": "Vegan",
+				"Text": "Nyhet",
 				"Class": "purple",
 				"ExternalId": "16267"
+			},  {
+				"Text": "Le Tag",
+				"Class": "purple",
+				"ExternalId": "16269"
+			}
+			,  {
+				"Text": "Eko",
+				"Class": "purple",
+				"ExternalId": "16269"
 			}],
 			"ShortTexts": ["Argentina"],
 			"ListPricePerUnit": 136,
