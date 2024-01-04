@@ -31,8 +31,10 @@ const FormGroup = ({ label, formElementId, className, children, helperText, erro
         </span>
         {helperText && <InlineHelperText className={styles.helperText}>{helperText}</InlineHelperText>}
       </label>
-      {children}
-      {errorText && <InlineErrorText className={styles.errorText}>{errorText}</InlineErrorText>}
+      <>
+        {children}
+        {errorText && <InlineErrorText className={styles.errorText}>{errorText}</InlineErrorText>}
+      </>
     </div>
   )
 }

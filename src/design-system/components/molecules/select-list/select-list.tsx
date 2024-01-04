@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../../atoms';
 import styles from './select-list.module.css';
 import cx from 'classnames';
+import { useOnClickOutside } from '../../../hooks';
 
 type TSelectItem = {
   name: string;
@@ -66,6 +67,8 @@ const SelectList = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [])
 
+  useOnClickOutside({ ref: selectListRef, onClose: () => setIsOpen(false) })
+
   return (
     <div ref={selectListRef} className={styles.selectListWrapper}>
       <Button
@@ -89,6 +92,7 @@ const SelectList = ({
                   className={styles.selectItem}
                 >
                   <button
+                    type='button'
                     className={styles.selectItemButton}
                     onClick={() => handleClickItem(option)}
                     disabled={disabled}
