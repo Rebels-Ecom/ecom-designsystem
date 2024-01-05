@@ -54,7 +54,7 @@ const CheckboxStoryTemplate: Story = {
     return (
       <>
         <div style={style}>
-          <Checkbox {...args} />
+          <Checkbox {...args} checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
         </div>
       </>
     )
