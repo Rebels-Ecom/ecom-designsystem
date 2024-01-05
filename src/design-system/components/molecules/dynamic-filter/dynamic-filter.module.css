@@ -66,6 +66,29 @@
       font-size: 1rem;
     }
   }
+  
+  & .radioItem {
+    font-family: var(--font-family-primary);
+    width: 100%;
+    border: none;
+    background: none;
+    display: block;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    text-align: left;
+
+    & .radio {
+      margin: 0;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    
+    & .label {
+      vertical-align: top;
+      font-size: 1rem;
+    }
+  }
 }
 
 .filtersWrapper {
@@ -98,7 +121,6 @@
   & span {
     justify-content: center;
     text-align: center;
-    font-weight: bold;
   }
 
   @media (min-width: 48em) {
@@ -118,12 +140,10 @@
   cursor: pointer;
   color: var(--cta-primary-default);
   padding: 0.25rem 0.5rem 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-weight: bold;
+  border-radius: 1.25rem;
   border: 1px solid transparent;
   
   & span {
-    font-weight: bold;
     font-size: 1rem;
     line-height: 1.375rem;
   }
