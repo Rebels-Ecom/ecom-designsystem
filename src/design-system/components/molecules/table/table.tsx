@@ -89,7 +89,7 @@ const Table = ({
   return loading ? <Loader visible size='md' /> : (
     <div className={styles.table} style={style}>
       <div className={styles.top}>
-        {title && <Heading order={5} children={title} />}
+        {title && <Heading className={styles.heading} order={5} children={title} />}
         {action && <Button {...action} />}
       </div>
       <div className={styles.mobile}>

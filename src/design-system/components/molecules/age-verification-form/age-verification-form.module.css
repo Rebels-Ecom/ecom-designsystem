@@ -1,4 +1,10 @@
 .ageVerificationForm {
+  padding: 0 1rem;
+
+  @media (min-width: 48em) {
+    padding: 0;
+  }
+
   & .description {
     max-width: 40rem;
   }
