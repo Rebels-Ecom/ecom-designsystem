@@ -15,6 +15,7 @@
     color: var(--color-text-default);
 
     & .filterName {
+      font-size: 0.875rem;
       font-weight: bold;
     }
 
@@ -64,7 +65,8 @@
     }
 
     & .label {
-      font-size: 1rem;
+      color: var(--color-text-default);
+      font-size: 0.875rem;
     }
   }
   
@@ -87,7 +89,8 @@
     
     & .label {
       vertical-align: top;
-      font-size: 1rem;
+      color: var(--color-text-default);
+      font-size: 0.875rem;
     }
   }
 }
