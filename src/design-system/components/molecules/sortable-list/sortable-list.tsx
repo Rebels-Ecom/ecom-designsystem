@@ -26,8 +26,10 @@ const SortingOption = ({ name, onClickUp, onClickDown, className }: ISortingOpti
   return (
     <div className={cx(styles.sortingOption, className ? className : '')}>
       <div className={styles.optionName}>{name}</div>
-      <IconButton type="button" icon="icon-chevron-up" onClick={() => onClickUp()} noPadding isTransparent noBorder />
-      <IconButton type="button" icon="icon-chevron-down" onClick={() => onClickDown()} noPadding isTransparent noBorder />
+      <div className={styles.arrowButtonsWrapper}>
+        <IconButton type="button" icon="icon-chevron-up" size="x-small" onClick={() => onClickUp()} noPadding isTransparent noBorder />
+        <IconButton type="button" icon="icon-chevron-down" size="x-small" onClick={() => onClickDown()} noPadding isTransparent noBorder />
+      </div>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { LinkComponent } from '../ui-link/ui-link'
 import { Icon, TIcon } from '../icon/icon'
 
-export type TIconButtonSize = 'small' | 'medium' | 'large'
+export type TIconButtonSize = 'x-small' | 'small' | 'medium' | 'large'
 
 type TWithLink = {
   type: 'link'

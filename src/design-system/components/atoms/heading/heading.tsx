@@ -8,6 +8,7 @@ export type TOrder = 1 | 2 | 3 | 4 | 5
 export interface IHeading {
   children: string
   order: TOrder
+  onClick?: () => void
   align?: THeadingAlignment
   noMargin?: boolean
   className?: string
@@ -16,9 +17,9 @@ export interface IHeading {
    * Takes either a single number, e.g. 1 or an array of numbers, e.g. [1, 0] or [1, 0, 0, 1] (top, right, bottom, left)
    * TODO: maybe remove this property after a proper design has been applied for our headings?
    * @default '0'
-  */
-  margin?: Array<number> | number;
-  color?: 'error'; // TODO: add more options if needed
+   */
+  margin?: Array<number> | number
+  color?: 'error' // TODO: add more options if needed
 }
 
 function getHeadingSize(size: TOrder) {
@@ -49,38 +50,61 @@ function getHeadingAlignment(alignment: THeadingAlignment) {
   }
 }
 
-function Heading({ children, order = 3, align = 'left', noMargin, className = '', margin, color }: IHeading) {
+function Heading({ children, order = 3, onClick, align = 'left', noMargin, className = '', margin, color }: IHeading) {
   const marginValue = useMemo(() => {
     if (!margin && margin !== 0) {
-      return "";
+      return ''
     }
 
-    if (typeof margin === "number") {
-      return `${margin}rem`;
+    if (typeof margin === 'number') {
+      return `${margin}rem`
     }
 
-    return margin.map(p => `${p}rem`).join(' ');
+    return margin.map((p) => `${p}rem`).join(' ')
+  }, [margin])
 
-  }, [margin]);
-
-  const Tag  = getHeadingSize(order);
+  const Tag = getHeadingSize(order)
 
   return (
-    <Tag
-      className={cx(
-        styles.heading,
-        styles[getHeadingAlignment(align)],
-        getHeadingSize(order),
-        {
-          [styles.noMargin]: noMargin,
-          [styles[color ?? '']]: color
-        },
-        className
+    <>
+      {onClick ? (
+        <button className={styles.headingButtonWrapper}>
+          <Tag
+            className={cx(
+              styles.heading,
+              styles[getHeadingAlignment(align)],
+              getHeadingSize(order),
+              {
+                [styles.noMargin]: noMargin,
+                [styles[color ?? '']]: color,
+              },
+              className
+            )}
+            style={{ margin: marginValue }}
+            onClick={onClick}
+          >
+            {children}
+          </Tag>
+        </button>
+      ) : (
+        <Tag
+          className={cx(
+            styles.heading,
+            styles[getHeadingAlignment(align)],
+            getHeadingSize(order),
+            {
+              [styles.noMargin]: noMargin,
+              [styles[color ?? '']]: color,
+            },
+            className
+          )}
+          style={{ margin: marginValue }}
+          onClick={onClick}
+        >
+          {children}
+        </Tag>
       )}
-      style={{ margin: marginValue }}
-    >
-      {children}
-    </Tag>
+    </>
   )
 }
 

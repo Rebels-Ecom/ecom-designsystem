@@ -6,6 +6,7 @@ export type TTextAlignment = 'left' | 'center' | 'right'
 export type TTextWeight = 'normal' | 'bold'
 export type TTextSize = 'regular' | 'small'
 export type TComponentType = 'a' | 'span'
+export type TPadding = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 export interface IText {
   children: React.ReactNode
@@ -17,8 +18,10 @@ export interface IText {
   weight?: TTextWeight
   size?: TTextSize
   className?: string
-  upperCase?: boolean;
-  color?: 'error'; // TODO: add more options if needed
+  upperCase?: boolean
+  color?: 'error' // TODO: add more options if needed
+  paddingLeft?: TPadding
+  paddingRight?: TPadding
 }
 
 function Text({
@@ -32,7 +35,9 @@ function Text({
   size = 'regular',
   className = '',
   upperCase,
-  color
+  color,
+  paddingLeft,
+  paddingRight,
 }: IText) {
   function getTextAlignment(alignment: TTextAlignment) {
     switch (alignment) {
@@ -59,7 +64,7 @@ function Text({
             [styles.textBold]: weight === 'bold',
             [styles.textUnderlined]: underline,
             [styles.textWithBottomBorder]: borderBottom,
-            [styles[color ?? '']]: color
+            [styles[color ?? '']]: color,
           },
           className
         )}
@@ -73,6 +78,8 @@ function Text({
         styles.text,
         'p',
         styles[getTextAlignment(align)],
+        paddingLeft ? styles[`padding-left-${paddingLeft}`] : '',
+        paddingRight ? styles[`padding-right-${paddingRight}`] : '',
         size === 'small' ? 'bodyS' : 'body',
         className,
         {
@@ -80,7 +87,7 @@ function Text({
           [styles.textUnderlined]: underline,
           [styles.textWithBottomBorder]: borderBottom,
           [styles.upperCase]: upperCase,
-          [styles[color ?? '']]: color
+          [styles[color ?? '']]: color,
         }
       )}
     >
