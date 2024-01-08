@@ -251,11 +251,10 @@ const DynamicFilter = ({
         })}
         {!!selectedFilters.length && (
           <button
-          className={cx(styles.selectedFilter, styles.clear)}
+            className={cx(styles.selectedFilter, styles.clear)}
             onClick={handleRemoveAllFilters}
           >
-            <span>Rensa</span>
-            <Icon icon='icon-x' /></button>
+            <Icon icon='icon-trash-2' /></button>
         )}
       </div>
     )
