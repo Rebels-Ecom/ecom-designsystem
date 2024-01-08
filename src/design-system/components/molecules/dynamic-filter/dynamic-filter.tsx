@@ -20,6 +20,7 @@ type TRadio = {
 export type TOptionType = {
   name: string;
   value: string;
+  count?: string | number;
 }
 
 export type TSelected = {
@@ -199,6 +200,7 @@ const DynamicFilter = ({
               disabled={loading}
             />
             <span className={styles.label}>{option.name}</span>
+            {option.count && <span className={cx(styles.label, styles.count)}>{option.count}</span>}
           </button>
         )
       case 'checkbox':
@@ -218,6 +220,7 @@ const DynamicFilter = ({
               disabled={loading}
             />
             <span className={styles.label}>{option.name}</span>
+            {option.count && <span className={cx(styles.label, styles.count)}>{option.count}</span>}
           </button>
         )
     }
@@ -233,9 +236,8 @@ const DynamicFilter = ({
               name = selectedFilter.name;
             }
             return (
-              <AnimatePresence exitBeforeEnter presenceAffectsLayout initial={false}>
+              <AnimatePresence key={`${selectedOption.value}-${i}`} exitBeforeEnter presenceAffectsLayout initial={false}>
                 <motion.button
-                  key={`${selectedOption.value}-${i}`}
                   className={cx(styles.selectedFilter, styles.active)}
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
