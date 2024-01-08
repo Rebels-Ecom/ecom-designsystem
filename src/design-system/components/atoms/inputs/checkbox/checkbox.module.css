@@ -1,13 +1,13 @@
 .checkbox {
   position: relative;
   appearance: none;
-  border-width: 0.125rem;
+  border-width: 0.0625rem;
   border-style: solid;
   background: var(--surface-default);
   border-color: var(--border-default);
   color: var(--color-text-default);
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border-radius: 0.25rem;
   margin: 0;
   cursor: pointer;
@@ -15,12 +15,12 @@
   &:after {
     position: absolute;
     content: '';
-    left: calc(100% - 0.875rem);
-    top: 0.125rem;
+    left: 5px;
+    top: 1px;
     width: 0.5rem;
     height: 0.875rem;
     border: solid var(--color-text-white);
-    border-width: 0 0.1875rem 0.1875rem 0;
+    border-width: 0 0.125rem 0.125rem 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
@@ -38,13 +38,14 @@
   }
 
   &:focus {
-    outline: 0.125rem solid var(--focused);
+    outline: 0.0625rem solid var(--focused);
     outline-offset: 0.125rem;
   }
 
   &.error {
     background: var(--surface-critical-subdued);
     border-color: var(--border-critical);
+    
     &:checked {
       background: var(--surface-critical);
     }
@@ -55,6 +56,7 @@
     background: var(--surface-subdued);
     color: var(--color-text-subdued);
     cursor: not-allowed;
+    
     &:checked {
       border-color: var(--interactive-disabled);
       background: var(--interactive-disabled);

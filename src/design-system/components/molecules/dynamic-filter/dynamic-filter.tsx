@@ -187,7 +187,7 @@ const DynamicFilter = ({
         return (
           <button
             key={`${option.name}-${i}`}
-            className={styles.checkboxItem}
+            className={styles.radioItem}
             onClick={() => handleUpdateFilter(option, filter.name, true)}
             disabled={loading}
           >

@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import cx from 'classnames'
-import { getisErroneousStyle } from '../../../../../helpers/form-helper'
 import { TOther } from '../../../../../types/other'
 import styles from './radio-button.module.css'
 
@@ -29,16 +28,20 @@ const RadioButton = forwardRef<HTMLInputElement, IRadioButton>(
     return (
       <input
         ref={ref}
-        type={'radio'}
-        className={cx('body', styles.radioButton, getisErroneousStyle(styles, isErroneous), className)}
+        type='radio'
         id={id}
         name={name}
         value={value}
         defaultValue={defaultValue}
-        onChange={handleOnChange}
         checked={checked}
+        onChange={handleOnChange}
         disabled={disabled}
         required={required}
+        className={cx(
+          styles.radioButton,
+          {[styles.error]: isErroneous },
+          className
+        )}
         {...other}
       />
     )
