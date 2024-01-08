@@ -56,6 +56,7 @@ export type TIcon =
   | 'icon-eye'
   | 'icon-save'
   | 'icon-alert-triangle'
+  | 'icon-trash-2'
 
 export interface IIcon {
   icon: TIcon

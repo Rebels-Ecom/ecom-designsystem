@@ -6,6 +6,8 @@
   font-family: var(--font-family-secondaryBold);
   border: solid 0.063rem transparent;
   border-radius: 0.25rem;
+  color: var(--color-text-default);
+  
   &:hover {
     cursor: pointer;
   }

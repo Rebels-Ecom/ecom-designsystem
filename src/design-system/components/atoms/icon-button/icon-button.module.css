@@ -6,6 +6,7 @@
     border: none;
     padding: 0.5rem;
     cursor: pointer;
+    color: var(--color-text-default);
 
     @media (min-width: 64em) {
         background-color: var(--cta-x-default);
