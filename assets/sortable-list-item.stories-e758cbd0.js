@@ -1,0 +1,13 @@
+import{j as e,a,F as g}from"./jsx-runtime-a3a6c0b8.js";import{I as L}from"./icon-button-4919769e.js";import{T as r}from"./text-59fe9fb2.js";import{G as _}from"./group-wrapper-8f1ce8c7.js";import{H as S}from"./heading-808ea78c.js";const b="_listItem_6zxm7_1",f="_itemWrapper_6zxm7_6",l={listItem:b,itemWrapper:f};function s({children:t,onClick:i}){return t?e("div",{className:l.listItem,children:a("div",{className:l.itemWrapper,children:[t,i&&e(L,{type:"button",onClick:i,icon:"icon-chevrons-right",noPadding:!0,isTransparent:!0,noBorder:!0})]})}):null}try{s.displayName="SortableListItem",s.__docgenInfo={description:"",displayName:"SortableListItem",props:{id:{defaultValue:null,description:"",name:"id",required:!0,type:{name:"string"}},name:{defaultValue:null,description:"",name:"name",required:!0,type:{name:"string"}},onClick:{defaultValue:null,description:"",name:"onClick",required:!1,type:{name:"(() => void)"}}}}}catch{}const y={title:"Design System/Molecules/SortableListItem",component:s},I={render:({...t})=>e("div",{style:{margin:"3rem auto",maxWidth:"1800px"},children:e(s,{...t,onClick:()=>console.log("Open the modal")})})},v=a(g,{children:[a(_,{direction:"column",children:[e(S,{order:5,noMargin:!0,children:"E-HANDELSFRÅGOR"}),e(r,{children:"Hej, vi testar för att se var den här infon syns"})]}),e(r,{children:"23/09/04"}),e(r,{children:"23/09/05"})]}),x=a(g,{children:[a(_,{direction:"column",spacing:"xs",children:[e(S,{order:5,noMargin:!0,children:"FRÅGA OM LEVERANS"}),e(r,{children:"Test test"})]}),e(r,{children:"23/09/04"}),e(r,{children:"23/09/05"})]}),n={...I,args:{children:v,onClick:()=>console.log("Open the modal")}},o={...I,args:{children:x,onClick:()=>console.log("Open the modal")}};var c,m,d;n.parameters={...n.parameters,docs:{...(c=n.parameters)==null?void 0:c.docs,source:{originalSource:`{
+  ...SortableListItemStoryTemplate,
+  args: {
+    children: itemEHandel,
+    onClick: () => console.log('Open the modal')
+  }
+}`,...(d=(m=n.parameters)==null?void 0:m.docs)==null?void 0:d.source}}};var p,u,h;o.parameters={...o.parameters,docs:{...(p=o.parameters)==null?void 0:p.docs,source:{originalSource:`{
+  ...SortableListItemStoryTemplate,
+  args: {
+    children: itemLeverans,
+    onClick: () => console.log('Open the modal')
+  }
+}`,...(h=(u=o.parameters)==null?void 0:u.docs)==null?void 0:h.source}}};const O=["SortableListItem_EHandel","SortableListItem_Leverans"],C=Object.freeze(Object.defineProperty({__proto__:null,SortableListItem_EHandel:n,SortableListItem_Leverans:o,__namedExportsOrder:O,default:y},Symbol.toStringTag,{value:"Module"}));export{n as S,o as a,s as b,C as s};
