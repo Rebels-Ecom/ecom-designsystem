@@ -167,18 +167,9 @@
     &.teaserLeft {
         @media (min-width: 64em) {
             flex-direction: row;
-
-            & .contentWrapper {
-                text-align: right;
-                align-items: flex-end;
-            }
             
             & .imageRound {
                 margin-right: auto;
-            }
-            
-            & .linkButton {
-                margin-left: auto;
             }
         }
           

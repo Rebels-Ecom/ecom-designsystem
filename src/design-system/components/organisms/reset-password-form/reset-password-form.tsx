@@ -1,9 +1,6 @@
-import { useMemo } from 'react'
 import { Form } from '../../molecules'
 import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
-import { IButton } from '../../atoms/button/button'
-import { validateField } from '../../molecules/form/helpers'
-import { IFormTemplateProps, TFormFieldType } from '../../molecules/form/types'
+import { IFormTemplateProps } from '../../molecules/form/types'
 import styles from './reset-password-form.module.css'
 
 export interface IResetPasswordForm extends IFormTemplateProps {

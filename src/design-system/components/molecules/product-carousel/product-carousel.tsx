@@ -23,8 +23,8 @@ const ProductCarousel = ({ productCards, addToCart }: IProductCarousel) => {
         >
         {productCards.map((productCard: TProductCard, index: number) => {
           return (
-            <CarouselItem>
-              <ProductCard key={index} {...productCard} addToCart={addToCart} />
+            <CarouselItem key={index}>
+              <ProductCard {...productCard} addToCart={addToCart} />
             </CarouselItem>
           )
         })}
