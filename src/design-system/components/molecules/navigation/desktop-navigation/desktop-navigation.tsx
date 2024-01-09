@@ -5,12 +5,14 @@ import { Icon, IconButton } from "../../../atoms";
 import styles from './desktop-navigation.module.css'
 import cx from 'classnames'
 import { ContentWrapper } from "../../../layouts";
+import { useOnClickOutside } from "../../../../hooks";
 
 const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) => {
   const [activeTopLevel, setActiveTopLevel] = useState<TNavCategory | TNavLink>();
   const [hoveredTopLevel, setHoveredTopLevel] = useState<TNavCategory | TNavLink>();
   const [activeSecondLevel, setActiveSecondLevel] = useState<TNavCategory | TNavLink | undefined>();
   const [thirdLevelHeight, setThirdLevelHeight] = useState<'auto' | number>('auto');
+  const navRef = useRef<HTMLDivElement>(null);
   const secondLevelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,8 +47,10 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
     setActiveTabs();
   }, []);
 
+  useOnClickOutside({ ref: navRef, onClose: () => setActiveTopLevel(undefined) })
+
   return (
-    <nav className={styles.desktopNavigation}>
+    <nav className={styles.desktopNavigation} ref={navRef}>
       <ContentWrapper padding={0}>
         <motion.div
           className={styles.topLevel}
