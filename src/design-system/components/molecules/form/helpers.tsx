@@ -29,7 +29,7 @@ export const validateField = (field: TFormInputType) => {
 }
 
 export const isEmail = (val?: string) => {
-  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/;
 
   return val && emailRegex.test(val);
 }
