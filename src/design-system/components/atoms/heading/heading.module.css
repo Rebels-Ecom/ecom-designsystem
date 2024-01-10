@@ -2,9 +2,18 @@
     display: flex;
 
     &.noMargin { margin: 0; }
-    &.leftAlignment { justify-content: flex-start;}
-    &.rightAlignment { justify-content: flex-end;}
-    &.centerAlignment { justify-content: center; text-align: center;}
+    &.leftAlignment {
+        justify-content: flex-start;
+        text-align: left;
+    }
+    &.rightAlignment {
+        justify-content: flex-end;
+        text-align: right;
+    }
+    &.centerAlignment {
+        justify-content: center;
+        text-align: center;
+    }
     &.error {
         color: var(--error-red);
     }
