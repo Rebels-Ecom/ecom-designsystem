@@ -17,20 +17,7 @@ type Story = StoryObj<typeof AgeVerificationForm>;
 const AgeVerificationFormStoryTemplate: Story = {
   render: (args) => {
     const [open, setOpen] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [verified, setVerified] = useState(false);
-    const handleSubmit = () => {
-      console.log('SUBMITTED FROM PARENT')
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setVerified(true);
-      }, 3000)
-    }
-    const handleClose = () => {
-      setOpen(false);
-      setVerified(false);
-    }
+    const [showError, setShowError] = useState(false);
     return (
       <>
         <Button surface='primary' type='button' onClick={() => setOpen(!open)}>{open ? 'Close' : 'Open'}</Button>
@@ -46,18 +33,23 @@ const AgeVerificationFormStoryTemplate: Story = {
               ]}
             />
             <AgeVerificationForm
-              label='Ange ålder'
-              open={open}
+              actions={[
+                {
+                  children: 'Jag är under 20 år',
+                  surface: 'primary',
+                  type: 'button',
+                  onClick: () => setShowError(true),
+                },
+                {
+                  children: 'Jag har fyllt 20 år',
+                  surface: 'primary',
+                  type: 'button',
+                  onClick: () => setShowError(false),
+                },
+              ]}
               title='Title'
               description='description'
-              onSubmit={handleSubmit}
-              loading={loading}
-              responseMessage={verified ? {
-                title: 'Welcome',
-                message: 'You are old enought to enter this website',
-                onClose: handleClose,
-                closeLabel: 'OK'
-              } : undefined}
+              errorMessage={showError ? 'Error message' : undefined}
             />
             </FlexContainer>
         </Modal>

@@ -8,4 +8,12 @@
   & .description {
     max-width: 40rem;
   }
+
+  & .errorContainer {
+    height: 2.5rem;
+  }
+
+  & .errorMessage {
+    max-width: 40rem;
+  }
 }
