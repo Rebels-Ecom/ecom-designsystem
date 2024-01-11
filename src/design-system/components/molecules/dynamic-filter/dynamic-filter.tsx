@@ -70,6 +70,8 @@ const getMinAndMaxValues = (options: TOptionType[]) => {
   }
 }
 
+
+// TODO: improve range select data model to avoid custom change handlers
 const DynamicFilter = ({
   filters,
   title,
@@ -95,7 +97,7 @@ const DynamicFilter = ({
     })
   }
   const handleChangeRange = (name: string, id: string, range: { min: number, max: number }) => {
-    handleUpdateFilter({ name: id, value: `${id}_${range.min}-${range.max}` }, name, true)
+    handleUpdateFilter({ name: id, value: `${id}_${range.min}-${range.max}` }, id, true)
   }
   const handleUpdateFilter = (optionToUpdate: TOptionType, name: string, singleSelect?: boolean) => {
     setSelectedFilters(prevSelectedFilters => {
@@ -150,7 +152,7 @@ const DynamicFilter = ({
     })
   }
 
-  const handleRemoveFilter = (optionToRemove: TOptionType) => {
+  const handleRemoveFilter = (optionToRemove: TOptionType, range?: boolean) => {
     setSelectedFilters(prevFilters => {
       const list = prevFilters;
       const updatedOptionsInFilters = list?.map(x => {
@@ -162,7 +164,11 @@ const DynamicFilter = ({
 
       const updatedFilters = updatedOptionsInFilters.filter(x => !!x.selectedOptions.length);
 
-      onUpdate?.(optionToRemove, updatedFilters);
+      if (range) {
+        onUpdate?.({ name: optionToRemove.value, value: optionToRemove.name }, updatedFilters);
+      } else {
+        onUpdate?.(optionToRemove, updatedFilters);
+      }
       return updatedFilters
     })
   }
@@ -232,8 +238,9 @@ const DynamicFilter = ({
         {selectedFilters?.map(selectedFilter => {
           return selectedFilter.selectedOptions?.map((selectedOption, i) => {
             let name = selectedOption.name;
-            if (filters?.find(x => (x.type === 'range') && (x.options?.find(y => y.value === selectedOption.name)))) {
-              name = selectedFilter.name;
+            const rangeSelect = filters?.find(x => (x.type === 'range') && (x.options?.find(y => y.value === selectedOption.name)));
+            if (rangeSelect) {
+              name = rangeSelect.name;
             }
             return (
               <AnimatePresence key={`${selectedOption.value}-${i}`} exitBeforeEnter presenceAffectsLayout initial={false}>
@@ -242,7 +249,7 @@ const DynamicFilter = ({
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.25, opacity: 0 }}
-                  onClick={() => handleRemoveFilter(selectedOption)}
+                  onClick={() => handleRemoveFilter(selectedOption, !!rangeSelect)}
                   >
                   <span>{name}</span>
                   <Icon icon='icon-x' />
@@ -310,7 +317,7 @@ const DynamicFilter = ({
           {filters?.map((filter, i) => {
             // TODO: extract helpers
             const isSelected = openFilters.includes(filter.name);
-            const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.name) : undefined;
+            const preSelectedSlider = filter.type === 'range' ? preSelected?.find(x => x.name === filter.id) : undefined;
             const preSelectedSliderOptions = preSelectedSlider?.selectedOptions?.[0]?.value?.split('-');
             const defMin = preSelectedSliderOptions?.[0] ? Number(preSelectedSliderOptions?.[0]) : undefined;
             const defMax = preSelectedSliderOptions?.[1] ? Number(preSelectedSliderOptions?.[1]) : undefined;
