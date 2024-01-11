@@ -1,5 +1,6 @@
 import { IButton } from "../../atoms/button/button";
 import { TIcon } from "../../atoms/icon/icon";
+import { ILinkButton } from "../../atoms/link-button/link-button";
 import { IInputField } from "./components/input-field";
 
 export type TFormSelectItem = {
@@ -122,6 +123,8 @@ export type IFormTemplateProps = {
   /** all fields to be rendered inside the form */
   fields: TFormFieldType[];
   actions?: IButton[];
+  /** Link buttons that will be rendered together with normal buttons/actions */
+  linkActions?: ILinkButton[];
   links?: TFormLink[];
   alignActions?: 'flex-start' | 'center' | 'flex-end';
   alignSubmitButtonHorizontally?: boolean

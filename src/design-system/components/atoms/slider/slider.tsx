@@ -56,6 +56,7 @@ const Slider = ({ onChange, formatLabel, min, max, defaultMinVal, defaultMaxVal,
       {withFields && (
         <div className={styles.fieldsContainer}>
           <InputField
+            className={styles.sliderInputField}
             label={minLabel}
             name='min'
             type='number'
@@ -67,6 +68,7 @@ const Slider = ({ onChange, formatLabel, min, max, defaultMinVal, defaultMaxVal,
             disabled={disabled}
           />
           <InputField
+            className={styles.sliderInputField}
             label={maxLabel}
             name='max'
             type='number'
@@ -100,7 +102,7 @@ const Slider = ({ onChange, formatLabel, min, max, defaultMinVal, defaultMaxVal,
             slider: styles.slider,
             sliderContainer: styles.sliderContainer,
             track: styles.track,
-            valueLabel: styles.valueLabel,
+            valueLabel: cx(styles.valueLabel, {[styles.hide]: withFields }),
           }
         }
       />

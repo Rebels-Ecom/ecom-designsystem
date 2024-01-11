@@ -3,6 +3,12 @@
   padding: 1rem 0;
   margin: 0.5rem 0;
   min-width: 12rem;
+
+  & .sliderInputField {
+    & input[type=number] {
+      width: 5rem;
+    }
+  }
   
   & .inputRange {
     height: 1rem;
@@ -43,6 +49,10 @@
     font-size: 0.8rem;
     transform: translateZ(0);
     white-space: nowrap;
+
+    &.hide {
+      display: none;
+    }
   }
   & .slider {
     appearance: none;

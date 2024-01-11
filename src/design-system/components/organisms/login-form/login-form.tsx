@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
 import { IFormTemplateProps, TFormFieldType } from '../../molecules/form/types'
+import { ILinkButton } from '../../atoms/link-button/link-button'
 
 type ILink = {
   name: string;
@@ -18,6 +19,8 @@ export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> 
   username?: string;
   passwordLabel: string;
   password?: string;
+  actions: IButton[];
+  linkActions?: ILinkButton[];
   forgotPassword: {
     name: string;
     href: string;
@@ -49,8 +52,6 @@ const LoginForm = ({
   password,
   forgotPassword,
   onSubmit,
-  primarySubmitLabel,
-  secondarySubmitLabel,
   offerLink,
   errorMessage,
   usernameError,
@@ -61,29 +62,9 @@ const LoginForm = ({
   logo,
   responseMessage,
   captcha,
-  submitDisabled
+  actions,
+  linkActions
 }: ILoginForm) => {
-  const actions: IButton[] = useMemo(() => {
-    const x: IButton[] = [{
-      children: primarySubmitLabel,
-      surface: 'primary',
-      type: 'submit',
-      size: 'small',
-      disabled: submitDisabled
-    }];
-
-    if (secondarySubmitLabel) {
-      x.push({
-        children: secondarySubmitLabel,
-        surface: 'secondary',
-        type: 'button',
-        size: 'small'
-      })
-    }
-
-    return x;
-  }, [primarySubmitLabel, secondarySubmitLabel, submitDisabled])
-
   const links: ILink[] = useMemo(() => {
     const x: ILink[] = [];
     
@@ -133,6 +114,7 @@ const LoginForm = ({
         loading={!!loading}
         onControlledSubmit={onSubmit}
         actions={actions}
+        linkActions={linkActions}
         generalErrorMessage={errorMessage}
         links={links}
         responseMessage={responseMessage}
