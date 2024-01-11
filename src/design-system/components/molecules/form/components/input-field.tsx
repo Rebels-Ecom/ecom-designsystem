@@ -72,7 +72,7 @@ const InputField = ({
   )
 
   return (
-    <div className={styles.inputField}>
+    <div className={cx(styles.inputField, props.className)}>
       {props.label && <label className={styles.label}>{props.label}</label>}
       <input
         data-isinvalid={props.dirty && !props.valid}

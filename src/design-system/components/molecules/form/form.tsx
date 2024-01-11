@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Button, ExpandableWrapper, Heading, Icon, Text } from '../../atoms';
+import { Button, ExpandableWrapper, Heading, Icon, LinkButton, Text } from '../../atoms';
 import styles from './form.module.css';
 import { FlexContainer } from '../../layouts';
 import { IFormTemplateProps, TFormFieldType, TFormInputType } from './types';
@@ -128,14 +128,20 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
           {props.captcha}
         </FlexContainer>
       )}
-      {props.actions && (
+      {(props.actions || props.linkActions) && (
         <FlexContainer justifyContent={props.alignActions ?? 'center'} className={styles.actionsWrapper}>
-          {props.actions.map((action, i) => (
+          {props.actions?.map((action, i) => (
             <Button
               key={`${action.type}-${i}`}
               {...action}
               disabled={action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading)}
               loading={action.type === 'submit' && loading}
+            />
+          ))}
+          {props.linkActions?.map((action, i) => (
+            <LinkButton
+              key={`${action.id ?? '0'}-${i}`}
+              {...action}
             />
           ))}
         </FlexContainer>

@@ -3,8 +3,8 @@
   justify-content: center;
   align-items: center;
   font-family: var(--font-family-secondaryBold);
-  border: solid 0.125rem transparent;
-  border-radius: 0.125rem;
+  border: solid 0.0625rem transparent;
+  border-radius: 0.25rem;
   text-decoration: none;
   &:hover {
     cursor: pointer;
