@@ -27,8 +27,8 @@ const AgeVerificationForm = ({
     >
       <Heading order={3} noMargin align='center'>{title}</Heading>
       <Text className={styles.description} align='center'>{description}</Text>
-      <FlexContainer flexDirection='column' alignItems='center'>
-        <FlexContainer>
+      <FlexContainer flexDirection='column' alignItems='center' stretch>
+        <FlexContainer className={styles.actionsWrapper} stretch alignItems='center' justifyContent='center'>
           {actions.map((action, i) => <Button key={i} {...action} />)}
         </FlexContainer>
         <div className={styles.errorContainer}>
