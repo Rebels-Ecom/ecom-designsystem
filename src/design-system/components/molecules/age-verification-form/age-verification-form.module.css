@@ -1,8 +1,17 @@
 .ageVerificationForm {
   padding: 0 1rem;
+  width: 100%;
+
+  & .actionsWrapper {
+    flex-direction: column;
+  }
 
   @media (min-width: 48em) {
     padding: 0;
+
+    & .actionsWrapper {
+      flex-direction: row;
+    }
   }
 
   & .description {
