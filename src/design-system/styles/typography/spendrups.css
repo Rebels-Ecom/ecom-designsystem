@@ -19,12 +19,12 @@ html {
   --heading-xl-mobile-font-size: 2.5rem;
   --heading-xl-mobile-line-height: 3.25rem;
   --heading-xl-desktop-font-size: 3.625rem;
-  --heading-xl-desktop-line-height: 4.188rem;
+  --heading-xl-desktop-line-height: 4.25rem;
 
   /* Heading L - ?/? mobile - 41/51 desktop */
   --heading-l-mobile-font-size: 2.25rem;
   --heading-l-mobie-line-height: 2.875rem;
-  --heading-l-desktop-font-size: 2.563rem;
+  --heading-l-desktop-font-size: 2.625rem;
   --heading-l-desktop-line-height: 3.188rem;
 
   /* Heading M - ?/? mobile - 36/46 desktop */

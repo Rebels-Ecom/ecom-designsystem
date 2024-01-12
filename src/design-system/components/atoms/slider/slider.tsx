@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputRange, { Range } from 'react-input-range'
 import 'react-input-range/lib/css/index.css';
 import styles from './slider.module.css';
 import cx from 'classnames';
 import { InputField } from '../../molecules/form/components/input-field';
+import { useDebounce } from '../../../../helpers/generic-helper';
 
 type TSlider = {
   min: number;
@@ -25,13 +26,44 @@ type TSlider = {
   allowSameValues?: boolean;
   step?: number;
   disabled?: boolean;
+  disableDebounce?: boolean;
 }
 
-const Slider = ({ onChange, formatLabel, min, max, defaultMinVal, defaultMaxVal, withFields, minLabel, maxLabel, allowSameValues, step, disabled }: TSlider) => {
-  const [value, setValue] = useState<number | Range>({ min: defaultMinVal ?? min, max: defaultMaxVal ?? max })
+const Slider = ({
+  onChange,
+  formatLabel,
+  min,
+  max,
+  defaultMinVal,
+  defaultMaxVal,
+  withFields,
+  minLabel,
+  maxLabel,
+  allowSameValues,
+  step,
+  disabled,
+  disableDebounce
+}: TSlider) => {
+  const [value, setValue] = useState<number | Range>({ min: defaultMinVal ?? min, max: defaultMaxVal ?? max });
+  const [sliderIsChanging, setSliderIsChanging] = useState(true);
+
   if (typeof value !== 'object'){
     return null;
   }
+
+  const debouncedRequest = useDebounce(() => {
+    if (value) {
+      onChange?.(value);
+    }
+  }, 1000);
+
+  useEffect(() => {
+    // Only wanna use debounce for input changes
+    if (!sliderIsChanging && !disableDebounce) {
+      debouncedRequest();
+    }
+  }, [value])
+
 
   // TODO: step must affect this function too. Otherwise sliding will reset value by this function.
   const handleInputChange = (val: string, name: string) => {
@@ -39,11 +71,23 @@ const Slider = ({ onChange, formatLabel, min, max, defaultMinVal, defaultMaxVal,
       min: name === 'min' ? Number(val) : value.min,
       max: name === 'max' ? Number(val) : value.max,
     };
+
+    if (sliderIsChanging) {
+      setSliderIsChanging(false);
+    }
+
     setValue(newRange);
-    onChange?.(newRange);
+    
+    if (disableDebounce) {
+      onChange?.(newRange);
+    }
   }
   
   const handleChange = (value: number | Range) => {
+    if (!sliderIsChanging) {
+      setSliderIsChanging(true);
+    }
+
     setValue(value)
   }
   
