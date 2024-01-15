@@ -51,9 +51,37 @@ const Slider = ({
     return null;
   }
 
+  // TODO: improve this logic. It is currently very customized for our dynamic filter and range select types
   const debouncedRequest = useDebounce(() => {
     if (value) {
-      onChange?.(value);
+      setSliderIsChanging(true);
+      if ((value.min < value.max && value.min >= min) && (value.max > value.min && value.max <= max)) {
+        onChange?.(value);
+      } else {
+        if (value.min < min && value.max > max) {
+          onChange?.({ min, max });
+          setValue({ min, max });
+        } else if (value.min >= min && value.max > max) {
+          onChange?.({ min: value.min, max });
+          setValue({ min: value.min, max });
+        } else if (value.min < min && value.max <= max) {
+          onChange?.({ min, max: value.max });
+          setValue({ min, max: value.max });
+        } else {
+          if (value.max < value.min) {
+            if (value.min > max) {
+              onChange?.({ min: max, max });
+              setValue({ min: max, max });
+            } else {
+              onChange?.({ min: value.max, max: value.max });
+              setValue({ min: value.max, max: value.max });
+            }
+          } else {
+            onChange?.(value);
+            setValue(value);
+          }
+        }
+      }
     }
   }, 1000);
 
@@ -88,7 +116,9 @@ const Slider = ({
       setSliderIsChanging(true);
     }
 
-    setValue(value)
+    if (typeof value === 'object' && value.min >= min && value.max <= max) {
+      setValue(value)
+    }
   }
   
   const handleChangeComplete = (value: number | Range) => {
