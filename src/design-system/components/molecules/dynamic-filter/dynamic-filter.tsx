@@ -322,6 +322,7 @@ const DynamicFilter = ({
             const preSelectedSliderOptions = preSelectedSlider?.selectedOptions?.[0]?.value?.split('-');
             const defMin = preSelectedSliderOptions?.[0] ? Number(preSelectedSliderOptions?.[0]) : undefined;
             const defMax = preSelectedSliderOptions?.[1] ? Number(preSelectedSliderOptions?.[1]) : undefined;
+            const minVal = (getMinAndMaxValues(filter.options)?.min ?? 0) >= 10 ? (getMinAndMaxValues(filter.options)?.min ?? 0) : 0;
 
             return (
               <div className={styles.filterCategory} key={`${filter.name}-${i}`}>
@@ -336,9 +337,9 @@ const DynamicFilter = ({
                 <ExpandableWrapper open={isSelected} className={styles.expandableWrapper}>
                   {filter.type === 'range' ? (
                     <Slider
-                      min={getMinAndMaxValues(filter.options)?.min ?? 0}
+                      min={minVal}
                       max={getMinAndMaxValues(filter.options)?.max ?? 10}
-                      defaultMinVal={defMin}
+                      defaultMinVal={!!defMin ? (defMin >= 10 ? defMin : 0) : undefined}
                       defaultMaxVal={defMax}
                       withFields={!hideSliderFields}
                       formatLabel='kr'

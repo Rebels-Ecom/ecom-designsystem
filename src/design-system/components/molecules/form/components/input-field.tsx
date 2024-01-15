@@ -48,13 +48,7 @@ const InputField = ({
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.persist()
-      if (props.type === 'number' && (props.min || props.max)) {
-        if (Number(e.target.value) >= (props.min ?? 0) && Number(e.target.value) <= (props.max ?? 10000)) {
-          onChange?.(e.target.value, props.name)
-        }
-      } else {
-        onChange?.(e.target.value, props.name)
-      }
+      onChange?.(e.target.value, props.name)
       
       onControlledChange?.(e)
     },
