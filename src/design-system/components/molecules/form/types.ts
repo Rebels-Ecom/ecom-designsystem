@@ -132,4 +132,6 @@ export type IFormTemplateProps = {
   /** If true, a message will be displayed after submit response */
   responseMessage?: TFormResponseMessage;
   captcha?: JSX.Element;
+  /** Used for login form only, in order to avoid disabling submit button per default */
+  isLogin?: boolean;
 };
