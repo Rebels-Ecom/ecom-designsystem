@@ -18,4 +18,12 @@
     & .accountNumber {
       margin: 0;
     }
+    
+    & .addressTitle {
+      margin-bottom: 0;
+    }
+
+    & .address {
+      margin-top: 0;
+    }
 }

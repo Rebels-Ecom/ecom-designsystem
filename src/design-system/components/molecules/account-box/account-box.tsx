@@ -1,12 +1,13 @@
-import React from 'react'
 import styles from './account-box.module.css'
 import { Button } from '../../atoms'
 import { IButton } from '../../atoms/button/button'
+import cx from 'classnames';
 
 export interface IAccountBox {
   companyName: string
   accountNumber: string
   contactPerson?: string
+  addressTitle?: string;
   address?: string
   zipcode?: string
   city?: string
@@ -18,6 +19,7 @@ function AccountBox({
   companyName,
   accountNumber,
   contactPerson,
+  addressTitle,
   address,
   zipcode,
   city,
@@ -37,8 +39,9 @@ function AccountBox({
           {accountNumber}
         </p>
         {contactPerson && <p>{contactPerson}</p>}
-        <p>
-          {address}, {zipcode}, {city}
+        {addressTitle && <p className={styles.addressTitle}>{addressTitle}</p>}
+        <p className={cx({[styles.address]: !!addressTitle })}>
+          {address && (zipcode || city ? `${address},` : address)} {zipcode && (city ? `${zipcode},` : zipcode)} {city && city}
         </p>
       </div>
       <Button {...chooseAccountBtn} type={'button'} surface={'primary'} onClick={handleClick}></Button>
