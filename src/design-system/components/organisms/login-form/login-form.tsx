@@ -119,6 +119,7 @@ const LoginForm = ({
         links={links}
         responseMessage={responseMessage}
         captcha={captcha}
+        isLogin
       />
     </div>
   )

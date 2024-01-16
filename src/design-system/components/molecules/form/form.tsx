@@ -134,7 +134,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             <Button
               key={`${action.type}-${i}`}
               {...action}
-              disabled={action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading)}
+              disabled={props.isLogin ? false : (action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading))}
               loading={action.type === 'submit' && loading}
             />
           ))}
