@@ -38,6 +38,7 @@
             
             &:hover {
                 color: var(--interactive-hover);
+                cursor: pointer;
             }
         }
 
