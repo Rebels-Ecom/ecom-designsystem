@@ -2,48 +2,19 @@ import React from 'react'
 import styles from './product-toast.module.css'
 import cx from 'classnames'
 import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
-import { ProductCard, IProductCard } from '../../molecules/product-card/product-card'
 import { Text } from '../../atoms/text/text'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ContentWrapper } from '../../layouts'
-import { GroupWrapper } from '../group-wrapper/group-wrapper'
+import { motion } from 'framer-motion'
 
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IProductToast {
   cartProduct: ICartProduct
-  recommendedProducts?: Array<IProductCard>
-  recommendedProductsTitle?: string
+  children?: React.ReactNode
   position?: TToastPosition
   className?: string
   label?: string
 }
 
-function renderRecommendedProducts({
-  recommendedProducts,
-  recommendedProductsTitle,
-}: {
-  recommendedProducts: Array<IProductCard>
-  recommendedProductsTitle: string
-}) {
-  return (
-    <ContentWrapper>
-      <div className={styles.header}>
-        {recommendedProductsTitle && (
-          <Text align="center" weight="bold">
-            {recommendedProductsTitle}
-          </Text>
-        )}
-      </div>
-      <GroupWrapper spacing="lg" direction="column">
-        {recommendedProducts.map((rec: any) => (
-          <ProductCard {...rec}></ProductCard>
-        ))}
-      </GroupWrapper>
-    </ContentWrapper>
-  )
-}
-
-function ProductToast({ cartProduct, recommendedProducts, recommendedProductsTitle = '', position = 'top-left', className, label }: IProductToast) {
+function ProductToast({ cartProduct, children, position = 'top-left', className, label }: IProductToast) {
   if (!cartProduct) return null
 
   return (
@@ -63,7 +34,8 @@ function ProductToast({ cartProduct, recommendedProducts, recommendedProductsTit
           )}
         </div>
         <CartProduct {...cartProduct}></CartProduct>
-        {recommendedProducts && renderRecommendedProducts({ recommendedProducts, recommendedProductsTitle })}
+        {children && <hr className={styles.divider} />}
+        {children}
       </div>
     </motion.div>
   )

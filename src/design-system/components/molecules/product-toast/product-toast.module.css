@@ -38,3 +38,10 @@
 	border-bottom: 1px solid #eee;
 }
 
+.divider {
+    margin: 0.75rem 0;
+    border: none;
+    height: 1px;
+    background-color: var(--grey-300);
+  }
+
