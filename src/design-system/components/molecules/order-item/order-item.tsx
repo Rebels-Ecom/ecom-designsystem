@@ -27,6 +27,7 @@ export interface IOrderItem {
   title?: string
   children: React.ReactNode
   orderDate?: string
+  orderDateLabel?: string;
   btnLabel?: string
   onClick?: () => void
 }
@@ -37,6 +38,7 @@ const OrderItem = ({
   title,
   children,
   orderDate,
+  orderDateLabel,
   deliveryDate,
   deliveryDateLabel,
   orderStatus,
@@ -106,7 +108,8 @@ const OrderItem = ({
               </div>
             )}
           </div>
-          <div className={styles.secondRow}>
+          <div className={cx(styles.secondRow, styles.secondRowCol)}>
+            {orderDate && orderDateLabel && <p className={styles.deliveryDate}>{`${orderDateLabel} ${orderDate}`}</p>}
             {deliveryDate && deliveryDateLabel && <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
           </div>
           <div>{children}</div>
