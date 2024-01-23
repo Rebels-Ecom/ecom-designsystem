@@ -58,6 +58,7 @@ export interface IProductCard {
   displaySmallImage?: boolean
   linkComponent?: any
   className?: string
+  maxQuantity?: number;
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -88,6 +89,7 @@ function ProductCard({
   displaySmallImage,
   linkComponent: Link,
   className,
+  maxQuantity,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -104,6 +106,10 @@ function ProductCard({
   })
 
   function handleOnChangeQuantity(productQuantity: number) {
+    if (maxQuantity && (productQuantity > maxQuantity)) {
+      return;
+    }
+    
     setProduct((prevState) => {
       const newProduct = {
         ...prevState,
