@@ -27,6 +27,7 @@ const ProductCardHorizontal = ({
   buttonLoading,
   disabled,
   border = false,
+  displaySmallImage = false,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
 }: IProductCard & TProductCardHorizontal) => {
@@ -91,7 +92,12 @@ const ProductCardHorizontal = ({
             </>
           ) : (
             <>
-              <Picture {...productImage} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />
+              <Picture
+                {...productImage}
+                classNamePicture={styles.picture}
+                classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
+                fallbackImageUrl={fallbackProductImageUrl}
+              />
               <div className={styles.content}>
                 {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
 

@@ -5,7 +5,7 @@ import cx from 'classnames'
 export type TGroupDirection = 'default' | 'row' | 'column'
 export type TGroupPosition = 'left' | 'right' | 'center' | 'apart'
 export type TSpacing = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-export type TAlign = 'left' | 'right' | 'center' | 'baseline'
+export type TAlign = 'left' | 'right' | 'center' | 'baseline' | 'stretch'
 
 export interface IGroupWrapper {
   children: React.ReactNode
@@ -25,15 +25,15 @@ export interface IGroupWrapper {
    * If true, the default margin will be removed
    * @default false
    */
-  noMargin?: boolean;
+  noMargin?: boolean
   /**
    * Sets the padding prop in rem
    * Takes either a single number, e.g. 1 or an array of numbers, e.g. [1, 0] or [1, 0, 0, 1] (top, right, bottom, left)
    * Default is undefined, and therefore decided by styles/css
    * @default undefined
-  */
-  padding?: Array<number> | number;
-  backgroundColor?: 'light';
+   */
+  padding?: Array<number> | number
+  backgroundColor?: 'light'
 }
 
 function BoxWrapper({
@@ -72,6 +72,8 @@ function BoxWrapper({
         return 'rightAlignment'
       case 'center':
         return 'centerAlignment'
+      case 'stretch':
+        return 'stretchAlignment'
       case 'baseline':
       default:
         return 'baselineAlignment'
@@ -108,16 +110,15 @@ function BoxWrapper({
 
   const paddingValue = useMemo(() => {
     if (!padding && padding !== 0) {
-      return "";
+      return ''
     }
 
-    if (typeof padding === "number") {
-      return `${padding}rem`;
+    if (typeof padding === 'number') {
+      return `${padding}rem`
     }
 
-    return padding.map(p => `${p}rem`).join(' ');
-
-  }, [padding]);
+    return padding.map((p) => `${p}rem`).join(' ')
+  }, [padding])
 
   return (
     <div
@@ -136,7 +137,7 @@ function BoxWrapper({
           [styles.noMargin]: noMargin,
         }
       )}
-      style={{ padding: paddingValue}}
+      style={{ padding: paddingValue }}
     >
       {children}
     </div>

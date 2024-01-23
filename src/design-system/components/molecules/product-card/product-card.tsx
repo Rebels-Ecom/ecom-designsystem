@@ -55,6 +55,7 @@ export interface IProductCard {
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   border?: boolean
+  displaySmallImage?: boolean
   linkComponent?: any
   className?: string
 }
@@ -84,6 +85,7 @@ function ProductCard({
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
   border,
+  displaySmallImage,
   linkComponent: Link,
   className,
 }: TProductCard) {
@@ -171,6 +173,7 @@ function ProductCard({
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
         border={border}
+        displaySmallImage={displaySmallImage}
         linkComponent={Link}
         className={className}
       />

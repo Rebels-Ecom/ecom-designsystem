@@ -67,6 +67,12 @@
     object-fit: contain;
   }
 
+  & .smallImage {
+    @media (min-width: 64rem) {
+      padding: 1.5rem 2rem 1.5rem 0;
+    } 
+  }
+
   & .content {
     width: 100%;
     max-width: 100%;
