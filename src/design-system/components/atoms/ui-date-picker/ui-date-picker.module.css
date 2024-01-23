@@ -20,6 +20,10 @@
     z-index: var(--menu-icon-z-index);
 }
 
+:global .react-datepicker-wrapper {
+    width:100%;
+}
+
 .datePickerWrapper {
     z-index: var(--menu-icon-z-index);
 }

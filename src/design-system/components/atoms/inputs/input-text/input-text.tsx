@@ -19,6 +19,7 @@ export interface IInputText {
   onBlur?: CallableFunction
   placeholder?: string
   disabled?: boolean
+  disabledNoBorder?: boolean
   isErroneous?: boolean
   required?: boolean
   readonly?: boolean
@@ -44,6 +45,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
       onChange,
       onBlur,
       disabled,
+      disabledNoBorder,
       placeholder,
       other,
       autocomplete,
@@ -71,7 +73,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
         <input
           ref={ref}
           type={type}
-          className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), className)}
+          className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), disabledNoBorder && styles.disabledNoBorder, className)}
           id={id}
           value={value}
           defaultValue={defaultValue}

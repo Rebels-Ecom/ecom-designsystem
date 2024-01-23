@@ -53,6 +53,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
               quantity={quantity}
               quantityInputId={partNo}
               disabled
+              disabledNoBorder
             />
           </div>
           {onClickRemoveProduct && iconButton && (

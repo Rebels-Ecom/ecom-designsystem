@@ -60,6 +60,12 @@
     border-color: var(--input-border-color);
   }
 
+  &.disabledNoBorder {
+    padding: 0.5rem 0.25rem;
+    background: var(--grey-200);
+    border: none;
+  }
+
   &.error {
     background: var(--surface-critical-subdued);
     border-color: var(--border-critical);
