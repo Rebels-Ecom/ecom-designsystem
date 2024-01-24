@@ -85,7 +85,7 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
             {swipe ? (
               <Carousel offsetArrows padding='2rem'>
                 {blogCards.map((card: IBlogCard, i: number) => (
-                  <CarouselItem>
+                  <CarouselItem key={i}>
                     {renderCarouselItem(card)}
                   </CarouselItem>
                 ))}
