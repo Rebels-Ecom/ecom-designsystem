@@ -38,7 +38,6 @@ const ProductVariant = ({
         <Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />{' '}
       </div>
       <div className={`${styles.contentWrapper}`}>
-        <p className={styles.heading}>{productName}</p>
         <p className={styles.heading}>{variantName}</p>
         <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
         <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>

@@ -30,6 +30,7 @@ const ProductCardHorizontal = ({
   displaySmallImage = false,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
+  maxQuantity
 }: IProductCard & TProductCardHorizontal) => {
   const {
     partNo,
@@ -128,6 +129,7 @@ const ProductCardHorizontal = ({
                   quantityInputId={partNo}
                   onChange={handleOnChangeQuantity}
                   disabled={productQuantityDisabled}
+                  maxQuantity={maxQuantity}
                 />
               </div>
               {!hideRemoveButton && onClickRemoveProduct && (

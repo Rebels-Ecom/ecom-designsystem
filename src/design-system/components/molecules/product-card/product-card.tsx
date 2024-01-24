@@ -182,6 +182,7 @@ function ProductCard({
         displaySmallImage={displaySmallImage}
         linkComponent={Link}
         className={className}
+        maxQuantity={maxQuantity}
       />
     )
   }
@@ -214,6 +215,7 @@ function ProductCard({
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
         linkComponent={Link}
         className={className}
+        maxQuantity={maxQuantity}
       />
     )
   }

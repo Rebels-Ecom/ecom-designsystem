@@ -4,6 +4,7 @@ import { Button, Icon } from '../../../atoms';
 import styles from './mobile-navigation.module.css';
 import cx from 'classnames';
 import { INavigation, TNavCategory, TNavLink } from '../types';
+import { useOnClickOutside } from '../../../../hooks';
 
 // TODO: extract list item
 interface IListItemWithLinks extends TNavCategory {
@@ -113,6 +114,8 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
       }
     }
   }, [open]);
+
+  useOnClickOutside({ ref: mobileNavRef, onClose: () => setOpen(false) })
 
   return (
     <div className={styles.mobileNavigation} ref={mobileNavRef}>
