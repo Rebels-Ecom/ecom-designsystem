@@ -1,24 +1,36 @@
-import React from 'react'
+import React, { useRef, useCallback } from 'react'
 import styles from './product-toast.module.css'
 import cx from 'classnames'
 import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
 import { Text } from '../../atoms/text/text'
 import { motion } from 'framer-motion'
+import { IconButton } from '../../atoms'
+import { useOnClickOutside } from '../../../hooks'
 
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IProductToast {
   cartProduct: ICartProduct
+  setIsOpen?: (isOpen: boolean) => void
   children?: React.ReactNode
   position?: TToastPosition
   className?: string
   label?: string
 }
 
-function ProductToast({ cartProduct, children, position = 'top-left', className, label }: IProductToast) {
+function ProductToast({ cartProduct, setIsOpen, children, position = 'top-left', className, label }: IProductToast) {
+  const productToastRef = useRef<HTMLDivElement | null>(null)
+
+  const onClose = useCallback(() => {
+    setIsOpen && setIsOpen(false)
+  }, [setIsOpen])
+
   if (!cartProduct) return null
+
+  useOnClickOutside({ ref: productToastRef, onClose })
 
   return (
     <motion.div
+      ref={productToastRef}
       animate={{ x: 0 }}
       initial={{ x: '100%' }}
       exit={{ x: '100%' }}
@@ -26,6 +38,18 @@ function ProductToast({ cartProduct, children, position = 'top-left', className,
       className={cx(className ? className : styles.toastContainer, styles[position])}
     >
       <div className={styles.toast}>
+        {setIsOpen && (
+          <IconButton
+            type="button"
+            className={styles.iconBtnClose}
+            onClick={() => setIsOpen(false)}
+            icon="icon-x"
+            size="large"
+            isTransparent
+            noPadding
+            noBorder
+          />
+        )}
         <div className={styles.header}>
           {label && (
             <Text align="center" weight="bold">

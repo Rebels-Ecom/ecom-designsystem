@@ -2,6 +2,15 @@
 	box-sizing: border-box;
 	position: fixed;
 	z-index: 999999;
+	height: 100%;
+	-ms-overflow-style: none;
+    scrollbar-width: none;  
+	@media(min-width: 64em){
+		opacity: .9;
+	}
+	&:hover, &:focus, &:active{
+		opacity:1;
+	}
 }
 
 .top-right {
@@ -20,13 +29,17 @@
 	transition: .3s ease;
 	position: relative;
 	pointer-events: auto;
-	overflow: hidden;
-	padding: 1.5rem;
-	width: 90vw;
+	height: 100%;
+    overflow-y: scroll;
+	-ms-overflow-style: none;
+    scrollbar-width: none;  
+	padding: 1rem;
+	width: 87vw;
 	border-radius: 0.25rem;
 	box-shadow: 0 0 0.5rem #999;
-	opacity: .9;
+	/* opacity: .9; */
 	@media(min-width: 64em){
+		padding: 1.5rem;
 		width: 38.75rem;
 	}
 }
@@ -43,5 +56,12 @@
     border: none;
     height: 1px;
     background-color: var(--grey-300);
-  }
+}
+
+.iconBtnClose {
+	margin-left: auto;
+	@media(min-width: 64em){
+		display: none;
+	}
+}
 
