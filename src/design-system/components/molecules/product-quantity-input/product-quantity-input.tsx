@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { InputText } from '../../atoms'
 import styles from './product-quantity-input.module.css'
 
@@ -12,6 +12,7 @@ export interface IProductQuantityInput {
   disabled?: boolean
   disabledNoBorder?: boolean
   onChange?: CallableFunction
+  maxQuantity?: number;
 }
 
 const ProductQuantityInput = ({
@@ -24,16 +25,22 @@ const ProductQuantityInput = ({
   disabled = false,
   disabledNoBorder = false,
   onChange,
+  maxQuantity
 }: IProductQuantityInput) => {
+  const [val, setVal] = useState(quantity);
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (maxQuantity && (Number(e.target.value) > maxQuantity)) {
+      return;
+    }
     onChange?.(e)
+    setVal(e.target.value);
   }
 
   return (
     <div className={`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
       <InputText
         id={quantityInputId}
-        defaultValue={quantity}
+        value={val}
         placeholder="0"
         onChange={handleOnChange}
         disabled={disabled}
