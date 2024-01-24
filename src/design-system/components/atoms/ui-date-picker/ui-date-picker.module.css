@@ -1,7 +1,7 @@
 :global .react-datepicker__day-name {
     width: 3rem;
     @media(min-width: 48em){
-        width: 4.3rem;
+        width: 4.25rem;
     }
 }
 
@@ -38,7 +38,7 @@
     width: 90%;
     margin: auto;
     text-align: center;
-    padding: 0.3rem;
+    padding: 0.3125rem;
 }
 
 .day {
@@ -47,8 +47,8 @@
     width: 3rem;
     height:3rem;
     @media(min-width: 48rem){
-        width: 4.3rem;
-        height: 4.3rem;
+        width: 4.25rem;
+        height: 4.25rem;
     }
     background: #F1F1F1;
     border-radius: 0.125rem;
@@ -103,7 +103,7 @@
     display: flex;
     margin: 0 0.5rem 0 0;
     cursor: pointer;
-    border: solid 0.063rem var(--border-on-x);
+    border: solid 0.0625rem var(--border-on-x);
     border-radius: 0.25rem;
     padding: 0.5rem 1rem;
     &:last-child {
@@ -117,7 +117,7 @@
 }
 
 .datePickerBtnOrange {
-    border: solid 0.063rem var(--input-border-color);
+    border: solid 0.0625rem var(--input-border-color);
     background: var(--light-orange-background);
     border-radius: 0;
     width: 100%;
@@ -139,16 +139,20 @@
 }
 
 .buttonIconWrapper{
-    display:flex;
-    gap: 0.15rem;
+    display: block;
 }
 
 .icon {
-    font-size: 1.2rem;
-    margin-bottom: 1px
+    font-size: 1.125rem;
+    line-height: 1.125rem;
+    vertical-align: sub;
+    display: inline-block;
 }
 
 .iconText{
+    margin-left: 0.25rem;
+    display: inline-block;
+
     @media (min-width: 48em) {
         display: none;
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import DatePicker, { CalendarContainer } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -8,6 +8,7 @@ import { Button } from '../button/button'
 import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
 import { Icon } from '../icon/icon'
+import { useOnClickOutside } from '../../../hooks'
 
 export interface IUiDatePicker {
   buttonLabel: string
@@ -21,10 +22,35 @@ export interface IUiDatePicker {
 }
 
 function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, showDateLabel, className }: IUiDatePicker) {
+  const datepickerRef = useRef<DatePicker | any>(null);
+  const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(selectedDeliveryDate))
   const deliveryDaysStrings = getDateStrings(deliveryDates)
   const holidayDaysStrings = getDateStrings(holidayDates)
   const customHeaderText = headerText ? headerText : 'Välj din leveransdag'
+
+  const CustomInput = forwardRef(() => {
+    const handleClick = () => {
+      setOpen(!open);
+    }
+
+    return (
+      <Button
+        type="button"
+        surface="x"
+        size="x-small"
+        className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnOrange, className ? className : '')}
+        onClick={handleClick}
+      >
+        <span className={styles.buttonLabelWrapper}>
+          <span className={styles.buttonLabel}>{buttonLabel}</span>
+          <span className={styles.buttonIconWrapper}>
+            <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
+            {!showDateLabel && <span className={styles.iconText}>Välj</span>}
+          </span>
+        </span>
+      </Button>
+  )})
 
   const CustomCalendarContainer = ({ className, children }: { className: any; children: React.ReactNode }) => {
     return (
@@ -65,10 +91,12 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
     return 'day'
   }
 
+  useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false)})
+
   if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) return null
 
   return (
-    <div className={styles.datePickerWrapper}>
+    <div className={styles.datePickerWrapper} ref={datepickerRef}>
       <DatePicker
         selected={selectedDate}
         onChange={(date) => date && onClickSelectDate(date)}
@@ -79,22 +107,8 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
         calendarClassName={styles.calendar}
         calendarContainer={CustomCalendarContainer}
         dayClassName={(date) => cx(styles.day, styles[getDayCustomClass(date)])}
-        customInput={
-          <Button
-            type="button"
-            surface="x"
-            size="x-small"
-            className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnOrange, className ? className : '')}
-          >
-            <span className={styles.buttonLabelWrapper}>
-              <span className={styles.buttonLabel}>{buttonLabel}</span>
-              <span className={styles.buttonIconWrapper}>
-                <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
-                {!showDateLabel && <span className={styles.iconText}>Välj</span>}
-              </span>
-            </span>
-          </Button>
-        }
+        customInput={<CustomInput />}
+        open={open}
       />
     </div>
   )
