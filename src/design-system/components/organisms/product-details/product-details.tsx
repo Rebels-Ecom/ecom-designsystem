@@ -192,7 +192,7 @@ const ProductDetails = ({
 
             {productDescription && <p className={styles.description}>{productDescription}</p>}
 
-            {Array.isArray(product.productVariantList) && product.productVariantList.length > 1 && (
+            {Array.isArray(product.productVariantList) && (
               <Button
                 type={'button'}
                 className={styles.btn}
@@ -200,6 +200,7 @@ const ProductDetails = ({
                 iconRight={{ icon: 'icon-layers' }}
                 rounded
                 onClick={() => handleVariantsButtonClick()}
+                disabled={product.productVariantList.length <= 1}
               >
                 {product.packaging}
               </Button>
