@@ -5,6 +5,7 @@ import cx from 'classnames'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { Icon } from '../../atoms'
 import { FlexContainer } from '../../layouts'
+import { IconWithTooltip } from '../../atoms'
 
 export interface IProductVariant {
   productName: string
@@ -20,6 +21,7 @@ export interface IProductVariant {
   partNoLabel: string
   unitLabel: string
   currencyLabel: string
+  sellerOnlyTooltipText?: string;
 }
 
 const ProductVariant = ({
@@ -35,11 +37,26 @@ const ProductVariant = ({
   currencyLabel,
   unitLabel,
   sellerOnly,
+  sellerOnlyTooltipText,
 }: IProductVariant) => {
   return (
     <div className={styles.productVariant}>
       <FlexContainer stretch justifyContent='flex-end' alignItems='center' className={styles.topRow}>
-        {sellerOnly && <Icon icon={'icon-eye'} size={'large'} />}
+        {sellerOnly && (
+          <>
+            {sellerOnlyTooltipText ? (
+              <IconWithTooltip
+                content={sellerOnlyTooltipText}
+                icon={{ icon: 'icon-eye' }}
+              />
+            ) : (
+              <Icon
+                icon={'icon-eye'}
+                size={'large'}
+              />
+            )}
+          </>
+        )}
         <div className={styles.radioWrapper}>
           <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />
         </div>

@@ -1,5 +1,6 @@
 import styles from './icon.module.css'
 import cx from 'classnames'
+
 export type TIconSize = 'small' | 'medium' | 'large' | 'xlarge'
 export type TIcon =
   | 'icon-alert-circle'

@@ -75,6 +75,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
+    "@radix-ui/react-tooltip": "^1.0.7",
     "@splidejs/react-splide": "^0.7.12",
     "react-datepicker": "^4.11.0",
     "react-input-range": "^1.3.0",

@@ -16,7 +16,7 @@ import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 import { IconButton } from '../../atoms/icon-button/icon-button'
-import { Icon } from '../../atoms'
+import { Icon, IconWithTooltip } from '../../atoms'
 
 export interface IProductSpec {
   name: string
@@ -46,6 +46,7 @@ export interface IProductDetails extends IProduct {
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   onPackageChange?: CallableFunction
+  sellerOnlyTooltipText?: string;
 }
 
 const ProductDetails = ({
@@ -80,7 +81,8 @@ const ProductDetails = ({
   packagePerPalletLabel1,
   packagePerPalletLabel2,
   onPackageChange,
-  sellerOnly
+  sellerOnly,
+  sellerOnlyTooltipText,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -100,6 +102,7 @@ const ProductDetails = ({
     priceLabel,
     unitLabel,
     currencyLabel,
+    
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
@@ -148,7 +151,23 @@ const ProductDetails = ({
 
   return (
     <div className={cx(styles.productDetails)}>
-      {sellerOnly && <Icon className={styles.sellerOnly} icon={'icon-eye'} size={'large'} />}
+      {sellerOnly && (
+        <>
+          {sellerOnlyTooltipText ? (
+            <IconWithTooltip
+              content={sellerOnlyTooltipText}
+              icon={{ icon: 'icon-eye' }}
+              className={styles.sellerOnly}
+            />
+          ) : (
+            <Icon
+              icon={'icon-eye'}
+              size={'large'}
+              className={styles.sellerOnly}
+            />
+          )}
+        </>
+      )}
 
       <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
 
@@ -201,7 +220,7 @@ const ProductDetails = ({
                 type={'button'}
                 className={styles.btn}
                 surface={'secondary'}
-                iconRight={{ icon: 'icon-layers' }}
+                iconRight={product.productVariantList.length <= 1 ? undefined : { icon: 'icon-layers' }}
                 rounded
                 onClick={() => handleVariantsButtonClick()}
                 disabled={product.productVariantList.length <= 1}

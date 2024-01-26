@@ -7,10 +7,17 @@ export interface IProductVariantList {
   className?: string
   variantsList: Array<IProductVariant>
   onVariantSelect: CallableFunction
-  selectedVariantId: string
+  selectedVariantId: string;
+  sellerOnlyTooltipText?: string;
 }
 
-const ProductVariantList = ({ className, variantsList, onVariantSelect, selectedVariantId }: IProductVariantList) => {
+const ProductVariantList = ({
+  className,
+  variantsList,
+  onVariantSelect,
+  selectedVariantId,
+  sellerOnlyTooltipText
+}: IProductVariantList) => {
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
 
   function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
@@ -28,7 +35,13 @@ const ProductVariantList = ({ className, variantsList, onVariantSelect, selected
       <ul className={styles.variantsList}>
         {variantsList.map((variant) => (
           <li key={variant.variantId} className={styles.listItem}>
-            <ProductVariant key={variant.variantId} {...variant} onChange={handleOnChangeVariant} checked={variant.variantId === selectedProductVariantId} />
+            <ProductVariant
+              key={variant.variantId}
+              {...variant}
+              onChange={handleOnChangeVariant}
+              checked={variant.variantId === selectedProductVariantId}
+              sellerOnlyTooltipText={sellerOnlyTooltipText}
+            />
           </li>
         ))}
       </ul>
