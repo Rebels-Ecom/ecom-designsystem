@@ -22,8 +22,8 @@ export interface IUiDatePicker {
 }
 
 function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, showDateLabel, className }: IUiDatePicker) {
-  const datepickerRef = useRef<DatePicker | any>(null);
-  const [open, setOpen] = useState(false);
+  const datepickerRef = useRef<DatePicker | any>(null)
+  const [open, setOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(selectedDeliveryDate))
   const deliveryDaysStrings = getDateStrings(deliveryDates)
   const holidayDaysStrings = getDateStrings(holidayDates)
@@ -31,7 +31,7 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
 
   const CustomInput = forwardRef(() => {
     const handleClick = () => {
-      setOpen(!open);
+      setOpen(!open)
     }
 
     return (
@@ -39,7 +39,7 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
         type="button"
         surface="x"
         size="x-small"
-        className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnOrange, className ? className : '')}
+        className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnHeader, className ? className : '')}
         onClick={handleClick}
       >
         <span className={styles.buttonLabelWrapper}>
@@ -50,7 +50,8 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
           </span>
         </span>
       </Button>
-  )})
+    )
+  })
 
   const CustomCalendarContainer = ({ className, children }: { className: any; children: React.ReactNode }) => {
     return (
@@ -91,7 +92,7 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
     return 'day'
   }
 
-  useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false)})
+  useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false) })
 
   if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) return null
 

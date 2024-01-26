@@ -116,9 +116,8 @@
     }
 }
 
-.datePickerBtnOrange {
-    border: solid 0.0625rem var(--input-border-color);
-    background: var(--light-orange-background);
+.datePickerBtnHeader {
+    border-width: 0.0625rem;
     border-radius: 0;
     width: 100%;
     @media (min-width: 48em) {
