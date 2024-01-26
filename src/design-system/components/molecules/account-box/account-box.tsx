@@ -7,6 +7,7 @@ export interface IAccountBox {
   companyName: string
   accountNumber: string
   contactPerson?: string
+  addressLabel?: string;
   addressTitle?: string;
   address?: string
   zipcode?: string
@@ -19,6 +20,7 @@ function AccountBox({
   companyName,
   accountNumber,
   contactPerson,
+  addressLabel,
   addressTitle,
   address,
   zipcode,
@@ -39,6 +41,7 @@ function AccountBox({
           {accountNumber}
         </p>
         {contactPerson && <p>{contactPerson}</p>}
+        {addressLabel && <p className={styles.addressLabel}><b>{addressLabel}</b></p>}
         {addressTitle && <p className={styles.addressTitle}>{addressTitle}</p>}
         <p className={cx({[styles.address]: !!addressTitle })}>
           {address && (zipcode || city ? `${address},` : address)} {zipcode && (city ? `${zipcode},` : zipcode)} {city && city}
