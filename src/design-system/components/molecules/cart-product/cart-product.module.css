@@ -1,8 +1,10 @@
 .cartProduct {
     width: 100%;
-    height: 11.5rem;
     position: relative;
     display: flex;
+    @media (min-width: 64em) {
+      height: 11.5rem;
+    }
   }
     
   .imageWrapper {

@@ -4,6 +4,10 @@
   gap: 0.25rem;
 }
 
+.fullWidth {
+  width: 100%;
+}
+
 .labelWrapper {
   display: block;
 }
