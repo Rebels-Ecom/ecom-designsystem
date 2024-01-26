@@ -31,7 +31,6 @@ const Header = ({
   return (
     <>
       {salesTool && salesTool}
-      {topNavBar && topNavBar}
       {deliveryInfoBar && deliveryInfoBar}
       <header className={styles.header}>
         {(logo || mobileSearchBar || mobileActions || mobileNavigation || desktopSearchBar || desktopActions || desktopNavigation) && (
@@ -40,6 +39,7 @@ const Header = ({
               {(matches) =>
                 matches && (
                   <>
+                    {topNavBar && topNavBar}
                     <ContentWrapper>
                       <FlexContainer flexDirection="column" gap={0}>
                         <FlexContainer alignItems="center" justifyContent="space-between" stretch>
@@ -59,6 +59,7 @@ const Header = ({
               {(matches) =>
                 matches && (
                   <>
+                    {topNavBar && topNavBar}
                     <ContentWrapper padding={[1, 0]}>
                       <FlexContainer alignItems="center">
                         {logo && logo}
