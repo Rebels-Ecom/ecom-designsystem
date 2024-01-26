@@ -59,6 +59,7 @@ export interface IProductCard {
   linkComponent?: any
   className?: string
   maxQuantity?: number;
+  sellerOnlyTooltipText?: string;
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -90,6 +91,7 @@ function ProductCard({
   linkComponent: Link,
   className,
   maxQuantity,
+  sellerOnlyTooltipText
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -217,6 +219,7 @@ function ProductCard({
         linkComponent={Link}
         className={className}
         maxQuantity={maxQuantity}
+        sellerOnlyTooltipText={sellerOnlyTooltipText}
       />
     )
   }

@@ -7,6 +7,7 @@ import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardVertical } from '../product-card/product-card'
+import { IconWithTooltip } from '../../atoms'
 
 const ProductCardVertical = ({
   product,
@@ -33,6 +34,7 @@ const ProductCardVertical = ({
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
+  sellerOnlyTooltipText
 }: IProductCard & TProductCardVertical) => {
   const {
     partNo,
@@ -80,6 +82,7 @@ const ProductCardVertical = ({
         variantsList={productVariantList}
         onVariantSelect={handlePackageChange}
         selectedVariantId={selectedVariantId}
+        sellerOnlyTooltipText={sellerOnlyTooltipText}
       />
     )
   } else {
@@ -100,7 +103,21 @@ const ProductCardVertical = ({
         {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
         {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
         <div className={styles.tagsWrapper}>
-          {sellerOnly && <Icon icon={'icon-eye'} size={'large'}></Icon>}
+          {sellerOnly && (
+            <>
+              {sellerOnlyTooltipText ? (
+                <IconWithTooltip
+                  content={sellerOnlyTooltipText}
+                  icon={{ icon: 'icon-eye' }}
+                />
+              ) : (
+                <Icon
+                  icon={'icon-eye'}
+                  size={'large'}
+                />
+              )}
+            </>
+          )}
           {isAccessoryPotItem && (
             <span>
               <b style={{ fontSize: '1.2rem' }}>S</b>
