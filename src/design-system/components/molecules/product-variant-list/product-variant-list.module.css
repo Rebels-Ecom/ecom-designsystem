@@ -13,9 +13,11 @@
 }
 
 .listItem {
-    padding: 0.8rem 0;
+    margin-bottom: 1rem;
     border-bottom: 0.0625rem solid var(--border-orange);
+    
     &:last-child {
+        margin-bottom: 0;
         border: 0;
   }
 }

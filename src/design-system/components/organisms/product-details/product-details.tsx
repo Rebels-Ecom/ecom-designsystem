@@ -16,6 +16,7 @@ import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 import { IconButton } from '../../atoms/icon-button/icon-button'
+import { Icon } from '../../atoms'
 
 export interface IProductSpec {
   name: string
@@ -79,6 +80,7 @@ const ProductDetails = ({
   packagePerPalletLabel1,
   packagePerPalletLabel2,
   onPackageChange,
+  sellerOnly
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -146,6 +148,8 @@ const ProductDetails = ({
 
   return (
     <div className={cx(styles.productDetails)}>
+      {sellerOnly && <Icon className={styles.sellerOnly} icon={'icon-eye'} size={'large'} />}
+
       <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
 
       <div className={cx(styles.content, styles.leftContent)}>

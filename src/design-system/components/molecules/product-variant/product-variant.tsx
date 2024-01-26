@@ -3,6 +3,8 @@ import { IPicture, Picture } from '../../atoms/picture/picture'
 import styles from './product-variant.module.css'
 import cx from 'classnames'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+import { Icon } from '../../atoms'
+import { FlexContainer } from '../../layouts'
 
 export interface IProductVariant {
   productName: string
@@ -11,6 +13,7 @@ export interface IProductVariant {
   country: string
   priceStr: string
   salesUnit: string
+  sellerOnly: boolean;
   image: IPicture
   onChange: CallableFunction
   checked: boolean
@@ -31,21 +34,27 @@ const ProductVariant = ({
   partNoLabel,
   currencyLabel,
   unitLabel,
+  sellerOnly,
 }: IProductVariant) => {
   return (
-    <label className={styles.productVariant}>
-      <div className={styles.imageWrapper}>
-        <Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />{' '}
-      </div>
-      <div className={`${styles.contentWrapper}`}>
-        <p className={styles.heading}>{variantName}</p>
-        <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
-        <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>
-      </div>
-      <div className={styles.radioWrapper}>
-        <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />
-      </div>
-    </label>
+    <div className={styles.productVariant}>
+      <FlexContainer stretch justifyContent='flex-end' alignItems='center' className={styles.topRow}>
+        {sellerOnly && <Icon icon={'icon-eye'} size={'large'} />}
+        <div className={styles.radioWrapper}>
+          <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />
+        </div>
+      </FlexContainer>
+      <FlexContainer stretch alignItems='center'>
+        <div className={styles.imageWrapper}>
+          <Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />{' '}
+        </div>
+        <div className={`${styles.contentWrapper}`}>
+          <p className={styles.heading}>{variantName}</p>
+          <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
+          <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>
+        </div>
+      </FlexContainer>
+    </div>
   )
 }
 

@@ -19,8 +19,13 @@
       margin: 0;
     }
     
-    & .addressTitle {
+    & .addressLabel {
       margin-bottom: 0;
+      text-transform: uppercase;
+    }
+
+    & .addressTitle {
+      margin: 0;
     }
 
     & .address {

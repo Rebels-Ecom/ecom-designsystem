@@ -149,6 +149,7 @@ function ProductCard({
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
+      sellerOnly: selectedVariant.sellerOnly,
       productUrl: `/Product/${selectedVariant.variantId}`,
     }))
     setVariantsListOpen(false)

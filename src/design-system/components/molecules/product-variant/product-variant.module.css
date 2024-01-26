@@ -1,6 +1,7 @@
 .productVariant {
     position:relative;
     display:flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
@@ -53,7 +54,18 @@
     font-family: var(--font-family-secondary);
 }
 
+.topRow {
+    height: var(--tag-rectangular-mobile-line-height);
+    min-height: var(--tag-rectangular-mobile-line-height);
+    flex: auto;
+    padding-right: 1rem;
+
+    @media (min-width: 48em) {
+        padding-right: 0;
+    }
+}
+
 .radioWrapper {
-    align-self: flex-start;
-    width: 15%;
+    display: flex;
+    margin-left: auto;
 }
