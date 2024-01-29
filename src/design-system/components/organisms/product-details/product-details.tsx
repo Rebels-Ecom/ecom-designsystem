@@ -210,6 +210,7 @@ const ProductDetails = ({
             variantsList={product.productVariantList}
             onVariantSelect={handlePackageChange}
             selectedVariantId={product.selectedVariantId}
+            sellerOnlyTooltipText={sellerOnlyTooltipText}
           />
         ) : (
           <>
