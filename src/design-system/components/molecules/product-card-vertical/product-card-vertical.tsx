@@ -34,7 +34,8 @@ const ProductCardVertical = ({
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
-  sellerOnlyTooltipText
+  sellerOnlyTooltipText,
+  accessoryPotItemTooltipText
 }: IProductCard & TProductCardVertical) => {
   const {
     partNo,
@@ -119,9 +120,18 @@ const ProductCardVertical = ({
             </>
           )}
           {isAccessoryPotItem && (
-            <span>
-              <b style={{ fontSize: '1.2rem' }}>S</b>
-            </span>
+            <>
+              {accessoryPotItemTooltipText ? (
+                <IconWithTooltip
+                  content={accessoryPotItemTooltipText}
+                  text='S'
+                />
+              ) : (
+                <span>
+                  <b style={{ fontSize: '1.2rem' }}>S</b>
+                </span>
+              )}
+            </>
           )}
           {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={campaign ? tags.slice(0, 3) : tags} /> : null}
         </div>

@@ -3,10 +3,11 @@ import styles from './product-card-horizontal.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, IconButton, Loader, Placeholder, Button, Icon } from '../../atoms'
+import { Picture, IconButton, Loader, Placeholder, Button, Icon, IconWithTooltip } from '../../atoms'
 import cx from 'classnames'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
+import { FlexContainer } from '../../layouts'
 
 const ProductCardHorizontal = ({
   product,
@@ -31,6 +32,8 @@ const ProductCardHorizontal = ({
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
   maxQuantity,
+  sellerOnlyTooltipText,
+  accessoryPotItemTooltipText,
 }: IProductCard & TProductCardHorizontal) => {
   const {
     partNo,
@@ -49,6 +52,8 @@ const ProductCardHorizontal = ({
     priceLabel,
     currencyLabel,
     unitLabel,
+    sellerOnly,
+    isAccessoryPotItem
   } = product
 
   const productImage = getProductPicture(partNo, primaryImageUrl)
@@ -114,7 +119,38 @@ const ProductCardHorizontal = ({
               )}
 
               <div className={styles.content}>
-                {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+                <FlexContainer alignItems='center' gap={0.5} minHeight={2.25}>
+                  {sellerOnly && (
+                    <>
+                      {sellerOnlyTooltipText ? (
+                        <IconWithTooltip
+                          content={sellerOnlyTooltipText}
+                          icon={{ icon: 'icon-eye' }}
+                        />
+                      ) : (
+                        <Icon
+                          icon={'icon-eye'}
+                          size={'large'}
+                        />
+                      )}
+                    </>
+                  )}
+                  {isAccessoryPotItem && (
+                    <>
+                      {accessoryPotItemTooltipText ? (
+                        <IconWithTooltip
+                          content={accessoryPotItemTooltipText}
+                          text='S'
+                        />
+                      ) : (
+                        <span>
+                          <b style={{ fontSize: '1.2rem' }}>S</b>
+                        </span>
+                      )}
+                    </>
+                  )}
+                  {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+                </FlexContainer>
 
                 {productUrl && Link ? (
                   <Link to={productUrl} href={productUrl} className={styles.mainLink}>
