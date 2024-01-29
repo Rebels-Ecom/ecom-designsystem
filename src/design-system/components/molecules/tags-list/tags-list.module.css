@@ -1,6 +1,7 @@
 .tagsList {
     display: flex;
     gap: 0.25rem;
+    flex-wrap: wrap;
     list-style: none;
     white-space: nowrap;
     overflow-x: scroll;

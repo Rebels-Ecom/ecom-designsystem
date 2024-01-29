@@ -3,22 +3,37 @@ import { IIcon, Icon } from '../icon/icon';
 import styles from './icon-with-tooltip.module.css';
 import cx from 'classnames';
 
+type TWithIcon = {
+  icon: IIcon;
+  text?: never;
+}
+
+type TWithOutIcon = {
+  text: string;
+  icon?: never;
+}
+
 type TTooltip = {
   content: string;
-  icon: IIcon;
   className?: string;
-}
-const IconWithTooltip = ({ content, icon, className }: TTooltip) => {
+} & (TWithIcon | TWithOutIcon)
+
+const IconWithTooltip = ({ content, className, ...props }: TTooltip) => {
   return (
     <div className={cx(styles.iconWithTooltip, className)}>
       <Tooltip.Provider delayDuration={0}>
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
             <button className={styles.triggerButton}>
-              <Icon
-                {...icon}
-                size='large'
-              />
+              {props.icon && (
+                <Icon
+                  {...props.icon}
+                  size='large'
+                />
+              )} 
+              {props.text && (
+                <span className={styles.text}>{props.text}</span>
+              )}
             </button>
           </Tooltip.Trigger>
           <Tooltip.Portal>

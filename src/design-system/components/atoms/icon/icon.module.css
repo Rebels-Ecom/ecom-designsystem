@@ -1,4 +1,5 @@
 .defaultStyling {
+  display: flex;
   color: inherit;
 }
 

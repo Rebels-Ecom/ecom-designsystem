@@ -47,6 +47,7 @@ export interface IProductDetails extends IProduct {
   onSaveToPurchaseListClick?: CallableFunction
   onPackageChange?: CallableFunction
   sellerOnlyTooltipText?: string;
+  accessoryPotItemTooltipText?: string;
 }
 
 const ProductDetails = ({
@@ -83,6 +84,8 @@ const ProductDetails = ({
   onPackageChange,
   sellerOnly,
   sellerOnlyTooltipText,
+  isAccessoryPotItem,
+  accessoryPotItemTooltipText,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -102,7 +105,6 @@ const ProductDetails = ({
     priceLabel,
     unitLabel,
     currencyLabel,
-    
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
@@ -151,22 +153,38 @@ const ProductDetails = ({
 
   return (
     <div className={cx(styles.productDetails)}>
-      {sellerOnly && (
-        <>
-          {sellerOnlyTooltipText ? (
-            <IconWithTooltip
-              content={sellerOnlyTooltipText}
-              icon={{ icon: 'icon-eye' }}
-              className={styles.sellerOnly}
-            />
-          ) : (
-            <Icon
-              icon={'icon-eye'}
-              size={'large'}
-              className={styles.sellerOnly}
-            />
+      {(sellerOnly || isAccessoryPotItem) && (
+        <div className={styles.iconWrapper}>
+          {sellerOnly && (
+            <>
+              {sellerOnlyTooltipText ? (
+                <IconWithTooltip
+                  content={sellerOnlyTooltipText}
+                  icon={{ icon: 'icon-eye' }}
+                />
+              ) : (
+                <Icon
+                  icon={'icon-eye'}
+                  size={'large'}
+                />
+              )}
+            </>
           )}
-        </>
+          {isAccessoryPotItem && (
+            <>
+              {accessoryPotItemTooltipText ? (
+                <IconWithTooltip
+                  content={accessoryPotItemTooltipText}
+                  text='S'
+                />
+              ) : (
+                <span style={{ fontSize: '0.875rem', width: '1.25rem', height: '1.25rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <b>S</b>
+                </span>
+              )}
+            </>
+          )}
+        </div>
       )}
 
       <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
@@ -192,6 +210,7 @@ const ProductDetails = ({
             variantsList={product.productVariantList}
             onVariantSelect={handlePackageChange}
             selectedVariantId={product.selectedVariantId}
+            sellerOnlyTooltipText={sellerOnlyTooltipText}
           />
         ) : (
           <>

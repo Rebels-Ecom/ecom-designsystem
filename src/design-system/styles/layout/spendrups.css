@@ -47,6 +47,7 @@ html {
     --select-list-z-index: 10;
     --drawer-overlay-z-index: 50;
     --drawer-content-z-index: 51;
+    --tooltip-z-index: 101;
 }
 
 body {
