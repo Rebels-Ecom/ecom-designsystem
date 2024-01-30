@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button, IButton } from '../../atoms/button/button'
 import { IProductVariant, ProductVariant } from '../product-variant/product-variant'
 import styles from './product-variant-list.module.css'
+import { useOnClickOutside } from '../../../hooks'
 
 export interface IProductVariantList {
   className?: string
@@ -9,6 +10,7 @@ export interface IProductVariantList {
   onVariantSelect: CallableFunction
   selectedVariantId: string;
   sellerOnlyTooltipText?: string;
+  onCloseVariants: CallableFunction;
 }
 
 const ProductVariantList = ({
@@ -16,9 +18,11 @@ const ProductVariantList = ({
   variantsList,
   onVariantSelect,
   selectedVariantId,
-  sellerOnlyTooltipText
+  sellerOnlyTooltipText,
+  onCloseVariants
 }: IProductVariantList) => {
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
+  const variantsRef = useRef<HTMLDivElement>(null);
 
   function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
     const selectedValue = e.currentTarget.value
@@ -30,8 +34,10 @@ const ProductVariantList = ({
     onVariantSelect(selectedProduct, variantsList)
   }
 
+  useOnClickOutside({ ref: variantsRef, onClose: onCloseVariants })
+
   return (
-    <div className={className ? className : ''}>
+    <div ref={variantsRef} className={className ? className : ''}>
       <ul className={styles.variantsList}>
         {variantsList.map((variant) => (
           <li key={variant.variantId} className={styles.listItem}>

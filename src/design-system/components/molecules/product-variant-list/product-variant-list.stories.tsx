@@ -19,7 +19,10 @@ const ProductVariantListStoryTemplate: Story = {
     function handleOnChange(selectedVariant) {
       alert(`Selected variant: ${selectedVariant.productName} - ${selectedVariant.variantName}`)
     }
-    return <ProductVariantList variantsList={args.variantsList} onVariantSelect={handleOnChange} selectedVariantId={args.selectedVariantId} />
+    function handleClose() {
+      console.log('Close');
+    }
+    return <ProductVariantList onCloseVariants={handleClose} variantsList={args.variantsList} onVariantSelect={handleOnChange} selectedVariantId={args.selectedVariantId} />
   },
 }
 

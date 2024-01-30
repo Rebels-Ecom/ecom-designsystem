@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
@@ -35,7 +35,8 @@ const ProductCardVertical = ({
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
   sellerOnlyTooltipText,
-  accessoryPotItemTooltipText
+  accessoryPotItemTooltipText,
+  onCloseVariants,
 }: IProductCard & TProductCardVertical) => {
   const {
     partNo,
@@ -59,7 +60,6 @@ const ProductCardVertical = ({
     unitLabel,
   } = product
   //const isLimitedProduct = product.partNo === '1109611' || product.partNo === '1174411' ? true : false
-
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
@@ -82,6 +82,7 @@ const ProductCardVertical = ({
         className={styles.productCardVertical}
         variantsList={productVariantList}
         onVariantSelect={handlePackageChange}
+        onCloseVariants={onCloseVariants}
         selectedVariantId={selectedVariantId}
         sellerOnlyTooltipText={sellerOnlyTooltipText}
       />
