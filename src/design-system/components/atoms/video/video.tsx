@@ -22,9 +22,9 @@ const Video = ({videoUrl, videoWithOpacity, className, mobileUrl} : IVideo) => {
 
     useEffect(() => {
         if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.defaultMuted = true;
           videoRef.current.autoplay = true
-          videoRef.current.defaultMuted = true
-          videoRef.current.muted = true
           videoRef.current.loop = true
         }
 
@@ -38,7 +38,7 @@ const Video = ({videoUrl, videoWithOpacity, className, mobileUrl} : IVideo) => {
     
     return (
         <>
-            <video ref={videoRef} playsInline className={cx(styles.video, className && className)}>
+            <video ref={videoRef} loop={true} playsInline className={cx(styles.video, className && className)}>
               <source src={source} type="video/mp4" />
             </video>
             {videoWithOpacity && <div className={cx(styles.opacityLayer, videoWithOpacity==='light' ? styles.withLightBackground : styles.withDarkBackground)}/>}

@@ -46,7 +46,7 @@ const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArr
             focus: breakpoints?.sm?.dotPerItem ? 0 : undefined
           },
         }
-      }}
+      }} 
     >
       <SplideTrack>
         {props.children}

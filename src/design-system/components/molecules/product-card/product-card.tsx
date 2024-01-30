@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { getProductPicture } from '../../../../helpers/picture-helper'
-import { IButton } from '../../atoms/button/button'
 import { IProduct } from '../../../../types/product'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
@@ -16,7 +15,8 @@ export type TProductCardVertical = {
   variantsOpen?: boolean
   handlePackageChange: CallableFunction
   selectedVariantId?: string
-  onVariantsButtonClick: CallableFunction
+  onVariantsButtonClick: CallableFunction;
+  onCloseVariants: CallableFunction;
 }
 
 export type TProductCardHorizontal = {
@@ -130,6 +130,10 @@ function ProductCard({
   function handleVariantsButtonClick() {
     setVariantsListOpen(true)
   }
+  
+  function handleCloseVariants() {
+    setVariantsListOpen(false)
+  }
 
   function handleRemoveProduct(id: string) {
     onRemoveProduct && onRemoveProduct(id)
@@ -225,6 +229,7 @@ function ProductCard({
         maxQuantity={maxQuantity}
         sellerOnlyTooltipText={sellerOnlyTooltipText}
         accessoryPotItemTooltipText={accessoryPotItemTooltipText}
+        onCloseVariants={handleCloseVariants}
       />
     )
   }

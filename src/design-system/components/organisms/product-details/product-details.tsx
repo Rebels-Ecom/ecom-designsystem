@@ -122,6 +122,10 @@ const ProductDetails = ({
     setVariantsListOpen(true)
   }
 
+  function handleCloseVariants() {
+    setVariantsListOpen(false);
+  }
+
   function getProductSpecs(specs: Array<IProductSpec>) {
     if (specs && Array.isArray(specs) && specs.length > 0) {
       return specs.map((spec, index) => {
@@ -211,6 +215,7 @@ const ProductDetails = ({
             onVariantSelect={handlePackageChange}
             selectedVariantId={product.selectedVariantId}
             sellerOnlyTooltipText={sellerOnlyTooltipText}
+            onCloseVariants={handleCloseVariants}
           />
         ) : (
           <>
