@@ -14,14 +14,13 @@
 }
 
 .top-right {
-	top: 0.75rem;
-	right: 0.75rem;
-
+	top: 0rem;
+	right: 0rem;
 }
 
 .top-left {
-	top: 0.75rem;
-	left: 0.75rem;
+	top: 0rem;
+	left: 0rem;
 }
 
 .toast {
@@ -34,8 +33,7 @@
 	-ms-overflow-style: none;
     scrollbar-width: none;  
 	padding: 1rem;
-	width: 87vw;
-	border-radius: 0.25rem;
+	width: 90vw;
 	box-shadow: 0 0 0.5rem #999;
 	/* opacity: .9; */
 	@media(min-width: 64em){

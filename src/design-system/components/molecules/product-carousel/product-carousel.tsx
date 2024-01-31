@@ -3,9 +3,9 @@ import { Carousel } from '../../organisms'
 import { CarouselItem } from '../../organisms/carousel/carousel'
 import { ContentWrapper } from '../../layouts'
 
-export interface IProductCarousel { 
-    productCards: Array<TProductCard>
-    addToCart: CallableFunction
+export interface IProductCarousel {
+  productCards: Array<TProductCard>
+  addToCart: CallableFunction
 }
 
 const ProductCarousel = ({ productCards, addToCart }: IProductCarousel) => {
@@ -15,12 +15,20 @@ const ProductCarousel = ({ productCards, addToCart }: IProductCarousel) => {
         splideProps={{
           options: {
             gap: '1rem',
-            autoplay: true,
-            pauseOnHover: true
-          }
+            autoplay: 'pause',
+            pauseOnHover: true,
+            intersection: {
+              inView: {
+                autoplay: true,
+              },
+              outView: {
+                autoplay: false,
+              },
+            },
+          },
         }}
         offsetArrows
-        >
+      >
         {productCards.map((productCard: TProductCard, index: number) => {
           return (
             <CarouselItem key={index}>

@@ -2,8 +2,10 @@
     width: 100%;
     position: relative;
     display: flex;
-    @media (min-width: 64em) {
-      height: 11.5rem;
+    align-items: center;
+    height: 11.5rem;
+    @media (min-width: 48em) {
+      height: 10.5rem;
     }
   }
     
@@ -18,12 +20,11 @@
     }
   }
 
-
   .quantityInput {
     width: 100%;
     margin: 0.5rem 0;
     align-items: baseline;
-    
+    flex: 1;
     
     & > input {
       &:disabled{
@@ -42,7 +43,7 @@
   }
   
   .contentWrapper {
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
   }
@@ -50,23 +51,31 @@
   .headingWrapper {
     text-decoration: none;
     color: var(--color-text-default);
+    flex: 1;
   }
   
   .heading {
     margin: 0.5rem 0;
     font-family: var(--font-family-secondary);
     font-weight: var(--font-weight-bold);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
   }
   
   .textGray {
     margin: 0 0 0.5rem 0;
     color: var(--color-text-decorative-grey);
+    flex: 1;
   }
   
   .textPurple {
     font-family: var(--font-family-secondary);
     margin: 0 0 0.5rem 0;
     color: var(--color-text-decorative-purple);
+    flex: 1;
   }
     
   .cardPicture {
@@ -91,10 +100,7 @@
     width: 10%;
     height:100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-start;
-    @media (min-width: 48em) {
-      width: 20%;
-    }
   }
   
