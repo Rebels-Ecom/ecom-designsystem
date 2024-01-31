@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { InputText } from '../../atoms'
 import styles from './product-quantity-input.module.css'
 
@@ -12,7 +12,7 @@ export interface IProductQuantityInput {
   disabled?: boolean
   disabledNoBorder?: boolean
   onChange?: CallableFunction
-  maxQuantity?: number;
+  maxQuantity?: number
 }
 
 const ProductQuantityInput = ({
@@ -25,15 +25,15 @@ const ProductQuantityInput = ({
   disabled = false,
   disabledNoBorder = false,
   onChange,
-  maxQuantity
+  maxQuantity,
 }: IProductQuantityInput) => {
-  const [val, setVal] = useState(quantity);
+  const [val, setVal] = useState(quantity)
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (maxQuantity && (Number(e.target.value) > maxQuantity)) {
-      return;
+    if (maxQuantity && Number(e.target.value) > maxQuantity) {
+      return
     }
     onChange?.(e)
-    setVal(e.target.value);
+    setVal(e.target.value)
   }
 
   return (
@@ -61,7 +61,7 @@ const ProductQuantityInput = ({
         }}
       />
       <div>
-        <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} stick)`}</p>
+        <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
         <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>
       </div>
     </div>
