@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button, ExpandableWrapper, Heading, Icon, LinkButton, Text } from '../../atoms';
 import styles from './form.module.css';
 import { FlexContainer } from '../../layouts';
-import { IFormTemplateProps, TFormFieldType, TFormInputType } from './types';
+import { IFormTemplateProps, TFormFieldType } from './types';
 import { InputField } from './components/input-field';
 import { validateField } from './helpers';
 import cx from 'classnames';
@@ -18,7 +18,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     if (!formRef.current) {
       return
     }
-    const isValid = fields.some((field) => field.required && !field.valid) ? false : true
+    const isValid = fields.some((field) => field.required && !field.valid) ? false : true;
 
     setIsValid(isValid)
   }, [fields])
@@ -75,6 +75,23 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     })
   }, [])
 
+  const handleValidateAutofill = (name: string) => {
+    setFields((prevFields) => {
+      const updatedFields = prevFields.map((field) => {
+        if (field.name === name) {
+          return {
+            ...field,
+            valid: true,
+          }
+        } else {
+          return field
+        }
+      })
+
+      return updatedFields;
+    })
+  }
+
   // TODO: extract success message to separate component
   return responseMessage ? (
     <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2  }}>
@@ -86,7 +103,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
       </div>
     </motion.div>
   ) : (
-    <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit}>
+    <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit} autoComplete='on'>
       <div>
         {formTitle && (
           <Heading order={3} className={styles.formTitle}>
@@ -111,6 +128,8 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
                     focusOnRender={i === 0}
                     readonly={field.blocked}
                     disabled={loading}
+                    validateAutofill={props.isLogin ? handleValidateAutofill : undefined}
+
                   />
                 )}
               </div>
@@ -134,7 +153,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             <Button
               key={`${action.type}-${i}`}
               {...action}
-              disabled={props.isLogin ? false : (action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading))}
+              disabled={action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading)}
               loading={action.type === 'submit' && loading}
             />
           ))}
