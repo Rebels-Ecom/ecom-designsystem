@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IProduct } from '../../../../types/product'
 import { convertNumToStr } from '../../../../helpers/format-helper'
@@ -15,8 +15,8 @@ export type TProductCardVertical = {
   variantsOpen?: boolean
   handlePackageChange: CallableFunction
   selectedVariantId?: string
-  onVariantsButtonClick: CallableFunction;
-  onCloseVariants: CallableFunction;
+  onVariantsButtonClick: CallableFunction
+  onCloseVariants: CallableFunction
 }
 
 export type TProductCardHorizontal = {
@@ -58,9 +58,9 @@ export interface IProductCard {
   displaySmallImage?: boolean
   linkComponent?: any
   className?: string
-  maxQuantity?: number;
-  sellerOnlyTooltipText?: string;
-  accessoryPotItemTooltipText?: string;
+  maxQuantity?: number
+  sellerOnlyTooltipText?: string
+  accessoryPotItemTooltipText?: string
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -93,7 +93,7 @@ function ProductCard({
   className,
   maxQuantity,
   sellerOnlyTooltipText,
-  accessoryPotItemTooltipText
+  accessoryPotItemTooltipText,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -109,11 +109,18 @@ function ProductCard({
     selectedVariantId: partNo,
   })
 
+  useEffect(() => {
+    setProduct((prevState) => ({
+      ...prevState,
+      quantity: quantity ? quantity : '1',
+    }))
+  }, [quantity])
+
   function handleOnChangeQuantity(productQuantity: number) {
-    if (maxQuantity && (productQuantity > maxQuantity)) {
-      return;
+    if (maxQuantity && productQuantity > maxQuantity) {
+      return
     }
-    
+
     setProduct((prevState) => {
       const newProduct = {
         ...prevState,
@@ -130,7 +137,7 @@ function ProductCard({
   function handleVariantsButtonClick() {
     setVariantsListOpen(true)
   }
-  
+
   function handleCloseVariants() {
     setVariantsListOpen(false)
   }
