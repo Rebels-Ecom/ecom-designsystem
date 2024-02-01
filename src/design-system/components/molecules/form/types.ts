@@ -38,7 +38,7 @@ export type TFormInputType = Omit<IInputField, "onChange" | "value"> &
      * @default 'half'
      */
     size?: 'half' | 'full';
-    onControlledChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onControlledChange?: (value: string) => void;
   };
 
 // export type TFormInputMultiType = Omit<

@@ -35,8 +35,8 @@ export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> 
   usernameError?: string;
   passwordError?: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onUsernameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onPasswordChange: (value: string) => void;
+  onUsernameChange: (value: string) => void;
   loading?: boolean;
   logo: TLogotype;
   captcha?: JSX.Element;
