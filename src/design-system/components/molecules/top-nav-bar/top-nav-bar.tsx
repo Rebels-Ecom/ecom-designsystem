@@ -11,7 +11,8 @@ import cx from 'classnames'
 export type TTopNavLinks = Array<TIconNavLink>
 
 export interface ITopNavBar {
-  links: TTopNavLinks
+  leftLinks: TTopNavLinks
+  rightLinks: TTopNavLinks
   userLoggedIn: boolean
   hasActiveUser?: boolean
   btnIcon?: TIcon
@@ -24,7 +25,8 @@ export interface ITopNavBar {
 }
 
 const TopNavBar = ({
-  links,
+  leftLinks = [],
+  rightLinks = [],
   userLoggedIn=false,
   hasActiveUser=false,
   btnIcon,
@@ -56,28 +58,26 @@ const TopNavBar = ({
     )
   }
 
-  if(!Array.isArray(links) || links.length<=0){
+  if (leftLinks?.length <= 0 && rightLinks?.length <= 0) {
     return null
   }
 
-  const linksLeft = links.slice(0, Math.ceil(links.length / 2))
-  const linksRight = linksLeft.length > 1 ? links.slice(- Math.floor(links.length / 2)) : [];
-
   const renderLeftLinks = useCallback(() => {
-    return linksLeft?.map((link: TIconNavLink, index) => (
+    return leftLinks?.map((link: TIconNavLink, index) => (
       <li key={`${link.href}-${index}`} className={styles.navLink}>
         {renderLink(link)}
       </li>
     ))
-  }, [links])
+  }, [leftLinks])
   
   const renderRightLinks = useCallback(() => {
-    return linksRight?.map((link: TIconNavLink, index) => (
+    return rightLinks?.map((link: TIconNavLink, index) => (
       <li key={`${link.href}-${index}`} className={styles.navLink}>
         {renderLink(link)}
       </li>
     ))
-  }, [links])
+  }, [rightLinks])
+
 
   return(
     <div className={cx(styles.topNavBar, hasActiveUser ? styles.adminTopNavBar : styles.userTopNavBar)}>
