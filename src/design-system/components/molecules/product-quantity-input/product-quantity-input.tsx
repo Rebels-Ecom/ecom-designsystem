@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { InputText } from '../../atoms'
 import styles from './product-quantity-input.module.css'
 
@@ -28,6 +28,11 @@ const ProductQuantityInput = ({
   maxQuantity,
 }: IProductQuantityInput) => {
   const [val, setVal] = useState(quantity)
+
+  useEffect(() => {
+    setVal(quantity)
+  }, [quantity])
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (maxQuantity && Number(e.target.value) > maxQuantity) {
       return
