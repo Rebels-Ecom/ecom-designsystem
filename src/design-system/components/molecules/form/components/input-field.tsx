@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute, useCallback, useEffect, useRef, useState } from 'react'
+import { HTMLInputTypeAttribute, useCallback, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import styles from './input-field.module.css'
 import { IUILink, UILink } from '../../../atoms/ui-link/ui-link'
