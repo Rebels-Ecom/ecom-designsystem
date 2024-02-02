@@ -64,6 +64,10 @@
     padding: 0.5rem 0.25rem;
     background: var(--grey-300);
     border: none;
+    color: var(--grey-900);
+    @media (min-width: 64em) {
+      color: var(--color-text-subdued);
+  }
   }
 
   &.error {
