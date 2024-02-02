@@ -184,7 +184,7 @@
   /* Color */
   --color-text-disabled: #666666;
   --color-text-critical: #cc0028;
-  --color-text-subdued: #666666;
+  --color-text-subdued: #676A6B;
   --color-text-decorative-one: #850020;
   --color-text-decorative-two: #ff3846;
   --color-text-decorative-purple: #9A576F;
@@ -430,7 +430,7 @@
   --color-text-blue: #003E51;
   --color-text-orange: #DE9034;
   --color-text-orange-hover: #E28F33;
-  --color-text-subdued: var(--grey-800);
+  --color-text-subdued: #676A6B;
 
 
   /* Surface */
@@ -447,7 +447,7 @@
   /* Color */
   --color-text-disabled: #b3b3b3;
   --color-text-critical: #cc0028;
-  --color-text-subdued: #b3b3b3;
+  --color-text-subdued: #676A6B;
   --color-text-decorative-one: #850020;
   --color-text-decorative-two: #ff3846;
   --color-text-decorative-purple: #9A576F;
