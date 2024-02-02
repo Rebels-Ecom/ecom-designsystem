@@ -28,8 +28,8 @@ const Video = ({videoUrl, videoWithOpacity, className, mobileUrl} : IVideo) => {
           videoRef.current.loop = true;
           videoRef.current.playsInline = true;
 
-          if (videoRef.current.paused && videoRef.current.readyState >= 2) {
-            videoRef.current.play();
+          if (videoRef.current.paused) {
+            videoRef.current?.play();
           }
         }
 
