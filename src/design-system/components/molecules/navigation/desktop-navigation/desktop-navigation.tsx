@@ -12,7 +12,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
   const [hoveredTopLevel, setHoveredTopLevel] = useState<TNavCategory | TNavLink>();
   const [activeSecondLevel, setActiveSecondLevel] = useState<TNavCategory | TNavLink | undefined>();
   const [thirdLevelHeight, setThirdLevelHeight] = useState<'auto' | number>('auto');
-  const navRef = useRef<HTMLDivElement>(null);
+  const secondLevelInnerRef = useRef<HTMLDivElement>(null);
   const secondLevelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,10 +47,16 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
     setActiveTabs();
   }, []);
 
-  useOnClickOutside({ ref: navRef, onClose: () => setActiveTopLevel(undefined) })
+  useOnClickOutside({ ref: secondLevelInnerRef, onClose: (e: any) => {
+    if (e?.srcElement?.classList?.contains(styles.topLevelTrigger)) {
+      return;
+    }
+
+    setActiveTopLevel(undefined);
+  } })
 
   return (
-    <nav className={styles.desktopNavigation} ref={navRef}>
+    <nav className={styles.desktopNavigation}>
       <ContentWrapper padding={0}>
         <motion.div
           className={styles.topLevel}
@@ -81,7 +87,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                   {isLink(cat) && (
                     <motion.a
                       key={`${cat.name}-${i}`}
-                      className={cx(styles.topLevelLink, {[styles.active]: activeTopLevel === cat})}
+                      className={cx(styles.topLevelLink, styles.topLevelTrigger, {[styles.active]: activeTopLevel === cat})}
                       href={cat.href}
                       target={cat.openInNewTab ? '_blank' : '_self'}
                     >
@@ -91,7 +97,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                   {isCategory(cat) && (
                     <motion.button
                       key={`${cat.name}-${i}`}
-                      className={cx(styles.topLevelLink, {[styles.active]: activeTopLevel === cat})}
+                      className={cx(styles.topLevelLink, styles.topLevelTrigger, {[styles.active]: activeTopLevel === cat})}
                       onClick={() => {
                         if (activeTopLevel?.name === cat.name) {
                           setActiveTopLevel(undefined)
@@ -101,7 +107,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                       }}
                     >
                       {cat.name}
-                      <Icon icon={activeTopLevel?.name === cat.name ? "icon-chevron-up" : "icon-chevron-down"} />
+                      <Icon className={styles.topLevelTrigger} icon={activeTopLevel?.name === cat.name ? "icon-chevron-up" : "icon-chevron-down"} />
                     </motion.button>
                   )}
                 </motion.li>
@@ -129,6 +135,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
           >
             <ContentWrapper padding={0}>
               <motion.div
+                ref={secondLevelInnerRef}
                 className={styles.secondLevelInner}
                 style={{ height: `${thirdLevelHeight}px` }}
                 initial={{ y: '-100%', opacity: 0 }}

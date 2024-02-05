@@ -19,9 +19,25 @@
         list-style: none;
         margin: 0;
         padding: 0;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+          height: 0.5rem;  
+        }
+
+        &::-webkit-scrollbar-track {
+            border-radius: 0.5rem;
+            background: rgba(251, 250, 249, 0.1);
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: var(--cta-tertiary-default);
+            border-radius: 0.5rem;
+        }
         
         & .topLevelLinkInner {
           position: relative;
+          flex: 1 0 auto;
 
           & .topLevelLinkActive {
             position: absolute;
@@ -38,8 +54,8 @@
             z-index: 10;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem 1rem 0;
+            gap: 0.25rem;
+            padding: 1rem 1rem 1rem 0;
             border: none;
             background: none;
             text-decoration: none;
@@ -51,6 +67,10 @@
             &.active {
               color: var(--cta-tertiary-default);
             }
+          }
+
+          & .topLevelTrigger {
+            opacity: 1;
           }
         }
       }
@@ -68,7 +88,7 @@
       & .secondLevelInner {
         display: flex;
         width: 100%;
-        padding-top: 2rem;
+        padding-top: 1rem;
         overflow: hidden;
         position: relative;
 
