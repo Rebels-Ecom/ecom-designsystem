@@ -32,6 +32,7 @@ export interface ICarousel {
    * Determines if arrows should be placed outside of carousel
    */
   offsetArrows?: boolean;
+  onChange?: (data: any, index: any, prev: any, dest: any) => void;
   padding?: number | string | {
     left?: number | string;
     right?: number | string;

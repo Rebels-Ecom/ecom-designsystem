@@ -3,9 +3,15 @@ import { Carousel, CarouselItem } from '../carousel/carousel'
 
 export interface IHeroCarousel {
   heroComponents: Array<IHero>
+  onSlideChange?: (index: number, prev: number) => void;
 }
 
-const HeroCarousel = ({ heroComponents }: IHeroCarousel) => {
+const HeroCarousel = ({ heroComponents, onSlideChange }: IHeroCarousel) => {
+  const handleChange = (_: any, index: any, prev: any) => {
+    console.log(':: CHANGING CAROUSEL SLIDE :: ', index, prev);
+    onSlideChange?.(index, prev);
+  }
+
   return (
     <Carousel
       splideProps={{
@@ -16,6 +22,7 @@ const HeroCarousel = ({ heroComponents }: IHeroCarousel) => {
           type: 'loop'
         }
       }}
+      onChange={handleChange}
       breakpoints={{
         lg: {
           perPage: 1,
