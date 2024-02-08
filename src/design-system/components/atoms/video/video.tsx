@@ -29,7 +29,17 @@ const Video = ({videoUrl, videoWithOpacity, className, mobileUrl} : IVideo) => {
           videoRef.current.playsInline = true;
 
           if (videoRef.current.paused) {
-            videoRef.current?.play();
+            const playPromise = videoRef.current.play();
+
+            if (playPromise !== undefined) {
+              playPromise.then(_ => {
+                videoRef.current?.classList.add('playing');
+              })
+              .catch(error => {
+                videoRef.current?.classList.remove('playing');
+                console.log(error);
+              });
+            }
           }
         }
 

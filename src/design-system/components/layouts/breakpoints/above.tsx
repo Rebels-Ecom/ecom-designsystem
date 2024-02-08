@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 import MediaQuery, { useMediaQuery } from 'react-responsive'
 import { breakpoints, Breakpoint } from '.'
 
+/** @deprecated Use mediaQueryHelper hook instead */
 const Above = ({ breakpoint, children }: { breakpoint: Breakpoint; children: (matches: boolean) => React.ReactNode }) => {
   const minWidth = breakpoints[breakpoint]
   const matches = useMediaQuery({ minWidth })
