@@ -9,14 +9,13 @@ import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { ITag, Tag } from '../../atoms/tag/tag'
-import { Below } from '../../layouts/breakpoints/below'
-import { Above } from '../../layouts/breakpoints/above'
 import { LoadingBars } from '../../molecules'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 import { IconButton } from '../../atoms/icon-button/icon-button'
 import { Icon, IconWithTooltip } from '../../atoms'
+import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 
 export interface IProductSpec {
   name: string
@@ -109,6 +108,7 @@ const ProductDetails = ({
     currencyLabel,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
+  const { isMobile } = mediaQueryHelper()
   const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
@@ -184,7 +184,7 @@ const ProductDetails = ({
         </div>
       )}
 
-      <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
+      {isMobile && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}
 
       <div className={cx(styles.content, styles.leftContent)}>
         {productDetail?.loaderValues && productDetail.loaderValues.length > 0 && (
@@ -213,7 +213,7 @@ const ProductDetails = ({
           />
         ) : (
           <>
-            <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Above>
+            {!isMobile && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}
             <div>
               <h3 className={styles.heading}>{product.productName}</h3>
               {!isRestrictedUser && (
