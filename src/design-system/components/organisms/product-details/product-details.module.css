@@ -32,7 +32,7 @@
         height: 100%;
         /* max-width: var(--content-max-width-text); */
         max-width: 50%;
-        gap: 0.5rem;
+        gap: 0.8rem;
       }
 
       &.leftContent {
@@ -137,6 +137,7 @@
       
           @media (min-width: 64em) {
               width: fit-content;
+              min-width: 12rem;
           }
         }
       }

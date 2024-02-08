@@ -14,14 +14,15 @@ export interface IProductVariant {
   country: string
   priceStr: string
   salesUnit: string
-  sellerOnly: boolean;
+  sellerOnly: boolean
   image: IPicture
   onChange: CallableFunction
   checked: boolean
   partNoLabel: string
   unitLabel: string
   currencyLabel: string
-  sellerOnlyTooltipText?: string;
+  sellerOnlyTooltipText?: string
+  isRestrictedUser?: boolean
 }
 
 const ProductVariant = ({
@@ -38,22 +39,17 @@ const ProductVariant = ({
   unitLabel,
   sellerOnly,
   sellerOnlyTooltipText,
+  isRestrictedUser,
 }: IProductVariant) => {
   return (
     <div className={styles.productVariant}>
-      <FlexContainer stretch justifyContent='flex-end' alignItems='center' className={styles.topRow}>
+      <FlexContainer stretch justifyContent="flex-end" alignItems="center" className={styles.topRow}>
         {sellerOnly && (
           <>
             {sellerOnlyTooltipText ? (
-              <IconWithTooltip
-                content={sellerOnlyTooltipText}
-                icon={{ icon: 'icon-eye' }}
-              />
+              <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
             ) : (
-              <Icon
-                icon={'icon-eye'}
-                size={'large'}
-              />
+              <Icon icon={'icon-eye'} size={'large'} />
             )}
           </>
         )}
@@ -61,14 +57,18 @@ const ProductVariant = ({
           <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />
         </div>
       </FlexContainer>
-      <FlexContainer stretch alignItems='center'>
+      <FlexContainer stretch alignItems="center">
         <div className={styles.imageWrapper}>
           <Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />{' '}
         </div>
         <div className={`${styles.contentWrapper}`}>
           <p className={styles.heading}>{variantName}</p>
-          <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
-          <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>
+          {!isRestrictedUser && (
+            <>
+              <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>
+            </>
+          )}
         </div>
       </FlexContainer>
     </div>

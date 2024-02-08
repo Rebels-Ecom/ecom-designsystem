@@ -8,9 +8,10 @@ export interface IProductVariantList {
   className?: string
   variantsList: Array<IProductVariant>
   onVariantSelect: CallableFunction
-  selectedVariantId: string;
-  sellerOnlyTooltipText?: string;
-  onCloseVariants: CallableFunction;
+  selectedVariantId: string
+  sellerOnlyTooltipText?: string
+  onCloseVariants: CallableFunction
+  isRestrictedUser?: boolean
 }
 
 const ProductVariantList = ({
@@ -19,10 +20,11 @@ const ProductVariantList = ({
   onVariantSelect,
   selectedVariantId,
   sellerOnlyTooltipText,
-  onCloseVariants
+  onCloseVariants,
+  isRestrictedUser,
 }: IProductVariantList) => {
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
-  const variantsRef = useRef<HTMLDivElement>(null);
+  const variantsRef = useRef<HTMLDivElement>(null)
 
   function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
     const selectedValue = e.currentTarget.value
@@ -47,6 +49,7 @@ const ProductVariantList = ({
               onChange={handleOnChangeVariant}
               checked={variant.variantId === selectedProductVariantId}
               sellerOnlyTooltipText={sellerOnlyTooltipText}
+              isRestrictedUser={isRestrictedUser}
             />
           </li>
         ))}
