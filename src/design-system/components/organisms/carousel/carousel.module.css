@@ -4,10 +4,24 @@
 
   & .slide {
     display: flex;
+
+    @media (max-width: 48em) {
+      & > div {
+        width: 100%;
+      }
+    }
   }
 
   & .pagination {
     padding: 0 4rem;
+    
+    &.hidePagination {
+      display: none;
+      
+      @media (min-width: 48em) {
+        display: flex;
+      }
+    }
 
     & .page {
       background-color: var(--cta-primary-default);
