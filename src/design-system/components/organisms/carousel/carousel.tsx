@@ -1,7 +1,7 @@
 import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
 import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/react-splide/css'
-import { PropsWithChildren } from 'react'
+import { Children, PropsWithChildren } from 'react'
 import styles from './carousel.module.css'
 import cx from 'classnames'
 import { ICarousel } from './types'
@@ -9,6 +9,7 @@ import { ICarousel } from './types'
 export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
 
 const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
+  const noOfChildren = Children?.count(props.children);
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
@@ -19,7 +20,7 @@ const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArr
           arrow: cx('splide__arrow', styles.arrow, { [styles.offset]: offsetArrows }),
           next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, { [styles.hasPadding]: !!padding }),
           prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, { [styles.hasPadding]: !!padding }),
-          pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination),
+          pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination, { [styles.hidePagination]: !!padding && noOfChildren > 14 }),
           page: cx('splide__pagination__page your-class-page', styles.page),
         },
         mediaQuery: 'min',
