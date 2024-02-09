@@ -119,9 +119,9 @@
 
   & .buttonsWrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
     align-self: flex-end;
-    align-items: flex-end;
+    align-items: center;
     margin-left: auto;
     gap: 0.5rem;
     width: 100%;
