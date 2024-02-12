@@ -5,6 +5,7 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { ProductCardHorizontal } from '../product-card-horizontal/product-card-horizontal'
 import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
+import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
 import { IPicture } from '../../atoms/picture/picture'
 
 export type TCardDisplayType = 'vertical' | 'horizontal'
@@ -27,6 +28,7 @@ export type TProductCardHorizontal = {
 
 export interface IProductCard {
   cardDisplay: TCardDisplayType
+  isRestrictedUser?: boolean
   product: IProduct
   loading: boolean
   buttonLoading?: boolean
@@ -67,6 +69,7 @@ export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHo
 
 function ProductCard({
   cardDisplay,
+  isRestrictedUser,
   product,
   loading,
   buttonLoading,
@@ -205,6 +208,30 @@ function ProductCard({
     )
   }
   if (cardDisplay === 'vertical') {
+    if (isRestrictedUser)
+      return (
+        <ProductCardRestricted
+          cardDisplay="vertical"
+          product={myProduct}
+          productImage={myProduct.productImage}
+          loading={loading}
+          buttonLoading={buttonLoading}
+          disabled={disabled}
+          variantsOpen={variantsListOpen}
+          onVariantsButtonClick={handleVariantsButtonClick}
+          handlePackageChange={handlePackageChange}
+          selectedVariantId={myProduct.selectedVariantId}
+          addToCart={addToCart}
+          addToCartBtnLabel={addToCartBtnLabel}
+          hideCartButton={hideCartButton}
+          hidePrice={hidePrice}
+          linkComponent={Link}
+          className={className}
+          sellerOnlyTooltipText={sellerOnlyTooltipText}
+          accessoryPotItemTooltipText={accessoryPotItemTooltipText}
+          onCloseVariants={handleCloseVariants}
+        />
+      )
     return (
       <ProductCardVertical
         cardDisplay="vertical"

@@ -9,14 +9,13 @@ import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { ITag, Tag } from '../../atoms/tag/tag'
-import { Below } from '../../layouts/breakpoints/below'
-import { Above } from '../../layouts/breakpoints/above'
 import { LoadingBars } from '../../molecules'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 import { IconButton } from '../../atoms/icon-button/icon-button'
 import { Icon, IconWithTooltip } from '../../atoms'
+import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 
 export interface IProductSpec {
   name: string
@@ -34,6 +33,7 @@ export interface IProductDetail {
 
 export interface IProductDetails extends IProduct {
   product: IProduct
+  isRestrictedUser: boolean
   productDetail: IProductDetail
   changePackagingButton: IButton
   addToCart: CallableFunction
@@ -46,11 +46,12 @@ export interface IProductDetails extends IProduct {
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   onPackageChange?: CallableFunction
-  sellerOnlyTooltipText?: string;
-  accessoryPotItemTooltipText?: string;
+  sellerOnlyTooltipText?: string
+  accessoryPotItemTooltipText?: string
 }
 
 const ProductDetails = ({
+  isRestrictedUser,
   partNo,
   productName,
   primaryImageUrl,
@@ -107,6 +108,7 @@ const ProductDetails = ({
     currencyLabel,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
+  const { isMobile } = mediaQueryHelper()
   const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
@@ -123,7 +125,7 @@ const ProductDetails = ({
   }
 
   function handleCloseVariants() {
-    setVariantsListOpen(false);
+    setVariantsListOpen(false)
   }
 
   function getProductSpecs(specs: Array<IProductSpec>) {
@@ -162,25 +164,16 @@ const ProductDetails = ({
           {sellerOnly && (
             <>
               {sellerOnlyTooltipText ? (
-                <IconWithTooltip
-                  content={sellerOnlyTooltipText}
-                  icon={{ icon: 'icon-eye' }}
-                />
+                <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
               ) : (
-                <Icon
-                  icon={'icon-eye'}
-                  size={'large'}
-                />
+                <Icon icon={'icon-eye'} size={'large'} />
               )}
             </>
           )}
           {isAccessoryPotItem && (
             <>
               {accessoryPotItemTooltipText ? (
-                <IconWithTooltip
-                  content={accessoryPotItemTooltipText}
-                  text='S'
-                />
+                <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
               ) : (
                 <span style={{ fontSize: '0.875rem', width: '1.25rem', height: '1.25rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <b>S</b>
@@ -191,7 +184,7 @@ const ProductDetails = ({
         </div>
       )}
 
-      <Below breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Below>
+      {isMobile && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}
 
       <div className={cx(styles.content, styles.leftContent)}>
         {productDetail?.loaderValues && productDetail.loaderValues.length > 0 && (
@@ -216,19 +209,25 @@ const ProductDetails = ({
             selectedVariantId={product.selectedVariantId}
             sellerOnlyTooltipText={sellerOnlyTooltipText}
             onCloseVariants={handleCloseVariants}
+            isRestrictedUser={isRestrictedUser}
           />
         ) : (
           <>
-            <Above breakpoint="md">{(matches: any) => matches && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}</Above>
+            {!isMobile && productDetail.tags && <ProductTags tagsList={productDetail.tags} />}
             <div>
               <h3 className={styles.heading}>{product.productName}</h3>
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${product.priceLabel}: ${
-                product.packagePriceString
-              } ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
-              <p className={cx(styles.textGrey, 'bodyS')}>
-                {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
-              </p>
-              <p className={cx(styles.textGrey, 'bodyS')}>{`${partNoLabel} ${product.partNo}`}</p>
+              {!isRestrictedUser && (
+                <>
+                  <p className={cx(styles.textPurple, 'bodyS')}>{`${product.priceLabel}: ${
+                    product.packagePriceString
+                  } ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
+
+                  <p className={cx(styles.textGrey, 'bodyS')}>
+                    {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
+                  </p>
+                  <p className={cx(styles.textGrey, 'bodyS')}>{`${partNoLabel} ${product.partNo}`}</p>
+                </>
+              )}
             </div>
 
             {campaign?.title && <CampaignBox {...campaign} />}
@@ -252,16 +251,18 @@ const ProductDetails = ({
                 {product.packaging}
               </Button>
             )}
-            <ProductQuantityInput
-              className={styles.quantityInput}
-              salesUnit={product.salesUnit}
-              itemNumberPerSalesUnit={product.itemNumberPerSalesUnit}
-              totalPrice={product.totalPrice}
-              quantity={product.quantity}
-              quantityInputId={product.partNo}
-              onChange={handleOnChangeQuantity}
-            />
-            {packagePerPallet && (
+            {!isRestrictedUser && (
+              <ProductQuantityInput
+                className={styles.quantityInput}
+                salesUnit={product.salesUnit}
+                itemNumberPerSalesUnit={product.itemNumberPerSalesUnit}
+                totalPrice={product.totalPrice}
+                quantity={product.quantity}
+                quantityInputId={product.partNo}
+                onChange={handleOnChangeQuantity}
+              />
+            )}
+            {!isRestrictedUser && packagePerPallet && (
               <p className={cx(styles.textGrey, 'bodyS')}>{`${packagePerPalletLabel1} ${packagePerPallet.value} ${packagePerPalletLabel2}`}</p>
             )}
             <div className={styles.buttonsWrapper}>

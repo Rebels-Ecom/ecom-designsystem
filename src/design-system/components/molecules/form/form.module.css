@@ -12,6 +12,12 @@
     margin: 0 0 1rem;
   }
 
+  & .fieldsWrapper{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
   & .field {
     flex: 0 1 100%;
 
@@ -21,6 +27,10 @@
       }
       
       &.full {
+        flex: 0 1 100%;
+      }
+
+      &.fieldDirectionRow {
         flex: 0 1 100%;
       }
     }

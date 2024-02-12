@@ -1,6 +1,5 @@
-import React, { useRef } from 'react'
-import styles from './product-card-vertical.module.css'
-import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
+import React from 'react'
+import styles from './product-card-restricted.module.css'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { Picture, Placeholder, Button, IconButton, Icon } from '../../atoms'
 import cx from 'classnames'
@@ -9,14 +8,12 @@ import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardVertical } from '../product-card/product-card'
 import { IconWithTooltip } from '../../atoms'
 
-const ProductCardVertical = ({
+const ProductCardRestricted = ({
   product,
   loading = false,
   hideCartButton,
   addToCart,
   addToCartBtnLabel,
-  onChangeQuantity,
-  productQuantityDisabled,
   linkComponent: Link,
   variantsOpen,
   handlePackageChange,
@@ -24,56 +21,18 @@ const ProductCardVertical = ({
   productImage,
   onVariantsButtonClick,
   className,
-  defaultQuantity,
-  campaign,
   disabled,
   buttonLoading,
-  limitedProductText,
-  showFavoriteIcon,
-  isFavoriteIconActive,
-  onFavoriteIconClick,
-  showAddToPurchaseListIcon,
-  onSaveToPurchaseListClick,
   sellerOnlyTooltipText,
   accessoryPotItemTooltipText,
   onCloseVariants,
 }: IProductCard & TProductCardVertical) => {
-  const {
-    partNo,
-    partNoLabel,
-    productName,
-    productUrl,
-    productVariantList,
-    country,
-    packaging,
-    priceStr,
-    totalPrice,
-    quantity,
-    salesUnit,
-    itemNumberPerSalesUnit,
-    tags,
-    isLimitedProduct,
-    sellerOnly,
-    isAccessoryPotItem,
-    priceLabel,
-    currencyLabel,
-    unitLabel,
-  } = product
-  //const isLimitedProduct = product.partNo === '1109611' || product.partNo === '1174411' ? true : false
-  const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
+  const { partNo, productName, productUrl, productVariantList, country, packaging, quantity, tags, sellerOnly, isAccessoryPotItem } = product
 
-  function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
-    const quantity = parseInt(e.target.value) || 0
-    onChangeQuantity && onChangeQuantity(quantity)
-  }
+  const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
   function handleVariantBtnClick() {
     onVariantsButtonClick && onVariantsButtonClick()
-  }
-
-  const style: { [key: string]: string } = {
-    '--campaign-color': campaign?.color ?? '#FFF',
-    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
   }
 
   if (variantsOpen && selectedVariantId) {
@@ -85,25 +44,12 @@ const ProductCardVertical = ({
         onCloseVariants={onCloseVariants}
         selectedVariantId={selectedVariantId}
         sellerOnlyTooltipText={sellerOnlyTooltipText}
+        isRestrictedUser={true}
       />
     )
   } else {
     return (
-      <div
-        className={cx(
-          styles.productCardVertical,
-          className ? className : '',
-          {
-            [styles.campaign]: campaign?.title,
-          },
-          {
-            [styles.limitedProduct]: !campaign && isLimitedProduct && limitedProductText,
-          }
-        )}
-        style={style}
-      >
-        {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
-        {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
+      <div className={cx(styles.productCardVertical, className ? className : '')}>
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
             <>
@@ -125,7 +71,7 @@ const ProductCardVertical = ({
               )}
             </>
           )}
-          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={campaign ? tags.slice(0, 3) : tags} /> : null}
+          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
         </div>
         {loading ? (
           <Placeholder type="image" />
@@ -158,7 +104,6 @@ const ProductCardVertical = ({
             <Placeholder type={'heading'} />
             <Placeholder type={'heading'} />
             <Placeholder type={'p_long'} />
-            <Placeholder type={'p_long'} />
           </div>
         ) : (
           <div className={`${styles.cardContent}`}>
@@ -169,8 +114,7 @@ const ProductCardVertical = ({
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${partNo} ${country && `- ${country}`}`}</p>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${priceLabel}: ${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}`}</p>
+            {country && <p className={cx(styles.textGray, 'bodyS')}>{country}</p>}
           </div>
         )}
         <Button
@@ -184,23 +128,6 @@ const ProductCardVertical = ({
         >
           {packaging}
         </Button>
-        {loading ? (
-          <div className={styles.placeholderContent}>
-            <Placeholder type={'p_long'} />
-            <Placeholder type={'p_long'} />
-          </div>
-        ) : (
-          <ProductQuantityInput
-            className={styles.productCardInput}
-            salesUnit={salesUnit}
-            itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-            totalPrice={totalPrice}
-            quantity={defaultQuantity ?? quantity}
-            quantityInputId={partNo}
-            disabled={productQuantityDisabled}
-            onChange={handleOnChangeQuantity}
-          />
-        )}
         {!hideCartButton && (
           <div className={styles.cartButtonWrapper}>
             <Button
@@ -214,30 +141,6 @@ const ProductCardVertical = ({
             >
               {addToCartBtnLabel}
             </Button>
-            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-              <IconButton
-                type="button"
-                icon={'icon-file-plus'}
-                className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick(partNo)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-              />
-            )}
-            {showFavoriteIcon && onFavoriteIconClick && (
-              <IconButton
-                type="button"
-                icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
-                className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(partNo)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-              />
-            )}
           </div>
         )}
       </div>
@@ -245,4 +148,4 @@ const ProductCardVertical = ({
   }
 }
 
-export { ProductCardVertical }
+export { ProductCardRestricted }

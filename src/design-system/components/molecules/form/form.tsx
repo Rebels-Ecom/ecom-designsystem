@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button, ExpandableWrapper, Heading, Icon, LinkButton, Text } from '../../atoms';
-import styles from './form.module.css';
-import { FlexContainer } from '../../layouts';
-import { IFormTemplateProps, TFormFieldType } from './types';
-import { InputField } from './components/input-field';
-import { validateField } from './helpers';
-import cx from 'classnames';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Button, ExpandableWrapper, Heading, Icon, LinkButton, Text } from '../../atoms'
+import styles from './form.module.css'
+import { FlexContainer } from '../../layouts'
+import { IFormTemplateProps, TFormFieldType } from './types'
+import { InputField } from './components/input-field'
+import { validateField } from './helpers'
+import cx from 'classnames'
 
 const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, responseMessage, ...props }: IFormTemplateProps) => {
   const [fields, setFields] = useState<Array<TFormFieldType>>(props.fields)
@@ -18,7 +18,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
     if (!formRef.current) {
       return
     }
-    const isValid = fields.some((field) => field.required && !field.valid) ? false : true;
+    const isValid = fields.some((field) => field.required && !field.valid) ? false : true
 
     setIsValid(isValid)
   }, [fields])
@@ -43,7 +43,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
       const updatedFields = prevFields.map((field) => {
         if (field.name === fieldName) {
           if (field.alphaField) {
-            const fieldToMatch = prevFields.find(x => x.name === field.alphaField);
+            const fieldToMatch = prevFields.find((x) => x.name === field.alphaField)
             return {
               ...field,
               dirty: true,
@@ -88,23 +88,36 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         }
       })
 
-      return updatedFields;
+      return updatedFields
     })
   }
 
   // TODO: extract success message to separate component
   return responseMessage ? (
-    <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2  }}>
+    <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2 }}>
       <div className={styles.loaderContainer}>
         {responseMessage.icon && <Icon icon={responseMessage.icon} className={styles.successIcon} />}
-        {responseMessage.title && <Heading order={3} noMargin>{responseMessage.title}</Heading>}
-        <Text align='center'>{responseMessage.message}</Text>
-        {responseMessage.onClose && <Button type='button' surface='primary' onClick={responseMessage.onClose}>{responseMessage.closeLabel ?? 'Stäng'}</Button>}
+        {responseMessage.title && (
+          <Heading order={3} noMargin>
+            {responseMessage.title}
+          </Heading>
+        )}
+        <Text align="center">{responseMessage.message}</Text>
+        {responseMessage.onClose && (
+          <Button type="button" surface="primary" onClick={responseMessage.onClose}>
+            {responseMessage.closeLabel ?? 'Stäng'}
+          </Button>
+        )}
       </div>
     </motion.div>
   ) : (
-    <form ref={formRef} className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')} onSubmit={handleSubmit} autoComplete='on'>
-      <div>
+    <form
+      ref={formRef}
+      className={cx(styles.form, props.alignSubmitButtonHorizontally ? styles.formDirectionRow : '')}
+      onSubmit={handleSubmit}
+      autoComplete="on"
+    >
+      <div className={styles.fieldsWrapper}>
         {formTitle && (
           <Heading order={3} className={styles.formTitle}>
             {formTitle}
@@ -114,7 +127,10 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         <FlexContainer wrap>
           {fields?.map((field, i) => {
             return (
-              <div key={field.name} className={cx(styles.field, styles[field.size ?? 'half'])}>
+              <div
+                key={field.name}
+                className={cx(styles.field, props.alignSubmitButtonHorizontally ? styles.fieldDirectionRow : '', styles[field.size ?? 'half'])}
+              >
                 {field.fieldType === 'input' && (
                   <InputField
                     {...field}
@@ -129,7 +145,6 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
                     readonly={field.blocked}
                     disabled={loading}
                     validateAutofill={props.isLogin ? handleValidateAutofill : undefined}
-
                   />
                 )}
               </div>
@@ -138,12 +153,17 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
         </FlexContainer>
         <ExpandableWrapper open={!!props.generalErrorMessage}>
           <FlexContainer alignItems="center" justifyContent="center">
-            {props.generalErrorMessage && <p className={cx(styles.generalErrorMessage, {[styles.generalErrorMessageDisabled]: loading})} dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}></p>}
+            {props.generalErrorMessage && (
+              <p
+                className={cx(styles.generalErrorMessage, { [styles.generalErrorMessageDisabled]: loading })}
+                dangerouslySetInnerHTML={{ __html: props.generalErrorMessage }}
+              ></p>
+            )}
           </FlexContainer>
         </ExpandableWrapper>
       </div>
       {props.captcha && (
-        <FlexContainer justifyContent='center' alignItems='center'>
+        <FlexContainer justifyContent="center" alignItems="center">
           {props.captcha}
         </FlexContainer>
       )}
@@ -153,22 +173,19 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             <Button
               key={`${action.type}-${i}`}
               {...action}
-              disabled={action.type === 'submit' ? (!isValid || action.disabled) : (action.disabled || loading)}
+              disabled={action.type === 'submit' ? !isValid || action.disabled : action.disabled || loading}
               loading={action.type === 'submit' && loading}
             />
           ))}
           {props.linkActions?.map((action, i) => (
-            <LinkButton
-              key={`${action.id ?? '0'}-${i}`}
-              {...action}
-            />
+            <LinkButton key={`${action.id ?? '0'}-${i}`} {...action} />
           ))}
         </FlexContainer>
       )}
       {props.links && (
-        <FlexContainer alignItems={props.alignActions ?? 'center'} flexDirection='column'>
+        <FlexContainer alignItems={props.alignActions ?? 'center'} flexDirection="column">
           {props.links.map((link, i) => (
-            <a className={cx(styles.link, {[styles.linkDisabled]: loading})} key={`${link.name}-${i}`} href={link.href} target="_blank">
+            <a className={cx(styles.link, { [styles.linkDisabled]: loading })} key={`${link.name}-${i}`} href={link.href} target="_blank">
               {link.name}
             </a>
           ))}

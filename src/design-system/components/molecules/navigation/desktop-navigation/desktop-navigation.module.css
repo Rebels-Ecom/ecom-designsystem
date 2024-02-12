@@ -22,7 +22,7 @@
         overflow-x: auto;
 
         &::-webkit-scrollbar {
-          height: 0.5rem;  
+          height: 0.25rem;  
         }
 
         &::-webkit-scrollbar-track {
