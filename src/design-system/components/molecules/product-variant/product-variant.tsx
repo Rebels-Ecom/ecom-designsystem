@@ -17,6 +17,7 @@ export interface IProductVariant {
   sellerOnly: boolean
   image: IPicture
   onChange: CallableFunction
+  onClick?: (partNo: string) => void
   checked: boolean
   partNoLabel: string
   unitLabel: string
@@ -33,6 +34,7 @@ const ProductVariant = ({
   country,
   priceStr,
   onChange,
+  onClick,
   checked,
   partNoLabel,
   currencyLabel,
@@ -42,7 +44,7 @@ const ProductVariant = ({
   isRestrictedUser,
 }: IProductVariant) => {
   return (
-    <div className={styles.productVariant}>
+    <button className={styles.productVariant} onClick={() => onClick?.(variantId)}>
       <FlexContainer stretch justifyContent="flex-end" alignItems="center" className={styles.topRow}>
         {sellerOnly && (
           <>
@@ -71,7 +73,7 @@ const ProductVariant = ({
           )}
         </div>
       </FlexContainer>
-    </div>
+    </button>
   )
 }
 

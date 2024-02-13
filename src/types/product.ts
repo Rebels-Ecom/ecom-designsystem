@@ -1,5 +1,6 @@
 import { IProductVariant } from '../design-system/components/molecules/product-variant/product-variant'
 import { ITag } from '../design-system/components/atoms/tag/tag'
+import { TCampaignBox } from '../design-system/components/atoms/campaign-box/campaign-box'
 
 export interface IProduct {
     partNo: string,
@@ -22,6 +23,7 @@ export interface IProduct {
     productVariantList: Array<IProductVariant>
     tags?: Array<ITag>
     sellerOnly?: boolean
+    activeCampaign?: TCampaignBox
     isLimitedProduct?: boolean
     isAccessoryPotItem?: boolean
 
