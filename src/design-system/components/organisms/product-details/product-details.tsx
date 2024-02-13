@@ -38,7 +38,6 @@ export interface IProductDetails extends IProduct {
   changePackagingButton: IButton
   addToCart: CallableFunction
   className: string
-  campaign?: TCampaignBox
   limitedProduct?: TCampaignBox
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
@@ -66,7 +65,6 @@ const ProductDetails = ({
   productDetail,
   addToCart,
   productDescription,
-  campaign,
   limitedProduct,
   showFavoriteIcon,
   isFavoriteIconActive,
@@ -87,6 +85,7 @@ const ProductDetails = ({
   sellerOnlyTooltipText,
   isAccessoryPotItem,
   accessoryPotItemTooltipText,
+  activeCampaign,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -106,6 +105,7 @@ const ProductDetails = ({
     priceLabel,
     unitLabel,
     currencyLabel,
+    activeCampaign,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const { isMobile } = mediaQueryHelper()
@@ -230,9 +230,9 @@ const ProductDetails = ({
               )}
             </div>
 
-            {campaign?.title && <CampaignBox {...campaign} />}
+            {product?.activeCampaign?.title && <CampaignBox {...product.activeCampaign} />}
 
-            {!campaign && limitedProduct && <CampaignBox {...limitedProduct} />}
+            {!product?.activeCampaign && limitedProduct && <CampaignBox {...limitedProduct} />}
 
             <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>
 

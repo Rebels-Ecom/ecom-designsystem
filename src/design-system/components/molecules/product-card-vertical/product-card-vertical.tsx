@@ -25,7 +25,6 @@ const ProductCardVertical = ({
   onVariantsButtonClick,
   className,
   defaultQuantity,
-  campaign,
   disabled,
   buttonLoading,
   limitedProductText,
@@ -39,6 +38,7 @@ const ProductCardVertical = ({
   onCloseVariants,
 }: IProductCard & TProductCardVertical) => {
   const {
+    activeCampaign,
     partNo,
     partNoLabel,
     productName,
@@ -72,7 +72,7 @@ const ProductCardVertical = ({
   }
 
   const style: { [key: string]: string } = {
-    '--campaign-color': campaign?.color ?? '#FFF',
+    '--campaign-color': activeCampaign?.color ?? '#FFF',
     '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
   }
 
@@ -94,16 +94,16 @@ const ProductCardVertical = ({
           styles.productCardVertical,
           className ? className : '',
           {
-            [styles.campaign]: campaign?.title,
+            [styles.campaign]: activeCampaign?.title,
           },
           {
-            [styles.limitedProduct]: !campaign && isLimitedProduct && limitedProductText,
+            [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedProductText,
           }
         )}
         style={style}
       >
-        {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
-        {!campaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
+        {activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
+        {!activeCampaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
             <>
@@ -125,7 +125,7 @@ const ProductCardVertical = ({
               )}
             </>
           )}
-          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={campaign ? tags.slice(0, 3) : tags} /> : null}
+          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={activeCampaign ? tags.slice(0, 3) : tags} /> : null}
         </div>
         {loading ? (
           <Placeholder type="image" />

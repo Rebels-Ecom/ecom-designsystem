@@ -24,7 +24,6 @@ const ProductCardHorizontal = ({
   linkComponent: Link,
   className = '',
   defaultQuantity,
-  campaign,
   buttonLoading,
   disabled,
   border = false,
@@ -36,6 +35,7 @@ const ProductCardHorizontal = ({
   accessoryPotItemTooltipText,
 }: IProductCard & TProductCardHorizontal) => {
   const {
+    activeCampaign,
     partNo,
     partNoLabel,
     productName,
@@ -43,7 +43,6 @@ const ProductCardHorizontal = ({
     primaryImageUrl,
     tags,
     country,
-    packaging,
     priceStr,
     totalPrice,
     quantity,
@@ -68,18 +67,18 @@ const ProductCardHorizontal = ({
   }
 
   const style: { [key: string]: string } = {
-    '--campaign-color': campaign?.color ?? '#FFF',
+    '--campaign-color': activeCampaign?.color ?? '#FFF',
   }
 
   return (
     <div
       className={cx(styles.productCardHorizontal, className, {
-        [styles.campaign]: campaign?.title,
+        [styles.campaign]: activeCampaign?.title,
         [styles.border]: border,
       })}
       style={style}
     >
-      {campaign?.title && <div className={styles.campaignBox}>{campaign.title}</div>}
+      {activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
       {removingProduct ? (
         <Loader visible text={'Loading'} />
       ) : (

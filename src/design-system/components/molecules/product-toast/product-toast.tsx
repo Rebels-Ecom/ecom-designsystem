@@ -10,6 +10,10 @@ import { useOnClickOutside } from '../../../hooks'
 export type TToastPosition = 'top-left' | 'top-right'
 export interface IProductToast {
   cartProduct: ICartProduct
+  notification?: {
+    quantity: number;
+    onClick: (data?: any) => void;
+  };
   setIsOpen?: (isOpen: boolean) => void
   children?: React.ReactNode
   position?: TToastPosition
@@ -17,7 +21,15 @@ export interface IProductToast {
   label?: string
 }
 
-function ProductToast({ cartProduct, setIsOpen, children, position = 'top-left', className, label }: IProductToast) {
+function ProductToast({
+  cartProduct,
+  setIsOpen,
+  children,
+  position = 'top-left',
+  className,
+  label,
+  notification
+}: IProductToast) {
   const productToastRef = useRef<HTMLDivElement | null>(null)
 
   const onClose = useCallback(() => {
@@ -51,6 +63,16 @@ function ProductToast({ cartProduct, setIsOpen, children, position = 'top-left',
           />
         )}
         <div className={styles.header}>
+          {notification?.quantity && (
+            <IconButton
+              type="button"
+              notification={notification.quantity ?? 0}
+              onClick={notification.onClick}
+              icon="icon-shopping-cart"
+              size="medium"
+              className={styles.cartIcon}
+            />
+          )}
           {label && (
             <Text align="center" weight="bold">
               {label}

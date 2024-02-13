@@ -30,6 +30,10 @@ const ProductVariantList = ({
     const selectedValue = e.currentTarget.value
     setSelectedProductVariantId(selectedValue)
   }
+  
+  function handleOnClickVariant(partNo: string) {
+    setSelectedProductVariantId(partNo);
+  }
 
   function handleSelectVariant() {
     const selectedProduct = variantsList.find((variant) => variant.variantId === selectedProductVariantId)
@@ -47,6 +51,7 @@ const ProductVariantList = ({
               key={variant.variantId}
               {...variant}
               onChange={handleOnChangeVariant}
+              onClick={handleOnClickVariant}
               checked={variant.variantId === selectedProductVariantId}
               sellerOnlyTooltipText={sellerOnlyTooltipText}
               isRestrictedUser={isRestrictedUser}

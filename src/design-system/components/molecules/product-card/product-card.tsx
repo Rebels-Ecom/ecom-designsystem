@@ -46,10 +46,6 @@ export interface IProductCard {
   defaultQuantity?: string
   onRemoveProduct?: CallableFunction
   hideRemoveButton?: boolean
-  campaign?: {
-    title: string
-    color: string
-  }
   limitedProductText?: string
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
@@ -83,7 +79,6 @@ function ProductCard({
   defaultQuantity,
   onRemoveProduct,
   hideRemoveButton,
-  campaign,
   limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
@@ -153,16 +148,15 @@ function ProductCard({
       packaging: selectedVariant.variantName,
       price: selectedVariant.price,
       priceStr: selectedVariant.priceStr,
-
       pricePerUnit: selectedVariant.pricePerUnit,
       pricePerUnitString: selectedVariant.pricePerUnitString,
-
       salesUnit: selectedVariant.salesUnit,
       itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
       sellerOnly: selectedVariant.sellerOnly,
+      activeCampaign: selectedVariant.activeCampaign,
       productUrl: `/Product/${selectedVariant.variantId}`,
     }))
     setVariantsListOpen(false)
@@ -185,7 +179,6 @@ function ProductCard({
         defaultQuantity={defaultQuantity}
         onClickRemoveProduct={handleRemoveProduct}
         hideRemoveButton={hideRemoveButton}
-        campaign={campaign}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
@@ -246,7 +239,6 @@ function ProductCard({
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
-        campaign={campaign}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}

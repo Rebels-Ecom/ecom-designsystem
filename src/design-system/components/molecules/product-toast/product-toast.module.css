@@ -43,10 +43,20 @@
 }
 
 .header {
-	padding-bottom: 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
 	margin-bottom: 0.5rem;
 	text-align: center;
 	border-bottom: 1px solid #eee;
+	height: 3rem;
+
+	& .cartIcon {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
 }
 
 .divider {
