@@ -71,6 +71,10 @@ function ProductSearch({
     onClear()
   }
 
+  function handleFocus() {
+    setIsOpen(true);
+  }
+  
   useOnClickOutside({ ref: searchWrapperElement, onClose })
   useCloseOnEscape({ onClose, isOpen })
 
@@ -90,6 +94,7 @@ function ProductSearch({
           disabled={disabled}
           placeholder={placeholder}
           wrapperClassName={styles.searchInput}
+          onFocus={handleFocus}
         />
         {query && (
           <button onClick={onClear} tabIndex={-1} type="button" className={styles.clearBtn}>
