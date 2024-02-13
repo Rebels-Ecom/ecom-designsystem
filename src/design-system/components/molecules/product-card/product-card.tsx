@@ -119,17 +119,12 @@ function ProductCard({
       return
     }
 
-    setProduct((prevState) => {
-      const newProduct = {
-        ...prevState,
-        quantity: productQuantity.toString(),
-        totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
-      }
-
-      onChangeQuantity?.(newProduct)
-
-      return newProduct
-    })
+    const newProduct = {
+      ...myProduct,
+      quantity: productQuantity.toString(),
+      totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
+    }
+    onChangeQuantity ? onChangeQuantity(newProduct) : setProduct(newProduct)
   }
 
   function handleVariantsButtonClick() {
