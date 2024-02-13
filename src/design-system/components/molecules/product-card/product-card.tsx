@@ -129,7 +129,7 @@ function ProductCard({
       quantity: productQuantity.toString(),
       totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
     }
-    onChangeQuantity?.(newProduct)
+    onChangeQuantity ? onChangeQuantity(newProduct) : setProduct(newProduct)
   }
 
   function handleVariantsButtonClick() {
