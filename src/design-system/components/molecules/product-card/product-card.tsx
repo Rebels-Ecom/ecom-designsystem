@@ -33,6 +33,7 @@ export interface IProductCard {
   loading: boolean
   buttonLoading?: boolean
   disabled?: boolean
+  // TODO: remove?
   hidePrice?: boolean
   addToCart: CallableFunction
   addToCartBtnLabel: string
@@ -165,6 +166,7 @@ function ProductCard({
   if (cardDisplay === 'horizontal') {
     return (
       <ProductCardHorizontal
+        isRestrictedUser={isRestrictedUser}
         cardDisplay="horizontal"
         product={myProduct}
         loading={loading}
@@ -196,7 +198,7 @@ function ProductCard({
     )
   }
   if (cardDisplay === 'vertical') {
-    if (isRestrictedUser)
+    if (isRestrictedUser) {
       return (
         <ProductCardRestricted
           cardDisplay="vertical"
@@ -220,6 +222,8 @@ function ProductCard({
           onCloseVariants={handleCloseVariants}
         />
       )
+    }
+
     return (
       <ProductCardVertical
         cardDisplay="vertical"

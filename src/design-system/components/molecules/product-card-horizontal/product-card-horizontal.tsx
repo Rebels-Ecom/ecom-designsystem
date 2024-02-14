@@ -33,6 +33,7 @@ const ProductCardHorizontal = ({
   maxQuantity,
   sellerOnlyTooltipText,
   accessoryPotItemTooltipText,
+  isRestrictedUser
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -118,38 +119,40 @@ const ProductCardHorizontal = ({
               )}
 
               <div className={styles.content}>
-                <FlexContainer alignItems='center' gap={0.5} minHeight={2.25}>
-                  {sellerOnly && (
-                    <>
-                      {sellerOnlyTooltipText ? (
-                        <IconWithTooltip
-                          content={sellerOnlyTooltipText}
-                          icon={{ icon: 'icon-eye' }}
-                        />
-                      ) : (
-                        <Icon
-                          icon={'icon-eye'}
-                          size={'large'}
-                        />
-                      )}
-                    </>
-                  )}
-                  {isAccessoryPotItem && (
-                    <>
-                      {accessoryPotItemTooltipText ? (
-                        <IconWithTooltip
-                          content={accessoryPotItemTooltipText}
-                          text='S'
-                        />
-                      ) : (
-                        <span>
-                          <b style={{ fontSize: '1.2rem' }}>S</b>
-                        </span>
-                      )}
-                    </>
-                  )}
-                  {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
-                </FlexContainer>
+                {/* {(sellerOnly || isAccessoryPotItem || (Array.isArray(tags) && tags.length > 0)) && ( */}
+                  <FlexContainer alignItems='center' gap={0.5} minHeight={2.25}>
+                    {sellerOnly && (
+                      <>
+                        {sellerOnlyTooltipText ? (
+                          <IconWithTooltip
+                            content={sellerOnlyTooltipText}
+                            icon={{ icon: 'icon-eye' }}
+                          />
+                        ) : (
+                          <Icon
+                            icon={'icon-eye'}
+                            size={'large'}
+                          />
+                        )}
+                      </>
+                    )}
+                    {isAccessoryPotItem && (
+                      <>
+                        {accessoryPotItemTooltipText ? (
+                          <IconWithTooltip
+                            content={accessoryPotItemTooltipText}
+                            text='S'
+                          />
+                        ) : (
+                          <span>
+                            <b style={{ fontSize: '1.2rem' }}>S</b>
+                          </span>
+                        )}
+                      </>
+                    )}
+                    {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+                  </FlexContainer>
+                {/* )} */}
 
                 {productUrl && Link ? (
                   <Link to={productUrl} href={productUrl} className={styles.mainLink}>
@@ -159,27 +162,29 @@ const ProductCardHorizontal = ({
                   <h5 className={styles.heading}>{productName}</h5>
                 )}
 
-                {!hidePrice && (
+                {(!hidePrice && !isRestrictedUser) && (
                   <p className={cx(styles.subTitle, 'bodyS')}>{`${priceLabel}: ${
                     priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
                   }`}</p>
                 )}
 
-                {(country !== '' || partNo !== '') && (
+                {((country !== '' || partNo !== '') && !isRestrictedUser) && (
                   <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
                 )}
 
-                <ProductQuantityInput
-                  className={styles.quantityInput}
-                  salesUnit={salesUnit}
-                  itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                  totalPrice={totalPrice}
-                  quantity={defaultQuantity ?? quantity}
-                  quantityInputId={partNo}
-                  onChange={handleOnChangeQuantity}
-                  disabled={productQuantityDisabled}
-                  maxQuantity={maxQuantity}
-                />
+                {!isRestrictedUser && (
+                  <ProductQuantityInput
+                    className={styles.quantityInput}
+                    salesUnit={salesUnit}
+                    itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                    totalPrice={totalPrice}
+                    quantity={defaultQuantity ?? quantity}
+                    quantityInputId={partNo}
+                    onChange={handleOnChangeQuantity}
+                    disabled={productQuantityDisabled}
+                    maxQuantity={maxQuantity}
+                  />
+                )}
               </div>
               {!hideRemoveButton && onClickRemoveProduct && (
                 <div className={styles.iconLink}>

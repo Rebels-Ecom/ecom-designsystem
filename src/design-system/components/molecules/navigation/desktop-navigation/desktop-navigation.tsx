@@ -169,6 +169,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                                   href={thirdLevelLink.href}
                                   target={thirdLevelLink.openInNewTab ? '_blank' : '_self'}
                                   className={styles.thirdLevelLink}
+                                  title={thirdLevelLink.name}
                                 >
                                   {thirdLevelLink.name}
                                 </a>
