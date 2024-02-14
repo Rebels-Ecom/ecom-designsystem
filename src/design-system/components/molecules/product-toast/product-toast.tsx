@@ -71,6 +71,7 @@ function ProductToast({
               icon="icon-shopping-cart"
               size="medium"
               className={styles.cartIcon}
+              disabled={cartProduct.loading}
             />
           )}
           {label && (
