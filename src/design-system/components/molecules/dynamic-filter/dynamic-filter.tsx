@@ -52,6 +52,10 @@ interface IDynamicFilter {
    * @default 6
    */
   maxOptionsToShow?: number;
+  /**
+   * If provided, a "show result (x)" button will be displayed at bottom of drawer
+   */
+  result?: number;
 }
 
 const getMinAndMaxValues = (options: TOptionType[]) => {
@@ -79,7 +83,8 @@ const DynamicFilter = ({
   loading,
   hideSliderFields,
   hideFilters,
-  maxOptionsToShow = 6
+  maxOptionsToShow = 6,
+  result
 }: IDynamicFilter) => {
   const [open, setOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
@@ -388,6 +393,11 @@ const DynamicFilter = ({
             )
           })}
         </div>
+        {(result || result === 0) && (
+          <button className={styles.stickyResult} onClick={handleClose} disabled={result === 0}>
+            {`Visa resultat (${result})`}
+          </button>
+        )}
       </DrawerSidebar>
     </>
   )

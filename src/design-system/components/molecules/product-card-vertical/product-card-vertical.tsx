@@ -181,6 +181,7 @@ const ProductCardVertical = ({
           fullWidth
           onClick={() => handleVariantBtnClick()}
           disabled={loading || packageBtnDisabled}
+          className={styles.packageBtn}
         >
           {packaging}
         </Button>

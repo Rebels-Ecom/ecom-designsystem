@@ -1,5 +1,6 @@
 .cartProductList {
-    position: relative
+    position: relative;
+    width: 100%;
 }
 
 .list {
@@ -7,6 +8,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .listItem {

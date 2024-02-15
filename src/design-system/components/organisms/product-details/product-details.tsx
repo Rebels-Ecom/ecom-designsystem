@@ -241,7 +241,7 @@ const ProductDetails = ({
             {Array.isArray(product.productVariantList) && (
               <Button
                 type={'button'}
-                className={styles.btn}
+                className={cx(styles.btn, styles.variantBtn)}
                 surface={'secondary'}
                 iconRight={product.productVariantList.length <= 1 ? undefined : { icon: 'icon-layers' }}
                 rounded
