@@ -162,7 +162,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                             >
                             {link.name}
                           </motion.a>
-                          <ul className={styles.thirdLevelList}>
+                          <ul className={cx(styles.thirdLevelList, {[styles.thirdLevelListMaxWidth]: activeTopLevel?.links?.length > 3 })}>
                             {link.links?.map((thirdLevelLink, i) => (
                               <li key={`${thirdLevelLink.href}-${i}`} className={styles.thirdLeveListItem}>
                                 <a

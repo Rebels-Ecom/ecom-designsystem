@@ -7,16 +7,4 @@
     color: var(--color-text-blue);
     font-size: 1.625rem;
   }
-
-  & section {
-    & :first-child {
-      margin: 0 0 1.25rem !important;
-      background-color: transparent !important;
-    }
-
-    & * {
-      font-family: var(--font-family-secondary);
-      font-size: 1.25rem;
-    }
-  }
 }

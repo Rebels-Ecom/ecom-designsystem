@@ -193,6 +193,18 @@ const ProductCardHorizontal = ({
               )}
               {!hideCartButton ? (
                 <div className={styles.buttonsWrapper}>
+                  <Button
+                    type={'button'}
+                    surface={'primary'}
+                    className={!loading ? styles.productCardBtn : ''}
+                    size={'x-small'}
+                    onClick={() => addToCart(product)}
+                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
+                    loading={buttonLoading}
+                    >
+                    <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
+                    <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
+                  </Button>
                   {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
                     <IconButton
                       type="button"
@@ -205,20 +217,6 @@ const ProductCardHorizontal = ({
                       noPadding
                     />
                   )}
-                  {/* TODO: replace this hc values with addToCartButton props? */}
-                  <Button
-                    type={'button'}
-                    surface={'primary'}
-                    className={!loading ? styles.productCardBtn : ''}
-                    size={'x-small'}
-                    onClick={() => addToCart(product)}
-                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
-                    loading={buttonLoading}
-                  >
-                    <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
-                    {/* TODO: replace this hc copy with addToCartButton.children? */}
-                    <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
-                  </Button>
                 </div>
               ) : null}
             </>
