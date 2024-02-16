@@ -10,7 +10,15 @@
     &.error {
         color: var(--error-red);
     }
-
+    &.warning {
+        color: var(--warning-orange);
+    }
+    &.information {
+        color: var(--information-blue);
+    }
+    &.default {
+        color: var(--default-black);
+    }
     &.padding-left-xs { padding-left: 0.5rem; }
     &.padding-left-sm { 
         padding-left: 0.5rem; 

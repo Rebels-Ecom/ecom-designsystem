@@ -7,6 +7,7 @@ export type TTextWeight = 'normal' | 'bold'
 export type TTextSize = 'regular' | 'small'
 export type TComponentType = 'a' | 'span'
 export type TPadding = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type TTextColor = 'error' | 'warning' | 'information' | 'default'
 
 export interface IText {
   children: React.ReactNode
@@ -19,7 +20,7 @@ export interface IText {
   size?: TTextSize
   className?: string
   upperCase?: boolean
-  color?: 'error' // TODO: add more options if needed
+  color?: TTextColor
   paddingLeft?: TPadding
   paddingRight?: TPadding
 }
