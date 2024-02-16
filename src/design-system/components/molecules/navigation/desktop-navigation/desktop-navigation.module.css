@@ -121,6 +121,7 @@
           & .secondLevelLinkItem {
             position: relative;
             overflow: hidden;
+            min-width: max-content;
           }
 
           & .secondLevelLinkActive {
@@ -172,6 +173,10 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    
+    &.thirdLevelListMaxWidth {
+      max-width: 20rem;
+    }
 
     & .thirdLeveListItem {
       padding: 0.5rem 0;
