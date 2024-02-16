@@ -15,6 +15,7 @@ export interface IGroupWrapper {
   noWrap?: boolean
   hasMaxWidth?: boolean
   withBorder?: boolean
+  withStrongBorder?: boolean;
   align?: TAlign
   /**
    * If true, applies an even vertical padding in order to vertically center the button
@@ -45,6 +46,7 @@ function BoxWrapper({
   align = 'left',
   hasMaxWidth = true,
   withBorder = true,
+  withStrongBorder = false,
   onlyButton = false,
   noMargin = false,
   padding,
@@ -132,6 +134,7 @@ function BoxWrapper({
           [styles[backgroundColor ?? '']]: backgroundColor,
           [styles.hasMaxWidth]: hasMaxWidth,
           [styles.withBorder]: withBorder,
+          [styles.withStrongBorder]: withStrongBorder,
           [styles.noWrap]: noWrap,
           [styles.onlyButton]: onlyButton,
           [styles.noMargin]: noMargin,
