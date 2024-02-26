@@ -50,6 +50,17 @@
     margin: 0;
     list-style-type: none;
     overflow: hidden;
+
+    & li:first-child {
+        & .sortingOption {
+            display: none;
+
+            @media (min-width: 64em) {
+                display: flex;
+            }
+        }
+    }
+    
     @media (min-width: 64em) { 
         gap:0.5rem;
         padding: 0.5rem;
@@ -62,15 +73,25 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    
     @media (min-width: 64em) {
         gap:0.5rem;
+    }
+
+    & .activeSortingIcon {
+        & span {
+            font-weight: bold;
+        }
     }
 }
 
 .optionName{
-    display: none;
-    @media (min-width: 64em) {
-        display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &.optionNameActive {
+        text-decoration: underline;
     }
 }
 
