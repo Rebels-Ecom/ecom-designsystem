@@ -28,6 +28,7 @@ const IconWithTooltip = ({ content, className, ...props }: TTooltip) => {
               {props.icon && (
                 <Icon
                   {...props.icon}
+                  className={styles.icon}
                   size='large'
                 />
               )} 

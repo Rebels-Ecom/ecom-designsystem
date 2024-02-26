@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react'
 import styles from './sortable-list.module.css'
 import cx from 'classnames'
 import { IconButton, Loader } from '../../atoms'
 
 export type TSpacing = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+export type TActiveSorting = {
+  name: string;
+  direction: 'asc' | 'desc';
+}
 
 export interface ISortableList {
   listHeading?: string
@@ -13,6 +17,7 @@ export interface ISortableList {
   withSeparatingLines?: boolean
   spacing?: TSpacing
   className?: string
+  activeSorting?: TActiveSorting;
 }
 
 export interface ISortingOption {
@@ -20,26 +25,65 @@ export interface ISortingOption {
   onClickUp: CallableFunction
   onClickDown: CallableFunction
   className?: string
+  activeSorting?: TActiveSorting;
 }
 
-const SortingOption = ({ name, onClickUp, onClickDown, className }: ISortingOption) => {
+export interface ISortingOptions {
+  sortingOptions: Array<ISortingOption>
+  activeSorting?: TActiveSorting;
+}
+
+const SortingOption = ({ name, onClickUp, onClickDown, className, activeSorting }: ISortingOption) => {
+  const handleSorting = () => {
+    if (activeSorting?.name === name) {
+        console.log('CLICKED 1');
+        activeSorting?.direction === 'asc' ? onClickUp() : onClickDown()
+      } else {
+      console.log('CLICKED 2');
+      onClickDown();
+    }
+  }
   return (
     <div className={cx(styles.sortingOption, className ? className : '')}>
-      <div className={styles.optionName}>{name}</div>
+      <button
+        name={name}
+        className={cx(styles.optionName, {[styles.optionNameActive]: activeSorting?.name === name})}
+        onClick={handleSorting}
+      >{name}</button>
       <div className={styles.arrowButtonsWrapper}>
-        <IconButton type="button" icon="icon-chevron-up" size="x-small" onClick={() => onClickUp()} noPadding isTransparent noBorder />
-        <IconButton type="button" icon="icon-chevron-down" size="x-small" onClick={() => onClickDown()} noPadding isTransparent noBorder />
+        {activeSorting?.name === name ? (
+          <IconButton
+            type="button"
+            icon={activeSorting?.direction === 'asc' ? "icon-chevron-down" : "icon-chevron-up"}
+            size="x-small"
+            onClick={() => activeSorting?.direction === 'asc' ? onClickUp() : onClickDown()}
+            noPadding
+            isTransparent
+            noBorder
+            className={styles.activeSortingIcon}
+          />  
+        ) : (
+          <IconButton
+            type="button"
+            icon="icon-chevron-down"
+            size="x-small"
+            onClick={() => onClickDown()}
+            noPadding
+            isTransparent
+            noBorder
+          />
+        )}
       </div>
     </div>
   )
 }
 
-const SortingOptions = ({ sortingOptions }: { sortingOptions: Array<ISortingOption> }) => {
+const SortingOptions = ({ sortingOptions, activeSorting }: ISortingOptions) => {
   return (
     <ul className={styles.sortingOptionsList}>
       {sortingOptions.map((option) => (
         <li key={option.name}>
-          <SortingOption {...option}></SortingOption>
+          <SortingOption {...option} activeSorting={activeSorting}></SortingOption>
         </li>
       ))}
       <SortingOption className={styles.invisibleSpacerItem} {...sortingOptions[0]}></SortingOption>
@@ -47,7 +91,8 @@ const SortingOptions = ({ sortingOptions }: { sortingOptions: Array<ISortingOpti
   )
 }
 
-const SortableList = ({ listHeading, sortingOptions, children, loading, withSeparatingLines, spacing = 'md', className }: ISortableList) => {
+const SortableList = ({ listHeading, sortingOptions, children, loading, withSeparatingLines, spacing = 'md', className, activeSorting }: ISortableList) => {
+  console.log(activeSorting);
   function getItemsSpacing(spacing: TSpacing) {
     switch (spacing) {
       case 'xs':
@@ -73,7 +118,7 @@ const SortableList = ({ listHeading, sortingOptions, children, loading, withSepa
       ) : (
         <div>
           {listHeading && <div className={cx(styles.listHeading, 'h4')}>{listHeading}</div>}
-          <SortingOptions sortingOptions={sortingOptions} />
+          <SortingOptions sortingOptions={sortingOptions} activeSorting={activeSorting} />
           <ul className={styles.list}>
             {children?.map((item: React.ReactNode) => (
               <li key={Math.random()} className={cx(styles.listItem, withSeparatingLines ? styles.withSeparatingLines : '', styles[getItemsSpacing(spacing)])}>

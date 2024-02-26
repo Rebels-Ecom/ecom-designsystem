@@ -24,6 +24,14 @@
     width:100%;
 }
 
+:global .react-datepicker__month {
+    margin: 0;
+
+    @media(min-width: 48em){
+        margin: 0.25rem;
+    }
+}
+
 .datePickerWrapper {
     z-index: var(--menu-icon-z-index);
 }

@@ -63,10 +63,10 @@ function ProductToast({
           />
         )}
         <div className={styles.header}>
-          {notification?.quantity && (
+          {(notification?.quantity || notification?.quantity === 0) && (
             <IconButton
               type="button"
-              notification={notification.quantity ?? 0}
+              notification={notification.quantity}
               onClick={notification.onClick}
               icon="icon-shopping-cart"
               size="medium"

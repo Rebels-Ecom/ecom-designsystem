@@ -109,7 +109,9 @@ const ProductDetails = ({
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const { isMobile } = mediaQueryHelper()
-  const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
+  const packagePerPallet =
+    productDetail?.visibleSpecs?.find((spec) => spec.name === 'PackagePerPallet') ||
+    productDetail?.invisibleSpecs?.find((spec) => spec.name === 'PackagePerPallet')
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
