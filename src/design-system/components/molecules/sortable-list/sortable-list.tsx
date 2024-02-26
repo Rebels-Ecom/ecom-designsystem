@@ -26,6 +26,7 @@ export interface ISortingOption {
   onClickDown: CallableFunction
   className?: string
   activeSorting?: TActiveSorting;
+  hidden?: boolean;
 }
 
 export interface ISortingOptions {
@@ -33,18 +34,16 @@ export interface ISortingOptions {
   activeSorting?: TActiveSorting;
 }
 
-const SortingOption = ({ name, onClickUp, onClickDown, className, activeSorting }: ISortingOption) => {
+const SortingOption = ({ name, onClickUp, onClickDown, className, activeSorting, hidden }: ISortingOption) => {
   const handleSorting = () => {
     if (activeSorting?.name === name) {
-        console.log('CLICKED 1');
-        activeSorting?.direction === 'asc' ? onClickUp() : onClickDown()
-      } else {
-      console.log('CLICKED 2');
+      activeSorting?.direction === 'asc' ? onClickUp() : onClickDown()
+    } else {
       onClickDown();
     }
   }
   return (
-    <div className={cx(styles.sortingOption, className ? className : '')}>
+    <div className={cx(styles.sortingOption, className ? className : '', {[styles.hidden]: hidden })}>
       <button
         name={name}
         className={cx(styles.optionName, {[styles.optionNameActive]: activeSorting?.name === name})}
@@ -92,7 +91,6 @@ const SortingOptions = ({ sortingOptions, activeSorting }: ISortingOptions) => {
 }
 
 const SortableList = ({ listHeading, sortingOptions, children, loading, withSeparatingLines, spacing = 'md', className, activeSorting }: ISortableList) => {
-  console.log(activeSorting);
   function getItemsSpacing(spacing: TSpacing) {
     switch (spacing) {
       case 'xs':
