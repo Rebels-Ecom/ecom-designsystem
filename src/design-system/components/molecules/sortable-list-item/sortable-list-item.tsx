@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton } from '../../atoms'
+import { Icon, IconButton } from '../../atoms'
 import styles from './sortable-list-item.module.css'
 import { mediaQueryHelper } from '../../layouts'
 
@@ -18,14 +18,7 @@ function SortableListItem({ children, onClick }: ISortableListItem) {
       <div className={styles.itemWrapper}>
         {children}
         {onClick && !isMobile && (
-          <IconButton
-            type="button"
-            onClick={onClick}
-            icon="icon-chevrons-right"
-            noPadding
-            isTransparent
-            noBorder
-          />
+          <Icon icon="icon-chevrons-right" />
         )}
       </div>
     </button>

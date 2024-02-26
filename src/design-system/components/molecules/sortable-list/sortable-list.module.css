@@ -50,16 +50,6 @@
     margin: 0;
     list-style-type: none;
     overflow: hidden;
-
-    & li:first-child {
-        & .sortingOption {
-            display: none;
-
-            @media (min-width: 64em) {
-                display: flex;
-            }
-        }
-    }
     
     @media (min-width: 64em) { 
         gap:0.5rem;
@@ -82,6 +72,10 @@
         & span {
             font-weight: bold;
         }
+    }
+
+    &.hidden {
+        display: none;
     }
 }
 
