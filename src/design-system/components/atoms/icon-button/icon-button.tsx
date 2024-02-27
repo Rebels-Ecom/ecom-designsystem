@@ -58,7 +58,7 @@ const IconButton = (props: TIconButton) => {
           target="_blank"
         >
           <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
-          {props.notification && props.notification < 100 && (
+          {(props.notification && props.notification < 100) && (
             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
               {props.notification < 100 ? props.notification : '99+'}
             </motion.span>

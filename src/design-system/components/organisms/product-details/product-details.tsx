@@ -38,7 +38,6 @@ export interface IProductDetails extends IProduct {
   changePackagingButton: IButton
   addToCart: CallableFunction
   className: string
-  campaign?: TCampaignBox
   limitedProduct?: TCampaignBox
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
@@ -66,7 +65,6 @@ const ProductDetails = ({
   productDetail,
   addToCart,
   productDescription,
-  campaign,
   limitedProduct,
   showFavoriteIcon,
   isFavoriteIconActive,
@@ -87,6 +85,7 @@ const ProductDetails = ({
   sellerOnlyTooltipText,
   isAccessoryPotItem,
   accessoryPotItemTooltipText,
+  activeCampaign,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -106,10 +105,13 @@ const ProductDetails = ({
     priceLabel,
     unitLabel,
     currencyLabel,
+    activeCampaign,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const { isMobile } = mediaQueryHelper()
-  const packagePerPallet = productDetail?.invisibleSpecs.find((spec) => spec.name === 'PackagePerPallet')
+  const packagePerPallet =
+    productDetail?.visibleSpecs?.find((spec) => spec.name === 'PackagePerPallet') ||
+    productDetail?.invisibleSpecs?.find((spec) => spec.name === 'PackagePerPallet')
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
@@ -230,9 +232,9 @@ const ProductDetails = ({
               )}
             </div>
 
-            {campaign?.title && <CampaignBox {...campaign} />}
+            {product?.activeCampaign?.title && <CampaignBox {...product.activeCampaign} />}
 
-            {!campaign && limitedProduct && <CampaignBox {...limitedProduct} />}
+            {!product?.activeCampaign && limitedProduct && <CampaignBox {...limitedProduct} />}
 
             <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>
 
@@ -241,7 +243,7 @@ const ProductDetails = ({
             {Array.isArray(product.productVariantList) && (
               <Button
                 type={'button'}
-                className={styles.btn}
+                className={cx(styles.btn, styles.variantBtn)}
                 surface={'secondary'}
                 iconRight={product.productVariantList.length <= 1 ? undefined : { icon: 'icon-layers' }}
                 rounded

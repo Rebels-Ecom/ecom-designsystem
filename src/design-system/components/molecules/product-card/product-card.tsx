@@ -33,6 +33,7 @@ export interface IProductCard {
   loading: boolean
   buttonLoading?: boolean
   disabled?: boolean
+  // TODO: remove?
   hidePrice?: boolean
   addToCart: CallableFunction
   addToCartBtnLabel: string
@@ -46,10 +47,6 @@ export interface IProductCard {
   defaultQuantity?: string
   onRemoveProduct?: CallableFunction
   hideRemoveButton?: boolean
-  campaign?: {
-    title: string
-    color: string
-  }
   limitedProductText?: string
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
@@ -83,7 +80,6 @@ function ProductCard({
   defaultQuantity,
   onRemoveProduct,
   hideRemoveButton,
-  campaign,
   limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
@@ -102,7 +98,7 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity } = product
+  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
@@ -116,25 +112,24 @@ function ProductCard({
     setProduct((prevState) => ({
       ...prevState,
       quantity: quantity ? quantity : '1',
+      priceStr: priceStr,
+      pricePerUnit: pricePerUnit,
+      totalPrice: convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
+      activeCampaign: activeCampaign,
     }))
-  }, [quantity])
+  }, [quantity, priceStr, pricePerUnit, activeCampaign])
 
   function handleOnChangeQuantity(productQuantity: number) {
     if (maxQuantity && productQuantity > maxQuantity) {
       return
     }
 
-    setProduct((prevState) => {
-      const newProduct = {
-        ...prevState,
-        quantity: productQuantity.toString(),
-        totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
-      }
-
-      onChangeQuantity?.(newProduct)
-
-      return newProduct
-    })
+    const newProduct = {
+      ...myProduct,
+      quantity: productQuantity.toString(),
+      totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
+    }
+    onChangeQuantity ? onChangeQuantity(newProduct) : setProduct(newProduct)
   }
 
   function handleVariantsButtonClick() {
@@ -158,16 +153,15 @@ function ProductCard({
       packaging: selectedVariant.variantName,
       price: selectedVariant.price,
       priceStr: selectedVariant.priceStr,
-
       pricePerUnit: selectedVariant.pricePerUnit,
       pricePerUnitString: selectedVariant.pricePerUnitString,
-
       salesUnit: selectedVariant.salesUnit,
       itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
       totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
       quantity: quantity.toString(),
       selectedVariantId: selectedVariant.variantId,
       sellerOnly: selectedVariant.sellerOnly,
+      activeCampaign: selectedVariant.activeCampaign,
       productUrl: `/Product/${selectedVariant.variantId}`,
     }))
     setVariantsListOpen(false)
@@ -176,6 +170,7 @@ function ProductCard({
   if (cardDisplay === 'horizontal') {
     return (
       <ProductCardHorizontal
+        isRestrictedUser={isRestrictedUser}
         cardDisplay="horizontal"
         product={myProduct}
         loading={loading}
@@ -190,7 +185,6 @@ function ProductCard({
         defaultQuantity={defaultQuantity}
         onClickRemoveProduct={handleRemoveProduct}
         hideRemoveButton={hideRemoveButton}
-        campaign={campaign}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
@@ -208,7 +202,7 @@ function ProductCard({
     )
   }
   if (cardDisplay === 'vertical') {
-    if (isRestrictedUser)
+    if (isRestrictedUser) {
       return (
         <ProductCardRestricted
           cardDisplay="vertical"
@@ -232,6 +226,8 @@ function ProductCard({
           onCloseVariants={handleCloseVariants}
         />
       )
+    }
+
     return (
       <ProductCardVertical
         cardDisplay="vertical"
@@ -251,7 +247,6 @@ function ProductCard({
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
-        campaign={campaign}
         limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}

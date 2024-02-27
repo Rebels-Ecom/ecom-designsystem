@@ -50,6 +50,7 @@
     margin: 0;
     list-style-type: none;
     overflow: hidden;
+    
     @media (min-width: 64em) { 
         gap:0.5rem;
         padding: 0.5rem;
@@ -62,15 +63,29 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    
     @media (min-width: 64em) {
         gap:0.5rem;
+    }
+
+    & .activeSortingIcon {
+        & span {
+            font-weight: bold;
+        }
+    }
+
+    &.hidden {
+        display: none;
     }
 }
 
 .optionName{
-    display: none;
-    @media (min-width: 64em) {
-        display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &.optionNameActive {
+        text-decoration: underline;
     }
 }
 

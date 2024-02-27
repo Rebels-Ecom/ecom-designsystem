@@ -33,8 +33,9 @@ export const lightTheme = {
   '--decorative-purple': '#9A576F',
   '--success-green': '#38B000',
   '--error-red':'#CE0B0B',
-  '--warning-orange': '#F5B154',
-  '--information-blue':'#277FE8',
+  '--warning-orange':'#DA7E00',
+  '--information-blue':'#003E51',
+  '--default-black': '#1D1D1B',
 
   /*Background */
   '--background': '#ffffff',
@@ -259,8 +260,9 @@ export const darkTheme = {
    '--decorative-purple': '#9A576F',
    '--success-green': '#38B000',
    '--error-red':'#CE0B0B',
-   '--warning-orange': '#F5B154',
-   '--information-blue':'#277FE8',
+   '--warning-orange':'#DA7E00',
+   '--information-blue':'#003E51',
+   '--default-black': '#1D1D1B',
  
    /*Background */
    '--background': '#1D1D1B',

@@ -51,7 +51,7 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
         [styles.centered]: fullWidth,
         [styles.maxHeight]: !!maxChar,
       })}>
-        <div className={styles.textContent}>
+        <div className={cx(styles.textContent, {[styles.richTextContent]: richText})}>
           {heading && <h4 className={styles.heading}>{heading}</h4>}
           {trimmedText && <p className={styles.text} dangerouslySetInnerHTML={{ __html: trimmedText }}></p>}
           {richText && richText}

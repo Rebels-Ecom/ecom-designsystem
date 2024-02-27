@@ -1,6 +1,7 @@
 import React from 'react'
-import { IconButton } from '../../atoms'
+import { Icon, IconButton } from '../../atoms'
 import styles from './sortable-list-item.module.css'
+import { mediaQueryHelper } from '../../layouts'
 
 export interface ISortableListItem {
   children: React.ReactNode
@@ -10,14 +11,17 @@ export interface ISortableListItem {
 }
 
 function SortableListItem({ children, onClick }: ISortableListItem) {
+  const { isMobile } = mediaQueryHelper();
   if (!children) return null
   return (
-    <div className={styles.listItem}>
+    <button className={styles.listItem} onClick={onClick}>
       <div className={styles.itemWrapper}>
         {children}
-        {onClick && <IconButton type="button" onClick={onClick} icon="icon-chevrons-right" noPadding isTransparent noBorder />}
+        {onClick && !isMobile && (
+          <Icon icon="icon-chevrons-right" />
+        )}
       </div>
-    </div>
+    </button>
   )
 }
 

@@ -40,10 +40,12 @@
 
     @media (min-width: 64em) {
         &.wide {
-            width: var(--content-max-width-md);
+            width: 100%;
+            max-width: var(--content-max-width-md);
         }
         &.narrow {
-            width: var(--text-width-narrow);
+            width: 100%;
+            max-width: var(--text-width-narrow);
         }
     }
 }

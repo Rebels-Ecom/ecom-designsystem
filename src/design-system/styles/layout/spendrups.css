@@ -58,3 +58,7 @@ body {
 .no-scroll {
   overflow: hidden;
 }
+
+button {
+  color: var(--color-text-default);
+}

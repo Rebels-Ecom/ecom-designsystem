@@ -61,6 +61,7 @@
         background: none;
         cursor: pointer;
         color: var(--color-text-default);
+        min-width: max-content;
 
         &:hover {
           background-color: var(--border-grey);

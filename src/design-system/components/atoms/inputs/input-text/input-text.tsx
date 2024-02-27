@@ -44,6 +44,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
       readonly,
       onChange,
       onBlur,
+      onFocus,
       disabled,
       disabledNoBorder,
       placeholder,
@@ -66,6 +67,12 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
         onBlur(e)
       }
     }
+    
+    function handleOnFocus(e: React.FocusEvent<HTMLInputElement>) {
+      if (onFocus) {
+        onFocus(e)
+      }
+    }
 
     return (
       <div className={cx(styles.inputWrapper, wrapperClassName ? wrapperClassName : '', fullWidth ? styles.fullWidth : '')}>
@@ -79,6 +86,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
           defaultValue={defaultValue}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
+          onFocus={handleOnFocus}
           disabled={disabled}
           placeholder={placeholder}
           required={required}
