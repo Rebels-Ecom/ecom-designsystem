@@ -60,6 +60,7 @@ export interface IProductCard {
   maxQuantity?: number
   sellerOnlyTooltipText?: string
   accessoryPotItemTooltipText?: string
+  onClick?: CallableFunction;
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -93,6 +94,7 @@ function ProductCard({
   maxQuantity,
   sellerOnlyTooltipText,
   accessoryPotItemTooltipText,
+  onClick
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -198,6 +200,7 @@ function ProductCard({
         maxQuantity={maxQuantity}
         sellerOnlyTooltipText={sellerOnlyTooltipText}
         accessoryPotItemTooltipText={accessoryPotItemTooltipText}
+        onClick={onClick}
       />
     )
   }
@@ -224,6 +227,7 @@ function ProductCard({
           sellerOnlyTooltipText={sellerOnlyTooltipText}
           accessoryPotItemTooltipText={accessoryPotItemTooltipText}
           onCloseVariants={handleCloseVariants}
+          onClick={onClick}
         />
       )
     }
@@ -259,6 +263,7 @@ function ProductCard({
         sellerOnlyTooltipText={sellerOnlyTooltipText}
         accessoryPotItemTooltipText={accessoryPotItemTooltipText}
         onCloseVariants={handleCloseVariants}
+        onClick={onClick}
       />
     )
   }

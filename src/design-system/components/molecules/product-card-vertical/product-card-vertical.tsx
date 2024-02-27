@@ -36,6 +36,7 @@ const ProductCardVertical = ({
   sellerOnlyTooltipText,
   accessoryPotItemTooltipText,
   onCloseVariants,
+  onClick
 }: IProductCard & TProductCardVertical) => {
   const {
     activeCampaign,
@@ -132,7 +133,7 @@ const ProductCardVertical = ({
         ) : (
           <>
             {productUrl && Link ? (
-              <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
+              <Link to={productUrl} href={productUrl} className={styles.imageWrapper} onClick={onClick}>
                 <Picture
                   {...productImage}
                   classNamePicture={styles.cardPicture}
@@ -163,7 +164,7 @@ const ProductCardVertical = ({
         ) : (
           <div className={`${styles.cardContent}`}>
             {productUrl && Link ? (
-              <Link to={productUrl} href={productUrl} className={styles.headingWrapper}>
+              <Link to={productUrl} href={productUrl} className={styles.headingWrapper} onClick={onClick}>
                 <h5 className={styles.heading}>{productName}</h5>
               </Link>
             ) : (

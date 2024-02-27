@@ -33,7 +33,8 @@ const ProductCardHorizontal = ({
   maxQuantity,
   sellerOnlyTooltipText,
   accessoryPotItemTooltipText,
-  isRestrictedUser
+  isRestrictedUser,
+  onClick
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -99,7 +100,7 @@ const ProductCardHorizontal = ({
           ) : (
             <>
               {productUrl && Link ? (
-                <Link to={productUrl} href={productUrl} className={styles.imageWrapper}>
+                <Link to={productUrl} href={productUrl} className={styles.imageWrapper} onClick={onClick}>
                   <Picture
                     {...productImage}
                     classNamePicture={styles.picture}
@@ -155,7 +156,7 @@ const ProductCardHorizontal = ({
                 {/* )} */}
 
                 {productUrl && Link ? (
-                  <Link to={productUrl} href={productUrl} className={styles.mainLink}>
+                  <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
                     <h5 className={styles.heading}>{productName}</h5>
                   </Link>
                 ) : (
