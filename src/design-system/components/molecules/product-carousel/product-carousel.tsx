@@ -6,16 +6,20 @@ import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 export interface IProductCarousel {
   productCards: Array<TProductCard>
   addToCart: CallableFunction
+  productsPerPageMobile?: number
+  productsPerPageTablet?: number
+  productsPerPageDesktop?: number
 }
 
-const ProductCarousel = ({ productCards, addToCart }: IProductCarousel) => {
-  const { isMobile } = mediaQueryHelper();
+const ProductCarousel = ({ productCards, addToCart, productsPerPageMobile = 1, productsPerPageTablet = 2, productsPerPageDesktop = 4 }: IProductCarousel) => {
+  const { isMobile } = mediaQueryHelper()
 
-  const renderProductCards = () => productCards?.map((productCard: TProductCard, index: number) => (
-    <CarouselItem key={index}>
-      <ProductCard {...productCard} addToCart={addToCart} />
-    </CarouselItem>
-  ));
+  const renderProductCards = () =>
+    productCards?.map((productCard: TProductCard, index: number) => (
+      <CarouselItem key={index}>
+        <ProductCard {...productCard} addToCart={addToCart} />
+      </CarouselItem>
+    ))
 
   return (
     <Carousel
@@ -36,11 +40,23 @@ const ProductCarousel = ({ productCards, addToCart }: IProductCarousel) => {
       }}
       offsetArrows
       padding={isMobile ? '2rem' : undefined}
-      breakpoints={isMobile ? {
-        sm: {
-          hideArrows: true,
-        }
-      } : undefined}
+      breakpoints={
+        isMobile
+          ? {
+              sm: {
+                hideArrows: true,
+                perPage: productsPerPageMobile,
+              },
+            }
+          : {
+              md: {
+                perPage: productsPerPageTablet,
+              },
+              lg: {
+                perPage: productsPerPageDesktop,
+              },
+            }
+      }
     >
       {renderProductCards()}
     </Carousel>
