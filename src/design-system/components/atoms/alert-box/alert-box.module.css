@@ -1,0 +1,34 @@
+.alertBox{
+  display: flex;
+  flex-direction: column;;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+
+  &.background-error {
+    background-color: var(--alert-message-icon-error-background);
+    color: var(--color-text-default);
+  }
+
+  &.background-warning {
+    background-color: var(--alert-message-icon-warning-background);
+    color: var(--color-text-default);
+  }
+
+  &.background-information {
+    background-color: var(--alert-message-icon-information-background);
+    color: var(--color-text-white);
+  }
+}
+
+.icon {
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  &.background-error { color: var(--color-text-blue); }
+  &.background-warning { color: var(--color-text-blue);}
+  &.background-information { color: var(--color-text-white);}
+}

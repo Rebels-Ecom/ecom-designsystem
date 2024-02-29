@@ -7,6 +7,7 @@ import { ProductCardHorizontal } from '../product-card-horizontal/product-card-h
 import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
 import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
 import { IPicture } from '../../atoms/picture/picture'
+import { TAlertBox } from '../../atoms/alert-box/alert-box'
 
 export type TCardDisplayType = 'vertical' | 'horizontal'
 
@@ -60,7 +61,8 @@ export interface IProductCard {
   maxQuantity?: number
   sellerOnlyTooltipText?: string
   accessoryPotItemTooltipText?: string
-  onClick?: CallableFunction;
+  alertBox?: TAlertBox
+  onClick?: CallableFunction
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -94,7 +96,8 @@ function ProductCard({
   maxQuantity,
   sellerOnlyTooltipText,
   accessoryPotItemTooltipText,
-  onClick
+  alertBox,
+  onClick,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -200,6 +203,7 @@ function ProductCard({
         maxQuantity={maxQuantity}
         sellerOnlyTooltipText={sellerOnlyTooltipText}
         accessoryPotItemTooltipText={accessoryPotItemTooltipText}
+        alertBox={alertBox}
         onClick={onClick}
       />
     )
@@ -263,6 +267,7 @@ function ProductCard({
         sellerOnlyTooltipText={sellerOnlyTooltipText}
         accessoryPotItemTooltipText={accessoryPotItemTooltipText}
         onCloseVariants={handleCloseVariants}
+        alertBox={alertBox}
         onClick={onClick}
       />
     )

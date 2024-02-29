@@ -99,6 +99,23 @@
       line-height: 1.5rem;
     }
 
+    & .cardInfoWrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      @media (min-width: 48rem) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    & .alertBox{
+      width: 100%;
+      @media (min-width: 48rem) {
+        width: 45%;
+      }
+    }
+
     & .subTitle {
       font-family: var(--font-family-secondary);
       margin: 0 0 0.5rem 0;
