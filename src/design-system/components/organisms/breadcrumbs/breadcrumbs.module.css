@@ -65,12 +65,14 @@
     align-items: center;
     text-decoration: none;
     color: #000;
-
+    
     &:after {
-        content: "\00a0\.\00a0\ ";
+        content: "\00a0\>\00a0\ ";
         display: block;
+        margin: 0 0.125rem;
+        font-size: 1.25rem;
     }
-
+    
     &:last-child {
         &:after {
             content: "";
@@ -85,5 +87,12 @@
 
 .listItemActive {
     color: var(--interactive-default);
+    overflow: hidden;
+    
+    & > span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 }
 

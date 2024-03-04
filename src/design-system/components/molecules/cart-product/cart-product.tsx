@@ -7,6 +7,7 @@ import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
 import { Loader } from '../../atoms/loader/loader'
+import { convertNumToStr } from '../../../../helpers/format-helper'
 
 export interface ICartProduct extends IProduct {
   product: IProduct
@@ -18,12 +19,14 @@ export interface ICartProduct extends IProduct {
 }
 
 const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link }: ICartProduct) => {
-  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, totalPrice, quantity, salesUnit, itemNumberPerSalesUnit } = product
+  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, quantity, salesUnit, itemNumberPerSalesUnit, pricePerUnit } = product
   const productImage = getProductPicture(partNo, primaryImageUrl)
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
   }
+
+  const tot = convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (quantity ? parseInt(quantity) : 0));
 
   return (
     <div className={cx(styles.cartProduct, className ? className : '')}>
@@ -49,7 +52,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
               className={styles.quantityInput}
               salesUnit={salesUnit}
               itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-              totalPrice={totalPrice}
+              totalPrice={tot}
               quantity={quantity}
               quantityInputId={partNo}
               disabled
