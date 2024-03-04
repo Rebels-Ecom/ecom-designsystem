@@ -35,33 +35,61 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
   const extractedRichTextValue = extractContent(text ?? '');
   const trimmedText = maxChar && (extractedRichTextValue?.length ?? 0) > maxChar ? extractedRichTextValue?.substring(0, maxChar).concat('...') : extractedRichTextValue;
 
+  const renderImage = () => {
+    if (!image) {
+      return;
+    }
+
+    return (
+      <div className={cx(styles.pictureWrapper, {[styles.smallHeight]: fullWidth})}>
+        <Picture {...image} classNamePicture={styles.picture} classNameImg={styles.image} />
+        {tags?.length && (
+          <div className={styles.tags}>
+            {tags.map((tag, i) => <Tag key={`${tag.text}-${i}`} {...tag} className={styles.tag} />)}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className={cx(styles.blogCard, {[styles.fullWidth]: fullWidth})}>
       {image && (
-        <div className={cx(styles.pictureWrapper, {[styles.smallHeight]: fullWidth})}>
-          <Picture {...image} classNamePicture={styles.picture} classNameImg={styles.image} />
-          {tags?.length && (
-            <div className={styles.tags}>
-              {tags.map((tag, i) => <Tag key={`${tag.text}-${i}`} {...tag} className={styles.tag} />)}
-            </div>
+        <>
+          {link ? (
+            <a href={link.href} target='_self' >
+              {renderImage()}
+            </a>
+          ) :
+            renderImage()
+          }
+        </>
+      )}
+      {(heading || trimmedText || richText || link?.children) && (
+        <div className={cx(styles.content, {
+          [styles.centered]: fullWidth,
+          [styles.maxHeight]: !!maxChar && (trimmedText || richText),
+        })}>
+          <div className={cx(styles.textContent, {[styles.richTextContent]: richText})}>
+            {heading && (
+              <>
+                {link ? (
+                  <a href={link.href} target='_self' className={cx(styles.heading, styles.headingLink)}>
+                    <h4 className={styles.heading}>{heading}</h4>
+                  </a>
+                ) : <h4 className={styles.heading}>{heading}</h4>}
+              </>
+            )}
+            {trimmedText && <p className={styles.text} dangerouslySetInnerHTML={{ __html: trimmedText }}></p>}
+            {richText && richText}
+          </div>
+          {link && (
+            <UILink {...link} onSurface={'transparent'} className={styles.link}>
+              {link?.children}
+            </UILink>
           )}
         </div>
       )}
-      <div className={cx(styles.content, {
-        [styles.centered]: fullWidth,
-        [styles.maxHeight]: !!maxChar,
-      })}>
-        <div className={cx(styles.textContent, {[styles.richTextContent]: richText})}>
-          {heading && <h4 className={styles.heading}>{heading}</h4>}
-          {trimmedText && <p className={styles.text} dangerouslySetInnerHTML={{ __html: trimmedText }}></p>}
-          {richText && richText}
-        </div>
-        {link && (
-          <UILink {...link} onSurface={'transparent'} className={styles.link}>
-            {link?.children}
-          </UILink>
-        )}
-      </div>
     </div>
   )
 }
