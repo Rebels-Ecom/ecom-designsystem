@@ -114,8 +114,10 @@
   flex-direction: column;
   gap: 0.5rem;
   align-self: stretch;
+  width: 100%;
   
   @media (min-width: 48em) {
+    width: auto;
     flex-direction: row;
   }
 }

@@ -85,7 +85,6 @@ const SortingOptions = ({ sortingOptions, activeSorting }: ISortingOptions) => {
           <SortingOption {...option} activeSorting={activeSorting}></SortingOption>
         </li>
       ))}
-      <SortingOption className={styles.invisibleSpacerItem} {...sortingOptions[0]}></SortingOption>
     </ul>
   )
 }
