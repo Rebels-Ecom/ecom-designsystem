@@ -3,7 +3,7 @@ import styles from './heading.module.css'
 import cx from 'classnames'
 
 export type THeadingAlignment = 'left' | 'center' | 'right'
-export type TOrder = 1 | 2 | 3 | 4 | 5
+export type TOrder = 1 | 2 | 3 | 4 | 5 | 'body'
 
 export interface IHeading {
   children: string
@@ -32,6 +32,8 @@ function getHeadingSize(size: TOrder) {
       return 'h3'
     case 4:
       return 'h4'
+    case 'body':
+      return 'body'
     case 5:
     default:
       return 'h5'

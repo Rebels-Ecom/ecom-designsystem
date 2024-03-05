@@ -19,14 +19,12 @@ export interface ICartProduct extends IProduct {
 }
 
 const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link }: ICartProduct) => {
-  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, quantity, salesUnit, itemNumberPerSalesUnit, pricePerUnit } = product
+  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, quantity, salesUnit, itemNumberPerSalesUnit, pricePerUnit, totalPrice } = product
   const productImage = getProductPicture(partNo, primaryImageUrl, '96')
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
   }
-
-  const tot = convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (quantity ? parseInt(quantity) : 0));
 
   return (
     <div className={cx(styles.cartProduct, className ? className : '')}>
@@ -52,7 +50,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
               className={styles.quantityInput}
               salesUnit={salesUnit}
               itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-              totalPrice={tot}
+              totalPrice={totalPrice}
               quantity={quantity}
               quantityInputId={partNo}
               disabled
