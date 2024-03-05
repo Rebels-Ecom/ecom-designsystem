@@ -8,6 +8,7 @@ import { ProductCardVertical } from '../product-card-vertical/product-card-verti
 import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
 import { IPicture } from '../../atoms/picture/picture'
 import { TAlertBox } from '../../atoms/alert-box/alert-box'
+import { mediaQueryHelper } from '../../layouts'
 
 export type TCardDisplayType = 'vertical' | 'horizontal'
 
@@ -103,11 +104,12 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
+  const { isMobile } = mediaQueryHelper();
   const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(partNo, primaryImageUrl),
+    productImage: getProductPicture(partNo, primaryImageUrl, isMobile ? '120' : '100'),
     quantity: quantity ? quantity : '1',
     totalPrice: convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
     selectedVariantId: partNo,

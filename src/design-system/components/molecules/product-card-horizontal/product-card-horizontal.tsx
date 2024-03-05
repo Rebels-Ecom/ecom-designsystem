@@ -58,7 +58,7 @@ const ProductCardHorizontal = ({
     isAccessoryPotItem,
   } = product
 
-  const productImage = getProductPicture(partNo, primaryImageUrl)
+  const productImage = getProductPicture(partNo, primaryImageUrl, '96');
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
