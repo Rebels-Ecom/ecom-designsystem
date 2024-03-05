@@ -197,7 +197,8 @@ h5,
   }
 }
 
-.body {
+.body,
+.heading-p {
   font-size: var(--body-mobile-font-size);
   line-height: var(--body-mobile-line-height);
 
