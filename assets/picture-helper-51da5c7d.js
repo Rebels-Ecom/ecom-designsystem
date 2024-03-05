@@ -1,0 +1,1 @@
+function e(t,c,o){return{id:`product_${t}`,src:o?`${c}?w=${o}`:c,alt:"Placholder",loading:"eager",decoding:"auto",fetchPriority:"high",sources:[{srcset:o?`${c}?w=${o}`:c,media:"(max-width: 767px)"},{srcset:o?`${c}?w=${o}`:c,media:"(min-width: 768px)"}]}}export{e as g};
