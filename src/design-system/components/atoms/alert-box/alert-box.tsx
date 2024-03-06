@@ -19,7 +19,7 @@ const AlertBox = ({ title, buttonText, color = 'error', className, onClick }: TA
       <Icon className={cx(styles.icon, styles[`background-${color}`])} icon={color === 'information' ? 'icon-info' : 'icon-alert-circle'}></Icon>
       <Text>{title}</Text>
       {buttonText && onClick && (
-        <Button type={'button'} surface={'primary'} onClick={onClick}>
+        <Button type={'button'} surface={'primary'} onClick={onClick} size="x-small">
           {buttonText}
         </Button>
       )}

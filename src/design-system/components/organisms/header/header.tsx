@@ -1,5 +1,5 @@
 import styles from './header.module.css'
-import { Above, Below, ContentWrapper, FlexContainer } from '../../layouts'
+import { ContentWrapper, FlexContainer, mediaQueryHelper } from '../../layouts'
 
 export interface IHeader {
   salesTool?: JSX.Element // TODO: Create sales tool component
@@ -28,6 +28,7 @@ const Header = ({
   desktopActions,
   desktopNavigation,
 }: IHeader) => {
+  const { isMobile, isTablet, isDesktop, isBigScreen } = mediaQueryHelper()
   return (
     <>
       {salesTool && salesTool}
@@ -35,43 +36,35 @@ const Header = ({
       <header className={styles.header}>
         {(logo || mobileSearchBar || mobileActions || mobileNavigation || desktopSearchBar || desktopActions || desktopNavigation) && (
           <>
-            <Below breakpoint="md">
-              {(matches) =>
-                matches && (
-                  <>
-                    {topNavBar && topNavBar}
-                    <ContentWrapper>
-                      <FlexContainer flexDirection="column" gap={0}>
-                        <FlexContainer alignItems="center" justifyContent="space-between" stretch>
-                          {logo && logo}
-                          {mobileActions && mobileActions}
-                          {mobileNavigation}
-                        </FlexContainer>
-                        {mobileSearchBar && mobileSearchBar}
-                      </FlexContainer>
-                    </ContentWrapper>
-                    {mobileCalendar && mobileCalendar}
-                  </>
-                )
-              }
-            </Below>
-            <Above breakpoint="md">
-              {(matches) =>
-                matches && (
-                  <>
-                    {topNavBar && topNavBar}
-                    <ContentWrapper padding={[1, 0]}>
-                      <FlexContainer alignItems="center">
-                        {logo && logo}
-                        {desktopSearchBar && desktopSearchBar}
-                        {desktopActions && desktopActions}
-                      </FlexContainer>
-                    </ContentWrapper>
-                    {desktopNavigation && desktopNavigation}
-                  </>
-                )
-              }
-            </Above>
+            {(isMobile || isTablet) && (
+              <>
+                {topNavBar && topNavBar}
+                <ContentWrapper>
+                  <FlexContainer flexDirection="column" gap={0}>
+                    <FlexContainer alignItems="center" justifyContent="space-between" stretch>
+                      {logo && logo}
+                      {mobileActions && mobileActions}
+                      {mobileNavigation}
+                    </FlexContainer>
+                    {mobileSearchBar && mobileSearchBar}
+                  </FlexContainer>
+                </ContentWrapper>
+                {mobileCalendar && mobileCalendar}
+              </>
+            )}
+            {(isDesktop || isBigScreen) && (
+              <>
+                {topNavBar && topNavBar}
+                <ContentWrapper padding={[1, 0]}>
+                  <FlexContainer alignItems="center">
+                    {logo && logo}
+                    {desktopSearchBar && desktopSearchBar}
+                    {desktopActions && desktopActions}
+                  </FlexContainer>
+                </ContentWrapper>
+                {desktopNavigation && desktopNavigation}
+              </>
+            )}
           </>
         )}
       </header>
