@@ -8,8 +8,8 @@ import { ICarousel } from './types'
 
 export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
 
-const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, ...props }: PropsWithChildren<ICarousel>) => {
-  const noOfChildren = Children?.count(props.children);
+const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, arrowsBottom, ...props }: PropsWithChildren<ICarousel>) => {
+  const noOfChildren = Children?.count(props.children)
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
@@ -18,8 +18,8 @@ const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArr
         ...splideProps?.options,
         classes: {
           arrow: cx('splide__arrow', styles.arrow, { [styles.offset]: offsetArrows }),
-          next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, { [styles.hasPadding]: !!padding }),
-          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, { [styles.hasPadding]: !!padding }),
+          next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, arrowsBottom && styles.arrowBottom, { [styles.hasPadding]: !!padding }),
+          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, arrowsBottom && styles.arrowBottom, { [styles.hasPadding]: !!padding }),
           pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination, { [styles.hidePagination]: !!padding && noOfChildren > 14 }),
           page: cx('splide__pagination__page your-class-page', styles.page),
         },

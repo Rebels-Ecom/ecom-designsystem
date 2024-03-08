@@ -9,9 +9,19 @@ export interface IProductCarousel {
   productsPerPageMobile?: number
   productsPerPageTablet?: number
   productsPerPageDesktop?: number
+  arrowsBottom?: boolean
+  offsetArrows?: boolean
 }
 
-const ProductCarousel = ({ productCards, addToCart, productsPerPageMobile = 1, productsPerPageTablet = 2, productsPerPageDesktop = 4 }: IProductCarousel) => {
+const ProductCarousel = ({
+  productCards,
+  addToCart,
+  productsPerPageMobile = 1,
+  productsPerPageTablet = 2,
+  productsPerPageDesktop = 4,
+  arrowsBottom,
+  offsetArrows,
+}: IProductCarousel) => {
   const { isMobile } = mediaQueryHelper()
 
   const renderProductCards = () =>
@@ -38,7 +48,8 @@ const ProductCarousel = ({ productCards, addToCart, productsPerPageMobile = 1, p
           },
         },
       }}
-      offsetArrows
+      arrowsBottom={arrowsBottom}
+      offsetArrows={offsetArrows}
       padding={isMobile ? '2rem' : undefined}
       breakpoints={
         isMobile

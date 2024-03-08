@@ -87,6 +87,10 @@
           right: 2rem;
         }
       }
+      &.arrowBottom {
+        top: unset;
+        bottom: -0.75rem;
+      }
     }
 
     @media (min-width: 64em) {
@@ -97,6 +101,10 @@
         &.right {
           right: 2rem;
         }
+      }
+      &.arrowBottom {
+        top: unset;
+        bottom: -0.75rem;
       }
     }
 
@@ -111,6 +119,10 @@
         &.right {
           right: -4.5rem;
         }
+      }
+      &.arrowBottom {
+        top: unset;
+        bottom: -0.75rem;
       }
     }
 
