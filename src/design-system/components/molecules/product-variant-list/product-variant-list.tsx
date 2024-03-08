@@ -3,8 +3,9 @@ import { Button } from '../../atoms/button/button'
 import { IProductVariant, ProductVariant } from '../product-variant/product-variant'
 import styles from './product-variant-list.module.css'
 import { useOnClickOutside } from '../../../hooks'
-import { Icon } from '../../atoms'
+import { Icon, IconButton } from '../../atoms'
 import { AnimatePresence, motion } from 'framer-motion'
+import cx from 'classnames';
 
 export interface IProductVariantList {
   className?: string
@@ -14,6 +15,7 @@ export interface IProductVariantList {
   sellerOnlyTooltipText?: string
   onCloseVariants: CallableFunction
   isRestrictedUser?: boolean
+  absolutePositioned?: boolean;
 }
 
 const ProductVariantList = ({
@@ -24,6 +26,7 @@ const ProductVariantList = ({
   sellerOnlyTooltipText,
   onCloseVariants,
   isRestrictedUser,
+  absolutePositioned
 }: IProductVariantList) => {
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
@@ -52,15 +55,14 @@ const ProductVariantList = ({
   function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
     const selectedValue = e.currentTarget.value
     setSelectedProductVariantId(selectedValue)
+    const selectedProduct = variantsList.find((variant) => variant.variantId === selectedValue);
+    onVariantSelect(selectedProduct, variantsList);
   }
   
   function handleOnClickVariant(partNo: string) {
     setSelectedProductVariantId(partNo);
-  }
-
-  function handleSelectVariant() {
-    const selectedProduct = variantsList.find((variant) => variant.variantId === selectedProductVariantId)
-    onVariantSelect(selectedProduct, variantsList)
+    const selectedProduct = variantsList.find((variant) => variant.variantId === partNo);
+    onVariantSelect(selectedProduct, variantsList);
   }
 
   function handleScrollToBottom() {
@@ -81,7 +83,20 @@ const ProductVariantList = ({
 
   return (
     <div ref={variantsRef} className={className ? className : ''}>
-      <ul className={styles.variantsList} ref={listRef}>
+      <IconButton
+        className={styles.buttonClose}
+        type='button'
+        onClick={() => onCloseVariants()}
+        icon='icon-x'
+        size="large"
+        isTransparent
+        noBorder
+        noPadding
+      />
+      <ul ref={listRef} className={cx(styles.variantsList, {
+        [styles.hasScrollBar]: variantsList?.length > 2,
+        [styles.absolute]: absolutePositioned,
+      })}>
         {variantsList.map((variant) => (
           <li key={variant.variantId} className={styles.listItem}>
             <ProductVariant
@@ -106,6 +121,7 @@ const ProductVariantList = ({
                   initial={{ scale: 0.2 }}
                   animate={{ scale: hasReachedBottom ? 1 : 0 }}
                   exit={{ scale: 0.2 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <Icon icon='icon-chevron-up' />
                 </motion.button>
@@ -118,6 +134,7 @@ const ProductVariantList = ({
                   initial={{ scale: 0.2 }}
                   animate={{ scale: hasReachedBottom ? 0 : 1 }}
                   exit={{ scale: 0.2 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <Icon icon='icon-chevron-down' />
                 </motion.button>
@@ -126,9 +143,9 @@ const ProductVariantList = ({
           </div>
         )}
       </ul>
-      <Button className={styles.productCardBtn} type="button" surface="primary" size="small" fullWidth onClick={handleSelectVariant}>
+      {/* <Button className={styles.productCardBtn} type="button" surface="primary" size="small" fullWidth onClick={handleSelectVariant}>
         Välj variant
-      </Button>
+      </Button> */}
     </div>
   )
 }
