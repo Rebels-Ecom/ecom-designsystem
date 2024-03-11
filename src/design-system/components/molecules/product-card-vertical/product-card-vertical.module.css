@@ -79,6 +79,7 @@
 
     & .packageBtn {
       &:disabled {
+        cursor: default;
         color: var(--cta-primary-default);
       }
     }
