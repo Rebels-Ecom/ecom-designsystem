@@ -80,7 +80,7 @@ function ProductToast({
             </Text>
           )}
         </div>
-        <CartProduct {...cartProduct}></CartProduct>
+        <CartProduct {...cartProduct} hidePrice></CartProduct>
         {children && <hr className={styles.divider} />}
         {children}
       </div>

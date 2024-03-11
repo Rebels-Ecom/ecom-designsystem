@@ -89,6 +89,7 @@ const ProductCardVertical = ({
         onCloseVariants={onCloseVariants}
         selectedVariantId={selectedVariantId}
         sellerOnlyTooltipText={sellerOnlyTooltipText}
+        absolutePositioned
       />
     )
   } else {

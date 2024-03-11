@@ -16,10 +16,25 @@ export interface ICartProduct extends IProduct {
   className?: string
   loading: boolean
   linkComponent?: any
+  hidePrice?: boolean;
 }
 
-const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link }: ICartProduct) => {
-  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, quantity, salesUnit, itemNumberPerSalesUnit, pricePerUnit, totalPrice } = product
+const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link, hidePrice }: ICartProduct) => {
+  const {
+    partNo,
+    productName,
+    productUrl,
+    primaryImageUrl,
+    country,
+    packaging,
+    priceStr,
+    quantity,
+    salesUnit,
+    itemNumberPerSalesUnit,
+    totalPrice,
+    currencyLabel,
+    unitLabel
+  } = product
   const productImage = getProductPicture(partNo, primaryImageUrl, '96')
 
   function handleRemoveProduct(id: string) {
@@ -44,7 +59,12 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
             ) : (
               <h5 className={styles.heading}>{productName}</h5>
             )}
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}</p>
+            <p className={cx(styles.textPurple, 'bodyS')}>
+              {hidePrice ?
+                packaging :
+                `${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''}`
+              }
+            </p>
             {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${partNo} - ${country}`}</p>}
             <ProductQuantityInput
               className={styles.quantityInput}
@@ -55,6 +75,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
               quantityInputId={partNo}
               disabled
               disabledNoBorder
+              hidePrice={hidePrice}
             />
           </div>
           {onClickRemoveProduct && iconButton && (
