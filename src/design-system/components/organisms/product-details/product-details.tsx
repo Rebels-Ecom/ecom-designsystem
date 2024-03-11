@@ -49,6 +49,7 @@ export interface IProductDetails extends IProduct {
   sellerOnlyTooltipText?: string
   accessoryPotItemTooltipText?: string
   alertBox?: TAlertBox
+  availableForOrder?: boolean
 }
 
 const ProductDetails = ({
@@ -88,7 +89,9 @@ const ProductDetails = ({
   isAccessoryPotItem,
   accessoryPotItemTooltipText,
   activeCampaign,
+  outOfStock,
   alertBox,
+  availableForOrder,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -109,6 +112,7 @@ const ProductDetails = ({
     unitLabel,
     currencyLabel,
     activeCampaign,
+    outOfStock,
   })
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
   const { isMobile } = mediaQueryHelper()
@@ -238,7 +242,7 @@ const ProductDetails = ({
             {product?.activeCampaign?.title && <CampaignBox {...product.activeCampaign} />}
 
             {!product?.activeCampaign && limitedProduct && <CampaignBox {...limitedProduct} />}
-            {!product?.activeCampaign && alertBox && <AlertBox {...alertBox} />}
+            {alertBox && <AlertBox {...alertBox} />}
 
             <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>
 
@@ -278,7 +282,7 @@ const ProductDetails = ({
                 surface={'primary'}
                 size="large"
                 onClick={() => addToCart(product)}
-                disabled={product.quantity === '0'}
+                disabled={product.quantity === '0' || product.outOfStock || !availableForOrder}
               >
                 {addToCartLabel}
               </Button>
