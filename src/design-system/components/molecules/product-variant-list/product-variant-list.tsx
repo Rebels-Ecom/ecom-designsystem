@@ -82,7 +82,7 @@ const ProductVariantList = ({
   useOnClickOutside({ ref: variantsRef, onClose: onCloseVariants })
 
   return (
-    <div ref={variantsRef} className={className ? className : ''}>
+    <div ref={variantsRef} className={cx(styles.productVariantList, className ? className : '')}>
       <IconButton
         className={styles.buttonClose}
         type='button'

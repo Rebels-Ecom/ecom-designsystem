@@ -20,7 +20,21 @@ export interface ICartProduct extends IProduct {
 }
 
 const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link, hidePrice }: ICartProduct) => {
-  const { partNo, productName, productUrl, primaryImageUrl, country, packaging, priceStr, quantity, salesUnit, itemNumberPerSalesUnit, pricePerUnit, totalPrice } = product
+  const {
+    partNo,
+    productName,
+    productUrl,
+    primaryImageUrl,
+    country,
+    packaging,
+    priceStr,
+    quantity,
+    salesUnit,
+    itemNumberPerSalesUnit,
+    totalPrice,
+    currencyLabel,
+    unitLabel
+  } = product
   const productImage = getProductPicture(partNo, primaryImageUrl, '96')
 
   function handleRemoveProduct(id: string) {
@@ -46,7 +60,10 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
               <h5 className={styles.heading}>{productName}</h5>
             )}
             <p className={cx(styles.textPurple, 'bodyS')}>
-              {hidePrice ? packaging : `${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} kr/st` : ''}`}
+              {hidePrice ?
+                packaging :
+                `${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''}`
+              }
             </p>
             {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${partNo} - ${country}`}</p>}
             <ProductQuantityInput
