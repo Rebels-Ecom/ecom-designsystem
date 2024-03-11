@@ -143,9 +143,6 @@ const ProductVariantList = ({
           </div>
         )}
       </ul>
-      {/* <Button className={styles.productCardBtn} type="button" surface="primary" size="small" fullWidth onClick={handleSelectVariant}>
-        Välj variant
-      </Button> */}
     </div>
   )
 }
