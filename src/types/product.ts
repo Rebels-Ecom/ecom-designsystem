@@ -21,6 +21,7 @@ export interface IProduct {
     quantity: string,
     totalPrice: string,
     productVariantList: Array<IProductVariant>
+    outOfStock?: boolean
     tags?: Array<ITag>
     sellerOnly?: boolean
     activeCampaign?: TCampaignBox
@@ -37,5 +38,5 @@ export interface IProduct {
     aLabel?: string
     packagePerPalletLabel1?: string
     packagePerPalletLabel2?: string
-
+    outOfStockLabel?: string
 }

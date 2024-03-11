@@ -9,7 +9,7 @@
   border-radius: 0.25rem;
 
   &.background-error {
-    background-color: var(--alert-message-icon-error-background);
+    background-color: var(--alert-message-error-background);
     color: var(--color-text-default);
   }
 

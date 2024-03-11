@@ -25,6 +25,7 @@ const ProductCardHorizontal = ({
   className = '',
   defaultQuantity,
   buttonLoading,
+  limitedProductText,
   disabled,
   border = false,
   displaySmallImage = false,
@@ -45,20 +46,23 @@ const ProductCardHorizontal = ({
     productUrl,
     primaryImageUrl,
     tags,
+    isLimitedProduct,
     country,
     priceStr,
     totalPrice,
     quantity,
+    outOfStock,
     salesUnit,
     itemNumberPerSalesUnit,
     priceLabel,
     currencyLabel,
     unitLabel,
+    outOfStockLabel,
     sellerOnly,
     isAccessoryPotItem,
   } = product
 
-  const productImage = getProductPicture(partNo, primaryImageUrl, '96');
+  const productImage = getProductPicture(partNo, primaryImageUrl, '96')
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -71,17 +75,30 @@ const ProductCardHorizontal = ({
 
   const style: { [key: string]: string } = {
     '--campaign-color': activeCampaign?.color ?? '#FFF',
+    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
+    '--out-of-stock-product-color': outOfStock && outOfStockLabel ? '#e4b6c3' : '#FFF',
   }
 
   return (
     <div
-      className={cx(styles.productCardHorizontal, className, {
-        [styles.campaign]: activeCampaign?.title,
-        [styles.border]: border,
-      })}
+      className={cx(
+        styles.productCardHorizontal,
+        className,
+        {
+          [styles.campaign]: activeCampaign?.title,
+        },
+        {
+          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedProductText,
+        },
+        {
+          [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel,
+        }
+      )}
       style={style}
     >
       {activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
+      {!activeCampaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
+      {!activeCampaign && outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
       {removingProduct ? (
         <Loader visible text={'Loading'} />
       ) : (
@@ -185,7 +202,15 @@ const ProductCardHorizontal = ({
               </div>
               {!hideRemoveButton && onClickRemoveProduct && (
                 <div className={styles.iconLink}>
-                  <IconButton type="button" icon="icon-x-circle" onClick={() => handleRemoveProduct(partNo)} isTransparent noBorder size="large" />
+                  <IconButton
+                    className={styles.iconBtn}
+                    type="button"
+                    icon="icon-x-circle"
+                    onClick={() => handleRemoveProduct(partNo)}
+                    isTransparent
+                    noBorder
+                    size="large"
+                  />
                 </div>
               )}
               {!hideCartButton ? (

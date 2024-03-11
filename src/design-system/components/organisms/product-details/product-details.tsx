@@ -14,8 +14,9 @@ import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 import { IconButton } from '../../atoms/icon-button/icon-button'
-import { Icon, IconWithTooltip } from '../../atoms'
+import { AlertBox, Icon, IconWithTooltip } from '../../atoms'
 import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
+import { TAlertBox } from '../../atoms/alert-box/alert-box'
 
 export interface IProductSpec {
   name: string
@@ -47,6 +48,7 @@ export interface IProductDetails extends IProduct {
   onPackageChange?: CallableFunction
   sellerOnlyTooltipText?: string
   accessoryPotItemTooltipText?: string
+  alertBox?: TAlertBox
 }
 
 const ProductDetails = ({
@@ -86,6 +88,7 @@ const ProductDetails = ({
   isAccessoryPotItem,
   accessoryPotItemTooltipText,
   activeCampaign,
+  alertBox,
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -235,6 +238,7 @@ const ProductDetails = ({
             {product?.activeCampaign?.title && <CampaignBox {...product.activeCampaign} />}
 
             {!product?.activeCampaign && limitedProduct && <CampaignBox {...limitedProduct} />}
+            {!product?.activeCampaign && alertBox && <AlertBox {...alertBox} />}
 
             <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>
 
