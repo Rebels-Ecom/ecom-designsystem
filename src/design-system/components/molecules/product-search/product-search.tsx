@@ -121,7 +121,7 @@ function ProductSearch({
                     productImage={productImage}
                     productVariantList={li.productVariantList}
                     onClick={handleOnClickSearchResult}
-                  ></ProductSearchResultItem>
+                  />
                 </li>
               )
             })}
