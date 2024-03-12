@@ -39,8 +39,17 @@ const ProductQuantityInput = ({
     if (maxQuantity && Number(e.target.value) > maxQuantity) {
       return
     }
-    onChange?.(e)
+    if (e.target.value !== '') {
+      onChange?.(e)
+    }
     setVal(e.target.value)
+  }
+
+  const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setVal('0');
+      onChange?.(e);
+    }
   }
 
   return (
@@ -50,6 +59,7 @@ const ProductQuantityInput = ({
         value={val}
         placeholder="0"
         onChange={handleOnChange}
+        onBlur={handleOnBlur}
         disabled={disabled}
         disabledNoBorder={disabledNoBorder}
         type="number"
