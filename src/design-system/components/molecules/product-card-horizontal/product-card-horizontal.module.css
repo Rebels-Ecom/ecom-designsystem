@@ -49,6 +49,38 @@
     }
   }
 
+  &.limitedProduct {
+    border: 2px solid transparent;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border-color: var(--limited-product-color);
+
+    & .limitedBox {
+      border: 2px solid transparent;
+      border-color: var(--limited-product-color);
+      background-color: var(--limited-product-color);
+      color: var(--color-text-default);
+      font-family: var(--font-family-secondary);
+      border-bottom-left-radius: 0.5rem;
+      border-top-width: 0;
+      border-right-width: 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0.5rem 1rem;
+    }
+    &.withExtraPadding {
+      padding: 0.5rem 2.5rem 0.5rem 1rem;
+    }
+    
+    & .iconLink {
+      & button {
+        padding: 0;
+      }
+    }
+  }
+
   &.outOfStockProduct {
     border: 2px solid transparent;
     padding: 1rem;

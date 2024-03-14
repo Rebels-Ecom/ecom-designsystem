@@ -79,7 +79,7 @@
       border-color: var(--limited-product-color);
   
       & .limitedBox {
-        width: 40%;
+        width: 30%;
         position: absolute;
         top: 0;
         right: 0;

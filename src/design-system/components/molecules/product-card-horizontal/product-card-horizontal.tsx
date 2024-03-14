@@ -25,7 +25,6 @@ const ProductCardHorizontal = ({
   className = '',
   defaultQuantity,
   buttonLoading,
-  limitedProductText,
   disabled,
   border = false,
   displaySmallImage = false,
@@ -58,6 +57,7 @@ const ProductCardHorizontal = ({
     currencyLabel,
     unitLabel,
     outOfStockLabel,
+    limitedLabel,
     sellerOnly,
     isAccessoryPotItem,
   } = product
@@ -75,7 +75,7 @@ const ProductCardHorizontal = ({
 
   const style: { [key: string]: string } = {
     '--campaign-color': activeCampaign?.color ?? '#FFF',
-    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
+    '--limited-product-color': isLimitedProduct && limitedLabel ? '#F08A00' : '#FFF',
     '--out-of-stock-product-color': outOfStock && outOfStockLabel ? '#e4b6c3' : '#FFF',
   }
 
@@ -88,7 +88,7 @@ const ProductCardHorizontal = ({
           [styles.campaign]: activeCampaign?.title,
         },
         {
-          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedProductText,
+          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel,
         },
         {
           [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel,
@@ -96,9 +96,11 @@ const ProductCardHorizontal = ({
       )}
       style={style}
     >
-      {activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
-      {!activeCampaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
-      {!activeCampaign && outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
+      {!outOfStock && activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
+      {!activeCampaign && isLimitedProduct && limitedLabel && (
+        <div className={cx(styles.limitedBox, !hideRemoveButton ? styles.withExtraPadding : '')}>{limitedLabel}</div>
+      )}
+      {outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
       {removingProduct ? (
         <Loader visible text={'Loading'} />
       ) : (

@@ -49,7 +49,6 @@ export interface IProductCard {
   defaultQuantity?: string
   onRemoveProduct?: CallableFunction
   hideRemoveButton?: boolean
-  limitedProductText?: string
   showFavoriteIcon?: boolean
   isFavoriteIconActive?: boolean
   onFavoriteIconClick?: CallableFunction
@@ -84,7 +83,6 @@ function ProductCard({
   defaultQuantity,
   onRemoveProduct,
   hideRemoveButton,
-  limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
@@ -104,7 +102,7 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { isMobile } = mediaQueryHelper();
+  const { isMobile } = mediaQueryHelper()
   const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
@@ -192,7 +190,6 @@ function ProductCard({
         defaultQuantity={defaultQuantity}
         onClickRemoveProduct={handleRemoveProduct}
         hideRemoveButton={hideRemoveButton}
-        limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}
@@ -257,7 +254,6 @@ function ProductCard({
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
-        limitedProductText={limitedProductText}
         showFavoriteIcon={showFavoriteIcon}
         isFavoriteIconActive={isFavoriteIconActive}
         onFavoriteIconClick={onFavoriteIconClick}

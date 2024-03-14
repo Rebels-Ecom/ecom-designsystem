@@ -27,7 +27,6 @@ const ProductCardVertical = ({
   defaultQuantity,
   disabled,
   buttonLoading,
-  limitedProductText,
   showFavoriteIcon,
   isFavoriteIconActive,
   onFavoriteIconClick,
@@ -61,6 +60,7 @@ const ProductCardVertical = ({
     currencyLabel,
     unitLabel,
     outOfStockLabel,
+    limitedLabel,
   } = product
   //const isLimitedProduct = product.partNo === '1109611' || product.partNo === '1174411' ? true : false
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
@@ -76,7 +76,7 @@ const ProductCardVertical = ({
 
   const style: { [key: string]: string } = {
     '--campaign-color': activeCampaign?.color ?? '#FFF',
-    '--limited-product-color': isLimitedProduct && limitedProductText ? '#F08A00' : '#FFF',
+    '--limited-product-color': isLimitedProduct && limitedLabel ? '#F08A00' : '#FFF',
     '--out-of-stock-product-color': outOfStock && outOfStockLabel ? '#e4b6c3' : '#FFF',
   }
 
@@ -102,7 +102,7 @@ const ProductCardVertical = ({
             [styles.campaign]: activeCampaign?.title,
           },
           {
-            [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedProductText,
+            [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel,
           },
           {
             [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel,
@@ -110,9 +110,9 @@ const ProductCardVertical = ({
         )}
         style={style}
       >
-        {activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
-        {!activeCampaign && isLimitedProduct && limitedProductText && <div className={styles.limitedBox}>{limitedProductText}</div>}
-        {!activeCampaign && outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
+        {!outOfStock && activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
+        {!activeCampaign && isLimitedProduct && limitedLabel && <div className={styles.limitedBox}>{limitedLabel}</div>}
+        {outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
             <>

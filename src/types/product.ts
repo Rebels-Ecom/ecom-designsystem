@@ -39,4 +39,5 @@ export interface IProduct {
     packagePerPalletLabel1?: string
     packagePerPalletLabel2?: string
     outOfStockLabel?: string
+    limitedLabel?: string
 }
