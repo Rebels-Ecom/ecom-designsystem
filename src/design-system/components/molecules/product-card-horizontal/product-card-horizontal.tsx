@@ -8,6 +8,7 @@ import cx from 'classnames'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
 import { FlexContainer } from '../../layouts'
+import { DebounceInput } from '../../atoms/inputs/debounce-input/debounce-input'
 
 const ProductCardHorizontal = ({
   product,
@@ -37,6 +38,7 @@ const ProductCardHorizontal = ({
   isRestrictedUser,
   alertBox,
   onClick,
+  debounceQuantityVal
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -71,6 +73,10 @@ const ProductCardHorizontal = ({
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
     const quantity = parseInt(e.target.value) || 0
     onChangeQuantity && onChangeQuantity(quantity)
+  }
+  
+  function handleOnDebounceChangeQuantity(val: string) {
+    onChangeQuantity && onChangeQuantity(parseInt(val))
   }
 
   const style: { [key: string]: string } = {
@@ -184,17 +190,33 @@ const ProductCardHorizontal = ({
                     )}
 
                     {!isRestrictedUser && (
-                      <ProductQuantityInput
-                        className={styles.quantityInput}
-                        salesUnit={salesUnit}
-                        itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                        totalPrice={totalPrice}
-                        quantity={defaultQuantity ?? quantity}
-                        quantityInputId={partNo}
-                        onChange={handleOnChangeQuantity}
-                        disabled={productQuantityDisabled}
-                        maxQuantity={maxQuantity}
-                      />
+                      <>
+                      {debounceQuantityVal ? (
+                        <DebounceInput
+                          debounceVal={debounceQuantityVal}
+                          debouncedEvent={handleOnDebounceChangeQuantity}
+                          salesUnit={salesUnit}
+                          itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                          totalPrice={totalPrice}
+                          quantity={defaultQuantity ?? quantity}
+                          quantityInputId={partNo}
+                          maxQuantity={maxQuantity}
+                          disabled={productQuantityDisabled}
+                        />
+                      ) : (
+                        <ProductQuantityInput
+                          className={styles.quantityInput}
+                          salesUnit={salesUnit}
+                          itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                          totalPrice={totalPrice}
+                          quantity={defaultQuantity ?? quantity}
+                          quantityInputId={partNo}
+                          onChange={handleOnChangeQuantity}
+                          disabled={productQuantityDisabled}
+                          maxQuantity={maxQuantity}
+                        />
+                        )}
+                      </>
                     )}
                   </div>
                   {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>}
