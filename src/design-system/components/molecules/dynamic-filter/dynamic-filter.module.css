@@ -206,6 +206,6 @@
   &:disabled {
     background-color: var(--cta-primary-disabled);
     color: var(--color-on-primary-disabled);
-    cursor: not-allowed;
+    cursor: default;
   }
 }
