@@ -27,7 +27,7 @@ const ProductQuantityInput = ({
   disabledNoBorder = false,
   onChange,
   maxQuantity,
-  hidePrice
+  hidePrice,
 }: IProductQuantityInput) => {
   const [val, setVal] = useState(quantity)
 

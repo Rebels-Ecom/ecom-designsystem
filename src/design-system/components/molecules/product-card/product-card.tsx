@@ -63,6 +63,7 @@ export interface IProductCard {
   accessoryPotItemTooltipText?: string
   alertBox?: TAlertBox
   onClick?: CallableFunction
+  debounceQuantityVal?: number;
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -97,6 +98,7 @@ function ProductCard({
   accessoryPotItemTooltipText,
   alertBox,
   onClick,
+  debounceQuantityVal
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -204,6 +206,7 @@ function ProductCard({
         accessoryPotItemTooltipText={accessoryPotItemTooltipText}
         alertBox={alertBox}
         onClick={onClick}
+        debounceQuantityVal={debounceQuantityVal}
       />
     )
   }
