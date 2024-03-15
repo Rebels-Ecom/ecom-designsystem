@@ -54,7 +54,7 @@
       border-color: var(--out-of-stock-product-color);
 
       & .outOfStockBox {
-        width: 40%;
+        width: 30%;
         position: absolute;
         top: 0;
         right: 0;
