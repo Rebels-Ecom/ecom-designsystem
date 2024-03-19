@@ -33,13 +33,23 @@
 	-ms-overflow-style: none;
     scrollbar-width: none;  
 	padding: 1rem;
-	width: 90vw;
+	width: 86vw;
 	box-shadow: 0 0 0.5rem #999;
 	/* opacity: .9; */
 	@media(min-width: 64em){
 		padding: 1.5rem;
 		width: 38.75rem;
 	}
+}
+
+.buttonWrapper {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.buttonsWrapper {
+	display: flex;
+	justify-content: space-between;
 }
 
 .header {

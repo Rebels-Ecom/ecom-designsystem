@@ -99,20 +99,20 @@ const ProductCardVertical = ({
           styles.productCardVertical,
           className ? className : '',
           {
-            [styles.campaign]: activeCampaign?.title,
+            [styles.campaign]: activeCampaign?.title && !loading,
           },
           {
-            [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel,
+            [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
           },
           {
-            [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel,
+            [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
           }
         )}
         style={style}
       >
-        {!outOfStock && activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
-        {!activeCampaign && isLimitedProduct && limitedLabel && <div className={styles.limitedBox}>{limitedLabel}</div>}
-        {outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
+        {!outOfStock && activeCampaign?.title && !loading && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
+        {!activeCampaign && isLimitedProduct && limitedLabel && !loading && <div className={styles.limitedBox}>{limitedLabel}</div>}
+        {outOfStock && outOfStockLabel && !loading && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
             <>

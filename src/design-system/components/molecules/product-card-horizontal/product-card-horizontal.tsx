@@ -37,7 +37,7 @@ const ProductCardHorizontal = ({
   isRestrictedUser,
   alertBox,
   onClick,
-  debounceQuantityVal
+  debounceQuantityVal,
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -74,7 +74,7 @@ const ProductCardHorizontal = ({
     const quantity = parseInt(e.target.value) || 0
     onChangeQuantity && onChangeQuantity(quantity)
   }
-  
+
   function handleOnDebounceChangeQuantity(val: string) {
     onChangeQuantity && onChangeQuantity(parseInt(val))
   }
@@ -91,22 +91,22 @@ const ProductCardHorizontal = ({
         styles.productCardHorizontal,
         className,
         {
-          [styles.campaign]: activeCampaign?.title,
+          [styles.campaign]: activeCampaign?.title && !loading,
         },
         {
-          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel,
+          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
         },
         {
-          [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel,
+          [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
         }
       )}
       style={style}
     >
-      {!outOfStock && activeCampaign?.title && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
-      {!activeCampaign && isLimitedProduct && limitedLabel && (
+      {!outOfStock && activeCampaign?.title && !loading && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
+      {!activeCampaign && isLimitedProduct && limitedLabel && !loading && (
         <div className={cx(styles.limitedBox, !hideRemoveButton ? styles.withExtraPadding : '')}>{limitedLabel}</div>
       )}
-      {outOfStock && outOfStockLabel && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
+      {outOfStock && outOfStockLabel && !loading && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
       {removingProduct ? (
         <Loader visible text={'Loading'} />
       ) : (
@@ -193,30 +193,30 @@ const ProductCardHorizontal = ({
 
                     {!isRestrictedUser && (
                       <>
-                      {debounceQuantityVal ? (
-                        <DebounceInput
-                          debounceVal={debounceQuantityVal}
-                          debouncedEvent={handleOnDebounceChangeQuantity}
-                          salesUnit={salesUnit}
-                          itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                          totalPrice={totalPrice}
-                          quantity={defaultQuantity ?? quantity}
-                          quantityInputId={partNo}
-                          maxQuantity={maxQuantity}
-                          disabled={productQuantityDisabled}
-                        />
-                      ) : (
-                        <ProductQuantityInput
-                          className={styles.quantityInput}
-                          salesUnit={salesUnit}
-                          itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                          totalPrice={totalPrice}
-                          quantity={defaultQuantity ?? quantity}
-                          quantityInputId={partNo}
-                          onChange={handleOnChangeQuantity}
-                          disabled={productQuantityDisabled}
-                          maxQuantity={maxQuantity}
-                        />
+                        {debounceQuantityVal ? (
+                          <DebounceInput
+                            debounceVal={debounceQuantityVal}
+                            debouncedEvent={handleOnDebounceChangeQuantity}
+                            salesUnit={salesUnit}
+                            itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                            totalPrice={totalPrice}
+                            quantity={defaultQuantity ?? quantity}
+                            quantityInputId={partNo}
+                            maxQuantity={maxQuantity}
+                            disabled={productQuantityDisabled}
+                          />
+                        ) : (
+                          <ProductQuantityInput
+                            className={styles.quantityInput}
+                            salesUnit={salesUnit}
+                            itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                            totalPrice={totalPrice}
+                            quantity={defaultQuantity ?? quantity}
+                            quantityInputId={partNo}
+                            onChange={handleOnChangeQuantity}
+                            disabled={productQuantityDisabled}
+                            maxQuantity={maxQuantity}
+                          />
                         )}
                       </>
                     )}
