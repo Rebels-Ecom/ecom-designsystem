@@ -7,11 +7,14 @@
 
   & .top {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-
+    flex-direction: column-reverse;
+    gap: 1rem;
+    align-items: start;
+    
     @media (min-width: 48em) {
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
       flex-direction: row;
     }
   }
