@@ -107,8 +107,6 @@
         }
 
         & .columnTitleText{
-          width: min-content;
-          min-width: 4rem;
           overflow: hidden;
           white-space: break-spaces;
           text-overflow: ellipsis;
