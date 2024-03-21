@@ -23,6 +23,8 @@ export interface IText {
   color?: TTextColor
   paddingLeft?: TPadding
   paddingRight?: TPadding
+  paddingTop?: TPadding
+  paddingBottom?: TPadding
 }
 
 function Text({
@@ -39,6 +41,8 @@ function Text({
   color,
   paddingLeft,
   paddingRight,
+  paddingTop,
+  paddingBottom,
 }: IText) {
   function getTextAlignment(alignment: TTextAlignment) {
     switch (alignment) {
@@ -81,6 +85,8 @@ function Text({
         styles[getTextAlignment(align)],
         paddingLeft ? styles[`padding-left-${paddingLeft}`] : '',
         paddingRight ? styles[`padding-right-${paddingRight}`] : '',
+        paddingTop ? styles[`padding-top-${paddingTop}`] : '',
+        paddingBottom ? styles[`padding-bottom-${paddingBottom}`] : '',
         size === 'small' ? 'bodyS' : 'body',
         className,
         {
