@@ -25,7 +25,14 @@
     
     & .firstRow {
         display: flex;
+        flex-direction: column-reverse;
+        gap: 0.5rem;
         justify-content: space-between;
+
+        @media (min-width: 48em) {
+            flex-direction: row;
+            gap: 0;
+        }
         
         & a {
             text-decoration: none;
@@ -44,8 +51,13 @@
 
         & .statusWrapper {
             display: flex;
+            justify-content: space-between;
             align-items: center;
             gap: 0.5rem;
+
+            @media (min-width: 48em) {
+                justify-content: flex-start;
+            }
 
             & .status {
                 display: block;
