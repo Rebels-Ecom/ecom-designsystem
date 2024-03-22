@@ -105,6 +105,13 @@
           border: none;
           border-bottom: 1px solid var(--border-on-x);
         }
+
+        & .columnTitleText{
+          overflow: hidden;
+          white-space: break-spaces;
+          text-overflow: ellipsis;
+    
+        }
     
         &.icon {
           padding: 0.75rem;
