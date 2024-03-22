@@ -1,6 +1,6 @@
 .dynamicFilter {
   font-family: var(--font-family-primary);
-  margin-bottom: 3rem;
+  margin-bottom: 6rem;
   
   & .filterItem {
     display: flex;
@@ -73,7 +73,6 @@
 
     & .count {
       margin-left: auto;
-      font-weight: bold;
       margin-right: 0.375rem;
       color: var(--grey-800);
     }
@@ -202,10 +201,23 @@
     color: var(--color-text-white);
     transition: all 0.3s ease;
   }
-
+  
   &:disabled {
     background-color: var(--cta-primary-disabled);
     color: var(--color-on-primary-disabled);
     cursor: default;
+  }
+
+  &.removeAllBtn {
+    bottom: 3rem;
+    background-color: var(--color-text-white);
+    
+    &:hover {
+      background-color: var(--color-text-white);
+      
+      & span {
+        color: var(--error-red);
+      }
+    }
   }
 }

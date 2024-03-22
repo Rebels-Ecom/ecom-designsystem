@@ -393,6 +393,11 @@ const DynamicFilter = ({
             )
           })}
         </div>
+        {!!selectedFilters.length && (
+          <button className={cx(styles.stickyResult, styles.removeAllBtn)} onClick={handleRemoveAllFilters}>
+            <Icon icon='icon-trash-2' />
+          </button>
+        )}
         {(result || result === 0) && (
           <button className={styles.stickyResult} onClick={handleClose} disabled={result === 0}>
             {`Visa resultat (${result})`}
