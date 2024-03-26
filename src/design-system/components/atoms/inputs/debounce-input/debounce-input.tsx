@@ -74,6 +74,7 @@ const DebounceInput = ({
         className={cx('body', styles.debounceQuantityInput)}
         onChange={onChange}
         value={value}
+        placeholder='0'
         onBlur={handleBlur}
         onKeyDown={(e: React.KeyboardEvent) => {
           const illegalChars = ['-', '+', '.', ',', 'e', 'E']
