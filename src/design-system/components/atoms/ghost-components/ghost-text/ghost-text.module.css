@@ -1,0 +1,45 @@
+.ghostTextWrapper {
+  width: 100%;
+}
+
+.ghostText {
+  background-image: linear-gradient(to right,rgba(0,0,0,.08) 0,rgba(0,0,0,.15) 15%,rgba(0,0,0,.08) 30%);
+  background-size: 1200px 100%;
+  webkit-animation: placeholderShimmer 2s linear;
+  animation: placeholderShimmer 2s linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  height: 1rem;
+  width: 90%;
+  border-radius: 2px;
+
+  &:nth-of-type(2) {
+    width: 80%;
+  }
+  &:nth-of-type(3) {
+    width: 85%;
+  }
+  &:nth-of-type(3) ~ p {
+    width: 90%;
+  }
+}
+
+@-webkit-keyframes placeholderShimmer {
+  0% {
+      background-position: -1200px 0;
+  }
+
+  100% {
+      background-position: 1200px 0;
+  }
+}
+
+@keyframes placeholderShimmer {
+  0% {
+      background-position: -1200px 0;
+  }
+
+  100% {
+      background-position: 1200px 0;
+  }
+}

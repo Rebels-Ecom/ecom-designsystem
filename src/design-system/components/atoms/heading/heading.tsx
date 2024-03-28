@@ -22,7 +22,7 @@ export interface IHeading {
   color?: 'error' // TODO: add more options if needed
 }
 
-function getHeadingSize(size: TOrder) {
+export function getHeadingSize(size: TOrder) {
   switch (size) {
     case 1:
       return 'h1'

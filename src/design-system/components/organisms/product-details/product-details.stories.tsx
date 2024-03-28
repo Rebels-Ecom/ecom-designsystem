@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { IProductDetail, ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct, dummyWineProduct, dummyWineProductNoVariants, dummyWineProduct_VariantDefaultImg } from './dummy-product'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
 import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
@@ -26,7 +25,7 @@ const ProductDetailsStoryTemplate: Story = {
 
     return (
       <ContentWrapper>
-        <ProductDetails {...args} addToCart={handleAddToCart} />
+        <ProductDetails {...args} isLoading={args.isLoading} addToCart={handleAddToCart} />
       </ContentWrapper>
     )
   },
@@ -109,6 +108,10 @@ function getProduct(productData: any): IProduct {
     totalPrice: convertNumToStr(product.PricePerUnit * product.UnitsPerBaseUnit),
     productVariantList: getVariantsList(productData.Name, productData.Variants),
     priceLabel: 'Listpris',
+    packagePrice: 0,
+    packagePriceString: '0',
+    pricePerUnit: 0,
+    pricePerUnitString: '0'
   }
 }
 
@@ -139,6 +142,7 @@ export const ProductDetailsStory = {
     aLabel: 'a',
     packagePerPalletLabel1: 'Det går',
     packagePerPalletLabel2: 'kolli på en pall',
+    isLoading: false
   },
 }
 

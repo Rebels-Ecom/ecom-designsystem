@@ -17,6 +17,7 @@ import { IconButton } from '../../atoms/icon-button/icon-button'
 import { AlertBox, Icon, IconWithTooltip } from '../../atoms'
 import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 import { TAlertBox } from '../../atoms/alert-box/alert-box'
+import { GhostProductDetails } from './ghost-product-details'
 
 export interface IProductSpec {
   name: string
@@ -50,6 +51,7 @@ export interface IProductDetails extends IProduct {
   accessoryPotItemTooltipText?: string
   alertBox?: TAlertBox
   availableForOrder?: boolean
+  isLoading?: boolean;
 }
 
 const ProductDetails = ({
@@ -92,6 +94,7 @@ const ProductDetails = ({
   outOfStock,
   alertBox,
   availableForOrder,
+  isLoading
 }: IProductDetails) => {
   const [product, setProduct] = useState({
     partNo,
@@ -164,6 +167,11 @@ const ProductDetails = ({
       </ul>
     )
   }
+
+  if (isLoading) {
+    return <GhostProductDetails />
+  }
+  
   if (!productDetail) return null
 
   return (
