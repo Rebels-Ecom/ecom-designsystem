@@ -73,7 +73,7 @@
         background-color: transparent;
     }
     &.noBorder {
-        border-color: transparent;
+        border: none !important;
     }
     &.noPadding {
         padding: 0;
