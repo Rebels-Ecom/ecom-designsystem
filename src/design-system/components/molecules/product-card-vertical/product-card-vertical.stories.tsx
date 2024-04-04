@@ -111,7 +111,6 @@ export const ProductCardVerticalStory_Favorite_Active = {
     product: productWineArgs,
     productImage: productImage,
     showFavoriteIcon: true,
-    isFavoriteIconActive: true,
   },
 }
 
@@ -121,7 +120,6 @@ export const ProductCardVerticalStory_Favorite = {
     product: productWineArgs,
     productImage: productImage,
     showFavoriteIcon: true,
-    isFavoriteIconActive: false,
   },
 }
 
@@ -131,7 +129,6 @@ export const ProductCardVerticalStory_AddToPurchaseList = {
     product: productWineArgs,
     productImage: productImage,
     showFavoriteIcon: true,
-    isFavoriteIconActive: true,
     showAddToPurchaseListIcon: true,
     onSaveToPurchaseListClick: () => {
       console.log('Add to purchase list...')

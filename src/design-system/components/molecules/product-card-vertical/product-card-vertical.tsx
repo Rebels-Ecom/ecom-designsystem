@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
@@ -28,7 +28,7 @@ const ProductCardVertical = ({
   disabled,
   buttonLoading,
   showFavoriteIcon,
-  isFavoriteIconActive,
+  favoriteProductsIds,
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
@@ -72,6 +72,11 @@ const ProductCardVertical = ({
 
   function handleVariantBtnClick() {
     onVariantsButtonClick && onVariantsButtonClick()
+  }
+
+  function isFavoriteProduct(partNo: string) {
+    if (!favoriteProductsIds || favoriteProductsIds.length === 0) return false
+    return favoriteProductsIds.includes(partNo)
   }
 
   const style: { [key: string]: string } = {
@@ -239,9 +244,9 @@ const ProductCardVertical = ({
             {showFavoriteIcon && onFavoriteIconClick && (
               <IconButton
                 type="button"
-                icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
-                className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(partNo)}
+                icon={isFavoriteProduct(partNo) ? 'icon-heart1' : 'icon-heart-o'}
+                className={cx(styles.favoriteIcon, isFavoriteProduct(partNo) ? styles.favoriteIconActive : '')}
+                onClick={() => onFavoriteIconClick(partNo, isFavoriteProduct(partNo))}
                 size="large"
                 isTransparent
                 noBorder

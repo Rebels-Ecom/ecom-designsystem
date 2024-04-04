@@ -50,7 +50,7 @@ export interface IProductCard {
   onRemoveProduct?: CallableFunction
   hideRemoveButton?: boolean
   showFavoriteIcon?: boolean
-  isFavoriteIconActive?: boolean
+  favoriteProductsIds?: Array<string>
   onFavoriteIconClick?: CallableFunction
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
@@ -63,7 +63,7 @@ export interface IProductCard {
   accessoryPotItemTooltipText?: string
   alertBox?: TAlertBox
   onClick?: CallableFunction
-  debounceQuantityVal?: number;
+  debounceQuantityVal?: number
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -85,7 +85,7 @@ function ProductCard({
   onRemoveProduct,
   hideRemoveButton,
   showFavoriteIcon,
-  isFavoriteIconActive,
+  favoriteProductsIds,
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
@@ -98,7 +98,7 @@ function ProductCard({
   accessoryPotItemTooltipText,
   alertBox,
   onClick,
-  debounceQuantityVal
+  debounceQuantityVal,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -193,7 +193,7 @@ function ProductCard({
         onClickRemoveProduct={handleRemoveProduct}
         hideRemoveButton={hideRemoveButton}
         showFavoriteIcon={showFavoriteIcon}
-        isFavoriteIconActive={isFavoriteIconActive}
+        favoriteProductsIds={favoriteProductsIds}
         onFavoriteIconClick={onFavoriteIconClick}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
@@ -258,7 +258,7 @@ function ProductCard({
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
         showFavoriteIcon={showFavoriteIcon}
-        isFavoriteIconActive={isFavoriteIconActive}
+        favoriteProductsIds={favoriteProductsIds}
         onFavoriteIconClick={onFavoriteIconClick}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}

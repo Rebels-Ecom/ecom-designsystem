@@ -41,7 +41,7 @@ export interface IProductDetails extends IProduct {
   className: string
   limitedProduct?: TCampaignBox
   showFavoriteIcon?: boolean
-  isFavoriteIconActive?: boolean
+  favoriteProductsIds?: Array<string>
   onFavoriteIconClick?: CallableFunction
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
@@ -70,7 +70,7 @@ const ProductDetails = ({
   productDescription,
   limitedProduct,
   showFavoriteIcon,
-  isFavoriteIconActive,
+  favoriteProductsIds,
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
@@ -149,6 +149,11 @@ const ProductDetails = ({
   function handlePackageChange(selectedVariant: any) {
     onPackageChange && onPackageChange(selectedVariant.variantId)
     setVariantsListOpen(false)
+  }
+
+  function isFavoriteProduct(partNo: string) {
+    if (!favoriteProductsIds || favoriteProductsIds.length === 0) return false
+    return favoriteProductsIds.includes(partNo)
   }
 
   const ProductTags = ({ tagsList = [] }: { tagsList: Array<ITag> }) => {
@@ -301,9 +306,9 @@ const ProductDetails = ({
               {showFavoriteIcon && onFavoriteIconClick && (
                 <IconButton
                   type="button"
-                  icon={isFavoriteIconActive ? 'icon-heart1' : 'icon-heart-o'}
-                  className={cx(styles.favoriteIcon, isFavoriteIconActive ? styles.favoriteIconActive : '')}
-                  onClick={() => onFavoriteIconClick(product.partNo)}
+                  icon={isFavoriteProduct(partNo) ? 'icon-heart1' : 'icon-heart-o'}
+                  className={cx(styles.favoriteIcon, isFavoriteProduct(partNo) ? styles.favoriteIconActive : '')}
+                  onClick={() => onFavoriteIconClick(product.partNo, isFavoriteProduct(partNo))}
                   size="large"
                   isTransparent
                   noBorder
