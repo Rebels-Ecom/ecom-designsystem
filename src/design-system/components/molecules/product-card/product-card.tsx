@@ -110,18 +110,27 @@ function ProductCard({
   const [myProduct, setProduct] = useState({
     ...product,
     productImage: getProductPicture(partNo, primaryImageUrl, isMobile ? '120' : '100'),
-    quantity: quantity ? quantity : '1',
-    totalPrice: convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
+    quantity: getQuantity(quantity),
+    pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
+    totalPrice: convertNumToStr(
+      (pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0) *
+        itemNumberPerSalesUnit *
+        (defaultQuantity ?? getQuantity(quantity) ? parseInt(defaultQuantity ?? getQuantity(quantity)) : 0)
+    ),
     selectedVariantId: partNo,
   })
 
   useEffect(() => {
     setProduct((prevState) => ({
       ...prevState,
-      quantity: quantity ? quantity : '1',
+      quantity: getQuantity(quantity),
       priceStr: priceStr,
-      pricePerUnit: pricePerUnit,
-      totalPrice: convertNumToStr(pricePerUnit * itemNumberPerSalesUnit * (defaultQuantity ?? quantity ? parseInt(defaultQuantity ?? quantity) : 0)),
+      pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
+      totalPrice: convertNumToStr(
+        (pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0) *
+          itemNumberPerSalesUnit *
+          (defaultQuantity ?? getQuantity(quantity) ? parseInt(defaultQuantity ?? getQuantity(quantity)) : 0)
+      ),
       activeCampaign: activeCampaign,
     }))
   }, [quantity, priceStr, pricePerUnit, activeCampaign])
@@ -137,6 +146,13 @@ function ProductCard({
       totalPrice: convertNumToStr(myProduct.pricePerUnit * myProduct.itemNumberPerSalesUnit * productQuantity),
     }
     onChangeQuantity ? onChangeQuantity(newProduct) : setProduct(newProduct)
+  }
+
+  function getQuantity(quantity: string) {
+    const parsedQuantity = parseInt(quantity)
+    if (!quantity || isNaN(parsedQuantity)) return '1'
+    if (parsedQuantity < 0) return '0'
+    return quantity
   }
 
   function handleVariantsButtonClick() {
@@ -160,7 +176,7 @@ function ProductCard({
       packaging: selectedVariant.variantName,
       price: selectedVariant.price,
       priceStr: selectedVariant.priceStr,
-      pricePerUnit: selectedVariant.pricePerUnit,
+      pricePerUnit: selectedVariant.pricePerUnit && isFinite(selectedVariant.pricePerUnit) ? selectedVariant.pricePerUnit : 0,
       pricePerUnitString: selectedVariant.pricePerUnitString,
       salesUnit: selectedVariant.salesUnit,
       itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
