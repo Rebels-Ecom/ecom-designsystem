@@ -204,6 +204,7 @@ const ProductCardHorizontal = ({
                             quantityInputId={partNo}
                             maxQuantity={maxQuantity}
                             disabled={productQuantityDisabled}
+                            hidePrice={hidePrice}
                           />
                         ) : (
                           <ProductQuantityInput
@@ -216,6 +217,7 @@ const ProductCardHorizontal = ({
                             onChange={handleOnChangeQuantity}
                             disabled={productQuantityDisabled}
                             maxQuantity={maxQuantity}
+                            hidePrice={hidePrice}
                           />
                         )}
                       </>

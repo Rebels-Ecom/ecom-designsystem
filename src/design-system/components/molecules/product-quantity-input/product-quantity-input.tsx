@@ -13,7 +13,7 @@ export interface IProductQuantityInput {
   disabledNoBorder?: boolean
   onChange?: CallableFunction
   maxQuantity?: number
-  hidePrice?: boolean;
+  hidePrice?: boolean
 }
 
 const ProductQuantityInput = ({
@@ -47,8 +47,8 @@ const ProductQuantityInput = ({
 
   const handleOnBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
-      setVal('0');
-      onChange?.(e);
+      setVal('0')
+      onChange?.(e)
     }
   }
 
