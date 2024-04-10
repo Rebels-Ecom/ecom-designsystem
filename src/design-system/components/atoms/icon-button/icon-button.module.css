@@ -90,6 +90,9 @@
         pointer-events: none;
         cursor: default;
     }
+    & .bold {
+        font-weight: bold;
+    }
 }
 
 .iconDisabled {

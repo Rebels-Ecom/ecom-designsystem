@@ -32,6 +32,7 @@ export type TIconButton = {
    * @default undefined
    */
   notification?: number
+  weight?: 'normal' | 'bold'
 } & (TWithLink | TWithoutLink)
 
 const IconButton = (props: TIconButton) => {
@@ -57,7 +58,13 @@ const IconButton = (props: TIconButton) => {
           href={props.linkUrl}
           target="_blank"
         >
-          <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
+          <Icon
+            icon={props.icon}
+            className={cx({
+              [styles.iconDisabled]: props.disabled,
+              [styles.bold]: props.weight === 'bold',
+            })}
+          />
           {(props.notification && props.notification < 100) && (
             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
               {props.notification < 100 ? props.notification : '99+'}
@@ -79,7 +86,13 @@ const IconButton = (props: TIconButton) => {
             [styles.disabled]: props.disabled,
           })}
         >
-          <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
+          <Icon
+            icon={props.icon}
+            className={cx({
+              [styles.iconDisabled]: props.disabled,
+              [styles.bold]: props.weight === 'bold',
+            })}
+          />
           {props.notification && (
             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
               {props.notification < 100 ? props.notification : '99+'}
@@ -106,7 +119,13 @@ const IconButton = (props: TIconButton) => {
         })}
         onClick={props.onClick}
       >
-        <Icon icon={props.icon} className={props.disabled ? styles.iconDisabled : ''} />
+        <Icon
+          icon={props.icon}
+          className={cx({
+            [styles.iconDisabled]: props.disabled,
+            [styles.bold]: props.weight === 'bold',
+          })}
+        />
         {!!props.notification && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
             {props.notification < 100 ? props.notification : '99+'}

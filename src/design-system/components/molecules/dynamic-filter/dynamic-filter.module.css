@@ -73,6 +73,7 @@
 
     & .count {
       margin-left: auto;
+      font-weight: bold;
       margin-right: 0.375rem;
       color: var(--grey-800);
     }
