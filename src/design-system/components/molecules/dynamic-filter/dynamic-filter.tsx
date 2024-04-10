@@ -276,8 +276,6 @@ const DynamicFilter = ({
     )
   }, [selectedFilters, filters])
 
-  console.log(selectedFilters);
-
   const numberOfSelectedFilters = selectedFilters?.flatMap(x => x?.selectedOptions)?.length; 
 
   return (
