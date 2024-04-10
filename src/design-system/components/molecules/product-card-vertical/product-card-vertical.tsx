@@ -12,6 +12,7 @@ import { IconWithTooltip } from '../../atoms'
 const ProductCardVertical = ({
   product,
   loading = false,
+  hidePrice,
   hideCartButton,
   addToCart,
   addToCartBtnLabel,
@@ -184,7 +185,11 @@ const ProductCardVertical = ({
               <h5 className={styles.heading}>{productName}</h5>
             )}
             <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${partNo} ${country && `- ${country}`}`}</p>
-            <p className={cx(styles.textPurple, 'bodyS')}>{`${priceLabel}: ${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}`}</p>
+            {!hidePrice && (
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${priceLabel}: ${priceStr} ${currencyLabel ?? ''}/${
+                unitLabel ? unitLabel.toLowerCase() : ''
+              }`}</p>
+            )}
           </div>
         )}
         <Button
@@ -214,6 +219,7 @@ const ProductCardVertical = ({
             quantityInputId={partNo}
             disabled={productQuantityDisabled}
             onChange={handleOnChangeQuantity}
+            hidePrice={hidePrice}
           />
         )}
         {!hideCartButton && (
