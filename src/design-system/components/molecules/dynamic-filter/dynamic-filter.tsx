@@ -91,6 +91,7 @@ const DynamicFilter = ({
   const [selectedFilters, setSelectedFilters] = useState<TSelected[]>(preSelected ?? []);
   const [showMore, setShowMore] = useState(false);
   const [showSelectedFilters, setShowSelectedFilters] = useState(false);
+
   const handleClickFilterItem = (name: string) => {
     setOpenFilters(prevOpenFilters => {
       if (prevOpenFilters.includes(name)) {
@@ -275,6 +276,8 @@ const DynamicFilter = ({
     )
   }, [selectedFilters, filters])
 
+  console.log(selectedFilters);
+
   const numberOfSelectedFilters = selectedFilters?.flatMap(x => x?.selectedOptions)?.length; 
 
   return (
@@ -287,6 +290,7 @@ const DynamicFilter = ({
             size='xx-small'
             onClick={() => setOpen(true)}
             className={styles.filterButton}
+            disabled={loading}
           >Filtrera</Button>
         {!hideFilters && selectedFilters.length > 0 && (
           <>
