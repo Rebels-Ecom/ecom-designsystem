@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, IconButton, IconLink } from '../../atoms'
+import { Icon, IconButton, IconLink, Placeholder } from '../../atoms'
 import styles from './link-list-item.module.css'
 import { getOrderStatusTagColor } from '../../../../helpers/tag-helper'
 import { Tag, TTagColor } from '../../atoms/tag/tag'
@@ -17,6 +17,7 @@ export interface ILinkListItem {
   target?: TTarget
   onDownloadClick?: () => void
   onClick?: () => void
+  loading?: boolean;
 }
 
 function LinkListItem({
@@ -31,11 +32,20 @@ function LinkListItem({
   downloadLinkUrl,
   target,
   onDownloadClick,
+  loading,
 }: ILinkListItem) {
   return (
     <div className={styles.linkItem}>
       <div className={styles.itemWrapper}>
         <div className={styles.linkContentWrapper}>
+          {loading ? (
+            <>
+              <Placeholder type='heading' />
+              <Placeholder type='p_short' />
+            </>
+          ) : (
+            <>
+            
           {date1 || date2 ? (
             <div className={styles.tagsWrapper}>
               {date1 && <Tag text={date1} shape={'rectangular'} color={'grey'} />}
@@ -58,6 +68,9 @@ function LinkListItem({
             <h4 className={styles.title}>{title}</h4>
           </Link> : <h4 className={styles.title}>{title}</h4>}
           {children && <div>{children}</div>}
+          </>
+          )
+        }
         </div>
         {linkUrl && <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick}>
           <Icon icon={'icon-chevrons-right'}></Icon>

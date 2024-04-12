@@ -58,7 +58,7 @@ const FooterContent = ({
   }
   return (
     <div className={styles.footerLeft}>
-      {logo && <Logotype {...logo} />}
+      {logo && <Logotype {...logo} width={154} height={36} />}
       {showNewsletter && (
         <Newsletter
           id={newsletterId}

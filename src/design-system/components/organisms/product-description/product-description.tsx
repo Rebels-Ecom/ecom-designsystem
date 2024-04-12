@@ -16,6 +16,7 @@ export interface IProductDescriptionItem {
 
 export interface IProductDescription {
   productDescriptionItems: Array<IProductDescriptionItem>
+  loading?: boolean;
 }
 
 const contentBoxAnimation = {
@@ -26,7 +27,7 @@ const contentBoxAnimation = {
   exit: { y: '-90%', opacity: 0, transition: { duration: 0.5 } },
 }
 
-function ProductDescription({ productDescriptionItems }: IProductDescription) {
+function ProductDescription({ productDescriptionItems, loading }: IProductDescription) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [currentTab, setCurrentTab] = useState('')
 
@@ -75,6 +76,7 @@ function ProductDescription({ productDescriptionItems }: IProductDescription) {
             surface={'secondary'}
             size={'large'}
             rounded
+            disabled={loading}
           >
             {item.btnLabel}
           </Button>
