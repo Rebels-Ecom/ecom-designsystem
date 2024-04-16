@@ -35,7 +35,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 99999;
+    z-index: var(--modal-backdrop-z-index);
     &.light{background-color: rgba(245,246,248, 0.8);}
     &.dark{background-color: rgba(0, 62, 81, 0.9);}
 }

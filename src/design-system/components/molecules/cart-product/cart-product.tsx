@@ -7,7 +7,6 @@ import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
 import { Loader } from '../../atoms/loader/loader'
-import { convertNumToStr } from '../../../../helpers/format-helper'
 
 export interface ICartProduct extends IProduct {
   product: IProduct
