@@ -1,1 +1,0 @@
-function o(e,t){return t?e.error:""}const n=e=>{if(console.log(typeof window),!(typeof window>"u"))return console.log(window.getComputedStyle(e,null).getPropertyValue("appearance")),new Promise(t=>{setTimeout(()=>{t(window.getComputedStyle(e,null).getPropertyValue("appearance")==="menulist-button")},600)})};export{n as d,o as g};
