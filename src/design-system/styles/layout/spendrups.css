@@ -48,6 +48,7 @@ html {
     --drawer-overlay-z-index: 50;
     --drawer-content-z-index: 51;
     --tooltip-z-index: 101;
+    --modal-backdrop-z-index: 100;
 }
 
 body {

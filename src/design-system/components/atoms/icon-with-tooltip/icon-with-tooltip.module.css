@@ -1,7 +1,7 @@
 .iconWithTooltip {
   & .triggerButton {
     display: block;
-    border: none;
+    border: none !important;
     background: none;
     padding: 0;
 

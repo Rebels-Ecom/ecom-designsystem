@@ -7,6 +7,7 @@
   padding: 1rem;
   gap: 0.5rem;
   border-radius: 0.25rem;
+  min-height: 10rem;
 
   &.background-error {
     background-color: var(--alert-message-error-background);
@@ -25,9 +26,9 @@
 }
 
 .icon {
-  font-size: 1.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  font-size: 1.125rem;
+  width: 1.125rem;
+  height: 1.125rem;
   &.background-error { color: var(--color-text-blue); }
   &.background-warning { color: var(--color-text-blue);}
   &.background-information { color: var(--color-text-white);}
