@@ -3,14 +3,15 @@ import { Carousel, CarouselItem } from '../carousel/carousel'
 
 export interface IHeroCarousel {
   heroComponents: Array<IHero>
+  autoplay: boolean
 }
 
-const HeroCarousel = ({ heroComponents }: IHeroCarousel) => {
+const HeroCarousel = ({ heroComponents, autoplay = true }: IHeroCarousel) => {
   return (
     <Carousel
       splideProps={{
         options: {
-          autoplay: true,
+          autoplay: autoplay,
           pauseOnHover: true,
           gap: 0,
           type: 'loop'
