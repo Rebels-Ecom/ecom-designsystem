@@ -3,7 +3,7 @@ import { Carousel, CarouselItem } from '../carousel/carousel'
 
 export interface IHeroCarousel {
   heroComponents: Array<IHero>
-  autoplay: boolean
+  autoplay?: boolean
 }
 
 const HeroCarousel = ({ heroComponents, autoplay = true }: IHeroCarousel) => {
