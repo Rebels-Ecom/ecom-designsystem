@@ -11,10 +11,6 @@ export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide class
 const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, arrowsBottom, ...props }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children)
 
-  console.log('################################################################')
-  console.log(noOfChildren)
-  console.log(splideProps?.options)
-
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
