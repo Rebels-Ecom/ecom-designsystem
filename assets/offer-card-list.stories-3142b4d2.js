@@ -1,6 +1,0 @@
-import{O as p,a as s,b as o}from"./offer-card.stories-c963712f.js";import{C as m,a as c}from"./carousel-54229a2b.js";import{j as r}from"./jsx-runtime-a3a6c0b8.js";import{C as u}from"./content-wrapper-c985da24.js";const t=({list:a})=>r(u,{children:r(m,{breakpoints:{lg:{perPage:4,perMove:1}},offsetArrows:!0,children:a.map((d,l)=>r(c,{children:r(p,{...d})},l))})});try{t.displayName="OfferCardList",t.__docgenInfo={description:"",displayName:"OfferCardList",props:{list:{defaultValue:null,description:"",name:"list",required:!0,type:{name:"IOfferCard[]"}},maxPerPage:{defaultValue:null,description:"",name:"maxPerPage",required:!1,type:{name:"number"}}}}}catch{}const g={title:"Design System/Organisms/OfferCardList",component:t},C={render:({...a})=>r(t,{...a})},O=[s.args,o.args,s.args,o.args,s.args,o.args],e={...C,args:{list:O}};var f,i,n;e.parameters={...e.parameters,docs:{...(f=e.parameters)==null?void 0:f.docs,source:{originalSource:`{
-  ...OfferCardListStoryTemplate,
-  args: {
-    list: offersList
-  }
-}`,...(n=(i=e.parameters)==null?void 0:i.docs)==null?void 0:n.source}}};const y=["OfferCardListStory"],P=Object.freeze(Object.defineProperty({__proto__:null,OfferCardListStory:e,__namedExportsOrder:y,default:g},Symbol.toStringTag,{value:"Module"}));export{e as O,t as a,P as o};
