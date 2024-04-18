@@ -10,6 +10,11 @@ export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide class
 
 const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, arrowsBottom, ...props }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children)
+
+  console.log('################################################################')
+  console.log(noOfChildren)
+  console.log(splideProps?.options)
+
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
@@ -30,19 +35,19 @@ const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArr
           1024: {
             perPage: breakpoints?.lg?.perPage ?? 4,
             perMove: breakpoints?.lg?.perMove ?? 1,
-            arrows: !!!breakpoints?.lg?.hideArrows,
+            arrows: noOfChildren > 1 ? !!!breakpoints?.lg?.hideArrows : false,
             focus: breakpoints?.lg?.dotPerItem ? 0 : undefined,
           },
           768: {
             perPage: breakpoints?.md?.perPage ?? 2,
             perMove: breakpoints?.md?.perMove ?? 1,
-            arrows: !!!breakpoints?.md?.hideArrows,
+            arrows: noOfChildren > 1 ? !!!breakpoints?.md?.hideArrows: false,
             focus: breakpoints?.md?.dotPerItem ? 0 : undefined,
           },
           576: {
             perPage: breakpoints?.sm?.perPage ?? 1,
             perMove: breakpoints?.sm?.perMove ?? 1,
-            arrows: !!!breakpoints?.sm?.hideArrows,
+            arrows: noOfChildren > 1 ? !!!breakpoints?.sm?.hideArrows : false,
             focus: breakpoints?.sm?.dotPerItem ? 0 : undefined,
           },
         },
