@@ -7,7 +7,6 @@ export interface IHeroCarousel {
 }
 
 const HeroCarousel = ({ heroComponents, autoplay = true }: IHeroCarousel) => {
-  console.log('autoplay heroCarousel', autoplay)
 
   return (
     <Carousel
