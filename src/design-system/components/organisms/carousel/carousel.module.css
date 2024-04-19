@@ -93,7 +93,7 @@
       }
     }
 
-    /* @media (min-width: 64em) {
+    @media (min-width: 64em) {
       &.offset {
         &.left {
           left: 2rem;
@@ -106,9 +106,9 @@
         top: unset;
         bottom: -0.75rem;
       }
-    } */
+    }
 
-    @media (min-width: 64rem) {
+    @media (min-width: 90rem) {
       bottom: unset;
       top: 50%;
 
