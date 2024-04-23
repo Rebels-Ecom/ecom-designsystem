@@ -13,9 +13,10 @@ export type TAlertBox = {
   className?: string
   onClick?: () => void
   loading?: boolean
+  minHeight?: boolean
 }
 
-const AlertBox = ({ title, buttonText, color = 'error', className, onClick, loading }: TAlertBox) => {
+const AlertBox = ({ title, buttonText, color = 'error', className, onClick, loading, minHeight }: TAlertBox) => {
   if (loading) {
     return (
       <div
@@ -23,6 +24,7 @@ const AlertBox = ({ title, buttonText, color = 'error', className, onClick, load
           styles.alertBox,
           styles[`background-${color}`],
           {[styles.loading]: loading},
+          {[styles.minHeight]: minHeight},
           className ? className : '',
         )}
       >
@@ -33,7 +35,7 @@ const AlertBox = ({ title, buttonText, color = 'error', className, onClick, load
     )
   }
   return (
-    <div className={cx(styles.alertBox, styles[`background-${color}`], className ? className : '')}>
+    <div className={cx(styles.alertBox, styles[`background-${color}`], {[styles.minHeight]: minHeight}, className ? className : '')}>
       <Icon className={cx(styles.icon, styles[`background-${color}`])} icon={color === 'information' ? 'icon-info' : 'icon-alert-circle'}></Icon>
       <Text size='small'>{title}</Text>
       {buttonText && onClick && (

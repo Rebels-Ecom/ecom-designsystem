@@ -34,7 +34,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
     currencyLabel,
     unitLabel
   } = product
-  const productImage = getProductPicture(partNo, primaryImageUrl, '96')
+  const productImage = getProductPicture(partNo, primaryImageUrl, '64')
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)

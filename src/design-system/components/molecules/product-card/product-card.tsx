@@ -109,7 +109,7 @@ function ProductCard({
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(partNo, primaryImageUrl, isMobile ? '120' : '100'),
+    productImage: getProductPicture(partNo, primaryImageUrl, '120'),
     quantity: getQuantity(quantity),
     pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
     totalPrice: convertNumToStr(

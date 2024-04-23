@@ -25,6 +25,7 @@
     height: 100%;
     padding: 0.5rem 1rem 0.5rem 0;
     object-fit: contain;
+    max-width: 3.375rem;
   }
 
   .productItemWrapper {
