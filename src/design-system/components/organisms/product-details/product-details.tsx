@@ -96,10 +96,11 @@ const ProductDetails = ({
   availableForOrder,
   loading
 }: IProductDetails) => {
+  const { isMobile, isTablet } = mediaQueryHelper()
   const [product, setProduct] = useState({
     partNo,
     productName,
-    productImage: getProductPicture(partNo, primaryImageUrl ? primaryImageUrl : fallbackProductImageUrl),
+    productImage: getProductPicture(partNo, primaryImageUrl ? primaryImageUrl : fallbackProductImageUrl, (isMobile || isTablet) ? '120' : '240'),
     packaging,
     priceStr,
     price,
@@ -119,7 +120,6 @@ const ProductDetails = ({
   })
 
   const [variantsListOpen, setVariantsListOpen] = useState<Boolean>(false)
-  const { isMobile } = mediaQueryHelper()
   const packagePerPallet =
     productDetail?.visibleSpecs?.find((spec) => spec.name === 'PackagePerPallet') ||
     productDetail?.invisibleSpecs?.find((spec) => spec.name === 'PackagePerPallet')

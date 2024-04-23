@@ -7,7 +7,7 @@ import { Picture, IconButton, Loader, Placeholder, Button, Icon, IconWithTooltip
 import cx from 'classnames'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
-import { FlexContainer } from '../../layouts'
+import { FlexContainer, mediaQueryHelper } from '../../layouts'
 import { DebounceInput } from '../../atoms/inputs/debounce-input/debounce-input'
 
 const ProductCardHorizontal = ({
@@ -62,9 +62,11 @@ const ProductCardHorizontal = ({
     limitedLabel,
     sellerOnly,
     isAccessoryPotItem,
-  } = product
+  } = product;
 
-  const productImage = getProductPicture(partNo, primaryImageUrl, '96')
+  const { isMobile, isTablet } = mediaQueryHelper();
+
+  const productImage = getProductPicture(partNo, primaryImageUrl, (isMobile || isTablet) ? '120' : '64');
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -129,7 +131,7 @@ const ProductCardHorizontal = ({
                 <Link to={productUrl} href={productUrl} className={styles.imageWrapper} onClick={onClick}>
                   <Picture
                     {...productImage}
-                    classNamePicture={styles.picture}
+                    classNamePicture={cx(styles.picture, displaySmallImage && styles.smallPicture)}
                     classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
                     fallbackImageUrl={fallbackProductImageUrl}
                   />
@@ -138,7 +140,7 @@ const ProductCardHorizontal = ({
                 <div className={styles.imageWrapper}>
                   <Picture
                     {...productImage}
-                    classNamePicture={styles.picture}
+                    classNamePicture={cx(styles.picture, displaySmallImage && styles.smallPicture)}
                     classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
                     fallbackImageUrl={fallbackProductImageUrl}
                   />

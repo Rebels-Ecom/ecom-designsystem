@@ -111,7 +111,7 @@ function ProductSearch({
         <div className={styles.searchResults}>
           <ul aria-labelledby={id} className={styles.searchResultsList}>
             {results.map((li: IResult, i: number) => {
-              const productImage = getProductPicture(li.partNo, li.primaryImageUrl)
+              const productImage = getProductPicture(li.partNo, li.primaryImageUrl, '54')
               return (
                 <li key={`${id}_${i}`} className={styles.resultListItem}>
                   <ProductSearchResultItem
