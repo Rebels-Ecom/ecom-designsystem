@@ -38,7 +38,7 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
             <ContentWrapper>
                 <>
                     {image?.src && title && <h2 className={cx(styles.title, styles[textWidth])} >{title}</h2>}
-                    <ul className={cx(styles.list, styles[textWidth])}>
+                    <div className={cx(styles.list, styles[textWidth])}>
                         {breadcrumbs.map((breadcrumb) => (
                             <UILink
                                 key={breadcrumb.href}
@@ -51,7 +51,7 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
                                 {breadcrumb.children}
                             </UILink>
                         ))}
-                    </ul>
+                    </div>
                 </>
             </ContentWrapper>
         </div>

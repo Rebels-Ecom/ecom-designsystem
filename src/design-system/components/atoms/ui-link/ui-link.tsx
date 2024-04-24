@@ -39,6 +39,7 @@ const UILink = ({
         styles[onSurface],
         className
       )}
+      aria-label={children}
     >
       {iconLeft && <Icon icon={iconLeft} className={cx(styles.icon, styles.left)} />}
       <span className={cx(styles.linkText, {[styles.noUnderline]: noUnderline })}>{children}</span>

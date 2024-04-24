@@ -271,6 +271,7 @@ const ProductDetails = ({
                 rounded
                 onClick={() => handleVariantsButtonClick()}
                 disabled={product.productVariantList.length <= 1}
+                name='Select packaging'
               >
                 {product.packaging}
               </Button>
@@ -297,6 +298,7 @@ const ProductDetails = ({
                 size="large"
                 onClick={() => addToCart(product)}
                 disabled={product.quantity === '0' || product.outOfStock || !availableForOrder}
+                name='Add to cart'
               >
                 {addToCartLabel}
               </Button>
@@ -310,6 +312,7 @@ const ProductDetails = ({
                   isTransparent
                   noBorder
                   noPadding
+                  name='Add to purchase list'
                 />
               )}
               {showFavoriteIcon && onFavoriteIconClick && (
@@ -322,6 +325,7 @@ const ProductDetails = ({
                   isTransparent
                   noBorder
                   noPadding
+                  name='Add to favorite list'
                 />
               )}
             </div>

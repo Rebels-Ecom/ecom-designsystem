@@ -42,6 +42,8 @@ const BrandDetails = ({ title, image, tags, link, ...props }: TBrandDetails) => 
           { srcset: `${image.mobileUrl ?? image.url}`, media: `(max-width: 767px)` },
           { srcset: `${image.url}`, media: `(min-width: 768px)` },
         ]}
+        fetchPriority="high"
+        loading="eager"
       />
 
       {tags?.length && <TagsList tagsList={tags} />}

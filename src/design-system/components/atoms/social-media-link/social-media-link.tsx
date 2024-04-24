@@ -17,6 +17,7 @@ const SocialMediaLink = (link : TSocialMediaLink ) => {
             href={link.href}
             target={link.target ? link.target : '_blank'}
             isExternal={link.isExternal}
+            name={link.title}
             >
             <Icon icon={link.icon} className={styles.socialMediaIcon}/>
         </LinkButton>

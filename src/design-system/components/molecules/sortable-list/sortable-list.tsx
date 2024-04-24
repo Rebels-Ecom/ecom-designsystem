@@ -60,6 +60,7 @@ const SortingOption = ({ name, onClickUp, onClickDown, className, activeSorting,
             isTransparent
             noBorder
             className={styles.activeSortingIcon}
+            name='Sort by'
           />  
         ) : (
           <IconButton
@@ -70,6 +71,7 @@ const SortingOption = ({ name, onClickUp, onClickDown, className, activeSorting,
             noPadding
             isTransparent
             noBorder
+            name='Sort by'
           />
         )}
       </div>

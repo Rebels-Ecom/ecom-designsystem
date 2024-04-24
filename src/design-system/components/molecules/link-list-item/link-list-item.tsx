@@ -64,7 +64,7 @@ function LinkListItem({
               {downloadLinkUrl && <IconLink href={downloadLinkUrl} linkComponent={Link} target={target} icon={'icon-file'} children={undefined}></IconLink>}
             </div>
           ) : null}
-          {linkUrl ? <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick}>
+          {linkUrl ? <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick} aria-label={`Navigate to ${title}`}>
             <h4 className={styles.title}>{title}</h4>
           </Link> : <h4 className={styles.title}>{title}</h4>}
           {children && <div>{children}</div>}
@@ -72,7 +72,7 @@ function LinkListItem({
           )
         }
         </div>
-        {linkUrl && <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick}>
+        {linkUrl && <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick} aria-label={`Navigate to ${title}`}>
           <Icon icon={'icon-chevrons-right'}></Icon>
         </Link>}
       </div>

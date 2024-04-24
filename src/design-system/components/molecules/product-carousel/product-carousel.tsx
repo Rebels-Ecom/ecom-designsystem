@@ -3,7 +3,7 @@ import { Carousel } from '../../organisms'
 import { CarouselItem } from '../../organisms/carousel/carousel'
 import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 
-export interface IProductCarousel {
+export interface IProductCarousel extends Pick<TProductCard, 'productArea'> {
   productCards: Array<TProductCard>
   addToCart: CallableFunction
   productsPerPageMobile?: number
@@ -21,13 +21,14 @@ const ProductCarousel = ({
   productsPerPageDesktop = 4,
   arrowsBottom,
   offsetArrows,
+  productArea
 }: IProductCarousel) => {
   const { isMobile } = mediaQueryHelper()
 
   const renderProductCards = () =>
     productCards?.map((productCard: TProductCard, index: number) => (
       <CarouselItem key={index}>
-        <ProductCard {...productCard} addToCart={addToCart} />
+        <ProductCard {...productCard} addToCart={addToCart} productArea={productArea} />
       </CarouselItem>
     ))
 

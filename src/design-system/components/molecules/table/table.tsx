@@ -64,7 +64,7 @@ const Table = ({ listItems, hideColumnTitles = false, equalWidthColumns = false,
   }
 
   const renderIcon = (obj: TIconButton, i: string) => {
-    return <IconButton key={i} {...obj} size="medium" noPadding isTransparent noBorder />
+    return <IconButton key={i} {...obj} size="medium" noPadding isTransparent noBorder name={obj.icon === 'icon-edit' ? 'Edit field' : 'Delete field'} />
   }
 
   const renderList = (columnTitle: string) => {
@@ -142,6 +142,7 @@ const Table = ({ listItems, hideColumnTitles = false, equalWidthColumns = false,
                         onClick={() => setSortBy({ by: columnTitle, dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc' })}
                         isTransparent
                         noBorder
+                        name='Sort by'
                       />
                     </>
                   )}
