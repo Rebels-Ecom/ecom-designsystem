@@ -36,11 +36,11 @@ const BrandDetails = ({ title, image, tags, link, ...props }: TBrandDetails) => 
       <Picture
         width={300}
         id='brand-image'
-        src={image.url}
+        src={`${image.url}?w=300`}
         alt={image.alt}
         sources={[
-          { srcset: `${image.mobileUrl ?? image.url}`, media: `(max-width: 767px)` },
-          { srcset: `${image.url}`, media: `(min-width: 768px)` },
+          { srcset: `${image.mobileUrl ?? image.url}?w=300`, media: `(max-width: 767px)` },
+          { srcset: `${image.url}?w=300`, media: `(min-width: 768px)` },
         ]}
         fetchPriority="high"
         loading="eager"
@@ -53,7 +53,7 @@ const BrandDetails = ({ title, image, tags, link, ...props }: TBrandDetails) => 
       {props.richText && <MaxWidth contentMaxWidth='text'>{props.richText}</MaxWidth>}
       {props.text && <MaxWidth contentMaxWidth='text'><Text align="center">{props.text}</Text></MaxWidth>}
 
-      {link && (
+      {(link?.url && link?.text) && (
         <UILink
           onSurface='transparent'
           linkComponent='a'
