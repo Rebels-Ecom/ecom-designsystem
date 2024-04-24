@@ -20,6 +20,7 @@ type TWithoutLink = {
 export type TIconButton = {
   type: 'link' | 'button'
   icon: TIcon
+  name?: string;
   size?: TIconButtonSize
   isTransparent?: boolean
   className?: string
@@ -118,6 +119,7 @@ const IconButton = (props: TIconButton) => {
           [styles.disabled]: props.disabled,
         })}
         onClick={props.onClick}
+        aria-label={props.name}
       >
         <Icon
           icon={props.icon}

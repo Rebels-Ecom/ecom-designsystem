@@ -24,7 +24,7 @@ const IconWithTooltip = ({ content, className, ...props }: TTooltip) => {
       <Tooltip.Provider delayDuration={0}>
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
-            <button className={styles.triggerButton}>
+            <button className={styles.triggerButton} aria-label={content}>
               {props.icon && (
                 <Icon
                   {...props.icon}

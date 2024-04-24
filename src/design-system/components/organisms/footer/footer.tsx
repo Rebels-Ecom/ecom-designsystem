@@ -90,17 +90,19 @@ const FooterLinks = ({ footerLinks, linkComponent: Link }: { footerLinks: Array<
           Array.isArray(list.links) && list.links?.length ? (
             <li key={`${list.title}-${i}`} className={styles.linkListItem}>
               <h5 className={styles.linkListTitle}>{list.title}</h5>
-              <ul className={styles.links}>
-                {list.links.length < 5 ? (
-                  list.links.map((link: ILink, i: number) => <FooterLink key={`${link.children}-${i}`} link={link} linkComponent={Link} />)
-                ) : (
-                  <div className={styles.linksInTwoColumns}>
+              {list.links.length < 5 ? (
+                <ul className={styles.links}>
+                  {list.links.map((link: ILink, i: number) => <FooterLink key={`${link.children}-${i}`} link={link} linkComponent={Link} />)}
+                </ul>
+              ) : (
+                <div className={styles.links}>
+                  <ul className={styles.linksInTwoColumns}>
                     {list.links.map((link: ILink, i: number) => (
                       <FooterLink key={`${link.children}-${i}`} link={link} linkComponent={Link} />
-                    ))}
-                  </div>
-                )}
-              </ul>
+                      ))}
+                  </ul>
+                </div>
+              )}
             </li>
           ) : null
         )}

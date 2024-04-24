@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
@@ -37,6 +37,7 @@ const ProductCardVertical = ({
   accessoryPotItemTooltipText,
   onCloseVariants,
   onClick,
+  productArea
 }: IProductCard & TProductCardVertical) => {
   const {
     activeCampaign,
@@ -201,6 +202,7 @@ const ProductCardVertical = ({
           onClick={() => handleVariantBtnClick()}
           disabled={loading || packageBtnDisabled}
           className={styles.packageBtn}
+          name='Select packaging'
         >
           {packaging}
         </Button>
@@ -216,7 +218,7 @@ const ProductCardVertical = ({
             itemNumberPerSalesUnit={itemNumberPerSalesUnit}
             totalPrice={totalPrice}
             quantity={defaultQuantity ?? quantity}
-            quantityInputId={partNo}
+            quantityInputId={`${partNo}-${productArea ?? 'category'}`}
             disabled={productQuantityDisabled}
             onChange={handleOnChangeQuantity}
             hidePrice={hidePrice}
@@ -232,6 +234,7 @@ const ProductCardVertical = ({
               onClick={() => addToCart(product)}
               disabled={buttonLoading || loading || disabled || quantity === '0'}
               loading={buttonLoading}
+              name={addToCartBtnLabel}
             >
               {addToCartBtnLabel}
             </Button>
@@ -245,6 +248,7 @@ const ProductCardVertical = ({
                 isTransparent
                 noBorder
                 noPadding
+                name='Add to purchase list'
               />
             )}
             {showFavoriteIcon && onFavoriteIconClick && (
@@ -257,6 +261,7 @@ const ProductCardVertical = ({
                 isTransparent
                 noBorder
                 noPadding
+                name='Add to favorite list'
               />
             )}
           </div>

@@ -79,7 +79,12 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
           </div>
           {onClickRemoveProduct && iconButton && (
             <div className={styles.iconLink}>
-              <IconButton {...iconButton} type="button" onClick={() => handleRemoveProduct(partNo)} />
+              <IconButton
+                {...iconButton}
+                type="button"
+                onClick={() => handleRemoveProduct(partNo)}
+                name='Remove product'
+              />
             </div>
           )}
         </>

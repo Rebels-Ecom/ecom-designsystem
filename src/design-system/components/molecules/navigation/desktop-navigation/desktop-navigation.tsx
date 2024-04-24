@@ -7,7 +7,7 @@ import cx from 'classnames'
 import { ContentWrapper } from "../../../layouts";
 import { useOnClickOutside } from "../../../../hooks";
 
-const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) => {
+const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
   const [activeTopLevel, setActiveTopLevel] = useState<TNavCategory | TNavLink>();
   const [hoveredTopLevel, setHoveredTopLevel] = useState<TNavCategory | TNavLink>();
   const [activeSecondLevel, setActiveSecondLevel] = useState<TNavCategory | TNavLink | undefined>();
@@ -97,6 +97,7 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                   {isCategory(cat) && (
                     <motion.button
                       key={`${cat.name}-${i}`}
+                      aria-label={cat.name}
                       className={cx(styles.topLevelLink, styles.topLevelTrigger, {[styles.active]: activeTopLevel === cat})}
                       onClick={() => {
                         if (activeTopLevel?.name === cat.name) {
@@ -112,19 +113,20 @@ const DesktopNavigation = ({ categories, currentSlug, initial }: INavigation) =>
                   )}
                 </motion.li>
               ))}
-              <motion.div
+              <motion.li
                 className={styles.closeButton}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={activeTopLevel ? { scale: 1, opacity: 1 } : undefined}
                 exit={{ transition: { delay: 0 }}}
               >
                 <IconButton
+                  name='Close navigation'
                   className={styles.iconButton}
                   icon="icon-plus"
                   type="button"
                   onClick={() => setActiveTopLevel(undefined)}
                 />
-              </motion.div>
+              </motion.li>
             </motion.ul>
           </div>
           <motion.div

@@ -64,6 +64,7 @@ export interface IProductCard {
   alertBox?: TAlertBox
   onClick?: CallableFunction
   debounceQuantityVal?: number
+  productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration';
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -99,6 +100,7 @@ function ProductCard({
   alertBox,
   onClick,
   debounceQuantityVal,
+  productArea
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -223,6 +225,7 @@ function ProductCard({
         alertBox={alertBox}
         onClick={onClick}
         debounceQuantityVal={debounceQuantityVal}
+        productArea={productArea}
       />
     )
   }
@@ -286,6 +289,7 @@ function ProductCard({
         onCloseVariants={handleCloseVariants}
         alertBox={alertBox}
         onClick={onClick}
+        productArea={productArea}
       />
     )
   }

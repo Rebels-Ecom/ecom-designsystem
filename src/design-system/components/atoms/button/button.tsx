@@ -29,6 +29,7 @@ export interface IButton {
    */
   loading?: boolean;
   weight?: 'normal' | 'bold';
+  name?: string;
 }
 
 export function getButtonSurface(surface: TButtonSurface) {
@@ -73,7 +74,8 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       id,
       className,
       loading,
-      weight = 'normal'
+      weight = 'normal',
+      name
     },
     ref
   ) => {
@@ -82,6 +84,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
 
     return(
       <button
+        aria-label={name}
         ref={ref}
         id={id ? id : undefined}
         type={type}

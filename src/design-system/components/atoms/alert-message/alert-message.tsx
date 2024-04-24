@@ -34,7 +34,7 @@ function AlertMessage({ children, type, isOpen, onClose }: IAlertMessage) {
         <div className={styles.wrapper}>
           <IconButton className={styles.invisibleSpacerItem} type="button" icon="icon-x" size="small" onClick={() => {}} />
           <span>{children}</span>
-          <IconButton className={styles[`${type}-icon`]} type="button" onClick={onClose} icon="icon-x" size="small" round noBorder />
+          <IconButton className={styles[`${type}-icon`]} type="button" onClick={onClose} icon="icon-x" size="small" round noBorder name='Close alert message' />
         </div>
       </ContentWrapper>
     </div>

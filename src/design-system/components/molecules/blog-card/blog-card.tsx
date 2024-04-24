@@ -57,7 +57,7 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
       {image && (
         <>
           {link ? (
-            <a href={link.href} target='_self' >
+            <a href={link.href} target='_self' aria-label={heading ? `Read more about ${heading}` : 'Read more'}>
               {renderImage()}
             </a>
           ) :
@@ -74,7 +74,12 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
             {heading && (
               <>
                 {link ? (
-                  <a href={link.href} target='_self' className={cx(styles.heading, styles.headingLink)}>
+                  <a
+                    href={link.href}
+                    target='_self'
+                    className={cx(styles.heading, styles.headingLink)}
+                    aria-label={`Read more about ${heading}`}
+                  >
                     <h4 className={styles.heading}>{heading}</h4>
                   </a>
                 ) : <h4 className={styles.heading}>{heading}</h4>}

@@ -38,6 +38,7 @@ const ProductCardHorizontal = ({
   alertBox,
   onClick,
   debounceQuantityVal,
+  productArea
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -203,7 +204,7 @@ const ProductCardHorizontal = ({
                             itemNumberPerSalesUnit={itemNumberPerSalesUnit}
                             totalPrice={totalPrice}
                             quantity={defaultQuantity ?? quantity}
-                            quantityInputId={partNo}
+                            quantityInputId={`${partNo}-${productArea}`}
                             maxQuantity={maxQuantity}
                             disabled={productQuantityDisabled}
                             hidePrice={hidePrice}
@@ -215,7 +216,7 @@ const ProductCardHorizontal = ({
                             itemNumberPerSalesUnit={itemNumberPerSalesUnit}
                             totalPrice={totalPrice}
                             quantity={defaultQuantity ?? quantity}
-                            quantityInputId={partNo}
+                            quantityInputId={`${partNo}-${productArea}`}
                             onChange={handleOnChangeQuantity}
                             disabled={productQuantityDisabled}
                             maxQuantity={maxQuantity}
@@ -238,6 +239,7 @@ const ProductCardHorizontal = ({
                     isTransparent
                     noBorder
                     size="large"
+                    name='Remove product'
                   />
                 </div>
               )}
@@ -251,6 +253,7 @@ const ProductCardHorizontal = ({
                     onClick={() => addToCart(product)}
                     disabled={buttonLoading || loading || disabled || quantity <= '0'}
                     loading={buttonLoading}
+                    name={addToCartBtnLabel}
                   >
                     <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
                     <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
@@ -265,6 +268,7 @@ const ProductCardHorizontal = ({
                       isTransparent
                       noBorder
                       noPadding
+                      name='Add to purchase list'
                     />
                   )}
                 </div>
