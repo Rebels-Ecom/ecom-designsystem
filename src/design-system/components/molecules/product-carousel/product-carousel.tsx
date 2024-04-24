@@ -58,14 +58,17 @@ const ProductCarousel = ({
               sm: {
                 hideArrows: true,
                 perPage: productsPerPageMobile,
+                perMove: productsPerPageMobile
               },
             }
           : {
               md: {
                 perPage: productsPerPageTablet,
+                perMove: productsPerPageTablet
               },
               lg: {
                 perPage: productsPerPageDesktop,
+                perMove: productsPerPageDesktop
               },
             }
       }

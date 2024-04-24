@@ -113,9 +113,11 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
                 breakpoints={{
                   lg: {
                     perPage: 4,
+                    perMove: 4,
                   },
                   md: {
                     perPage: 2,
+                    perMove: 2
                   },
                 }}
               >
@@ -126,7 +128,7 @@ const BlogCardList = ({ title, blogCards, swipe, oddHeights, stretchItems }: IBl
                 ))}
               </Carousel>
             ) : (
-              <FlexContainer wrap className={styles.list}>
+              <FlexContainer wrap className={styles.list} alignItems='stretch'>
                 {blogCards.map((card: IBlogCard, i: number) => (
                   <Fragment key={i}>
                     {oddHeights ? renderSpecialItem(card, i % 2 == 0) : renderFlexItem(card)}
