@@ -1,14 +1,9 @@
 .logoPicture {
     display: block;
-    height: var(--logotype-height-mobile);
-    @media (min-width: 64em) {
-        height: var(--logotype-height-desktop);
-    }
 }
   
 .logoImg {
     display: block;
-    height: 100%;
 }
 
 .linkLogo {

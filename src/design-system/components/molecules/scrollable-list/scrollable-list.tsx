@@ -26,7 +26,7 @@ const ScrollableList = ({ children, loading, visibleItemsNumber, hasFade, classN
   }
 
   useEffect(() => {
-    ref?.current?.clientHeight && setHeight(ref.current.clientHeight)
+    ref?.current?.clientHeight && setHeight(ref.current.clientHeight + 1)
   }, [])
 
   if (!Array.isArray(children) || !children.length) return null

@@ -7,6 +7,7 @@ export type TLogotype = IPicture;
 const Logotype = ({ classNamePicture, classNameImg, ...props}: TLogotype) => (
   <Picture
     {...props}
+    height={32}
     classNamePicture={cx(styles.logoPicture, classNamePicture)}
     classNameImg={cx(styles.logoImg, classNameImg)}
   />

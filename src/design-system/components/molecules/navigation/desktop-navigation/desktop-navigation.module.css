@@ -166,7 +166,7 @@
     list-style: none;
     
     &.thirdLevelListMaxWidth {
-      max-width: calc((100vw - 18rem) / 5);
+      max-width: calc((var(--second-level-width) - 8rem) / 5);
     }
 
     & .thirdLeveListItem {
