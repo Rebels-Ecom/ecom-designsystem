@@ -28,6 +28,7 @@ export interface IInputText {
   iconRight?: IIcon
   min?: string
   fullWidth?: boolean
+  small?: boolean
 }
 
 const InputText = forwardRef<HTMLInputElement, IInputText>(
@@ -53,6 +54,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
       iconRight,
       min,
       fullWidth,
+      small
     },
     ref
   ) => {
@@ -80,7 +82,10 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
         <input
           ref={ref}
           type={type}
-          className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), disabledNoBorder && styles.disabledNoBorder, className)}
+          className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), {
+            [styles.small]: small,
+            [styles.disabledNoBorder]: disabledNoBorder,
+          }, className)}
           id={id}
           value={value}
           defaultValue={defaultValue}

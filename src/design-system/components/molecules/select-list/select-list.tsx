@@ -18,6 +18,7 @@ interface ISelectList {
   onClickItem?: (item?: TSelectItem) => void;
   closeOnSelect?: boolean;
   disabled?: boolean;
+  small?: boolean;
 }
 
 const SelectList = ({
@@ -27,7 +28,8 @@ const SelectList = ({
   onClickItem,
   closeOnSelect,
   disabled,
-  placeholder
+  placeholder,
+  small
 }: ISelectList) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -79,6 +81,7 @@ const SelectList = ({
         onClick={handleClick}
         iconRight={{ icon: isOpen ? 'icon-chevron-up' : 'icon-chevron-down' }}
         disabled={disabled}
+        className={cx({[styles.small]: small})}
       >
         {selected?.name ?? placeholder}
       </Button>

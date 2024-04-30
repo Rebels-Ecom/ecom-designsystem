@@ -49,6 +49,12 @@
   color: var(--color-text-input);
   font-family: var(--font-family-primary);
 
+  &.small {
+    @media (min-width: 48em) {
+      height: 2.5rem;
+    }
+  }
+
   &:focus {
     outline:none;
     background: var(--input-background-focused);

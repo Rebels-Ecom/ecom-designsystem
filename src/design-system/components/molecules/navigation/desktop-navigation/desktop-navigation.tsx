@@ -12,6 +12,7 @@ const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
   const [hoveredTopLevel, setHoveredTopLevel] = useState<TNavCategory | TNavLink>();
   const [activeSecondLevel, setActiveSecondLevel] = useState<TNavCategory | TNavLink | undefined>();
   const [thirdLevelHeight, setThirdLevelHeight] = useState<'auto' | number>('auto');
+  const [secondLevelWidth, setSecondLevelWidth] = useState<string | number>('auto');
   const secondLevelInnerRef = useRef<HTMLDivElement>(null);
   const secondLevelRef = useRef<HTMLDivElement>(null);
 
@@ -45,6 +46,7 @@ const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
 
   useEffect(() => {
     setActiveTabs();
+    setSecondLevelWidth(`${secondLevelInnerRef?.current?.getBoundingClientRect()?.width ?? 1240}px`);
   }, []);
 
   useOnClickOutside({ ref: secondLevelInnerRef, onClose: (e: any) => {
@@ -55,8 +57,12 @@ const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
     setActiveTopLevel(undefined);
   } })
 
+  const style: { [key: string]: string | number } = ({
+    '--second-level-width': secondLevelWidth,
+  })
+
   return (
-    <nav className={styles.desktopNavigation}>
+    <nav className={styles.desktopNavigation} style={style}>
       <ContentWrapper padding={0}>
         <motion.div
           className={styles.topLevel}
