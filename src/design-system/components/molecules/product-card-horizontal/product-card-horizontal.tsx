@@ -3,7 +3,7 @@ import styles from './product-card-horizontal.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, IconButton, Loader, Placeholder, Button, Icon, IconWithTooltip, AlertBox } from '../../atoms'
+import { Picture, IconButton, Placeholder, Button, Icon, IconWithTooltip, AlertBox } from '../../atoms'
 import cx from 'classnames'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
@@ -88,6 +88,32 @@ const ProductCardHorizontal = ({
     '--out-of-stock-product-color': outOfStock && outOfStockLabel ? '#e4b6c3' : '#FFF',
   }
 
+  const iconsAndTags = (
+    <FlexContainer alignItems="center" gap={0.5} minHeight={2.25}>
+      {sellerOnly && (
+        <>
+          {sellerOnlyTooltipText ? (
+            <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
+          ) : (
+            <Icon icon={'icon-eye'} size={'large'} />
+          )}
+        </>
+      )}
+      {isAccessoryPotItem && (
+        <>
+          {accessoryPotItemTooltipText ? (
+            <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
+          ) : (
+            <span>
+              <b style={{ fontSize: '1.2rem' }}>S</b>
+            </span>
+          )}
+        </>
+      )}
+      {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+    </FlexContainer>
+  )
+
   return (
     <div
       className={cx(
@@ -95,154 +121,108 @@ const ProductCardHorizontal = ({
         className,
         {
           [styles.campaign]: activeCampaign?.title && !loading,
-        },
-        {
           [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
-        },
-        {
           [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
-        }
+        },
       )}
       style={style}
     >
-      {!outOfStock && activeCampaign?.title && !loading && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
-      {!activeCampaign && isLimitedProduct && limitedLabel && !loading && (
-        <div className={cx(styles.limitedBox, !hideRemoveButton ? styles.withExtraPadding : '')}>{limitedLabel}</div>
+      {!outOfStock && activeCampaign?.title && !loading && (
+        <div className={styles.campaignBox}>{activeCampaign.title}</div>
       )}
-      {outOfStock && outOfStockLabel && !loading && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
-      {removingProduct ? (
-        <Loader visible text={'Loading'} />
+      {!activeCampaign && isLimitedProduct && limitedLabel && !loading && (
+        <div className={cx(styles.limitedBox, {[styles.withExtraPadding]: !hideRemoveButton})}>{limitedLabel}</div>
+      )}
+      {outOfStock && outOfStockLabel && !loading && (
+        <div className={styles.outOfStockBox}>{outOfStockLabel}</div>
+      )}
+      {loading ? (
+        <>
+          <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
+            <Placeholder type="image" />
+          </div>
+          <div className={styles.placeholderContent}>
+            <Placeholder type={'heading'} />
+            <Placeholder type={'p_long'} />
+            <Placeholder type={'p_short'} />
+            <Placeholder type={'p_short'} />
+          </div>
+        </>
       ) : (
         <>
-          {loading ? (
-            <>
-              <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
-                <Placeholder type="image" />
-              </div>
-              <div className={styles.placeholderContent}>
-                <Placeholder type={'heading'} />
-                <Placeholder type={'p_long'} />
-                <Placeholder type={'p_short'} />
-                <Placeholder type={'p_short'} />
-              </div>
-            </>
+          {productUrl && Link ? (
+            <Link to={productUrl} href={productUrl} className={styles.imageWrapper} onClick={onClick}>
+              <Picture
+                {...productImage}
+                classNamePicture={cx(styles.picture, displaySmallImage && styles.smallPicture)}
+                classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
+                fallbackImageUrl={fallbackProductImageUrl}
+              />
+            </Link>
           ) : (
-            <>
-              {productUrl && Link ? (
-                <Link to={productUrl} href={productUrl} className={styles.imageWrapper} onClick={onClick}>
-                  <Picture
-                    {...productImage}
-                    classNamePicture={cx(styles.picture, displaySmallImage && styles.smallPicture)}
-                    classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
-                    fallbackImageUrl={fallbackProductImageUrl}
-                  />
-                </Link>
-              ) : (
-                <div className={styles.imageWrapper}>
-                  <Picture
-                    {...productImage}
-                    classNamePicture={cx(styles.picture, displaySmallImage && styles.smallPicture)}
-                    classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
-                    fallbackImageUrl={fallbackProductImageUrl}
-                  />
-                </div>
-              )}
-
-              <div className={styles.content}>
-                {/* {(sellerOnly || isAccessoryPotItem || (Array.isArray(tags) && tags.length > 0)) && ( */}
-                <FlexContainer alignItems="center" gap={0.5} minHeight={2.25}>
-                  {sellerOnly && (
-                    <>
-                      {sellerOnlyTooltipText ? (
-                        <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
-                      ) : (
-                        <Icon icon={'icon-eye'} size={'large'} />
-                      )}
-                    </>
-                  )}
-                  {isAccessoryPotItem && (
-                    <>
-                      {accessoryPotItemTooltipText ? (
-                        <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
-                      ) : (
-                        <span>
-                          <b style={{ fontSize: '1.2rem' }}>S</b>
-                        </span>
-                      )}
-                    </>
-                  )}
-                  {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
-                </FlexContainer>
-                {/* )} */}
-
-                {productUrl && Link ? (
-                  <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
-                    <h5 className={styles.heading}>{productName}</h5>
-                  </Link>
-                ) : (
-                  <h5 className={styles.heading}>{productName}</h5>
+            <div className={styles.imageWrapper}>
+              <Picture
+                {...productImage}
+                classNamePicture={cx(styles.picture, displaySmallImage && styles.smallPicture)}
+                classNameImg={cx(styles.image, displaySmallImage && styles.smallImage)}
+                fallbackImageUrl={fallbackProductImageUrl}
+              />
+            </div>
+          )}
+          <FlexContainer flexDirection='column' className={styles.content} gap={0.25}>
+            {iconsAndTags}
+            {productUrl && Link ? (
+              <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
+                <h5 className={styles.heading}>{productName}</h5>
+              </Link>
+            ) : (
+              <h5 className={styles.heading}>{productName}</h5>
+            )}
+            <div className={styles.cardInfoWrapper}>
+              <div>
+                {!hidePrice && !isRestrictedUser && (
+                  <p className={cx(styles.subTitle, 'bodyS')}>{`${priceLabel}: ${
+                    priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
+                  }`}</p>
                 )}
-                <div className={styles.cardInfoWrapper}>
-                  <div>
-                    {!hidePrice && !isRestrictedUser && (
-                      <p className={cx(styles.subTitle, 'bodyS')}>{`${priceLabel}: ${
-                        priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
-                      }`}</p>
-                    )}
 
-                    {(country !== '' || partNo !== '') && !isRestrictedUser && (
-                      <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
-                    )}
+                {(country !== '' || partNo !== '') && !isRestrictedUser && (
+                  <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
+                )}
 
-                    {!isRestrictedUser && (
-                      <>
-                        {debounceQuantityVal ? (
-                          <DebounceInput
-                            debounceVal={debounceQuantityVal}
-                            debouncedEvent={handleOnDebounceChangeQuantity}
-                            salesUnit={salesUnit}
-                            itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                            totalPrice={totalPrice}
-                            quantity={defaultQuantity ?? quantity}
-                            quantityInputId={`${partNo}-${productArea}`}
-                            maxQuantity={maxQuantity}
-                            disabled={productQuantityDisabled}
-                            hidePrice={hidePrice}
-                          />
-                        ) : (
-                          <ProductQuantityInput
-                            className={styles.quantityInput}
-                            salesUnit={salesUnit}
-                            itemNumberPerSalesUnit={itemNumberPerSalesUnit}
-                            totalPrice={totalPrice}
-                            quantity={defaultQuantity ?? quantity}
-                            quantityInputId={`${partNo}-${productArea}`}
-                            onChange={handleOnChangeQuantity}
-                            disabled={productQuantityDisabled}
-                            maxQuantity={maxQuantity}
-                            hidePrice={hidePrice}
-                          />
-                        )}
-                      </>
+                {!isRestrictedUser && (
+                  <>
+                    {debounceQuantityVal ? (
+                      <DebounceInput
+                        debounceVal={debounceQuantityVal}
+                        debouncedEvent={handleOnDebounceChangeQuantity}
+                        salesUnit={salesUnit}
+                        itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                        totalPrice={totalPrice}
+                        quantity={defaultQuantity ?? quantity}
+                        quantityInputId={`${partNo}-${productArea}`}
+                        maxQuantity={maxQuantity}
+                        disabled={productQuantityDisabled}
+                        hidePrice={hidePrice}
+                      />
+                    ) : (
+                      <ProductQuantityInput
+                        className={styles.quantityInput}
+                        salesUnit={salesUnit}
+                        itemNumberPerSalesUnit={itemNumberPerSalesUnit}
+                        totalPrice={totalPrice}
+                        quantity={defaultQuantity ?? quantity}
+                        quantityInputId={`${partNo}-${productArea}`}
+                        onChange={handleOnChangeQuantity}
+                        disabled={productQuantityDisabled}
+                        maxQuantity={maxQuantity}
+                        hidePrice={hidePrice}
+                      />
                     )}
-                  </div>
-                  {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>}
-                </div>
+                  </>
+                )}
               </div>
-              {!hideRemoveButton && onClickRemoveProduct && (
-                <div className={styles.iconLink}>
-                  <IconButton
-                    className={styles.iconBtn}
-                    type="button"
-                    icon="icon-x-circle"
-                    onClick={() => handleRemoveProduct(partNo)}
-                    isTransparent
-                    noBorder
-                    size="large"
-                    name='Remove product'
-                  />
-                </div>
-              )}
+              {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>}
               {!hideCartButton ? (
                 <div className={styles.buttonsWrapper}>
                   <Button
@@ -273,7 +253,21 @@ const ProductCardHorizontal = ({
                   )}
                 </div>
               ) : null}
-            </>
+            </div>
+          </FlexContainer>
+          {!hideRemoveButton && onClickRemoveProduct && (
+            <div className={styles.iconLink}>
+              <IconButton
+                className={styles.iconBtn}
+                type="button"
+                icon="icon-x-circle"
+                onClick={() => handleRemoveProduct(partNo)}
+                isTransparent
+                noBorder
+                size="large"
+                name='Remove product'
+              />
+            </div>
           )}
         </>
       )}
