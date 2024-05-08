@@ -54,9 +54,17 @@ const Table = ({ listItems, hideColumnTitles = false, equalWidthColumns = false,
 
   const handleSort = (a: TListItem, b: TListItem) => {
     if (sortBy?.dir === 'asc') {
+      if (a[sortBy?.by ?? columnTitles[0]] === b[sortBy?.by ?? columnTitles[0]]) {
+        return 0;
+      }
+
       return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? 1 : -1
     }
     if (sortBy?.dir === 'desc') {
+      if (a[sortBy?.by ?? columnTitles[0]] === b[sortBy?.by ?? columnTitles[0]]) {
+        return 0;
+      }
+
       return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? -1 : 1
     }
 
