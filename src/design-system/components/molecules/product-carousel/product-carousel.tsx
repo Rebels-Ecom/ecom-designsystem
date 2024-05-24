@@ -2,6 +2,7 @@ import { ProductCard, TProductCard } from '../product-card/product-card'
 import { Carousel } from '../../organisms'
 import { CarouselItem } from '../../organisms/carousel/carousel'
 import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
+import { IProduct } from '../../../../types/product'
 
 export interface IProductCarousel extends Pick<TProductCard, 'productArea'> {
   productCards: Array<TProductCard>
@@ -28,7 +29,7 @@ const ProductCarousel = ({
   const renderProductCards = () =>
     productCards?.map((productCard: TProductCard, index: number) => (
       <CarouselItem key={index}>
-        <ProductCard {...productCard} addToCart={addToCart} productArea={productArea} />
+        <ProductCard {...productCard} addToCart={(p: IProduct) => addToCart(p, index)} productArea={productArea} />
       </CarouselItem>
     ))
 

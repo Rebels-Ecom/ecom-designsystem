@@ -16,9 +16,19 @@ export interface ICartProduct extends IProduct {
   loading: boolean
   linkComponent?: any
   hidePrice?: boolean;
+  onClick?: CallableFunction;
 }
 
-const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loading = false, linkComponent: Link, hidePrice }: ICartProduct) => {
+const CartProduct = ({
+  product,
+  iconButton,
+  onClickRemoveProduct,
+  className,
+  loading = false,
+  linkComponent: Link,
+  hidePrice,
+  onClick
+}: ICartProduct) => {
   const {
     partNo,
     productName,
@@ -52,7 +62,7 @@ const CartProduct = ({ product, iconButton, onClickRemoveProduct, className, loa
 
           <div className={styles.contentWrapper}>
             {productUrl && Link ? (
-              <Link to={productUrl} href={productUrl} className={styles.headingWrapper}>
+              <Link to={productUrl} href={productUrl} className={styles.headingWrapper} onClick={onClick}>
                 <h5 className={styles.heading}>{productName}</h5>
               </Link>
             ) : (
