@@ -196,26 +196,27 @@ const DynamicFilter = ({
     const activeCategory = selectedFilters?.find(x => x.name === filter.name);
     const isActiveOption = activeCategory?.selectedOptions?.find(y => y.value === option.value);
     switch(filter.type) {
-      case 'radio':
-        return (
-          <button
-            key={`${option.name}-${i}`}
-            className={styles.radioItem}
-            onClick={() => handleUpdateFilter(option, filter.name, true)}
-            disabled={loading}
-          >
-            <RadioButton
-              checked={!!isActiveOption}
-              id={option.value}
-              name={option.value}
-              className={styles.radio}
-              disabled={loading}
-            />
-            <span className={styles.label}>{option.name}</span>
-            {option.count && <span className={cx(styles.label, styles.count)}>{option.count}</span>}
-          </button>
-        )
+      // case 'radio':
+      //   return (
+      //     <button
+      //       key={`${option.name}-${i}`}
+      //       className={styles.radioItem}
+      //       onClick={() => handleUpdateFilter(option, filter.name, true)}
+      //       disabled={loading}
+      //     >
+      //       <RadioButton
+      //         checked={!!isActiveOption}
+      //         id={option.value}
+      //         name={option.value}
+      //         className={styles.radio}
+      //         disabled={loading}
+      //       />
+      //       <span className={styles.label}>{option.name}</span>
+      //       {option.count && <span className={cx(styles.label, styles.count)}>{option.count}</span>}
+      //     </button>
+      //   )
       case 'checkbox':
+      case 'radio':
       default:
         return (
           <button

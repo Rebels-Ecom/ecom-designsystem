@@ -29,7 +29,9 @@ export interface IOrderItem {
   orderDate?: string
   orderDateLabel?: string;
   btnLabel?: string
-  onClick?: () => void
+  onClick?: () => void;
+  customOrderNumber?: string;
+  customOrderNumberLabel?: string;
 }
 
 const OrderItem = ({
@@ -51,6 +53,8 @@ const OrderItem = ({
   downloadUrl,
   border,
   statusIcon,
+  customOrderNumber,
+  customOrderNumberLabel
 }: IOrderItem) => {
   const getIcon = (): TIcon => {
     switch (statusIcon) {
@@ -86,6 +90,11 @@ const OrderItem = ({
               </Link>
             </div>
           </div>
+          {(customOrderNumber && customOrderNumberLabel) && (
+            <div className={styles.secondRow}>
+              <p className={styles.deliveryDate}>{customOrderNumberLabel} <span>{customOrderNumber}</span></p>
+            </div>
+          )}
           <div className={styles.secondRow}>
             {deliveryDate && deliveryDateLabel && <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
             {downloadLabel && downloadUrl && (
