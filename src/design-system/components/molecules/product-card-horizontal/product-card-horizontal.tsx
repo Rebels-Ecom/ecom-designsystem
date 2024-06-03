@@ -104,9 +104,7 @@ const ProductCardHorizontal = ({
           {accessoryPotItemTooltipText ? (
             <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
           ) : (
-            <span>
-              <b style={{ fontSize: '1.2rem' }}>S</b>
-            </span>
+            <span className={styles.standardIcon}>S</span>
           )}
         </>
       )}

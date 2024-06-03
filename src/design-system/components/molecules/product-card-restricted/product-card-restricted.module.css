@@ -99,7 +99,20 @@
     align-items: center;
     gap: 0.5rem;
   }
+
+  .standardIcon {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-text-white);
+    background: var(--cta-tertiary-default);
+    border-radius: 50%;
+    font-size: 0.875rem;
+  }
 }
-  
+
   
   
