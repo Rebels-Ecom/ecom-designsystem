@@ -89,7 +89,7 @@ const OrderItem = ({
           <div className={styles.secondRow}>
             {deliveryDate && deliveryDateLabel && <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
             {downloadLabel && downloadUrl && (
-              <UILink className={styles.downloadLink} onSurface="transparent" linkComponent="a" isExternal target={'_blank'} href={downloadUrl}>
+              <UILink download className={styles.downloadLink} onSurface="transparent" linkComponent="a" isExternal href={downloadUrl}>
                 {downloadLabel}
               </UILink>
             )}
