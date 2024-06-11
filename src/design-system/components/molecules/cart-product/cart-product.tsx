@@ -74,7 +74,12 @@ const CartProduct = ({
                 `${packaging ? `${packaging}:` : ''} ${priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''}`
               }
             </p>
-            {country !== '' && <p className={cx(styles.textGray, 'bodyS')}>{`Art.nr. ${partNo} - ${country}`}</p>}
+            
+            {(country !== '' || partNo !== '') && (
+              <p className={cx(styles.textGray, 'bodyS')}>
+                {`${partNo ? `Art.nr. ${partNo}` : ''} ${country && `- ${country}`}`}
+              </p>
+            )}
             <ProductQuantityInput
               className={styles.quantityInput}
               salesUnit={salesUnit}
