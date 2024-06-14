@@ -1,4 +1,0 @@
-import{r as c,j as m}from"./jsx-runtime-a3a6c0b8.js";import{D as s}from"./debounce-input-5bd94146.js";import"./_commonjsHelpers-de833af9.js";import"./index-a587463d.js";import"./generic-helper-0893f968.js";const y={title:"Design System/Atoms/Debounce Input",component:s},i={render:()=>{const[e,a]=c.useState("1");function u(p){a(p)}return m(s,{debouncedEvent:u,itemNumberPerSalesUnit:1,quantity:e,quantityInputId:"x",salesUnit:"st",totalPrice:(parseInt(e)*10).toString()})}},t={...i,args:{}};var n,r,o;t.parameters={...t.parameters,docs:{...(n=t.parameters)==null?void 0:n.docs,source:{originalSource:`{
-  ...DebounceInputStoryTemplate,
-  args: {}
-}`,...(o=(r=t.parameters)==null?void 0:r.docs)==null?void 0:o.source}}};const D=["DebounceInputStory"];export{t as DebounceInputStory,D as __namedExportsOrder,y as default};
