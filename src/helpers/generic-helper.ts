@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo } from "react";
-import { debounce } from "lodash";
+import debounce from 'lodash/debounce';
 
 const useDebounce = (callback: CallableFunction, delay: number) => {
   const ref = useRef<CallableFunction>();
