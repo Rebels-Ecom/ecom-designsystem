@@ -5,7 +5,7 @@ import { SearchNavBarStory } from '../search-nav-bar/search-nav-bar.stories'
 import { TopNavBarStory_Guest_User } from '../top-nav-bar/top-nav-bar.stories'
 
 const meta: Meta<typeof Navigation> = {
-  title: 'Design System/Molecules/Navigation',
+  title: 'Design System/Deprecated/Navigation',
   component: Navigation
 };
 export default meta;

@@ -10,6 +10,10 @@
         width: 100%;
       }
     }
+
+    @media (min-width: 48em) {
+      margin-bottom: var(--slide-margin-bottom);
+    }
   }
 
   & .pagination {

@@ -16,9 +16,11 @@ export interface IBlogCard {
   link?: ILink
   fullWidth?: boolean
   maxChar?: number;
+  oddHeight?: boolean;
 }
 
-const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxChar }: IBlogCard) => {
+/** @deprecated Use ArticleCard instead */
+const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxChar, oddHeight }: IBlogCard) => {
   const extractContent = (s: string) => {
     if (typeof document === 'undefined') return;
 
@@ -41,9 +43,9 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
     }
 
     return (
-      <div className={cx(styles.pictureWrapper, {[styles.smallHeight]: fullWidth})}>
+      <div className={cx(styles.pictureWrapper, {[styles.smallHeight]: fullWidth, [styles.oddHeight]: oddHeight})}>
         <Picture {...image} classNamePicture={styles.picture} classNameImg={styles.image} />
-        {tags?.length && (
+        {!!tags?.length && (
           <div className={styles.tags}>
             {tags.map((tag, i) => <Tag key={`${tag.text}-${i}`} {...tag} className={styles.tag} />)}
           </div>
@@ -54,6 +56,7 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
 
   return (
     <div className={cx(styles.blogCard, {[styles.fullWidth]: fullWidth})}>
+      <div>
       {image && (
         <>
           {link ? (
@@ -65,6 +68,7 @@ const BlogCard = ({ image, tags, heading, text, richText, link, fullWidth, maxCh
           }
         </>
       )}
+      </div>
       {(heading || trimmedText || richText || link?.children) && (
         <div className={cx(styles.content, {
           [styles.centered]: fullWidth,

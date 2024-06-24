@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { ToggleSwitch } from './toggle-switch';
 
 const meta: Meta<typeof ToggleSwitch> = {
-  title: 'Design System/Atoms/ToggleSwitch',
+  title: 'Design System/Deprecated/ToggleSwitch',
   component: ToggleSwitch,
 };
 

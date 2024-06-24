@@ -7,6 +7,8 @@ export interface IDateInfo {
   dateLabel: string
 }
 
+// TODO: Remove
+/** @deprecated Will be removed */
 function DeliveryDateInfo({ dateLabel }: IDateInfo) {
   return (
     <div className={cx('cta-l', styles.dateWrapper)}>

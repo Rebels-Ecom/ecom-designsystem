@@ -44,7 +44,7 @@ export const TableStory = {
         },
       },
       {
-        name: 'Name 6',
+        name: 'Name 2',
         status: 'IN PROGRESS',
         id: '2',
         "icon": {
@@ -64,7 +64,7 @@ export const TableStory = {
         }
       },
       {
-        name: 'Name 5',
+        name: 'Name 4',
         status: 'DONE',
         id: '4',
         "icon": {
@@ -74,7 +74,7 @@ export const TableStory = {
         }
       },
       {
-        name: 'Name 2',
+        name: 'Name 5',
         status: 'DONE',
         id: '5',
         "icon": {
@@ -84,7 +84,7 @@ export const TableStory = {
         }
       },
       {
-        name: 'Name 4',
+        name: 'Name 6',
         status: 'DONE',
         id: '6',
         "icon": {

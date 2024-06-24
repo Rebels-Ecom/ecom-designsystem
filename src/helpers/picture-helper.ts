@@ -1,13 +1,20 @@
-import { IPicture } from '../design-system/components/atoms/picture/picture';
+import { IPicture, TPictureFetchPriority, TPictureLoading } from '../design-system/components/atoms/picture/picture';
 
-export function getProductPicture(partNo: string, primaryImageUrl: string, width?: string, height?: string): IPicture {
+export function getProductPicture(
+    partNo: string,
+    primaryImageUrl: string,
+    width?: string,
+    height?: string,
+    loading?: TPictureLoading,
+    fetchPriority?: TPictureFetchPriority,
+): IPicture {
     return {
         id: `product_${partNo}`,
         src: width ? `${primaryImageUrl}?w=${width}`: primaryImageUrl,
         alt: 'Placholder',
-        loading: 'eager',
+        loading: loading ?? 'lazy',
         decoding: 'auto',
-        fetchPriority: 'high',
+        fetchPriority: fetchPriority ?? 'low',
         width: width ?? '300',
         height: height ?? '200',
         sources: 

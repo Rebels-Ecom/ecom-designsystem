@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { SwipeList } from './swipe-list'
 
 const meta: Meta<typeof SwipeList> = {
-  title: 'Design System/Organisms/Swipe List',
+  title: 'Design System/Deprecated/Swipe List',
   component: SwipeList,
 };
 

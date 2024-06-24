@@ -7,6 +7,7 @@ import { Above, Below, ContentWrapper, FlexContainer } from '../../layouts'
 import { Carousel, CarouselItem } from '../carousel/carousel'
 import { FlexItem } from '../../molecules/flex-item/flex-item'
 
+/** @deprecated Use ArticleList instead */
 export interface IBlogCardList {
   blogCards: Array<IBlogCard>;
   title?: string;

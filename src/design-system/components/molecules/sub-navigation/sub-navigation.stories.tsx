@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SubNavigation } from './sub-navigation'
 
 const meta: Meta<typeof SubNavigation> = {
-  title: 'Design System/Molecules/SubNavigation',
+  title: 'Design System/Deprecated/SubNavigation',
   component: SubNavigation
 };
 

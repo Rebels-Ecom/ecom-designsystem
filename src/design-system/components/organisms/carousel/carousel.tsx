@@ -6,7 +6,13 @@ import styles from './carousel.module.css'
 import cx from 'classnames'
 import { ICarousel } from './types'
 
-export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
+export const CarouselItem = (props: PropsWithChildren<{}> & {
+  marginBottom?: string;
+}) => {
+  const style: { [key: string]: string } = ({
+    '--slide-margin-bottom': props.marginBottom ?? '0'
+  })
+return <SplideSlide className={styles.slide} style={style}>{props.children}</SplideSlide>}
 
 const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, arrowsBottom, ...props }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children)

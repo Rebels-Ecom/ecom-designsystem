@@ -2,17 +2,13 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { BlogCardList } from './blog-card-list'
 import {
-  BlogCardStory_AmericanBeer, 
-  BlogCardStory_Pang,
-  BlogCardStory_Oranges,
-  BlogCardStory_BeerEquipment,
-  BlogCardStory_BeerTap,
-  BlogCardStoryFullWidth,
+  BlogCardStory,
+  BlogCardStoryFullWidth
 } from '../../molecules/blog-card/blog-card.stories'
 import { ContentWrapper } from '../../layouts';
 
 const meta: Meta<typeof BlogCardList> = {
-  title: 'Design System/Organisms/BlogCardList',
+  title: 'Design System/Deprecated/BlogCardList',
   component: BlogCardList
 };
 
@@ -38,29 +34,29 @@ const oneCardList = [
 ]
 
 const twoCardList = [
-  BlogCardStory_AmericanBeer.args, 
-  BlogCardStory_Pang.args, 
+  BlogCardStory.args, 
+  BlogCardStory.args, 
 ]
 
 const threeCardList = [
-  BlogCardStory_AmericanBeer.args, 
-  BlogCardStory_Pang.args, 
-  BlogCardStory_Oranges.args,
+  BlogCardStory.args, 
+  BlogCardStory.args, 
+  BlogCardStory.args,
 ]
 
 const spendrupsEquipment = [
-  BlogCardStory_Oranges.args,
-  BlogCardStory_BeerEquipment.args,
-  BlogCardStory_BeerTap.args,
-  BlogCardStory_Oranges.args,
-  BlogCardStory_BeerEquipment.args,
-  BlogCardStory_BeerTap.args,
-  BlogCardStory_Oranges.args,
-  BlogCardStory_BeerEquipment.args,
-  BlogCardStory_BeerTap.args,
-  BlogCardStory_Oranges.args,
-  BlogCardStory_BeerEquipment.args,
-  BlogCardStory_BeerTap.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
+  BlogCardStory.args,
 ]
 
 export const Full_Width = {

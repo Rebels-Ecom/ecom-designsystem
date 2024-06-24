@@ -22,21 +22,3 @@ export const LoadingBarStory_Beska = {
     color: 'orange'
   }
 }
-
-export const LoadingBarStory_Sötma = {
-  ...LoadingBarStoryTemplate,
-  args: {
-    name: 'Sötma',
-    value: '3',
-    color: 'orange'
-  }
-}
-
-export const LoadingBarStory_Fyllighet = {
-  ...LoadingBarStoryTemplate,
-  args: {
-    name: 'Fyllighet',
-    value: '5',
-    color: 'orange'
-  }
-}

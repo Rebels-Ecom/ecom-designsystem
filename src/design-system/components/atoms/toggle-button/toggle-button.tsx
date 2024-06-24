@@ -9,6 +9,8 @@ export interface IToggleButton {
     onToggleClick: CallableFunction
 }
 
+// TODO: Remove
+/** @deprecated Will be removed */
 function ToggleButton({toggleBtnLabelExpand, toggleBtnLabelCollapse, isExpanded, onToggleClick} : IToggleButton) {
   function handleToggleClick() {
     onToggleClick()

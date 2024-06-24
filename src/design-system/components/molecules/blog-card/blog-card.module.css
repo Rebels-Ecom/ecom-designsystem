@@ -38,6 +38,16 @@
                 }
             }
         }
+        
+        &.oddHeight {
+            &:before {
+                padding-top: calc((6 / 5) * 100%);
+
+                @media (min-width: 48em) {
+                    padding-top: calc((4 / 3) * 100%);
+                }
+            }
+        }
     
         & .picture {
             position: absolute;

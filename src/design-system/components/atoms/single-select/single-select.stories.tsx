@@ -3,7 +3,7 @@ import { SingleSelect } from './single-select'
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof SingleSelect> = {
-    title: 'Design System/Atoms/SingleSelect',
+    title: 'Design System/Deprecated/SingleSelect',
     component: SingleSelect
 }
 

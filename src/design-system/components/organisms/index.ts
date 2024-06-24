@@ -26,3 +26,4 @@ export { Carousel, CarouselItem } from './carousel/carousel'
 export { BrandDetails } from './brand-details/brand-details'
 export { ResetPasswordForm } from './reset-password-form/reset-password-form'
 export { GhostProductDetails } from './product-details/ghost-product-details'
+export { ArticleList } from './article-list/article-list';

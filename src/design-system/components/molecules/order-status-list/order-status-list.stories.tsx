@@ -6,7 +6,7 @@ import { TagsList } from '../tags-list/tags-list';
 import { Heading } from '../../atoms';
 
 const meta: Meta<typeof OrderStatusList> = {
-  title: 'Design System/Molecules/OrderStatusList',
+  title: 'Design System/Deprecated/OrderStatusList',
   component: OrderStatusList
 }
 

@@ -6,6 +6,8 @@ export interface IToggleSwitch {
     onChangeToggle: CallableFunction
 }
 
+// TODO: Remove
+/** @deprecated Will be removed */
 function ToggleSwitch({id, onChangeToggle} : IToggleSwitch) {
   const [switchState, setSwitchState] = useState<boolean>(false)
 

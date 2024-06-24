@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { DeliveryDateInfo } from './delivery-date-info'
 
 const meta: Meta<typeof DeliveryDateInfo> = {
-  title: 'Design System/Molecules/DeliveryDateInfo',
+  title: 'Design System/Deprecated/DeliveryDateInfo',
   component: DeliveryDateInfo
 }
 

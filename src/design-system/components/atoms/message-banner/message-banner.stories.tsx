@@ -24,13 +24,6 @@ export const MessageBannerStory_Success = {
   },
 }
 
-export const MessageBannerStory_Information = {
-  ...MessageBannerStoryTemplate,
-  args: {
-    type: 'information',
-  },
-}
-
 export const MessageBannerStory_Link = {
   ...MessageBannerStoryTemplate,
   args: {
