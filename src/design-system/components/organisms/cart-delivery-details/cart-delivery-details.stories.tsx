@@ -1,14 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CartDeliveryDetails } from './cart-delivery-details'
 import type { Meta, StoryObj } from '@storybook/react';
 import { DeliveryFormStory } from '../delivery-form/delivery-form.stories';
 import { DeliveryForm } from '../delivery-form/delivery-form';
 import { Button } from '../../atoms/button/button';
-import { FormGroup } from '../../molecules/form-group/form-group';
-import { ToggleSwitch } from '../../atoms/toggle-switch/toggle-switch';
 import { Text } from '../../atoms/text/text';
-import { Heading } from '../../atoms';
+import { Checkbox, Heading } from '../../atoms';
 import { Heading_DeliveryForm_Story } from '../../atoms/heading/heading.stories';
+import { FlexContainer } from '../../layouts';
 
 const meta: Meta<typeof CartDeliveryDetails> = {
     title: 'Design System/Organisms/CartDeliveryDetails',
@@ -20,6 +19,7 @@ type Story = StoryObj<typeof CartDeliveryDetails>;
 
 const CartDeliveryDetailsStoryTemplate: Story = {
     render: ({ ...args }) => {
+        const [termsAndConditionsIsAccepted, setTermsAndConditions] = useState(false);
 
         function handleStartCheckout(){
             alert(`Start checkout process...`)
@@ -30,9 +30,25 @@ const CartDeliveryDetailsStoryTemplate: Story = {
                 <CartDeliveryDetails loading={args.loading}>
                     <Heading order={3}>{Heading_DeliveryForm_Story.args.children}</Heading>
                     <DeliveryForm {...DeliveryFormStory.args}/>
-                    <FormGroup label={'Jag godkänner köpesvillkoren'} formElementId={'terms-and-conditions'}>
-                        <ToggleSwitch id={'terms-and-conditions'} onChangeToggle={()=>{}}></ToggleSwitch>
-                    </FormGroup>
+                    <FlexContainer alignItems="center" gap={0.5}>
+                        <Checkbox
+                            id="terms-and-conditions"
+                            name="terms-and-conditions"
+                            value={`${termsAndConditionsIsAccepted}`}
+                            checked={termsAndConditionsIsAccepted}
+                            onChange={() => setTermsAndConditions(!termsAndConditionsIsAccepted)}
+                            other={{
+                                ['aria-label']: 'Terms and conditions'
+                            }}
+                        />
+                        <Text size="small">
+                            <p
+                                dangerouslySetInnerHTML={{
+                                __html: 'Terms and conditions',
+                                }}
+                            />
+                        </Text>
+                    </FlexContainer>
                     <Text>Genom att klicka på "Lägg beställning" godkänner jag Villkor för Spendrups Shoppingtjänst och bekräftar att jag har läst Spendrups Dataskyddsinformation och Cookiepolicy. Jag godkänner villkoren för Spendrups AB.</Text>
                     <Text componentType='a' href='/kopevillkor' underline>Spendrups köpevillkor</Text>
                     <Button children='Button' type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>

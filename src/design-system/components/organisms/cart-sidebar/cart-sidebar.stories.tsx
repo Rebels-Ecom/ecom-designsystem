@@ -8,8 +8,6 @@ import { DrawerSidebar } from '../../molecules/drawer-sidebar/drawer-sidebar'
 import { Button } from '../../atoms/button/button'
 import { CartProductList } from '../cart-product-list/cart-product-list'
 import { LinkButton } from '../../atoms/link-button/link-button'
-import { FormGroup } from '../../molecules/form-group/form-group'
-import { ToggleSwitch } from '../../atoms/toggle-switch/toggle-switch'
 import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
 import { Heading } from '../../atoms/heading/heading'
 import { GroupWrapper } from '../../molecules'
@@ -51,9 +49,6 @@ const CartSidebarStoryTemplate: Story = {
                         </CartProductList>
                         <GroupWrapper spacing='xl'>
                             <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
-                        <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'} isToggleBtnLabel>
-                            <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
-                        </FormGroup>
                         </GroupWrapper>
                     </CartSidebar>
                 </DrawerSidebar>
@@ -73,7 +68,6 @@ export const CartSidebarStory = {
         latestOrderButton: Button_Large_Icon_Right.args,
         cartProductsList: CartProductListStory.args,
         goToCartButton: Button_Large_Icon_Right.args,
-        toggleSwitchLabel: 'Spara som inköpslista',
         suggestedProductsList: FeaturedProductsStory.args
     }
 }
@@ -89,7 +83,6 @@ export const CartSidebarStoryNoProducts = {
         latestOrderButton: Button_Large_Icon_Right.args,
         cartProductsList: [],
         goToCartButton: Button_Large_Icon_Right.args,
-        toggleSwitchLabel: 'Spara som inköpslista',
         suggestedProductsList: FeaturedProductsStory.args
     }
 }

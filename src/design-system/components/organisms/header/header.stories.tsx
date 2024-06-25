@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { motion } from 'framer-motion'
 import { Header } from './header'
@@ -6,11 +6,10 @@ import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
-import { Heading, LinkButton, ToggleSwitch, Button, IconButton, UiDatePicker, ExpandableWrapper } from '../../atoms'
+import { Heading, LinkButton, Button, IconButton, UiDatePicker, ExpandableWrapper } from '../../atoms'
 import {
   DrawerSidebar,
   GroupWrapper,
-  FormGroup,
   TopNavBar,
   SearchNavBar,
   Logotype,
@@ -185,9 +184,6 @@ const HeaderStoryTemplate: Story = {
               <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>
                 Go to cart
               </LinkButton>
-              <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
-                <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={() => {}}></ToggleSwitch>
-              </FormGroup>
             </GroupWrapper>
           </CartSidebar>
         </DrawerSidebar>
