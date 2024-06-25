@@ -5,15 +5,15 @@ import { CartOrderDetailsStory } from '../../organisms/cart-order-details/cart-o
 import { CartDeliveryDetailsStory } from '../../organisms/cart-delivery-details/cart-delivery-details.stories'
 import { CartDeliveryDetails } from '../../organisms/cart-delivery-details/cart-delivery-details'
 import { CartOrderDetails } from '../../organisms/cart-order-details/cart-order-details'
-import { LinkButton, ToggleSwitch, Button, Heading, Loader } from '../../atoms'
-import { CartProduct, FormGroup, GroupWrapper } from '../../molecules'
+import { LinkButton, Button, Heading, Loader, Checkbox } from '../../atoms'
+import { CartProduct, GroupWrapper } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../../organisms/cart-product-list/cart-product-list'
 import { DeliveryForm } from '../../organisms/delivery-form/delivery-form'
-import { Button_Small_Icon_Right } from '../../atoms/button/button.stories'
 import { DeliveryFormStory } from '../../organisms/delivery-form/delivery-form.stories'
 import { Text } from '../../atoms/text/text'
 import { Heading_DeliveryForm_Story } from '../../atoms/heading/heading.stories'
+import { FlexContainer } from '../../layouts'
 
 const meta: Meta<typeof Cart> = {
     title: 'Design System/Templates/Cart',
@@ -25,6 +25,7 @@ type Story = StoryObj<typeof Cart>
 
 const CartStoryTemplate: Story = {
     render: ({ ...args }) => {
+        const [termsAndConditionsIsAccepted, setTermsAndConditions] = useState<boolean>(false)
         const [isLoading, setIsLoading] = useState<boolean>(false)
         function handleStartCheckout(){
             setIsLoading(true)
@@ -36,9 +37,25 @@ const CartStoryTemplate: Story = {
                     <CartDeliveryDetails loading={isLoading}>
                         <Heading order={3}>{Heading_DeliveryForm_Story.args.children}</Heading>
                         <DeliveryForm {...DeliveryFormStory.args}/>
-                        <FormGroup label={'Jag godkänner köpesvillkoren'} formElementId={'terms-and-conditions'} isToggleBtnLabel>
-                            <ToggleSwitch id={'terms-and-conditions'} onChangeToggle={()=>{}}></ToggleSwitch>
-                        </FormGroup>
+                        <FlexContainer alignItems="center" gap={0.5}>
+                            <Checkbox
+                                id="terms-and-conditions"
+                                name="terms-and-conditions"
+                                value={`${termsAndConditionsIsAccepted}`}
+                                checked={termsAndConditionsIsAccepted}
+                                onChange={() => setTermsAndConditions(!termsAndConditionsIsAccepted)}
+                                other={{
+                                    ['aria-label']: 'Terms and conditions'
+                                }}
+                            />
+                            <Text size="small">
+                                <p
+                                    dangerouslySetInnerHTML={{
+                                    __html: 'Terms and conditions',
+                                    }}
+                                />
+                            </Text>
+                        </FlexContainer>
                         <Text>Genom att klicka på "Lägg beställning" godkänner jag Villkor för Spendrups Shoppingtjänst och bekräftar att jag har läst Spendrups Dataskyddsinformation och Cookiepolicy. Jag godkänner villkoren för Spendrups AB.</Text>
                         <Text componentType='a' href='/kopevillkor' underline>Spendrups köpevillkor</Text>
                         <Button children='Button' type={'button'} surface={'primary'} onClick={handleStartCheckout} ></Button>
@@ -66,9 +83,6 @@ const CartStoryTemplate: Story = {
                             </CartProductList>
                             <GroupWrapper align='right'>
                                 <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
-                            <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'} isToggleBtnLabel>
-                                <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
-                            </FormGroup>
                             </GroupWrapper>
                         </GroupWrapper>
                         }   

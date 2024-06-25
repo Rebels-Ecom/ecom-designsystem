@@ -65,6 +65,10 @@ export interface IProductCard {
   onClick?: CallableFunction
   debounceQuantityVal?: number
   productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration';
+  imagePriority?: {
+    fetchPriority: 'auto' | 'high' | 'low',
+    loading: 'eager' | 'lazy',
+  }
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -100,18 +104,18 @@ function ProductCard({
   alertBox,
   onClick,
   debounceQuantityVal,
-  productArea
+  productArea,
+  imagePriority
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { isMobile } = mediaQueryHelper()
   const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(partNo, primaryImageUrl, '120'),
+    productImage: getProductPicture(partNo, primaryImageUrl, '120', undefined, imagePriority?.loading, imagePriority?.fetchPriority),
     quantity: getQuantity(quantity),
     pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
     totalPrice: convertNumToStr(

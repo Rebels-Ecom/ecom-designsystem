@@ -16,6 +16,7 @@ export interface ISelectOption {
   value: string
 }
 
+/** @deprecated Use SelectList instead */
 const SingleSelect = forwardRef<HTMLSelectElement, ISingleSelect>(
   ({ id, name, options, onChange, value, selectedIndex, disabled } : ISingleSelect, ref) => {
     

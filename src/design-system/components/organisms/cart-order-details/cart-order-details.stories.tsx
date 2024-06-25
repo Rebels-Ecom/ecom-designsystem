@@ -5,8 +5,6 @@ import { FeaturedProductsStory } from '../../molecules/featured-products/feature
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { Button } from '../../atoms/button/button'
 import { LinkButton } from '../../atoms/link-button/link-button'
-import { FormGroup } from '../../molecules/form-group/form-group'
-import { ToggleSwitch } from '../../atoms/toggle-switch/toggle-switch'
 import { CartProduct, GroupWrapper } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product'
 import { CartProductList } from '../cart-product-list/cart-product-list'
@@ -50,9 +48,6 @@ const CartOrderDetailsStoryTemplate: Story = {
                     </CartProductList>
                     <GroupWrapper align='right'>
                         <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>Go to cart</LinkButton>
-                    <FormGroup label={'Spara som inköpslista'} formElementId={'toggle-save-shopping-list'}>
-                        <ToggleSwitch id={'toggle-save-shopping-list'} onChangeToggle={()=>{}}></ToggleSwitch>
-                    </FormGroup>
                     </GroupWrapper>
                     </GroupWrapper>
                     }

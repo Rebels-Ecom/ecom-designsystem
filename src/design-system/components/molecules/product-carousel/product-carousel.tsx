@@ -29,7 +29,15 @@ const ProductCarousel = ({
   const renderProductCards = () =>
     productCards?.map((productCard: TProductCard, index: number) => (
       <CarouselItem key={index}>
-        <ProductCard {...productCard} addToCart={(p: IProduct) => addToCart(p, index)} productArea={productArea} />
+        <ProductCard
+          {...productCard}
+          addToCart={(p: IProduct) => addToCart(p, index)}
+          productArea={productArea}
+          imagePriority={{
+            loading: index < 4 ? 'eager' : 'lazy',
+            fetchPriority: index < 4 ? 'high' : 'low',
+          }}
+        />
       </CarouselItem>
     ))
 

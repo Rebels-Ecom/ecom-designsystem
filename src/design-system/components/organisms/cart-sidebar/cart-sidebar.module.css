@@ -39,12 +39,3 @@
     width: auto;
     margin: 1rem 0;
 }
-
-.toggleSwitchWrapper {
-    & >label >span {
-        font-family: var(--font-family-secondary);
-        font-weight: 400;
-        color: var(--color-text-orange);
-        margin-bottom: 0.813rem;
-    }
-}

@@ -3,7 +3,6 @@ import { BoxWrapper } from './box-wrapper'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button, Heading, Text } from '../../atoms'
 import {
-  DeliveryDateInfo,
   InfoSummaryBox,
   OrderConfirmationDetails,
   OrderItem,
@@ -114,7 +113,6 @@ const mittSpendrupsArgs = (
   <>
     <Heading order={3}>Mitt spendrups</Heading>
     <Text>Dina aktuella leveransdatum</Text>
-    <DeliveryDateInfo dateLabel={'2022-06-03'} />
     <InfoSummaryBox {...InfoSummaryBoxStory_DinaUppgifter.args}></InfoSummaryBox>
     <InfoSummaryBox {...InfoSummaryBoxStory_Anvandare.args}></InfoSummaryBox>
   </>
