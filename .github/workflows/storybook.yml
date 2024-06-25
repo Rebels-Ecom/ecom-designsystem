@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          node-version: '16'
 
       - name: Install and Build
         run: |
@@ -27,6 +25,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
           publish_branch: gh-pages
-          node-version: '16'
         
          
