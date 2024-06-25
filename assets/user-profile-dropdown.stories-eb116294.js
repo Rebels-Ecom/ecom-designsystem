@@ -1,0 +1,13 @@
+import{r as f,j as r}from"./jsx-runtime-03333307.js";import{u as U}from"./useOnClickOutside-9d2c35bb.js";import{D as _}from"./drawer-sidebar-63df5b87.js";import{I as P}from"./icon-button-4ba5bdac.js";import{D as y,a as w}from"./dropdown-list.stories-364c2d1c.js";import{U as D,a as S}from"./user-info-summary.stories-f53dfdd2.js";const x="_userProfileDropdown_ktynu_1",O="_button_ktynu_11",j="_dropdown_ktynu_22",h={userProfileDropdown:x,button:O,dropdown:j};function a({children:t,isOpen:o,onClick:e}){const i=f.useRef(null);return U({ref:i,onClose:()=>o?e():void 0}),r.jsxs("div",{className:h.userProfileDropdown,ref:i,children:[r.jsx(P,{type:"button",icon:"icon-user",onClick:e,size:"medium"}),r.jsx(_,{isOpen:o,onClose:e,children:t})]})}a.__docgenInfo={description:"",methods:[],displayName:"UserProfileDropdownControlled",props:{children:{required:!0,tsType:{name:"ReactReactNode",raw:"React.ReactNode"},description:""},isDropdownOpen:{required:!1,tsType:{name:"boolean"},description:""},isOpen:{required:!0,tsType:{name:"boolean"},description:""},onClick:{required:!0,tsType:{name:"signature",type:"function",raw:"() => void",signature:{arguments:[],return:{name:"void"}}},description:""}}};const I={title:"Design System/Molecules/UserProfileDropdown",component:a},g={render:({...t})=>{const[o,e]=f.useState(t.isDropdownOpen??!1);return r.jsx("div",{style:{margin:"auto",display:"flex",justifyContent:"center"},children:r.jsx(a,{isOpen:o,onClick:()=>e(!o),children:t.children})})}},s={...g,args:{isDropdownOpen:!1,children:[r.jsx(D,{...S.args}),r.jsx(y,{...w.args})]}},n={...g,args:{isDropdownOpen:!0,children:[r.jsx(D,{...S.args}),r.jsx(y,{...w.args})]}};var d,p,l;s.parameters={...s.parameters,docs:{...(d=s.parameters)==null?void 0:d.docs,source:{originalSource:`{
+  ...UserProfileDropdownStoryTemplate,
+  args: {
+    isDropdownOpen: false,
+    children: [<UserInfoSummary {...UserInfoSummaryStory.args}></UserInfoSummary>, <DropdownList {...DropdownListStory.args}></DropdownList>]
+  }
+}`,...(l=(p=s.parameters)==null?void 0:p.docs)==null?void 0:l.source}}};var u,m,c;n.parameters={...n.parameters,docs:{...(u=n.parameters)==null?void 0:u.docs,source:{originalSource:`{
+  ...UserProfileDropdownStoryTemplate,
+  args: {
+    isDropdownOpen: true,
+    children: [<UserInfoSummary {...UserInfoSummaryStory.args}></UserInfoSummary>, <DropdownList {...DropdownListStory.args}></DropdownList>]
+  }
+}`,...(c=(m=n.parameters)==null?void 0:m.docs)==null?void 0:c.source}}};const b=["UserProfileDropdownStory","UserProfileDropdownStory_Open"],E=Object.freeze(Object.defineProperty({__proto__:null,UserProfileDropdownStory:s,UserProfileDropdownStory_Open:n,__namedExportsOrder:b,default:I},Symbol.toStringTag,{value:"Module"}));export{s as U,h as s,E as u};

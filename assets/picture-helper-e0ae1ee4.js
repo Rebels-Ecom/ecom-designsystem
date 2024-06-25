@@ -1,0 +1,1 @@
+function $(t,o,c,e,s,u){return{id:`product_${t}`,src:c?`${o}?w=${c}`:o,alt:"Placholder",loading:s??"lazy",decoding:"auto",fetchPriority:u??"low",width:c??"300",height:e??"200",sources:[{srcset:c?`${o}?w=${c}`:o,media:"(max-width: 767px)"},{srcset:c?`${o}?w=${c}`:o,media:"(min-width: 768px)"}]}}export{$ as g};

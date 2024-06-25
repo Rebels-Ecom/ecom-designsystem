@@ -1,1 +1,0 @@
-function r(e){switch(e){case"status-progress":return"yellow";case"status-delivered":return"green";case"status-returned":return"purple";case"status-cancelled":return"orange";case"status-invoice":return"blue";default:return"grey"}}export{r as g};

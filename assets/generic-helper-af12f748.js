@@ -1,1 +1,0 @@
-import{r as o}from"./jsx-runtime-a3a6c0b8.js";import{d as n}from"./debounce-fb9442f2.js";const f=(r,c)=>{const e=o.useRef();return o.useEffect(()=>{e.current=r},[r]),o.useMemo(()=>n(()=>{var u;(u=e.current)==null||u.call(e)},c),[])};export{f as u};

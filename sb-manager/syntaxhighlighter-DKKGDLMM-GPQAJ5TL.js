@@ -1,0 +1,1 @@
+import{SyntaxHighlighter2,createCopyToClipboardFunction,supportedLanguages,syntaxhighlighter_default}from"./chunk-XQ2LE2MR.js";import"./chunk-OUWKM4RB.js";import"./chunk-VCKCP2R2.js";export{SyntaxHighlighter2 as SyntaxHighlighter,createCopyToClipboardFunction,syntaxhighlighter_default as default,supportedLanguages};
