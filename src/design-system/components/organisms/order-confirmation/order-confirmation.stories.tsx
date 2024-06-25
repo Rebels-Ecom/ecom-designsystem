@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { OrderConfirmation } from './order-confirmation'
 import { CartProduct_OrderConfirmation_Beer, CartProduct_OrderConfirmation_Wine } from '../../molecules/cart-product/cart-product.stories';
 import {Heading, Text, MessageBanner, Button } from '../../atoms'
-import { CartProduct, DeliveryDateInfo, GroupWrapper, OrderConfirmationDetails } from '../../molecules'
+import { CartProduct, GroupWrapper, OrderConfirmationDetails } from '../../molecules'
 import { ICartProduct } from '../../molecules/cart-product/cart-product';
 import { CartProductList } from '../cart-product-list/cart-product-list';
 
@@ -27,8 +27,6 @@ const OrderConfirmationStoryTemplate: Story = {
                     <OrderConfirmationDetails detailItems={args.deliveryDetails} label='Leveransuppgifter'></OrderConfirmationDetails>
                     <OrderConfirmationDetails detailItems={args.pricingDetails}></OrderConfirmationDetails>
                     <OrderConfirmationDetails detailItems={args.paymentDetails} label='Totalt'></OrderConfirmationDetails>
-                    <Text>Ditt aktuella leveransdatum</Text>
-                    <DeliveryDateInfo dateLabel={'2023-06-15'}></DeliveryDateInfo>
                     <CartProductList>
                         { args.itemsList.map( (product: ICartProduct) => <CartProduct key={Math.random()} {...product} ></CartProduct>) }
                     </CartProductList>

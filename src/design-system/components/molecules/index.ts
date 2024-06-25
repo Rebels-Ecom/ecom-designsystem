@@ -29,7 +29,6 @@ export { UserProfileDropdown } from './user-profile-dropdown/user-profile-dropdo
 export { UserProfileDropdownControlled } from './user-profile-dropdown/user-profile-dropdown-controlled'
 export { Tabs } from './tabs/tabs'
 export { LoadingBars } from './loading-bars/loading-bars'
-export { DeliveryDateInfo } from './delivery-date-info/delivery-date-info'
 export { InfoSummaryBox } from './info-summary-box/info-summary-box'
 export { BoxWrapper } from './box-wrapper/box-wrapper'
 export { OrderItem } from './order-item/order-item'

@@ -3,8 +3,8 @@ import type { Meta } from '@storybook/react';
 import { Standard_Header } from '../../organisms/header/header.stories';
 import { FooterStory } from '../../organisms/footer/footer.stories';
 import { ContentWrapper } from '../../layouts';
-import { BoxWrapper, DeliveryDateInfo, InfoSummaryBox, OrderConfirmationDetails, ScrollableList } from '../../molecules';
-import { Button, Heading, IconLink, MessagePopup, Text } from '../../atoms';
+import { BoxWrapper, InfoSummaryBox, OrderConfirmationDetails, ScrollableList } from '../../molecules';
+import { Button, Heading, IconLink, MessagePopup } from '../../atoms';
 import { MessagePopupStory } from '../../atoms/message-popup/message-popup.stories';
 import { InfoSummaryBoxStory_ShoppingList } from '../../molecules/info-summary-box/info-summary-box.stories';
 import { ScrollableListListStory_WithFade_2_products } from '../../molecules/scrollable-list/scrollable-list.stories';
@@ -35,8 +35,6 @@ const ShoppingListStoryTemplate = {
 
             <BoxWrapper spacing={'xl'}>
               <Heading order={3}>Vårfesten</Heading>
-              <Text>Senast sparad:</Text>
-              <DeliveryDateInfo dateLabel={'2022-06-10'} />
               <MessagePopup onClose={() => setIsMessagePopupOpen(!isMessagePopupOpen)} {...MessagePopupStory.args} icon={'icon-info'} arrowPosition='center' isOpen={isMessagePopupOpen}></MessagePopup>
               <InfoSummaryBox {...InfoSummaryBoxStory_ShoppingList.args} />
               <Heading order={4} align='center'>Populära produkter som vi tror passar dig</Heading>
