@@ -23,6 +23,7 @@ export interface IDebounceInput {
   type?: acceptedTypes;
   min?: string;
   rest?: TOther;
+  pricePerUnitText?: string;
 }
 
 const DebounceInput = ({
@@ -35,7 +36,8 @@ const DebounceInput = ({
   quantity,
   disabled,
   quantityInputId,
-  debounceVal = 1000
+  debounceVal = 1000,
+  pricePerUnitText
  }: IDebounceInput) => {
   const [value, setValue] = useState(quantity);
 
@@ -66,6 +68,8 @@ const DebounceInput = ({
     }
   }
 
+  const priceDetail = `${itemNumberPerSalesUnit} styck ${pricePerUnitText ?? ''}`;
+
   return (
     <div className={`${styles.debounceQuantityWrapper}`}>
       <input
@@ -87,8 +91,10 @@ const DebounceInput = ({
         }}
         disabled={disabled}
       />
-      <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
-        {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
+      <p className={`${styles.textQuantity} bodyS`}>
+        {`x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}
+      </p>
+      {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
     </div>
   );
 };

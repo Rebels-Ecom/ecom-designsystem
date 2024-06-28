@@ -13,7 +13,8 @@ export interface IProductQuantityInput {
   disabledNoBorder?: boolean
   onChange?: CallableFunction
   maxQuantity?: number
-  hidePrice?: boolean
+  hidePrice?: boolean;
+  pricePerUnitText?: string;
 }
 
 const ProductQuantityInput = ({
@@ -28,6 +29,7 @@ const ProductQuantityInput = ({
   onChange,
   maxQuantity,
   hidePrice,
+  pricePerUnitText
 }: IProductQuantityInput) => {
   const [val, setVal] = useState(quantity)
 
@@ -51,6 +53,8 @@ const ProductQuantityInput = ({
       onChange?.(e)
     }
   }
+
+  const priceDetail = `${itemNumberPerSalesUnit} styck ${pricePerUnitText ?? ''}`;
 
   return (
     <div className={`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
@@ -78,7 +82,7 @@ const ProductQuantityInput = ({
         }}
       />
       <div>
-        <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
+        <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}</p>
         {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
       </div>
     </div>

@@ -63,6 +63,8 @@ const ProductCardHorizontal = ({
     limitedLabel,
     sellerOnly,
     isAccessoryPotItem,
+    pricePerUnitString,
+    aLabel
   } = product;
 
   const { isMobile, isTablet } = mediaQueryHelper();
@@ -202,6 +204,7 @@ const ProductCardHorizontal = ({
                         maxQuantity={maxQuantity}
                         disabled={productQuantityDisabled}
                         hidePrice={hidePrice}
+                        pricePerUnitText={`${aLabel} ${pricePerUnitString} ${currencyLabel}`}
                       />
                     ) : (
                       <ProductQuantityInput

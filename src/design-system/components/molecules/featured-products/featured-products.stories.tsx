@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions'
 import { ProductCardListStory } from '../../organisms/product-card-list/product-card-list.stories'
 
 const meta: Meta<typeof FeaturedProducts> = {
-  title: 'Design System/Molecules/FeaturedProducts',
+  title: 'Design System/Deprecated/FeaturedProducts',
   component: FeaturedProducts
 };
 
