@@ -8,7 +8,6 @@ import { ProductCardVertical } from '../product-card-vertical/product-card-verti
 import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
 import { IPicture } from '../../atoms/picture/picture'
 import { TAlertBox } from '../../atoms/alert-box/alert-box'
-import { mediaQueryHelper } from '../../layouts'
 
 export type TCardDisplayType = 'vertical' | 'horizontal'
 

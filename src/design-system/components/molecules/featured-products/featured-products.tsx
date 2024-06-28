@@ -25,6 +25,7 @@ function renderProductList(products: Array<TProductCard>, addProductToCart: Call
     return products.map((productCard: TProductCard, index: number) => <ProductCard key={index} {...productCard} addToCart={addProductToCart} />)
 }
 
+/** @deprecated Use ProductCarousel instead */
 const FeaturedProducts = ({ title, link, productCards, addToCart, productCardsNumber='3', linkComponent: Link }: IFeaturedProducts) => {
     const products = productCards?.slice(0, parseInt(productCardsNumber))
     if(!products)
