@@ -141,7 +141,7 @@ export const Default = {
   args: {
     title: 'Default',
     articles: articlesData,
-    swipe: false,
+    swipe: true,
   } as Pick<IArticleList, 'articles'>
 }
 

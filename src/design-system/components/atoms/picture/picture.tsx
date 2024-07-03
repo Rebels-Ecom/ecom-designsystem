@@ -60,7 +60,7 @@ const Picture = ({
     })
   }
 
-  if (!isValidPicture()) return null
+  if (!isValidPicture() && !fallbackImageUrl) return null
   return (
     <>
       <picture className={classNamePicture ? classNamePicture : styles.picture} id={id}>
@@ -68,8 +68,8 @@ const Picture = ({
           <source key={`${id}_source_${i}`} srcSet={source.srcset} type={source.type} media={source.media} sizes={source.sizes} />
         ))}
         <img
-          src={imageSources.src}
-          className={classNameImg ? classNameImg : styles.image}
+          src={imageSources.src ?? fallbackImageUrl}
+          className={cx(classNameImg ? classNameImg : styles.image, {[styles.fallback]: !isValidPicture() && !!fallbackImageUrl })}
           loading={loading}
           decoding={decoding}
           alt={alt}
