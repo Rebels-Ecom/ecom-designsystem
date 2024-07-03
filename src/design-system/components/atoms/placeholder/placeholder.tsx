@@ -4,10 +4,11 @@ import cx from 'classnames'
 
 export type TPlaceholderType = 'image' | 'tags' | 'heading' | 'p_long' | 'p_short'
 export interface IPlaceholder {
-    type: TPlaceholderType
+    type: TPlaceholderType;
+    noMargin?: boolean;
 }
 
-function Placeholder({type = 'heading'}: IPlaceholder) {
+function Placeholder({type = 'heading', noMargin}: IPlaceholder) {
 
     function getPlaceholderType(type: TPlaceholderType){
         switch (type) {
@@ -26,7 +27,7 @@ function Placeholder({type = 'heading'}: IPlaceholder) {
     }
 
     return (
-        <div className={cx(styles.placeholder, styles[getPlaceholderType(type)])}/>
+        <div className={cx(styles.placeholder, styles[getPlaceholderType(type)], {[styles.noMargin]: noMargin})}/>
     )
 }
 

@@ -9,6 +9,7 @@ import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
 import { Icon } from '../icon/icon'
 import { useOnClickOutside } from '../../../hooks'
+import { Placeholder } from '../placeholder/placeholder'
 
 export interface IUiDatePicker {
   buttonLabel: string
@@ -19,9 +20,20 @@ export interface IUiDatePicker {
   onDateSelected: CallableFunction
   showDateLabel?: boolean
   className?: string
+  loading?: boolean;
 }
 
-function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holidayDates, headerText, onDateSelected, showDateLabel, className }: IUiDatePicker) {
+function UiDatePicker({
+  buttonLabel,
+  selectedDeliveryDate,
+  deliveryDates,
+  holidayDates,
+  headerText,
+  onDateSelected,
+  showDateLabel,
+  className,
+  loading
+}: IUiDatePicker) {
   const datepickerRef = useRef<DatePicker | any>(null)
   const [open, setOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(selectedDeliveryDate))
@@ -41,6 +53,7 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
         size="x-small"
         className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnHeader, className ? className : '')}
         onClick={handleClick}
+        disabled={loading}
       >
         <span className={styles.buttonLabelWrapper}>
           <span className={styles.buttonLabel}>{buttonLabel}</span>
@@ -94,7 +107,19 @@ function UiDatePicker({ buttonLabel, selectedDeliveryDate, deliveryDates, holida
 
   useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false) })
 
-  if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) return null
+  if (loading || !selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) {
+    return (
+      <div className={cx(styles.datePickerWrapper, styles.ghost)}>
+        <span className={styles.buttonLabelWrapper}>
+          <Placeholder type='heading' noMargin />
+          <span className={styles.buttonIconWrapper}>
+            <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
+            <Placeholder type='heading' noMargin />
+          </span>
+        </span>
+      </div>  
+    )
+  }
 
   return (
     <div className={styles.datePickerWrapper} ref={datepickerRef}>

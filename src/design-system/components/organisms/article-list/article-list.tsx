@@ -1,9 +1,8 @@
-import { ContentWrapper, mediaQueryHelper } from "../../layouts";
+import { Above, Below, ContentWrapper, mediaQueryHelper } from "../../layouts";
 import { ArticleCard } from "../../molecules";
 import { TArticle } from "../../molecules/article-card/article-card";
 import { Carousel, CarouselItem } from "../carousel/carousel";
 import styles from './article-list.module.css';
-import cx from 'classnames';
 
 export interface IArticleList {
   articles: Array<TArticle>;
@@ -12,7 +11,9 @@ export interface IArticleList {
 }
 
 const ArticleList = ({ articles, title, swipe }: IArticleList) => {
-  const { isMobile } = mediaQueryHelper();
+  if (!Array.isArray(articles) || !articles.length) {
+    return null;
+  }
 
   const extractContent = (s: string) => {
     if (typeof document === 'undefined') {
@@ -57,7 +58,7 @@ const ArticleList = ({ articles, title, swipe }: IArticleList) => {
   const carouselArticlesToRender = articles.map((article, i) => {
     const textToDisplay = formatText(article.text, article.maxChar);
     return (
-      <CarouselItem key={i} marginBottom={isMobile ? '0' : '2rem'}>
+      <CarouselItem key={i}>
         <ArticleCard
           {...article}
           text={textToDisplay}
@@ -73,49 +74,50 @@ const ArticleList = ({ articles, title, swipe }: IArticleList) => {
   return (
     <div className={styles.articleList}>
       {title && <h3 className={styles.title}>{title}</h3>}
-      {isMobile ? (
-        <>
-          {swipe ? (
-            <Carousel offsetArrows padding='2rem'>
-              {carouselArticlesToRender}
-            </Carousel>
-          ) : (
-            <ContentWrapper>
-              <div
-                className={cx(styles.articles, 
-                  {[styles.equalHeights]: articles.length > 3}
-                )}
+      <Below breakpoint='md'>
+        {(matches) => matches && (
+          <>
+            {swipe ? (
+              <Carousel offsetArrows padding='2rem'>
+                {carouselArticlesToRender}
+              </Carousel>            
+            ) : (
+              <ContentWrapper>
+                <div className={styles.articles}>
+                  {articlesToRender}
+                </div>
+              </ContentWrapper>
+            )}
+          </>
+        )}
+      </Below>
+      <Above breakpoint='md'>
+        {(matches) => matches && (
+          <ContentWrapper>
+            {(swipe && articles.length > 3) ? (
+              <Carousel
+                offsetArrows
+                breakpoints={{
+                  lg: {
+                    perPage: 4,
+                    perMove: 4,
+                  },
+                  md: {
+                    perPage: 2,
+                    perMove: 2
+                  },
+                }}
               >
+                {carouselArticlesToRender}
+              </Carousel>
+            ) : (
+              <div className={styles.articles}>
                 {articlesToRender}
               </div>
-            </ContentWrapper>
-          )}
-        </>
-      ) : (
-        <ContentWrapper>
-          {(swipe && articles.length > 3) ? (
-            <Carousel
-              offsetArrows
-              breakpoints={{
-                lg: {
-                  perPage: 4,
-                  perMove: 4,
-                },
-                md: {
-                  perPage: 2,
-                  perMove: 2
-                },
-              }}
-            >
-              {carouselArticlesToRender}
-            </Carousel>
-          ) : (
-            <div className={styles.articles}>
-              {articlesToRender}
-            </div>
-          )}
-        </ContentWrapper>
-      )}
+            )}
+          </ContentWrapper>
+        )}
+      </Above>
     </div>
   )
 }

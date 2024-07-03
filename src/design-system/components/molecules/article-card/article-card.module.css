@@ -60,8 +60,10 @@
       width: 100vw;
       margin-left: -1rem;
       margin-right: -1rem;
-
+      aspect-ratio: 16/9;
+      
       @media (min-width: 33.75em) {
+        aspect-ratio: 18/4;
         width: 100%;
         margin-left: 0;
         margin-right: 0;
@@ -77,6 +79,10 @@
 
           @media (min-width: 33.75em) {
             aspect-ratio: 18/4;
+          }
+
+          & .image {
+            object-position: center;
           }
         }
       }
@@ -109,9 +115,15 @@
   
   & .imageContainer {
     display: flex;
+    flex: 1;
     align-items: flex-end;
     position: relative;
     height: auto;
+    aspect-ratio: 5/6;
+    
+    @media (min-width: 48em) {
+      aspect-ratio: var(--ratio);
+    }
 
     & .tags {
       position: absolute;
@@ -120,7 +132,9 @@
     }
 
     & .imageLink {
-      display: flex;
+      display: block;
+      height: 100%;
+      width: 100%;
     }
 
     & .picture {

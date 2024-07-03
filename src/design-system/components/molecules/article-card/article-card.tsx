@@ -5,6 +5,7 @@ import { ITag, Tag } from '../../atoms/tag/tag';
 import { IPicture } from '../../atoms/picture/picture';
 import { RichTextProps } from '../../../../types/other';
 import { ILink } from '../../../../types/links';
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg';
 
 export type TArticle = {
   image?: IPicture;
@@ -17,6 +18,7 @@ export type TArticle = {
   maxChar?: number;
   equalHeights?: boolean;
   asCarouselItem?: boolean;
+  type?: 'small' | 'large' | 'full'
 }
 
 const ArticleCard = ({
@@ -31,9 +33,7 @@ const ArticleCard = ({
   equalHeights,
   fullWidth,
   asCarouselItem
-}: TArticle & {
-  type: 'small' | 'large' | 'full'
-}) => {
+}: TArticle) => {
   const style: { [key: string]: string } = ({
     '--ratio': type === 'large' ? '3/4' : '5/6',
   })
@@ -67,6 +67,7 @@ const ArticleCard = ({
                     {...image}
                     classNamePicture={styles.picture}
                     classNameImg={styles.image}
+                    fallbackImageUrl={fallbackProductImageUrl}
                   />
                 </a>
               ) :
