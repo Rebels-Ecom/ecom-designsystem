@@ -107,18 +107,8 @@ function UiDatePicker({
 
   useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false) })
 
-  if (loading || !selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) {
-    return (
-      <div className={cx(styles.datePickerWrapper, styles.ghost)}>
-        <span className={styles.buttonLabelWrapper}>
-          <Placeholder type='heading' noMargin />
-          <span className={styles.buttonIconWrapper}>
-            <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
-            <Placeholder type='heading' noMargin />
-          </span>
-        </span>
-      </div>  
-    )
+  if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) {
+    return null;
   }
 
   return (
