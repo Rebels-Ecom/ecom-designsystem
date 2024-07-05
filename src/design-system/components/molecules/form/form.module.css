@@ -16,6 +16,14 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+
+    & .fieldsContainer {
+      gap: 0.5rem;
+
+      @media (min-width: 48em) {
+        gap: 1rem;
+      }
+    }
   }
 
   & .field {

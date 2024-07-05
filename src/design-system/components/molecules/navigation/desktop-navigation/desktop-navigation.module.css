@@ -60,6 +60,10 @@
             &.active {
               color: var(--cta-tertiary-default);
             }
+
+            &::after {
+              content: unset;
+            }
           }
 
           & .topLevelTrigger {
@@ -150,6 +154,10 @@
             &:hover {
               color: var(--cta-tertiary-default);
             }
+
+            &::after {
+              content: unset;
+            }
           }
         }
       }
@@ -183,6 +191,10 @@
 
         &:hover {
           color: var(--cta-tertiary-default)
+        }
+
+        &::after {
+          content: unset;
         }
       }
     }

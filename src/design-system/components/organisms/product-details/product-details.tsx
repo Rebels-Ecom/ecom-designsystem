@@ -14,7 +14,7 @@ import { ILoadingBar } from '../../atoms/loading-bar/loading-bar'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { CampaignBox, TCampaignBox } from '../../atoms/campaign-box/campaign-box'
 import { IconButton } from '../../atoms/icon-button/icon-button'
-import { AlertBox, Icon, IconWithTooltip, Placeholder } from '../../atoms'
+import { AlertBox, ButtonWithTooltip, Icon, IconWithTooltip } from '../../atoms'
 import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 import { TAlertBox } from '../../atoms/alert-box/alert-box'
 import { GhostProductDetails } from './ghost-product-details'
@@ -161,17 +161,16 @@ const ProductDetails = ({
   }
 
   const ProductTags = ({ tagsList = [] }: { tagsList: Array<ITag> }) => {
-    return (
+    return Array.isArray(tagsList) &&
+    tagsList.length > 0 ? (
       <ul className={styles.tagsList}>
-        {Array.isArray(tagsList) &&
-          tagsList.length > 0 &&
-          tagsList.map((tag, index) => (
-            <li key={index}>
-              <Tag {...tag}></Tag>
-            </li>
-          ))}
+        {tagsList.map((tag, index) => (
+          <li key={index}>
+            <Tag {...tag}></Tag>
+          </li>
+        ))}
       </ul>
-    )
+    ) : null;
   }
 
   if (loading) {
@@ -241,14 +240,14 @@ const ProductDetails = ({
               <h3 className={styles.heading}>{product.productName}</h3>
               {!isRestrictedUser && (
                 <>
-                  <p className={cx(styles.textPurple, 'bodyS')}>{`${product.priceLabel}: ${
+                  <p className={cx(styles.textPurple, styles.specsText, 'bodyS')}>{`${product.priceLabel}: ${
                     product.packagePriceString
                   } ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
 
-                  <p className={cx(styles.textGrey, 'bodyS')}>
+                  <p className={cx(styles.textGrey, styles.specsText, 'bodyS')}>
                     {`${quantityPerPackageLabel} ${product.itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${product.priceStr} ${currencyLabel}`}
                   </p>
-                  <p className={cx(styles.textGrey, 'bodyS')}>{`${partNoLabel} ${product.partNo}`}</p>
+                  <p className={cx(styles.textGrey, styles.specsText, 'bodyS')}>{`${partNoLabel} ${product.partNo}`}</p>
                 </>
               )}
             </div>
@@ -263,7 +262,8 @@ const ProductDetails = ({
             {productDescription && <p className={styles.description}>{productDescription}</p>}
 
             {Array.isArray(product.productVariantList) && (
-              <Button
+              <ButtonWithTooltip
+                content='Välj variant'
                 type={'button'}
                 className={cx(styles.btn, styles.variantBtn)}
                 surface={'secondary'}
@@ -272,9 +272,12 @@ const ProductDetails = ({
                 onClick={() => handleVariantsButtonClick()}
                 disabled={product.productVariantList.length <= 1}
                 name='Select packaging'
+                side={(isMobile || isTablet) ? 'top' : 'right'}
+                align={(isMobile || isTablet) ? 'end' : 'center'}
+                fullWidth
               >
                 {product.packaging}
-              </Button>
+              </ButtonWithTooltip>
             )}
             {!isRestrictedUser && (
               <ProductQuantityInput
@@ -287,9 +290,6 @@ const ProductDetails = ({
                 onChange={handleOnChangeQuantity}
               />
             )}
-            {!isRestrictedUser && packagePerPallet && (
-              <p className={cx(styles.textGrey, 'bodyS')}>{`${packagePerPalletLabel1} ${packagePerPallet.value} ${packagePerPalletLabel2}`}</p>
-            )}
             <div className={styles.buttonsWrapper}>
               <Button
                 className={styles.btn}
@@ -299,6 +299,7 @@ const ProductDetails = ({
                 onClick={() => addToCart(product)}
                 disabled={product.quantity === '0' || product.outOfStock || !availableForOrder}
                 name='Add to cart'
+                fullWidth
               >
                 {addToCartLabel}
               </Button>
@@ -329,6 +330,9 @@ const ProductDetails = ({
                 />
               )}
             </div>
+            {!isRestrictedUser && packagePerPallet && (
+              <p className={cx(styles.textGrey, 'bodyS', styles.packagePerPalletText)}>{`${packagePerPalletLabel1} ${packagePerPallet.value} ${packagePerPalletLabel2}`}</p>
+            )}
           </>
         )}
       </div>

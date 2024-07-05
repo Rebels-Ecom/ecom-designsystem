@@ -30,9 +30,7 @@
       @media (min-width: 64em) {
         flex: 1 1 50%;
         height: 100%;
-        /* max-width: var(--content-max-width-text); */
         max-width: 50%;
-        gap: 0.8rem;
       }
 
       &.leftContent {
@@ -43,6 +41,7 @@
         & .loadingBars {
           width: 30%;
           word-break: break-word;
+          
           @media (min-width: 48em) {
             padding-left: 1rem;
           }
@@ -111,7 +110,7 @@
         }
         
         & .heading {
-          margin: 0.5rem 0;
+          margin: 1rem 0 1.5rem;
           font-family: var(--font-family-secondary);
           font-weight: var(--font-weight-bold);
         }
@@ -130,19 +129,18 @@
         
         & .textPurple {
           font-family: var(--font-family-secondary);
-          margin: 0;
+          margin-bottom: 0.5rem;
           color: var(--color-text-decorative-purple);
         }
 
-        &.textGrey {
-          margin: 0.5rem 0;
+        & .packagePerPalletText {
+          margin-bottom: 0;
         }
       
         & .btn {
           width: 100%; 
       
           @media (min-width: 64em) {
-              width: fit-content;
               min-width: 12rem;
           }
 
