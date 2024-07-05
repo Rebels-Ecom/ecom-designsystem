@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, Placeholder, Button, IconButton, Icon } from '../../atoms'
+import { Picture, Placeholder, Button, IconButton, Icon, ButtonWithTooltip } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -191,7 +191,8 @@ const ProductCardVertical = ({
             )}
           </div>
         )}
-        <Button
+        <ButtonWithTooltip
+          content='Välj variant'
           type={'button'}
           surface="secondary"
           iconRight={packageBtnDisabled ? undefined : { icon: 'icon-layers' }}
@@ -201,9 +202,11 @@ const ProductCardVertical = ({
           disabled={loading || packageBtnDisabled}
           className={styles.packageBtn}
           name='Select packaging'
+          side='top'
+          align='end'
         >
           {packaging}
-        </Button>
+        </ButtonWithTooltip>
         {loading ? (
           <div className={styles.placeholderContent}>
             <Placeholder type={'p_long'} />
