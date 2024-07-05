@@ -124,7 +124,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
           </Heading>
         )}
         {formSubtitle && <p className={styles.formSubtitle}>{formSubtitle}</p>}
-        <FlexContainer wrap>
+        <FlexContainer wrap className={styles.fieldsContainer}>
           {fields?.map((field, i) => {
             return (
               <div

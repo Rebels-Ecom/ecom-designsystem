@@ -91,10 +91,12 @@ const DebounceInput = ({
         }}
         disabled={disabled}
       />
-      <p className={`${styles.textQuantity} bodyS`}>
-        {`x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}
-      </p>
-      {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
+      <div>
+        <p className={`${styles.textQuantity} bodyS`}>
+          {`x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}
+        </p>
+        {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
+      </div>
     </div>
   );
 };
