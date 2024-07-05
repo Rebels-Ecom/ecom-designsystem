@@ -75,7 +75,8 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       className,
       loading,
       weight = 'normal',
-      name
+      name,
+      ...props
     },
     ref
   ) => {
@@ -103,6 +104,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         )}
         disabled={disabled || loading}
         onClick={onClick}
+        {...props}
       >
         {loading && size !== 'xx-small' ? <Loader visible size='xs' /> : 
         <>
