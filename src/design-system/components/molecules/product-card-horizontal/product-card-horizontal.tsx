@@ -244,7 +244,7 @@ const ProductCardHorizontal = ({
                       type="button"
                       icon={'icon-file-plus'}
                       className={styles.purchaseListIcon}
-                      onClick={() => onSaveToPurchaseListClick(partNo)}
+                      onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
                       size="large"
                       isTransparent
                       noBorder

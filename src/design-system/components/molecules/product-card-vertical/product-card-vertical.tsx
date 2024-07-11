@@ -244,7 +244,7 @@ const ProductCardVertical = ({
                 type="button"
                 icon={'icon-file-plus'}
                 className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick(partNo)}
+                onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
                 size="large"
                 isTransparent
                 noBorder
@@ -257,7 +257,7 @@ const ProductCardVertical = ({
                 type="button"
                 icon={isFavoriteProduct(partNo) ? 'icon-heart1' : 'icon-heart-o'}
                 className={cx(styles.favoriteIcon, isFavoriteProduct(partNo) ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(partNo, isFavoriteProduct(partNo))}
+                onClick={() => onFavoriteIconClick(partNo, isFavoriteProduct(partNo), totalPrice)}
                 size="large"
                 isTransparent
                 noBorder
