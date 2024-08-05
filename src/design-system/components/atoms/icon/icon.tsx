@@ -66,7 +66,7 @@ export interface IIcon {
   /**
    * optional color
    */
-  color?: 'error';
+  color?: 'error' | 'success';
 }
 
 const Icon = ({ icon, size, className, color }: IIcon) => {

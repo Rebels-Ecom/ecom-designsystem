@@ -27,6 +27,7 @@ export const CampaignMessageStory = {
     onClick: () => alert('clicked'),
     icon: {
       icon: 'icon-alert-circle',
+      color: 'success',
     } as IIcon
   }
 }

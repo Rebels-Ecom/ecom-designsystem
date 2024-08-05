@@ -3,6 +3,7 @@
     height: 1rem;
     width: 1.25rem;
     margin: 0;
+    accent-color: var(--cta-primary-default);
     
     &.error {
       &:checked {
