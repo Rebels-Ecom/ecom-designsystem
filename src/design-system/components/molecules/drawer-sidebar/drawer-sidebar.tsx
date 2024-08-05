@@ -23,9 +23,14 @@ export interface IDrawerSidebar {
    * @default false
    */
   hideOverlay?: boolean;
+  /**
+   * Defines if body should be scrollable when sidebar is open
+   * @default false
+   */
+  enableBackgroundScroll?: boolean;
 }
 
-function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', width = 'lg', hideOverlay = false }: IDrawerSidebar) {
+function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', width = 'lg', hideOverlay = false, enableBackgroundScroll = false }: IDrawerSidebar) {
   const overlay = {
     hidden: { opacity: 0 },
     show: {
@@ -47,6 +52,10 @@ function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', widt
   }
 
   useEffect(() => {
+    if (enableBackgroundScroll) {
+      return;
+    }
+    
     const el = document.body;
 
     if (el) {

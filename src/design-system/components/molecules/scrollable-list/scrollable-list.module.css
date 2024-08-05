@@ -15,11 +15,11 @@
     }
 
     &::-webkit-scrollbar-track {
-        background-color: #FFF9E8; 
+        background: rgba(251, 250, 249, 0.1);
     }
     
     &::-webkit-scrollbar-thumb {
-        background: var(--color-text-orange);
+        background: var(--grey-400);
         border-radius: 0.5rem;
     }
 

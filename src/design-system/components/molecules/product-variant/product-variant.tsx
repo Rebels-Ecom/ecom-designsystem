@@ -31,7 +31,6 @@ const ProductVariant = ({
   productName,
   variantName,
   variantId,
-  country,
   priceStr,
   onChange,
   onClick,
@@ -67,8 +66,8 @@ const ProductVariant = ({
           <p className={styles.heading}>{variantName}</p>
           {!isRestrictedUser && (
             <>
-              <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId} ${country && `- ${country}`}`}</p>
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${variantName}: ${priceStr} ${currencyLabel}/${unitLabel}`}</p>
+              <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId}`}</p>
+              <p className={cx(styles.textPurple, 'bodyS')}>{`${priceStr} ${currencyLabel}/${unitLabel}`}</p>
             </>
           )}
         </div>

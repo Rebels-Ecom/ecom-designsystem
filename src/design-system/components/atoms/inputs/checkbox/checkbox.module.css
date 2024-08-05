@@ -29,8 +29,8 @@
   }
 
   &:checked {
-    background: var(--interactive-default);
-    border-color: var(--interactive-default);
+    background: var(--cta-primary-default);
+    border-color: var(--cta-primary-default);
 
     &:after {
       display: inline;
@@ -38,7 +38,7 @@
   }
 
   &:focus {
-    outline: 0.0625rem solid var(--focused);
+    outline: 0.0625rem solid var(--cta-primary-default);
     outline-offset: 0.125rem;
   }
 

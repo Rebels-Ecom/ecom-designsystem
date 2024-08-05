@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { DrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
 import styles from './dynamic-filter.module.css'
-import { Button, Checkbox, ExpandableWrapper, Icon, RadioButton, Slider } from '../../atoms';
+import { Button, Checkbox, ExpandableWrapper, Icon, Slider } from '../../atoms';
 import { Above, Below, FlexContainer } from '../../layouts';
 import { AnimatePresence, motion } from 'framer-motion';
 import cx from 'classnames';
@@ -320,7 +320,7 @@ const DynamicFilter = ({
           </>
         )}
       </div>
-      <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md' hideOverlay>
+      <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md' hideOverlay enableBackgroundScroll>
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
           {filters?.map((filter, i) => {

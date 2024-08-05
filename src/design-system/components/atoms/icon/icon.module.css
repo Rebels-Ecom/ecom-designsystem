@@ -11,3 +11,7 @@
 .error {
   color: var(--error-red);
 }
+
+.success {
+  color: var(--tag-green);
+}
