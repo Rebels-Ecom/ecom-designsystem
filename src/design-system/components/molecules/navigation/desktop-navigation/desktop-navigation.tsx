@@ -7,7 +7,7 @@ import cx from 'classnames'
 import { ContentWrapper } from "../../../layouts";
 import { useOnClickOutside } from "../../../../hooks";
 
-const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
+const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INavigation) => {
   const [activeTopLevel, setActiveTopLevel] = useState<TNavCategory | TNavLink>();
   const [hoveredTopLevel, setHoveredTopLevel] = useState<TNavCategory | TNavLink>();
   const [activeSecondLevel, setActiveSecondLevel] = useState<TNavCategory | TNavLink | undefined>();
@@ -91,14 +91,14 @@ const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
                     />
                   )}
                   {isLink(cat) && (
-                    <motion.a
+                    <Link
                       key={`${cat.name}-${i}`}
                       className={cx(styles.topLevelLink, styles.topLevelTrigger, {[styles.active]: activeTopLevel === cat})}
-                      href={cat.href}
+                      to={cat.href}
                       target={cat.openInNewTab ? '_blank' : '_self'}
                     >
                       {cat.name}
-                    </motion.a>
+                    </Link>
                   )}
                   {isCategory(cat) && (
                     <motion.button
@@ -160,27 +160,31 @@ const DesktopNavigation = ({ categories, currentSlug }: INavigation) => {
                         exit={{ opacity: 0 }}
                       >
                         <>
-                          <motion.a
+                          <Link
                             className={cx(styles.secondLevelLink, {[styles.active]: activeSecondLevel === link})}
-                            href={link.href}
+                            to={link.href}
                             target={link.openInNewTab ? '_blank' : '_self'}
                             onClick={() => {
                               setActiveSecondLevel(link);
+                              setActiveTopLevel(undefined);
                             }}
-                            >
+                          >
                             {link.name}
-                          </motion.a>
+                          </Link>
                           <ul className={cx(styles.thirdLevelList, {[styles.thirdLevelListMaxWidth]: activeTopLevel?.links?.length > 3 })}>
                             {link.links?.map((thirdLevelLink, i) => (
                               <li key={`${thirdLevelLink.href}-${i}`} className={styles.thirdLeveListItem}>
-                                <a
-                                  href={thirdLevelLink.href}
+                                <Link
+                                  to={thirdLevelLink.href}
                                   target={thirdLevelLink.openInNewTab ? '_blank' : '_self'}
                                   className={styles.thirdLevelLink}
                                   title={thirdLevelLink.name}
+                                  onClick={() => {
+                                    setActiveTopLevel(undefined);
+                                  }}
                                 >
                                   {thirdLevelLink.name}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>

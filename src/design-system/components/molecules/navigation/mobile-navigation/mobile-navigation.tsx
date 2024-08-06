@@ -18,7 +18,10 @@ type TListItemWithoutLinks = {
   delay?: number;
 };
 
-const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWithoutLinks) => {
+const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (IListItemWithLinks | TListItemWithoutLinks) & {
+  linkComponent: any,
+  close: () => void,
+}) => {
   const [open, setOpen] = useState(false);
   const [height, setHeight] = useState<'auto' | number | `${number}%`>(0);
   const [activeSecondLevel, setActiveSecondLevel] = useState<string | undefined>();
@@ -32,9 +35,14 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
       className={styles.menuListItem}
     >
       {isLink(link) ? (
-        <a className={styles.menuListItemLink} href={link.href} target={link.openInNewTab ? '_blank' : '_self'}>
+        <Link
+          className={styles.menuListItemLink}
+          to={link.href}
+          target={link.openInNewTab ? '_blank' : '_self'}
+          onClick={close}
+        >
           {name}
-        </a>
+        </Link>
       ) : (
         <button
           className={styles.menuListItemLink}
@@ -44,7 +52,6 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
           }}
         >
           <span className={`${open ? styles.menuListItemLinkActive : ''}`}>{name}</span>
-          {/* <Plus className={`stroke-black ${open ? 'rotate-45' : 'rotate-0'} transition-transform`} /> */}
           <Icon className={styles.itemIcon} icon={open ? 'icon-chevron-up' : 'icon-chevron-down'} />
         </button>
       )}
@@ -53,10 +60,15 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
           {links.map((secondLink) => (
             <Fragment key={secondLink.name}>
               {isLink(secondLink) ? (
-                <a className={styles.subMenuListItemLink} href={secondLink.href} target={secondLink.openInNewTab ? '_blank' : '_self'}>
+                <Link
+                  className={styles.subMenuListItemLink}
+                  to={secondLink.href}
+                  target={secondLink.openInNewTab ? '_blank' : '_self'}
+                  onClick={close}
+                >
                   {secondLink.name}
-                  <Icon  className={styles.itemIcon} icon='icon-chevron-right' />
-                </a>
+                  <Icon className={styles.itemIcon} icon='icon-chevron-right' />
+                </Link>
               ) : (
                 <button
                   className={styles.subMenuListItemLink}
@@ -77,10 +89,15 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
                   {secondLink.links.map((thirdLink) => (
                     <Fragment key={thirdLink.name}>
                       {isLink(thirdLink) ? (
-                        <a className={styles.subMenuListItemLink} href={thirdLink.href} target={thirdLink.openInNewTab ? '_blank' : '_self'}>
+                        <Link
+                          className={styles.subMenuListItemLink}
+                          to={thirdLink.href}
+                          target={thirdLink.openInNewTab ? '_blank' : '_self'}
+                          onClick={close}
+                        >
                           {thirdLink.name}
                           <Icon className={styles.itemIcon} icon='icon-chevron-right' />
-                        </a>
+                        </Link>
                       ) : // TODO: add support for another level if needed
                       undefined}
                     </Fragment>
@@ -95,7 +112,7 @@ const ListItem = ({ name, link, links, delay }: IListItemWithLinks | TListItemWi
   );
 };
 
-const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut, actions, isOpen: open, setIsOpen: setOpen }: INavigation) => {
+const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut, actions, isOpen: open, setIsOpen: setOpen, linkComponent: Link }: INavigation) => {
   const [distanceTop, setDistanceTop] = useState(0);
   const mobileNavRef = useRef<HTMLDivElement>(null);
 
@@ -124,7 +141,6 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
           <div className={styles.actions}>{actions}</div>
         )}
         <div className={styles.topInner}>
-          {/* mode="wait" */}
           <AnimatePresence initial={false} exitBeforeEnter>
             {!open && (
               <motion.button
@@ -165,9 +181,28 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
           <ul className={styles.menuList}>
             {categories.map((cat, i) => {
               if (isCategory(cat)) {
-                return <ListItem key={cat.name} name={cat.name} links={cat.links} delay={i * 0.1} href={cat.href} />;
+                return (
+                  <ListItem
+                    key={cat.name}
+                    linkComponent={Link}
+                    name={cat.name}
+                    links={cat.links}
+                    delay={i * 0.1}
+                    href={cat.href}
+                    close={() => setOpen(false)}
+                  />
+                );
               } else if (isLink(cat)) {
-                return <ListItem key={cat.name} name={cat.name} link={cat} delay={i * 0.1} />;
+                return (
+                  <ListItem
+                    key={cat.name}
+                    linkComponent={Link}
+                    name={cat.name}
+                    link={cat}
+                    delay={i * 0.1}
+                    close={() => setOpen(false)}
+                  />
+                );
               }
             })}
           </ul>

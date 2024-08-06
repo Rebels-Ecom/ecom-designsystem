@@ -88,6 +88,10 @@
     background: var(--surface-critical-subdued);
     border-color: var(--border-critical);
   }
+  
+  &.center {
+    text-align: center;
+  }
 }
 
 .iconRight {

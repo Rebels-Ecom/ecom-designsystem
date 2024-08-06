@@ -29,6 +29,7 @@ export interface IInputText {
   min?: string
   fullWidth?: boolean
   small?: boolean
+  centered?: boolean;
 }
 
 const InputText = forwardRef<HTMLInputElement, IInputText>(
@@ -54,7 +55,8 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
       iconRight,
       min,
       fullWidth,
-      small
+      small,
+      centered
     },
     ref
   ) => {
@@ -85,6 +87,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
           className={cx('body', styles.inputText, getisErroneousStyle(styles, isErroneous), {
             [styles.small]: small,
             [styles.disabledNoBorder]: disabledNoBorder,
+            [styles.center]: centered
           }, className)}
           id={id}
           value={value}

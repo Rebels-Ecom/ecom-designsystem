@@ -32,6 +32,7 @@ export interface INavigation {
   categories: Array<TNavLink | TNavCategory>;
   // Active slug/path
   currentSlug: string;
+  linkComponent: any;
   // inital active top level
   initial?: string;
   // User logged in status
