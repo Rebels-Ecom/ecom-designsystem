@@ -96,6 +96,7 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
                       className={cx(styles.topLevelLink, styles.topLevelTrigger, {[styles.active]: activeTopLevel === cat})}
                       to={cat.href}
                       target={cat.openInNewTab ? '_blank' : '_self'}
+                      onClick={() => setActiveTopLevel(undefined)}
                     >
                       {cat.name}
                     </Link>

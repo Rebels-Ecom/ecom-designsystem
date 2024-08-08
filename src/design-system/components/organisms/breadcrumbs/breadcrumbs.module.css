@@ -13,6 +13,19 @@
     }
 }
 
+.breadcrumb {
+    display: flex;
+    gap: 0.25rem;
+    text-decoration: none;
+    line-height: 1.125rem;
+
+    & .breadcrumbText {
+        &.underline {
+            text-decoration: underline;
+        }
+    }
+}
+
 .breadcrumbsPicture {
     width: 100%;
     height: 100%;

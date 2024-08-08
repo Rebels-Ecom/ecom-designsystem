@@ -320,7 +320,7 @@ const DynamicFilter = ({
           </>
         )}
       </div>
-      <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md' hideOverlay enableBackgroundScroll>
+      <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md'>
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
           {filters?.map((filter, i) => {

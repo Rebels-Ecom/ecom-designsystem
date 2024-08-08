@@ -6,11 +6,12 @@ import cx from 'classnames';
 type TExpandableWrapper = {
   open: boolean;
   className?: string;
+  initialHeight?: number | string;
 }
 
-const ExpandableWrapper = ({ open, children, className = '' }: PropsWithChildren<TExpandableWrapper>) => {
+const ExpandableWrapper = ({ open, children, className = '', initialHeight = 0 }: PropsWithChildren<TExpandableWrapper>) => {
   return (
-    <motion.div className={cx(styles.expandableWrapper, className)} initial={{ height: 0 }} animate={{ height: open ? 'auto' : 0 }}>{children}</motion.div>
+    <motion.div className={cx(styles.expandableWrapper, className)} initial={{ height: initialHeight }} animate={{ height: open ? 'auto' : initialHeight }}>{children}</motion.div>
   )
 }
 
