@@ -5,7 +5,7 @@
 	left: 0;
 	bottom: 0;
 	height: 100vh;
-	z-index: 999999;
+	z-index: var(--drawer-sidebar-z-index);
 	background: #FFFFFF;
 	padding: 1rem;
 	margin-left:auto;
@@ -55,6 +55,6 @@
 	right: 0;
 	bottom: 0;
 	left: 0; 
-	z-index: 99999;
+	z-index: var(--drawer-sidebar-backdrop-z-index);
 	backdrop-filter: blur(10px);
 }

@@ -45,10 +45,10 @@ html {
     --menu-z-index: 100;
     --menu-backdrop-z-index: 99;
     --select-list-z-index: 10;
-    --drawer-overlay-z-index: 50;
-    --drawer-content-z-index: 51;
     --tooltip-z-index: 101;
-    --modal-backdrop-z-index: 100;
+    --drawer-sidebar-backdrop-z-index: 997;
+    --drawer-sidebar-z-index: 998;
+    --modal-backdrop-z-index: 999;
 }
 
 body {

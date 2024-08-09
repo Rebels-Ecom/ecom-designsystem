@@ -29,6 +29,7 @@ export interface IDrawerSidebar {
    * @default false
    */
   enableBackgroundScroll?: boolean;
+  disableCloseOnOutsideClick?: boolean;
 }
 
 function DrawerSidebar({
@@ -38,7 +39,8 @@ function DrawerSidebar({
   from = 'right',
   width = 'lg',
   hideOverlay = false,
-  enableBackgroundScroll = false
+  enableBackgroundScroll = false,
+  disableCloseOnOutsideClick = false,
 }: IDrawerSidebar) {
   const contentRef = useRef<HTMLDivElement>(null);
   const overlay = {
@@ -74,7 +76,13 @@ function DrawerSidebar({
     return () => el?.classList?.remove('no-scroll')
   }, [isOpen]);
 
-  useOnClickOutside({ ref: contentRef, onClose: (e: React.SyntheticEvent) => onClose(e) })
+  useOnClickOutside({ ref: contentRef, onClose: (e: React.SyntheticEvent) => {
+    if (disableCloseOnOutsideClick) {
+      return;
+    }
+
+    return onClose(e);
+  } })
 
 
   return (

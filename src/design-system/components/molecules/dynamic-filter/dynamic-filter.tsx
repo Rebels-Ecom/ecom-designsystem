@@ -56,7 +56,7 @@ interface IDynamicFilter {
    * If provided, a "show result (x)" button will be displayed at bottom of drawer
    */
   result?: number;
-  backdropOptions?: Pick<IDrawerSidebar, 'enableBackgroundScroll' | 'hideOverlay'>
+  backdropOptions?: Pick<IDrawerSidebar, 'enableBackgroundScroll' | 'hideOverlay' | 'disableCloseOnOutsideClick'>
 }
 
 const getMinAndMaxValues = (options: TOptionType[]) => {
@@ -187,7 +187,6 @@ const DynamicFilter = ({
   }
 
   const handleClose = () => setOpen(false);
-
   useEffect(() => {
     if (!open) {
       setShowMore(false)
