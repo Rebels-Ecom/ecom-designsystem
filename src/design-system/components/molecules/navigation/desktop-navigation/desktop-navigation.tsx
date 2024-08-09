@@ -196,7 +196,6 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
                     null
                   )}
                 </motion.ul>
-                <motion.div className={styles.endOfList} initial={{ opacity: 0 }} animate={{ opacity: activeTopLevel ? 1 : 0 }} />
               </motion.div>
             </ContentWrapper>
           </motion.div>

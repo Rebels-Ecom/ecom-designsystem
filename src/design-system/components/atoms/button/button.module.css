@@ -124,6 +124,20 @@
   }
 }
 
+.link {
+  background-color: transparent;
+  color: var(--cta-primary-default);
+  padding: 0;
+  min-width: 0;
+  width: auto;
+  height: auto;
+
+  &:hover{
+    color: var(--cta-primary-hover);
+    text-decoration: underline;
+  }
+}
+
 .rounded {
   border-radius: 6.25rem;
 }

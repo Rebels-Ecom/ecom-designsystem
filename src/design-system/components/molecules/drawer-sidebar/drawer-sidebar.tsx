@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
-import { AnimatePresence, motion, useCycle } from 'framer-motion'
+import React, { useEffect, useRef } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import styles from './drawer-sidebar.module.css'
 import { IconButton } from '../../atoms'
 import cx from 'classnames';
+import { useOnClickOutside } from '../../../hooks';
 
 export interface IDrawerSidebar {
   children: any
@@ -30,7 +31,16 @@ export interface IDrawerSidebar {
   enableBackgroundScroll?: boolean;
 }
 
-function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', width = 'lg', hideOverlay = false, enableBackgroundScroll = false }: IDrawerSidebar) {
+function DrawerSidebar({
+  children,
+  isOpen = false,
+  onClose,
+  from = 'right',
+  width = 'lg',
+  hideOverlay = false,
+  enableBackgroundScroll = false
+}: IDrawerSidebar) {
+  const contentRef = useRef<HTMLDivElement>(null);
   const overlay = {
     hidden: { opacity: 0 },
     show: {
@@ -44,11 +54,6 @@ function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', widt
   const sidebar = {
     hidden: { x: from === 'left' ? '-100%' : '100%' },
     show: { x: 0 },
-  }
-
-  const handleOnClose = (e: React.SyntheticEvent) => {
-    if (e.target !== e.currentTarget) return
-    onClose(e)
   }
 
   useEffect(() => {
@@ -69,27 +74,44 @@ function DrawerSidebar({ children, isOpen = false, onClose, from = 'right', widt
     return () => el?.classList?.remove('no-scroll')
   }, [isOpen]);
 
+  useOnClickOutside({ ref: contentRef, onClose: (e: React.SyntheticEvent) => onClose(e) })
+
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.aside className={cx(styles.sidebar, {[styles.hideOverlay]: hideOverlay })} variants={overlay} initial="hidden" animate="show" exit="hidden" onClick={handleOnClose}>
-          <motion.div className={cx(styles.sidebarContent, styles[from], styles[width])} variants={sidebar} animate="show" initial="hidden" exit="hidden" transition={{ ease: 'easeIn' }}>
-            <div className={styles.contentWrapper}>
-              <IconButton
-                className={styles.buttonClose}
-                type='button'
-                onClick={onClose}
-                icon='icon-x'
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-              />
-              {children}
-            </div>
-          </motion.div>
-        </motion.aside>
+        <>
+          <motion.aside
+            className={cx(styles.drawerSidebar, styles[from], styles[width])}
+            variants={sidebar}
+            animate="show"
+            initial="hidden"
+            exit="hidden"
+            transition={{ ease: 'easeIn' }}
+            ref={contentRef}
+          >
+            <IconButton
+              className={styles.buttonClose}
+              type='button'
+              onClick={onClose}
+              icon='icon-x'
+              size="large"
+              isTransparent
+              noBorder
+              noPadding
+            />
+            {children}
+          </motion.aside>
+          {!hideOverlay && (
+            <motion.div
+              className={styles.backdrop}
+              variants={overlay}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+            />
+          )}
+        </>
       )}
     </AnimatePresence>
   )

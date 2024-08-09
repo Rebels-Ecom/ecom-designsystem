@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { DrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
+import { DrawerSidebar, IDrawerSidebar } from '../drawer-sidebar/drawer-sidebar'
 import styles from './dynamic-filter.module.css'
 import { Button, Checkbox, ExpandableWrapper, Icon, Slider } from '../../atoms';
 import { Above, Below, FlexContainer } from '../../layouts';
@@ -56,6 +56,7 @@ interface IDynamicFilter {
    * If provided, a "show result (x)" button will be displayed at bottom of drawer
    */
   result?: number;
+  backdropOptions?: Pick<IDrawerSidebar, 'enableBackgroundScroll' | 'hideOverlay'>
 }
 
 const getMinAndMaxValues = (options: TOptionType[]) => {
@@ -84,7 +85,8 @@ const DynamicFilter = ({
   hideSliderFields,
   hideFilters,
   maxOptionsToShow = 6,
-  result
+  result,
+  backdropOptions
 }: IDynamicFilter) => {
   const [open, setOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
@@ -320,7 +322,13 @@ const DynamicFilter = ({
           </>
         )}
       </div>
-      <DrawerSidebar isOpen={open} onClose={handleClose} from='left' width='md'>
+      <DrawerSidebar
+        isOpen={open}
+        onClose={handleClose}
+        from='left'
+        width='md'
+        {...backdropOptions}
+      >
         <div className={styles.dynamicFilter}>
           {title && <h4 className={styles.title}>{title}</h4>}
           {filters?.map((filter, i) => {
