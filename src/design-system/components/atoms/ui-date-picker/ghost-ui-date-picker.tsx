@@ -10,7 +10,6 @@ const GhostUiDatePicker = () => {
         <Placeholder type='heading' noMargin />
         <span className={styles.buttonIconWrapper}>
           <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
-          <Placeholder type='heading' noMargin />
         </span>
       </span>
     </div>  

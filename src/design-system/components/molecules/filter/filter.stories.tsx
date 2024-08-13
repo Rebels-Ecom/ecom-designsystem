@@ -5,7 +5,7 @@ import { MultiSelectStoryLand, MultiSelectStoryProducer, MultiSelectStoryPackagi
 import { SingleSelectStory } from '../../atoms/single-select/single-select.stories'
 
 const meta: Meta<typeof Filter> = {
-    title: 'Design System/Molecules/Filter',
+    title: 'Design System/Deprecated/Filter',
     component: Filter
 }
 

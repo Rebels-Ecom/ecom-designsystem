@@ -1,0 +1,67 @@
+.clickableListItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
+
+  & .label,
+  .icon {
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-family: var(--font-family-primary);
+  }
+
+  &.small {
+    & .label,
+    .icon {
+      font-size: 0.875rem;
+      line-height: 1rem;
+    }
+  }
+
+  &.start {
+    justify-content: flex-start;
+  }
+
+  &.center {
+    justify-content: center;
+  }
+
+  &.end {
+    justify-content: flex-end;
+  }
+
+  &.bold {
+    & .label,
+    .icon {
+      font-weight: bold;
+    }  
+  }
+
+  &.blue {
+    & .label,
+    .icon {  
+      color: var(--cta-primary-default);
+    }
+  }
+  
+  &.orange {
+    & .label,
+    .icon {  
+      color: var(--orange-600);
+    }
+  }
+
+  & .icon {
+    margin-left: 0.5rem;
+  }
+}
