@@ -19,7 +19,7 @@ function PopUp({ open, children, contentPosition = 'center' }: IPopUp) {
           className={cx(styles.popUp, styles[contentPosition])}
           onClick={(e) => e.stopPropagation()}
           initial={{ y: '35%', opacity: 0 }}
-          animate={{ y: '0%', opacity: 1, position: 'fixed', zIndex: 2 }}
+          animate={{ y: '0%', opacity: 1, position: 'fixed', zIndex: 995 }}
           transition={{ duration: 0.4 }}
           exit={{ y: '20%', opacity: 0, transition: { duration: 0.4 } }}
         >

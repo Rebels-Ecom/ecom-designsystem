@@ -18,7 +18,11 @@ export type TArticle = {
   maxChar?: number;
   equalHeights?: boolean;
   asCarouselItem?: boolean;
-  type?: 'small' | 'large' | 'full'
+  type?: 'small' | 'large' | 'full',
+  imagePriority?: {
+    fetchPriority: 'auto' | 'high' | 'low',
+    loading: 'eager' | 'lazy',
+  }
 }
 
 const ArticleCard = ({
@@ -32,7 +36,8 @@ const ArticleCard = ({
   type,
   equalHeights,
   fullWidth,
-  asCarouselItem
+  asCarouselItem,
+  imagePriority
 }: TArticle) => {
   const style: { [key: string]: string } = ({
     '--ratio': type === 'large' ? '3/4' : '5/6',
@@ -68,6 +73,8 @@ const ArticleCard = ({
                     classNamePicture={styles.picture}
                     classNameImg={styles.image}
                     fallbackImageUrl={fallbackProductImageUrl}
+                    fetchPriority={imagePriority?.fetchPriority}
+                    loading={imagePriority?.loading}
                   />
                 </a>
               ) :
@@ -75,6 +82,8 @@ const ArticleCard = ({
                   {...image}
                   classNamePicture={styles.picture}
                   classNameImg={styles.image}
+                  fetchPriority={imagePriority?.fetchPriority}
+                  loading={imagePriority?.loading}
                 />
               }
             </>

@@ -23,19 +23,19 @@ html {
 
   /* Heading L - ?/? mobile - 41/51 desktop */
   --heading-l-mobile-font-size: 2.25rem;
-  --heading-l-mobie-line-height: 2.875rem;
+  --heading-l-mobile-line-height: 2.875rem;
   --heading-l-desktop-font-size: 2.625rem;
   --heading-l-desktop-line-height: 3.188rem;
 
   /* Heading M - ?/? mobile - 36/46 desktop */
   --heading-m-mobile-font-size: 2rem;
-  --heading-m-mobie-line-height: 2.75rem;
+  --heading-m-mobile-line-height: 2.75rem;
   --heading-m-desktop-font-size: 2.25rem;
   --heading-m-desktop-line-height: 2.875rem;
 
   /* Heading S - ?/? mobile - 22/28 desktop */
   --heading-s-mobile-font-size: 1.375rem;
-  --heading-s-mobie-line-height: 1.75rem;
+  --heading-s-mobile-line-height: 1.75rem;
   --heading-s-desktop-font-size: 1.375rem;
   --heading-s-desktop-line-height: 1.75rem;
 
@@ -146,7 +146,7 @@ h2,
 .headingL {
   font-weight: var(--font-weight-bold);
   font-size: var(--heading-l-mobile-font-size);
-  line-height: var(--heading-l-mobie-line-height);
+  line-height: var(--heading-l-mobile-line-height);
 
   @media (min-width: 64em) {
     font-size: var(--heading-l-desktop-font-size);
@@ -159,7 +159,7 @@ h3,
 .headingM {
   font-weight: var(--font-weight-bold);
   font-size: var(--heading-m-mobile-font-size);
-  line-height: var(--heading-m-mobie-line-height);
+  line-height: var(--heading-m-mobile-line-height);
 
   @media (min-width: 64em) {
     font-size: var(--heading-m-desktop-font-size);

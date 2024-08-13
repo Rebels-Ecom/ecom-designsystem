@@ -7,6 +7,8 @@ export type TLogotype = IPicture;
 const Logotype = ({ classNamePicture, classNameImg, ...props}: TLogotype) => (
   <Picture
     {...props}
+    fetchPriority='high'
+    loading='eager'
     height={32}
     classNamePicture={cx(styles.logoPicture, classNamePicture)}
     classNameImg={cx(styles.logoImg, classNameImg)}
