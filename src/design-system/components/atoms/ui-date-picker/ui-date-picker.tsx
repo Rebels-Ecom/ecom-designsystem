@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useRef, useState } from 'react'
 import DatePicker, { CalendarContainer } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -9,7 +9,6 @@ import { getIsoString } from '../../../../helpers/date-helper'
 import cx from 'classnames'
 import { Icon } from '../icon/icon'
 import { useOnClickOutside } from '../../../hooks'
-import { Placeholder } from '../placeholder/placeholder'
 
 export interface IUiDatePicker {
   buttonLabel: string
@@ -59,7 +58,6 @@ function UiDatePicker({
           <span className={styles.buttonLabel}>{buttonLabel}</span>
           <span className={styles.buttonIconWrapper}>
             <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
-            {!showDateLabel && <span className={styles.iconText}>Välj</span>}
           </span>
         </span>
       </Button>
