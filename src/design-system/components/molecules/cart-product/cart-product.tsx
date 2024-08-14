@@ -7,6 +7,7 @@ import cx from 'classnames'
 import { Picture } from '../../atoms/picture/picture'
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
 import { Loader } from '../../atoms/loader/loader'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 
 export interface ICartProduct extends IProduct {
   product: IProduct
@@ -57,7 +58,12 @@ const CartProduct = ({
       ) : (
         <>
           <div className={styles.imageWrapper}>
-            <Picture {...productImage} classNamePicture={styles.cardPicture} classNameImg={`${styles.cardImage}`} />
+            <Picture
+              {...productImage}
+              classNamePicture={styles.cardPicture}
+              classNameImg={`${styles.cardImage}`}
+              fallbackImageUrl={fallbackProductImageUrl}
+            />
           </div>
 
           <div className={styles.contentWrapper}>
