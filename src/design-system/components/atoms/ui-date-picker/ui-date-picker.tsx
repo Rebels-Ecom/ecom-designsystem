@@ -53,6 +53,7 @@ function UiDatePicker({
         className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnHeader, className ? className : '')}
         onClick={handleClick}
         disabled={loading}
+        fullWidth
       >
         <span className={styles.buttonLabelWrapper}>
           <span className={styles.buttonLabel}>{buttonLabel}</span>

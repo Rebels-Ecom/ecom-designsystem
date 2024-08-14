@@ -1,5 +1,4 @@
 .carousel {
-  display: grid;
   padding-bottom: 2.5rem;
 
   & .slide {

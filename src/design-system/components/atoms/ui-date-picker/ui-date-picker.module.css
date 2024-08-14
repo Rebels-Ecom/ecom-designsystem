@@ -189,9 +189,10 @@
 
 .buttonLabelWrapper {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    width: 100%;
 
     @media (min-width: 48em) {
         gap: 1rem;
@@ -203,9 +204,8 @@
 }
 
 .icon {
-    font-size: 1.125rem;
-    line-height: 1.125rem;
-    vertical-align: sub;
+    font-size: 1rem;
+    line-height: 1rem;
     display: inline-block;
 }
 

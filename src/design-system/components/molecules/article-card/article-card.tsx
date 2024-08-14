@@ -43,6 +43,8 @@ const ArticleCard = ({
     '--ratio': type === 'large' ? '3/4' : '5/6',
   })
 
+  const Link = link?.linkComponent ?? 'a';
+
   return (
     <div
       className={cx(styles.articleCard, {
@@ -62,7 +64,8 @@ const ArticleCard = ({
           {image && (
             <>
               {link ? (
-                <a
+                <Link
+                  to={link.href}
                   href={link.href}
                   target='_self'
                   aria-label={heading ? `Read more about ${heading}` : 'Read more'}
@@ -76,7 +79,7 @@ const ArticleCard = ({
                     fetchPriority={imagePriority?.fetchPriority}
                     loading={imagePriority?.loading}
                   />
-                </a>
+                </Link>
               ) :
                 <Picture
                   {...image}
@@ -103,14 +106,15 @@ const ArticleCard = ({
             {heading && (
               <>
                 {link ? (
-                  <a
+                  <Link
+                    to={link.href}
                     href={link.href}
                     target='_self'
                     className={cx(styles.heading, styles.headingLink)}
                     aria-label={`Read more about ${heading}`}
                   >
                     <h4 className={styles.heading}>{heading}</h4>
-                  </a>
+                  </Link>
                 ) : <h4 className={styles.heading}>{heading}</h4>}
               </>
             )}

@@ -150,7 +150,11 @@
 }
 
 .buttonContent {
-  display: flex;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  
   &.contentLeft {
     margin-right: 0.625rem;
   }

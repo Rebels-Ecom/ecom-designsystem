@@ -106,7 +106,6 @@
 
           & .secondLevelLinkItem {
             position: relative;
-            overflow: hidden;
             min-width: max-content;
           }
 
@@ -158,8 +157,9 @@
   & .thirdLevelList {
     width: 100%;
     display: flex;
+    gap: 0.25rem;
     flex-direction: column;
-    height: calc(100% - 4rem);
+    min-height: calc(100% - 4rem);
     margin: 0;
     padding: 0;
     list-style: none;
