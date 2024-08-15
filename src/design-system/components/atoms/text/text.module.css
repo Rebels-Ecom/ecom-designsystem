@@ -1,7 +1,7 @@
 .text {
     display: flex;
-    &.leftAlignment { justify-content: flex-start;}
-    &.rightAlignment { justify-content: flex-end;}
+    &.leftAlignment { justify-content: flex-start; text-align: left;}
+    &.rightAlignment { justify-content: flex-end;  text-align: right;}
     &.centerAlignment { justify-content: center; text-align: center;}
     &.textBold { font-weight: bold;}
     &.textUnderlined {text-decoration: underline;}

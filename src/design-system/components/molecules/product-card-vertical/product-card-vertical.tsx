@@ -107,13 +107,9 @@ const ProductCardVertical = ({
           className ? className : '',
           {
             [styles.campaign]: activeCampaign?.title && !loading,
-          },
-          {
             [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
-          },
-          {
             [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
-          }
+          },
         )}
         style={style}
       >

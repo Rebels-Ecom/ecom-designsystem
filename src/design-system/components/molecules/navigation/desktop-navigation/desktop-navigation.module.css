@@ -34,8 +34,8 @@
           & .topLevelLinkActive {
             position: absolute;
             left: 0;
-            bottom: 0;
-            height: 0.25rem;
+            bottom: 1rem;
+            height: 0.125rem;
             width: calc(100% - 2rem);
             background-color: var(--cta-tertiary-default);
           }

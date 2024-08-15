@@ -110,18 +110,18 @@ const OrderItem = ({
           <div className={styles.firstRow}>
             {orderNumber && orderNumberLabel && onClick && <h4 className={styles.orderNumber} onClick={onClick}>{`${orderNumberLabel} ${orderNumber}`}</h4>}
             {btnLabel && onClick && (
-              <div className={styles.statusWrapper}>
-                <Button type={'button'} surface={'primary'} onClick={onClick}>
+              <div className={cx(styles.statusWrapper, styles.btn)}>
+                <Button type={'button'} surface='link' onClick={onClick}>
                   {btnLabel}
                 </Button>
               </div>
             )}
           </div>
-          <div className={cx(styles.secondRow, styles.secondRowCol)}>
+          <div className={cx(styles.secondRow, styles.secondRowCol, {[styles.hasChildren]: !!children })}>
             {orderDate && orderDateLabel && <p className={styles.deliveryDate}>{`${orderDateLabel} ${orderDate}`}</p>}
             {deliveryDate && deliveryDateLabel && <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
           </div>
-          <div>{children}</div>
+          {children && <div>{children}</div>}
         </>
       )}
     </div>

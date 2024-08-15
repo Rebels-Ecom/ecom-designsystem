@@ -141,11 +141,11 @@
   --product-description-background: #FBFAF9;
   --pagination-indicators-active: #003E51;
   --pagination-indicators-inactive: rgba(247, 249, 250, 0.15);
-  --alert-message-error-background: #e4b6c3;
-  --alert-message-warning-background: #FFF9E8;
+  --alert-message-error-background: #CD8AA2;
+  --alert-message-warning-background: #fadbb0;
   --alert-message-information-background: #3D5B49;
-  --alert-message-icon-error-background: #CD8AA2;
-  --alert-message-icon-warning-background: #fadbb0;
+  --alert-message-icon-error-background: #e4b6c3;
+  --alert-message-icon-warning-background: #FFF9E8;
   --alert-message-icon-information-background: #708E7C;
 
   /*Text */

@@ -30,7 +30,7 @@ const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (ILi
     <motion.div
       key={name}
       initial={{ opacity: 0, translateX: '10vw' }}
-      whileInView={{ opacity: 1, translateX: 0, transition: { delay: delay ?? 0.3 } }}
+      animate={{ opacity: 1, translateX: 0, transition: { delay: delay ?? 0.3 } }}
       viewport={{ once: true }}
       className={styles.menuListItem}
     >

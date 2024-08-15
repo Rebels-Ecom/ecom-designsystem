@@ -27,8 +27,8 @@ function getBannerIcon(type: TMessageBannerType) {
 function MessageBanner({ children, type, color }: IMessageBanner) {
   return (
     <div className={styles.messageBanner} style={{ background: color ? color : defaultBkg, color: color && '#ffff' }}>
-      <span>{children}</span>
       {type && <Icon icon={getBannerIcon(type)} className={styles.bannerIcon}></Icon>}
+      <span>{children}</span>
     </div>
   )
 }

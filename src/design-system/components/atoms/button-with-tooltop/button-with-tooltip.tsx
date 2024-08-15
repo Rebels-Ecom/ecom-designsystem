@@ -30,7 +30,7 @@ const ButtonWithTooltip = ({ content, wrapperClassName, className, side, align, 
           <Tooltip.Portal>
             <Tooltip.Content
               className={styles.content}
-              sideOffset={5}
+              sideOffset={0}
               side={side ?? 'top'}
               align={align}
             >

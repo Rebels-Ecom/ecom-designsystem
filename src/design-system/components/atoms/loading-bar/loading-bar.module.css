@@ -42,6 +42,9 @@
 
 .barText {
     max-width: 4rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .fill_1 { height: 8.33%; }

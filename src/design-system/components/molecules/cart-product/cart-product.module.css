@@ -9,6 +9,10 @@
     @media (min-width: 48em) {
       height: 10.5rem;
     }
+
+    &.whiteBackground {
+      background-color: #ffffff;
+    }
   }
     
   .imageWrapper {

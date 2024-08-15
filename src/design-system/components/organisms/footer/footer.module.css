@@ -49,6 +49,10 @@
       width: 70%;
     }
   }
+
+  .logo {
+    width: 8.5rem;
+  }
   
   .linkListItem {
     margin: 1rem 0;

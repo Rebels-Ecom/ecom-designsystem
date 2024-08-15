@@ -90,7 +90,14 @@
                 }
             }
         }
-        
+
+        & .btn {
+            display: none;
+
+            @media (min-width: 48em) {
+                display: block;
+            }
+        }
     }
 
     & .secondRow {
@@ -101,7 +108,10 @@
         &.secondRowCol {
             justify-content: flex-start;
             flex-direction: column;
-            margin-bottom: 1rem;
+
+            &.hasChildren {
+                margin-bottom: 1rem;
+            }
         }
 
         & .deliveryDate {
