@@ -18,6 +18,7 @@ export interface ICartProduct extends IProduct {
   linkComponent?: any
   hidePrice?: boolean;
   onClick?: CallableFunction;
+  whiteBackground?: boolean;
 }
 
 const CartProduct = ({
@@ -28,7 +29,8 @@ const CartProduct = ({
   loading = false,
   linkComponent: Link,
   hidePrice,
-  onClick
+  onClick,
+  whiteBackground
 }: ICartProduct) => {
   const {
     partNo,
@@ -52,7 +54,7 @@ const CartProduct = ({
   }
 
   return (
-    <div className={cx(styles.cartProduct, className ? className : '')}>
+    <div className={cx(styles.cartProduct, className ? className : '', {[styles.whiteBackground]: whiteBackground })}>
       {loading ? (
         <Loader visible={loading} text={'Loading'} />
       ) : (

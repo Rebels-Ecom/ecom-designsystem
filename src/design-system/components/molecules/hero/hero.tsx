@@ -47,7 +47,7 @@ const Hero = ({ topHeading, heading, preamble, image, video, contentImage, align
             )}
             {contentImage && <Picture {...contentImage} fetchPriority={fetchPriority} loading={loading}></Picture>}
             {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
-            {link && <LinkButton {...link} className={styles.linkButton} />}
+            {link?.href && <LinkButton {...link} className={styles.linkButton} />}
           </div>
         </div>
       </div>

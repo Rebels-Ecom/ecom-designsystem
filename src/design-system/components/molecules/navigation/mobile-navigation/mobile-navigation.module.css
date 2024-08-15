@@ -70,7 +70,7 @@
     & .menuList {
       display: flex;
       flex-direction: column;
-      padding: 0 0 4rem;
+      padding: 0 0 6rem;
       
       @media (min-width: 48em) {
         padding: 0 0 0.75rem;
