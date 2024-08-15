@@ -1,0 +1,13 @@
+import{j as e}from"./jsx-runtime-03333307.js";import{m as S}from"./hooks-0265167d.js";import{I as _}from"./icon-cf6ebd85.js";import{T as r}from"./text-1a10703e.js";import{G as g}from"./group-wrapper-5bc35e6d.js";import{H as h}from"./heading-ba18f9a9.js";const I="_listItem_1z11g_1",b="_itemWrapper_1z11g_11",a={listItem:I,itemWrapper:b};function o({children:n,onClick:i}){const{isMobile:j}=S();return n?e.jsx("button",{className:a.listItem,onClick:i,children:e.jsxs("div",{className:a.itemWrapper,children:[n,i&&!j&&e.jsx(_,{icon:"icon-chevrons-right"})]})}):null}o.__docgenInfo={description:"",methods:[],displayName:"SortableListItem",props:{children:{required:!0,tsType:{name:"ReactReactNode",raw:"React.ReactNode"},description:""},id:{required:!0,tsType:{name:"string"},description:""},name:{required:!0,tsType:{name:"string"},description:""},onClick:{required:!1,tsType:{name:"signature",type:"function",raw:"() => void",signature:{arguments:[],return:{name:"void"}}},description:""}}};const L={title:"Design System/Molecules/SortableListItem",component:o},x={render:({...n})=>e.jsx("div",{style:{margin:"3rem auto",maxWidth:"1800px"},children:e.jsx(o,{...n,onClick:()=>console.log("Open the modal")})})},f=e.jsxs(e.Fragment,{children:[e.jsxs(g,{direction:"column",children:[e.jsx(h,{order:5,noMargin:!0,children:"E-HANDELSFRÅGOR"}),e.jsx(r,{children:"Hej, vi testar för att se var den här infon syns"})]}),e.jsx(r,{children:"23/09/04"}),e.jsx(r,{children:"23/09/05"})]}),y=e.jsxs(e.Fragment,{children:[e.jsxs(g,{direction:"column",spacing:"xs",children:[e.jsx(h,{order:5,noMargin:!0,children:"FRÅGA OM LEVERANS"}),e.jsx(r,{children:"Test test"})]}),e.jsx(r,{children:"23/09/04"}),e.jsx(r,{children:"23/09/05"})]}),t={...x,args:{children:f,onClick:()=>console.log("Open the modal")}},s={...x,args:{children:y,onClick:()=>console.log("Open the modal")}};var l,c,m;t.parameters={...t.parameters,docs:{...(l=t.parameters)==null?void 0:l.docs,source:{originalSource:`{
+  ...SortableListItemStoryTemplate,
+  args: {
+    children: itemEHandel,
+    onClick: () => console.log('Open the modal')
+  }
+}`,...(m=(c=t.parameters)==null?void 0:c.docs)==null?void 0:m.source}}};var d,p,u;s.parameters={...s.parameters,docs:{...(d=s.parameters)==null?void 0:d.docs,source:{originalSource:`{
+  ...SortableListItemStoryTemplate,
+  args: {
+    children: itemLeverans,
+    onClick: () => console.log('Open the modal')
+  }
+}`,...(u=(p=s.parameters)==null?void 0:p.docs)==null?void 0:u.source}}};const v=["SortableListItem_EHandel","SortableListItem_Leverans"],M=Object.freeze(Object.defineProperty({__proto__:null,SortableListItem_EHandel:t,SortableListItem_Leverans:s,__namedExportsOrder:v,default:L},Symbol.toStringTag,{value:"Module"}));export{t as S,s as a,o as b,M as s};
