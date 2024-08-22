@@ -4,7 +4,7 @@ import { SignupTeaser } from './signup-teaser'
 import { action } from '@storybook/addon-actions';
 
 const meta: Meta<typeof SignupTeaser> = {
-    title: 'Design System/Molecules/SignupTeaser',
+    title: 'Design System/Deprecated/SignupTeaser',
     component: SignupTeaser
 }
 

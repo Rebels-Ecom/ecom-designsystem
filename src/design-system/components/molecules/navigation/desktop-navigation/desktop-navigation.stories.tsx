@@ -302,7 +302,7 @@ type Story = StoryObj<typeof DesktopNavigation>;
 
 export const DefaultDesktopNavigation: Story = {
   render: (args) => {
-    return <DesktopNavigation {...args} />;
+    return <DesktopNavigation {...args} linkComponent='a' />;
   },
   args: {
     categories,

@@ -13,7 +13,7 @@ type Story = StoryObj<typeof Breadcrumbs>;
 
 const BreadcrumbsStoryTemplate: Story = {
   render: ({ ...args }) => (
-        <Breadcrumbs {...args}/>
+        <Breadcrumbs {...args} linkComponent='a' />
     )
 };
 

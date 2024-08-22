@@ -17,6 +17,7 @@ export interface ILinkListItem {
   target?: TTarget
   onDownloadClick?: () => void
   onClick?: () => void
+  onRemove?: () => void
   loading?: boolean;
 }
 
@@ -32,6 +33,7 @@ function LinkListItem({
   downloadLinkUrl,
   target,
   onDownloadClick,
+  onRemove,
   loading,
 }: ILinkListItem) {
   return (
@@ -72,6 +74,7 @@ function LinkListItem({
           )
         }
         </div>
+        {onRemove && <IconButton type='button' icon='icon-trash-2' onClick={onRemove} noBorder noPadding isTransparent className={styles.deleteIcon} />}
         {linkUrl && <Link className={styles.linkWrapper} to={linkUrl} href={linkUrl} onClick={onClick} aria-label={`Navigate to ${title}`}>
           <Icon icon={'icon-chevrons-right'}></Icon>
         </Link>}

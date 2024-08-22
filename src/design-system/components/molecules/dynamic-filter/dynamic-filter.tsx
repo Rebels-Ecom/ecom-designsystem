@@ -288,6 +288,9 @@ const DynamicFilter = ({
             type='button'
             surface='x'
             size='xx-small'
+            iconRight={{
+              icon: 'icon-plus'
+            }}
             onClick={() => setOpen(true)}
             className={styles.filterButton}
             disabled={loading}

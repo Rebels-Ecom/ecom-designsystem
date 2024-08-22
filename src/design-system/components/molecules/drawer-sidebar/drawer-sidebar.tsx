@@ -81,9 +81,10 @@ function DrawerSidebar({
       return;
     }
 
-    return onClose(e);
+    if (hideOverlay) {
+      return onClose(e);
+    }
   } })
-
 
   return (
     <AnimatePresence>
@@ -98,17 +99,19 @@ function DrawerSidebar({
             transition={{ ease: 'easeIn' }}
             ref={contentRef}
           >
-            <IconButton
-              className={styles.buttonClose}
-              type='button'
-              onClick={onClose}
-              icon='icon-x'
-              size="large"
-              isTransparent
-              noBorder
-              noPadding
-            />
-            {children}
+            <div className={styles.contentWrapper}>
+              <IconButton
+                className={styles.buttonClose}
+                type='button'
+                onClick={onClose}
+                icon='icon-x'
+                size="large"
+                isTransparent
+                noBorder
+                noPadding
+              />
+              {children}
+            </div>
           </motion.aside>
           {!hideOverlay && (
             <motion.div
@@ -117,6 +120,7 @@ function DrawerSidebar({
               initial="hidden"
               animate="show"
               exit="hidden"
+              onClick={(e) => onClose(e)}
             />
           )}
         </>

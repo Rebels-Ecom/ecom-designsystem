@@ -13,7 +13,7 @@ import { Text } from '../../atoms/text/text'
 import { Loader } from '../../atoms/loader/loader'
 
 const meta: Meta<typeof CartOrderDetails> = {
-    title: 'Design System/Organisms/CartOrderDetails',
+    title: 'Design System/Deprecated/CartOrderDetails',
     component: CartOrderDetails
 }
 

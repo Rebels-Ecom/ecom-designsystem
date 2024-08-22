@@ -306,7 +306,7 @@ export const DefaultMobileNavigation: Story = {
     const [isOpen, setIsOpen] = useState(false);
     return (
       <ContentWrapper>
-        <MobileNavigation {...args} isOpen={isOpen} setIsOpen={setIsOpen} />;
+        <MobileNavigation {...args} linkComponent='a' isOpen={isOpen} setIsOpen={setIsOpen} />
       </ContentWrapper>
     )
   },

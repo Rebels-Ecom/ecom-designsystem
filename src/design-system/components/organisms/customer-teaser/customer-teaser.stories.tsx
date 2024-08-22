@@ -5,7 +5,7 @@ import { FeaturedProductsStory } from '../../molecules/featured-products/feature
 import { SignupTeaserStory } from '../../molecules/signup-teaser/signup-teaser.stories'
 
 const meta: Meta<typeof CustomerTeaser> = {
-  title: 'Design System/Organisms/CustomerTeaser',
+  title: 'Design System/Deprecated/CustomerTeaser',
   component: CustomerTeaser
 };
 

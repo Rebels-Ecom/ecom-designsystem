@@ -8,7 +8,7 @@ import { UiDatePicker } from '../../atoms/ui-date-picker/ui-date-picker';
 import { Button } from '../../atoms/button/button';
 
 const meta: Meta<typeof SearchNavBarLinks> = {
-  title: 'Design System/Molecules/SearchNavBarLinks',
+  title: 'Design System/Deprecated/SearchNavBarLinks',
   component: SearchNavBarLinks
 };
 

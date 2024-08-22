@@ -3,7 +3,7 @@ import { SingleSelectButtonsList } from './single-select-buttons-list'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof SingleSelectButtonsList> = {
-  title: 'Design System/Molecules/SingleSelectButtonsList',
+  title: 'Design System/Deprecated/SingleSelectButtonsList',
   component: SingleSelectButtonsList,
 }
 
