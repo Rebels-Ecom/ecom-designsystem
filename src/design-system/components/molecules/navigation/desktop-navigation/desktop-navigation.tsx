@@ -62,7 +62,12 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
   })
 
   return (
-    <nav className={styles.desktopNavigation} style={style}>
+    <motion.nav
+      initial={{ opacity: 0.1 }}
+      animate={{ opacity: 1 }}
+      className={styles.desktopNavigation}
+      style={style}
+    >
       <ContentWrapper padding={0}>
         <motion.div
           className={styles.topLevel}
@@ -201,7 +206,7 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
           </motion.div>
         </motion.div>
       </ContentWrapper>
-    </nav>
+    </motion.nav>
   );
 };
 

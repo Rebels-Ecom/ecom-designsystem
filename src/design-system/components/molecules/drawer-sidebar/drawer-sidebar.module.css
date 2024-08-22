@@ -7,7 +7,6 @@
 	height: 100vh;
 	z-index: var(--drawer-sidebar-z-index);
 	background: #FFFFFF;
-	padding: 1rem;
 	margin-left:auto;
 	overflow: auto;
 	box-sizing: border-box;
@@ -25,19 +24,29 @@
 	
 		&.md {
 			max-width: 25rem;
-			padding: 0 1.5rem;
+			padding: 0;
 
 			& .buttonClose {
 				@media(min-width: 64em) {
-					right: 1.5rem;
+					right: 1rem;
 				}
 			}
 		}
 	}
 
+	.contentWrapper {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		padding: 0 1rem;
+		overflow: auto;
+	}
+
 	& .buttonClose {
 		position: absolute;
-		top: 1rem;
+		top: 1.875rem;
 		right: 1rem;
 		align-self: flex-end;
 		

@@ -6,7 +6,6 @@ import {
   InfoSummaryBox,
   OrderConfirmationDetails,
   OrderItem,
-  SingleSelectButtonsList,
   Tabs,
   TagsList,
 } from '../../molecules'
@@ -31,7 +30,6 @@ import { ScrollableList } from '../scrollable-list/scrollable-list'
 import {
   ScrollableListListStory_PurchaseLists,
 } from '../scrollable-list/scrollable-list.stories'
-import { SingleSelectButtonsListStory } from '../single-select-buttons-list/single-select-buttons-list.stories'
 
 const meta: Meta<typeof BoxWrapper> = {
   title: 'Design System/Molecules/BoxWrapper',
@@ -190,7 +188,6 @@ const tidigareOrdrarArgs = (
     <Heading order={3}>Mina tidigare ordrar</Heading>
     <Text>Ordrar sparas 1-1.5 år tillbaka i tiden, per månad:</Text>
     <Text weight="bold">Välj din månad för att se tidigare historik</Text>
-    <SingleSelectButtonsList onChange={() => {}} {...SingleSelectButtonsListStory.args}></SingleSelectButtonsList>
   </>
 )
 

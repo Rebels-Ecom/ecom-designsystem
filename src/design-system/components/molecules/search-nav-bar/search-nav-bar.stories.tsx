@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { SearchNavBar } from './search-nav-bar'
 
 const meta: Meta<typeof SearchNavBar> = {
-  title: 'Design System/Molecules/Search Nav Bar',
+  title: 'Design System/Deprecated/Search Nav Bar',
   component: SearchNavBar,
 }
 
