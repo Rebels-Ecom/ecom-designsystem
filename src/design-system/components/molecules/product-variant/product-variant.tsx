@@ -24,6 +24,7 @@ export interface IProductVariant {
   currencyLabel: string
   sellerOnlyTooltipText?: string
   isRestrictedUser?: boolean
+  horizontal?: boolean;
 }
 
 const ProductVariant = ({
@@ -41,9 +42,10 @@ const ProductVariant = ({
   sellerOnly,
   sellerOnlyTooltipText,
   isRestrictedUser,
+  horizontal
 }: IProductVariant) => {
   return (
-    <button className={styles.productVariant} onClick={() => onClick?.(variantId)}>
+    <button className={cx(styles.productVariant, { [styles.horizontal]: horizontal })} onClick={() => onClick?.(variantId)}>
       <FlexContainer stretch justifyContent="flex-end" alignItems="center" className={styles.topRow}>
         {sellerOnly && (
           <>

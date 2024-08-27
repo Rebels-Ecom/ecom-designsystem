@@ -7,7 +7,7 @@ import { dummyProductNoVariants, dummyWineProduct } from '../product-card/dummy-
 import { PictureStoryBeer } from '../../atoms/picture/picture.stories'
 
 const meta: Meta<typeof ProductCardRestricted> = {
-  title: 'Design System/Molecules/ProductCardRestricted',
+  title: 'Design System/Deprecated/ProductCardRestricted',
   component: ProductCardRestricted,
 }
 

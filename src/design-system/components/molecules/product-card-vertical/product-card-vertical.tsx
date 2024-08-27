@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './product-card-vertical.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, Placeholder, Button, IconButton, Icon, ButtonWithTooltip } from '../../atoms'
+import { Picture, Placeholder, Button, IconButton, Icon, ButtonWithTooltip, ComponentWithTooltip } from '../../atoms'
 import cx from 'classnames'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
@@ -33,11 +33,10 @@ const ProductCardVertical = ({
   onFavoriteIconClick,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
-  sellerOnlyTooltipText,
-  accessoryPotItemTooltipText,
   onCloseVariants,
   onClick,
-  productArea
+  productArea,
+  tooltips
 }: IProductCard & TProductCardVertical) => {
   const {
     activeCampaign,
@@ -81,6 +80,8 @@ const ProductCardVertical = ({
     return favoriteProductsIds.includes(partNo)
   }
 
+  const isFavorite = isFavoriteProduct(partNo);
+
   const style: { [key: string]: string } = {
     '--campaign-color': activeCampaign?.color ?? '#FFF',
     '--limited-product-color': isLimitedProduct && limitedLabel ? '#F08A00' : '#FFF',
@@ -95,7 +96,7 @@ const ProductCardVertical = ({
         onVariantSelect={handlePackageChange}
         onCloseVariants={onCloseVariants}
         selectedVariantId={selectedVariantId}
-        sellerOnlyTooltipText={sellerOnlyTooltipText}
+        sellerOnlyTooltipText={tooltips?.sellerOnly}
         absolutePositioned
       />
     )
@@ -119,8 +120,8 @@ const ProductCardVertical = ({
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
             <>
-              {sellerOnlyTooltipText ? (
-                <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
+              {tooltips?.sellerOnly ? (
+                <IconWithTooltip content={tooltips.sellerOnly} icon={{ icon: 'icon-eye' }} />
               ) : (
                 <Icon icon={'icon-eye'} size={'large'} />
               )}
@@ -128,8 +129,8 @@ const ProductCardVertical = ({
           )}
           {isAccessoryPotItem && (
             <>
-              {accessoryPotItemTooltipText ? (
-                <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
+              {tooltips?.accessoryPotItem ? (
+                <IconWithTooltip content={tooltips.accessoryPotItem} text="S" />
               ) : (
                 <span className={styles.standardIcon}>S</span>
               )}
@@ -188,8 +189,8 @@ const ProductCardVertical = ({
           </div>
         )}
         <ButtonWithTooltip
-          content='Välj variant'
-          type={'button'}
+          content={tooltips?.changeVariant ?? 'Välj variant'}
+          type='button'
           surface="secondary"
           iconRight={packageBtnDisabled ? undefined : { icon: 'icon-layers' }}
           rounded
@@ -205,8 +206,8 @@ const ProductCardVertical = ({
         </ButtonWithTooltip>
         {loading ? (
           <div className={styles.placeholderContent}>
-            <Placeholder type={'p_long'} />
-            <Placeholder type={'p_long'} />
+            <Placeholder type='p_long' />
+            <Placeholder type='p_long' />
           </div>
         ) : (
           <ProductQuantityInput
@@ -236,29 +237,39 @@ const ProductCardVertical = ({
               {addToCartBtnLabel}
             </Button>
             {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-              <IconButton
-                type="button"
-                icon={'icon-file-plus'}
-                className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-                name='Add to purchase list'
+              <ComponentWithTooltip
+                element={(
+                  <IconButton
+                    type="button"
+                    icon={'icon-file-plus'}
+                    className={styles.purchaseListIcon}
+                    onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
+                    size="large"
+                    isTransparent
+                    noBorder
+                    noPadding
+                    name={tooltips?.addToPurchaseList ?? 'Add to purchase list'}
+                  />
+                )}
+                content={tooltips?.addToPurchaseList}
               />
             )}
             {showFavoriteIcon && onFavoriteIconClick && (
-              <IconButton
-                type="button"
-                icon={isFavoriteProduct(partNo) ? 'icon-heart1' : 'icon-heart-o'}
-                className={cx(styles.favoriteIcon, isFavoriteProduct(partNo) ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(partNo, isFavoriteProduct(partNo), totalPrice)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-                name='Add to favorite list'
+              <ComponentWithTooltip
+                element={(
+                  <IconButton
+                    type="button"
+                    icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
+                    className={cx(styles.favoriteIcon, isFavorite ? styles.favoriteIconActive : '')}
+                    onClick={() => onFavoriteIconClick(partNo, isFavorite, totalPrice)}
+                    size="large"
+                    isTransparent
+                    noBorder
+                    noPadding
+                    name={tooltips?.addToFavorites ?? 'Add to favorite list'}
+                  />
+                )}
+                content={isFavorite ? tooltips?.removeFromFavorites : tooltips?.addToFavorites}
               />
             )}
           </div>

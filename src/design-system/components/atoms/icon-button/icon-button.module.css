@@ -93,6 +93,19 @@
     & .bold {
         font-weight: bold;
     }
+
+    &.primary {
+        background-color: var(--cta-primary-default);
+        color: var(--color-on-primary);
+        &:hover{
+            background-color: var(--cta-primary-hover);
+        }
+        &.disabled,
+        &:disabled {
+            background-color: var(--cta-primary-disabled);
+            color: var(--color-on-primary-disabled);
+        }
+    }
 }
 
 .iconDisabled {

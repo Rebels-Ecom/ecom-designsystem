@@ -34,6 +34,7 @@ export type TIconButton = {
    */
   notification?: number
   weight?: 'normal' | 'bold'
+  surface?: 'primary' | 'white'
 } & (TWithLink | TWithoutLink)
 
 const IconButton = (props: TIconButton) => {
@@ -49,13 +50,20 @@ const IconButton = (props: TIconButton) => {
     if (props.isExternal) {
       return (
         <a
-          className={cx(styles.iconButton, props.className, styles[props.size ?? 'small'], {
-            [styles.noPadding]: props.noPadding,
-            [styles.transparent]: props.isTransparent,
-            [styles.noBorder]: props.noBorder,
-            [styles.round]: props.round,
-            [styles.disabled]: props.disabled,
-          })}
+          className={
+            cx(
+              styles.iconButton,
+              styles[props.size ?? 'small'],
+              {
+                [styles.noPadding]: props.noPadding,
+                [styles.transparent]: props.isTransparent,
+                [styles.noBorder]: props.noBorder,
+                [styles.round]: props.round,
+                [styles.disabled]: props.disabled,
+              },
+              props.className,
+            )
+          }
           href={props.linkUrl}
           target="_blank"
         >
@@ -79,13 +87,15 @@ const IconButton = (props: TIconButton) => {
       return (
         <Link
           to={props.linkUrl}
-          className={cx(styles.iconButton, props.className, styles[props.size ?? 'small'], {
-            [styles.noPadding]: props.noPadding,
-            [styles.transparent]: props.isTransparent,
-            [styles.noBorder]: props.noBorder,
-            [styles.round]: props.round,
-            [styles.disabled]: props.disabled,
-          })}
+          className={
+            cx(styles.iconButton, styles[props.size ?? 'small'], styles[props.surface ?? 'white'], {
+              [styles.noPadding]: props.noPadding,
+              [styles.transparent]: props.isTransparent,
+              [styles.noBorder]: props.noBorder,
+              [styles.round]: props.round,
+              [styles.disabled]: props.disabled,
+            }, props.className)
+          }
         >
           <Icon
             icon={props.icon}
@@ -111,13 +121,15 @@ const IconButton = (props: TIconButton) => {
 
     return (
       <button
-        className={cx(styles.iconButton, props.className, styles[props.size ?? 'small'], {
-          [styles.noPadding]: props.noPadding,
-          [styles.transparent]: props.isTransparent,
-          [styles.noBorder]: props.noBorder,
-          [styles.round]: props.round,
-          [styles.disabled]: props.disabled,
-        })}
+        className={
+          cx(styles.iconButton, styles[props.size ?? 'small'], styles[props.surface ?? 'white'], {
+            [styles.noPadding]: props.noPadding,
+            [styles.transparent]: props.isTransparent,
+            [styles.noBorder]: props.noBorder,
+            [styles.round]: props.round,
+            [styles.disabled]: props.disabled,
+          }, props.className)
+        }
         onClick={props.onClick}
         aria-label={props.name}
       >

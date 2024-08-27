@@ -26,6 +26,7 @@ export type TCarouselBreakpoints = {
 
 export interface ICarousel {
   className?: string;
+  trackClassName?: string;
   splideProps?: SplideProps;
   breakpoints?: TCarouselBreakpoints;
   /**

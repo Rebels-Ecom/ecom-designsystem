@@ -5,6 +5,7 @@ import { convertNumToStr } from '../../../../helpers/format-helper'
 import { IProduct } from '../../../../types/product'
 import { dummyWineProduct, dummyProductNoVariants } from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
+import { IProductVariant } from '../product-variant/product-variant'
 
 function getProductTags(tags: Array<any>) {
   return tags.map((tag) => {
@@ -20,19 +21,20 @@ function getVariantsList(productName: string, variantsList: any) {
   const firstVariantId = variantsList[0].VariantId
   return variantsList.map((variant) => {
     return {
-      productName: productName,
+      productName,
       variantName: variant.Name,
       variantId: variant.VariantId,
+      checked: variant.VariantId === firstVariantId,
       country: Array.isArray(variant.ShortTexts) && variant.ShortTexts.length ? variant.ShortTexts[0] : '',
       priceStr: variant.ListPricePerUnitString,
-      price: variant.ListPricePerUnit,
-      salesUnit: variant.SalesUnit,
-      itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
-      imageUrl: variant.PrimaryImageUrl,
-      checked: variant.VariantId === firstVariantId,
-      tags: getProductTags(variant.Tags),
-      onChange: () => {},
-    }
+      image: getProductPicture(variant.VariantId, variant.PrimaryImageUrl),
+      // onChange: () => {},
+      // price: variant.ListPricePerUnit,
+      // salesUnit: variant.SalesUnit,
+      // itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
+      // checked: variant.VariantId === firstVariantId,
+      // tags: getProductTags(variant.Tags),
+    } as IProductVariant
   })
 }
 
@@ -52,7 +54,7 @@ function getProduct(productData: any): IProduct {
     tags: getProductTags(product.Tags),
     quantity: '1',
     totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
-    productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
+    productVariantList: Array.from({ length: 10 }, () => getVariantsList(productData.DisplayName, productData.Variants)?.[0]),
   }
 }
 
@@ -145,12 +147,14 @@ export const ProductCardStory_Horizontal: Story = {
   },
   args: {
     cardDisplay: 'horizontal',
-    product: productNoVariantsArgs,
+    product: productWineArgs,
     addToCart: () => {},
     loading: false,
-    campaign: {
-      title: 'Kampanj',
-      color: '#9A576F',
-    },
+    addToCartBtnLabel: 'Lägg i varukorg',
+    variantsOpen: false,
+    // campaign: {
+    //   title: 'Kampanj',
+    //   color: '#9A576F',
+    // },
   },
 }

@@ -8,6 +8,7 @@ import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardVertical } from '../product-card/product-card'
 import { IconWithTooltip } from '../../atoms'
 
+/** @deprecated Use ProductCard instead */
 const ProductCardRestricted = ({
   product,
   loading = false,
@@ -23,10 +24,9 @@ const ProductCardRestricted = ({
   className,
   disabled,
   buttonLoading,
-  sellerOnlyTooltipText,
-  accessoryPotItemTooltipText,
   onCloseVariants,
   onClick,
+  tooltips
 }: IProductCard & TProductCardVertical) => {
   const { partNo, productName, productUrl, productVariantList, country, packaging, quantity, tags, sellerOnly, isAccessoryPotItem } = product
 
@@ -44,7 +44,7 @@ const ProductCardRestricted = ({
         onVariantSelect={handlePackageChange}
         onCloseVariants={onCloseVariants}
         selectedVariantId={selectedVariantId}
-        sellerOnlyTooltipText={sellerOnlyTooltipText}
+        sellerOnlyTooltipText={tooltips?.sellerOnly}
         isRestrictedUser={true}
       />
     )
@@ -54,8 +54,8 @@ const ProductCardRestricted = ({
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
             <>
-              {sellerOnlyTooltipText ? (
-                <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
+              {tooltips?.sellerOnly ? (
+                <IconWithTooltip content={tooltips.sellerOnly} icon={{ icon: 'icon-eye' }} />
               ) : (
                 <Icon icon={'icon-eye'} size={'large'} />
               )}
@@ -63,8 +63,8 @@ const ProductCardRestricted = ({
           )}
           {isAccessoryPotItem && (
             <>
-              {accessoryPotItemTooltipText ? (
-                <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
+              {tooltips?.accessoryPotItem ? (
+                <IconWithTooltip content={tooltips.accessoryPotItem} text="S" />
               ) : (
                 <span className={styles.standardIcon}>S</span>
               )}

@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from './product-card-horizontal.module.css'
 import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, IconButton, Placeholder, Button, Icon, IconWithTooltip, AlertBox } from '../../atoms'
+import { Picture, IconButton, Placeholder, Button, Icon, IconWithTooltip, AlertBox, ComponentWithTooltip } from '../../atoms'
 import cx from 'classnames'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
 import { FlexContainer, mediaQueryHelper } from '../../layouts'
 import { DebounceInput } from '../../atoms/inputs/debounce-input/debounce-input'
+import { HorizontalVariants } from '../horizontal-variants/horiztonal-variants';
 
 const ProductCardHorizontal = ({
   product,
@@ -19,7 +19,6 @@ const ProductCardHorizontal = ({
   hidePrice,
   onClickRemoveProduct,
   hideRemoveButton,
-  removingProduct,
   onChangeQuantity,
   productQuantityDisabled,
   linkComponent: Link,
@@ -27,18 +26,26 @@ const ProductCardHorizontal = ({
   defaultQuantity,
   buttonLoading,
   disabled,
-  border = false,
   displaySmallImage = false,
   showAddToPurchaseListIcon,
   onSaveToPurchaseListClick,
   maxQuantity,
-  sellerOnlyTooltipText,
-  accessoryPotItemTooltipText,
   isRestrictedUser,
   alertBox,
   onClick,
   debounceQuantityVal,
-  productArea
+  productArea,
+  onVariantsButtonClick,
+  variantsOpen,
+  onCloseVariants,
+  selectedVariantId,
+  handlePackageChange,
+  productImage,
+  showPackaging = false,
+  favoriteProductsIds,
+  showFavoriteIcon,
+  onFavoriteIconClick,
+  tooltips
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -46,7 +53,6 @@ const ProductCardHorizontal = ({
     partNoLabel,
     productName,
     productUrl,
-    primaryImageUrl,
     tags,
     isLimitedProduct,
     country,
@@ -64,12 +70,12 @@ const ProductCardHorizontal = ({
     sellerOnly,
     isAccessoryPotItem,
     pricePerUnitString,
-    aLabel
+    aLabel,
+    productVariantList,
+    packaging,
   } = product;
 
-  const { isMobile, isTablet } = mediaQueryHelper();
-
-  const productImage = getProductPicture(partNo, primaryImageUrl, (isMobile || isTablet) ? '120' : '64');
+  const { isMobile } = mediaQueryHelper();
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -84,6 +90,11 @@ const ProductCardHorizontal = ({
     onChangeQuantity && onChangeQuantity(parseInt(val))
   }
 
+  function isFavoriteProduct(partNo: string) {
+    if (!favoriteProductsIds || favoriteProductsIds.length === 0) return false
+    return favoriteProductsIds.includes(partNo)
+  }
+
   const style: { [key: string]: string } = {
     '--campaign-color': activeCampaign?.color ?? '#FFF',
     '--limited-product-color': isLimitedProduct && limitedLabel ? '#F08A00' : '#FFF',
@@ -91,28 +102,45 @@ const ProductCardHorizontal = ({
   }
 
   const iconsAndTags = (
-    <FlexContainer alignItems="center" gap={0.5} minHeight={2.25}>
+    <FlexContainer alignItems='center' gap={0.5} minHeight={2.25} stretch>
       {sellerOnly && (
         <>
-          {sellerOnlyTooltipText ? (
-            <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
+          {tooltips?.sellerOnly ? (
+            <IconWithTooltip content={tooltips.sellerOnly} icon={{ icon: 'icon-eye' }} />
           ) : (
-            <Icon icon={'icon-eye'} size={'large'} />
+            <Icon icon='icon-eye' size='large' />
           )}
         </>
       )}
       {isAccessoryPotItem && (
         <>
-          {accessoryPotItemTooltipText ? (
-            <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
+          {tooltips?.accessoryPotItem ? (
+            <IconWithTooltip content={tooltips.accessoryPotItem} text="S" />
           ) : (
             <span className={styles.standardIcon}>S</span>
           )}
         </>
       )}
       {Array.isArray(tags) && tags.length ? <TagsList tagsList={tags} /> : null}
+      {!hideRemoveButton && onClickRemoveProduct && (
+        <div className={styles.iconLink}>
+          <IconButton
+            className={styles.iconBtn}
+            type="button"
+            icon="icon-x-circle"
+            onClick={() => handleRemoveProduct(partNo)}
+            isTransparent
+            noBorder
+            noPadding
+            size="large"
+            name='Remove product'
+          />
+        </div>
+      )}
     </FlexContainer>
   )
+
+  const isFavorite = isFavoriteProduct(partNo);
 
   return (
     <div
@@ -139,13 +167,13 @@ const ProductCardHorizontal = ({
       {loading ? (
         <>
           <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
-            <Placeholder type="image" />
+            <Placeholder type='image' />
           </div>
           <div className={styles.placeholderContent}>
-            <Placeholder type={'heading'} />
-            <Placeholder type={'p_long'} />
-            <Placeholder type={'p_short'} />
-            <Placeholder type={'p_short'} />
+            <Placeholder type='heading' />
+            <Placeholder type='p_long' />
+            <Placeholder type='p_short' />
+            <Placeholder type='p_short' />
           </div>
         </>
       ) : (
@@ -180,14 +208,15 @@ const ProductCardHorizontal = ({
             )}
             <div className={styles.cardInfoWrapper}>
               <div>
+                {(showPackaging && packaging) && <p className={cx(styles.packaging, 'bodyS')}>{packaging}</p>}
                 {!hidePrice && !isRestrictedUser && (
-                  <p className={cx(styles.subTitle, 'bodyS')}>{`${priceLabel}: ${
+                  <p className={cx(styles.priceText, 'bodyS')}>{`${priceLabel}: ${
                     priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
                   }`}</p>
                 )}
 
                 {(country !== '' || partNo !== '') && !isRestrictedUser && (
-                  <p className={cx(styles.caption, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
+                  <p className={cx(styles.partNo, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
                 )}
 
                 {!isRestrictedUser && (
@@ -223,54 +252,111 @@ const ProductCardHorizontal = ({
                   </>
                 )}
               </div>
+
               {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>}
-              {!hideCartButton ? (
-                <div className={styles.buttonsWrapper}>
+              
+              <div className={styles.buttonsWrapper}>
+                {isMobile && !hideCartButton && (
                   <Button
-                    type={'button'}
-                    surface={'primary'}
+                    type='button'
+                    surface='primary'
                     className={!loading ? styles.productCardBtn : ''}
-                    size={'x-small'}
+                    size='x-small'
                     onClick={() => addToCart(product)}
                     disabled={buttonLoading || loading || disabled || quantity <= '0'}
                     loading={buttonLoading}
                     name={addToCartBtnLabel}
                   >
-                    <Icon icon={'icon-shopping-cart'} className={styles.cartBtnIcon}></Icon>
+                    <Icon icon='icon-shopping-cart' className={styles.cartBtnIcon} />
                     <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
                   </Button>
-                  {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-                    <IconButton
-                      type="button"
-                      icon={'icon-file-plus'}
-                      className={styles.purchaseListIcon}
-                      onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
-                      size="large"
-                      isTransparent
-                      noBorder
-                      noPadding
-                      name='Add to purchase list'
-                    />
-                  )}
-                </div>
-              ) : null}
+                )}
+
+                {(!!productVariantList?.length ||
+                  (showAddToPurchaseListIcon &&onSaveToPurchaseListClick) ||
+                  (showFavoriteIcon && onFavoriteIconClick)) && (
+                  <FlexContainer gap={0.5}>
+                    {productVariantList?.length > 1 && (
+                      <ComponentWithTooltip
+                        content={tooltips?.changeVariant}
+                        element={(
+                          <IconButton
+                            type='button'
+                            icon='icon-layers'
+                            onClick={() => onVariantsButtonClick?.()}
+                            noBorder
+                            isTransparent
+                            size='medium'
+                            noPadding
+                            name='Open variants list'
+                          />
+                        )}
+                      />
+                    )}
+                    {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+                      <ComponentWithTooltip
+                        content={tooltips?.addToPurchaseList}
+                        element={(
+                          <IconButton
+                            type='button'
+                            icon='icon-file-plus'
+                            onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
+                            noBorder={true}
+                            isTransparent={true}
+                            size='medium'
+                            noPadding={true}
+                            name='Save as favorite'
+                          />
+                        )}
+                      />
+                    )}
+                    {showFavoriteIcon && onFavoriteIconClick && (
+                      <ComponentWithTooltip
+                        content={isFavorite ? tooltips?.removeFromFavorites : tooltips?.addToFavorites}
+                        element={(
+                          <IconButton
+                            type='button'
+                            icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
+                            onClick={() => onFavoriteIconClick(partNo, isFavorite, totalPrice)}
+                            noBorder
+                            isTransparent
+                            name='Add to favorite list'
+                            className={isFavorite ? styles.favoriteIconActive : undefined}
+                            size='medium'
+                            noPadding
+                          />
+                        )}
+                      />
+                    )}
+                  </FlexContainer>
+                )}
+
+                {!isMobile && !hideCartButton && (
+                  <IconButton
+                    type='button'
+                    icon='icon-shopping-cart'
+                    onClick={() => addToCart(product)}
+                    surface='primary'
+                    noBorder
+                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
+                    name={addToCartBtnLabel}
+                    size='medium'
+                  />
+                )}
+              </div>
             </div>
           </FlexContainer>
-          {!hideRemoveButton && onClickRemoveProduct && (
-            <div className={styles.iconLink}>
-              <IconButton
-                className={styles.iconBtn}
-                type="button"
-                icon="icon-x-circle"
-                onClick={() => handleRemoveProduct(partNo)}
-                isTransparent
-                noBorder
-                size="large"
-                name='Remove product'
-              />
-            </div>
-          )}
         </>
+      )}
+      {selectedVariantId && (
+        <HorizontalVariants
+          open={variantsOpen}
+          variantsList={productVariantList}
+          onVariantSelect={handlePackageChange}
+          onCloseVariants={onCloseVariants}
+          selectedVariantId={selectedVariantId}
+          sellerOnlyTooltipText={tooltips?.sellerOnly}
+        />
       )}
     </div>
   )
