@@ -48,6 +48,7 @@ export interface IProductCard {
   showFavoriteIcon?: boolean
   favoriteProductsIds?: Array<string>
   onFavoriteIconClick?: CallableFunction
+  isAddingToFavorites?: boolean;
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   border?: boolean
@@ -112,7 +113,8 @@ function ProductCard({
   productArea,
   imagePriority,
   showPackaging,
-  tooltips
+  tooltips,
+  isAddingToFavorites
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -226,6 +228,7 @@ function ProductCard({
     showFavoriteIcon,
     favoriteProductsIds,
     onFavoriteIconClick,
+    isAddingToFavorites
   };
   
   if (cardDisplay === 'horizontal') {

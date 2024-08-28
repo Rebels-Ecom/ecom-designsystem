@@ -36,7 +36,8 @@ const ProductCardVertical = ({
   onCloseVariants,
   onClick,
   productArea,
-  tooltips
+  tooltips,
+  isAddingToFavorites
 }: IProductCard & TProductCardVertical) => {
   const {
     activeCampaign,
@@ -62,8 +63,8 @@ const ProductCardVertical = ({
     unitLabel,
     outOfStockLabel,
     limitedLabel,
-  } = product
-  //const isLimitedProduct = product.partNo === '1109611' || product.partNo === '1174411' ? true : false
+  } = product;
+
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
   function handleOnChangeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
@@ -267,6 +268,7 @@ const ProductCardVertical = ({
                     noBorder
                     noPadding
                     name={tooltips?.addToFavorites ?? 'Add to favorite list'}
+                    animate={isAddingToFavorites ? 'loading' : 'default'}
                   />
                 )}
                 content={isFavorite ? tooltips?.removeFromFavorites : tooltips?.addToFavorites}

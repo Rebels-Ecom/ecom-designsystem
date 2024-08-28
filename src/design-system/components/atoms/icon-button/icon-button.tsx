@@ -18,7 +18,7 @@ type TWithoutLink = {
 }
 
 export type TIconButton = {
-  type: 'link' | 'button'
+  type: 'link' | 'button' // TODO: remove link option
   icon: TIcon
   name?: string;
   size?: TIconButtonSize
@@ -35,6 +35,7 @@ export type TIconButton = {
   notification?: number
   weight?: 'normal' | 'bold'
   surface?: 'primary' | 'white'
+  animate?: 'default' | 'loading' | 'updated';
 } & (TWithLink | TWithoutLink)
 
 const IconButton = (props: TIconButton) => {
@@ -119,6 +120,30 @@ const IconButton = (props: TIconButton) => {
       return
     }
 
+    const variants = {
+      loading: {
+          scale: [1, 1.05, 1],
+          transition: {
+              duration: 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+          },
+      },
+      updated: {
+          scale: [1, 0.9, 1.2, 1],
+          transition: {
+              duration: 0.5,
+              ease: 'easeInOut',
+          },
+      },
+      default: {
+          scale: 1,
+          transition: {
+              duration: 0.2,
+          },
+      },
+    };
+
     return (
       <button
         className={
@@ -133,13 +158,19 @@ const IconButton = (props: TIconButton) => {
         onClick={props.onClick}
         aria-label={props.name}
       >
-        <Icon
-          icon={props.icon}
-          className={cx({
-            [styles.iconDisabled]: props.disabled,
-            [styles.bold]: props.weight === 'bold',
-          })}
-        />
+        <motion.span
+          variants={variants}
+          initial='default'
+          animate={props.animate}
+        >
+          <Icon
+            icon={props.icon}
+            className={cx({
+              [styles.iconDisabled]: props.disabled,
+              [styles.bold]: props.weight === 'bold',
+            })}
+          />
+        </motion.span>
         {!!props.notification && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
             {props.notification < 100 ? props.notification : '99+'}

@@ -45,7 +45,8 @@ const ProductCardHorizontal = ({
   favoriteProductsIds,
   showFavoriteIcon,
   onFavoriteIconClick,
-  tooltips
+  tooltips,
+  isAddingToFavorites,
 }: IProductCard & TProductCardHorizontal) => {
   const {
     activeCampaign,
@@ -324,6 +325,7 @@ const ProductCardHorizontal = ({
                             className={isFavorite ? styles.favoriteIconActive : undefined}
                             size='medium'
                             noPadding
+                            animate={isAddingToFavorites ? 'loading' : 'default'}
                           />
                         )}
                       />
