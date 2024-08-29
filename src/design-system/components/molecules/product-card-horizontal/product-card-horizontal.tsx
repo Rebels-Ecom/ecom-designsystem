@@ -70,7 +70,7 @@ const ProductCardHorizontal = ({
     limitedLabel,
     sellerOnly,
     isAccessoryPotItem,
-    pricePerUnitString,
+    pricePerUnit,
     aLabel,
     productVariantList,
     packaging,
@@ -234,7 +234,7 @@ const ProductCardHorizontal = ({
                         maxQuantity={maxQuantity}
                         disabled={productQuantityDisabled}
                         hidePrice={hidePrice}
-                        pricePerUnitText={`${aLabel} ${pricePerUnitString} ${currencyLabel}`}
+                        pricePerUnitText={`${aLabel} ${pricePerUnit?.toFixed(2)?.replace('.', ',')} ${currencyLabel}`}
                       />
                     ) : (
                       <ProductQuantityInput

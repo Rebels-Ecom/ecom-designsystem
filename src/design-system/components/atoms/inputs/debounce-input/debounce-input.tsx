@@ -75,6 +75,7 @@ const DebounceInput = ({
       <input
         id={quantityInputId}
         type='number'
+        min="0"
         className={cx('body', styles.debounceQuantityInput)}
         onChange={onChange}
         value={value}
