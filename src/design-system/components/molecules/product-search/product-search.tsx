@@ -67,8 +67,8 @@ function ProductSearch({
 
   function handleOnClickSearchResult(item: IResult) {
     onClickSearchResult(item)
-    onClose()
-    onClear()
+    // onClose()
+    // onClear()
   }
 
   function handleFocus() {

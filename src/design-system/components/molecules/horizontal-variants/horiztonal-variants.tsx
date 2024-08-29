@@ -34,6 +34,7 @@ const HorizontalVariants = ({ variantsList, onCloseVariants, open, onVariantSele
       >
         <Carousel
           className={styles.carousel}
+          noGrid
           trackClassName={styles.carouselTrack}
           splideProps={{
             options: {

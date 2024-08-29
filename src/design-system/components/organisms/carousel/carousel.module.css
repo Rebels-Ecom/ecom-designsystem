@@ -1,5 +1,10 @@
 .carousel {
+  display: grid;
   padding-bottom: 2.5rem;
+
+  &.noGrid {
+    display: block;
+  }
 
   & .slide {
     display: flex;

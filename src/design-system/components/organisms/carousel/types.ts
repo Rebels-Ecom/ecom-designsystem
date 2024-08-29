@@ -34,6 +34,10 @@ export interface ICarousel {
    */
   offsetArrows?: boolean;
   arrowsBottom?:boolean;
+  /**
+   * Sets display: block; instead of display: grid;
+   */
+  noGrid?: boolean;
   padding?: number | string | {
     left?: number | string;
     right?: number | string;

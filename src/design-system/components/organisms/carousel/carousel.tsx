@@ -17,6 +17,7 @@ const Carousel = ({
   offsetArrows,
   arrowsBottom,
   trackClassName,
+  noGrid,
   ...props
  }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children)
@@ -24,7 +25,7 @@ const Carousel = ({
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
-      className={cx(styles.carousel, className)}
+      className={cx(styles.carousel, className, { [styles.noGrid]: noGrid })}
       options={{
         ...splideProps?.options,
         classes: {
