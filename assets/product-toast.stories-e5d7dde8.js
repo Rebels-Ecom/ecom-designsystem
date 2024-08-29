@@ -1,0 +1,17 @@
+import{r as i,j as r}from"./jsx-runtime-03333307.js";import{P as n}from"./product-toast-1c0e64ff.js";import{C as u}from"./cart-product.stories-c9c87353.js";import{a as S}from"./product-card-list.stories-db8fd455.js";import{A as k}from"./index-61679f6b.js";import"./index-09749a66.js";import"./text-1a10703e.js";import"./hooks-0265167d.js";import"./react-responsive-c4f2314e.js";import"./useOnClickOutside-9d2c35bb.js";import"./motion-9380e2c6.js";import"./tslib.es6-4d885d63.js";import"./icon-button-e7d024c9.js";import"./ui-link-e60391c5.js";import"./icon-cf6ebd85.js";import"./product-quantity-input-a65dfb53.js";import"./input-text-0d02e73b.js";import"./form-helper-af1dc92c.js";import"./picture-helper-e0ae1ee4.js";import"./picture-d7d6bf69.js";import"./loader-5c06d14e.js";import"./defaultFallbackImage-b43581a6.js";import"./format-helper-a8a0bc10.js";import"./icon-button.stories-1a44100e.js";import"./chunk-MZXVCX43-aa6c8130.js";import"./v4-4a60fe23.js";import"./product-card.stories-02953882.js";import"./product-card-horizontal-53ca13b0.js";import"./tags-list-dcc30c34.js";import"./tag-84e76236.js";import"./debounce-input-f51e0718.js";import"./generic-helper-87eaa4e8.js";import"./debounce-27b61785.js";import"./isSymbol-9d21be03.js";import"./flex-container-7aff6506.js";import"./icon-with-tooltip-a95bbda3.js";import"./index-9d35675b.js";import"./index-145cfc81.js";import"./index-821951ec.js";import"./carousel-67aec039.js";import"./placeholder-7c72702c.js";import"./alert-box-29cffed7.js";import"./button-8e3f9b10.js";import"./button.module-a43725bf.js";import"./component-with-tooltip-74101d4d.js";import"./product-card-vertical-7d68cbeb.js";import"./product-variant-list-ea13e9d5.js";import"./product-variant-67b3241e.js";import"./radio-button-a10aef08.js";import"./button-with-tooltip-55b8a1cc.js";import"./product-card-restricted-e3071edc.js";import"./dummy-product-d82fa475.js";import"./content-wrapper-adfa8526.js";const kr={title:"Design System/Molecules/ProductToast",component:n},l={render:({...g})=>{const[P,e]=i.useState(!1);return i.useEffect(()=>{const T=setInterval(()=>{e(!1)},3e3);return()=>{clearInterval(T)}},[]),r.jsxs("div",{children:[r.jsx("button",{onClick:()=>e(!0),children:"Add toast"}),r.jsx(k,{children:P&&r.jsx(n,{...g})})]})}},t={...l,args:{cartProduct:u.args,position:"top-right",label:"Tillagd i varukorgen"}},o={...l,args:{cartProduct:u.args,recommendedProducts:S.args.productCards,recommendedProductsTitle:"Du kanske också gillar",position:"top-right",label:"Tillagd i varukorgen"}};var a,s,m;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  ...ProductToastStoryTemplate,
+  args: {
+    cartProduct: CartProductStoryBeer.args,
+    position: 'top-right',
+    label: 'Tillagd i varukorgen'
+  }
+}`,...(m=(s=t.parameters)==null?void 0:s.docs)==null?void 0:m.source}}};var p,c,d;o.parameters={...o.parameters,docs:{...(p=o.parameters)==null?void 0:p.docs,source:{originalSource:`{
+  ...ProductToastStoryTemplate,
+  args: {
+    cartProduct: CartProductStoryBeer.args,
+    recommendedProducts: ProductCardListStoryLoka.args.productCards,
+    recommendedProductsTitle: 'Du kanske också gillar',
+    position: 'top-right',
+    label: 'Tillagd i varukorgen'
+  }
+}`,...(d=(c=o.parameters)==null?void 0:c.docs)==null?void 0:d.source}}};const yr=["ProductToastStory","ProductToastStory_WithRecommendedProducts"];export{t as ProductToastStory,o as ProductToastStory_WithRecommendedProducts,yr as __namedExportsOrder,kr as default};
