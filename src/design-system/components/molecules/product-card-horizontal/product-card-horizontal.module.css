@@ -8,6 +8,7 @@
   background-color: #fff;
   width: 100%;
   max-width: var(--content-max-width-text);
+  overflow: hidden;
 
   @media (min-width: 48rem) {
     flex-direction: row;
@@ -38,7 +39,7 @@
       position: absolute;
       top: 0;
       right: 0;
-      padding: 0.5rem 2.5rem 0.5rem 1rem;
+      padding: 0.5rem 3rem 0.5rem 1rem;
     }
 
     & .iconLink {
@@ -193,33 +194,37 @@
       }
     }
 
-    & .subTitle {
-      font-family: var(--font-family-secondary);
+    & .packaging,
+    & .priceText,
+    & .partNo {
       margin: 0 0 0.5rem 0;
+      font-family: var(--font-family-primary);
+    }
+
+    & .priceText {
       color: var(--color-text-decorative-purple);
     }
 
-    & .caption {
-      margin: 0 0 0.5rem 0;
-      color: var(--color-text-decorative-grey);
+    & .partNo {
+      /* color: var(--color-text-decorative-grey); */
       user-select: text;
       cursor: text;
+      margin-bottom: 1rem;
     }
   }
 
   & .iconLink {
     position: absolute;
     top: 0.5rem;
-    right: 0.5rem;
+    right: 1rem;
   }
 
   & .buttonsWrapper {
     display: flex;
-    flex-direction: row-reverse;
     align-self: flex-end;
     align-items: center;
     margin-left: auto;
-    gap: 0.5rem;
+    gap: 1rem;
     width: 100%;
     
     @media (min-width: 48rem) {
@@ -230,7 +235,7 @@
     }
 
     & .productCardBtn {
-      flex: 1;
+      flex: 1 1 100%;
       width: 100%;
       
       & .cartBtnIcon {
@@ -240,6 +245,10 @@
           display: none;
         }
       }
+    }
+
+    & .favoriteIconActive {
+      color: var(--orange-500);
     }
   }
 

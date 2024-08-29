@@ -26,6 +26,7 @@ export type TCarouselBreakpoints = {
 
 export interface ICarousel {
   className?: string;
+  trackClassName?: string;
   splideProps?: SplideProps;
   breakpoints?: TCarouselBreakpoints;
   /**
@@ -33,6 +34,10 @@ export interface ICarousel {
    */
   offsetArrows?: boolean;
   arrowsBottom?:boolean;
+  /**
+   * Sets display: block; instead of display: grid;
+   */
+  noGrid?: boolean;
   padding?: number | string | {
     left?: number | string;
     right?: number | string;

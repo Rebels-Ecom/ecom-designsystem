@@ -9,13 +9,23 @@ import { ICarousel } from './types'
 export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
 
 
-const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArrows, arrowsBottom, ...props }: PropsWithChildren<ICarousel>) => {
+const Carousel = ({
+  className = '',
+  breakpoints,
+  splideProps,
+  padding,
+  offsetArrows,
+  arrowsBottom,
+  trackClassName,
+  noGrid,
+  ...props
+ }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children)
 
   return (
     <Splide
       hasTrack={!!splideProps?.hasTrack}
-      className={cx(styles.carousel, className)}
+      className={cx(styles.carousel, className, { [styles.noGrid]: noGrid })}
       options={{
         ...splideProps?.options,
         classes: {
@@ -51,7 +61,7 @@ const Carousel = ({ className = '', breakpoints, splideProps, padding, offsetArr
       }}
       extensions={{ Intersection }}
     >
-      <SplideTrack>
+      <SplideTrack className={trackClassName}>
         {props.children}
       </SplideTrack>
     </Splide>

@@ -12,22 +12,19 @@ import { TAlertBox } from '../../atoms/alert-box/alert-box'
 export type TCardDisplayType = 'vertical' | 'horizontal'
 
 export type TProductCardVertical = {
-  cardDisplay: 'vertical'
-  productImage: IPicture
-  variantsOpen?: boolean
-  handlePackageChange: CallableFunction
-  selectedVariantId?: string
-  onVariantsButtonClick: CallableFunction
-  onCloseVariants: CallableFunction
+  cardDisplay: 'vertical';
+  showPackaging?: never;
 }
 
 export type TProductCardHorizontal = {
   cardDisplay: 'horizontal'
   onClickRemoveProduct?: CallableFunction
   removingProduct?: boolean
+  showPackaging?: boolean; 
 }
 
 export interface IProductCard {
+  productImage: IPicture
   cardDisplay: TCardDisplayType
   isRestrictedUser?: boolean
   product: IProduct
@@ -51,6 +48,7 @@ export interface IProductCard {
   showFavoriteIcon?: boolean
   favoriteProductsIds?: Array<string>
   onFavoriteIconClick?: CallableFunction
+  isAddingToFavorites?: boolean;
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   border?: boolean
@@ -58,8 +56,6 @@ export interface IProductCard {
   linkComponent?: any
   className?: string
   maxQuantity?: number
-  sellerOnlyTooltipText?: string
-  accessoryPotItemTooltipText?: string
   alertBox?: TAlertBox
   onClick?: CallableFunction
   debounceQuantityVal?: number
@@ -67,6 +63,19 @@ export interface IProductCard {
   imagePriority?: {
     fetchPriority: 'auto' | 'high' | 'low',
     loading: 'eager' | 'lazy',
+  },
+  variantsOpen?: boolean
+  handlePackageChange: CallableFunction
+  selectedVariantId?: string
+  onVariantsButtonClick: CallableFunction
+  onCloseVariants: CallableFunction
+  tooltips?: {
+    addToFavorites?: string;
+    removeFromFavorites?: string;
+    addToPurchaseList?: string;
+    changeVariant?: string;
+    sellerOnly?: string;
+    accessoryPotItem?: string;
   }
 }
 
@@ -98,13 +107,14 @@ function ProductCard({
   linkComponent: Link,
   className,
   maxQuantity,
-  sellerOnlyTooltipText,
-  accessoryPotItemTooltipText,
   alertBox,
   onClick,
   debounceQuantityVal,
   productArea,
-  imagePriority
+  imagePriority,
+  showPackaging,
+  tooltips,
+  isAddingToFavorites
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -173,7 +183,8 @@ function ProductCard({
   }
 
   function handlePackageChange(selectedVariant: any) {
-    const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
+    const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1;
+
     setProduct((prevState) => ({
       ...prevState,
       partNo: selectedVariant.variantId,
@@ -195,106 +206,73 @@ function ProductCard({
     setVariantsListOpen(false)
   }
 
+  const commonProps = {
+    product: myProduct,
+    loading,
+    buttonLoading,
+    disabled,
+    addToCart,
+    addToCartBtnLabel,
+    hideCartButton,
+    hidePrice,
+    linkComponent: Link,
+    className,
+    onClick,
+    productImage: myProduct.productImage,
+    variantsOpen: variantsListOpen,
+    onVariantsButtonClick: handleVariantsButtonClick,
+    handlePackageChange,
+    selectedVariantId: myProduct.selectedVariantId,
+    onCloseVariants: handleCloseVariants,
+    tooltips,
+    showFavoriteIcon,
+    favoriteProductsIds,
+    onFavoriteIconClick,
+    isAddingToFavorites
+  };
+  
   if (cardDisplay === 'horizontal') {
     return (
       <ProductCardHorizontal
+        {...commonProps}
         isRestrictedUser={isRestrictedUser}
         cardDisplay="horizontal"
-        product={myProduct}
-        loading={loading}
-        buttonLoading={buttonLoading}
-        disabled={disabled}
-        addToCart={addToCart}
-        addToCartBtnLabel={addToCartBtnLabel}
-        hideCartButton={hideCartButton}
-        hidePrice={hidePrice}
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
         onClickRemoveProduct={handleRemoveProduct}
         hideRemoveButton={hideRemoveButton}
-        showFavoriteIcon={showFavoriteIcon}
-        favoriteProductsIds={favoriteProductsIds}
-        onFavoriteIconClick={onFavoriteIconClick}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
         border={border}
         displaySmallImage={displaySmallImage}
-        linkComponent={Link}
-        className={className}
         maxQuantity={maxQuantity}
-        sellerOnlyTooltipText={sellerOnlyTooltipText}
-        accessoryPotItemTooltipText={accessoryPotItemTooltipText}
         alertBox={alertBox}
-        onClick={onClick}
         debounceQuantityVal={debounceQuantityVal}
         productArea={productArea}
+        showPackaging={showPackaging}
       />
-    )
+    );
   }
+  
   if (cardDisplay === 'vertical') {
     if (isRestrictedUser) {
-      return (
-        <ProductCardRestricted
-          cardDisplay="vertical"
-          product={myProduct}
-          productImage={myProduct.productImage}
-          loading={loading}
-          buttonLoading={buttonLoading}
-          disabled={disabled}
-          variantsOpen={variantsListOpen}
-          onVariantsButtonClick={handleVariantsButtonClick}
-          handlePackageChange={handlePackageChange}
-          selectedVariantId={myProduct.selectedVariantId}
-          addToCart={addToCart}
-          addToCartBtnLabel={addToCartBtnLabel}
-          hideCartButton={hideCartButton}
-          hidePrice={hidePrice}
-          linkComponent={Link}
-          className={className}
-          sellerOnlyTooltipText={sellerOnlyTooltipText}
-          accessoryPotItemTooltipText={accessoryPotItemTooltipText}
-          onCloseVariants={handleCloseVariants}
-          onClick={onClick}
-        />
-      )
+      return <ProductCardRestricted cardDisplay="vertical" {...commonProps} />;
     }
-
+  
     return (
       <ProductCardVertical
         cardDisplay="vertical"
-        product={myProduct}
-        productImage={myProduct.productImage}
-        loading={loading}
-        buttonLoading={buttonLoading}
-        disabled={disabled}
-        variantsOpen={variantsListOpen}
-        onVariantsButtonClick={handleVariantsButtonClick}
-        handlePackageChange={handlePackageChange}
-        selectedVariantId={myProduct.selectedVariantId}
-        addToCart={addToCart}
-        addToCartBtnLabel={addToCartBtnLabel}
-        hideCartButton={hideCartButton}
-        hidePrice={hidePrice}
+        {...commonProps}
         onChangeQuantity={handleOnChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
-        showFavoriteIcon={showFavoriteIcon}
-        favoriteProductsIds={favoriteProductsIds}
-        onFavoriteIconClick={onFavoriteIconClick}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}
         onSaveToPurchaseListClick={onSaveToPurchaseListClick}
-        linkComponent={Link}
-        className={className}
-        maxQuantity={maxQuantity}
-        sellerOnlyTooltipText={sellerOnlyTooltipText}
-        accessoryPotItemTooltipText={accessoryPotItemTooltipText}
-        onCloseVariants={handleCloseVariants}
         alertBox={alertBox}
-        onClick={onClick}
         productArea={productArea}
       />
-    )
+    );
   }
 
   return null

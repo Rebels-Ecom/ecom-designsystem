@@ -16,6 +16,7 @@ export interface IProductVariantList {
   onCloseVariants: CallableFunction
   isRestrictedUser?: boolean
   absolutePositioned?: boolean;
+  open?: boolean;
 }
 
 const ProductVariantList = ({
