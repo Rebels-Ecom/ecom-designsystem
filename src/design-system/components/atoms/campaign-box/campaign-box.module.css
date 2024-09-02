@@ -1,4 +1,9 @@
+.campaignBoxWrapper {
+  border-radius: 0.5rem;
+}
+
 .campaignBox {
+  position: relative;
   width: 100%;
   padding: 1.5rem;
   background-color: var(--campaign-box-color);
@@ -15,11 +20,47 @@
     outline: none;
   }
 
+  & .selectButton {
+    width: auto;
+    min-width: 0;
+    height: auto;
+    position: absolute;
+    top: 1rem;
+    right: 4rem;
+    border: none;
+    color: white;
+    background-color: transparent;
+    border: 1px solid white;
+    padding: .5rem 1rem;
+    line-height: 1.25rem;
+  }
+
+  & .toggleButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: white;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 0.25rem;
+    cursor: pointer;
+
+    & span {
+      font-size: 1.75rem;
+    }
+  }
+
   & .title {
     text-transform: uppercase;
     font-family: var(--font-family-secondary);
+    line-height: 1.25rem;
     margin-top: 0;
-    margin-bottom: 1.25rem
+    margin-bottom: 1.25rem;
+
+    @media (min-width: 48em) {
+      padding-right: 7rem;
+    }
   }
 
   & .description {
@@ -45,6 +86,10 @@
     animation: placeholderShimmer 2s linear;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
+
+    & > div {
+      margin: 0;
+    }
   }
 }
 

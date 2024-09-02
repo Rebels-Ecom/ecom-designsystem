@@ -34,8 +34,8 @@
 
     &.noWrap {flex-wrap: nowrap;}
     &.hasMaxWidth { max-width: 43.75rem; }
-    &.withBorder { border: solid 0.063rem var(--border-grey); border-radius: 0.5rem; }
-    &.withStrongBorder { border: solid 0.063rem var(--cta-primary-default); border-radius: 0.5rem; }
+    &.withBorder { border: solid 0.063rem var(--border-grey); border-radius: 0.25rem; }
+    &.withStrongBorder { border: solid 0.063rem var(--cta-primary-default); border-radius: 0.25rem; }
 
     &.leftPosition { justify-content: flex-start;}
     &.rightPosition { justify-content: flex-end;}

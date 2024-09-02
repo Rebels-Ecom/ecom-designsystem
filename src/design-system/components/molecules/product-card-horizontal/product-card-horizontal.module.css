@@ -22,7 +22,7 @@
 
   &.campaign {
     border: 2px solid transparent;
-    padding: 1rem;
+    padding: 3rem 1rem 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     border-color: var(--campaign-color);

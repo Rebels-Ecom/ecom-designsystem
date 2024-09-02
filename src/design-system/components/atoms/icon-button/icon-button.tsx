@@ -159,7 +159,7 @@ const IconButton = (props: TIconButton) => {
         aria-label={props.name}
       >
         <motion.span
-          variants={variants}
+          variants={props.animate ? variants : undefined}
           initial='default'
           animate={props.animate}
         >

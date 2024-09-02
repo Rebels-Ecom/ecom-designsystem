@@ -306,7 +306,7 @@ const ProductCardHorizontal = ({
                             isTransparent={true}
                             size='medium'
                             noPadding={true}
-                            name='Save as favorite'
+                            name='Add to purchase list'
                           />
                         )}
                       />

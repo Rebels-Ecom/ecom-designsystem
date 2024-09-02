@@ -1,12 +1,12 @@
 .articleList {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
   margin: 2rem 0;
 
   @media (min-width: 33.75em) {
     padding-bottom: 2rem;
+  }
+
+  & .title {
+    text-align: center;
   }
   
   & .articles {

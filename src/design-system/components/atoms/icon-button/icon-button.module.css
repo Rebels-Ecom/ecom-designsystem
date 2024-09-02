@@ -16,7 +16,7 @@
     }
 
     & > span:first-of-type {
-        display: block;
+        display: inline-flex;
         font-size: 1rem;
     }
 
