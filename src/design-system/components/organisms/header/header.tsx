@@ -1,5 +1,7 @@
 import styles from './header.module.css'
 import { ContentWrapper, FlexContainer, mediaQueryHelper } from '../../layouts'
+import { DesktopNavigation } from '../../molecules'
+import { Icon, Loader } from '../../atoms'
 
 export interface IHeader {
   salesTool?: JSX.Element // TODO: Create sales tool component
@@ -13,6 +15,7 @@ export interface IHeader {
   desktopSearchBar?: JSX.Element
   desktopActions?: JSX.Element
   desktopNavigation?: JSX.Element
+  loading?: boolean;
 }
 
 const Header = ({
@@ -27,6 +30,7 @@ const Header = ({
   desktopSearchBar,
   desktopActions,
   desktopNavigation,
+  loading
 }: IHeader) => {
   const { isMobile, isTablet, isDesktop, isBigScreen } = mediaQueryHelper()
   return (
@@ -44,7 +48,8 @@ const Header = ({
                     <FlexContainer alignItems="center" justifyContent="space-between" stretch>
                       {logo && logo}
                       {mobileActions && mobileActions}
-                      {mobileNavigation}
+                      {loading && <Loader visible position='relative' size='xs' />}
+                      {!loading && mobileNavigation}
                     </FlexContainer>
                     {mobileSearchBar && mobileSearchBar}
                   </FlexContainer>
@@ -62,7 +67,16 @@ const Header = ({
                     {desktopActions && desktopActions}
                   </FlexContainer>
                 </ContentWrapper>
-                {desktopNavigation && desktopNavigation}
+                {loading && (
+                  <DesktopNavigation
+                    categories={[]}
+                    currentSlug='/'
+                    isOpen={false}
+                    linkComponent='a'
+                    setIsOpen={() => {}}
+                  />
+                )}
+                {desktopNavigation && !loading && desktopNavigation}
               </>
             )}
           </>

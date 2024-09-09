@@ -7,6 +7,7 @@ export interface ICartOrderDetails {
   className?: string
 }
 
+/** @deprecated */
 function CartOrderDetails({children, className}: ICartOrderDetails) {
   return (
     <div className={cx(styles.cartOrderDetails, className ? className : '')}>

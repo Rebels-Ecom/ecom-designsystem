@@ -18,9 +18,18 @@ type TListItemWithoutLinks = {
   delay?: number;
 };
 
-const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (IListItemWithLinks | TListItemWithoutLinks) & {
+const ListItem = ({
+  name,
+  link,
+  links,
+  delay,
+  linkComponent: Link,
+  close,
+  trackNavigation
+}: (IListItemWithLinks | TListItemWithoutLinks) & {
   linkComponent: any,
   close: () => void,
+  trackNavigation?: (target: string) => void,
 }) => {
   const [open, setOpen] = useState(false);
   const [height, setHeight] = useState<'auto' | number | `${number}%`>(0);
@@ -39,7 +48,10 @@ const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (ILi
           className={styles.menuListItemLink}
           to={link.href}
           target={link.openInNewTab ? '_blank' : '_self'}
-          onClick={close}
+          onClick={() => {
+            close();
+            trackNavigation?.(link.href);
+          }}
         >
           {name}
         </Link>
@@ -64,7 +76,10 @@ const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (ILi
                   className={styles.subMenuListItemLink}
                   to={secondLink.href}
                   target={secondLink.openInNewTab ? '_blank' : '_self'}
-                  onClick={close}
+                  onClick={() => {
+                    close();
+                    trackNavigation?.(secondLink.href);
+                  }}
                 >
                   {secondLink.name}
                   <Icon className={styles.itemIcon} icon='icon-chevron-right' />
@@ -93,7 +108,10 @@ const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (ILi
                           className={styles.subMenuListItemLink}
                           to={thirdLink.href}
                           target={thirdLink.openInNewTab ? '_blank' : '_self'}
-                          onClick={close}
+                          onClick={() => {
+                            close();
+                            trackNavigation?.(thirdLink.href);
+                          }}
                         >
                           {thirdLink.name}
                           <Icon className={styles.itemIcon} icon='icon-chevron-right' />
@@ -112,7 +130,17 @@ const ListItem = ({ name, link, links, delay, linkComponent: Link, close }: (ILi
   );
 };
 
-const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut, actions, isOpen: open, setIsOpen: setOpen, linkComponent: Link }: INavigation) => {
+const MobileNavigation = ({
+  categories,
+  isAuthenticated,
+  signOutLabel,
+  onSignOut,
+  actions,
+  isOpen: open,
+  setIsOpen: setOpen,
+  linkComponent: Link,
+  trackNavigation,
+}: INavigation) => {
   const [distanceTop, setDistanceTop] = useState(0);
   const mobileNavRef = useRef<HTMLDivElement>(null);
 
@@ -190,6 +218,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
                     delay={i * 0.1}
                     href={cat.href}
                     close={() => setOpen(false)}
+                    trackNavigation={trackNavigation}
                   />
                 );
               } else if (isLink(cat)) {
@@ -201,6 +230,7 @@ const MobileNavigation = ({ categories, isAuthenticated, signOutLabel, onSignOut
                     link={cat}
                     delay={i * 0.1}
                     close={() => setOpen(false)}
+                    trackNavigation={trackNavigation}
                   />
                 );
               }

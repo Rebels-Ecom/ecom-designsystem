@@ -20,6 +20,7 @@ export interface IUiDatePicker {
   showDateLabel?: boolean
   className?: string
   loading?: boolean;
+  onClick?: CallableFunction;
 }
 
 function UiDatePicker({
@@ -31,7 +32,8 @@ function UiDatePicker({
   onDateSelected,
   showDateLabel,
   className,
-  loading
+  loading,
+  onClick
 }: IUiDatePicker) {
   const datepickerRef = useRef<DatePicker | any>(null)
   const [open, setOpen] = useState(false)
@@ -43,6 +45,9 @@ function UiDatePicker({
   const CustomInput = forwardRef(() => {
     const handleClick = () => {
       setOpen(!open)
+      if (!open) {
+        onClick?.();
+      }
     }
 
     return (

@@ -2,10 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import type { Meta } from '@storybook/react'
 import { Standard_Header } from '../../organisms/header/header.stories'
 import { BreadcrumbsStoryWithoutBackground } from '../../organisms/breadcrumbs/breadcrumbs.stories'
-import { ProductCardListStory } from '../../organisms/product-card-list/product-card-list.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
 import { ContentWrapper, FlexContainer } from '../../layouts'
-import { Breadcrumbs, Footer, ProductCardList } from '../../organisms'
+import { Breadcrumbs, Footer } from '../../organisms'
 import { DynamicFilter, SelectList } from '../../molecules'
 import { Dynamic_Filter_Default } from '../../molecules/dynamic-filter/dynamic-filter.stories'
 import { Button } from '../../atoms'
@@ -35,30 +34,6 @@ const ProductCategoryListingPageStoryTemplate = {
       setDataToDisplay(args?.productCategoryListing?.productCards ?? [])
     }, [])
     
-    const handleSort = (a, b) => {
-      if (sortBy === 'fallande') {
-        if (a.product.productName > b.product.productName) {
-          return 1;
-        }
-        if (a.product.productName < b.product.productName) {
-          return -1;
-        }
-        return 0
-      }
-      
-      if (sortBy === 'stigande') {
-        if (a.product.productName > b.product.productName) {
-          return -1;
-        }
-        if (a.product.productName < b.product.productName) {
-          return 1;
-        }
-        return 0
-      }
-
-      return 0;
-    }
-
     const handleUpdate = (_, updatedFilters) => {
       const filteredData = args.productCategoryListing.productCards?.filter(x =>
         updatedFilters?.find(y =>
@@ -76,7 +51,6 @@ const ProductCategoryListingPageStoryTemplate = {
       setSortBy(sortItem.value);
     }
 
-    const productCardList = useMemo(() => <ProductCardList {...args.productCategoryListing} productCards={dataToDisplay.sort(handleSort)} addToCart={handleAddToCart} />, [dataToDisplay, sortBy])
 
     return (
       <>
@@ -104,7 +78,6 @@ const ProductCategoryListingPageStoryTemplate = {
                 onClickItem={handleSorting}
               />
             </FlexContainer>
-            {productCardList}
           </FlexContainer>
         </ContentWrapper>
         <Footer {...args.footer} />
@@ -118,7 +91,6 @@ export const ProductCategoryListingPageStory = {
   args: {
     header: Standard_Header.render,
     breadcrumbs: BreadcrumbsStoryWithoutBackground.args,
-    productCategoryListing: ProductCardListStory.args,
     footer: FooterStory.args
   }
 }

@@ -22,7 +22,8 @@ export type TArticle = {
   imagePriority?: {
     fetchPriority: 'auto' | 'high' | 'low',
     loading: 'eager' | 'lazy',
-  }
+  };
+  onClick?: () => void;
 }
 
 const ArticleCard = ({
@@ -37,7 +38,8 @@ const ArticleCard = ({
   equalHeights,
   fullWidth,
   asCarouselItem,
-  imagePriority
+  imagePriority,
+  onClick,
 }: TArticle) => {
   const style: { [key: string]: string } = ({
     '--ratio': type === 'large' ? '3/4' : '5/6',
@@ -70,6 +72,7 @@ const ArticleCard = ({
                   target='_self'
                   aria-label={heading ? `Read more about ${heading}` : 'Read more'}
                   className={styles.imageLink}
+                  onClick={onClick}
                 >
                   <Picture
                     {...image}
@@ -112,6 +115,7 @@ const ArticleCard = ({
                     target='_self'
                     className={cx(styles.heading, styles.headingLink)}
                     aria-label={`Read more about ${heading}`}
+                    onClick={onClick}
                   >
                     <h4 className={styles.heading}>{heading}</h4>
                   </Link>
@@ -122,7 +126,7 @@ const ArticleCard = ({
             {richText && richText}
           </div>
           {link && (
-            <UILink {...link} onSurface={'transparent'} className={styles.link}>
+            <UILink {...link} onSurface={'transparent'} className={styles.link} onClick={onClick}>
               {link?.children}
             </UILink>
           )}

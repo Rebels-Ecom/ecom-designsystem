@@ -26,6 +26,7 @@ const HeroCarousel = ({ heroComponents, autoplay = true }: IHeroCarousel) => {
           perPage: 1,
         },
       }}
+      lightArrows
     >
       {heroComponents.map((hero: IHero, index: number) => {
         return (

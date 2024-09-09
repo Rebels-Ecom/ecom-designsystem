@@ -2,16 +2,14 @@ import React, { useEffect } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { motion } from 'framer-motion'
 import { Header } from './header'
-import { SearchNavBarStory } from '../../molecules/search-nav-bar/search-nav-bar.stories'
 import logotype_desktop_horizontal from '../../../../logotypes/Spendrups_logo_horizontal.svg'
 import logotype_mobile_vertical from '../../../../logotypes/Spendrups_logo_vertical.svg'
 import { CartSidebar } from '../cart-sidebar/cart-sidebar'
-import { Heading, LinkButton, Button, IconButton, UiDatePicker, ExpandableWrapper } from '../../atoms'
+import { Heading, LinkButton, Button, IconButton, UiDatePicker } from '../../atoms'
 import {
   DrawerSidebar,
   GroupWrapper,
   TopNavBar,
-  SearchNavBar,
   Logotype,
   MobileNavigation,
   UserInfoSummary,
@@ -23,9 +21,6 @@ import { UiDatePickerStory } from '../../atoms/ui-date-picker/ui-date-picker.sto
 import { ContentWrapper, FlexContainer } from '../../layouts'
 import { AdminSearch, IResult } from '../../atoms/admin-search/admin-search'
 import { AdminSearchStory, itemsToFilterOn } from '../../atoms/admin-search/admin-search.stories'
-import { CartProductList } from '../cart-product-list/cart-product-list'
-import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
-import { CartProduct, ICartProduct } from '../../molecules/cart-product/cart-product'
 import { DefaultMobileNavigation } from '../../molecules/navigation/mobile-navigation/mobile-navigation.stories'
 import { DefaultDesktopNavigation } from '../../molecules/navigation/desktop-navigation/desktop-navigation.stories'
 import { UserInfoSummaryStory } from '../../molecules/user-info-summary/user-info-summary.stories'
@@ -126,11 +121,6 @@ const HeaderStoryTemplate: Story = {
               </a>
             </motion.div>
           }
-          mobileSearchBar={
-            <ExpandableWrapper open={isSearchbarOpen}>
-              <SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />
-            </ExpandableWrapper>
-          }
           mobileActions={
             <FlexContainer alignItems="center" justifyContent="flex-end" flex="1">
               {activeUser?.name && <IconButton type="button" icon="icon-user" onClick={() => {}} size="large" isTransparent />}
@@ -147,7 +137,6 @@ const HeaderStoryTemplate: Story = {
           }
           mobileNavigation={<MobileNavigation {...(DefaultMobileNavigation.args as INavigation)} isOpen={isOpen} setIsOpen={setIsOpen} />}
           mobileCalendar={<UiDatePicker {...UiDatePickerStory.args} onDateSelected={setSelectedDate} />}
-          desktopSearchBar={<SearchNavBar {...SearchNavBarStory.args} isOpen={isSearchbarOpen} />}
           desktopActions={
             <>
               {activeUser?.name && <IconButton type="button" icon="icon-user" onClick={() => {}} size="large" isTransparent />}
@@ -175,11 +164,6 @@ const HeaderStoryTemplate: Story = {
               <Button type={'button'} surface={'secondary'} children={'Hämta inköpslista'} iconRight={{ icon: 'icon-layers' }} rounded onClick={() => {}} />
               <Button type={'button'} surface={'secondary'} children={'Senaste order'} iconRight={{ icon: 'icon-package' }} rounded onClick={() => {}} />
             </GroupWrapper>
-            <CartProductList>
-              {CartProductListStory.args?.children?.map((product: ICartProduct, i) => (
-                <CartProduct key={i} {...product}></CartProduct>
-              ))}
-            </CartProductList>
             <GroupWrapper>
               <LinkButton surface={'primary'} isExternal={true} href={'?path=/story/design-system-organisms-cart--cart-story'}>
                 Go to cart

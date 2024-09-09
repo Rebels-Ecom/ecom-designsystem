@@ -8,7 +8,6 @@ import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardVertical } from '../product-card/product-card'
 import { IconWithTooltip } from '../../atoms'
 
-/** @deprecated Use ProductCard instead */
 const ProductCardRestricted = ({
   product,
   loading = false,

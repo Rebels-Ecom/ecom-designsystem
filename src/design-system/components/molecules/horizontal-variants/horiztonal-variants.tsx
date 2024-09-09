@@ -41,7 +41,7 @@ const HorizontalVariants = ({ variantsList, onCloseVariants, open, onVariantSele
               gap: '0.25rem',
             }
           }}
-          arrowsBottom
+          zeroOffset
           breakpoints={
             {
               md: {
@@ -65,17 +65,6 @@ const HorizontalVariants = ({ variantsList, onCloseVariants, open, onVariantSele
             </CarouselItem>
           ))}
         </Carousel>
-        {/* <div className={styles.list}>
-          {variantsList?.map(variant => {
-            console.log(variant);
-            return (
-              <HorizontalVariant
-                {...variant}
-                checked={variant.variantId === selectedProductVariantId}
-                onClick={handleOnClickVariant}
-              />
-          )})}
-        </div> */}
       </motion.div>
   )
 }

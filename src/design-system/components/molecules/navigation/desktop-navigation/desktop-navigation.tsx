@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { INavigation, TNavCategory, TNavLink } from "../types";
 import { motion } from "framer-motion";
-import { Icon, IconButton } from "../../../atoms";
+import { Icon, IconButton, Placeholder } from "../../../atoms";
 import styles from './desktop-navigation.module.css'
 import cx from 'classnames'
-import { ContentWrapper } from "../../../layouts";
+import { ContentWrapper, FlexContainer } from "../../../layouts";
 import { useOnClickOutside } from "../../../../hooks";
 
-const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INavigation) => {
+const DesktopNavigation = ({
+  categories,
+  currentSlug,
+  linkComponent: Link,
+  trackNavigation
+}: INavigation) => {
   const [activeTopLevel, setActiveTopLevel] = useState<TNavCategory | TNavLink>();
   const [hoveredTopLevel, setHoveredTopLevel] = useState<TNavCategory | TNavLink>();
   const [activeSecondLevel, setActiveSecondLevel] = useState<TNavCategory | TNavLink | undefined>();
@@ -61,6 +66,16 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
     '--second-level-width': secondLevelWidth,
   })
 
+  if (categories?.length === 0) {
+    return (
+      <motion.nav
+        initial={{ opacity: 0.1 }}
+        animate={{ opacity: 1 }}
+        className={cx(styles.desktopNavigation, styles.loading)}
+      />
+    )
+  }
+
   return (
     <motion.nav
       initial={{ opacity: 0.1 }}
@@ -101,7 +116,10 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
                       className={cx(styles.topLevelLink, styles.topLevelTrigger, {[styles.active]: activeTopLevel === cat})}
                       to={cat.href}
                       target={cat.openInNewTab ? '_blank' : '_self'}
-                      onClick={() => setActiveTopLevel(undefined)}
+                      onClick={() => {
+                        setActiveTopLevel(undefined);
+                        trackNavigation?.(cat.href);
+                      }}
                     >
                       {cat.name}
                     </Link>
@@ -173,6 +191,7 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
                             onClick={() => {
                               setActiveSecondLevel(link);
                               setActiveTopLevel(undefined);
+                              trackNavigation?.(link.href);
                             }}
                           >
                             {link.name}
@@ -187,6 +206,7 @@ const DesktopNavigation = ({ categories, currentSlug, linkComponent: Link }: INa
                                   title={thirdLevelLink.name}
                                   onClick={() => {
                                     setActiveTopLevel(undefined);
+                                    trackNavigation?.(thirdLevelLink.href);
                                   }}
                                 >
                                   {thirdLevelLink.name}

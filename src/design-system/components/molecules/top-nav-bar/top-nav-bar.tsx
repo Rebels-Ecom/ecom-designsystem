@@ -49,7 +49,7 @@ const TopNavBar = ({
             styles.topNavText)}>{link.children}</span>
           </a>
           :
-          <Link to={link.href} className={styles.topNavLink} title={link.children}>
+          <Link to={link.href} className={styles.topNavLink} title={link.children} onClick={link.onClick}>
             {link.icon && <Icon icon={link.icon} className={styles.navIcon} />}
             <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
           </Link>

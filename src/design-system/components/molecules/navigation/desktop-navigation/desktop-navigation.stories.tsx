@@ -305,7 +305,7 @@ export const DefaultDesktopNavigation: Story = {
     return <DesktopNavigation {...args} linkComponent='a' />;
   },
   args: {
-    categories,
+    categories: [],
     isAuthenticated: true,
     signOutLabel: 'Logga ut',
     onSignOut: () => alert('Logging out'),

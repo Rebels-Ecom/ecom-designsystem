@@ -1,7 +1,6 @@
 import React from 'react'
 import { CartOrderDetails } from './cart-order-details'
 import type { Meta, StoryObj } from '@storybook/react'
-import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { Button } from '../../atoms/button/button'
 import { LinkButton } from '../../atoms/link-button/link-button'
@@ -21,7 +20,7 @@ export default meta;
 type Story = StoryObj<typeof CartOrderDetails>;
 
 const CartOrderDetailsStoryTemplate: Story = {
-    render: ({ ...args }) => {
+    render: (args) => {
         const isLoading = false
         return(
             <div style={{ margin: 'auto', position: 'relative' }}>
@@ -65,6 +64,5 @@ export const CartOrderDetailsStory = {
         productsNumber: 7,
         text: '<p>Tillagda produkter</p>',
         cartProductsList: CartProductListStory.args,
-        suggestedProductsList: FeaturedProductsStory.args
     }
 }
