@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { CartSidebar } from './cart-sidebar'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
-import { FeaturedProductsStory } from '../../molecules/featured-products/featured-products.stories'
 import { CartProductListStory } from '../cart-product-list/cart-product-list.stories'
 import { DrawerSidebar } from '../../molecules/drawer-sidebar/drawer-sidebar'
 import { Button } from '../../atoms/button/button'
@@ -68,7 +67,6 @@ export const CartSidebarStory = {
         latestOrderButton: Button_Large_Icon_Right.args,
         cartProductsList: CartProductListStory.args,
         goToCartButton: Button_Large_Icon_Right.args,
-        suggestedProductsList: FeaturedProductsStory.args
     }
 }
 
@@ -83,6 +81,5 @@ export const CartSidebarStoryNoProducts = {
         latestOrderButton: Button_Large_Icon_Right.args,
         cartProductsList: [],
         goToCartButton: Button_Large_Icon_Right.args,
-        suggestedProductsList: FeaturedProductsStory.args
     }
 }

@@ -13,6 +13,7 @@ export interface IProductCarousel extends Pick<TProductCard, 'productArea'> {
   arrowsBottom?: boolean
   offsetArrows?: boolean
   noPadding?: boolean; 
+  onNavigation?: CallableFunction;
 }
 
 const ProductCarousel = ({
@@ -24,7 +25,8 @@ const ProductCarousel = ({
   arrowsBottom,
   offsetArrows,
   productArea,
-  noPadding
+  noPadding,
+  onNavigation
 }: IProductCarousel) => {
   const { isMobile } = mediaQueryHelper()
 
@@ -60,6 +62,7 @@ const ProductCarousel = ({
           },
         },
       }}
+      onNavigation={onNavigation}
       arrowsBottom={arrowsBottom}
       offsetArrows={offsetArrows}
       padding={(isMobile && !noPadding) ? '2rem' : undefined}

@@ -11,6 +11,7 @@ export interface IUILink extends ILink {
   children: React.ReactNode;
   noUnderline?: boolean;
   download?: boolean;
+  onClick?: CallableFunction;
 }
 
 export const LinkComponent = ({ children, ...props }: any) => <div {...props}>{children}</div>
@@ -27,7 +28,8 @@ const UILink = ({
   iconRight,
   onSurface = 'transparent',
   noUnderline,
-  download
+  download,
+  onClick
 }: IUILink) => {
   const Tag = isExternal ? 'a' : Link
   return (
@@ -43,6 +45,7 @@ const UILink = ({
       )}
       aria-label={children}
       download={download}
+      onClick={onClick}
     >
       {iconLeft && <Icon icon={iconLeft} className={cx(styles.icon, styles.left)} />}
       <span className={cx(styles.linkText, {[styles.noUnderline]: noUnderline })}>{children}</span>

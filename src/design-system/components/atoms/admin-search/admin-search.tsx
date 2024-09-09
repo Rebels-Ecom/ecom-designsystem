@@ -25,9 +25,24 @@ export interface IAdminSearch {
   noResultText: React.ReactNode | string
   placeholder?: string
   className?: string
+  onFocus?: CallableFunction,
 }
 
-function AdminSearch({ className, id, isLoading=false, isOpen, setIsOpen, query, setQuery, results, onClickSearchResult, disabled, noResultText, placeholder }: IAdminSearch) {
+function AdminSearch({
+  className,
+  id,
+  isLoading = false,
+  isOpen,
+  setIsOpen,
+  query,
+  setQuery,
+  results,
+  onClickSearchResult,
+  disabled,
+  noResultText,
+  placeholder,
+  onFocus
+}: IAdminSearch) {
   const searchWrapperElement = useRef<HTMLDivElement | null>(null)
   const inputField = useRef<HTMLInputElement | null>(null)
 
@@ -71,6 +86,7 @@ function AdminSearch({ className, id, isLoading=false, isOpen, setIsOpen, query,
           type="text"
           id={id}
           onChange={onInputChange}
+          onFocus={onFocus}
           value={query}
           other={{ autoComplete: 'off' }}
           disabled={disabled}

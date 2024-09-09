@@ -49,6 +49,8 @@
   & .arrow {
     top: unset;
     bottom: -0.75rem;
+    background-color: transparent;
+    opacity: 1;
     
     &.left {
       left: 1rem;
@@ -131,6 +133,35 @@
       &.arrowBottom {
         top: unset;
         bottom: -0.75rem;
+      }
+    }
+
+    &.zeroOffset {
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    &.lightArrows {
+      background-color: rgba(229, 236, 238, 0.75);
+      border-radius: 50%;
+
+      &.left {
+        & span {
+          position: relative;
+          right: 1px;
+        }
+      }
+      
+      &.right {
+        & span {
+          position: relative;
+          left: 1px;
+        }
       }
     }
 

@@ -1,16 +1,5 @@
-import React from 'react'
 import styles from './dropdown-list.module.css'
 import { INavigationLink } from '../../../../types/links'
-import { AnimatePresence, motion } from 'framer-motion'
-
-const variants = {
-    open: {
-      transition: { staggerChildren: 0.03, delayChildren: 0.2 },
-    },
-    closed: {
-      transition: { staggerChildren: 0.05, staggerDirection: -1 },
-    },
-}
   
 const itemVariants = {
     open: {
@@ -37,24 +26,22 @@ export interface IDropdownList {
 
 function DropdownList({links, linkComponent: Link} : IDropdownList) {
   return (
-    <AnimatePresence>
-        <motion.ul className={styles.linkList} variants={variants} exit="closed" initial="closed" animate="open">
-            {links.map((link: INavigationLink, index) => (
-                <motion.li key={index} className={styles.listItem} variants={itemVariants}>
-                    {link.isExternal 
-                    ? 
-                        <a href={link.href} target={link.target} title={link.title} className={styles.linkItem}>
-                            {link.title?.toUpperCase()}
-                        </a>
-                    : 
-                        <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkItem}>
-                            {link.title?.toUpperCase()}
-                        </Link>
-                    }
-                </motion.li>
-            ))}
-        </motion.ul>
-    </AnimatePresence>
+    <ul className={styles.linkList}>
+        {links.map((link: INavigationLink, index) => (
+            <li key={index} className={styles.listItem}>
+                {link.isExternal 
+                ? 
+                    <a href={link.href} target={link.target} title={link.title} className={styles.linkItem}>
+                        {link.title?.toUpperCase()}
+                    </a>
+                : 
+                    <Link field={link} target={link.target} title={link.title} activeClassName={styles.active} className={styles.linkItem}>
+                        {link.title?.toUpperCase()}
+                    </Link>
+                }
+            </li>
+        ))}
+    </ul>
   )
 }
 

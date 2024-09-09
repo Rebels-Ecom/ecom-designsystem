@@ -28,11 +28,14 @@ export interface ICarousel {
   className?: string;
   trackClassName?: string;
   splideProps?: SplideProps;
+  onNavigation?: CallableFunction;
   breakpoints?: TCarouselBreakpoints;
   /**
    * Determines if arrows should be placed outside of carousel
    */
   offsetArrows?: boolean;
+  zeroOffset?: boolean;
+  lightArrows?: boolean;
   arrowsBottom?:boolean;
   /**
    * Sets display: block; instead of display: grid;

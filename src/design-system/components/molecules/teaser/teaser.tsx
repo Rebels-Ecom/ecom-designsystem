@@ -1,7 +1,5 @@
-import { ILink } from '../../../../types/links'
 import { RichTextProps } from '../../../../types/other'
-import { Icon } from '../../atoms/icon/icon'
-import { LinkButton } from '../../atoms/link-button/link-button'
+import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
 import { IPicture, Picture } from '../../atoms/picture/picture'
 import { Tag, ITag } from '../../atoms/tag/tag'
 import styles from './teaser.module.css'
@@ -19,7 +17,7 @@ export interface ITeaser {
     imageRound?: boolean;
     tag?: ITag
     tagPosition?: TTagPosition
-    linkButton : ILink
+    linkButton : ILinkButton
     fullWidth?: boolean
 }
 
@@ -41,7 +39,7 @@ const Teaser = ({heading, preamble, richText, image, imagePosition, tag, tagPosi
                 {richText && (
                     <div className={cx(styles.text, imagePosition === 'right' && styles.textRight)}>{richText}</div>
                 )}
-                <LinkButton surface="primary" {...linkButton} className={styles.linkButton} />
+                <LinkButton {...linkButton} surface={linkButton.surface ?? 'primary'} className={styles.linkButton} />
             </div>
         </div>
     )

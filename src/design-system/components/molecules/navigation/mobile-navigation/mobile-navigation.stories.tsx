@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { MobileNavigation } from './mobile-navigation';
 import { ContentWrapper } from '../../../layouts';
+import { INavigation, TNavCategory, TNavLink } from '../types';
 
 const categories = [
   {
@@ -288,7 +289,7 @@ const categories = [
     href: '#',
     openInNewTab: true,
   },
-];
+] as (TNavLink | TNavCategory)[];
 
 export default {
   title: 'Design System/Molecules/MobileNavigation',
@@ -313,6 +314,7 @@ export const DefaultMobileNavigation: Story = {
   args: {
     currentSlug: '/',
     categories,
+    linkComponent: 'a',
     isAuthenticated: true,
     signOutLabel: 'Logga ut',
     onSignOut: () => alert('Logging out'),

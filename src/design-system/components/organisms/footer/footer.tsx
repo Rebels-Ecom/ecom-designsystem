@@ -19,6 +19,7 @@ export interface IFooter {
   newsletterPlaceholder: string
   bottomBarText: string
   children: React.ReactNode
+  trackFooterLink?: CallableFunction
 }
 
 export type INavigationLogo = {
@@ -81,7 +82,7 @@ const FooterContent = ({
   )
 }
 
-const FooterLinks = ({ footerLinks, linkComponent: Link }: { footerLinks: Array<TFooterLinksList>; linkComponent: any }) => {
+const FooterLinks = ({ footerLinks, linkComponent: Link, trackFooterLink }: { footerLinks: Array<TFooterLinksList>; linkComponent: any, trackFooterLink?: CallableFunction }) => {
   if (!Array.isArray(footerLinks) || footerLinks.length === 0) return null
   else
     return (
@@ -98,7 +99,13 @@ const FooterLinks = ({ footerLinks, linkComponent: Link }: { footerLinks: Array<
                 <div className={styles.links}>
                   <ul className={styles.linksInTwoColumns}>
                     {list.links.map((link: ILink, i: number) => (
-                      <FooterLink key={`${link.children}-${i}`} link={link} linkComponent={Link} />
+                      <FooterLink
+                        key={`${link.children}-${i}`}
+                        link={link}
+                        linkComponent={Link}
+                        {...link}
+                        trackFooterLink={trackFooterLink}
+                      />
                       ))}
                   </ul>
                 </div>
@@ -110,14 +117,14 @@ const FooterLinks = ({ footerLinks, linkComponent: Link }: { footerLinks: Array<
     )
 }
 
-const FooterLink = ({ link, linkComponent: Link }: { link: ILink; linkComponent: any }) => (
+const FooterLink = ({ link, linkComponent: Link, trackFooterLink }: { link: ILink; linkComponent: any, trackFooterLink?: CallableFunction }) => (
   <li className={styles.linkItem}>
     {link.isExternal ? (
       <a href={link.href} target={link.target} className="body">
         {link.children}
       </a>
     ) : (
-      <Link to={link.href}>{link.children}</Link>
+      <Link to={link.href} onClick={trackFooterLink}>{link.children}</Link>
     )}
   </li>
 )
@@ -136,6 +143,7 @@ const Footer = ({
   newsletterId,
   newsletterPlaceholder,
   bottomBarText,
+  trackFooterLink
 }: IFooter) => {
   return (
     <>
@@ -153,7 +161,7 @@ const Footer = ({
               newsletterPlaceholder={newsletterPlaceholder}
               children={children}
             />
-            <FooterLinks footerLinks={links} linkComponent={Link}></FooterLinks>
+            <FooterLinks footerLinks={links} linkComponent={Link} trackFooterLink={trackFooterLink}></FooterLinks>
           </div>
         </ContentWrapper>
       </footer>

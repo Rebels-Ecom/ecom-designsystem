@@ -68,6 +68,7 @@ export interface IProductCard {
   handlePackageChange: CallableFunction
   selectedVariantId?: string
   onVariantsButtonClick: CallableFunction
+  onVariantChange?: CallableFunction;
   onCloseVariants: CallableFunction
   tooltips?: {
     addToFavorites?: string;
@@ -114,7 +115,9 @@ function ProductCard({
   imagePriority,
   showPackaging,
   tooltips,
-  isAddingToFavorites
+  isAddingToFavorites,
+  onVariantsButtonClick,
+  onVariantChange,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -172,6 +175,7 @@ function ProductCard({
 
   function handleVariantsButtonClick() {
     setVariantsListOpen(true)
+    onVariantsButtonClick?.();
   }
 
   function handleCloseVariants() {
@@ -185,24 +189,30 @@ function ProductCard({
   function handlePackageChange(selectedVariant: any) {
     const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1;
 
-    setProduct((prevState) => ({
-      ...prevState,
-      partNo: selectedVariant.variantId,
-      productImage: selectedVariant.image ?? fallbackProductImageUrl,
-      packaging: selectedVariant.variantName,
-      price: selectedVariant.price,
-      priceStr: selectedVariant.priceStr,
-      pricePerUnit: selectedVariant.pricePerUnit && isFinite(selectedVariant.pricePerUnit) ? selectedVariant.pricePerUnit : 0,
-      pricePerUnitString: selectedVariant.pricePerUnitString,
-      salesUnit: selectedVariant.salesUnit,
-      itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
-      totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
-      quantity: quantity.toString(),
-      selectedVariantId: selectedVariant.variantId,
-      sellerOnly: selectedVariant.sellerOnly,
-      activeCampaign: selectedVariant.activeCampaign,
-      productUrl: `/Product/${selectedVariant.variantId}`,
-    }))
+    setProduct((prevState) => {
+      const updatedProduct = {
+        ...prevState,
+        partNo: selectedVariant.variantId,
+        productImage: selectedVariant.image ?? fallbackProductImageUrl,
+        packaging: selectedVariant.variantName,
+        price: selectedVariant.price,
+        priceStr: selectedVariant.priceStr,
+        pricePerUnit: selectedVariant.pricePerUnit && isFinite(selectedVariant.pricePerUnit) ? selectedVariant.pricePerUnit : 0,
+        pricePerUnitString: selectedVariant.pricePerUnitString,
+        salesUnit: selectedVariant.salesUnit,
+        itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
+        totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
+        quantity: quantity.toString(),
+        selectedVariantId: selectedVariant.variantId,
+        sellerOnly: selectedVariant.sellerOnly,
+        activeCampaign: selectedVariant.activeCampaign,
+        productUrl: `/Product/${selectedVariant.variantId}`,
+      };
+
+      onVariantChange?.(updatedProduct);
+
+      return updatedProduct;
+    })
     setVariantsListOpen(false)
   }
 

@@ -40,4 +40,5 @@ export interface INavigation {
   signOutLabel?: string;
   onSignOut?: () => void;
   actions?: JSX.Element;
+  trackNavigation?: (target: string) => void;
 }

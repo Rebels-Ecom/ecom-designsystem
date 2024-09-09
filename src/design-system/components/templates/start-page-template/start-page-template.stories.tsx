@@ -5,11 +5,8 @@ import { OfferCardListStory } from '../../organisms/offer-card-list/offer-card-l
 import { Teaser_Round, Teaser_Square } from '../../molecules/teaser/teaser.stories'
 import { Standard_Header } from '../../organisms/header/header.stories'
 import { FooterStory } from '../../organisms/footer/footer.stories'
-import { FeaturedProductsCarouselStory } from '../../organisms/featured-products-carousel/featured-products-carousel.stories'
-import { CustomerTeaserStory } from '../../organisms/customer-teaser/customer-teaser.stories'
 import { ContentWrapper } from '../../layouts'
-import { CustomerTeaser, FeaturedProductsCarousel, Footer, HeroCarousel, OfferCardList } from '../../organisms'
-import { Default } from '../../organisms/article-list/article-list.stories'
+import { Footer, HeroCarousel, OfferCardList } from '../../organisms'
 
 const meta: Meta = {
   title: 'Design System/Templates/StartPageTemplate',
@@ -30,10 +27,7 @@ const StartPageStoryTemplate = {
       {args.header && args.header()}
       <HeroCarousel {...args.hero} />
       <ContentWrapper>
-        <FeaturedProductsCarousel {...args.featuredProducts} />
         <OfferCardList {...args.offerCardsList} />
-        <CustomerTeaser {...args.customerTeaser} />
-        <FeaturedProductsCarousel {...args.featuredProducts} />
       </ContentWrapper>
       <Footer {...args.footer} />
     </>
@@ -45,9 +39,7 @@ export const StartPage_Guest_User = {
   args: {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
-    featuredProducts: FeaturedProductsCarouselStory.args,
     offerCardsList: OfferCardListStory.args,
-    customerTeaser: CustomerTeaserStory.args,
     teaserRight: Teaser_Round.args,
     teaserLeft1: Teaser_Square.args,
     teaserLeft2: Teaser_Square.args,
@@ -60,9 +52,7 @@ export const StartPage_Logged_In_User = {
   args: {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
-    featuredProducts: FeaturedProductsCarouselStory.args,
     offerCardsList: OfferCardListStory.args,
-    customerTeaser: CustomerTeaserStory.args,
     teaserRight: Teaser_Round.args,
     teaserLeft1: Teaser_Square.args,
     teaserLeft2: Teaser_Square.args,
@@ -76,7 +66,6 @@ export const StartPage_Admin_User = {
     header: Standard_Header.render,
     hero: HeroCarouselStory.args,
     offerCardsList: OfferCardListStory.args,
-    customerTeaser: CustomerTeaserStory.args,
     teaserRight: Teaser_Round.args,
     teaserLeft1: Teaser_Square.args,
     teaserLeft2: Teaser_Square.args,

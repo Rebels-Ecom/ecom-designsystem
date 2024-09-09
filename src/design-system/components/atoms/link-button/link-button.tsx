@@ -13,6 +13,7 @@ export interface ILinkButton extends ILink {
   round?: boolean
   disabled?: boolean
   name?: string
+  onClick?: CallableFunction
 }
 
 export function getButtonSize(surface: TButtonSize) {
@@ -42,7 +43,8 @@ const LinkButton = ({
   rounded,
   round,
   disabled,
-  name
+  name,
+  onClick
 }: ILinkButton) => {
   const classNames = cx(styles.button, getButtonSize(size), styles[surface], {
     [styles.fullWidth]: fullWidth,
@@ -53,7 +55,16 @@ const LinkButton = ({
   
   const Tag = isExternal ? 'a' : Link
   return (
-    <Tag aria-label={name} to={!isExternal ? href : undefined} href={isExternal ? href : undefined} target={target} title={title} className={classNames} id={id ? id : undefined}>
+    <Tag
+      aria-label={name}
+      to={!isExternal ? href : undefined}
+      href={isExternal ? href : undefined}
+      target={target}
+      title={title}
+      className={classNames}
+      id={id ? id : undefined}
+      onClick={onClick}
+    >
       {children}
     </Tag>
   )
