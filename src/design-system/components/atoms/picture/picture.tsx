@@ -50,7 +50,7 @@ const Picture = ({
   useEffect(() => { setImageSources({src, sources})}, [src])
 
   function isValidPicture() {
-    return sources instanceof Array && src && id
+    return sources instanceof Array && src && src !== '' && id
   }
 
   function handleBrokenImage(e: React.SyntheticEvent<HTMLImageElement, Event>) {
