@@ -102,8 +102,10 @@ const ProductCardHorizontal = ({
     '--out-of-stock-product-color': outOfStock && outOfStockLabel ? '#e4b6c3' : '#FFF',
   }
 
+  const hasIconAndTags = sellerOnly || isAccessoryPotItem || !!tags?.length;
+
   const iconsAndTags = (
-    <FlexContainer alignItems='center' gap={0.5} minHeight={2.25} stretch>
+    <FlexContainer alignItems='center' gap={0.5} minHeight={hasIconAndTags ? 2.25 : 0} stretch>
       {sellerOnly && (
         <>
           {tooltips?.sellerOnly ? (
@@ -202,10 +204,10 @@ const ProductCardHorizontal = ({
             {iconsAndTags}
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
-                <h5 className={styles.heading}>{productName}</h5>
+                <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags })}>{productName}</h5>
               </Link>
             ) : (
-              <h5 className={styles.heading}>{productName}</h5>
+              <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags })}>{productName}</h5>
             )}
             <div className={styles.cardInfoWrapper}>
               <div>
@@ -257,26 +259,12 @@ const ProductCardHorizontal = ({
               {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>}
               
               <div className={styles.buttonsWrapper}>
-                {isMobile && !hideCartButton && (
-                  <Button
-                    type='button'
-                    surface='primary'
-                    className={!loading ? styles.productCardBtn : ''}
-                    size='x-small'
-                    onClick={() => addToCart(product)}
-                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
-                    loading={buttonLoading}
-                    name={addToCartBtnLabel}
-                  >
-                    <Icon icon='icon-shopping-cart' className={styles.cartBtnIcon} />
-                    <span className={styles.cartBtnText}>{addToCartBtnLabel}</span>
-                  </Button>
-                )}
+                
 
                 {(!!productVariantList?.length ||
                   (showAddToPurchaseListIcon &&onSaveToPurchaseListClick) ||
                   (showFavoriteIcon && onFavoriteIconClick)) && (
-                  <FlexContainer gap={0.5}>
+                  <FlexContainer gap={0.5} justifyContent='flex-end'>
                     {productVariantList?.length > 1 && (
                       <ComponentWithTooltip
                         content={tooltips?.changeVariant}
@@ -333,7 +321,7 @@ const ProductCardHorizontal = ({
                   </FlexContainer>
                 )}
 
-                {!isMobile && !hideCartButton && (
+                {!hideCartButton && (
                   <IconButton
                     type='button'
                     icon='icon-shopping-cart'

@@ -16,19 +16,20 @@ const DeliveryInfoBar = ({ exists, infoText, onClick }: IDeliveryInfoBar) => {
   }
 
   return (
-    <ContentWrapper padding={[0.3, 1]}>
-      <motion.div
-        className={styles.deliveryInfoBar}
-        initial={{ opacity: 0, translateY: '-50px' }}
-        animate={{ opacity: 1, translateY: 0 }}
-        transition={{ delay: 0.5, type: 'spring', duration: 0.3 }}
-      >
-        <motion.button whileTap={{ scale: 0.95 }} className={styles.button} onClick={onClick}>
-          <Icon className={styles.icon} icon={'icon-truck'}></Icon>
-          <span className={styles.text}>{infoText}</span>
-        </motion.button>
-      </motion.div>
-    </ContentWrapper>
+    <motion.div
+      initial={{ opacity: 0, translateY: '-50px' }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ delay: 0.5, type: 'spring', duration: 0.3 }}
+    >
+      <ContentWrapper padding={[0.25, 2.5]}>
+        <div className={styles.deliveryInfoBar}>
+          <motion.button whileTap={{ scale: 0.95 }} className={styles.button} onClick={onClick}>
+            <Icon className={styles.icon} icon='icon-truck' />
+            <span className={styles.text}>{infoText}</span>
+          </motion.button>
+        </div>
+      </ContentWrapper>
+    </motion.div>
   )
 }
 
