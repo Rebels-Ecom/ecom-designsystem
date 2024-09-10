@@ -29,46 +29,30 @@
   }
   & .mainContent {
     display: flex;
-    flex-direction: column;
     align-self: stretch;
     align-items: center;
-    gap: 1.5rem;
-    
-    @media (min-width: 48em) {
-      gap: 1rem;
-      flex-direction: row;
-    }
+    gap: 1rem;
   }
 
   & .imageWrapper {
-    width: 3rem;
-    height: auto;
+    width: 3.5rem;
+    height: 7rem;
 
-    @media (min-width: 48em) {
-      width: 3.5rem;
-      height: 7rem;
-    }
-
-      & .picture {
-          padding: 0;
-          height: 100%;
-          
-          & .image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-          }
+    & .picture {
+      padding: 0;
+      height: 100%;
+      
+      & .image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
+    }
   }
   & .contentWrapper {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    text-align: center;
-
-    @media (min-width: 48em) {
-      text-align: left;
-    }
     
     & .heading,
     & .partNo,
@@ -79,8 +63,6 @@
     & .heading {
       font-weight: bold;
       margin-bottom: 0.125rem;
-    }
-    & .partNo {
     }
     & .price {
       color: var(--color-text-decorative-purple);

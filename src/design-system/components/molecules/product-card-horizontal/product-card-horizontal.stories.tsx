@@ -4,17 +4,18 @@ import { ProductCardHorizontal } from './product-card-horizontal'
 import { IProduct } from '../../../../types/product'
 import { dummyBeerProduct, dummyWineProduct } from '../product-card/dummy-product'
 import { convertNumToStr } from '../../../../helpers/format-helper'
+import { IProductCard, ProductCard } from '../product-card/product-card'
 
-const meta: Meta<typeof ProductCardHorizontal> = {
+const meta: Meta<typeof ProductCard> = {
   title: 'Design System/Molecules/ProductCardHorizontal',
   parameters: {
     controls: { exclude: ['product', 'addToCart', 'onClickRemoveProduct', 'onChangeQuantity', 'className'] },
   },
-  component: ProductCardHorizontal,
+  component: ProductCard,
 }
 
 export default meta
-type Story = StoryObj<typeof ProductCardHorizontal>
+type Story = StoryObj<typeof ProductCard>
 
 const ProductCardHorizontalStoryTemplate: Story = {
   render: ({ ...args }) => {
@@ -34,9 +35,10 @@ const ProductCardHorizontalStoryTemplate: Story = {
     }
 
     return (
-      <ProductCardHorizontal
+      <ProductCard
         {...args}
-        removingProduct={args.removingProduct}
+        cardDisplay='horizontal'
+        removingProduct={loading}
         loading={args.loading ?? loading}
         addToCart={handleAddToCart}
         onChangeQuantity={handleQuantityChange}
@@ -57,21 +59,29 @@ function getProductTags(tags: Array<any>) {
 }
 
 function getVariantsList(productName: string, variantsList: any) {
-  const firstVariantId = variantsList[0].VariantId
-  return variantsList.map((variant: any) => {
+  return variantsList.map((variant: any, i: number) => {
+    const firstVariantId = variantsList?.[0]?.VariantId;
     return {
-      productName: productName,
-      variantName: variant.Name,
-      variantId: variant.VariantId,
-      country: Array.isArray(variant.ShortTexts) && variant.ShortTexts.length ? variant.ShortTexts[0] : '',
+      checked: firstVariantId === variant.VariantId,
+      country: Array.isArray(variant.ShortTexts) && variant.ShortTexts.length ? variant.ShortTexts[0] : 'Sweden',
+      currencyLabel: 'kr',
+      image: {
+        id: `x-${i}`, 
+        src: variant.PrimaryImageUrl,
+        sources: [],
+      },
+      onChange: () => {},
+      partNoLabel: 'x',
       priceStr: variant.ListPricePerUnitString,
+      productName: productName,
+      sellerOnly: false,
+      unitLabel: 'x',
+      variantId: variant.VariantId,
+      variantName: variant.Name,
       price: variant.ListPricePerUnit,
       salesUnit: variant.SalesUnit,
       itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
-      imageUrl: variant.PrimaryImageUrl,
-      checked: variant.VariantId === firstVariantId,
       tags: getProductTags(variant.Tags),
-      onChange: () => {},
     }
   })
 }
@@ -80,84 +90,55 @@ function getProduct(productData: any): IProduct {
   const product = productData.Variants[0]
   return {
     partNo: product.VariantId,
+    itemNumberPerSalesUnit: 1,
+    packagePrice: 1,
+    packagePriceString: '1',
+    packaging: '33cl Engångsglas',
+    price: 1,
+    pricePerUnit: 1,
+    pricePerUnitString: '1',
+    priceStr: '1',
+    primaryImageUrl: 'https://spendrups.cdn.storm.io/4237ad51-a9f9-45e5-a85a-72389f6e65bb',
     productName: productData.DisplayName,
-    productUrl: productData.ProductUrl,
-    primaryImageUrl: product.PrimaryImageUrl,
-    country: Array.isArray(product.ShortTexts) && product.ShortTexts.length ? product.ShortTexts[0] : '',
-    packaging: product.VariantFullName,
-    priceStr: product.ListPricePerUnitString,
-    price: product.ListPricePerUnit,
-    salesUnit: product.SalesUnit,
-    itemNumberPerSalesUnit: product.UnitsPerBaseUnit,
-    tags: getProductTags(product.Tags),
     quantity: '1',
-    totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
+    salesUnit: 'st',
+    totalPrice: '1',
+    activeCampaign: undefined,
+    country: 'Sweden',
+    partNoLabel: 'Art.nr.',
+    priceLabel: 'Pris',
+    aLabel: 'à',
+    currencyLabel: 'kr',
     productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
+    unitLabel: 'kolli',
+    tags: getProductTags(product.Tags),
   }
 }
 
 const productBeerArgs = getProduct(dummyBeerProduct)
-const productWineArgs = getProduct(dummyWineProduct)
 
-export const CartProductStoryBeer = {
+export const Product_Card_Horizontal = {
   ...ProductCardHorizontalStoryTemplate,
   args: {
     product: productBeerArgs,
     loading: false,
     linkComponent: 'a',
-    hideCartButton: true,
-  },
-}
-
-export const ProductCardHorizontalStoryWine = {
-  ...ProductCardHorizontalStoryTemplate,
-  args: {
-    product: productWineArgs,
-    loading: true,
-    linkComponent: 'a',
-  },
-}
-
-export const ProductCardHorizontalStoryWithCampaign = {
-  ...ProductCardHorizontalStoryTemplate,
-  args: {
-    product: productWineArgs,
-    linkComponent: 'a',
-    campaign: {
-      title: 'Kampanj',
-      color: '#9A576F',
+    hideCartButton: false,
+    showPackaging: true,
+    addToCart: () => {},
+    addToCartBtnLabel: 'Add to cart',
+    cardDisplay: 'horizontal',
+    handlePackageChange: () => {},
+    onCloseVariants: () => {},
+    onVariantsButtonClick: () => {},
+    productImage: {
+      id: '',
+      sources: [],
+      src: ''
     },
-  },
-}
-
-export const ProductCardHorizontal_OrderConfirmation_Beer = {
-  ...ProductCardHorizontalStoryTemplate,
-  args: {
-    product: productBeerArgs,
-    loading: false,
-    linkComponent: 'a',
-    hideRemoveButton: true,
-  },
-}
-
-export const ProductCardHorizontal_OrderConfirmation_Wine = {
-  ...ProductCardHorizontalStoryTemplate,
-  args: {
-    product: productWineArgs,
-    loading: false,
-    linkComponent: 'a',
-  },
-}
-
-export const ProductCardHorizontal_AddToPurchaseList = {
-  ...ProductCardHorizontalStoryTemplate,
-  args: {
-    product: productWineArgs,
-    loading: false,
-    linkComponent: 'a',
+    showFavoriteIcon: true,
+    onFavoriteIconClick: () => {},
     showAddToPurchaseListIcon: true,
-    onSaveToPurchaseListClick: () => {
-      console.log('Add to purchase list...')
-    },
-  },
+    productQuantityDisabled: true
+  } as IProductCard,
 }

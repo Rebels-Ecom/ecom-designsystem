@@ -21,6 +21,7 @@ export interface ICartProduct extends IProduct {
   whiteBackground?: boolean;
 }
 
+/** @deprecated Use ProductCard instead */
 const CartProduct = ({
   product,
   iconButton,

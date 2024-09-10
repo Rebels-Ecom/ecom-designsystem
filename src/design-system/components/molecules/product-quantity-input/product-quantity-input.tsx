@@ -58,31 +58,33 @@ const ProductQuantityInput = ({
 
   return (
     <div className={`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
-      <InputText
-        id={quantityInputId}
-        value={val}
-        placeholder="0"
-        onChange={handleOnChange}
-        onBlur={handleOnBlur}
-        disabled={disabled}
-        disabledNoBorder={disabledNoBorder}
-        type="number"
-        className={styles.quantityInputField}
-        min="0"
-        other={{
-          onKeyDown: (e: React.KeyboardEvent) => {
-            const illegalChars = ['-', '+', '.', ',', 'e', 'E']
-            if (illegalChars.find((p) => p === e.key)) {
+      {!disabled && (
+        <InputText
+          id={quantityInputId}
+          value={val}
+          placeholder="0"
+          onChange={handleOnChange}
+          onBlur={handleOnBlur}
+          disabled={disabled}
+          disabledNoBorder={disabledNoBorder}
+          type="number"
+          className={styles.quantityInputField}
+          min="0"
+          other={{
+            onKeyDown: (e: React.KeyboardEvent) => {
+              const illegalChars = ['-', '+', '.', ',', 'e', 'E']
+              if (illegalChars.find((p) => p === e.key)) {
+                e.preventDefault()
+              }
+            },
+            onPaste: (e: React.ClipboardEvent) => {
               e.preventDefault()
-            }
-          },
-          onPaste: (e: React.ClipboardEvent) => {
-            e.preventDefault()
-          },
-        }}
-      />
+            },
+          }}
+        />
+      )}
       <div>
-        <p className={`${styles.textQuantity} bodyS`}>{`x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}</p>
+        <p className={`${styles.textQuantity} bodyS`}>{`${disabled ? val : ''} x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}</p>
         {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
       </div>
     </div>

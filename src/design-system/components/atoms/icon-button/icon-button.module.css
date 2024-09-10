@@ -8,11 +8,11 @@
     cursor: pointer;
     color: var(--color-text-default);
     background: none;
+    border-radius: 0.25rem;
 
     @media (min-width: 64em) {
         background-color: var(--cta-x-default);
         border: solid 1px var(--border-on-x);
-        border-radius: 0.25rem;
     }
 
     & > span:first-of-type {

@@ -5,9 +5,9 @@ import { ITag, Tag } from '../../atoms/tag/tag';
 import { IPicture } from '../../atoms/picture/picture';
 import { RichTextProps } from '../../../../types/other';
 import { ILink } from '../../../../types/links';
-import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg';
 
 export type TArticle = {
+  fallbackImage: string;
   image?: IPicture;
   tags?: ITag[];
   heading?: string;
@@ -27,6 +27,7 @@ export type TArticle = {
 }
 
 const ArticleCard = ({
+  fallbackImage,
   image,
   tags,
   heading,
@@ -78,7 +79,7 @@ const ArticleCard = ({
                     {...image}
                     classNamePicture={styles.picture}
                     classNameImg={styles.image}
-                    fallbackImageUrl={fallbackProductImageUrl}
+                    fallbackImageUrl={fallbackImage}
                     fetchPriority={imagePriority?.fetchPriority}
                     loading={imagePriority?.loading}
                   />
