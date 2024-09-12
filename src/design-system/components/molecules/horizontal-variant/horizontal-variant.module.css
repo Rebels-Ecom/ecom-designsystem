@@ -61,11 +61,18 @@
     }
 
     & .heading {
+      font-size: 0.875rem;
+      line-height: 1.125rem;
       font-weight: bold;
       margin-bottom: 0.125rem;
     }
     & .price {
       color: var(--color-text-decorative-purple);
+    }
+    & .partNo,
+    & .price {
+      font-size: 0.875rem;
+      line-height: 1.125rem;
     }
   }
 

@@ -9,6 +9,7 @@ import { IProductCard, TProductCardHorizontal } from '../product-card/product-ca
 import { FlexContainer, mediaQueryHelper } from '../../layouts'
 import { DebounceInput } from '../../atoms/inputs/debounce-input/debounce-input'
 import { HorizontalVariants } from '../horizontal-variants/horiztonal-variants';
+import { IProductVariant } from '../product-variant/product-variant'
 
 const ProductCardHorizontal = ({
   product,
@@ -204,10 +205,10 @@ const ProductCardHorizontal = ({
             {iconsAndTags}
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
-                <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags })}>{productName}</h5>
+                <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton })}>{productName}</h5>
               </Link>
             ) : (
-              <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags })}>{productName}</h5>
+              <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton })}>{productName}</h5>
             )}
             <div className={styles.cardInfoWrapper}>
               <div>
@@ -322,16 +323,29 @@ const ProductCardHorizontal = ({
                 )}
 
                 {!hideCartButton && (
-                  <IconButton
-                    type='button'
-                    icon='icon-shopping-cart'
-                    onClick={() => addToCart(product)}
-                    surface='primary'
-                    noBorder
-                    disabled={buttonLoading || loading || disabled || quantity <= '0'}
-                    name={addToCartBtnLabel}
-                    size='medium'
-                  />
+                  <>
+                    {isRestrictedUser ? (
+                      <Button
+                        type='button'
+                        onClick={() => addToCart(product)}
+                        surface='primary'
+                        disabled={buttonLoading || loading || disabled || quantity <= '0'}
+                        name={addToCartBtnLabel}
+                        children={addToCartBtnLabel}
+                      />
+                    ) : (
+                      <IconButton
+                        type='button'
+                        icon='icon-shopping-cart'
+                        onClick={() => addToCart(product)}
+                        surface='primary'
+                        noBorder
+                        disabled={buttonLoading || loading || disabled || quantity <= '0'}
+                        name={addToCartBtnLabel}
+                        size='medium'
+                      />
+                    )}
+                  </>
                 )}
               </div>
             </div>

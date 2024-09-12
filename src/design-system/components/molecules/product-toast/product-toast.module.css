@@ -32,12 +32,11 @@
     overflow-y: scroll;
 	-ms-overflow-style: none;
     scrollbar-width: none;  
-	padding: 1rem;
 	width: 86vw;
 	box-shadow: 0 0 0.5rem #999;
-	/* opacity: .9; */
+
 	@media(min-width: 64em){
-		padding: 1.5rem;
+		padding: 1rem;
 		width: 38.75rem;
 	}
 }
@@ -45,6 +44,11 @@
 .buttonWrapper {
 	display: flex;
 	justify-content: flex-end;
+	padding: 1rem 1rem 0;
+
+	@media (min-width: 48em) {
+		padding: 0;
+	}
 }
 
 .buttonsWrapper {

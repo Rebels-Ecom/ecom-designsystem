@@ -1,8 +1,12 @@
 .hero {
-  height: 36rem;
+  height: 22rem;
   width: 100%;
   position: relative;
   display: flex;
+
+  @media (min-width: 48em) {
+    height: 36rem;
+  }
 }
 
 .outerWrapper {
@@ -44,7 +48,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   
   @media (min-width: 48rem) {
     width: 50%;
@@ -52,14 +56,14 @@
     padding-bottom: 0;
   }
   
-  & > header > h2 {
+  & > .textContent > h2 {
     color:var(--color-text-decorative-orange);
   }
 }
 
 .dark {
   & .content {
-    & > header > h1, & > p {
+    & > .textContent > h1, & > p {
       color: var(--color-text-white);
     }
   }
@@ -68,7 +72,7 @@
 .light {
   & .content {
 
-    & > header > h1, & > p {
+    & > .textContent > h1, & > p {
       color: var(--color-text-default);
     }
   }
@@ -86,13 +90,17 @@
 }
 
 .topHeading {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
+
+  @media (min-width: 48em) {
+    margin: 0 0 1rem 0;
+  }
 }
 
 .heading {
+  font-size: 1.5rem;
+  line-height: 1.75rem;
   font-weight: var(--font-weight-bold);
-  font-size: var(--heading-m-mobile-font-size);
-  line-height: var(--heading-m-mobile-line-height);
   margin: 0;
 
   @media (min-width: 48em) {
@@ -112,7 +120,9 @@
 }
 
 .linkButton {
-  margin-top: 0.625rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+
   @media (min-width: 48em) {
     margin-top: 1.125rem;
   }

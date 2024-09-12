@@ -1,6 +1,6 @@
 .productCardHorizontal {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 1.5rem;
   padding: 1rem;
   position: relative;
@@ -21,7 +21,7 @@
 
   &.campaign {
     border: 2px solid transparent;
-    padding: 3rem 1rem 1rem;
+    padding: 2.5rem 1rem 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     border-color: var(--campaign-color);
@@ -42,9 +42,10 @@
     }
 
     & .iconLink {
+      top: 0.5rem;
+      
       & button {
         color: white;
-        padding: 0;
       }
     }
   }
@@ -75,15 +76,13 @@
     }
     
     & .iconLink {
-      & button {
-        padding: 0;
-      }
+      top: 0.5rem;
     }
   }
 
   &.outOfStockProduct {
     border: 2px solid transparent;
-    padding: 1rem;
+    padding: 2.5rem 1rem 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     border-color: var(--out-of-stock-product-color);
@@ -103,15 +102,13 @@
       padding: 0.5rem 2.5rem 0.5rem 1rem;
     }
     & .iconLink {
-      & button {
-        padding: 0;
-      }
+      top: 0.5rem;
     }
   }
 
   & .picture {
     all: unset;
-    width: 3rem;
+    width: 2.5rem;
     display: flex;
     align-items: center;
     align-self: center;
@@ -185,7 +182,7 @@
     & .cardInfoWrapper {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.75rem;
       align-self: stretch;
       
       @media (min-width: 48rem) {
@@ -265,6 +262,10 @@
     & .favoriteIconActive {
       color: var(--orange-500);
     }
+  }
+
+  & .imageWrapper {
+    align-self: center;
   }
 
   & .imageWrapperPlaceholder {

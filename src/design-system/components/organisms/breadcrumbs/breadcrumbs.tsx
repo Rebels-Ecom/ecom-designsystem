@@ -10,7 +10,7 @@ export type TBreadcrumbsTextWidth = 'wide' | 'narrow'
 
 export type TBreadcrumb = {
     children: string;
-    href: string;
+    href?: string;
     active?: boolean;
 } 
 
@@ -29,11 +29,16 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
     return (
         <ContentWrapper>
             <FlexContainer gap={0.5}>
-                {breadcrumbs.map((breadcrumb) => (
+                {breadcrumbs.map((breadcrumb) => breadcrumb?.href ? (
                     <Link key={breadcrumb.href} to={breadcrumb.href} className={styles.breadcrumb}>
                         <span className={cx(styles.breadcrumbText, {[styles.underline]: !breadcrumb.active})}>{breadcrumb.children}</span>
                         {!breadcrumb.active && <Icon icon='icon-chevron-right' />}
                     </Link>
+                ) : (
+                    <span key='last-breadcrumb' className={cx(styles.breadcrumb, styles.lastBreadcrumb)}>
+                        <span className={cx(styles.breadcrumbText, {[styles.underline]: !breadcrumb.active})}>{breadcrumb.children}</span>
+                        {!breadcrumb.active && <Icon icon='icon-chevron-right' />}
+                    </span>
                 ))}
             </FlexContainer>
         </ContentWrapper>

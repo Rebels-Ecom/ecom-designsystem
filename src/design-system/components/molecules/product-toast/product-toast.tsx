@@ -38,9 +38,7 @@ const ProductToast = forwardRef<HTMLDivElement, IProductToast>(
     const productToastRef = useRef<HTMLDivElement | null>(null)
     const { isMobile, isTablet, isDesktop, isBigScreen } = mediaQueryHelper()
 
-    const onClose = useCallback(() => {
-      setIsOpen && setIsOpen(false)
-    }, [setIsOpen])
+    const onClose = useCallback(() => setIsOpen?.(false), [setIsOpen])
 
     if (!cartProduct) return null
 

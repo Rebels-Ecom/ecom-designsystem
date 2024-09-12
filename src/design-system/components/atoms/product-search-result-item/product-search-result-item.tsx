@@ -4,7 +4,6 @@ import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultF
 import { IProductVariant } from '../../molecules/product-variant/product-variant'
 import { IconButton } from '../icon-button/icon-button'
 import { IPicture, Picture } from '../picture/picture'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 
 export interface IResultItem {
   partNo: string

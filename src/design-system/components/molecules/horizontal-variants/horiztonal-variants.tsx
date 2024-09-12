@@ -8,7 +8,13 @@ import { useOnClickOutside } from "../../../hooks";
 import { Carousel, CarouselItem } from "../../organisms";
 
 
-const HorizontalVariants = ({ variantsList, onCloseVariants, open, onVariantSelect, selectedVariantId }: IProductVariantList) => {
+const HorizontalVariants = ({
+  variantsList,
+  onCloseVariants,
+  open,
+  onVariantSelect,
+  selectedVariantId
+}: IProductVariantList) => {
   const variantsRef = useRef<HTMLDivElement>(null);
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
   function handleOnClickVariant(partNo: string) {
@@ -55,7 +61,7 @@ const HorizontalVariants = ({ variantsList, onCloseVariants, open, onVariantSele
             }
           }
         >
-          {variantsList?.map(variant => (
+          {variantsList?.sort((a, b) => Number(b.variantId === selectedProductVariantId) - Number(a.variantId === selectedProductVariantId))?.map(variant => (
             <CarouselItem key={variant.variantId}>
               <HorizontalVariant
                 {...variant}

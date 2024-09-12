@@ -41,9 +41,9 @@ html {
 
   /* Heading XS - ?/? mobile - 18/23 desktop */
   --heading-xs-mobile-font-size: 1.125rem;
-  --heading-xs-mobile-line-height: 1.438rem;
+  --heading-xs-mobile-line-height: 1.5rem;
   --heading-xs-desktop-font-size: 1.125rem;
-  --heading-xs-desktop-line-height: 1.438rem;
+  --heading-xs-desktop-line-height: 1.5rem;
 
   /* Body - ?/? mobile - 16/31 desktop */
   --body-mobile-font-size: 1rem;

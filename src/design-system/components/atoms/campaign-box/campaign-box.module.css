@@ -57,10 +57,7 @@
     line-height: 1.25rem;
     margin-top: 0;
     margin-bottom: 1.25rem;
-
-    @media (min-width: 48em) {
-      padding-right: 7rem;
-    }
+    padding-right: 7rem;
   }
 
   & .description {

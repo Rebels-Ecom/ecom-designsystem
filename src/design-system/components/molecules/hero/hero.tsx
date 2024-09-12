@@ -40,10 +40,10 @@ const Hero = ({ topHeading, heading, preamble, image, video, contentImage, align
         <div className={styles.innerWrapper}>
           <div className={cx(styles.content, getAlignContent(alignContent))}>
             {(topHeading || heading) && (
-              <header>
+              <div className={styles.textContent}>
                 {topHeading && <h2 className={cx('body', 'fontRegular', styles.topHeading)}>{topHeading}</h2>}
                 {heading && <h1 className={cx('headingXL', styles.heading)}>{heading}</h1>}
-              </header>
+              </div>
             )}
             {contentImage && <Picture {...contentImage} fetchPriority={fetchPriority} loading={loading}></Picture>}
             {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}

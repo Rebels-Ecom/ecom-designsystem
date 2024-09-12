@@ -5,9 +5,11 @@
     align-items: center;
     height: 11.5rem;
     gap: 1rem;
+    padding-right: 1rem;
 
     @media (min-width: 48em) {
       height: 10.5rem;
+      padding-right: 0;
     }
 
     &.whiteBackground {

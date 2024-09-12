@@ -19,6 +19,14 @@
     text-decoration: none;
     line-height: 1.125rem;
 
+    &.lastBreadcrumb {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: var(--interactive-default);
+    }
+
     & .breadcrumbText {
         &.underline {
             text-decoration: underline;
