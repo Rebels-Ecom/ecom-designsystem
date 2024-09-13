@@ -1,0 +1,4 @@
+import{C as i}from"./component-with-tooltip-83375017.js";import{I as p}from"./icon-button-a35c10ac.js";import{j as t}from"./jsx-runtime-03333307.js";import"./index-9d35675b.js";import"./index-145cfc81.js";import"./index-821951ec.js";import"./index-09749a66.js";import"./ui-link-2df8a5b4.js";import"./icon-cf6ebd85.js";import"./motion-9380e2c6.js";import"./tslib.es6-4d885d63.js";const S={title:"Design System/Atoms/ComponentWithTooltip",component:i},m={render:()=>t.jsx(i,{content:"Välj variant",element:t.jsx(p,{icon:"icon-x",type:"button",onClick:()=>alert("clicked")}),side:"top",align:"center"})},o={...m,args:{}};var e,r,n;o.parameters={...o.parameters,docs:{...(e=o.parameters)==null?void 0:e.docs,source:{originalSource:`{
+  ...ComponentWithTooltipStoryTemplate,
+  args: {}
+}`,...(n=(r=o.parameters)==null?void 0:r.docs)==null?void 0:n.source}}};const W=["ComponentWithTooltipStory"];export{o as ComponentWithTooltipStory,W as __namedExportsOrder,S as default};
