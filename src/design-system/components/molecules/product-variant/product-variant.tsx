@@ -1,7 +1,6 @@
 import { RadioButton } from '../../atoms/inputs/radio-button/radio-button'
 import { IPicture, Picture } from '../../atoms/picture/picture'
 import styles from './product-variant.module.css'
-import cx from 'classnames'
 import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import { Icon } from '../../atoms'
 import { FlexContainer } from '../../layouts'
@@ -24,7 +23,6 @@ export interface IProductVariant {
   currencyLabel: string
   sellerOnlyTooltipText?: string
   isRestrictedUser?: boolean
-  horizontal?: boolean;
 }
 
 const ProductVariant = ({
@@ -42,10 +40,9 @@ const ProductVariant = ({
   sellerOnly,
   sellerOnlyTooltipText,
   isRestrictedUser,
-  horizontal
 }: IProductVariant) => {
   return (
-    <button className={cx(styles.productVariant, { [styles.horizontal]: horizontal })} onClick={() => onClick?.(variantId)}>
+    <button className={styles.productVariant} onClick={() => onClick?.(variantId)}>
       <FlexContainer stretch justifyContent="flex-end" alignItems="center" className={styles.topRow}>
         {sellerOnly && (
           <>
@@ -68,8 +65,8 @@ const ProductVariant = ({
           <p className={styles.heading}>{variantName}</p>
           {!isRestrictedUser && (
             <>
-              <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${variantId}`}</p>
-              <p className={cx(styles.textPurple, 'bodyS')}>{`${priceStr} ${currencyLabel}/${unitLabel}`}</p>
+              <p className={styles.textGray}>{`${partNoLabel} ${variantId}`}</p>
+              <p className={styles.textPurple}>{`${priceStr} ${currencyLabel}/${unitLabel}`}</p>
             </>
           )}
         </div>

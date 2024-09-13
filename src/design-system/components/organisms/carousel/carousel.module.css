@@ -147,8 +147,11 @@
     }
 
     &.lightArrows {
-      background-color: rgba(229, 236, 238, 0.75);
       border-radius: 50%;
+      
+      @media (min-width: 90em) {
+        background-color: rgba(229, 236, 238, 0.75);
+      }
 
       &.left {
         & span {

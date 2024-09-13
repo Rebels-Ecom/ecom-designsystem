@@ -1,15 +1,25 @@
-import React from 'react'
-import styles from './product-card-horizontal.module.css'
-import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
-import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, IconButton, Placeholder, Button, Icon, IconWithTooltip, AlertBox, ComponentWithTooltip } from '../../atoms'
-import cx from 'classnames'
+import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion'; 
+import cx from 'classnames';
+import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input';
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg';
+import {
+  Picture,
+  IconButton,
+  Placeholder,
+  Button,
+  Icon,
+  IconWithTooltip,
+  AlertBox,
+  ComponentWithTooltip
+} from '../../atoms';
+import styles from './product-card-horizontal.module.css';
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
 import { FlexContainer, mediaQueryHelper } from '../../layouts'
 import { DebounceInput } from '../../atoms/inputs/debounce-input/debounce-input'
 import { HorizontalVariants } from '../horizontal-variants/horiztonal-variants';
-import { IProductVariant } from '../product-variant/product-variant'
+import { useOnClickOutside } from '../../../hooks';
 
 const ProductCardHorizontal = ({
   product,
@@ -49,6 +59,8 @@ const ProductCardHorizontal = ({
   tooltips,
   isAddingToFavorites,
 }: IProductCard & TProductCardHorizontal) => {
+  const alertBoxRef = useRef<HTMLDivElement>(null);
+  const { isMobile } = mediaQueryHelper();
   const {
     activeCampaign,
     partNo,
@@ -77,7 +89,7 @@ const ProductCardHorizontal = ({
     packaging,
   } = product;
 
-  const { isMobile } = mediaQueryHelper();
+  const [alertBoxOpen, setAlertBoxOpen] = useState(false);
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -104,6 +116,11 @@ const ProductCardHorizontal = ({
   }
 
   const hasIconAndTags = sellerOnly || isAccessoryPotItem || !!tags?.length;
+  const isFavorite = isFavoriteProduct(partNo);
+  const isCampaignCard = activeCampaign?.title;
+  const isLimitedCard = !activeCampaign && isLimitedProduct && limitedLabel;
+  const isOutOfStockCard = !activeCampaign && outOfStock && outOfStockLabel;
+  const isSpecialCard = isCampaignCard || isLimitedCard || isOutOfStockCard;
 
   const iconsAndTags = (
     <FlexContainer alignItems='center' gap={0.5} minHeight={hasIconAndTags ? 2.25 : 0} stretch>
@@ -144,7 +161,7 @@ const ProductCardHorizontal = ({
     </FlexContainer>
   )
 
-  const isFavorite = isFavoriteProduct(partNo);
+  useOnClickOutside({ ref: alertBoxRef, onClose: () => setAlertBoxOpen(false)});
 
   return (
     <div
@@ -152,21 +169,22 @@ const ProductCardHorizontal = ({
         styles.productCardHorizontal,
         className,
         {
-          [styles.campaign]: activeCampaign?.title && !loading,
-          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
-          [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
+          [styles.specialCard]: isSpecialCard && !loading,
+          [styles.campaign]: isCampaignCard && !loading,
+          [styles.limitedProduct]: isLimitedCard && !loading,
+          [styles.outOfStockProduct]: isOutOfStockCard && !loading,
         },
       )}
       style={style}
     >
-      {!outOfStock && activeCampaign?.title && !loading && (
-        <div className={styles.campaignBox}>{activeCampaign.title}</div>
+      {!outOfStock && isCampaignCard && !loading && (
+        <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{activeCampaign.title}</div>
       )}
-      {!activeCampaign && isLimitedProduct && limitedLabel && !loading && (
-        <div className={cx(styles.limitedBox, {[styles.withExtraPadding]: !hideRemoveButton})}>{limitedLabel}</div>
+      {isLimitedCard && !loading && (
+        <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{limitedLabel}</div>
       )}
-      {outOfStock && outOfStockLabel && !loading && (
-        <div className={styles.outOfStockBox}>{outOfStockLabel}</div>
+      {isOutOfStockCard && !loading && (
+        <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{outOfStockLabel}</div>
       )}
       {loading ? (
         <>
@@ -205,10 +223,10 @@ const ProductCardHorizontal = ({
             {iconsAndTags}
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
-                <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton })}>{productName}</h5>
+                <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h5>
               </Link>
             ) : (
-              <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton })}>{productName}</h5>
+              <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h5>
             )}
             <div className={styles.cardInfoWrapper}>
               <div>
@@ -257,15 +275,13 @@ const ProductCardHorizontal = ({
                 )}
               </div>
 
-              {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>}
+              {/* {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>} */}
               
               <div className={styles.buttonsWrapper}>
-                
-
                 {(!!productVariantList?.length ||
                   (showAddToPurchaseListIcon &&onSaveToPurchaseListClick) ||
                   (showFavoriteIcon && onFavoriteIconClick)) && (
-                  <FlexContainer gap={0.5} justifyContent='flex-end'>
+                  <FlexContainer gap={0.5} justifyContent='flex-end' alignItems='center'>
                     {productVariantList?.length > 1 && (
                       <ComponentWithTooltip
                         content={tooltips?.changeVariant}
@@ -319,6 +335,37 @@ const ProductCardHorizontal = ({
                         )}
                       />
                     )}
+                    {alertBox && (
+                      <>
+                        {isMobile ? (
+                          <Button
+                            type='button'
+                            onClick={() => setAlertBoxOpen(true)}
+                            className={styles.alertBoxButton}
+                            children={alertBox.buttonText ?? 'Byt produkt'}
+                            surface='primary'
+                            iconRight={{ icon: 'icon-alert-circle', color: 'error' }}
+                            size='x-small'
+                          />
+                        ) : (
+                          <ComponentWithTooltip
+                            content={alertBox.title}
+                            color='pink'
+                            element={(
+                              <Button
+                                type='button'
+                                onClick={alertBox.onClick}
+                                className={styles.alertBoxButton}
+                                children={alertBox.buttonText ?? 'Byt produkt'}
+                                surface='primary'
+                                iconRight={{ icon: 'icon-alert-circle', color: 'error' }}
+                                size='x-small'
+                              />
+                            )}
+                          />
+                        )}
+                      </>
+                    )}
                   </FlexContainer>
                 )}
 
@@ -361,6 +408,22 @@ const ProductCardHorizontal = ({
           selectedVariantId={selectedVariantId}
           sellerOnlyTooltipText={tooltips?.sellerOnly}
         />
+      )}
+      {alertBox && isMobile && (
+        <motion.div
+          ref={alertBoxRef}
+          className={styles.alertBoxWrapper}
+          initial={{ y: '100%' }}
+          animate={alertBoxOpen ? { y: '0%' } : { y: '100%' }}
+          exit={{ y: '100%' }}
+          transition={{
+            type: 'tween',
+            duration: 0.3,
+            ease: [0.4, 0, 0.2, 1],
+          }}
+        >
+          <AlertBox className={styles.alertBox} {...alertBox} />
+        </motion.div>
       )}
     </div>
   )

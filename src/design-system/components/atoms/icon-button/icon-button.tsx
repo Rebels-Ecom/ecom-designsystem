@@ -158,19 +158,20 @@ const IconButton = (props: TIconButton) => {
         onClick={props.onClick}
         aria-label={props.name}
       >
-        <motion.span
+        {/* <motion.span
           variants={props.animate ? variants : undefined}
           initial='default'
           animate={props.animate}
-        >
+        > */}
           <Icon
             icon={props.icon}
             className={cx({
               [styles.iconDisabled]: props.disabled,
               [styles.bold]: props.weight === 'bold',
+              [styles.animate]: props.animate === 'loading'
             })}
           />
-        </motion.span>
+        {/* </motion.span> */}
         {!!props.notification && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
             {props.notification < 100 ? props.notification : '99+'}

@@ -4,6 +4,7 @@
 
 .fallback {
   object-fit: contain !important;
+  padding: 1rem !important; 
 }
 
 .image {

@@ -37,9 +37,9 @@ const AlertBox = ({ title, buttonText, color = 'error', className, onClick, load
   return (
     <div className={cx(styles.alertBox, styles[`background-${color}`], {[styles.minHeight]: minHeight}, className ? className : '')}>
       <Icon className={cx(styles.icon, styles[`background-${color}`])} icon={color === 'information' ? 'icon-info' : 'icon-alert-circle'}></Icon>
-      <Text size='small'>{title}</Text>
+      <Text size='small' className={styles.title}>{title}</Text>
       {buttonText && onClick && (
-        <Button type='button' surface='primary' onClick={onClick} size="xx-small">
+        <Button type='button' surface='primary' onClick={onClick} size="xx-small" className={styles.button}>
           {buttonText}
         </Button>
       )}

@@ -28,50 +28,50 @@ const HorizontalVariants = ({
   return (
     <motion.div
       ref={variantsRef}
-        className={cx(styles.horizontalVariants, {[styles.open]: open})}
-        initial={{ y: '100%' }}
-        animate={open ? { y: '0%' } : { y: '100%' }}
-        exit={{ y: '100%' }}
-        transition={{
-          type: 'tween', // Use tween for smooth transitions
-          duration: 0.3, // Duration of the animation
-          ease: [0.4, 0, 0.2, 1], // Custom easing function for smoothness
-        }}
-      >
-        <Carousel
-          className={styles.carousel}
-          noGrid
-          trackClassName={styles.carouselTrack}
-          splideProps={{
-            options: {
-              gap: '0.25rem',
-            }
-          }}
-          zeroOffset
-          breakpoints={
-            {
-              md: {
-                perPage: 2,
-                perMove: 2
-              },
-              lg: {
-                perPage: 2,
-                perMove: 2
-              },
-            }
+      className={cx(styles.horizontalVariants, {[styles.open]: open})}
+      initial={{ y: '100%' }}
+      animate={open ? { y: '0%' } : { y: '100%' }}
+      exit={{ y: '100%' }}
+      transition={{
+        type: 'tween',
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1],
+      }}
+    >
+      <Carousel
+        className={styles.carousel}
+        noGrid
+        trackClassName={styles.carouselTrack}
+        splideProps={{
+          options: {
+            gap: '0.25rem',
           }
-        >
-          {variantsList?.sort((a, b) => Number(b.variantId === selectedProductVariantId) - Number(a.variantId === selectedProductVariantId))?.map(variant => (
-            <CarouselItem key={variant.variantId}>
-              <HorizontalVariant
-                {...variant}
-                checked={variant.variantId === selectedProductVariantId}
-                onClick={handleOnClickVariant}
-              />
-            </CarouselItem>
-          ))}
-        </Carousel>
-      </motion.div>
+        }}
+        zeroOffset
+        breakpoints={
+          {
+            md: {
+              perPage: 2,
+              perMove: 2
+            },
+            lg: {
+              perPage: 2,
+              perMove: 2
+            },
+          }
+        }
+      >
+        {variantsList?.sort((a, b) => Number(b.variantId === selectedProductVariantId) - Number(a.variantId === selectedProductVariantId))?.map(variant => (
+          <CarouselItem key={variant.variantId}>
+            <HorizontalVariant
+              {...variant}
+              checked={variant.variantId === selectedProductVariantId}
+              onClick={handleOnClickVariant}
+            />
+          </CarouselItem>
+        ))}
+      </Carousel>
+    </motion.div>
   )
 }
 

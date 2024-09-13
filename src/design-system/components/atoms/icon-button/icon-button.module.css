@@ -38,6 +38,10 @@
         padding: 0.25rem;
     }
 
+    & .animate {
+        animation: pulse 1.5s infinite;
+    }
+
     &.x-small {
         height: 2.25rem;
         min-width: 1.25rem;
@@ -110,4 +114,16 @@
 
 .iconDisabled {
     color: var(--color-on-secondary-disabled)
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

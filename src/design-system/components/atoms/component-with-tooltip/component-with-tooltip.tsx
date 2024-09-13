@@ -3,21 +3,23 @@ import cx from 'classnames';
 import styles from './component-with-tooltip.module.css';
 import { cloneElement, ReactElement } from 'react';
 
-interface IComponentWithTooltip<T> {
-  element: ReactElement; // Change to ReactElement
+interface IComponentWithTooltip {
+  element: ReactElement;
   content?: string;
   wrapperClassName?: string;
   side?: 'top' | 'right' | 'bottom' | 'left';
   align?: 'end' | 'start' | 'center';
+  color?: 'black' | 'pink'; // Add more as needed
 }
 
-const ComponentWithTooltip = <T,>({
+const ComponentWithTooltip = ({
   content,
   wrapperClassName,
   side,
   align,
   element: Element,
-}: IComponentWithTooltip<T>) => {
+  color = 'black'
+}: IComponentWithTooltip) => {
   return !content ? Element : (
     <div className={cx(styles.componentWithTooltip, wrapperClassName)}>
       <Tooltip.Provider delayDuration={0}>
@@ -29,7 +31,7 @@ const ComponentWithTooltip = <T,>({
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
-              className={styles.content}
+              className={cx(styles.content, styles[color])}
               sideOffset={0}
               side={side ?? 'top'}
               align={align}

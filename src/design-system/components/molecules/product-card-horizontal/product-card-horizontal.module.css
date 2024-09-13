@@ -19,90 +19,64 @@
     padding: 1rem;
   }
 
-  &.campaign {
+  &.specialCard {
     border: 2px solid transparent;
     padding: 2.5rem 1rem 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
-    border-color: var(--campaign-color);
 
-    & .campaignBox {
-      border: 2px solid transparent;
-      border-color: var(--campaign-color);
-      background-color: var(--campaign-color);
-      color: white;
-      font-family: var(--font-family-secondary);
-      border-bottom-left-radius: 0.5rem;
-      border-top-width: 0;
-      border-right-width: 0;
+    & .box {
       position: absolute;
       top: 0;
       right: 0;
       padding: 0.5rem 3rem 0.5rem 1rem;
+      border: 0.125rem solid transparent;
+      border-bottom-left-radius: 0.5rem;
+      border-top-width: 0;
+      border-right-width: 0;
+      font-family: var(--font-family-secondary);
+
+      &.noRemoveButton {
+        padding-right: 1rem;
+      }
     }
 
     & .iconLink {
       top: 0.5rem;
-      
-      & button {
-        color: white;
-      }
+    }
+  }
+
+  &.campaign {
+    border-color: var(--campaign-color);
+
+    & .box {
+      border-color: var(--campaign-color);
+      background-color: var(--campaign-color);
+      color: white;
+    }
+
+    & .iconLink button {
+      color: white;
     }
   }
 
   &.limitedProduct {
-    border: 2px solid transparent;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow: hidden;
     border-color: var(--limited-product-color);
 
-    & .limitedBox {
-      border: 2px solid transparent;
+    & .box {
       border-color: var(--limited-product-color);
       background-color: var(--limited-product-color);
       color: var(--color-text-default);
-      font-family: var(--font-family-secondary);
-      border-bottom-left-radius: 0.5rem;
-      border-top-width: 0;
-      border-right-width: 0;
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 0.5rem 1rem;
-    }
-    & .withExtraPadding {
-      padding: 0.5rem 2.5rem 0.5rem 1rem;
-    }
-    
-    & .iconLink {
-      top: 0.5rem;
     }
   }
 
   &.outOfStockProduct {
-    border: 2px solid transparent;
-    padding: 2.5rem 1rem 1rem;
-    border-radius: 0.5rem;
-    overflow: hidden;
     border-color: var(--out-of-stock-product-color);
 
-    & .outOfStockBox {
-      border: 2px solid transparent;
+    & .box {
       border-color: var(--out-of-stock-product-color);
       background-color: var(--out-of-stock-product-color);
       color: var(--color-text-default);
-      font-family: var(--font-family-secondary);
-      border-bottom-left-radius: 0.5rem;
-      border-top-width: 0;
-      border-right-width: 0;
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 0.5rem 2.5rem 0.5rem 1rem;
-    }
-    & .iconLink {
-      top: 0.5rem;
     }
   }
 
@@ -194,6 +168,7 @@
 
     & .alertBox{
       width: 100%;
+
       @media (min-width: 48rem) {
         width: 45%;
       }
@@ -290,6 +265,25 @@
     background: var(--cta-tertiary-default);
     border-radius: 50%;
     font-size: 0.875rem;
+  }
+
+  .alertBoxButton {
+    margin-left: 0.5rem;
+  }
+
+  .alertBoxWrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    padding: 0.5rem;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 

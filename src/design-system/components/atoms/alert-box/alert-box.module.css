@@ -5,8 +5,12 @@
   align-items: center;
   text-align: center;
   padding: 1rem;
-  gap: 0.5rem;
+  gap: 1.5rem;
   border-radius: 0.25rem;
+
+  @media (min-width: 48em) {
+    gap: 0.5rem;
+  }
   
   &.minHeight {
     min-height: 10rem;
@@ -26,13 +30,33 @@
     background-color: var(--alert-message-icon-information-background);
     color: var(--color-text-white);
   }
-}
 
-.icon {
-  font-size: 1.125rem;
-  width: 1.125rem;
-  height: 1.125rem;
-  &.background-error { color: var(--color-text-blue); }
-  &.background-warning { color: var(--color-text-blue);}
-  &.background-information { color: var(--color-text-white);}
+  & .icon {
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+
+    &.background-error { color: var(--color-text-blue); }
+    &.background-warning { color: var(--color-text-blue);}
+    &.background-information { color: var(--color-text-white);}
+  }
+
+  & .title {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    text-align: center;
+
+    @media (min-width: 48em) {
+      font-size: 1rem;
+      text-align: left;
+    }
+  }
+  
+  & .button {
+    width: 100%;
+    
+    @media (min-width: 48em) {
+      width: auto;
+    }
+  }
 }

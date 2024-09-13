@@ -47,11 +47,17 @@ export interface IProductDetails extends IProduct {
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   onPackageChange?: CallableFunction
-  sellerOnlyTooltipText?: string
-  accessoryPotItemTooltipText?: string
   alertBox?: TAlertBox
   availableForOrder?: boolean
   loading?: boolean;
+  tooltips?: {
+    addToFavorites?: string;
+    removeFromFavorites?: string;
+    addToPurchaseList?: string;
+    changeVariant?: string;
+    sellerOnly?: string;
+    accessoryPotItem?: string;
+  }
 }
 
 const ProductDetails = ({
@@ -87,14 +93,13 @@ const ProductDetails = ({
   packagePerPalletLabel2,
   onPackageChange,
   sellerOnly,
-  sellerOnlyTooltipText,
   isAccessoryPotItem,
-  accessoryPotItemTooltipText,
   activeCampaign,
   outOfStock,
   alertBox,
   availableForOrder,
-  loading
+  loading,
+  tooltips
 }: IProductDetails) => {
   const { isMobile, isTablet } = mediaQueryHelper()
   const [product, setProduct] = useState({
@@ -185,8 +190,8 @@ const ProductDetails = ({
         <div className={styles.iconWrapper}>
           {sellerOnly && (
             <>
-              {sellerOnlyTooltipText ? (
-                <IconWithTooltip content={sellerOnlyTooltipText} icon={{ icon: 'icon-eye' }} />
+              {tooltips?.sellerOnly ? (
+                <IconWithTooltip content={tooltips.sellerOnly} icon={{ icon: 'icon-eye' }} />
               ) : (
                 <Icon icon={'icon-eye'} size={'large'} />
               )}
@@ -194,8 +199,8 @@ const ProductDetails = ({
           )}
           {isAccessoryPotItem && (
             <>
-              {accessoryPotItemTooltipText ? (
-                <IconWithTooltip content={accessoryPotItemTooltipText} text="S" />
+              {tooltips?.accessoryPotItem ? (
+                <IconWithTooltip content={tooltips.accessoryPotItem} text="S" />
               ) : (
                 <span style={{ fontSize: '0.875rem', width: '1.25rem', height: '1.25rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <b>S</b>
@@ -229,7 +234,7 @@ const ProductDetails = ({
             variantsList={product.productVariantList}
             onVariantSelect={handlePackageChange}
             selectedVariantId={product.selectedVariantId}
-            sellerOnlyTooltipText={sellerOnlyTooltipText}
+            sellerOnlyTooltipText={tooltips?.sellerOnly}
             onCloseVariants={handleCloseVariants}
             isRestrictedUser={isRestrictedUser}
           />
