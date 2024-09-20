@@ -12,6 +12,13 @@
   max-width: 100%;
   height: auto;
   content-visibility: auto;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+
+  &.loading {
+    opacity: 0;
+  }
 }
 
 .opacityLayer {
@@ -29,3 +36,30 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
+.skeleton {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: rgb(229 236 238 / 20%);
+}
+
+.skeleton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(70deg, 
+  rgb(251 250 249 / 0%) 0%,
+  rgb(198 198 198 / 50%) 20%,
+  rgb(251 250 249 / 50%) 60%,
+  rgb(199 198 198 / 20%) 80%,
+  rgb(251 250 249 / 0%) 100%);
+  filter: blur(10px);
+}

@@ -32,6 +32,8 @@ import mariestad from '../../../../assets/blog-images/mariestad.png'
 import visby from '../../../../assets/blog-images/visby.png'
 import pang from '../../../../assets/blog-images/pang.png'
 
+import fallbackImage from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+
 /* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture */
 
 const meta: Meta<typeof Picture> = {
@@ -54,15 +56,16 @@ export const PictureStory = {
   ...PictureStoryTemplate,
   args: {
     id: 'pictureOne',
-    src: 'https://picsum.photos/id/1018/1366/576',
+    src: '', // 'https://picsum.photos/id/1018/1366/576',
     sources: [
       { srcset: 'https://picsum.photos/id/1011/700/1050', media: `(max-width: 767px)` },
-      { srcset: 'https://picsum.photos/id/1018/1366/576', media: `(min-width: 768px)` },
+      { srcset: '', media: `(min-width: 768px)` },
     ],
+    fallbackImageUrl: fallbackImage,
     alt: 'Placholder',
-    loading: 'eager',
+    loading: 'lazy',
     decoding: 'auto',
-    fetchPriority: 'high',
+    fetchPriority: 'low',
   }
 }
 

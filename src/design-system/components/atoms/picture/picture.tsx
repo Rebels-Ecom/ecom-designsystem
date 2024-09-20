@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './picture.module.css';
 import cx from 'classnames';
-import { mediaQueryHelper } from '../../layouts';
 
 export type TPictureLoading = 'eager' | 'lazy';
 export type TPictureDecoding = 'sync' | 'async' | 'auto';
@@ -52,16 +51,24 @@ const Picture: React.FC<IPicture> = ({
   classNamePicture,
   classNameImg,
   pictureWithOpacity,
-  fallbackImageUrl = ''
+  fallbackImageUrl = '',
 }) => {
-  const { isMobile } = mediaQueryHelper();
   const [imageSources, setImageSources] = useState({ src, sources });
+  const [isLoading, setIsLoading] = useState(true);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const validSources = sources;
     const validSrc = isValidUrl(src) ? src : '';
     setImageSources({ src: validSrc, sources: validSources });
+    setIsLoading(true);
   }, [src, sources]);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      handleImageLoad();
+    }
+  }, [imageSources]);
 
   const handleBrokenImage = () => {
     if (fallbackImageUrl && isValidUrl(fallbackImageUrl)) {
@@ -70,6 +77,15 @@ const Picture: React.FC<IPicture> = ({
         sources: [{ srcset: fallbackImageUrl }]
       });
     }
+    setIsLoading(false);
+  };
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleLoadStart = () => {
+    setIsLoading(true);
   };
 
   const isValidPicture = (): boolean => {
@@ -77,13 +93,12 @@ const Picture: React.FC<IPicture> = ({
       return false;
     }
   
-    const currentSrc = imageSources.sources[isMobile ? 0 : 1];
-    return Boolean(currentSrc?.srcset && isValidUrl(currentSrc.srcset)) && Boolean(imageSources.src);
+    return Boolean(imageSources.src);
   };
 
   return (
     <>
-      <picture className={classNamePicture || styles.picture} id={id}>
+      <picture className={cx(styles.picture, classNamePicture)} id={id}>
         {imageSources.sources.map((source, i) => (
           <source
             key={`${id}_source_${i}`}
@@ -94,20 +109,29 @@ const Picture: React.FC<IPicture> = ({
           />
         ))}
         <img
+          ref={imgRef}
           src={imageSources.src || fallbackImageUrl}
           className={cx(
-            classNameImg || styles.image,
-            { [styles.fallback]: !isValidPicture() && !!fallbackImageUrl }
+            styles.image,
+            classNameImg,
+            { [styles.fallback]: !isValidPicture() && !!fallbackImageUrl },
+            { [styles.loading]: isLoading }
           )}
           loading={loading}
           decoding={decoding}
           alt={alt}
+          aria-busy={isLoading}
           width={width}
           height={height}
           fetchpriority={fetchPriority}
           onError={handleBrokenImage}
+          onLoad={handleImageLoad}
+          onLoadStart={handleLoadStart}
         />
       </picture>
+      {isLoading && (
+        <div className={styles.skeleton} style={{ width, height }} />
+      )}
       {pictureWithOpacity && (
         <div 
           className={cx(
