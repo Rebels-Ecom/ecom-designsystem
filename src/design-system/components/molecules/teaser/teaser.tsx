@@ -18,14 +18,26 @@ export interface ITeaser {
     tag?: ITag
     tagPosition?: TTagPosition
     linkButton : ILinkButton
-    fullWidth?: boolean
+    fullWidth?: boolean;
+    fallbackImageUrl?: string;
 }
 
-const Teaser = ({heading, preamble, richText, image, imagePosition, tag, tagPosition, linkButton, imageRound, fullWidth}: ITeaser) => {
+const Teaser = ({
+    heading,
+    preamble,
+    richText,
+    image,
+    imagePosition,
+    tag,
+    tagPosition,
+    linkButton,
+    imageRound,
+    fallbackImageUrl
+}: ITeaser) => {
     return (
         <div className={`${styles.teaser} ${imagePosition === 'left' ? styles.teaserLeft : styles.teaserRight}`}>
             <div className={cx(styles.imageWrapper, {[styles.imageRound]: imageRound})}>
-                <Picture {...image} classNamePicture={styles.picture} classNameImg={styles.image} />
+                <Picture {...image} classNamePicture={styles.picture} classNameImg={styles.image} fallbackImageUrl={fallbackImageUrl} />
                 {tag && (
                     <Tag
                         {...tag}

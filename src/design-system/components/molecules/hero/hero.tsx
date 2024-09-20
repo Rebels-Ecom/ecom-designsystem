@@ -10,6 +10,7 @@ export type heroTheme = 'light' | 'dark'
 
 export interface IHero {
   image: IPicture
+  fallbackImageUrl?: string;
   video?: IVideo
   contentImage?: IPicture
   topHeading?: string
@@ -27,14 +28,28 @@ function getAlignContent(alignContent: string = 'left'): string {
   return styles[`content-${alignContent}`]
 }
 
-const Hero = ({ topHeading, heading, preamble, image, video, contentImage, alignContent, link, heroTheme='light', fetchPriority, loading, isVideo }: IHero) => {
+const Hero = ({
+  topHeading,
+  heading,
+  preamble,
+  image,
+  video,
+  contentImage,
+  alignContent,
+  link,
+  heroTheme='light',
+  fetchPriority,
+  loading,
+  isVideo,
+  fallbackImageUrl
+}: IHero) => {
   return (
     <section className={cx(styles.hero, styles[heroTheme])}>
       {(isVideo && video)
         ?
         <Video {...video} videoWithOpacity={heroTheme}></Video>
         :
-        <Picture {...image} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} pictureWithOpacity={heroTheme}/>
+        <Picture {...image} fallbackImageUrl={fallbackImageUrl} fetchPriority={fetchPriority} loading={loading} classNamePicture={styles.picture} classNameImg={cx(styles.image)} pictureWithOpacity={heroTheme}/>
       }
       <div className={styles.outerWrapper}>
         <div className={styles.innerWrapper}>

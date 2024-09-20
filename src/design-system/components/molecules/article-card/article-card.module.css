@@ -23,8 +23,8 @@
   }
 
   &.equalHeights {
-    flex: 0 1 calc(50% - 0.75rem);
-    
+    /* flex: 0 1 calc(50% - 0.75rem); */
+
     @media (min-width: 33.75em) {
       flex: 1 1 calc(50% - 0.75rem);
     }

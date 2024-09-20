@@ -69,7 +69,12 @@
     max-width: 25rem;
     color: var(--error-red);
     text-align: center;
-    word-break: break-all;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    
+    & a {
+      white-space: nowrap;
+    }
 
     &.generalErrorMessageDisabled {
       & a {

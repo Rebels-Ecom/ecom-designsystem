@@ -24,7 +24,7 @@ const Carousel = ({
   lightArrows,
   ...props
  }: PropsWithChildren<ICarousel>) => {
-  const noOfChildren = Children?.count(props.children)
+  const noOfChildren = Children?.count(props.children) ?? 0;
   const ref = useRef<Splide | null>(null);
   const [userInitiated, setUserInitiated] = useState(false);
 
@@ -64,6 +64,8 @@ const Carousel = ({
       className={cx(styles.carousel, className, { [styles.noGrid]: noGrid })}
       options={{
         ...splideProps?.options,
+        drag: noOfChildren > 1,
+        arrows: noOfChildren > 1,
         classes: {
           arrow: cx('splide__arrow', styles.arrow, {[styles.offset]: offsetArrows }),
           next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, arrowsBottom && styles.arrowBottom, {
@@ -103,28 +105,30 @@ const Carousel = ({
       <SplideTrack className={trackClassName}>
         {props.children}
       </SplideTrack>
-      <div className="splide__arrows">
-        <button
-          className={cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, {
-            [styles.hasPadding]: !!padding,
-            [styles.arrowBottom]: arrowsBottom,
-            [styles.offset]: offsetArrows,
-            [styles.zeroOffset]: zeroOffset,
-            [styles.lightArrows]: lightArrows,
-          })}
-          onClick={goToPrev}
-          ><Icon icon='icon-chevron-left' size='large' /></button>
-        <button
-          className={cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, {
-            [styles.hasPadding]: !!padding,
-            [styles.arrowBottom]: arrowsBottom,
-            [styles.offset]: offsetArrows,
-            [styles.zeroOffset]: zeroOffset,
-            [styles.lightArrows]: lightArrows,
-          })}
-          onClick={goToNext}
-        ><Icon icon='icon-chevron-right' size='large' /></button>
-      </div>
+      {noOfChildren > 1 && (
+        <div className="splide__arrows">
+          <button
+            className={cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, {
+              [styles.hasPadding]: !!padding,
+              [styles.arrowBottom]: arrowsBottom,
+              [styles.offset]: offsetArrows,
+              [styles.zeroOffset]: zeroOffset,
+              [styles.lightArrows]: lightArrows,
+            })}
+            onClick={goToPrev}
+            ><Icon icon='icon-chevron-left' size='large' /></button>
+          <button
+            className={cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, {
+              [styles.hasPadding]: !!padding,
+              [styles.arrowBottom]: arrowsBottom,
+              [styles.offset]: offsetArrows,
+              [styles.zeroOffset]: zeroOffset,
+              [styles.lightArrows]: lightArrows,
+            })}
+            onClick={goToNext}
+          ><Icon icon='icon-chevron-right' size='large' /></button>
+        </div>
+      )}
     </Splide>
   )
 }
