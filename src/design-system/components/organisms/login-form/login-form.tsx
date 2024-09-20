@@ -1,6 +1,5 @@
 import styles from './login-form.module.css'
 import { Form } from '../../molecules'
-import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
 import { useMemo } from 'react'
 import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
@@ -38,7 +37,7 @@ export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> 
   onPasswordChange: (value: string) => void;
   onUsernameChange: (value: string) => void;
   loading?: boolean;
-  logo: TLogotype;
+  logo: React.ReactNode;
   captcha?: JSX.Element;
   submitDisabled?: boolean;
 }
@@ -105,7 +104,9 @@ const LoginForm = ({
 
   return (
     <div className={styles.loginForm}>
-      {logo && <Logotype {...logo} classNamePicture={styles.logo} />}
+      <div className={styles.logoWrapper}>
+        {logo && logo}
+      </div>
       <Form
         formTitle={title}
         formSubtitle={description}

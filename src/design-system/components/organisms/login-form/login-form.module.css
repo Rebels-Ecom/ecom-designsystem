@@ -12,6 +12,10 @@
     padding: 3rem;
   }
 
+  & .logoWrapper {
+    margin-bottom: 1rem;
+  }
+
   & h1 {
     margin: 0 0 10px 0;
   }

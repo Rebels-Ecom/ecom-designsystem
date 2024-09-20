@@ -4,8 +4,8 @@ import { Newsletter } from '../../molecules/newsletter/newsletter'
 import { useState } from 'react'
 import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
 import styles from './footer.module.css'
-import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
-import { ContentWrapper, mediaQueryHelper } from '../../layouts'
+import { TLogotype } from '../../molecules/logotype/logotype'
+import { ContentWrapper } from '../../layouts'
 
 export interface IFooter {
   footerTopBarLinks: Array<TNavLink>
@@ -41,7 +41,7 @@ const FooterContent = ({
   newsletterId,
   newsletterPlaceholder,
 }: {
-  logo: TLogotype
+  logo: React.ReactNode;
   address: string
   addressLabel: string
   children: React.ReactNode
@@ -59,7 +59,7 @@ const FooterContent = ({
   }
   return (
     <div className={styles.footerLeft}>
-      {logo && <Logotype {...logo} height={32} width={136} classNameImg={styles.logo} />}
+      {logo && logo}
       {showNewsletter && (
         <Newsletter
           id={newsletterId}
