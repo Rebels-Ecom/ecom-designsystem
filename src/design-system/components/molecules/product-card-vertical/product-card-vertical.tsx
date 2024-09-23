@@ -176,10 +176,10 @@ const ProductCardVertical = ({
           <div className={`${styles.cardContent}`}>
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.headingWrapper} onClick={onClick}>
-                <h5 className={styles.heading}>{productName}</h5>
+                <h2 className={cx(styles.heading, 'h5')}>{productName}</h2>
               </Link>
             ) : (
-              <h5 className={styles.heading}>{productName}</h5>
+              <h2 className={cx(styles.heading, 'h5')}>{productName}</h2>
             )}
             <p className={cx(styles.textGray, 'bodyS')}>{`${partNoLabel} ${partNo} ${country && `- ${country}`}`}</p>
             {!hidePrice && (

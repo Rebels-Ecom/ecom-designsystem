@@ -4,8 +4,9 @@ import { Newsletter } from '../../molecules/newsletter/newsletter'
 import { useState } from 'react'
 import { FooterTopBar } from '../../molecules/footer-top-bar/footer-top-bar'
 import styles from './footer.module.css'
-import { Logotype, TLogotype } from '../../molecules/logotype/logotype'
-import { ContentWrapper, mediaQueryHelper } from '../../layouts'
+import { TLogotype } from '../../molecules/logotype/logotype'
+import { ContentWrapper } from '../../layouts'
+import cx from 'classnames';
 
 export interface IFooter {
   footerTopBarLinks: Array<TNavLink>
@@ -41,7 +42,7 @@ const FooterContent = ({
   newsletterId,
   newsletterPlaceholder,
 }: {
-  logo: TLogotype
+  logo: React.ReactNode;
   address: string
   addressLabel: string
   children: React.ReactNode
@@ -59,7 +60,7 @@ const FooterContent = ({
   }
   return (
     <div className={styles.footerLeft}>
-      {logo && <Logotype {...logo} height={32} width={136} classNameImg={styles.logo} />}
+      {logo && logo}
       {showNewsletter && (
         <Newsletter
           id={newsletterId}
@@ -90,7 +91,7 @@ const FooterLinks = ({ footerLinks, linkComponent: Link, trackFooterLink }: { fo
         {footerLinks.map((list: TFooterLinksList, i: number) =>
           Array.isArray(list.links) && list.links?.length ? (
             <li key={`${list.title}-${i}`} className={styles.linkListItem}>
-              <h5 className={styles.linkListTitle}>{list.title}</h5>
+              <h3 className={cx(styles.linkListTitle, 'h5')}>{list.title}</h3>
               {list.links.length < 5 ? (
                 <ul className={styles.links}>
                   {list.links.map((link: ILink, i: number) => <FooterLink key={`${link.children}-${i}`} link={link} linkComponent={Link} />)}
@@ -120,11 +121,11 @@ const FooterLinks = ({ footerLinks, linkComponent: Link, trackFooterLink }: { fo
 const FooterLink = ({ link, linkComponent: Link, trackFooterLink }: { link: ILink; linkComponent: any, trackFooterLink?: CallableFunction }) => (
   <li className={styles.linkItem}>
     {link.isExternal ? (
-      <a href={link.href} target={link.target} className="body">
+      <a href={link.href} target={link.target} className="body" aria-label={`Go to ${link.children}`}>
         {link.children}
       </a>
     ) : (
-      <Link to={link.href} onClick={trackFooterLink}>{link.children}</Link>
+      <Link to={link.href} onClick={trackFooterLink} aria-label={`Go to ${link.children}`}>{link.children}</Link>
     )}
   </li>
 )

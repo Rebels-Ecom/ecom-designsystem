@@ -1,35 +1,44 @@
-import styles from './picture.module.css'
-import cx from 'classnames'
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
+import styles from './picture.module.css';
+import cx from 'classnames';
 
-export type TPictureLoading = 'eager' | 'lazy'
-export type TPictureDecoding = 'sync' | 'async' | 'auto'
-export type TPictureFetchPriority = 'high' | 'low' | 'auto'
-
-export interface IPicture {
-  id: string
-  sources: Array<IPictureSource>
-  src: string
-  width?: number | string
-  height?: number | string
-  loading?: TPictureLoading
-  decoding?: TPictureDecoding
-  alt?: string
-  fetchPriority?: TPictureFetchPriority
-  classNamePicture?: string
-  classNameImg?: string
-  pictureWithOpacity?: string
-  fallbackImageUrl?: string
-}
+export type TPictureLoading = 'eager' | 'lazy';
+export type TPictureDecoding = 'sync' | 'async' | 'auto';
+export type TPictureFetchPriority = 'high' | 'low' | 'auto';
 
 export interface IPictureSource {
-  srcset?: string
-  type?: string
-  media?: string
-  sizes?: string
+  srcset: string;
+  type?: string;
+  media?: string;
+  sizes?: string;
 }
 
-const Picture = ({
+export interface IPicture {
+  id: string;
+  sources: Array<IPictureSource>;
+  src: string;
+  width?: number | string;
+  height?: number | string;
+  loading?: TPictureLoading;
+  decoding?: TPictureDecoding;
+  alt?: string;
+  fetchPriority?: TPictureFetchPriority;
+  classNamePicture?: string;
+  classNameImg?: string;
+  pictureWithOpacity?: 'light' | 'dark';
+  fallbackImageUrl?: string;
+}
+
+const isValidUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+const Picture: React.FC<IPicture> = ({
   id,
   sources,
   src,
@@ -42,46 +51,98 @@ const Picture = ({
   classNamePicture,
   classNameImg,
   pictureWithOpacity,
-  fallbackImageUrl=''
-}: IPicture) => {
+  fallbackImageUrl = '',
+}) => {
+  const [imageSources, setImageSources] = useState({ src, sources });
+  const [isLoading, setIsLoading] = useState(true);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  const [imageSources, setImageSources] = useState({src, sources})
+  useEffect(() => {
+    const validSources = sources;
+    const validSrc = isValidUrl(src) ? src : '';
+    setImageSources({ src: validSrc, sources: validSources });
+    setIsLoading(true);
+  }, [src, sources]);
 
-  useEffect(() => { setImageSources({src, sources})}, [src])
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      handleImageLoad();
+    }
+  }, [imageSources]);
 
-  function isValidPicture() {
-    return sources instanceof Array && src && src !== '' && id
-  }
+  const handleBrokenImage = () => {
+    if (fallbackImageUrl && isValidUrl(fallbackImageUrl)) {
+      setImageSources({
+        src: fallbackImageUrl,
+        sources: [{ srcset: fallbackImageUrl }]
+      });
+    }
+    setIsLoading(false);
+  };
 
-  function handleBrokenImage(e: React.SyntheticEvent<HTMLImageElement, Event>) {
-    setImageSources({
-      src : fallbackImageUrl,
-      sources: [{srcset: fallbackImageUrl}]
-    })
-  }
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
 
-  if (!isValidPicture() && !fallbackImageUrl) return null
+  const handleLoadStart = () => {
+    setIsLoading(true);
+  };
+
+  const isValidPicture = (): boolean => {
+    if (!imageSources?.sources?.length) {
+      return false;
+    }
+  
+    return Boolean(imageSources.src);
+  };
+
   return (
     <>
-      <picture className={classNamePicture ? classNamePicture : styles.picture} id={id}>
+      <picture className={cx(styles.picture, classNamePicture)} id={id}>
         {imageSources.sources.map((source, i) => (
-          <source key={`${id}_source_${i}`} srcSet={source.srcset} type={source.type} media={source.media} sizes={source.sizes} />
+          <source
+            key={`${id}_source_${i}`}
+            srcSet={source.srcset || fallbackImageUrl}
+            type={source.type}
+            media={source.media}
+            sizes={source.sizes}
+          />
         ))}
         <img
-          src={imageSources.src ?? fallbackImageUrl}
-          className={cx(classNameImg ? classNameImg : styles.image, {[styles.fallback]: !isValidPicture() && !!fallbackImageUrl })}
+          ref={imgRef}
+          src={imageSources.src || fallbackImageUrl}
+          className={cx(
+            styles.image,
+            classNameImg,
+            { [styles.fallback]: !isValidPicture() && !!fallbackImageUrl },
+            { [styles.loading]: isLoading }
+          )}
           loading={loading}
           decoding={decoding}
           alt={alt}
+          aria-busy={isLoading}
           width={width}
           height={height}
           fetchpriority={fetchPriority}
           onError={handleBrokenImage}
+          onLoad={handleImageLoad}
+          onLoadStart={handleLoadStart}
         />
       </picture>
-      {pictureWithOpacity && <div className={cx(styles.opacityLayer, pictureWithOpacity==='light' ? styles.withLightBackground : styles.withDarkBackground)}/>}
+      {isLoading && (
+        <div className={styles.skeleton} style={{ width, height }} />
+      )}
+      {pictureWithOpacity && (
+        <div 
+          className={cx(
+            styles.opacityLayer,
+            pictureWithOpacity === 'light' ? styles.withLightBackground : styles.withDarkBackground
+          )}
+          aria-hidden="true"
+        />
+      )}
     </>
-  )
-}
+  );
+};
 
-export { Picture }
+export { Picture };

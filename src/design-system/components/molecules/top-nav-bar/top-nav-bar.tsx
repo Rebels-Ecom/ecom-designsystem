@@ -42,17 +42,27 @@ const TopNavBar = ({
     return(
       <>
         {link.isExternal
-          ?
-          <a href={link.isTelephoneLink ? `tel:${link.href}` : link.isMailLink ? `mailto:${link.href}` : link.href} className={styles.topNavLink} target={'_blank'}>
-            {link.icon && <Icon className={styles.navIcon} icon={link.icon} />}
-            <span className={cx('bodyS',
-            styles.topNavText)}>{link.children}</span>
-          </a>
-          :
-          <Link to={link.href} className={styles.topNavLink} title={link.children} onClick={link.onClick}>
-            {link.icon && <Icon icon={link.icon} className={styles.navIcon} />}
-            <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
-          </Link>
+          ? (
+            <a
+              href={link.isTelephoneLink ? `tel:${link.href}` : link.isMailLink ? `mailto:${link.href}` : link.href}
+              className={styles.topNavLink}
+              target={'_blank'}
+              aria-label={`Go to ${link.children}`}
+            >
+              {link.icon && <Icon className={styles.navIcon} icon={link.icon} />}
+              <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
+            </a>
+          ) : (
+            <Link
+              to={link.href}
+              className={styles.topNavLink}
+              onClick={link.onClick}
+              aria-label={`Go to ${link.children}`}
+            >
+              {link.icon && <Icon icon={link.icon} className={styles.navIcon} />}
+              <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>
+            </Link>
+          )
         }
       </>
     )

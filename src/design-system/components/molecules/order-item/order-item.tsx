@@ -73,7 +73,7 @@ const OrderItem = ({
         <>
           <div className={styles.firstRow}>
             {orderNumber && orderNumberLabel && (
-              <Link to={linkUrl}>
+              <Link to={linkUrl} aria-label={`Go to order ${orderNumber}`}>
                 <h4 className={styles.orderNumber} onClick={onClick}>{`${orderNumberLabel} ${orderNumber}`}</h4>
               </Link>
             )}
@@ -84,9 +84,8 @@ const OrderItem = ({
                   {statusIcon && <Icon className={styles.statusIcon} icon={getIcon()} />}
                 </span>
               )}
-              <Link to={linkUrl}>
-                <h4 className={styles.orderNumber} onClick={onClick}></h4>
-                <Icon className={styles.icon} icon={'icon-chevrons-right'}></Icon>
+              <Link to={linkUrl} aria-label={`Go to order ${orderNumber}`}>
+                <Icon className={styles.icon} icon={'icon-chevrons-right'} />
               </Link>
             </div>
           </div>

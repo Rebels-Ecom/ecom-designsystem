@@ -8,7 +8,10 @@
     width: 2rem;
     
     @media (min-width: 48em) {
-        width: 8.5rem;
+        /* width: 8.5rem; */
+        width: 136px;
+        height: 32px;
+        object-fit: contain;
     }
 }
 

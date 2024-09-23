@@ -25,7 +25,7 @@ const AgeVerificationForm = ({
       alignItems='center'
       gap={2}
     >
-      <Heading order={3} noMargin align='center'>{title}</Heading>
+      {title && <Heading order={3} noMargin align='center'>{title}</Heading>}
       <Text className={styles.description} align='center'>{description}</Text>
       <FlexContainer flexDirection='column' alignItems='center' stretch>
         <FlexContainer className={styles.actionsWrapper} stretch alignItems='center' justifyContent='center'>

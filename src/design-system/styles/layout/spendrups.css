@@ -41,7 +41,7 @@ html {
     --content-width-lg: 77.5rem;
 
     /* Z-INDEX */
-    --menu-icon-z-index: 10;
+    --menu-icon-z-index: 101;
     --menu-z-index: 100;
     --menu-backdrop-z-index: 99;
     --select-list-z-index: 10;
