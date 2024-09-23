@@ -118,16 +118,17 @@ const ArticleCard = ({
                     aria-label={`Read more about ${heading}`}
                     onClick={onClick}
                   >
-                    <h4 className={styles.heading}>{heading}</h4>
+                    <h3 className={cx(styles.heading, 'h4')}>{heading}</h3>
                   </Link>
-                ) : <h4 className={styles.heading}>{heading}</h4>}
+                ) : <h3 className={cx(styles.heading, 'h4')}>{heading}</h3>}
               </>
             )}
             {text && <p className={styles.text} dangerouslySetInnerHTML={{ __html: text }} />}
             {richText && richText}
           </div>
+          {/* TODO: improve handling of title or aria-label for this link */}
           {link && (
-            <UILink {...link} onSurface={'transparent'} className={styles.link} onClick={onClick}>
+            <UILink {...link} ariaLabel={`Read more aboout ${heading || 'this article'}`} onSurface={'transparent'} className={styles.link} onClick={onClick}>
               {link?.children}
             </UILink>
           )}

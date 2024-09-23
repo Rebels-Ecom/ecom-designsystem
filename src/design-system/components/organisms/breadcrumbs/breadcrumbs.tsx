@@ -30,7 +30,7 @@ const Breadcrumbs = ({title, image, breadcrumbs, className, location, textWidth=
         <ContentWrapper>
             <FlexContainer gap={0.5}>
                 {breadcrumbs.map((breadcrumb) => breadcrumb?.href ? (
-                    <Link key={breadcrumb.href} to={breadcrumb.href} className={styles.breadcrumb}>
+                    <Link key={breadcrumb.href} to={breadcrumb.href} className={styles.breadcrumb} aria-label={`Go to ${breadcrumb.children === 'Start' ? 'Spendrups homepage' : breadcrumb.children}`}>
                         <span className={cx(styles.breadcrumbText, {[styles.underline]: !breadcrumb.active})}>{breadcrumb.children}</span>
                         {!breadcrumb.active && <Icon icon='icon-chevron-right' />}
                     </Link>

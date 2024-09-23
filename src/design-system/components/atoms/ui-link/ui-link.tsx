@@ -12,6 +12,7 @@ export interface IUILink extends ILink {
   noUnderline?: boolean;
   download?: boolean;
   onClick?: CallableFunction;
+  ariaLabel?: string;
 }
 
 export const LinkComponent = ({ children, ...props }: any) => <div {...props}>{children}</div>
@@ -29,7 +30,8 @@ const UILink = ({
   onSurface = 'transparent',
   noUnderline,
   download,
-  onClick
+  onClick,
+  ariaLabel,
 }: IUILink) => {
   const Tag = isExternal ? 'a' : Link
   return (
@@ -43,7 +45,7 @@ const UILink = ({
         styles[onSurface],
         className
       )}
-      aria-label={children}
+      aria-label={ariaLabel || children}
       download={download}
       onClick={onClick}
     >

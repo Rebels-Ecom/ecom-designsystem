@@ -14,9 +14,18 @@ export type TCampaignBox = {
   color?: string;
   onClick?: () => void;
   loading?: boolean;
+  btnLabel?: string;
 }
 
-const CampaignBox = ({ title, description, subDescription, color = '#1D1D1B', onClick, loading }: TCampaignBox) => {
+const CampaignBox = ({
+  title,
+  description,
+  subDescription,
+  color = '#1D1D1B',
+  onClick,
+  loading,
+  btnLabel
+}: TCampaignBox) => {
   const [open, setOpen] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const style: { [key: string]: string } = ({
@@ -39,14 +48,16 @@ const CampaignBox = ({ title, description, subDescription, color = '#1D1D1B', on
       <div className={cx(styles.campaignBox, {[styles.loading]: loading})} style={style}>
         <Button
           type='button'
-          children='Välj'
+          children={btnLabel || 'Välj'}
           surface='x'
           onClick={onClick}
           className={styles.selectButton}
+          name={`${btnLabel || 'Välj'} campaign`}
         />
         <button
           onClick={() => setOpen(!open)}
           className={styles.toggleButton}
+          aria-label='Toggle campaign'
           >
           <motion.div
             key="open-btn"
@@ -60,7 +71,7 @@ const CampaignBox = ({ title, description, subDescription, color = '#1D1D1B', on
             <Icon className={styles.toggleIcon} icon='icon-chevron-down' />
           </motion.div>
         </button>
-        <h5 ref={titleRef} className={styles.title}>{title}</h5>
+        <h3 ref={titleRef} className={cx(styles.title, 'h5')}>{title}</h3>
         {description && <p className={styles.description}>{description}</p>}
         {subDescription && <hr className={styles.divider} />}
         {subDescription && <p className={styles.subDescription}>{subDescription}</p>}

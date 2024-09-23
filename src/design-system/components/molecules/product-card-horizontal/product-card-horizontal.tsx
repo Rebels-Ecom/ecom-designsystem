@@ -223,10 +223,10 @@ const ProductCardHorizontal = ({
             {iconsAndTags}
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
-                <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h5>
+                <h2 className={cx(styles.heading, 'h5', {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h2>
               </Link>
             ) : (
-              <h5 className={cx(styles.heading, {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h5>
+              <h2 className={cx(styles.heading, 'h5', {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h2>
             )}
             <div className={styles.cardInfoWrapper}>
               <div>
