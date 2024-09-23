@@ -245,9 +245,8 @@
 
   & .imageWrapperPlaceholder {
     display: block;
-    height: 11rem;
+    height: 7rem;
     width: 6rem;
-    padding-top: 2rem;
   }
 
   & .placeholderContent {
