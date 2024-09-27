@@ -48,6 +48,7 @@ const TopNavBar = ({
               className={styles.topNavLink}
               target={'_blank'}
               aria-label={`Go to ${link.children}`}
+              onClick={() => link.onClick?.()}
             >
               {link.icon && <Icon className={styles.navIcon} icon={link.icon} />}
               <span className={cx('bodyS', styles.topNavText)}>{link.children}</span>

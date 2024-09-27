@@ -185,7 +185,13 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
       {props.links && (
         <FlexContainer alignItems={props.alignActions ?? 'center'} flexDirection="column">
           {props.links.map((link, i) => (
-            <a className={cx(styles.link, { [styles.linkDisabled]: loading })} key={`${link.name}-${i}`} href={link.href} target="_blank">
+            <a
+              className={cx(styles.link, { [styles.linkDisabled]: loading })}
+              key={`${link.name}-${i}`}
+              href={link.href}
+              target='_blank'
+              onClick={() => link.onClick?.()}
+            >
               {link.name}
             </a>
           ))}

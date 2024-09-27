@@ -29,6 +29,7 @@ export interface ICarousel {
   trackClassName?: string;
   splideProps?: SplideProps;
   onNavigation?: CallableFunction;
+  onSlideChange?: CallableFunction;
   breakpoints?: TCarouselBreakpoints;
   /**
    * Determines if arrows should be placed outside of carousel

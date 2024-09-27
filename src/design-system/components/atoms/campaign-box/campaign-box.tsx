@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import cx from 'classnames';
 import { motion } from 'framer-motion';
 import styles from './campaign-box.module.css'
@@ -27,7 +27,6 @@ const CampaignBox = ({
   btnLabel
 }: TCampaignBox) => {
   const [open, setOpen] = useState(false);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const style: { [key: string]: string } = ({
     '--campaign-box-color': loading ? 'transparent' : color,
   })
@@ -43,7 +42,7 @@ const CampaignBox = ({
     <ExpandableWrapper
       className={styles.campaignBoxWrapper}
       open={open}
-      initialHeight={`${(titleRef.current?.getBoundingClientRect()?.height ?? 40) + 48}px`}
+      initialHeight='62px'
     >
       <div className={cx(styles.campaignBox, {[styles.loading]: loading})} style={style}>
         <Button
@@ -71,7 +70,7 @@ const CampaignBox = ({
             <Icon className={styles.toggleIcon} icon='icon-chevron-down' />
           </motion.div>
         </button>
-        <h3 ref={titleRef} className={cx(styles.title, 'h5')}>{title}</h3>
+        <h3 className={cx(styles.title, 'h5')}>{title}</h3>
         {description && <p className={styles.description}>{description}</p>}
         {subDescription && <hr className={styles.divider} />}
         {subDescription && <p className={styles.subDescription}>{subDescription}</p>}

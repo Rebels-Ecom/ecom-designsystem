@@ -22,6 +22,7 @@ const Carousel = ({
   onNavigation,
   zeroOffset,
   lightArrows,
+  onSlideChange,
   ...props
  }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children) ?? 0;
@@ -57,11 +58,16 @@ const Carousel = ({
     setUserInitiated(true);
   };
 
+  const handleSlideChange = (_: any, newIndex: number) => {
+    onSlideChange?.(newIndex);
+  };
+
   return (
     <Splide
       ref={ref}
       hasTrack={!!splideProps?.hasTrack}
       className={cx(styles.carousel, className, { [styles.noGrid]: noGrid })}
+      onMoved={handleSlideChange}
       options={{
         ...splideProps?.options,
         drag: noOfChildren > 1,

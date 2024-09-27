@@ -63,6 +63,7 @@ const ProductCarousel = ({
         },
       }}
       onNavigation={onNavigation}
+      onSlideChange={onNavigation}
       arrowsBottom={arrowsBottom}
       offsetArrows={offsetArrows}
       padding={(isMobile && !noPadding) ? '2rem' : undefined}
