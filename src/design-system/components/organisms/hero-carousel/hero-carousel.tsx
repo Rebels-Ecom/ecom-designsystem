@@ -4,12 +4,14 @@ import { Carousel, CarouselItem } from '../carousel/carousel'
 export interface IHeroCarousel {
   heroComponents: Array<IHero>
   autoplay?: boolean
+  onSlideChange?: CallableFunction;
 }
 
-const HeroCarousel = ({ heroComponents, autoplay = true }: IHeroCarousel) => {
-
+const HeroCarousel = ({ heroComponents, autoplay = true, onSlideChange }: IHeroCarousel) => {
   return (
     <Carousel
+      onSlideChange={onSlideChange}
+      onNavigation={onSlideChange}
       splideProps={{
         options: {
           autoplay: autoplay,

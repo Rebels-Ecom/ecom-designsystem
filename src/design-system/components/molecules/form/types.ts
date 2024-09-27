@@ -99,6 +99,7 @@ export type TFormFieldType = {
 export type TFormLink = {
   name: string;
   href: string;
+  onClick?: CallableFunction;
 }
 
 export type TFormResponseMessage = {

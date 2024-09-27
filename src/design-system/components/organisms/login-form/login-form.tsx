@@ -9,6 +9,7 @@ import { ILinkButton } from '../../atoms/link-button/link-button'
 type ILink = {
   name: string;
   href: string;
+  onClick?: CallableFunction;
 }
 
 export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> {
@@ -23,12 +24,14 @@ export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage'> 
   forgotPassword: {
     name: string;
     href: string;
+    onClick?: CallableFunction;
   };
   primarySubmitLabel: string;
   secondarySubmitLabel?: string;
   offerLink?: {
     name: string;
     href: string;
+    onClick?: CallableFunction;
   };
   errorMessage?: any;
   usernameError?: string;

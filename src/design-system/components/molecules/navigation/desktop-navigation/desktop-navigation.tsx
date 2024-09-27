@@ -120,6 +120,7 @@ const DesktopNavigation = ({
                         setActiveTopLevel(undefined);
                         trackNavigation?.(cat.href);
                       }}
+                      aria-label={`main menu top level – ${cat.name}`}
                     >
                       {cat.name}
                     </Link>
@@ -193,6 +194,7 @@ const DesktopNavigation = ({
                               setActiveTopLevel(undefined);
                               trackNavigation?.(link.href);
                             }}
+                            aria-label={`main menu second level – ${link.name}`}
                           >
                             {link.name}
                           </Link>
@@ -208,6 +210,7 @@ const DesktopNavigation = ({
                                     setActiveTopLevel(undefined);
                                     trackNavigation?.(thirdLevelLink.href);
                                   }}
+                                  aria-label={`main menu third level – ${thirdLevelLink.name}`}
                                 >
                                   {thirdLevelLink.name}
                                 </Link>
