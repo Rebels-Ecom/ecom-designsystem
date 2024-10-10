@@ -77,6 +77,8 @@ export interface IProductCard {
     changeVariant?: string;
     sellerOnly?: string;
     accessoryPotItem?: string;
+    stockShortage?: string;
+    outOfStock?: string;
   }
 }
 
@@ -123,7 +125,7 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
+  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product;
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
@@ -217,7 +219,10 @@ function ProductCard({
   }
 
   const commonProps = {
-    product: myProduct,
+    product: {
+      ...myProduct,
+      outOfStock: product.outOfStock,
+    },
     loading,
     buttonLoading,
     disabled,

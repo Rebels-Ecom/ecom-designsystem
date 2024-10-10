@@ -8,9 +8,10 @@ export interface IArticleList {
   articles: Array<TArticle>;
   title?: string;
   swipe?: boolean;
+  grid?: boolean;
 }
 
-const ArticleList = ({ articles, title, swipe }: IArticleList) => {
+const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
   if (!Array.isArray(articles) || !articles.length) {
     return null;
   }
@@ -51,6 +52,19 @@ const ArticleList = ({ articles, title, swipe }: IArticleList) => {
         type={articles.length > 3 ? 'small' : i % 2 == 0 ? 'small' : 'large'}
         equalHeights={articles.length > 3}
         fullWidth={articles.length === 1}
+      />
+    )
+  });
+  
+  const gridArticlesToRender = articles.map((article, i) => {
+    const textToDisplay = formatText(article.text, article.maxChar);
+    return (
+      <ArticleCard
+        key={i}
+        {...article}
+        text={textToDisplay}
+        type='small'
+        equalHeights
       />
     )
   });
@@ -112,7 +126,7 @@ const ArticleList = ({ articles, title, swipe }: IArticleList) => {
               </Carousel>
             ) : (
               <div className={styles.articles}>
-                {articlesToRender}
+                {grid ? gridArticlesToRender : articlesToRender}
               </div>
             )}
           </ContentWrapper>

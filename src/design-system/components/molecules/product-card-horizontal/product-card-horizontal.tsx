@@ -118,8 +118,8 @@ const ProductCardHorizontal = ({
   const hasIconAndTags = sellerOnly || isAccessoryPotItem || !!tags?.length;
   const isFavorite = isFavoriteProduct(partNo);
   const isCampaignCard = activeCampaign?.title;
-  const isLimitedCard = !activeCampaign && isLimitedProduct && limitedLabel;
-  const isOutOfStockCard = !activeCampaign && outOfStock && outOfStockLabel;
+  const isLimitedCard = !!((!activeCampaign) && isLimitedProduct && limitedLabel);
+  const isOutOfStockCard = !!((!activeCampaign) && outOfStock && outOfStockLabel);
   const isSpecialCard = isCampaignCard || isLimitedCard || isOutOfStockCard;
 
   const iconsAndTags = (
@@ -184,7 +184,25 @@ const ProductCardHorizontal = ({
         <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{limitedLabel}</div>
       )}
       {isOutOfStockCard && !loading && (
-        <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{outOfStockLabel}</div>
+        <>
+          {tooltips?.stockShortage && (
+            <ComponentWithTooltip
+              content={tooltips.stockShortage}
+              element={<div>{outOfStockLabel}</div>}
+              wrapperClassName={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}
+            />
+          )}
+          {tooltips?.outOfStock && (
+            <ComponentWithTooltip
+              content={tooltips.outOfStock}
+              element={<div>{outOfStockLabel}</div>}
+              wrapperClassName={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}
+            />
+          )}
+          {!tooltips?.stockShortage && !tooltips?.outOfStock && (
+            <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{outOfStockLabel}</div>
+          )}
+        </>
       )}
       {loading ? (
         <>
@@ -350,7 +368,6 @@ const ProductCardHorizontal = ({
                         ) : (
                           <ComponentWithTooltip
                             content={alertBox.title}
-                            color='pink'
                             element={(
                               <Button
                                 type='button'

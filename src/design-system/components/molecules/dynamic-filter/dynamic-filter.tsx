@@ -91,7 +91,7 @@ const DynamicFilter = ({
   const [open, setOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState<Array<string>>([]);
   const [selectedFilters, setSelectedFilters] = useState<TSelected[]>(preSelected ?? []);
-  const [showMore, setShowMore] = useState(false);
+  const [openOptions, setOpenOptions] = useState<Array<string>>([]);
   const [showSelectedFilters, setShowSelectedFilters] = useState(false);
 
   const handleClickFilterItem = (name: string) => {
@@ -100,6 +100,15 @@ const DynamicFilter = ({
         return prevOpenFilters.filter(x => x !== name);
       } else {
         return [...prevOpenFilters, name];
+      }
+    })
+  }
+  const handleClickFilterOption = (name: string) => {
+    setOpenOptions(prevOpenOptions => {
+      if (prevOpenOptions.includes(name)) {
+        return prevOpenOptions.filter(x => x !== name);
+      } else {
+        return [...prevOpenOptions, name];
       }
     })
   }
@@ -189,7 +198,7 @@ const DynamicFilter = ({
   const handleClose = () => setOpen(false);
   useEffect(() => {
     if (!open) {
-      setShowMore(false)
+      setOpenOptions([]);
     }
   }, [open]);
 
@@ -233,7 +242,7 @@ const DynamicFilter = ({
               className={styles.checkbox}
               disabled={loading}
             />
-            <span className={styles.label}>{option.name}</span>
+            <span className={styles.label}>{option.name?.replace(/\s*\(.*$/, '')}</span>
             {option.count && <span className={cx(styles.label, styles.count)}>{option.count}</span>}
           </button>
         )
@@ -341,6 +350,7 @@ const DynamicFilter = ({
             const defMin = preSelectedSliderOptions?.[0] ? Number(preSelectedSliderOptions?.[0]) : undefined;
             const defMax = preSelectedSliderOptions?.[1] ? Number(preSelectedSliderOptions?.[1]) : undefined;
             const minVal = (getMinAndMaxValues(filter.options)?.min ?? 0) >= 10 ? (getMinAndMaxValues(filter.options)?.min ?? 0) : 0;
+            const isExpanded = openOptions.includes(filter.name);
 
             return (
               <div className={styles.filterCategory} key={`${filter.name}-${i}`}>
@@ -368,34 +378,34 @@ const DynamicFilter = ({
                     ) : <>{filterItems(filter).slice(0, maxOptionsToShow)}</>}
                     {filterItems(filter).length > maxOptionsToShow && filter.type !== 'range' ? (
                       <>
-                        <ExpandableWrapper open={showMore} >
+                        <ExpandableWrapper open={isExpanded} >
                           {filterItems(filter).slice(maxOptionsToShow, filterItems(filter).length)}
                         </ExpandableWrapper>
                         <FlexContainer alignItems='center' justifyContent='center'>
-                          {showMore && (
+                          {isExpanded && (
                             <motion.button
                               key='open'
                               initial={{ scale: 0.5 }}
-                              animate={{ scale: !showMore ? 0 : 1 }}
+                              animate={{ scale: !isExpanded ? 0 : 1 }}
                               exit={{ scale: 0.5 }}
-                              onClick={() => setShowMore(false)}
+                              onClick={() => handleClickFilterOption(filter.name)}
                               className={styles.showMoreButton}
                             >
-                              <span className={styles.showMoreLabel}>{showMore ? 'Se mindre' : 'Se mer'}</span>
-                              <Icon icon={showMore ? 'icon-x-circle' : 'icon-plus-circle'} />
+                              <span className={styles.showMoreLabel}>{isExpanded ? 'Se mindre' : 'Se mer'}</span>
+                              <Icon icon={isExpanded ? 'icon-x-circle' : 'icon-plus-circle'} />
                             </motion.button>
                           )}
-                          {!showMore && (
+                          {!isExpanded && (
                             <motion.button
                               key='close'
                               initial={{ scale: 0.5 }}
-                              animate={{ scale: showMore ? 0 : 1 }}
+                              animate={{ scale: isExpanded ? 0 : 1 }}
                               exit={{ scale: 0.5 }}
-                              onClick={() => setShowMore(true)}
+                              onClick={() => handleClickFilterOption(filter.name)}
                               className={styles.showMoreButton}
                             >
-                              <span className={styles.showMoreLabel}>{showMore ? 'Se mindre' : 'Se mer'}</span>
-                              <Icon icon={showMore ? 'icon-x-circle' : 'icon-plus-circle'} />
+                              <span className={styles.showMoreLabel}>{isExpanded ? 'Se mindre' : 'Se mer'}</span>
+                              <Icon icon={isExpanded ? 'icon-x-circle' : 'icon-plus-circle'} />
                             </motion.button>
                           )}
                         </FlexContainer>

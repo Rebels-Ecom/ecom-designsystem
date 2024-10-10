@@ -104,8 +104,8 @@
   margin: 0;
 
   @media (min-width: 48em) {
-    font-size: var(--heading-xl-desktop-font-size);
-    line-height: var(--heading-xl-desktop-line-height);
+    font-size: var(--heading-l-desktop-font-size);
+    line-height: var(--heading-l-desktop-line-height);
   }
 }
 

@@ -24,8 +24,8 @@ html {
   /* Heading L - ?/? mobile - 41/51 desktop */
   --heading-l-mobile-font-size: 2.25rem;
   --heading-l-mobile-line-height: 2.875rem;
-  --heading-l-desktop-font-size: 2.625rem;
-  --heading-l-desktop-line-height: 3.188rem;
+  --heading-l-desktop-font-size: 2.5rem;
+  --heading-l-desktop-line-height: 3.5rem;
 
   /* Heading M - ?/? mobile - 36/46 desktop */
   --heading-m-mobile-font-size: 2rem;
