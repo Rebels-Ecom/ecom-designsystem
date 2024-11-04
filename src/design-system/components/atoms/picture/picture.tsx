@@ -128,10 +128,10 @@ const Picture: React.FC<IPicture> = ({
           onLoad={handleImageLoad}
           onLoadStart={handleLoadStart}
         />
+        {isLoading && (
+          <div className={styles.skeleton} style={{ width, height }} />
+        )}
       </picture>
-      {isLoading && (
-        <div className={styles.skeleton} style={{ width, height }} />
-      )}
       {pictureWithOpacity && (
         <div 
           className={cx(

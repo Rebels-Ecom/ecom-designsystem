@@ -77,6 +77,10 @@ function getProduct(productData: any): IProduct {
     quantity: '1',
     totalPrice: convertNumToStr(product.ListPricePerUnit * product.UnitsPerBaseUnit),
     productVariantList: getVariantsList(productData.DisplayName, productData.Variants),
+    packagePrice: 10,
+    packagePriceString: '10',
+    pricePerUnit: 1,
+    pricePerUnitString: '1'
   }
 }
 

@@ -63,6 +63,10 @@ const SelectList = ({
   }
 
   useEffect(() => {
+    setSelected(preSelected);
+  }, [preSelected]);
+
+  useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize)
 

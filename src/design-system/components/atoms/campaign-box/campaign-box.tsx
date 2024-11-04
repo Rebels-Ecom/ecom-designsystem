@@ -15,6 +15,7 @@ export type TCampaignBox = {
   onClick?: () => void;
   loading?: boolean;
   btnLabel?: string;
+  limited?: boolean;
 }
 
 const CampaignBox = ({
@@ -24,7 +25,8 @@ const CampaignBox = ({
   color = '#1D1D1B',
   onClick,
   loading,
-  btnLabel
+  btnLabel,
+  limited
 }: TCampaignBox) => {
   const [open, setOpen] = useState(false);
   const style: { [key: string]: string } = ({
@@ -44,15 +46,17 @@ const CampaignBox = ({
       open={open}
       initialHeight='62px'
     >
-      <div className={cx(styles.campaignBox, {[styles.loading]: loading})} style={style}>
-        <Button
-          type='button'
-          children={btnLabel || 'Välj'}
-          surface='x'
-          onClick={onClick}
-          className={styles.selectButton}
-          name={`${btnLabel || 'Välj'} campaign`}
-        />
+      <div className={cx(styles.campaignBox, {[styles.loading]: loading, [styles.limited]: limited })} style={style}>
+        {!limited && (
+            <Button
+            type='button'
+            children={btnLabel || 'Välj'}
+            surface='x'
+            onClick={onClick}
+            className={styles.selectButton}
+            name={`${btnLabel || 'Välj'} campaign`}
+          />
+        )}
         <button
           onClick={() => setOpen(!open)}
           className={styles.toggleButton}
