@@ -32,7 +32,7 @@ const MiniProductToastStoryTemplate: Story = {
     const [content, setContent] = useState<IProductCard[]>([]);
     
     return (
-      <div>
+      <div style={{ position: 'relative' }}>
         <Button
           type='button'
           surface='primary'
@@ -53,7 +53,7 @@ const MiniProductToastStoryTemplate: Story = {
             setContent((prevContent) => prevContent?.concat([{ ...p, product: {...p.product, productName: Math.ceil(Math.random() * 100).toString() }}]))
           }}
         />
-        <MiniProductToast {...args} open={!!content} cartProducts={content} />
+        <MiniProductToast {...args} open={!!content.length} cartProducts={content} />
       </div>
     )
   }
@@ -61,5 +61,13 @@ const MiniProductToastStoryTemplate: Story = {
 
 export const MiniProductToastStory = {
     ...MiniProductToastStoryTemplate,
-    args: {}
+    args: {
+      loading: false,
+      notification: {
+        quantity: 1,
+        onClick: () => {
+          alert('clicked notification')
+        }
+      }
+    }
 }

@@ -169,7 +169,7 @@
     @media (min-width: 64em) {
         display: block;
         margin-right: 1.5rem;
-        border: solid 0.0625rem var(--border-on-x);
+        border: solid 0.0625rem transparent;
     }
 }
 
@@ -177,13 +177,15 @@
     border-width: 0.0625rem;
     border-radius: 0;
     width: 100%;
+    
     @media (min-width: 64em) {
         display: block;
         width: max-content;
         background: #ffffff;
-        border-color: var(--border-on-x);
+        border-color: transparent;
         border-radius: 0.25rem;
         margin-right: 1.5rem;
+        box-shadow: 0 4px 4px #0000000d;
     }
 }
 

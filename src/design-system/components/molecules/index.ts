@@ -52,3 +52,5 @@ export { AgeVerificationForm } from './age-verification-form/age-verification-fo
 export { ArticleCard } from './article-card/article-card'
 export { ClickableListItem } from './clickable-list-item/clickable-list-item'
 export { HorizontalVariants } from './horizontal-variants/horiztonal-variants'
+export { MiniProductToast } from './mini-product-toast/mini-product-toast'
+export { ProductCardMini } from './product-card-mini/product-card-mini'
