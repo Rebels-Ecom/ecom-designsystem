@@ -30,6 +30,8 @@ export interface IButton {
   loading?: boolean;
   weight?: 'normal' | 'bold';
   name?: string;
+  isTransparent?: boolean;
+  noBorder?: boolean;
 }
 
 export function getButtonSurface(surface: TButtonSurface) {
@@ -76,6 +78,8 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       loading,
       weight = 'normal',
       name,
+      isTransparent,
+      noBorder,
       ...props
     },
     ref
@@ -99,6 +103,8 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
             [styles.rounded]: rounded,
             [styles.iconRight]: !!iconRight?.icon,
             [styles.iconLeft]: !!iconLeft?.icon,
+            [styles.transparent]: isTransparent,
+            [styles.noBorder]: noBorder,
           },
           className
         )}

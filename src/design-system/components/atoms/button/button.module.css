@@ -149,6 +149,13 @@
   justify-content: center;
 }
 
+.transparent {
+  background-color: transparent;
+}
+.noBorder {
+  border: solid 1px transparent !important;
+}
+
 .buttonContent {
   display: block;
   overflow: hidden;
