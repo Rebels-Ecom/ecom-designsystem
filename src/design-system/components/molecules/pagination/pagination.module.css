@@ -3,7 +3,7 @@
 
   & .pagination {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     justify-content: center;
     flex: 1 0 auto;
 
@@ -16,7 +16,6 @@
       
       @media (min-width: 48em) {
         width: auto;
-        min-width: 320px;
       }
     }
 
