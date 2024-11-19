@@ -257,9 +257,9 @@ const ProductDetails = ({
               )}
             </div>
 
-            {product?.activeCampaign?.title && <CampaignBox {...product.activeCampaign} />}
+            {product?.activeCampaign?.title && <CampaignBox {...product.activeCampaign} hideSelectBtn />}
 
-            {limitedProduct && <CampaignBox {...limitedProduct} limited />}
+            {limitedProduct && <CampaignBox {...limitedProduct} limited hideSelectBtn />}
             {alertBox && <AlertBox {...alertBox} />}
 
             <div className={styles.specs}>{productDetail.visibleSpecs && getProductSpecs(productDetail.visibleSpecs)}</div>

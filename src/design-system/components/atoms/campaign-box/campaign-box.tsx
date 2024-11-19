@@ -16,6 +16,7 @@ export type TCampaignBox = {
   loading?: boolean;
   btnLabel?: string;
   limited?: boolean;
+  hideSelectBtn?: boolean;
 }
 
 const CampaignBox = ({
@@ -26,7 +27,8 @@ const CampaignBox = ({
   onClick,
   loading,
   btnLabel,
-  limited
+  limited,
+  hideSelectBtn
 }: TCampaignBox) => {
   const [open, setOpen] = useState(false);
   const style: { [key: string]: string } = ({
@@ -47,8 +49,8 @@ const CampaignBox = ({
       initialHeight='62px'
     >
       <div className={cx(styles.campaignBox, {[styles.loading]: loading, [styles.limited]: limited })} style={style}>
-        {!limited && (
-            <Button
+        {(!limited && !hideSelectBtn) && (
+          <Button
             type='button'
             children={btnLabel || 'Välj'}
             surface='x'
