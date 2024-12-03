@@ -22,8 +22,8 @@
 
     & .notification {
         position: absolute;
-        bottom: -0.25rem;
-        left: -0.25rem;
+        bottom: -0.125rem;
+        left: -0.125rem;
         display: flex;
         justify-content: center;
         align-items: center;

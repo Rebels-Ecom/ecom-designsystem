@@ -37,14 +37,17 @@ const Hero = ({
   contentImage,
   alignContent,
   link,
-  heroTheme='light',
+  heroTheme,
   fetchPriority,
   loading,
   isVideo,
   fallbackImageUrl
 }: IHero) => {
   return (
-    <section className={cx(styles.hero, styles[heroTheme])}>
+    <section className={cx(styles.hero, {
+      [styles.dark]: heroTheme === 'dark',
+      [styles.light]: heroTheme === 'light',
+    })}>
       {(isVideo && video)
         ?
         <Video {...video} videoWithOpacity={heroTheme}></Video>

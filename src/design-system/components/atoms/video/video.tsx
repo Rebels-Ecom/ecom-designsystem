@@ -56,7 +56,12 @@ const Video = ({videoUrl, videoWithOpacity, className, mobileUrl} : IVideo) => {
             <video ref={videoRef} className={cx(styles.video, className && className)}>
               <source src={source} type="video/mp4" />
             </video>
-            {videoWithOpacity && <div className={cx(styles.opacityLayer, videoWithOpacity==='light' ? styles.withLightBackground : styles.withDarkBackground)}/>}
+            {videoWithOpacity && (
+              <div className={cx(styles.opacityLayer, {
+                [styles.withLightBackground]: videoWithOpacity === 'light',
+                [styles.withDarkBackground]: videoWithOpacity === 'dark',
+              })}/>
+            )}
         </>
     )
 }

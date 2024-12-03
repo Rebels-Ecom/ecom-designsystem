@@ -136,7 +136,10 @@ const Picture: React.FC<IPicture> = ({
         <div 
           className={cx(
             styles.opacityLayer,
-            pictureWithOpacity === 'light' ? styles.withLightBackground : styles.withDarkBackground
+            {
+              [styles.withLightBackground]: pictureWithOpacity === 'light',
+              [styles.withDarkBackground]: pictureWithOpacity === 'dark',
+            }
           )}
           aria-hidden="true"
         />
