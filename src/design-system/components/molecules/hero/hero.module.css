@@ -61,6 +61,12 @@
   }
 }
 
+& .content {
+  & > .textContent > h1, & > p {
+    color: var(--color-text-white);
+  }
+}
+
 .dark {
   & .content {
     & > .textContent > h1, & > p {

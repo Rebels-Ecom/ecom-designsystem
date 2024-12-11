@@ -1,4 +1,4 @@
-import { Splide, SplideSlide, SplideTrack, SplideHTMLAttributes } from '@splidejs/react-splide'
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
 import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/react-splide/css'
 import { Children, PropsWithChildren, SetStateAction, useEffect, useRef, useState } from 'react'
