@@ -23,6 +23,7 @@ export interface IProductVariant {
   currencyLabel: string
   sellerOnlyTooltipText?: string
   isRestrictedUser?: boolean
+  outOfStock?: boolean;
 }
 
 const ProductVariant = ({

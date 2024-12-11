@@ -209,6 +209,7 @@ function ProductCard({
         sellerOnly: selectedVariant.sellerOnly,
         activeCampaign: selectedVariant.activeCampaign,
         productUrl: `/Product/${selectedVariant.variantId}`,
+        outOfStock: selectedVariant.outOfStock,
       };
 
       onVariantChange?.(updatedProduct);
@@ -219,10 +220,7 @@ function ProductCard({
   }
 
   const commonProps = {
-    product: {
-      ...myProduct,
-      outOfStock: product.outOfStock,
-    },
+    product: myProduct,
     loading,
     buttonLoading,
     disabled,
