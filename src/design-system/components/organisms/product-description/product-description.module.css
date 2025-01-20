@@ -52,7 +52,9 @@
 
 .content{
     width: 100%;
+    max-width: 100%;
     margin: auto;
+    
     @media (min-width: 48em) {
       width:var(--product-listing-width-m);
     }
