@@ -1,7 +1,7 @@
-import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { ITable, Table } from './table'
+import React from 'react'
 import { ContentWrapper } from '../../layouts'
+import { ITable, Table } from './table'
 
 const meta: Meta<typeof Table> = {
   title: 'Design System/Atoms/Table',
@@ -9,10 +9,10 @@ const meta: Meta<typeof Table> = {
   parameters: {
     controls: { exclude: ['listItems'] },
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof Table>;
+export default meta
+type Story = StoryObj<typeof Table>
 
 const TableStoryTemplate: Story = {
   render: (args) => {
@@ -21,8 +21,8 @@ const TableStoryTemplate: Story = {
         <Table {...args} />
       </ContentWrapper>
     )
-  }
-};
+  },
+}
 
 export const TableStory = {
   ...TableStoryTemplate,
@@ -32,12 +32,12 @@ export const TableStory = {
         name: 'Name 1',
         status: 'OK',
         id: '1',
-        "icon": {
+        icon: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
         },
-        "icon2": {
+        icon2: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
@@ -47,7 +47,7 @@ export const TableStory = {
         name: 'Name 2',
         status: 'IN PROGRESS',
         id: '2',
-        "icon": {
+        icon: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
@@ -57,47 +57,47 @@ export const TableStory = {
         name: 'Name 3',
         status: 'DONE',
         id: '3',
-        "icon": {
+        icon: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
-        }
+        },
       },
       {
         name: 'Name 4',
         status: 'DONE',
         id: '4',
-        "icon": {
+        icon: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
-        }
+        },
       },
       {
         name: 'Name 5',
         status: 'DONE',
         id: '5',
-        "icon": {
+        icon: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
-        }
+        },
       },
       {
         name: 'Name 6',
         status: 'DONE',
         id: '6',
-        "icon": {
+        icon: {
           icon: 'icon-alert-circle',
           onClick: () => console.log('clicked'),
           type: 'button',
-        }
+        },
       },
     ],
     hideColumnTitles: false,
     equalWidthColumns: false,
     listGap: 0,
-  } as ITable
+  } as ITable,
 }
 
 export const TableStoryTwo = {
@@ -111,5 +111,5 @@ export const TableStoryTwo = {
     hideColumnTitles: false,
     equalWidthColumns: false,
     listGap: 0,
-  } as ITable
+  } as ITable,
 }

@@ -1,9 +1,9 @@
+import cx from 'classnames'
 import { useEffect, useState } from 'react'
 import { Heading, Loader } from '../../atoms'
+import { Button, IButton } from '../../atoms/button/button'
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
 import styles from './table.module.css'
-import cx from 'classnames'
-import { Button, IButton } from '../../atoms/button/button'
 
 type TListItem = { [key: string]: string | TIconButton }
 type TListItems = Array<TListItem>
@@ -43,35 +43,43 @@ export interface ITable {
   action?: IButton
 }
 
-const Table = ({ listItems, hideColumnTitles = false, equalWidthColumns = false, listGap = 0, loading, initialSortBy, title, action }: ITable) => {
+const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = false, listGap = 0, loading, initialSortBy, title, action }: ITable) => {
   const [sortBy, setSortBy] = useState<{ by: string; dir: 'asc' | 'desc' }>()
   const listItem = listItems?.sort((a, b) => Object.keys(b).length - Object.keys(a).length)[0]
   const columnTitles = listItems.length ? Object.keys(listItem) : []
 
   useEffect(() => {
-    setSortBy({ by: initialSortBy ?? columnTitles[0], dir: 'asc' })
+    if (columnTitles.length > 0) {
+      setSortBy({ by: initialSortBy ?? columnTitles[0], dir: 'asc' })
+    }
   }, [])
 
   const handleSort = (a: TListItem, b: TListItem) => {
+    const sortKey = sortBy?.by ?? columnTitles[0]
+
+    if (!sortKey) return 0
+
     if (sortBy?.dir === 'asc') {
-      if (a[sortBy?.by ?? columnTitles[0]] === b[sortBy?.by ?? columnTitles[0]]) {
-        return 0;
+      if (a[sortKey] === b[sortKey]) {
+        return 0
       }
 
-      return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? 1 : -1
+      return a[sortKey] > b[sortKey] ? 1 : -1
     }
     if (sortBy?.dir === 'desc') {
-      if (a[sortBy?.by ?? columnTitles[0]] === b[sortBy?.by ?? columnTitles[0]]) {
-        return 0;
+      if (a[sortKey] === b[sortKey]) {
+        return 0
       }
 
-      return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? -1 : 1
+      return a[sortKey] > b[sortKey] ? -1 : 1
     }
 
     return 0
   }
 
   const renderIcon = (obj: TIconButton, i: string) => {
+    if (!obj) return null
+
     return <IconButton key={i} {...obj} size="medium" noPadding isTransparent noBorder name={obj.icon === 'icon-edit' ? 'Edit field' : 'Delete field'} />
   }
 
@@ -105,7 +113,7 @@ const Table = ({ listItems, hideColumnTitles = false, equalWidthColumns = false,
       </div>
       <div className={styles.mobile}>
         {listItems.map((item, i) => {
-          const entries = Object.entries(item)
+          const entries = Object.entries(item || {})
           const nonIcons = entries?.filter(([key]) => !key.includes('icon'))
           const icons = entries?.filter(([key]) => key.includes('icon'))
           return (
@@ -150,7 +158,7 @@ const Table = ({ listItems, hideColumnTitles = false, equalWidthColumns = false,
                         onClick={() => setSortBy({ by: columnTitle, dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc' })}
                         isTransparent
                         noBorder
-                        name='Sort by'
+                        name="Sort by"
                       />
                     </>
                   )}
