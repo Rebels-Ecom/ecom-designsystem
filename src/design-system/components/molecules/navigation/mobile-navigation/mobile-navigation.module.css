@@ -4,6 +4,11 @@
   flex-direction: column;
   padding: 0 0.5rem;
 
+  & button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+  }
+
   & .top {
     z-index: calc(var(--menu-z-index) + 1);
     margin: 0 -0.5rem;

@@ -1,0 +1,42 @@
+.productCardMiniVertical {
+  width: calc(50% - 0.25rem);
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+  & .tagsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+
+    & .tag {
+      display: inline-flex;
+      width: 1.5rem;
+      height: 1rem;
+      border-radius: 0.75rem;
+    }
+  }
+
+  & .picture {
+    width: 6rem;
+    margin: 0 auto;
+
+    & .image {
+      padding: 0;
+    }
+  }
+
+  & .content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    justify-content: center;
+
+    & .quantityWrapper {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+    }
+  }
+}

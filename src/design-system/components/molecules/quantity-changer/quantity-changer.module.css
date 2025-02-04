@@ -1,0 +1,40 @@
+.quantityChanger {
+  display: flex;
+  align-self: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 11.25rem;
+  border: 1px solid var(--border-grey);
+  border-radius: 1.5rem;
+
+  & .inputWrapper {
+    display: flex;
+    align-self: flex-start;
+  }
+
+  & .decrement,
+  & .increment {
+      font-size: 16px;
+  }
+
+  & .quantityInput {
+      min-width: 2ch;
+      max-width: 4ch; /* Maximum width */
+      width: auto;
+      text-align: center;
+      margin: 0 0.5rem;
+      border: none;
+      font-size: 1rem;
+      font-family: var(--font-family-primary);
+
+      &:focus {
+        outline: none;
+      }
+      
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+  }
+}

@@ -1,25 +1,43 @@
 .paginationWrapper {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  
+  @media (min-width: 48em) {
+    flex-direction: row;
+  }
 
   & .pagination {
+    width: 100%;
     display: flex;
-    gap: 1rem;
+    gap: 0;
     justify-content: center;
     flex: 1 0 auto;
+    
+    @media (min-width: 48em) {
+      max-width: 20rem;
+      margin: 0 auto;
+    }
 
     & .pages {
       display: flex;
-      gap: 0.5rem;
-      justify-content: center;
+      gap: 0;
+      justify-content: space-around;
       align-items: center;
       width: 100%;
       
       @media (min-width: 48em) {
         width: auto;
+
+        & > button {
+          width: 2rem;
+        }
       }
     }
 
     & .btn {
+      height: 100%;
       background: none;
       border: none;
       color: var(--cta-primary-default);
@@ -27,10 +45,17 @@
       line-height: 1.25rem;
       font-family: var(--font-family-primary);
       cursor: pointer;
+      padding: 0;
+      flex: 1;
       
       @media (min-width: 48em) {
+        height: auto;
         font-size: 1rem;
         line-height: 1rem;
+
+        &:hover {
+          font-weight: bold;
+        }
       }
 
       &:disabled {
@@ -47,10 +72,24 @@
       &.nextBtn {
         font-size: 1.5rem;
         padding: 0.75rem;
+
+        & span {
+          display: inline-block;
+
+          &::before {
+            display: block;
+          }
+        }
         
         @media (min-width: 48em) {
           padding: 0;
           font-size: 1.25rem;
+
+          &:hover {
+            & span {
+              font-weight: bold;
+            }
+          }
         }
       }
     }
@@ -64,5 +103,21 @@
   & .scrollToTop {
     display: flex;
     flex: 0 1 auto;
+
+    & span {
+      font-size: 1.5rem;
+    }
+
+    @media (min-width: 48em) {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+
+    @media (min-width: 64em) {
+      & span {
+        font-size: 1rem;
+      }
+    }
   }
 }
