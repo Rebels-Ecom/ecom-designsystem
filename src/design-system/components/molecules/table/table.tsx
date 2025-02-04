@@ -43,66 +43,50 @@ export interface ITable {
   action?: IButton
 }
 
-const Table = ({
-  listItems,
-  hideColumnTitles = false,
-  equalWidthColumns = false,
-  listGap = 0,
-  loading,
-  initialSortBy,
-  title,
-  action,
-}: ITable) => {
+const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = false, listGap = 0, loading, initialSortBy, title, action }: ITable) => {
   const [sortBy, setSortBy] = useState<{ by: string; dir: 'asc' | 'desc' }>()
   const listItem = listItems?.sort((a, b) => Object.keys(b).length - Object.keys(a).length)[0]
-  const columnTitles = listItems?.length ? Object.keys(listItem) : []
+  const columnTitles = listItems.length ? Object.keys(listItem) : []
 
   useEffect(() => {
-    setSortBy({ by: initialSortBy ?? columnTitles[0], dir: 'asc' })
+    if (columnTitles.length > 0) {
+      setSortBy({ by: initialSortBy ?? columnTitles[0], dir: 'asc' })
+    }
   }, [])
 
   const handleSort = (a: TListItem, b: TListItem) => {
+    const sortKey = sortBy?.by ?? columnTitles[0]
+
+    if (!sortKey) return 0
+
     if (sortBy?.dir === 'asc') {
-      if (a[sortBy?.by ?? columnTitles[0]] === b[sortBy?.by ?? columnTitles[0]]) {
+      if (a[sortKey] === b[sortKey]) {
         return 0
       }
 
-      return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? 1 : -1
+      return a[sortKey] > b[sortKey] ? 1 : -1
     }
     if (sortBy?.dir === 'desc') {
-      if (a[sortBy?.by ?? columnTitles[0]] === b[sortBy?.by ?? columnTitles[0]]) {
+      if (a[sortKey] === b[sortKey]) {
         return 0
       }
 
-      return a[sortBy?.by ?? columnTitles[0]] > b[sortBy?.by ?? columnTitles[0]] ? -1 : 1
+      return a[sortKey] > b[sortKey] ? -1 : 1
     }
 
     return 0
   }
 
   const renderIcon = (obj: TIconButton, i: string) => {
-    if (!obj?.icon) {
-      return null
-    }
+    if (!obj) return null
 
-    return (
-      <IconButton
-        key={i}
-        {...obj}
-        size="medium"
-        noPadding
-        isTransparent
-        noBorder
-        name={obj.icon === 'icon-edit' ? 'Edit field' : 'Delete field'}
-      />
-    )
+    return <IconButton key={i} {...obj} size="medium" noPadding isTransparent noBorder name={obj.icon === 'icon-edit' ? 'Edit field' : 'Delete field'} />
   }
 
   const renderList = (columnTitle: string) => {
     return listItems
       .sort((a: TListItem, b: TListItem) => handleSort(a, b))
       .map((item, i) => {
-        console.log(item[columnTitle])
         return typeof item[columnTitle] === 'object' ? (
           <div key={`${item[columnTitle]}-${i}`} className={cx(styles.item, styles.icon)}>
             {renderIcon(item[columnTitle] as TIconButton, i.toString())}
@@ -128,8 +112,8 @@ const Table = ({
         {action && <Button {...action} />}
       </div>
       <div className={styles.mobile}>
-        {listItems?.map((item, i) => {
-          const entries = Object.entries(item)
+        {listItems.map((item, i) => {
+          const entries = Object.entries(item || {})
           const nonIcons = entries?.filter(([key]) => !key.includes('icon'))
           const icons = entries?.filter(([key]) => key.includes('icon'))
           return (
@@ -137,21 +121,13 @@ const Table = ({
               {nonIcons?.length
                 ? nonIcons.map(([key, value]) => (
                     <div key={`${key}-${i}`} className={styles.row}>
-                      {!hideColumnTitles && !key.includes('icon') ? (
-                        <span className={styles.columnTitle}>{`${key}: `}</span>
-                      ) : (
-                        ''
-                      )}
-                      <span className={styles.item}>
-                        {typeof value === 'object' ? renderIcon(value, `${key}-${i}`) : value}
-                      </span>
+                      {!hideColumnTitles && !key.includes('icon') ? <span className={styles.columnTitle}>{`${key}: `}</span> : ''}
+                      <span className={styles.item}>{typeof value === 'object' ? renderIcon(value, `${key}-${i}`) : value}</span>
                     </div>
                   ))
                 : null}
               {icons?.length ? (
-                <div className={styles.icons}>
-                  {icons.map(([key, value]) => typeof value === 'object' && renderIcon(value, `${key}-${i}`))}
-                </div>
+                <div className={styles.icons}>{icons.map(([key, value]) => typeof value === 'object' && renderIcon(value, `${key}-${i}`))}</div>
               ) : null}
             </div>
           )
@@ -177,16 +153,9 @@ const Table = ({
                     <>
                       <span className={styles.columnTitleText}>{columnTitle}</span>
                       <IconButton
-                        icon={
-                          sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'icon-chevron-down' : 'icon-chevron-up'
-                        }
+                        icon={sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'icon-chevron-down' : 'icon-chevron-up'}
                         type="button"
-                        onClick={() =>
-                          setSortBy({
-                            by: columnTitle,
-                            dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc',
-                          })
-                        }
+                        onClick={() => setSortBy({ by: columnTitle, dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc' })}
                         isTransparent
                         noBorder
                         name="Sort by"
