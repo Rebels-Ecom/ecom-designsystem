@@ -1,9 +1,23 @@
-function convertNumToStr(number:number) {
-    return number.toFixed(2).toString().replace('.', ',');
+function convertNumToStr(number: number) {
+  return number.toFixed(2).toString().replace('.', ',')
+}
+
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase()
+}
+
+function getQuantityString(quantity: string, defaultValue: number = 1): string {
+  const parsedQuantity = Number(quantity)
+
+  if (!quantity || isNaN(parsedQuantity)) {
+    return String(defaultValue)
   }
 
-  function capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase()
+  if (parsedQuantity < 0) {
+    return '0'
   }
 
-export {convertNumToStr, capitalizeFirstLetter}
+  return String(parsedQuantity)
+}
+
+export { capitalizeFirstLetter, convertNumToStr, getQuantityString }

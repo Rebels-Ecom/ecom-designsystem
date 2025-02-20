@@ -1,3 +1,203 @@
+import { getProductPicture } from '../../../../helpers/picture-helper'
+
+function productCardFactory(productItem: any = {}) {
+  const [product] = productItem?.Variants || []
+
+  return {
+    partNo: product?.PartNo || productItem?.PartNo,
+    productName: productItem?.Name,
+    productUrl: productItem?.ProductUrl,
+    productCategoryId: productItem?.Category,
+    categoryName:
+      product?.CategoryName || productItem?.CategoryName || productItem?.CategoryString || productItem?.Category,
+    productBrand: product?.Brand || productItem?.Brand || productItem?.BrandName,
+    brandName: product?.Brand || productItem?.Brand || productItem?.BrandName,
+    primaryImageUrl: product?.PrimaryImageUrl || productItem?.PrimaryImageUrl,
+    productDescription: productItem?.FullDescription,
+    country:
+      Array.isArray(productItem?.ShortTexts) && productItem?.ShortTexts.length
+        ? productItem?.ShortTexts[0]
+        : Array.isArray(product?.ShortTexts) && product?.ShortTexts.length
+        ? product.ShortTexts[0]
+        : '',
+    packaging: product?.VariantFullName,
+    price: product?.PricePerUnit || productItem?.PricePerUnit,
+    priceStr: product?.PricePerUnitString || productItem?.PricePerUnitString || '0',
+    pricePerUnit: product?.PricePerUnit || productItem?.PricePerUnit,
+    pricePerUnitString: product?.PricePerUnitString || productItem?.PricePerUnitString || '0',
+    packagePrice: productItem?.PackagePrice,
+    packagePriceString: productItem?.PackagePriceString || '0',
+    quantity: productItem?.Quantity ? productItem?.Quantity : 0,
+    salesUnit: product?.SalesUnit || productItem?.SalesUnit,
+    itemNumberPerSalesUnit: product?.UnitsPerBaseUnit || productItem?.UnitsPerBaseUnit,
+    tags: product?.Tags?.map((tag: any = {}) => {
+      return {
+        text: tag.Text || tag.text,
+        shape: tag.Shape ? tag.Shape : 'pill',
+        color: tag.Class || tag.class,
+      }
+    }),
+    productVariantList: productItem?.Variants?.map((variant: any) => {
+      const [firstVariant] = productItem?.Variants
+      const image = getProductPicture(variant?.PartNo, variant.PrimaryImageUrl)
+      return {
+        activeCampaign: variant?.ActiveCampaign,
+        productName: productItem?.Name,
+        variantName: variant.VariantFullName || variant.VariantName,
+        variantId: variant?.PartNo,
+        country: Array.isArray(variant.ShortTexts) && variant.ShortTexts.length ? variant.ShortTexts[0] : '',
+        price: variant.PricePerUnit,
+        priceStr: variant.PricePerUnitString || '0',
+        pricePerUnit: variant.PricePerUnit,
+        pricePerUnitString: variant.PricePerUnitString || '0',
+        salesUnit: variant.SalesUnit,
+        sellerOnly: variant.SellerOnly,
+        isAccessoryPotItem: variant.AccessoryPotVariant,
+        itemNumberPerSalesUnit: variant.UnitsPerBaseUnit,
+        image,
+        checked: firstVariant?.PartNo ? variant.VariantId === firstVariant?.PartNo : false,
+        tags: variant?.Tags?.map((tag: any = {}) => {
+          return {
+            text: tag.Text || tag.text,
+            shape: tag.Shape ? tag.Shape : 'pill',
+            color: tag.Class || tag.class,
+          }
+        }),
+        onChange: () => {},
+        partNoLabel: 'Artikelnr',
+        unitLabel: 'st',
+        currencyLabel: 'kr',
+      }
+    }),
+    productDetail: {},
+    sortIndex: productItem?.SortIndex,
+    activeCampaign: productItem?.ActiveCampaign,
+    isCampaignProduct: productItem?.CampaignProduct,
+    isLimitedProduct: productItem?.LimitedProduct,
+    isAccessoryPotItem: productItem?.AccessoryPotItem,
+    sellerOnly: productItem?.SellerOnly,
+    showPrice: productItem?.ShowPrice,
+    simulatedPrice: productItem?.SimulatedPrice,
+    accessoryProductFlag: productItem?.AccessoryProductFlag,
+
+    //New fields added for campaigns
+    campaignTitle: productItem?.ActiveCampaign?.CampaignTitle,
+    sumString: productItem?.SumString,
+    confirmedDeliveryDate: productItem?.ConfirmedDeliveryDate,
+    errorStatus: productItem?.ErrorStatus,
+    confirmedQuantity: productItem?.ConfirmedQuantity,
+    showQuantityMsg: productItem?.ShowQuantityMsg,
+    showErrorLine: productItem?.ShowErrorLine,
+    externalId: productItem?.ExternalId,
+    discount: productItem?.Discount,
+    priceCode: productItem?.PriceCode,
+    outOfStock: productItem?.ShowQuantityMsg,
+    useAccessoryCredits: productItem?.UseAccessoryCredits,
+    showDeliveryDate: productItem?.ShowDeliveryDate,
+    insertOnNewLine: productItem?.InsertOnNewLine,
+    netPriceBeforeDiscount: productItem?.NetPriceBeforeDiscount,
+    //Translation labels
+    partNoLabel: 'Artikelnr',
+    unitLabel: 'st',
+    currencyLabel: 'kr',
+    priceLabel: 'Listpris',
+    addToCartLabel: 'Lägg till i varukorg',
+    outOfStockLabel: productItem?.ConfirmedQuantity > 0 ? 'Ej tillräckligt' : 'Ej i lager',
+    limitedLabel: 'Limited',
+  }
+}
+
+const dummy = {
+  FirstVariantName: '33cl Engångsglas',
+  PricePerUnit: 22.844166666666666,
+  PricePerUnitString: '22,84',
+  Name: 'Wisby Pils 5,0 EKO',
+  ProductUrl: '/Product/1125111',
+  IsHit: true,
+  IsProduct: true,
+  PrimaryImageUrl: 'https://spendrups.cdn.storm.io/f58dafe9-ce3c-4005-aaa3-488dfca1a1ca',
+  PartNo: '1125111',
+  LimitedProduct: false,
+  CampaignProduct: false,
+  ActiveCampaign: null,
+  Tags: [
+    {
+      Text: 'Eko',
+      Class: 'green',
+      ExternalId: '10755',
+    },
+    {
+      Text: 'Nyhet',
+      Class: 'black',
+      ExternalId: '10755',
+    },
+  ],
+  SellerOnly: true,
+  AccessoryPotVariant: true,
+  ShortTexts: ['Sverige'],
+  Variants: [
+    {
+      Name: '33cl Engångsglas',
+      VariantFullName: '33cl Engångsglas',
+      PartNo: '1125111',
+      PrimaryImageUrl: 'https://spendrups.cdn.storm.io/f58dafe9-ce3c-4005-aaa3-488dfca1a1ca',
+      SalesUnit: 'Kolli',
+      UnitsPerBaseUnit: 24,
+      Tags: [
+        {
+          Text: 'Eko',
+          Class: 'green',
+          ExternalId: '10755',
+        },
+        {
+          Text: 'Nyhet',
+          Class: 'black',
+          ExternalId: '10755',
+        },
+      ],
+      ShortTexts: ['Sverige'],
+      PricePerUnit: 22.844166666666666,
+      PricePerUnitString: '22,84',
+      SellerOnly: true,
+      AccessoryPotVariant: true,
+      ActiveCampaign: null,
+    },
+    {
+      Name: '30l FAT',
+      VariantFullName: '30l FAT',
+      PartNo: '1125191',
+      PrimaryImageUrl: 'https://spendrups.cdn.storm.io/e02e9f3e-e272-40eb-bf46-7d36404631a3',
+      SalesUnit: 'Kolli',
+      UnitsPerBaseUnit: 1,
+      Tags: [
+        {
+          Text: 'Eko',
+          Class: 'green',
+          ExternalId: '10755',
+        },
+        {
+          Text: 'Vegan',
+          Class: 'purple',
+          ExternalId: '16267',
+        },
+      ],
+      ShortTexts: ['Sverige'],
+      PricePerUnit: 1962.66,
+      PricePerUnitString: '1962,66',
+      SellerOnly: false,
+      AccessoryPotVariant: false,
+      ActiveCampaign: null,
+    },
+  ],
+  Desc: '',
+  SalesUnit: 'Kolli',
+  UnitsPerBaseUnit: 24,
+  AccessoryPotItem: true,
+  ModelName: '33cl Engångsglas',
+  CategoryName: 'Öl',
+  BrandName: 'Spendrups',
+}
+
 const dummyBeerProduct = {
   FirstVariantName: '',
   ListPricePerUnit: 22.677,
@@ -12,7 +212,7 @@ const dummyBeerProduct = {
   CampaignProduct: false,
   ActiveCampaign: null,
   Tags: [{ Shape: 'pill', Text: 'Vegan', Class: 'green' }],
-  SellerOnly: false,
+  SellerOnly: true,
   ShortTexts: ['Sverige'],
   Variants: [
     {
@@ -29,8 +229,8 @@ const dummyBeerProduct = {
       ShortTexts: ['Sverige'],
       ListPricePerUnit: 22.677,
       ListPricePerUnitString: '22,68',
-      SellerOnly: false,
-      AccessoryPotVariant: false,
+      SellerOnly: true,
+      AccessoryPotVariant: true,
       ActiveCampaign: null,
     },
     {
@@ -300,4 +500,4 @@ const dummyProductNoVariants = {
   BrandName: 'Norrlands Guld',
 }
 
-export { dummyBeerProduct, dummyProductNoVariants, dummyWineProduct }
+export { dummy, dummyBeerProduct, dummyProductNoVariants, dummyWineProduct, productCardFactory }

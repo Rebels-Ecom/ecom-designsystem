@@ -11,7 +11,7 @@ export type TQuantityChanger = {
   maxQuantity?: number
 }
 
-const QuantityChanger = ({ quantity, disabled = false, onChange, maxQuantity }: TQuantityChanger) => {
+const QuantityChanger = ({ id, quantity, disabled = false, onChange, maxQuantity }: TQuantityChanger) => {
   const [val, setVal] = useState<number>(parseInt(quantity) || 0)
 
   useEffect(() => {
@@ -61,6 +61,7 @@ const QuantityChanger = ({ quantity, disabled = false, onChange, maxQuantity }: 
         round
       />
       <input
+        id={id}
         type="number"
         value={val}
         onChange={handleOnChange}

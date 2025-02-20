@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import cx from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
-import styles from './drawer-sidebar.module.css'
+import React, { useEffect, useRef } from 'react'
+import { useOnClickOutside } from '../../../hooks'
 import { IconButton } from '../../atoms'
-import cx from 'classnames';
-import { useOnClickOutside } from '../../../hooks';
+import styles from './drawer-sidebar.module.css'
 
 export interface IDrawerSidebar {
   children: any
@@ -13,23 +13,23 @@ export interface IDrawerSidebar {
    * Defines what direction the sidebar should appear from
    * @default 'right'
    */
-  from?: 'left' | 'right';
+  from?: 'left' | 'right'
   /**
    * Defines the width of the sidebar content
    * @default 'lg'
    */
-  width?: 'md' | 'lg';
+  width?: 'md' | 'lg'
   /**
    * Defines if backdrop should be hidden
    * @default false
    */
-  hideOverlay?: boolean;
+  hideOverlay?: boolean
   /**
    * Defines if body should be scrollable when sidebar is open
    * @default false
    */
-  enableBackgroundScroll?: boolean;
-  disableCloseOnOutsideClick?: boolean;
+  enableBackgroundScroll?: boolean
+  disableCloseOnOutsideClick?: boolean
 }
 
 function DrawerSidebar({
@@ -42,49 +42,38 @@ function DrawerSidebar({
   enableBackgroundScroll = false,
   disableCloseOnOutsideClick = false,
 }: IDrawerSidebar) {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const overlay = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.5,
-      },
-    },
-  }
-
-  const sidebar = {
-    hidden: { x: from === 'left' ? '-100%' : '100%' },
-    show: { x: 0 },
-  }
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (enableBackgroundScroll) {
-      return;
+      return
     }
-    
-    const el = document.body;
+
+    const el = document.body
 
     if (el) {
       if (isOpen) {
-        el.classList.add('no-scroll');
+        el.classList.add('no-scroll')
       } else {
-        el.classList.remove('no-scroll');
+        el.classList.remove('no-scroll')
       }
     }
 
     return () => el?.classList?.remove('no-scroll')
-  }, [isOpen]);
+  }, [isOpen])
 
-  useOnClickOutside({ ref: contentRef, onClose: (e: React.SyntheticEvent) => {
-    if (disableCloseOnOutsideClick) {
-      return;
-    }
+  useOnClickOutside({
+    ref: contentRef,
+    onClose: (e: React.SyntheticEvent) => {
+      if (disableCloseOnOutsideClick) {
+        return
+      }
 
-    if (hideOverlay) {
-      return onClose(e);
-    }
-  } })
+      if (hideOverlay) {
+        return onClose(e)
+      }
+    },
+  })
 
   return (
     <AnimatePresence>
@@ -92,19 +81,18 @@ function DrawerSidebar({
         <>
           <motion.aside
             className={cx(styles.drawerSidebar, styles[from], styles[width])}
-            variants={sidebar}
-            animate="show"
-            initial="hidden"
-            exit="hidden"
-            transition={{ ease: 'easeIn' }}
+            initial={{ x: from === 'left' ? '-100vw' : '100vw' }}
+            animate={{ x: 0 }}
+            exit={{ x: from === 'left' ? '-100vw' : '100vw' }}
+            transition={{ type: 'tween' }}
             ref={contentRef}
           >
             <div className={styles.contentWrapper}>
               <IconButton
                 className={styles.buttonClose}
-                type='button'
+                type="button"
                 onClick={onClose}
-                icon='icon-x'
+                icon="icon-x"
                 size="large"
                 isTransparent
                 noBorder
@@ -116,10 +104,9 @@ function DrawerSidebar({
           {!hideOverlay && (
             <motion.div
               className={styles.backdrop}
-              variants={overlay}
-              initial="hidden"
-              animate="show"
-              exit="hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={(e) => onClose(e)}
             />
           )}

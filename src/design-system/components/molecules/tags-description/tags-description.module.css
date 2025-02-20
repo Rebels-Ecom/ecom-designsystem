@@ -1,0 +1,56 @@
+.tagsDescription {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+
+  & .tagDescription {
+    display: flex;
+    gap: 0.375rem;
+
+    & .color {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.5rem;
+
+      &.mint{
+        background: var(--tag-mint);
+        color: var(--tag-blue);
+      }
+
+      &.blue{
+        background: var(--tag-blue);
+      }
+
+      &.orange{
+        background: var(--tag-orange);
+      }
+
+      &.grey{
+        background: var(--tag-grey);
+        color: var(--color-text-default);
+      }
+
+      &.yellow{
+        background: var(--tag-yellow);
+        color: var(--color-text-default);
+      }
+
+      &.purple{
+        background: var(--tag-purple);
+      }
+
+      &.green{
+        background: var(--tag-green);
+      }
+
+      &.black{
+        background: var(--tag-black);
+      }
+    }
+
+    & .text {
+      margin: 0;
+    }
+  }
+}

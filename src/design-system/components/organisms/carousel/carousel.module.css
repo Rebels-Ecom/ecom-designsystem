@@ -51,6 +51,7 @@
     bottom: -0.75rem;
     background-color: transparent;
     opacity: 1;
+    transform: unset;
     
     &.left {
       left: 1rem;
@@ -58,6 +59,8 @@
     
     &.right {
       right: 1rem;
+      left: unset;
+      transform: translateY();
     }
 
     &.offset {
@@ -139,10 +142,12 @@
     &.zeroOffset {
       &.left {
         left: 0;
+        bottom: 0;
       }
 
       &.right {
         right: 0;
+        bottom: 0;
       }
     }
 

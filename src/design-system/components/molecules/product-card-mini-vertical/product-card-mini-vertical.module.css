@@ -1,42 +1,102 @@
 .productCardMiniVertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
   width: calc(50% - 0.25rem);
+  height: 100%;
   background-color: white;
-  padding: 0.5rem;
+  padding: 1rem 0.5rem 0.75rem;
   border-radius: 0.5rem;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 
-  & .tagsList {
+  & .tagsWrapper {
+    position: absolute;
+    top: 0.5rem;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 0.25rem;
-
+    margin-bottom: 0.5rem;
+    min-height: 1.25rem;
 
     & .tag {
-      display: inline-flex;
-      width: 1.5rem;
-      height: 1rem;
-      border-radius: 0.75rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* width: 1rem;
+      height: 1rem; */
+      /* border-radius: 0.5rem; */
     }
   }
 
+  & .accessoryPotItemIcon {
+    margin: 0;
+    background-color: var(--tag-orange);
+    color: white;
+    font-size: 0.625rem;
+  }
+
   & .picture {
-    width: 6rem;
+    display: flex;
+    justify-content: center;
+    width: 4rem;
+    height: 7rem;
     margin: 0 auto;
 
     & .image {
       padding: 0;
+      object-fit: contain;
     }
   }
 
   & .content {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     gap: 0;
+    padding-top: 0.5rem;
+
+    & .productNameLink {
+      text-decoration: none;
+      margin-bottom: auto;
+    }
+
+    & .productName {
+      margin: 0.5rem 0;
+    }
+
+    & .detail {
+      margin: 0;
+    }
+  }
+
+  & .variant {
+    padding: 0;
+    margin-top: 0.5rem;
+  }
+
+  & .addToCart {
+    margin: 0.5rem 0;
+  }
+
+  & .actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap-reverse;
     justify-content: center;
 
-    & .quantityWrapper {
+    & .extras {
       display: flex;
-      flex-direction: column;
-      align-self: stretch;
+      gap: 0.5rem;
+      flex: 1;
+      justify-content: center;
     }
+  }
+
+  & .variants {
+
   }
 }

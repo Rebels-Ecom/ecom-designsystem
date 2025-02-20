@@ -1,14 +1,15 @@
 import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
-import { Intersection } from '@splidejs/splide-extension-intersection'
 import '@splidejs/react-splide/css'
-import { Children, PropsWithChildren, SetStateAction, useEffect, useRef, useState } from 'react'
-import styles from './carousel.module.css'
+import { Intersection } from '@splidejs/splide-extension-intersection'
 import cx from 'classnames'
+import { Children, PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { Icon } from '../../atoms'
+import styles from './carousel.module.css'
 import { ICarousel } from './types'
-import { Icon, IconButton } from '../../atoms'
 
-export const CarouselItem = (props: PropsWithChildren<{}>) => <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
-
+export const CarouselItem = (props: PropsWithChildren<{}>) => (
+  <SplideSlide className={styles.slide}>{props.children}</SplideSlide>
+)
 
 const Carousel = ({
   className = '',
@@ -23,44 +24,45 @@ const Carousel = ({
   zeroOffset,
   lightArrows,
   onSlideChange,
+  hidePagination,
   ...props
- }: PropsWithChildren<ICarousel>) => {
-  const noOfChildren = Children?.count(props.children) ?? 0;
-  const ref = useRef<Splide | null>(null);
-  const [userInitiated, setUserInitiated] = useState(false);
+}: PropsWithChildren<ICarousel>) => {
+  const noOfChildren = Children?.count(props.children) ?? 0
+  const ref = useRef<Splide | null>(null)
+  const [userInitiated, setUserInitiated] = useState(false)
 
   useEffect(() => {
-    const splide = ref.current?.splide;
+    const splide = ref.current?.splide
 
     const handleMoved = (index: number) => {
       if (userInitiated) {
-        onNavigation?.(index);
-        setUserInitiated(false);
+        onNavigation?.(index)
+        setUserInitiated(false)
       }
-    };
+    }
 
     if (splide) {
-      splide.on('moved', handleMoved);
+      splide.on('moved', handleMoved)
     }
 
     return () => {
       if (splide) {
-        splide.off('moved');
+        splide.off('moved')
       }
-    };
-  }, [userInitiated]);
+    }
+  }, [userInitiated])
 
   const goToPrev = () => {
-    setUserInitiated(true);
-  };
-  
+    setUserInitiated(true)
+  }
+
   const goToNext = () => {
-    setUserInitiated(true);
-  };
+    setUserInitiated(true)
+  }
 
   const handleSlideChange = (_: any, newIndex: number) => {
-    onSlideChange?.(newIndex);
-  };
+    onSlideChange?.(newIndex)
+  }
 
   return (
     <Splide
@@ -72,14 +74,25 @@ const Carousel = ({
         ...splideProps?.options,
         drag: noOfChildren > 1,
         arrows: noOfChildren > 1,
+        pagination: !hidePagination,
         classes: {
-          arrow: cx('splide__arrow', styles.arrow, {[styles.offset]: offsetArrows }),
-          next: cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, arrowsBottom && styles.arrowBottom, {
+          arrow: cx('splide__arrow', styles.arrow, { [styles.offset]: offsetArrows }),
+          next: cx(
+            'splide__arrow splide__arrow--next',
+            styles.arrow,
+            styles.right,
+            arrowsBottom && styles.arrowBottom,
+            {
+              [styles.hasPadding]: !!padding,
+              [styles.offset]: offsetArrows,
+            }
+          ),
+          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, arrowsBottom && styles.arrowBottom, {
             [styles.hasPadding]: !!padding,
-            [styles.offset]: offsetArrows
           }),
-          prev: cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, arrowsBottom && styles.arrowBottom, { [styles.hasPadding]: !!padding }),
-          pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination, { [styles.hidePagination]: !!padding && noOfChildren > 14 }),
+          pagination: cx('splide__pagination splide__pagination--ltr', styles.pagination, {
+            [styles.hidePagination]: !!padding && noOfChildren > 14,
+          }),
           page: cx('splide__pagination__page', styles.page),
         },
         mediaQuery: 'min',
@@ -95,7 +108,7 @@ const Carousel = ({
           768: {
             perPage: breakpoints?.md?.perPage ?? 2,
             perMove: breakpoints?.md?.perMove ?? 1,
-            arrows: noOfChildren > 1 ? !!!breakpoints?.md?.hideArrows: false,
+            arrows: noOfChildren > 1 ? !!!breakpoints?.md?.hideArrows : false,
             focus: breakpoints?.md?.dotPerItem ? 0 : undefined,
           },
           576: {
@@ -108,9 +121,7 @@ const Carousel = ({
       }}
       extensions={{ Intersection }}
     >
-      <SplideTrack className={trackClassName}>
-        {props.children}
-      </SplideTrack>
+      <SplideTrack className={trackClassName}>{props.children}</SplideTrack>
       {noOfChildren > 1 && (
         <div className="splide__arrows">
           <button
@@ -122,7 +133,12 @@ const Carousel = ({
               [styles.lightArrows]: lightArrows,
             })}
             onClick={goToPrev}
-            ><Icon icon='icon-chevron-left' size='large' /></button>
+          >
+            <Icon
+              icon={splideProps?.options?.direction === 'ttb' ? 'icon-chevron-up' : 'icon-chevron-left'}
+              size="large"
+            />
+          </button>
           <button
             className={cx('splide__arrow splide__arrow--next', styles.arrow, styles.right, {
               [styles.hasPadding]: !!padding,
@@ -132,7 +148,12 @@ const Carousel = ({
               [styles.lightArrows]: lightArrows,
             })}
             onClick={goToNext}
-          ><Icon icon='icon-chevron-right' size='large' /></button>
+          >
+            <Icon
+              icon={splideProps?.options?.direction === 'ttb' ? 'icon-chevron-down' : 'icon-chevron-right'}
+              size="large"
+            />
+          </button>
         </div>
       )}
     </Splide>
