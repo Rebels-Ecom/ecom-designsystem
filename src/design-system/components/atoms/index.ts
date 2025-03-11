@@ -1,3 +1,4 @@
+export { AddToCartButton } from './add-to-cart-button/add-to-cart-button'
 export { AdminSearch } from './admin-search/admin-search'
 export { AlertBox } from './alert-box/alert-box'
 export { AlertMessage } from './alert-message/alert-message'

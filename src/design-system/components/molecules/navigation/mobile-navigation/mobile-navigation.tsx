@@ -178,7 +178,7 @@ const MobileNavigation = ({
             {!open && (
               <motion.button
                 key="menu-btn"
-                initial={{ scale: 0.2 }}
+                initial={false}
                 animate={{ scale: open ? 0 : 1 }}
                 exit={{ scale: 0.2 }}
                 onClick={() => setOpen(true)}

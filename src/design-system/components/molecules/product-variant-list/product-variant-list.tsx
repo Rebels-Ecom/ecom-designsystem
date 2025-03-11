@@ -1,11 +1,10 @@
+import cx from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '../../atoms/button/button'
-import { IProductVariant, ProductVariant } from '../product-variant/product-variant'
-import styles from './product-variant-list.module.css'
 import { useOnClickOutside } from '../../../hooks'
 import { Icon, IconButton } from '../../atoms'
-import { AnimatePresence, motion } from 'framer-motion'
-import cx from 'classnames';
+import { IProductVariant, ProductVariant } from '../product-variant/product-variant'
+import styles from './product-variant-list.module.css'
 
 export interface IProductVariantList {
   className?: string
@@ -15,8 +14,8 @@ export interface IProductVariantList {
   sellerOnlyTooltipText?: string
   onCloseVariants: CallableFunction
   isRestrictedUser?: boolean
-  absolutePositioned?: boolean;
-  open?: boolean;
+  absolutePositioned?: boolean
+  open?: boolean
 }
 
 const ProductVariantList = ({
@@ -27,53 +26,53 @@ const ProductVariantList = ({
   sellerOnlyTooltipText,
   onCloseVariants,
   isRestrictedUser,
-  absolutePositioned
+  absolutePositioned,
 }: IProductVariantList) => {
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
-  const [hasReachedBottom, setHasReachedBottom] = useState(false);
+  const [hasReachedBottom, setHasReachedBottom] = useState(false)
   const variantsRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     const handleScroll = (event: any) => {
       if (listRef?.current) {
-        const height = Math.ceil((event.target.scrollHeight - listRef.current?.getBoundingClientRect().height) ?? 0);
-        
-        if (event.target.scrollTop >= (height - 20) && !hasReachedBottom) {
+        const height = Math.ceil(event.target.scrollHeight - listRef.current?.getBoundingClientRect().height || 0)
+
+        if (event.target.scrollTop >= height - 20 && !hasReachedBottom) {
           setHasReachedBottom(true)
         }
-        if (event.target.scrollTop < (height - 20) && hasReachedBottom) {
-          setHasReachedBottom(false);
+        if (event.target.scrollTop < height - 20 && hasReachedBottom) {
+          setHasReachedBottom(false)
         }
       }
     }
 
     listRef.current?.addEventListener('scroll', handleScroll)
 
-    return () => listRef.current?.removeEventListener('scroll', handleScroll);
-  }, [hasReachedBottom]);
+    return () => listRef.current?.removeEventListener('scroll', handleScroll)
+  }, [hasReachedBottom])
 
   function handleOnChangeVariant(e: React.FormEvent<HTMLInputElement>) {
     const selectedValue = e.currentTarget.value
     setSelectedProductVariantId(selectedValue)
-    const selectedProduct = variantsList.find((variant) => variant.variantId === selectedValue);
-    onVariantSelect(selectedProduct, variantsList);
+    const selectedProduct = variantsList.find((variant) => variant.variantId === selectedValue)
+    onVariantSelect(selectedProduct, variantsList)
   }
-  
+
   function handleOnClickVariant(partNo: string) {
-    setSelectedProductVariantId(partNo);
-    const selectedProduct = variantsList.find((variant) => variant.variantId === partNo);
-    onVariantSelect(selectedProduct, variantsList);
+    setSelectedProductVariantId(partNo)
+    const selectedProduct = variantsList.find((variant) => variant.variantId === partNo)
+    onVariantSelect(selectedProduct, variantsList)
   }
 
   function handleScrollToBottom() {
     if (listRef?.current) {
-      const height = Math.ceil((listRef.current.scrollHeight - listRef.current?.getBoundingClientRect().height) ?? 0);
+      const height = Math.ceil(listRef.current.scrollHeight - listRef.current?.getBoundingClientRect().height || 0)
 
       listRef.current.scrollTo({ top: height ?? 0, behavior: 'smooth' })
     }
   }
-  
+
   function handleScrollToTop() {
     if (listRef?.current) {
       listRef.current.scrollTo({ top: 0, behavior: 'smooth' })
@@ -86,18 +85,21 @@ const ProductVariantList = ({
     <div ref={variantsRef} className={cx(styles.productVariantList, className ? className : '')}>
       <IconButton
         className={styles.buttonClose}
-        type='button'
+        type="button"
         onClick={() => onCloseVariants()}
-        icon='icon-x'
+        icon="icon-x"
         size="large"
         isTransparent
         noBorder
         noPadding
       />
-      <ul ref={listRef} className={cx(styles.variantsList, {
-        [styles.hasScrollBar]: variantsList?.length > 2,
-        [styles.absolute]: absolutePositioned,
-      })}>
+      <ul
+        ref={listRef}
+        className={cx(styles.variantsList, {
+          [styles.hasScrollBar]: variantsList?.length > 2,
+          [styles.absolute]: absolutePositioned,
+        })}
+      >
         {variantsList.map((variant) => (
           <li key={variant.variantId} className={styles.listItem}>
             <ProductVariant
@@ -116,7 +118,7 @@ const ProductVariantList = ({
             <AnimatePresence initial={false} exitBeforeEnter>
               {hasReachedBottom && (
                 <motion.button
-                  key='arrow-up'
+                  key="arrow-up"
                   className={styles.showMoreBtn}
                   onClick={handleScrollToTop}
                   initial={{ scale: 0.2 }}
@@ -124,12 +126,12 @@ const ProductVariantList = ({
                   exit={{ scale: 0.2 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Icon icon='icon-chevron-up' />
+                  <Icon icon="icon-chevron-up" />
                 </motion.button>
               )}
               {!hasReachedBottom && (
                 <motion.button
-                  key='arrow-down'
+                  key="arrow-down"
                   className={styles.showMoreBtn}
                   onClick={handleScrollToBottom}
                   initial={{ scale: 0.2 }}
@@ -137,7 +139,7 @@ const ProductVariantList = ({
                   exit={{ scale: 0.2 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Icon icon='icon-chevron-down' />
+                  <Icon icon="icon-chevron-down" />
                 </motion.button>
               )}
             </AnimatePresence>

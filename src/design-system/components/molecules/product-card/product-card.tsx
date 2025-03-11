@@ -6,15 +6,15 @@ import { IProduct } from '../../../../types/product'
 import { TAlertBox } from '../../atoms/alert-box/alert-box'
 import { IPicture } from '../../atoms/picture/picture'
 import { ProductCardHorizontal } from '../product-card-horizontal/product-card-horizontal'
-import { ProductCardMiniVertical } from '../product-card-mini-vertical/product-card-mini-vertical'
 import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
 import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
 
-export type TCardDisplayType = 'vertical' | 'horizontal' | 'mini-vertical'
+export type TCardDisplayType = 'vertical' | 'horizontal'
 
 export type TProductCardVertical = {
   cardDisplay: 'vertical'
   showPackaging?: never
+  onButtonClick?: never
 }
 
 export type TProductCardHorizontal = {
@@ -22,11 +22,7 @@ export type TProductCardHorizontal = {
   onClickRemoveProduct?: CallableFunction
   removingProduct?: boolean
   showPackaging?: boolean
-}
-
-export type TProductCardMiniVertical = {
-  cardDisplay: 'mini-vertical'
-  showPackaging?: never
+  onButtonClick?: never
 }
 
 export interface IProductCard {
@@ -86,10 +82,9 @@ export interface IProductCard {
     stockShortage?: string
     outOfStock?: string
   }
-  variantsInCart?: Array<{ variantId: string; quantity: number }>
 }
 
-export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal | TProductCardMiniVertical)
+export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
 
 function ProductCard({
   cardDisplay,
@@ -127,7 +122,6 @@ function ProductCard({
   isAddingToFavorites,
   onVariantsButtonClick,
   onVariantChange,
-  variantsInCart,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -204,14 +198,7 @@ function ProductCard({
   }
 
   function handlePackageChange(selectedVariant: any) {
-    const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
-
-    console.log('variantsInCart :: ', variantsInCart)
-    console.log('selectedVariant.variantId :: ', selectedVariant.variantId)
-    console.log(
-      'variant q :: ',
-      variantsInCart?.find((v) => v.variantId === selectedVariant.variantId)?.quantity?.toString()
-    )
+    const q = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
 
     setProduct((prevState) => {
       const updatedProduct = {
@@ -226,10 +213,8 @@ function ProductCard({
         pricePerUnitString: selectedVariant.pricePerUnitString,
         salesUnit: selectedVariant.salesUnit,
         itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
-        totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
-        quantity:
-          variantsInCart?.find((v) => v.variantId === selectedVariant.variantId)?.quantity?.toString() ||
-          quantity.toString(),
+        totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * q),
+        quantity: q.toString(),
         selectedVariantId: selectedVariant.variantId,
         sellerOnly: selectedVariant.sellerOnly,
         activeCampaign: selectedVariant.activeCampaign,
@@ -291,23 +276,6 @@ function ProductCard({
         debounceQuantityVal={debounceQuantityVal}
         productArea={productArea}
         showPackaging={showPackaging}
-      />
-    )
-  }
-
-  if (cardDisplay === 'mini-vertical') {
-    return (
-      <ProductCardMiniVertical
-        cardDisplay="mini-vertical"
-        isRestrictedUser={isRestrictedUser}
-        {...commonProps}
-        onChangeQuantity={handleOnChangeQuantity}
-        productQuantityDisabled={productQuantityDisabled}
-        // defaultQuantity={myProduct.quantity ?? defaultQuantity}
-        showAddToPurchaseListIcon={showAddToPurchaseListIcon}
-        onSaveToPurchaseListClick={onSaveToPurchaseListClick}
-        alertBox={alertBox}
-        productArea={productArea}
       />
     )
   }

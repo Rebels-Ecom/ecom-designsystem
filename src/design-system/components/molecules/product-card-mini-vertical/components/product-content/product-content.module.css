@@ -1,0 +1,26 @@
+.productContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0;
+  padding-top: 0.5rem;
+
+  & .productNameLink {
+    text-decoration: none;
+    margin-bottom: auto;
+  }
+
+  & .productName {
+    margin: 0.5rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2.25rem;      
+  }
+
+  & .detail {
+    margin: 0;
+  }
+}
