@@ -159,10 +159,6 @@ const ProductCardMiniVertical = ({
   }, [])
 
   const handleVariantChange = useCallback((variant: any) => {
-    if (variant.variantId === '1125191') {
-      console.log('new variant :: ', variant)
-    }
-    // Use current variantsInCart through ref
     const currentCartItems = prevVariantsInCart.current
 
     const variantInCart = currentCartItems.find((item) => item.variantId === variant.variantId)
@@ -209,7 +205,6 @@ const ProductCardMiniVertical = ({
   }
 
   const debouncedRequest = useDebounceWithPayload(({ id, q }: any) => {
-    console.log('debounced req :: ', id, q)
     onChangeQuantity?.({ ...cardStateRef.current, partNo: id, quantity: q })
   }, 1000)
 
@@ -225,14 +220,20 @@ const ProductCardMiniVertical = ({
         }),
         inputQuantity: newQuantity,
       }))
-      debouncedRequest({ id: id, q: newQuantity })
-
-      console.log('quantity change for :: ', id, newQuantity)
 
       debouncedRequest({ id: id, q: newQuantity })
     },
     [debouncedRequest]
   )
+
+  const handleAddToCart = useCallback(() => {
+    if (isRestrictedUser) {
+      addToCart()
+    } else {
+      setCardState((prev) => ({ ...prev, inputQuantity: cardState.quantity === 0 ? 1 : cardState.quantity }))
+      addToCart({ ...cardState, quantity: cardState.quantity === 0 ? 1 : cardState.quantity })
+    }
+  }, [isRestrictedUser, cardState])
 
   function handleCloseVariants() {
     setVariantsListOpen(false)
@@ -326,11 +327,7 @@ const ProductCardMiniVertical = ({
         <AddToCartButton
           buttonLabel={addToCartBtnLabel}
           id={`${cardState.partNo}-${productArea ?? 'category'}`}
-          onClick={() => {
-            console.log('add to cart :: ', cardState.partNo)
-            setCardState((prev) => ({ ...prev, inputQuantity: cardState.quantity === 0 ? 1 : cardState.quantity }))
-            addToCart({ ...cardState, quantity: cardState.quantity === 0 ? 1 : cardState.quantity })
-          }}
+          onClick={handleAddToCart}
           onChange={(val) => handleQuantityChange(val, cardState.partNo)}
           quantity={cardState.inputQuantity}
           disabled={buttonLoading || loading || disabled}
