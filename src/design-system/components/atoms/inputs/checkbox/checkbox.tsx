@@ -1,5 +1,5 @@
-import { forwardRef } from 'react'
 import cx from 'classnames'
+import { forwardRef } from 'react'
 import { getisErroneousStyle } from '../../../../../helpers/form-helper'
 import { TOther } from '../../../../../types/other'
 import styles from './checkbox.module.css'

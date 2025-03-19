@@ -1,8 +1,8 @@
-import styles from './icon-button.module.css'
 import cx from 'classnames'
 import { motion } from 'framer-motion'
-import { LinkComponent } from '../ui-link/ui-link'
 import { Icon, TIcon } from '../icon/icon'
+import { LinkComponent } from '../ui-link/ui-link'
+import styles from './icon-button.module.css'
 
 export type TIconButtonSize = 'x-small' | 'small' | 'medium' | 'large'
 
@@ -20,7 +20,7 @@ type TWithoutLink = {
 export type TIconButton = {
   type: 'link' | 'button' // TODO: remove link option
   icon: TIcon
-  name?: string;
+  name?: string
   size?: TIconButtonSize
   isTransparent?: boolean
   className?: string
@@ -35,7 +35,7 @@ export type TIconButton = {
   notification?: number
   weight?: 'normal' | 'bold'
   surface?: 'primary' | 'white'
-  animate?: 'default' | 'loading' | 'updated';
+  animate?: 'default' | 'loading' | 'updated'
 } & (TWithLink | TWithoutLink)
 
 const IconButton = (props: TIconButton) => {
@@ -51,20 +51,18 @@ const IconButton = (props: TIconButton) => {
     if (props.isExternal) {
       return (
         <a
-          className={
-            cx(
-              styles.iconButton,
-              styles[props.size ?? 'small'],
-              {
-                [styles.noPadding]: props.noPadding,
-                [styles.transparent]: props.isTransparent,
-                [styles.noBorder]: props.noBorder,
-                [styles.round]: props.round,
-                [styles.disabled]: props.disabled,
-              },
-              props.className,
-            )
-          }
+          className={cx(
+            styles.iconButton,
+            styles[props.size ?? 'small'],
+            {
+              [styles.noPadding]: props.noPadding,
+              [styles.transparent]: props.isTransparent,
+              [styles.noBorder]: props.noBorder,
+              [styles.round]: props.round,
+              [styles.disabled]: props.disabled,
+            },
+            props.className
+          )}
           href={props.linkUrl}
           target="_blank"
         >
@@ -75,7 +73,7 @@ const IconButton = (props: TIconButton) => {
               [styles.bold]: props.weight === 'bold',
             })}
           />
-          {(props.notification && props.notification < 100) && (
+          {props.notification && props.notification < 100 && (
             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
               {props.notification < 100 ? props.notification : '99+'}
             </motion.span>
@@ -88,15 +86,19 @@ const IconButton = (props: TIconButton) => {
       return (
         <Link
           to={props.linkUrl}
-          className={
-            cx(styles.iconButton, styles[props.size ?? 'small'], styles[props.surface ?? 'white'], {
+          className={cx(
+            styles.iconButton,
+            styles[props.size ?? 'small'],
+            styles[props.surface ?? 'white'],
+            {
               [styles.noPadding]: props.noPadding,
               [styles.transparent]: props.isTransparent,
               [styles.noBorder]: props.noBorder,
               [styles.round]: props.round,
               [styles.disabled]: props.disabled,
-            }, props.className)
-          }
+            },
+            props.className
+          )}
         >
           <Icon
             icon={props.icon}
@@ -120,58 +122,32 @@ const IconButton = (props: TIconButton) => {
       return
     }
 
-    const variants = {
-      loading: {
-          scale: [1, 1.05, 1],
-          transition: {
-              duration: 0.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-          },
-      },
-      updated: {
-          scale: [1, 0.9, 1.2, 1],
-          transition: {
-              duration: 0.5,
-              ease: 'easeInOut',
-          },
-      },
-      default: {
-          scale: 1,
-          transition: {
-              duration: 0.2,
-          },
-      },
-    };
-
     return (
       <button
-        className={
-          cx(styles.iconButton, styles[props.size ?? 'small'], styles[props.surface ?? 'white'], {
+        className={cx(
+          styles.iconButton,
+          styles[props.size ?? 'small'],
+          styles[props.surface ?? 'white'],
+          {
             [styles.noPadding]: props.noPadding,
             [styles.transparent]: props.isTransparent,
             [styles.noBorder]: props.noBorder,
             [styles.round]: props.round,
             [styles.disabled]: props.disabled,
-          }, props.className)
-        }
+          },
+          props.className
+        )}
         onClick={props.onClick}
         aria-label={props.name}
       >
-        {/* <motion.span
-          variants={props.animate ? variants : undefined}
-          initial='default'
-          animate={props.animate}
-        > */}
-          <Icon
-            icon={props.icon}
-            className={cx({
-              [styles.iconDisabled]: props.disabled,
-              [styles.bold]: props.weight === 'bold',
-              [styles.animate]: props.animate === 'loading'
-            })}
-          />
-        {/* </motion.span> */}
+        <Icon
+          icon={props.icon}
+          className={cx({
+            [styles.iconDisabled]: props.disabled,
+            [styles.bold]: props.weight === 'bold',
+            [styles.animate]: props.animate === 'loading',
+          })}
+        />
         {!!props.notification && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className={styles.notification}>
             {props.notification < 100 ? props.notification : '99+'}
