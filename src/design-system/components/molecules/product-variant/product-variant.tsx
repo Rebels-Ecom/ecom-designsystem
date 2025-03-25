@@ -1,10 +1,9 @@
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+import { Icon, IconWithTooltip } from '../../atoms'
 import { RadioButton } from '../../atoms/inputs/radio-button/radio-button'
 import { IPicture, Picture } from '../../atoms/picture/picture'
-import styles from './product-variant.module.css'
-import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Icon } from '../../atoms'
 import { FlexContainer } from '../../layouts'
-import { IconWithTooltip } from '../../atoms'
+import styles from './product-variant.module.css'
 
 export interface IProductVariant {
   productName: string
@@ -13,6 +12,7 @@ export interface IProductVariant {
   country: string
   priceStr: string
   salesUnit: string
+  itemNumberPerSalesUnit: number
   sellerOnly: boolean
   image: IPicture
   onChange: CallableFunction
@@ -23,7 +23,7 @@ export interface IProductVariant {
   currencyLabel: string
   sellerOnlyTooltipText?: string
   isRestrictedUser?: boolean
-  outOfStock?: boolean;
+  outOfStock?: boolean
 }
 
 const ProductVariant = ({
@@ -55,12 +55,23 @@ const ProductVariant = ({
           </>
         )}
         <div className={styles.radioWrapper}>
-          <RadioButton id={variantId} name={`variant-radio-${productName}`} checked={checked} value={variantId} onChange={onChange} />
+          <RadioButton
+            id={variantId}
+            name={`variant-radio-${productName}`}
+            checked={checked}
+            value={variantId}
+            onChange={onChange}
+          />
         </div>
       </FlexContainer>
       <FlexContainer stretch alignItems="center">
         <div className={styles.imageWrapper}>
-          <Picture {...image} classNamePicture={styles.picture} classNameImg={`${styles.image}`} fallbackImageUrl={fallbackProductImageUrl} />{' '}
+          <Picture
+            {...image}
+            classNamePicture={styles.picture}
+            classNameImg={`${styles.image}`}
+            fallbackImageUrl={fallbackProductImageUrl}
+          />{' '}
         </div>
         <div className={`${styles.contentWrapper}`}>
           <p className={styles.heading}>{variantName}</p>

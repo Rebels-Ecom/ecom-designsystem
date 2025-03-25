@@ -47,7 +47,7 @@ const VerticalVariants = ({
             gap: '0.25rem',
             direction: 'ttb',
             height: '100%',
-            fixedHeight: '8.75rem',
+            fixedHeight: '40%',
           },
         }}
         hidePagination

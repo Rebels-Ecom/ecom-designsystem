@@ -54,6 +54,7 @@ export interface IProductCardMiniVertical {
     outOfStock?: string
   }
   variantsInCart?: Array<{ variantId: string; quantity: number }>
+  fullWidth?: boolean
 }
 
 const ProductCardMiniVertical = ({
@@ -85,6 +86,7 @@ const ProductCardMiniVertical = ({
   isAddingToFavorites,
   tooltips,
   maxQuantity, // TODO: implement
+  fullWidth,
 }: IProductCardMiniVertical & {
   product: IProduct
   variantsInCart?: Array<{ variantId: string; quantity: number }>
@@ -172,7 +174,7 @@ const ProductCardMiniVertical = ({
         selectedVariantId: variant.variantId,
         quantity: newQuantity,
         totalPrice: calculateTotalPrice({
-          unitPrice: variant.pricePerUnit,
+          unitPrice: Number(variant.pricePerUnit),
           quantity: newQuantity === 0 ? 1 : newQuantity,
           unitNumber: variant.itemNumberPerSalesUnit,
         }),
@@ -230,10 +232,11 @@ const ProductCardMiniVertical = ({
     if (isRestrictedUser) {
       addToCart()
     } else {
-      setCardState((prev) => ({ ...prev, inputQuantity: cardState.quantity === 0 ? 1 : cardState.quantity }))
-      addToCart({ ...cardState, quantity: cardState.quantity === 0 ? 1 : cardState.quantity })
+      const newQ = cardState.quantity === 0 ? 1 : cardState.quantity
+      setCardState((prev) => ({ ...prev, quantity: newQ, inputQuantity: newQ }))
+      debouncedRequest({ id: cardState.partNo, q: newQ })
     }
-  }, [isRestrictedUser, cardState])
+  }, [isRestrictedUser, cardState, debouncedRequest])
 
   function handleCloseVariants() {
     setVariantsListOpen(false)
@@ -261,7 +264,7 @@ const ProductCardMiniVertical = ({
   }
 
   return loading ? (
-    <div className={cx(styles.productCardMiniVertical, styles.loading)}>
+    <div className={cx(styles.productCardMiniVertical, styles.loading, { [styles.fullWidth]: fullWidth })}>
       <Placeholder type="image" className={styles.loadingImage} />
       <div className={styles.placeholderContent}>
         <Placeholder type={'heading'} />
@@ -277,6 +280,7 @@ const ProductCardMiniVertical = ({
         [styles.campaign]: isCampaignCard && !loading,
         [styles.limitedProduct]: isLimitedCard && !loading,
         [styles.outOfStockProduct]: isOutOfStockCard && !loading,
+        [styles.fullWidth]: fullWidth,
       })}
       style={style}
     >
@@ -305,6 +309,7 @@ const ProductCardMiniVertical = ({
         Link={Link}
         onClick={onClick}
         quantity={cardState.quantity}
+        salesUnit={cardState.salesUnit}
         itemNumberPerSalesUnit={cardState.itemNumberPerSalesUnit}
         price={cardState.totalPrice}
         isRestrictedUser={isRestrictedUser}
@@ -336,42 +341,44 @@ const ProductCardMiniVertical = ({
       )}
       <div className={styles.actions}>
         <div className={styles.extras}>
-          {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-            <IconButton
-              type="button"
-              icon={'icon-file-plus'}
-              className={styles.purchaseListIcon}
-              onClick={() => onSaveToPurchaseListClick(cardState.partNo, cardState.totalPrice)}
-              size="large"
-              isTransparent
-              noBorder
-              noPadding
-              name={tooltips?.addToPurchaseList ?? 'Add to purchase list'}
-            />
-          )}
-          {showFavoriteIcon && onFavoriteIconClick && (
-            <IconButton
-              type="button"
-              icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
-              className={cx(styles.favoriteIcon, isFavorite ? styles.favoriteIconActive : '')}
-              onClick={() => onFavoriteIconClick(cardState.partNo, isFavorite, cardState.totalPrice)}
-              size="large"
-              isTransparent
-              noBorder
-              noPadding
-              name={tooltips?.addToFavorites ?? 'Add to favorite list'}
-              animate={isAddingToFavorites ? 'loading' : 'default'}
-            />
-          )}
-          {loading ? (
-            <Placeholder type="tags" />
-          ) : Array.isArray(cardState.tags) && cardState.tags.length ? (
-            <>
-              {tagsList?.map((tag) => (
-                <Tag key={tag.text} {...tag} text={tag.text?.slice(0, 1)} shape="pill" className={styles.tag} />
-              ))}
-            </>
-          ) : null}
+          <div className={styles.tags}>
+            {Array.isArray(cardState.tags) && cardState.tags?.length ? (
+              <>
+                {tagsList?.map((tag) => (
+                  <Tag key={tag.text} {...tag} text={tag.text?.slice(0, 1)} shape="pill" className={styles.tag} />
+                ))}
+              </>
+            ) : null}
+          </div>
+          <div className={styles.clickable}>
+            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+              <IconButton
+                type="button"
+                icon={'icon-file-plus'}
+                className={styles.purchaseListIcon}
+                onClick={() => onSaveToPurchaseListClick(cardState.partNo, cardState.totalPrice)}
+                size="large"
+                isTransparent
+                noBorder
+                noPadding
+                name={tooltips?.addToPurchaseList ?? 'Add to purchase list'}
+              />
+            )}
+            {showFavoriteIcon && onFavoriteIconClick && (
+              <IconButton
+                type="button"
+                icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
+                className={cx(styles.favoriteIcon, isFavorite ? styles.favoriteIconActive : '')}
+                onClick={() => onFavoriteIconClick(cardState.partNo, isFavorite, cardState.totalPrice)}
+                size="large"
+                isTransparent
+                noBorder
+                noPadding
+                name={tooltips?.addToFavorites ?? 'Add to favorite list'}
+                animate={isAddingToFavorites ? 'loading' : 'default'}
+              />
+            )}
+          </div>
         </div>
       </div>
       {variantsListOpen && (

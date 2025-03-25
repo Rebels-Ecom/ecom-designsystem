@@ -12,7 +12,8 @@ const VerticalVariant = ({
   image,
   isRestrictedUser,
   variantName,
-  partNoLabel,
+  salesUnit,
+  itemNumberPerSalesUnit,
   priceStr,
   currencyLabel,
   unitLabel,
@@ -36,13 +37,12 @@ const VerticalVariant = ({
           <p className={styles.heading}>{variantName}</p>
           {!isRestrictedUser && (
             <>
-              <p className={styles.partNo}>{`${partNoLabel} ${variantId}`}</p>
+              <p className={styles.partNo}>{`${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
               <p className={styles.price}>{`${priceStr} ${currencyLabel}/${unitLabel}`}</p>
             </>
           )}
         </div>
       </div>
-      {checked && <Icon icon="icon-check" className={styles.selectedIcon} />}
     </button>
   )
 }

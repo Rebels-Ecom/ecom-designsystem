@@ -1,42 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styles from './picture.module.css';
-import cx from 'classnames';
+import cx from 'classnames'
+import React, { useEffect, useRef, useState } from 'react'
+import styles from './picture.module.css'
 
-export type TPictureLoading = 'eager' | 'lazy';
-export type TPictureDecoding = 'sync' | 'async' | 'auto';
-export type TPictureFetchPriority = 'high' | 'low' | 'auto';
+export type TPictureLoading = 'eager' | 'lazy'
+export type TPictureDecoding = 'sync' | 'async' | 'auto'
+export type TPictureFetchPriority = 'high' | 'low' | 'auto'
 
 export interface IPictureSource {
-  srcset: string;
-  type?: string;
-  media?: string;
-  sizes?: string;
+  srcset: string
+  type?: string
+  media?: string
+  sizes?: string
 }
 
 export interface IPicture {
-  id: string;
-  sources: Array<IPictureSource>;
-  src: string;
-  width?: number | string;
-  height?: number | string;
-  loading?: TPictureLoading;
-  decoding?: TPictureDecoding;
-  alt?: string;
-  fetchPriority?: TPictureFetchPriority;
-  classNamePicture?: string;
-  classNameImg?: string;
-  pictureWithOpacity?: 'light' | 'dark';
-  fallbackImageUrl?: string;
+  id: string
+  sources: Array<IPictureSource>
+  src: string
+  width?: number | string
+  height?: number | string
+  loading?: TPictureLoading
+  decoding?: TPictureDecoding
+  alt?: string
+  fetchPriority?: TPictureFetchPriority
+  classNamePicture?: string
+  classNameImg?: string
+  pictureWithOpacity?: 'light' | 'dark'
+  fallbackImageUrl?: string
 }
 
 const isValidUrl = (url: string): boolean => {
   try {
-    new URL(url);
-    return true;
+    new URL(url)
+    return true
   } catch (e) {
-    return false;
+    return false
   }
-};
+}
 
 const Picture: React.FC<IPicture> = ({
   id,
@@ -53,53 +53,53 @@ const Picture: React.FC<IPicture> = ({
   pictureWithOpacity,
   fallbackImageUrl = '',
 }) => {
-  const [imageSources, setImageSources] = useState({ src, sources });
-  const [isLoading, setIsLoading] = useState(true);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const [imageSources, setImageSources] = useState({ src, sources })
+  const [isLoading, setIsLoading] = useState(true)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    const validSources = sources;
-    const validSrc = isValidUrl(src) ? src : '';
-    setImageSources({ src: validSrc, sources: validSources });
-    setIsLoading(true);
-  }, [src, sources]);
+    const validSources = sources
+    const validSrc = isValidUrl(src) ? src : ''
+    setImageSources({ src: validSrc, sources: validSources })
+    setIsLoading(true)
+  }, [src, sources])
 
   useEffect(() => {
     if (imgRef.current && imgRef.current.complete) {
-      handleImageLoad();
+      handleImageLoad()
     }
-  }, [imageSources]);
+  }, [imageSources])
 
   const handleBrokenImage = () => {
     if (fallbackImageUrl && isValidUrl(fallbackImageUrl)) {
       setImageSources({
         src: fallbackImageUrl,
-        sources: [{ srcset: fallbackImageUrl }]
-      });
+        sources: [{ srcset: fallbackImageUrl }],
+      })
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   const handleImageLoad = () => {
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   const handleLoadStart = () => {
-    setIsLoading(true);
-  };
+    setIsLoading(true)
+  }
 
   const isValidPicture = (): boolean => {
     if (!imageSources?.sources?.length) {
-      return false;
+      return false
     }
-  
-    return Boolean(imageSources.src);
-  };
+
+    return Boolean(imageSources.src)
+  }
 
   return (
     <>
       <picture className={cx(styles.picture, classNamePicture)} id={id}>
-        {imageSources.sources.map((source, i) => (
+        {imageSources.sources?.map((source, i) => (
           <source
             key={`${id}_source_${i}`}
             srcSet={source.srcset || fallbackImageUrl}
@@ -128,24 +128,19 @@ const Picture: React.FC<IPicture> = ({
           onLoad={handleImageLoad}
           onLoadStart={handleLoadStart}
         />
-        {isLoading && (
-          <div className={styles.skeleton} style={{ width, height }} />
-        )}
+        {isLoading && <div className={styles.skeleton} style={{ width, height }} />}
       </picture>
       {pictureWithOpacity && (
-        <div 
-          className={cx(
-            styles.opacityLayer,
-            {
-              [styles.withLightBackground]: pictureWithOpacity === 'light',
-              [styles.withDarkBackground]: pictureWithOpacity === 'dark',
-            }
-          )}
+        <div
+          className={cx(styles.opacityLayer, {
+            [styles.withLightBackground]: pictureWithOpacity === 'light',
+            [styles.withDarkBackground]: pictureWithOpacity === 'dark',
+          })}
           aria-hidden="true"
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export { Picture };
+export { Picture }

@@ -2,8 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { IProduct } from '../../../../types/product'
 import { dummy, productCardFactory } from '../product-card/dummy-product'
-import { IProductCard } from '../product-card/product-card'
-import { ProductCardMiniVertical } from './product-card-mini-vertical'
+import { IProductCardMiniVertical, ProductCardMiniVertical } from './product-card-mini-vertical'
 
 const meta: Meta<typeof ProductCardMiniVertical> = {
   title: 'Design System/Molecules/ProductCardMiniVertical',
@@ -96,7 +95,6 @@ export const Product_Card_Mini_Vertical = {
     showPackaging: true,
     addToCart: () => {},
     addToCartBtnLabel: 'Add to cart',
-    cardDisplay: 'mini-vertical',
     handlePackageChange: () => {},
     onCloseVariants: () => {},
     onVariantsButtonClick: () => {},
@@ -109,5 +107,5 @@ export const Product_Card_Mini_Vertical = {
     onFavoriteIconClick: () => {},
     showAddToPurchaseListIcon: true,
     productQuantityDisabled: false,
-  } as IProductCard,
+  } as IProductCardMiniVertical,
 }

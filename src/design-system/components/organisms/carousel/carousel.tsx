@@ -28,6 +28,7 @@ const Carousel = ({
   ...props
 }: PropsWithChildren<ICarousel>) => {
   const noOfChildren = Children?.count(props.children) ?? 0
+  const minChildrenToDisplayArrows = splideProps?.options?.direction === 'ttb' ? 2 : 1
   const ref = useRef<Splide | null>(null)
   const [userInitiated, setUserInitiated] = useState(false)
 
@@ -72,8 +73,8 @@ const Carousel = ({
       onMoved={handleSlideChange}
       options={{
         ...splideProps?.options,
-        drag: noOfChildren > 1,
-        arrows: noOfChildren > 1,
+        drag: noOfChildren > minChildrenToDisplayArrows,
+        arrows: noOfChildren > minChildrenToDisplayArrows,
         pagination: !hidePagination,
         classes: {
           arrow: cx('splide__arrow', styles.arrow, { [styles.offset]: offsetArrows }),
@@ -102,19 +103,25 @@ const Carousel = ({
           1024: {
             perPage: breakpoints?.lg?.perPage ?? 4,
             perMove: breakpoints?.lg?.perMove ?? 1,
-            arrows: noOfChildren > 1 ? !!!breakpoints?.lg?.hideArrows : false,
+            arrows: noOfChildren > minChildrenToDisplayArrows ? !!!breakpoints?.lg?.hideArrows : false,
             focus: breakpoints?.lg?.dotPerItem ? 0 : undefined,
           },
           768: {
             perPage: breakpoints?.md?.perPage ?? 2,
             perMove: breakpoints?.md?.perMove ?? 1,
-            arrows: noOfChildren > 1 ? !!!breakpoints?.md?.hideArrows : false,
+            arrows: noOfChildren > minChildrenToDisplayArrows ? !!!breakpoints?.md?.hideArrows : false,
             focus: breakpoints?.md?.dotPerItem ? 0 : undefined,
           },
           576: {
             perPage: breakpoints?.sm?.perPage ?? 1,
             perMove: breakpoints?.sm?.perMove ?? 1,
-            arrows: noOfChildren > 1 ? !!!breakpoints?.sm?.hideArrows : false,
+            arrows: noOfChildren > minChildrenToDisplayArrows ? !!!breakpoints?.sm?.hideArrows : false,
+            focus: breakpoints?.sm?.dotPerItem ? 0 : undefined,
+          },
+          300: {
+            perPage: breakpoints?.sm?.perPage ?? 1,
+            perMove: breakpoints?.sm?.perMove ?? 1,
+            arrows: noOfChildren > minChildrenToDisplayArrows ? !!!breakpoints?.sm?.hideArrows : false,
             focus: breakpoints?.sm?.dotPerItem ? 0 : undefined,
           },
         },
@@ -122,7 +129,7 @@ const Carousel = ({
       extensions={{ Intersection }}
     >
       <SplideTrack className={trackClassName}>{props.children}</SplideTrack>
-      {noOfChildren > 1 && (
+      {noOfChildren > minChildrenToDisplayArrows && (
         <div className="splide__arrows">
           <button
             className={cx('splide__arrow splide__arrow--prev', styles.arrow, styles.left, {

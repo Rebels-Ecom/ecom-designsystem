@@ -10,6 +10,7 @@ type ProductContentProps = {
   quantity: number
   itemNumberPerSalesUnit: number
   price: string
+  salesUnit: string
   isRestrictedUser?: boolean
   hidePrice?: boolean
 }
@@ -20,6 +21,7 @@ const ProductContent: React.FC<ProductContentProps> = ({
   Link,
   onClick,
   quantity,
+  salesUnit,
   itemNumberPerSalesUnit,
   price,
   isRestrictedUser,
@@ -36,7 +38,7 @@ const ProductContent: React.FC<ProductContentProps> = ({
       )}
       {!hidePrice && !isRestrictedUser && (
         <>
-          <p className={cx(styles.detail, 'bodyS')}>{`${quantity} x (${itemNumberPerSalesUnit} styck)`}</p>
+          <p className={cx(styles.detail, 'bodyS')}>{`${quantity} x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
           <p className={cx(styles.detail, 'bodyS fontBold')}>{`Pris: ${price} kr`}</p>
         </>
       )}
