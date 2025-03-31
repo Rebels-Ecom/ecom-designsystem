@@ -27,7 +27,7 @@ const PurchaseList = ({ items, selectedItems, onSelectChange, linkComponent: Lin
   return (
     <ul className={styles.purchaseList}>
       {items?.map((item) => {
-        const checked = !!selectedItems.find((s) => s.id === item.id)
+        const checked = !!selectedItems?.find((s) => s.id === item.id)
         const deleting = checked && item.removing
 
         return (
@@ -45,7 +45,11 @@ const PurchaseList = ({ items, selectedItems, onSelectChange, linkComponent: Lin
               </div>
               <div className={styles.row}>{deleting ? <Placeholder type="p_short" /> : <p className={styles.label}>{item.noOfProducts}</p>}</div>
               <div className={styles.row}>
-                {deleting ? <Placeholder type="p_short" /> : <>{item.updated && <span className={styles.updated}>{item.updated}</span>}</>}
+                {deleting && item.updated ? (
+                  <Placeholder type="p_short" />
+                ) : (
+                  <>{item.updated ? <span className={styles.updated}>{item.updated}</span> : null}</>
+                )}
               </div>
             </div>
             {!deleting && (
