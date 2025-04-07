@@ -60,8 +60,6 @@ const ProductCarousel = ({
       </CarouselItem>
     ))
 
-  console.log(productsPerPageMobile)
-
   return (
     <Carousel
       splideProps={{
@@ -83,7 +81,7 @@ const ProductCarousel = ({
       onSlideChange={onNavigation}
       arrowsBottom={arrowsBottom}
       offsetArrows={offsetArrows}
-      padding={isMobile && !noPadding ? '2rem' : undefined}
+      padding={isMobile && !noPadding ? '1rem' : undefined}
       breakpoints={
         isMobile
           ? {

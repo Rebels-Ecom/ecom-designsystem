@@ -1,6 +1,18 @@
 .carousel {
   display: grid;
-  padding-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+
+  & div:first-child {
+    padding-bottom: 0.5rem;
+    
+    @media (min-width: 48em) {
+      padding-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 48em) {
+    padding-bottom: 2.5rem;
+  }
 
   &.noGrid {
     display: block;
