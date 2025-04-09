@@ -94,7 +94,7 @@ const ProductCardMiniVertical = ({
   onChangeQuantity?: CallableFunction
 }) => {
   const productVariants = product.productVariantList || []
-  const initialVariantId = productVariants[0]?.variantId || null
+  const initialVariantId = productVariants.find((pV) => pV.variantId === product.partNo)?.variantId || null
   const [variantsListOpen, setVariantsListOpen] = useState(false)
   const [cardState, setCardState] = useState(() => {
     const initialCartItem = variantsInCart.find((item) => item.variantId === initialVariantId)
