@@ -8,6 +8,7 @@
   background-color: #fff;
   padding: 0.5rem;
   margin-top: auto;
+  z-index: 2;
 
   & .closeVariantsIcon {
     position: absolute;

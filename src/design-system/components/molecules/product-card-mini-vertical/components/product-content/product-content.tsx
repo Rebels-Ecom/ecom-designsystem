@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import styles from './product-content.module.css'
 
 type ProductContentProps = {
@@ -13,6 +13,7 @@ type ProductContentProps = {
   salesUnit: string
   isRestrictedUser?: boolean
   hidePrice?: boolean
+  icons?: ReactElement
 }
 
 const ProductContent: React.FC<ProductContentProps> = ({
@@ -26,6 +27,7 @@ const ProductContent: React.FC<ProductContentProps> = ({
   price,
   isRestrictedUser,
   hidePrice,
+  icons,
 }) => {
   return (
     <div className={`${styles.productContent}`}>
@@ -36,12 +38,19 @@ const ProductContent: React.FC<ProductContentProps> = ({
       ) : (
         <h2 className={cx(styles.productName, 'bodyS')}>{productName}</h2>
       )}
-      {!hidePrice && !isRestrictedUser && (
-        <>
-          <p className={cx(styles.detail, 'bodyS')}>{`${quantity} x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
-          <p className={cx(styles.detail, 'bodyS fontBold')}>{`Pris: ${price} kr`}</p>
-        </>
-      )}
+      <div className={styles.bottom}>
+        <div className={styles.left}>
+          {!hidePrice && !isRestrictedUser && (
+            <>
+              <p
+                className={cx(styles.detail, 'bodyS')}
+              >{`${quantity} x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
+              <p className={cx(styles.detail, 'bodyS fontBold')}>{`Pris: ${price} kr`}</p>
+            </>
+          )}
+        </div>
+        <div className={styles.right}>{icons && <div className={styles.right}>{icons}</div>}</div>
+      </div>
     </div>
   )
 }

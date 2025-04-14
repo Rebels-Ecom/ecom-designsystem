@@ -296,6 +296,13 @@ const ProductCardMiniVertical = ({
       <div className={styles.iconsWrapper}>
         {cardState.sellerOnly && <Icon icon="icon-eye" size="medium" />}
         {cardState.isAccessoryPotItem && <span className={`${styles.accessoryPotItemIcon} ${styles.icon}`}>S</span>}
+        {Array.isArray(cardState.tags) && cardState.tags?.length ? (
+          <>
+            {tagsList?.map((tag) => (
+              <Tag key={tag.text} {...tag} shape="pill" className={styles.tag} />
+            ))}
+          </>
+        ) : null}
       </div>
       <ProductCardImage
         Link={Link}
@@ -314,6 +321,37 @@ const ProductCardMiniVertical = ({
         price={cardState.totalPrice}
         isRestrictedUser={isRestrictedUser}
         hidePrice={hidePrice}
+        icons={
+          <div className={styles.clickable}>
+            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
+              <IconButton
+                type="button"
+                icon={'icon-file-plus'}
+                className={styles.purchaseListIcon}
+                onClick={() => onSaveToPurchaseListClick(cardState.partNo, cardState.totalPrice)}
+                size="large"
+                isTransparent
+                noBorder
+                noPadding
+                name={tooltips?.addToPurchaseList ?? 'Add to purchase list'}
+              />
+            )}
+            {showFavoriteIcon && onFavoriteIconClick && (
+              <IconButton
+                type="button"
+                icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
+                className={cx(styles.favoriteIcon, isFavorite ? styles.favoriteIconActive : '')}
+                onClick={() => onFavoriteIconClick(cardState.partNo, isFavorite, cardState.totalPrice)}
+                size="large"
+                isTransparent
+                noBorder
+                noPadding
+                name={tooltips?.addToFavorites ?? 'Add to favorite list'}
+                animate={isAddingToFavorites ? 'loading' : 'default'}
+              />
+            )}
+          </div>
+        }
       />
       <Button
         type="button"
@@ -339,7 +377,7 @@ const ProductCardMiniVertical = ({
           hasBeenAdded={cardState.inputQuantity > 0}
         />
       )}
-      <div className={styles.actions}>
+      {/* <div className={styles.actions}>
         <div className={styles.extras}>
           <div className={styles.tags}>
             {Array.isArray(cardState.tags) && cardState.tags?.length ? (
@@ -380,7 +418,7 @@ const ProductCardMiniVertical = ({
             )}
           </div>
         </div>
-      </div>
+      </div> */}
       {variantsListOpen && (
         <VerticalVariants
           onCloseVariants={handleCloseVariants}

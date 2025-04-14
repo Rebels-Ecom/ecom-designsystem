@@ -5,6 +5,19 @@
   gap: 0;
   padding-top: 0.5rem;
 
+  & .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    & .left {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+
   & .productNameLink {
     text-decoration: none;
     margin-bottom: auto;
@@ -21,6 +34,11 @@
   }
 
   & .detail {
+    font-size: 0.75rem;
     margin: 0;
+  }
+
+  & .favoriteIconActive {
+    color: var(--orange-500);
   }
 }
