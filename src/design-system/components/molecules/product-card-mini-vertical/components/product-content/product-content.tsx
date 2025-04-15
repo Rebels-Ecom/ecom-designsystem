@@ -45,7 +45,7 @@ const ProductContent: React.FC<ProductContentProps> = ({
               <p
                 className={cx(styles.detail, 'bodyS')}
               >{`${quantity} x ${salesUnit} (${itemNumberPerSalesUnit} styck)`}</p>
-              <p className={cx(styles.detail, 'bodyS fontBold')}>{`Pris: ${price} kr`}</p>
+              <p className={cx(styles.detail, 'bodyS fontBold', styles.price)}>{`Pris: ${price} kr`}</p>
             </>
           )}
         </div>
