@@ -1,6 +1,18 @@
 .carousel {
   display: grid;
-  padding-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+
+  & > div:first-child {
+    padding-bottom: 0.5rem;
+    
+    @media (min-width: 48em) {
+      padding-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 48em) {
+    padding-bottom: 2.5rem;
+  }
 
   &.noGrid {
     display: block;
@@ -51,6 +63,7 @@
     bottom: -0.75rem;
     background-color: transparent;
     opacity: 1;
+    transform: unset;
     
     &.left {
       left: 1rem;
@@ -58,6 +71,8 @@
     
     &.right {
       right: 1rem;
+      left: unset;
+      transform: translateY();
     }
 
     &.offset {
@@ -139,10 +154,12 @@
     &.zeroOffset {
       &.left {
         left: 0;
+        bottom: 0;
       }
 
       &.right {
         right: 0;
+        bottom: 0;
       }
     }
 

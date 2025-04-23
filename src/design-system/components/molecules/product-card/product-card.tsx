@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+import { convertNumToStr } from '../../../../helpers/format-helper'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { IProduct } from '../../../../types/product'
-import { convertNumToStr } from '../../../../helpers/format-helper'
-import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { ProductCardHorizontal } from '../product-card-horizontal/product-card-horizontal'
-import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
-import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
-import { IPicture } from '../../atoms/picture/picture'
 import { TAlertBox } from '../../atoms/alert-box/alert-box'
+import { IPicture } from '../../atoms/picture/picture'
+import { ProductCardHorizontal } from '../product-card-horizontal/product-card-horizontal'
+import { ProductCardRestricted } from '../product-card-restricted/product-card-restricted'
+import { ProductCardVertical } from '../product-card-vertical/product-card-vertical'
 
 export type TCardDisplayType = 'vertical' | 'horizontal'
 
 export type TProductCardVertical = {
-  cardDisplay: 'vertical';
-  showPackaging?: never;
+  cardDisplay: 'vertical'
+  showPackaging?: never
+  onButtonClick?: never
 }
 
 export type TProductCardHorizontal = {
   cardDisplay: 'horizontal'
   onClickRemoveProduct?: CallableFunction
   removingProduct?: boolean
-  showPackaging?: boolean; 
+  showPackaging?: boolean
+  onButtonClick?: never
 }
 
 export interface IProductCard {
@@ -48,7 +50,7 @@ export interface IProductCard {
   showFavoriteIcon?: boolean
   favoriteProductsIds?: Array<string>
   onFavoriteIconClick?: CallableFunction
-  isAddingToFavorites?: boolean;
+  isAddingToFavorites?: boolean
   showAddToPurchaseListIcon?: boolean
   onSaveToPurchaseListClick?: CallableFunction
   border?: boolean
@@ -59,26 +61,26 @@ export interface IProductCard {
   alertBox?: TAlertBox
   onClick?: CallableFunction
   debounceQuantityVal?: number
-  productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration';
+  productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration'
   imagePriority?: {
-    fetchPriority: 'auto' | 'high' | 'low',
-    loading: 'eager' | 'lazy',
-  },
+    fetchPriority: 'auto' | 'high' | 'low'
+    loading: 'eager' | 'lazy'
+  }
   variantsOpen?: boolean
   handlePackageChange: CallableFunction
   selectedVariantId?: string
   onVariantsButtonClick: CallableFunction
-  onVariantChange?: CallableFunction;
+  onVariantChange?: CallableFunction
   onCloseVariants: CallableFunction
   tooltips?: {
-    addToFavorites?: string;
-    removeFromFavorites?: string;
-    addToPurchaseList?: string;
-    changeVariant?: string;
-    sellerOnly?: string;
-    accessoryPotItem?: string;
-    stockShortage?: string;
-    outOfStock?: string;
+    addToFavorites?: string
+    removeFromFavorites?: string
+    addToPurchaseList?: string
+    changeVariant?: string
+    sellerOnly?: string
+    accessoryPotItem?: string
+    stockShortage?: string
+    outOfStock?: string
   }
 }
 
@@ -125,11 +127,18 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product;
+  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
-    productImage: getProductPicture(partNo, primaryImageUrl, '120', undefined, imagePriority?.loading, imagePriority?.fetchPriority),
+    productImage: getProductPicture(
+      partNo,
+      primaryImageUrl,
+      '120',
+      undefined,
+      imagePriority?.loading,
+      imagePriority?.fetchPriority
+    ),
     quantity: getQuantity(quantity),
     pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
     totalPrice: convertNumToStr(
@@ -177,7 +186,7 @@ function ProductCard({
 
   function handleVariantsButtonClick() {
     setVariantsListOpen(true)
-    onVariantsButtonClick?.();
+    onVariantsButtonClick?.()
   }
 
   function handleCloseVariants() {
@@ -189,7 +198,7 @@ function ProductCard({
   }
 
   function handlePackageChange(selectedVariant: any) {
-    const quantity = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1;
+    const q = myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
 
     setProduct((prevState) => {
       const updatedProduct = {
@@ -199,22 +208,25 @@ function ProductCard({
         packaging: selectedVariant.variantName,
         price: selectedVariant.price,
         priceStr: selectedVariant.priceStr,
-        pricePerUnit: selectedVariant.pricePerUnit && isFinite(selectedVariant.pricePerUnit) ? selectedVariant.pricePerUnit : 0,
+        pricePerUnit:
+          selectedVariant.pricePerUnit && isFinite(selectedVariant.pricePerUnit) ? selectedVariant.pricePerUnit : 0,
         pricePerUnitString: selectedVariant.pricePerUnitString,
         salesUnit: selectedVariant.salesUnit,
         itemNumberPerSalesUnit: selectedVariant.itemNumberPerSalesUnit,
-        totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * quantity),
-        quantity: quantity.toString(),
+        totalPrice: convertNumToStr(selectedVariant.price * selectedVariant.itemNumberPerSalesUnit * q),
+        quantity: q.toString(),
         selectedVariantId: selectedVariant.variantId,
         sellerOnly: selectedVariant.sellerOnly,
         activeCampaign: selectedVariant.activeCampaign,
         productUrl: `/Product/${selectedVariant.variantId}`,
         outOfStock: selectedVariant.outOfStock,
-      };
+        isAccessoryPotItem: selectedVariant?.isAccessoryPotItem,
+        tags: selectedVariant?.tags,
+      }
 
-      onVariantChange?.(updatedProduct);
+      onVariantChange?.(updatedProduct)
 
-      return updatedProduct;
+      return updatedProduct
     })
     setVariantsListOpen(false)
   }
@@ -241,9 +253,9 @@ function ProductCard({
     showFavoriteIcon,
     favoriteProductsIds,
     onFavoriteIconClick,
-    isAddingToFavorites
-  };
-  
+    isAddingToFavorites,
+  }
+
   if (cardDisplay === 'horizontal') {
     return (
       <ProductCardHorizontal
@@ -265,14 +277,14 @@ function ProductCard({
         productArea={productArea}
         showPackaging={showPackaging}
       />
-    );
+    )
   }
-  
+
   if (cardDisplay === 'vertical') {
     if (isRestrictedUser) {
-      return <ProductCardRestricted cardDisplay="vertical" {...commonProps} />;
+      return <ProductCardRestricted cardDisplay="vertical" {...commonProps} />
     }
-  
+
     return (
       <ProductCardVertical
         cardDisplay="vertical"
@@ -285,7 +297,7 @@ function ProductCard({
         alertBox={alertBox}
         productArea={productArea}
       />
-    );
+    )
   }
 
   return null

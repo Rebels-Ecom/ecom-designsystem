@@ -1,8 +1,9 @@
-import { ProductCard, TProductCard } from '../product-card/product-card'
+import { IProduct } from '../../../../types/product'
+import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 import { Carousel } from '../../organisms'
 import { CarouselItem } from '../../organisms/carousel/carousel'
-import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
-import { IProduct } from '../../../../types/product'
+import { ProductCardMiniVertical } from '../product-card-mini-vertical/product-card-mini-vertical'
+import { ProductCard, TProductCard } from '../product-card/product-card'
 
 export interface IProductCarousel extends Pick<TProductCard, 'productArea'> {
   productCards: Array<TProductCard>
@@ -12,8 +13,8 @@ export interface IProductCarousel extends Pick<TProductCard, 'productArea'> {
   productsPerPageDesktop?: number
   arrowsBottom?: boolean
   offsetArrows?: boolean
-  noPadding?: boolean; 
-  onNavigation?: CallableFunction;
+  noPadding?: boolean
+  onNavigation?: CallableFunction
 }
 
 const ProductCarousel = ({
@@ -26,22 +27,36 @@ const ProductCarousel = ({
   offsetArrows,
   productArea,
   noPadding,
-  onNavigation
+  onNavigation,
 }: IProductCarousel) => {
   const { isMobile } = mediaQueryHelper()
 
   const renderProductCards = () =>
     productCards?.map((productCard: TProductCard, index: number) => (
       <CarouselItem key={index}>
-        <ProductCard
-          {...productCard}
-          addToCart={(p: IProduct) => addToCart(p, index)}
-          productArea={productArea}
-          imagePriority={{
-            loading: index < 4 ? 'eager' : 'lazy',
-            fetchPriority: index < 4 ? 'high' : 'low',
-          }}
-        />
+        {isMobile ? (
+          <ProductCardMiniVertical
+            {...productCard}
+            addToCart={(p: IProduct) => addToCart(p, index)}
+            onClick={undefined}
+            onChangeQuantity={(p: IProduct) => addToCart(p, index)}
+            productArea={productArea}
+            imagePriority={{
+              loading: index < 4 ? 'eager' : 'lazy',
+              fetchPriority: index < 4 ? 'high' : 'low',
+            }}
+          />
+        ) : (
+          <ProductCard
+            {...productCard}
+            addToCart={(p: IProduct) => addToCart(p, index)}
+            productArea={productArea}
+            imagePriority={{
+              loading: index < 4 ? 'eager' : 'lazy',
+              fetchPriority: index < 4 ? 'high' : 'low',
+            }}
+          />
+        )}
       </CarouselItem>
     ))
 
@@ -49,7 +64,7 @@ const ProductCarousel = ({
     <Carousel
       splideProps={{
         options: {
-          gap: '1rem',
+          gap: isMobile ? '0.5rem' : '1rem',
           autoplay: 'pause',
           pauseOnHover: true,
           intersection: {
@@ -66,24 +81,23 @@ const ProductCarousel = ({
       onSlideChange={onNavigation}
       arrowsBottom={arrowsBottom}
       offsetArrows={offsetArrows}
-      padding={(isMobile && !noPadding) ? '2rem' : undefined}
+      padding={isMobile && !noPadding ? '1rem' : undefined}
       breakpoints={
         isMobile
           ? {
               sm: {
-                hideArrows: true,
                 perPage: productsPerPageMobile,
-                perMove: productsPerPageMobile
+                perMove: productsPerPageMobile,
               },
             }
           : {
               md: {
                 perPage: productsPerPageTablet,
-                perMove: productsPerPageTablet
+                perMove: productsPerPageTablet,
               },
               lg: {
                 perPage: productsPerPageDesktop,
-                perMove: productsPerPageDesktop
+                perMove: productsPerPageDesktop,
               },
             }
       }

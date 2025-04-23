@@ -4,13 +4,17 @@
   flex-direction: column;
   padding: 0 0.5rem;
 
+  & button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+  }
+
   & .top {
     z-index: calc(var(--menu-z-index) + 1);
     margin: 0 -0.5rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    /* add drop shadow */
 
     & .actions {
       display: flex;
@@ -22,6 +26,7 @@
 
     & .topInner {
       display: flex;
+      min-width: 1.75rem;
 
       & .menuButton {
         margin-left: 0.25rem;
@@ -43,6 +48,7 @@
         & .menuCloseIcon {
           transform: rotate(45deg);
         }
+
       }
     }
   }
@@ -56,13 +62,41 @@
     height: 100vh;
     width: 90vw;
     flex-direction: column;
-    justify-content: space-between;
     background-color: white;
-    padding-top: 6rem;
+    padding-top: 1.5rem;
     margin: 0;
 
+    & .closeButtonContainer {
+      min-height: 2rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    & .menuButton {
+      margin: 0 1rem 0.5rem 0.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.125rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: none;
+      padding: 0;
+      color: var(--color-text-default);
+
+      & .menuIcon {
+        font-size: 1.5rem;
+      }
+
+      & .menuCloseIcon {
+        transform: rotate(45deg);
+      }
+
+    }
+
     & .menuListWrapper {
-      padding: 1rem;
+      padding: 0 1rem 1rem;
       overflow-y: auto;
       border-top: 1px solid var(--border-grey);
     }
@@ -71,6 +105,7 @@
       display: flex;
       flex-direction: column;
       padding: 0 0 6rem;
+      margin: 0;
       
       @media (min-width: 48em) {
         padding: 0 0 0.75rem;
@@ -146,14 +181,15 @@
     }
   }
 
-  & .backDrop {
-    pointer-events: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: var(--menu-backdrop-z-index);
-    background-color: var(--color-text-default);
-  }
+}
+
+.backDrop {
+  background: rgba(0, 62, 81, 0.9);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; 
+  z-index: var(--menu-backdrop-z-index);
+  backdrop-filter: blur(10px);
 }

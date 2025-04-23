@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { InputText } from '../../atoms'
 import styles from './product-quantity-input.module.css'
 
@@ -13,8 +13,8 @@ export interface IProductQuantityInput {
   disabledNoBorder?: boolean
   onChange?: CallableFunction
   maxQuantity?: number
-  hidePrice?: boolean;
-  pricePerUnitText?: string;
+  hidePrice?: boolean
+  pricePerUnitText?: string
 }
 
 const ProductQuantityInput = ({
@@ -29,7 +29,7 @@ const ProductQuantityInput = ({
   onChange,
   maxQuantity,
   hidePrice,
-  pricePerUnitText
+  pricePerUnitText,
 }: IProductQuantityInput) => {
   const [val, setVal] = useState(quantity)
 
@@ -54,7 +54,7 @@ const ProductQuantityInput = ({
     }
   }
 
-  const priceDetail = `${itemNumberPerSalesUnit} styck ${pricePerUnitText ?? ''}`;
+  const priceDetail = `${itemNumberPerSalesUnit} styck ${pricePerUnitText ?? ''}`
 
   return (
     <div className={`${styles.inputQuantityWrapper} ${className ? className : ''}`}>
@@ -84,7 +84,9 @@ const ProductQuantityInput = ({
         />
       )}
       <div>
-        <p className={`${styles.textQuantity} bodyS`}>{`${disabled ? val : ''} x ${salesUnit} (${!hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`})`}</p>
+        <p className={`${styles.textQuantity} bodyS`}>{`${disabled ? val : ''} x ${salesUnit} (${
+          !hidePrice ? priceDetail.trim() : `${itemNumberPerSalesUnit} styck`
+        })`}</p>
         {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
       </div>
     </div>

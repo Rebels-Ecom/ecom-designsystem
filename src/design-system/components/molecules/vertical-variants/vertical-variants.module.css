@@ -1,0 +1,49 @@
+.verticalVariants {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 0.5rem;
+  margin-top: auto;
+  z-index: 2;
+
+  & .closeVariantsIcon {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  & .carousel {
+    height: 100%;
+
+    & .carouselTrack {
+      height: 100%;
+    }
+  }
+
+  & .list {
+    display: flex;
+    gap: 0.5rem;
+    height: 100%;
+    margin: 0;
+    padding: 1rem;
+    list-style: none;
+    background-color: var(--background);
+
+    & .listItem {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.25rem 0;
+      font-size: 0.875rem;
+      font-weight: bold;
+
+      & .variantPicture {
+        display: block;
+        width: 1rem;
+      }
+    }
+  }
+}
