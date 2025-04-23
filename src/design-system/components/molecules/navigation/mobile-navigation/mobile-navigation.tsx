@@ -1,22 +1,22 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { Button, Icon } from '../../../atoms';
-import styles from './mobile-navigation.module.css';
-import cx from 'classnames';
-import { INavigation, TNavCategory, TNavLink } from '../types';
-import { useOnClickOutside } from '../../../../hooks';
+import cx from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import { useOnClickOutside } from '../../../../hooks'
+import { Button, Icon } from '../../../atoms'
+import { INavigation, TNavCategory, TNavLink } from '../types'
+import styles from './mobile-navigation.module.css'
 
 // TODO: extract list item
 interface IListItemWithLinks extends TNavCategory {
-  delay?: number;
-  link?: never;
+  delay?: number
+  link?: never
 }
 type TListItemWithoutLinks = {
-  name: string;
-  link: TNavLink;
-  links?: never;
-  delay?: number;
-};
+  name: string
+  link: TNavLink
+  links?: never
+  delay?: number
+}
 
 const ListItem = ({
   name,
@@ -25,15 +25,26 @@ const ListItem = ({
   delay,
   linkComponent: Link,
   close,
-  trackNavigation
+  trackNavigation,
 }: (IListItemWithLinks | TListItemWithoutLinks) & {
-  linkComponent: any,
-  close: () => void,
-  trackNavigation?: (target: string) => void,
+  linkComponent: any
+  close: () => void
+  trackNavigation?: (target: string) => void
 }) => {
-  const [open, setOpen] = useState(false);
-  const [height, setHeight] = useState<'auto' | number | `${number}%`>(0);
-  const [activeSecondLevel, setActiveSecondLevel] = useState<string | undefined>();
+  const [open, setOpen] = useState(false)
+  const [height, setHeight] = useState<'auto' | number | `${number}%`>(0)
+  const [activeSecondLevel, setActiveSecondLevel] = useState<string | undefined>()
+  const subMenuRef = useRef<HTMLDivElement>(null)
+
+  const handleSecondLevelClick = (secondLinkName: string) => {
+    setActiveSecondLevel((prev) => (prev === secondLinkName ? undefined : secondLinkName))
+  }
+
+  useEffect(() => {
+    if (subMenuRef?.current) {
+      subMenuRef.current.scrollTop = 56
+    }
+  }, [activeSecondLevel])
 
   return (
     <motion.div
@@ -49,8 +60,8 @@ const ListItem = ({
           to={link.href}
           target={link.openInNewTab ? '_blank' : '_self'}
           onClick={() => {
-            close();
-            trackNavigation?.(link.href);
+            close()
+            trackNavigation?.(link.href)
           }}
         >
           {name}
@@ -59,8 +70,8 @@ const ListItem = ({
         <button
           className={styles.menuListItemLink}
           onClick={() => {
-            setHeight(height === 0 ? 'auto' : 0);
-            setOpen(!open);
+            setHeight(height === 0 ? 'auto' : 0)
+            setOpen(!open)
           }}
         >
           <span className={`${open ? styles.menuListItemLinkActive : ''}`}>{name}</span>
@@ -77,22 +88,22 @@ const ListItem = ({
                   to={secondLink.href}
                   target={secondLink.openInNewTab ? '_blank' : '_self'}
                   onClick={() => {
-                    close();
-                    trackNavigation?.(secondLink.href);
+                    close()
+                    trackNavigation?.(secondLink.href)
                   }}
                 >
                   {secondLink.name}
-                  <Icon className={styles.itemIcon} icon='icon-chevron-right' />
+                  <Icon className={styles.itemIcon} icon="icon-chevron-right" />
                 </Link>
               ) : (
-                <button
-                  className={styles.subMenuListItemLink}
-                  onClick={() => {
-                    setActiveSecondLevel(activeSecondLevel === secondLink.name ? '' : secondLink.name);
-                  }}
-                >
-                  <span className={`${activeSecondLevel === secondLink.name ? styles.subMenuListItemLinkActive : ''}`}>{secondLink.name}</span>
-                  <Icon className={styles.itemIcon} icon={activeSecondLevel === secondLink.name ? 'icon-chevron-up' : 'icon-chevron-down'} />
+                <button className={styles.subMenuListItemLink} onClick={() => handleSecondLevelClick(secondLink.name)}>
+                  <span className={`${activeSecondLevel === secondLink.name ? styles.subMenuListItemLinkActive : ''}`}>
+                    {secondLink.name}
+                  </span>
+                  <Icon
+                    className={styles.itemIcon}
+                    icon={activeSecondLevel === secondLink.name ? 'icon-chevron-up' : 'icon-chevron-down'}
+                  />
                 </button>
               )}
               {isCategory(secondLink) && secondLink.links?.length ? (
@@ -100,6 +111,7 @@ const ListItem = ({
                   className={styles.subMenuList}
                   initial={{ height: 0 }}
                   animate={{ height: activeSecondLevel === secondLink.name ? 'auto' : 0 }}
+                  ref={subMenuRef}
                 >
                   {secondLink.links.map((thirdLink) => (
                     <Fragment key={thirdLink.name}>
@@ -109,12 +121,12 @@ const ListItem = ({
                           to={thirdLink.href}
                           target={thirdLink.openInNewTab ? '_blank' : '_self'}
                           onClick={() => {
-                            close();
-                            trackNavigation?.(thirdLink.href);
+                            close()
+                            trackNavigation?.(thirdLink.href)
                           }}
                         >
                           {thirdLink.name}
-                          <Icon className={styles.itemIcon} icon='icon-chevron-right' />
+                          <Icon className={styles.itemIcon} icon="icon-chevron-right" />
                         </Link>
                       ) : // TODO: add support for another level if needed
                       undefined}
@@ -127,8 +139,8 @@ const ListItem = ({
         </motion.div>
       ) : undefined}
     </motion.div>
-  );
-};
+  )
+}
 
 const MobileNavigation = ({
   categories,
@@ -141,130 +153,125 @@ const MobileNavigation = ({
   linkComponent: Link,
   trackNavigation,
 }: INavigation) => {
-  const [distanceTop, setDistanceTop] = useState(0);
-  const mobileNavRef = useRef<HTMLDivElement>(null);
+  const mobileNavRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setDistanceTop((mobileNavRef.current?.getBoundingClientRect().y ?? 0) + (((mobileNavRef.current?.clientHeight ?? 0) + 16) ?? 0));
-  }, [open])
-
-  useEffect(() => {
-    const el = document.body;
+    const el = document.body
 
     if (el) {
       if (open) {
-        el.classList.add('no-scroll');
+        el.classList.add('no-scroll')
       } else {
-        el.classList.remove('no-scroll');
+        el.classList.remove('no-scroll')
       }
     }
-  }, [open]);
+  }, [open])
 
   useOnClickOutside({ ref: mobileNavRef, onClose: () => setOpen(false) })
 
   return (
-    <div className={styles.mobileNavigation} ref={mobileNavRef}>
-      <div className={styles.top}>
-        {actions && (
-          <div className={styles.actions}>{actions}</div>
-        )}
-        <div className={styles.topInner}>
-          <AnimatePresence initial={false} exitBeforeEnter>
+    <AnimatePresence>
+      <div key="main" className={styles.mobileNavigation} ref={mobileNavRef}>
+        <div className={styles.top}>
+          {actions && <div className={styles.actions}>{actions}</div>}
+          <div className={styles.topInner}>
             {!open && (
               <motion.button
                 key="menu-btn"
-                initial={{ scale: 0.2 }}
+                initial={false}
                 animate={{ scale: open ? 0 : 1 }}
                 exit={{ scale: 0.2 }}
                 onClick={() => setOpen(true)}
                 className={styles.menuButton}
+                transition={{ type: 'tween' }}
+                layoutId="menu-button"
               >
-                <Icon className={styles.menuIcon} icon='icon-menu' />
+                <Icon className={styles.menuIcon} icon="icon-menu" />
               </motion.button>
             )}
-
+          </div>
+        </div>
+        <motion.nav
+          className={styles.content}
+          initial={{ x: '100vw' }}
+          animate={{ x: open ? '0' : '100vw' }}
+          transition={{ type: 'tween' }}
+        >
+          <div className={styles.closeButtonContainer}>
             {open && (
               <motion.button
                 key="close-btn"
-                initial={{ scale: 0.2 }}
-                animate={{ scale: open ? 1 : 0 }}
-                exit={{ scale: 0.2 }}
+                initial={{ scale: 0.2, opacity: 0 }}
+                animate={{ scale: open ? 1 : 0, opacity: 1 }}
+                exit={{ scale: 0.2, opacity: 0 }}
                 onClick={() => setOpen(false)}
                 className={styles.menuButton}
+                transition={{ type: 'tween', delay: 0.1 }}
+                layoutId="menu-button"
               >
-                <Icon className={cx(styles.menuIcon, styles.menuCloseIcon)} icon='icon-plus' />
+                <Icon className={cx(styles.menuIcon, styles.menuCloseIcon)} icon="icon-plus" />
               </motion.button>
             )}
-          </AnimatePresence>
-        </div>
+          </div>
+          <div className={styles.menuListWrapper}>
+            <ul className={styles.menuList}>
+              {categories.map((cat, i) => {
+                if (isCategory(cat)) {
+                  return (
+                    <ListItem
+                      key={cat.name}
+                      linkComponent={Link}
+                      name={cat.name}
+                      links={cat.links}
+                      delay={i * 0.1}
+                      href={cat.href}
+                      close={() => setOpen(false)}
+                      trackNavigation={trackNavigation}
+                    />
+                  )
+                } else if (isLink(cat)) {
+                  return (
+                    <ListItem
+                      key={cat.name}
+                      linkComponent={Link}
+                      name={cat.name}
+                      link={cat}
+                      delay={i * 0.1}
+                      close={() => setOpen(false)}
+                      trackNavigation={trackNavigation}
+                    />
+                  )
+                }
+              })}
+            </ul>
+            {isAuthenticated && signOutLabel && onSignOut && (
+              <div className={styles.signOut}>
+                <Button children={signOutLabel} onClick={onSignOut} surface="x" type="button" />
+              </div>
+            )}
+          </div>
+        </motion.nav>
       </div>
-      <motion.nav
-        className={styles.content}
-        initial={{ x: '100vw' }}
-        animate={{ x: open ? '0' : '100vw' }}
-        transition={{ type: 'tween' }}
-        style={{ paddingTop: `${distanceTop}px` }}
-      >
-        <div className={styles.menuListWrapper}>
-          <ul className={styles.menuList}>
-            {categories.map((cat, i) => {
-              if (isCategory(cat)) {
-                return (
-                  <ListItem
-                    key={cat.name}
-                    linkComponent={Link}
-                    name={cat.name}
-                    links={cat.links}
-                    delay={i * 0.1}
-                    href={cat.href}
-                    close={() => setOpen(false)}
-                    trackNavigation={trackNavigation}
-                  />
-                );
-              } else if (isLink(cat)) {
-                return (
-                  <ListItem
-                    key={cat.name}
-                    linkComponent={Link}
-                    name={cat.name}
-                    link={cat}
-                    delay={i * 0.1}
-                    close={() => setOpen(false)}
-                    trackNavigation={trackNavigation}
-                  />
-                );
-              }
-            })}
-          </ul>
-          {isAuthenticated && signOutLabel && onSignOut && (
-            <div className={styles.signOut}>
-              <Button children={signOutLabel} onClick={onSignOut} surface='x' type='button' />
-            </div>
-          )}
-        </div>
-      </motion.nav>
-      <AnimatePresence>
+      <AnimatePresence key="backdrop">
         {open && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.75 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className={styles.backDrop}
           />
         )}
       </AnimatePresence>
-    </div>
-  );
-};
+    </AnimatePresence>
+  )
+}
 
 const isLink = (obj: any): obj is TNavLink => {
-  return obj && !isCategory(obj);
-};
+  return obj && !isCategory(obj)
+}
 
 const isCategory = (obj: any): obj is TNavCategory => {
-  return obj && 'links' in obj;
-};
+  return obj && 'links' in obj
+}
 
-export {
-  MobileNavigation
-};
+export { MobileNavigation }

@@ -319,8 +319,4 @@ a {
   &:hover {
     color: var(--interactive-hover);
   }
-
-  &:focus {
-    color: var(--interactive-hover);
-  }
 }

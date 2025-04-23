@@ -1,13 +1,21 @@
-import React from 'react'
-import styles from './product-card-vertical.module.css'
-import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
-import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
-import { Picture, Placeholder, Button, IconButton, Icon, ButtonWithTooltip, ComponentWithTooltip } from '../../atoms'
 import cx from 'classnames'
+import React from 'react'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
+import {
+  Button,
+  ButtonWithTooltip,
+  ComponentWithTooltip,
+  Icon,
+  IconButton,
+  IconWithTooltip,
+  Picture,
+  Placeholder,
+} from '../../atoms'
+import { IProductCard, TProductCardVertical } from '../product-card/product-card'
+import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
 import { ProductVariantList } from '../product-variant-list/product-variant-list'
 import { TagsList } from '../tags-list/tags-list'
-import { IProductCard, TProductCardVertical } from '../product-card/product-card'
-import { IconWithTooltip } from '../../atoms'
+import styles from './product-card-vertical.module.css'
 
 const ProductCardVertical = ({
   product,
@@ -37,7 +45,7 @@ const ProductCardVertical = ({
   onClick,
   productArea,
   tooltips,
-  isAddingToFavorites
+  isAddingToFavorites,
 }: IProductCard & TProductCardVertical) => {
   const {
     activeCampaign,
@@ -63,7 +71,7 @@ const ProductCardVertical = ({
     unitLabel,
     outOfStockLabel,
     limitedLabel,
-  } = product;
+  } = product
 
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
@@ -81,7 +89,7 @@ const ProductCardVertical = ({
     return favoriteProductsIds.includes(partNo)
   }
 
-  const isFavorite = isFavoriteProduct(partNo);
+  const isFavorite = isFavoriteProduct(partNo)
 
   const style: { [key: string]: string } = {
     '--campaign-color': activeCampaign?.color ?? '#FFF',
@@ -104,19 +112,19 @@ const ProductCardVertical = ({
   } else {
     return (
       <div
-        className={cx(
-          styles.productCardVertical,
-          className ? className : '',
-          {
-            [styles.campaign]: activeCampaign?.title && !loading,
-            [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
-            [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
-          },
-        )}
+        className={cx(styles.productCardVertical, className ? className : '', {
+          [styles.campaign]: activeCampaign?.title && !loading,
+          [styles.limitedProduct]: !activeCampaign && isLimitedProduct && limitedLabel && !loading,
+          [styles.outOfStockProduct]: !activeCampaign && outOfStock && outOfStockLabel && !loading,
+        })}
         style={style}
       >
-        {!outOfStock && activeCampaign?.title && !loading && <div className={styles.campaignBox}>{activeCampaign.title}</div>}
-        {!activeCampaign && isLimitedProduct && limitedLabel && !loading && <div className={styles.limitedBox}>{limitedLabel}</div>}
+        {!outOfStock && activeCampaign?.title && !loading && (
+          <div className={styles.campaignBox}>{activeCampaign.title}</div>
+        )}
+        {!activeCampaign && isLimitedProduct && limitedLabel && !loading && (
+          <div className={styles.limitedBox}>{limitedLabel}</div>
+        )}
         {outOfStock && outOfStockLabel && !loading && <div className={styles.outOfStockBox}>{outOfStockLabel}</div>}
         <div className={styles.tagsWrapper}>
           {sellerOnly && (
@@ -137,7 +145,11 @@ const ProductCardVertical = ({
               )}
             </>
           )}
-          {loading ? <Placeholder type="tags" /> : Array.isArray(tags) && tags.length ? <TagsList tagsList={activeCampaign ? tags.slice(0, 3) : tags} /> : null}
+          {loading ? (
+            <Placeholder type="tags" />
+          ) : Array.isArray(tags) && tags.length ? (
+            <TagsList tagsList={activeCampaign ? tags.slice(0, 3) : tags} />
+          ) : null}
         </div>
         {loading ? (
           <Placeholder type="image" />
@@ -191,7 +203,7 @@ const ProductCardVertical = ({
         )}
         <ButtonWithTooltip
           content={tooltips?.changeVariant ?? 'Välj variant'}
-          type='button'
+          type="button"
           surface="secondary"
           iconRight={packageBtnDisabled ? undefined : { icon: 'icon-layers' }}
           rounded
@@ -199,16 +211,16 @@ const ProductCardVertical = ({
           onClick={() => handleVariantBtnClick()}
           disabled={loading || packageBtnDisabled}
           className={styles.packageBtn}
-          name='Select packaging'
-          side='top'
-          align='end'
+          name="Select packaging"
+          side="top"
+          align="end"
         >
           {packaging}
         </ButtonWithTooltip>
         {loading ? (
           <div className={styles.placeholderContent}>
-            <Placeholder type='p_long' />
-            <Placeholder type='p_long' />
+            <Placeholder type="p_long" />
+            <Placeholder type="p_long" />
           </div>
         ) : (
           <ProductQuantityInput
@@ -239,7 +251,7 @@ const ProductCardVertical = ({
             </Button>
             {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
               <ComponentWithTooltip
-                element={(
+                element={
                   <IconButton
                     type="button"
                     icon={'icon-file-plus'}
@@ -251,13 +263,13 @@ const ProductCardVertical = ({
                     noPadding
                     name={tooltips?.addToPurchaseList ?? 'Add to purchase list'}
                   />
-                )}
+                }
                 content={tooltips?.addToPurchaseList}
               />
             )}
             {showFavoriteIcon && onFavoriteIconClick && (
               <ComponentWithTooltip
-                element={(
+                element={
                   <IconButton
                     type="button"
                     icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
@@ -270,7 +282,7 @@ const ProductCardVertical = ({
                     name={tooltips?.addToFavorites ?? 'Add to favorite list'}
                     animate={isAddingToFavorites ? 'loading' : 'default'}
                   />
-                )}
+                }
                 content={isFavorite ? tooltips?.removeFromFavorites : tooltips?.addToFavorites}
               />
             )}

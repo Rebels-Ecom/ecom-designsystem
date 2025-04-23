@@ -58,6 +58,8 @@ export type TIcon =
   | 'icon-save'
   | 'icon-alert-triangle'
   | 'icon-trash-2'
+  | 'icon-minus-circle'
+  | 'icon-minus'
 
 export interface IIcon {
   icon: TIcon
@@ -66,7 +68,7 @@ export interface IIcon {
   /**
    * optional color
    */
-  color?: 'error' | 'success';
+  color?: 'error' | 'success'
 }
 
 const Icon = ({ icon, size, className, color }: IIcon) => {
