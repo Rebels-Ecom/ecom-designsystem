@@ -11,7 +11,7 @@
         color: var(--error-red);
     }
     &.warning {
-        color: var(--warning-orange);
+        color: var(--cta-tertiary-default);
     }
     &.information {
         color: var(--information-blue);

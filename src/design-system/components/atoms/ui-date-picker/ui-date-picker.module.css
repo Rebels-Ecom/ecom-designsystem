@@ -1,13 +1,13 @@
 :global .react-datepicker__day-name {
-    width: calc((100% / 7) - 0.5rem);
+    width: calc((100% / 7) - 0.5rem) !important;
 
     @media(min-width: 48em){
-        width: 4.25rem;
+        width: 4.25rem !important;
     }
 }
 
 :global .react-datepicker__header {
-    background: #FFFFFF;
+    background-color: #FFFFFF;
     border: none;
 }
 
@@ -18,7 +18,7 @@
 }
 
 :global .react-datepicker-popper {
-    z-index: var(--menu-icon-z-index);
+    z-index: var(--menu-icon-z-index) !important;
 }
 
 :global .react-datepicker-wrapper {
@@ -36,7 +36,7 @@
 }
 
 :global .react-datepicker__month-container {
-    float: unset;
+    float: unset !important;
 }
 
 .datePickerWrapper {
@@ -75,7 +75,7 @@
 }
 
 .calendar {
-    background: #ffffff;
+    background-color: #ffffff;
     border: 1px solid #DE9034;
     width: calc(100vw - 2rem);
     left: 1rem;
@@ -97,64 +97,64 @@
 .day {
     font-family: var(--font-family-primary);
     font-weight: bold;
-    width: 2rem;
-    height: 3rem;
-    width: calc((100% / 7) - .5rem);
+    /* width: 2rem !important; */
+    height: 3rem !important;
+    width: calc((100% / 7) - .5rem) !important;
 
     @media(min-width: 48rem){
-        width: 4.25rem;
-        height: 4.25rem;
+        width: 4.25rem !important;
+        height: 4.25rem !important;
     }
-    background: #F1F1F1;
+    background-color: #F1F1F1;
     border-radius: 0.125rem;
     &:hover {
-        background: #F1F1F1;
+        background-color: #F1F1F1;
     }
 }
 
 .currentDay {
-    background: #FFF9E8;
-    color: #003E51;
-    border: 1px solid #DE9034;
+    background-color: #FFF9E8 !important;
+    color: #003E51 !important;
+    border: 1px solid #DE9034 !important;
     &:hover {
-        background: #FFF9E8;
+        background-color: #FFF9E8 !important;
     }
 }
 
 .selectedDay {
-    background: #DE9034;
-    color: #ffffff;
+    background-color: #DE9034 !important;
+    color: #ffffff !important;
     &:hover {
-        background: #DE9034;
+        background-color: #DE9034 !important;
     }
 }
 
 .pastDay {
-    background: rgba(241, 241, 241, 0.3);
+    background-color: rgba(241, 241, 241, 0.3);
     color: rgba(0, 62, 81, 0.1);
     &:hover {
         cursor: not-allowed;
-        background: rgba(241, 241, 241, 0.3);
+        background-color: rgba(241, 241, 241, 0.3);
     }
 }
 
 .deliveryDay {
-    background: #ffffff;
+    background-color: #ffffff;
     border: 1px solid #DE9034;
     color: #003E51;
     &:hover {
-        background: #DE9034;
+        background-color: #DE9034;
     }
 }
 
 .holidayDay {
-    background: #B8BDBE;
+    background-color: #B8BDBE;
     color: rgba(0, 62, 81, 0.9);
 }
 
 .datePickerBtn {
     position: relative;
-    background: #ffffff;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     margin: 0 0.5rem 0 0;
@@ -181,7 +181,7 @@
     @media (min-width: 64em) {
         display: block;
         width: max-content;
-        background: #ffffff;
+        background-color: #ffffff;
         border-color: transparent;
         border-radius: 0.25rem;
         margin-right: 1.5rem;

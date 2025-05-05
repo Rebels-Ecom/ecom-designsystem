@@ -1,9 +1,9 @@
 .socialMediaLink {
-    background: var(--icon-backgorund-blue);
-    border: none;
-    padding: 0.6rem;
+	background: var(--icon-backgorund-blue);
+	border: none;
+	padding: 0.5rem;
 
-    &::after {
-        display: none;
-    }
+	&::after {
+		display: none;
+	}
 }

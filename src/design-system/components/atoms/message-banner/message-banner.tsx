@@ -1,15 +1,15 @@
 import React from 'react'
-import styles from './message-banner.module.css'
 import { Icon } from '../icon/icon'
+import styles from './message-banner.module.css'
 
-export type TMessageBannerType = 'success' | 'information' | 'link'
+export type TMessageBannerType = 'success' | 'information' | 'link' | 'update'
 export interface IMessageBanner {
   children: React.ReactNode
   type?: TMessageBannerType
   color?: string
 }
 
-const defaultBkg = 'rgba(255, 196, 22, 0.1)'
+const defaultBkg = '#F2EFEA'
 
 function getBannerIcon(type: TMessageBannerType) {
   switch (type) {
@@ -19,6 +19,8 @@ function getBannerIcon(type: TMessageBannerType) {
       return 'icon-check-circle'
     case 'link':
       return 'icon-arrow-right'
+    case 'update':
+      return 'icon-refresh-cw'
     default:
       return 'icon-check-circle'
   }
