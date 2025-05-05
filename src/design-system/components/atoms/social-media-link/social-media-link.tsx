@@ -4,24 +4,24 @@ import { TIcon } from '../../atoms/icon/icon'
 import styles from './social-media-link.module.css'
 
 export type TSocialMediaLink = {
-    icon: TIcon
+  icon: TIcon
 } & ILink
 
-const SocialMediaLink = (link : TSocialMediaLink ) => {
-    return(
-        <LinkButton 
-            className={styles.socialMediaLink} 
-            surface='secondary' 
-            size='small'
-            round 
-            href={link.href}
-            target={link.target ? link.target : '_blank'}
-            isExternal={link.isExternal}
-            name={link.title}
-            >
-            <Icon icon={link.icon} className={styles.socialMediaIcon}/>
-        </LinkButton>
-    )
+const SocialMediaLink = (link: TSocialMediaLink) => {
+  return (
+    <LinkButton
+      className={styles.socialMediaLink}
+      surface="secondary"
+      size="x-small"
+      round
+      href={link.href}
+      target={link.target ? link.target : '_blank'}
+      isExternal={link.isExternal}
+      name={link.title}
+    >
+      <Icon icon={link.icon} className={styles.socialMediaIcon} />
+    </LinkButton>
+  )
 }
 
-export { SocialMediaLink}
+export { SocialMediaLink }

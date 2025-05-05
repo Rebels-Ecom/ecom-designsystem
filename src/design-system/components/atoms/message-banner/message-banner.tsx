@@ -9,7 +9,7 @@ export interface IMessageBanner {
   color?: string
 }
 
-const defaultBkg = 'rgba(255, 196, 22, 0.1)'
+const defaultBkg = '#F2EFEA'
 
 function getBannerIcon(type: TMessageBannerType) {
   switch (type) {

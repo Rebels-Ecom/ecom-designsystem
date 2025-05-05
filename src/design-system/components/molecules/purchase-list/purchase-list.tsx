@@ -31,7 +31,7 @@ const PurchaseList = ({ items, selectedItems, onSelectChange, linkComponent: Lin
         const deleting = checked && item.removing
 
         return (
-          <li key={item.name} className={styles.item}>
+          <li key={item.id} className={styles.item}>
             <div className={styles.content}>
               <div className={styles.row}>
                 {deleting ? (
@@ -43,7 +43,9 @@ const PurchaseList = ({ items, selectedItems, onSelectChange, linkComponent: Lin
                 )}
                 {item.shared && <Icon icon="icon-share-2" />}
               </div>
-              <div className={styles.row}>{deleting ? <Placeholder type="p_short" /> : <p className={styles.label}>{item.noOfProducts}</p>}</div>
+              <div className={styles.row}>
+                {deleting ? <Placeholder type="p_short" /> : <p className={styles.label}>{item.noOfProducts}</p>}
+              </div>
               <div className={styles.row}>
                 {deleting && item.updated ? (
                   <Placeholder type="p_short" />
@@ -52,14 +54,20 @@ const PurchaseList = ({ items, selectedItems, onSelectChange, linkComponent: Lin
                 )}
               </div>
             </div>
-            {!deleting && (
+            {!deleting && !item.shared ? (
               <>
-                <Checkbox id={item.id} className={styles.checkbox} name={item.name} checked={checked} onChange={() => handleCheckboxChange(item)} />
+                <Checkbox
+                  id={item.id}
+                  className={styles.checkbox}
+                  name={item.name}
+                  checked={checked}
+                  onChange={() => handleCheckboxChange(item)}
+                />
                 <Link to={item.linkUrl} aria-label={`Navigate to ${item.name}`} className={styles.linkWrapper}>
                   <Icon icon="icon-chevrons-right" />
                 </Link>
               </>
-            )}
+            ) : null}
           </li>
         )
       })}
