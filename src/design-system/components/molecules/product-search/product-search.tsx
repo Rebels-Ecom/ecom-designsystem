@@ -1,16 +1,17 @@
-import React, { useCallback, useRef } from 'react'
-import styles from './product-search.module.css'
-import { useCloseOnEscape, useOnClickOutside } from '../../../hooks'
-import { Loader, InputText, Icon, ProductSearchResultItem } from '../../atoms'
-import { IProductVariant } from '../product-variant/product-variant'
-import { getProductPicture } from '../../../../helpers/picture-helper'
 import cx from 'classnames'
+import React, { useCallback, useRef } from 'react'
+import { useCloseOnEscape, useOnClickOutside } from '../../../hooks'
+import { Icon, InputText, Loader, ProductSearchResultItem } from '../../atoms'
+import { IProductVariant } from '../product-variant/product-variant'
+import styles from './product-search.module.css'
 
 export interface IResult {
   partNo: string
   productName: string
   primaryImageUrl: string
   productVariantList: Array<IProductVariant>
+  isSeller?: boolean
+  sellerTooltip?: string
 }
 
 export interface IProductSearch {
@@ -67,14 +68,12 @@ function ProductSearch({
 
   function handleOnClickSearchResult(item: IResult) {
     onClickSearchResult(item)
-    // onClose()
-    // onClear()
   }
 
   function handleFocus() {
-    setIsOpen(true);
+    setIsOpen(true)
   }
-  
+
   useOnClickOutside({ ref: searchWrapperElement, onClose })
   useCloseOnEscape({ onClose, isOpen })
 
@@ -110,18 +109,10 @@ function ProductSearch({
       {isOpen && query && !isLoading && (
         <div className={styles.searchResults}>
           <ul aria-labelledby={id} className={styles.searchResultsList}>
-            {results.map((li: IResult, i: number) => {
-              const productImage = getProductPicture(li.partNo, li.primaryImageUrl, '54')
+            {results.map((li: IResult) => {
               return (
-                <li key={`${id}_${i}`} className={styles.resultListItem}>
-                  <ProductSearchResultItem
-                    key={`${id}_${li.partNo}`}
-                    partNo={li.partNo}
-                    productName={li.productName}
-                    productImage={productImage}
-                    productVariantList={li.productVariantList}
-                    onClick={handleOnClickSearchResult}
-                  />
+                <li key={`${id}_${li.partNo}`} className={styles.resultListItem}>
+                  <ProductSearchResultItem onClick={handleOnClickSearchResult} {...li} />
                 </li>
               )
             })}
