@@ -6,7 +6,6 @@ import styles from './add-to-cart-button.module.css'
 export type TAddToCartButton = {
   id: string
   quantity: number
-  hasBeenAdded: boolean
   onClick: CallableFunction
   buttonLabel: string
   className?: string
@@ -18,21 +17,30 @@ export type TAddToCartButton = {
 const AddToCartButton = ({
   id,
   quantity = 0,
-  hasBeenAdded,
   onClick,
   buttonLabel = '',
   disabled = false,
   onChange = () => {},
   maxQuantity,
 }: TAddToCartButton) => {
-  const [val, setVal] = useState<number>(quantity)
+  const [val, setVal] = useState<number | ''>(quantity)
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
     setVal(quantity)
   }, [quantity])
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(0, parseInt(e.target.value) || 0)
+    const rawValue = e.target.value
+    const parsed = parseInt(rawValue, 10)
+
+    if (rawValue === '') {
+      setVal('')
+      return
+    }
+
+    const value = Math.max(0, parsed || 0)
+
     if (maxQuantity === undefined || value <= maxQuantity) {
       setVal(value)
       onChange(value)
@@ -45,31 +53,36 @@ const AddToCartButton = ({
     }
   }
 
+  const handleOnFocus = () => {
+    setIsFocused(true)
+  }
+
   const handleOnBlur = () => {
-    if (val < 0) {
+    setIsFocused(false)
+    if (Number(val) <= 0) {
       setVal(0)
       onChange(0)
     }
   }
 
   const handleIncrement = () => {
-    if (maxQuantity === undefined || val < maxQuantity) {
-      setVal((prev) => Math.min(prev + 1, maxQuantity || prev + 1))
-      onChange(val + 1)
-    }
+    const parsed = typeof val === 'string' ? parseInt(val, 10) || 0 : val
+    const next = Math.min(parsed + 1, maxQuantity ?? parsed + 1)
+    setVal(next)
+    onChange(next)
   }
 
   const handleDecrement = () => {
-    if (val > 0) {
-      setVal((prev) => Math.max(prev - 1, 0))
-      onChange(val - 1)
-    }
+    const parsed = typeof val === 'string' ? parseInt(val, 10) || 0 : val
+    const next = Math.max(parsed - 1, 0)
+    setVal(next)
+    onChange(next)
   }
 
   return (
     <AnimatePresence>
       <div className={styles.addToCartButton} role="group" aria-label="Quantity changer">
-        {!hasBeenAdded && (
+        {(val === 0 || val === '') && !isFocused ? (
           <motion.button
             key="add-button"
             className={styles.button}
@@ -82,13 +95,15 @@ const AddToCartButton = ({
           >
             {buttonLabel}
           </motion.button>
-        )}
-        {hasBeenAdded && (
+        ) : (
           <motion.div
             key="quantity-controls"
             className={styles.inputWrapper}
             initial={{ scale: 0.2, opacity: 0 }}
-            animate={{ scale: val > 0 ? 1 : 0, opacity: val > 0 ? 1 : 0 }}
+            animate={{
+              scale: typeof val === 'string' || Number(val) > 0 ? 1 : 0,
+              opacity: typeof val === 'string' || Number(val) > 0 ? 1 : 0,
+            }}
             exit={{ scale: 0.2, opacity: 0 }}
           >
             <IconButton
@@ -111,6 +126,7 @@ const AddToCartButton = ({
               type="number"
               value={val}
               onChange={handleOnChange}
+              onFocus={handleOnFocus}
               onBlur={handleOnBlur}
               className={styles.quantityInput}
               aria-label="Current quantity"

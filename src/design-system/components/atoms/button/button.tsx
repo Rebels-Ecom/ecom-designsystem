@@ -1,9 +1,9 @@
-import { forwardRef } from 'react'
 import cx from 'classnames'
+import { forwardRef } from 'react'
 import { TButtonSize, TButtonSurface } from '../../../../types/button'
 import { Icon, IIcon } from '../icon/icon'
-import styles from './button.module.css'
 import { Loader } from '../loader/loader'
+import styles from './button.module.css'
 
 export type TButtonType = 'submit' | 'button'
 export interface IButton {
@@ -27,11 +27,11 @@ export interface IButton {
    * If true, displays a loading spinner and disables the button
    * @default undefined
    */
-  loading?: boolean;
-  weight?: 'normal' | 'bold';
-  name?: string;
-  isTransparent?: boolean;
-  noBorder?: boolean;
+  loading?: boolean
+  weight?: 'normal' | 'bold'
+  name?: string
+  isTransparent?: boolean
+  noBorder?: boolean
 }
 
 export function getButtonSurface(surface: TButtonSurface) {
@@ -63,9 +63,9 @@ export function getButtonSize(size: TButtonSize) {
 const Button = forwardRef<HTMLButtonElement, IButton>(
   (
     {
-      surface='primary',
-      size='small',
-      type='button',
+      surface = 'primary',
+      size = 'small',
+      type = 'button',
       children,
       iconLeft,
       iconRight,
@@ -84,10 +84,9 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
     },
     ref
   ) => {
-    if(!children)
-      return null;
+    if (!children) return null
 
-    return(
+    return (
       <button
         aria-label={name}
         ref={ref}
@@ -112,13 +111,21 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         onClick={onClick}
         {...props}
       >
-        {loading && size !== 'xx-small' ? <Loader visible size='xs' /> : 
-        <>
-          {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
-          {children && <span className={ cx(styles.buttonContent, iconLeft && styles.contentRight, iconRight && styles.contentLeft)}>{children}</span>}
-          {iconRight && <Icon icon={iconRight.icon}></Icon>}
-        </>
-        }
+        {loading && size !== 'xx-small' ? (
+          <Loader position="relative" visible size="xs" />
+        ) : (
+          <>
+            {iconLeft && <Icon icon={iconLeft.icon}></Icon>}
+            {children && (
+              <span
+                className={cx(styles.buttonContent, iconLeft && styles.contentRight, iconRight && styles.contentLeft)}
+              >
+                {children}
+              </span>
+            )}
+            {iconRight && <Icon icon={iconRight.icon}></Icon>}
+          </>
+        )}
       </button>
     )
   }

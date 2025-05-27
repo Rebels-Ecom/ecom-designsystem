@@ -274,7 +274,7 @@ const ProductCardMiniVertical = ({
     </div>
   ) : (
     <div
-      key={cardState.partNo} // TODO: use product.partNo?
+      key={cardState.partNo}
       className={cx(styles.productCardMiniVertical, className ? className : '', {
         [styles.specialCard]: isSpecialCard && !loading,
         [styles.campaign]: isCampaignCard && !loading,
@@ -307,7 +307,7 @@ const ProductCardMiniVertical = ({
       <ProductCardImage
         Link={Link}
         productImage={cardState.productImage}
-        productUrl={cardState.productUrl} // TODO: verify this works
+        productUrl={cardState.productUrl}
         onClick={onClick}
       />
       <ProductContent
@@ -374,51 +374,8 @@ const ProductCardMiniVertical = ({
           onChange={(val) => handleQuantityChange(val, cardState.partNo)}
           quantity={cardState.inputQuantity}
           disabled={buttonLoading || loading || disabled}
-          hasBeenAdded={cardState.inputQuantity > 0}
         />
       )}
-      {/* <div className={styles.actions}>
-        <div className={styles.extras}>
-          <div className={styles.tags}>
-            {Array.isArray(cardState.tags) && cardState.tags?.length ? (
-              <>
-                {tagsList?.map((tag) => (
-                  <Tag key={tag.text} {...tag} text={tag.text?.slice(0, 1)} shape="pill" className={styles.tag} />
-                ))}
-              </>
-            ) : null}
-          </div>
-          <div className={styles.clickable}>
-            {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-              <IconButton
-                type="button"
-                icon={'icon-file-plus'}
-                className={styles.purchaseListIcon}
-                onClick={() => onSaveToPurchaseListClick(cardState.partNo, cardState.totalPrice)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-                name={tooltips?.addToPurchaseList ?? 'Add to purchase list'}
-              />
-            )}
-            {showFavoriteIcon && onFavoriteIconClick && (
-              <IconButton
-                type="button"
-                icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
-                className={cx(styles.favoriteIcon, isFavorite ? styles.favoriteIconActive : '')}
-                onClick={() => onFavoriteIconClick(cardState.partNo, isFavorite, cardState.totalPrice)}
-                size="large"
-                isTransparent
-                noBorder
-                noPadding
-                name={tooltips?.addToFavorites ?? 'Add to favorite list'}
-                animate={isAddingToFavorites ? 'loading' : 'default'}
-              />
-            )}
-          </div>
-        </div>
-      </div> */}
       {variantsListOpen && (
         <VerticalVariants
           onCloseVariants={handleCloseVariants}

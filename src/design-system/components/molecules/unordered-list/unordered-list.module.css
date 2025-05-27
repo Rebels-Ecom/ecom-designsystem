@@ -18,6 +18,13 @@
     &.spacing-md { padding: 1rem 0;}
     &.spacing-lg { padding: 1.5rem 0;}
     &.spacing-xl { padding: 2rem 0;}
+    &.spacing-none { padding: 0 }
+    &:first-of-type {
+        padding-top: 0;
+    }
+    &:last-child {
+        padding-bottom: 0;
+    }
     &.withSeparatingLines{
         &:after {
             content: "";

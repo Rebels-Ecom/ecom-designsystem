@@ -65,7 +65,6 @@
 .l {
   font-size: var(--cta-l-font-size);
   line-height: var(--cta-l-line-height);
-  letter-spacing: var(--cta-l-letter-spacing);
   height: 3rem;
   min-width: 8.125rem;
   padding: 1rem 2rem;
@@ -115,7 +114,6 @@
   }
 }
 
-/* TODO: this should replace secondary when approved */
 .x {
   @media (min-width: 48em) {
     background-color: var(--cta-x-default);
@@ -132,9 +130,15 @@
   width: auto;
   height: auto;
 
-  &:hover{
+  &:hover {
     color: var(--cta-primary-hover);
     text-decoration: underline;
+  }
+
+  &.iconRight {
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 

@@ -33,4 +33,11 @@
     &.withBackground {
         background: #FFF9E8;
     }
+    
+    &.yellow {
+        background: #FFF9E8;
+    }
+    &.blue {
+        background-color: var(--border-grey);
+    }
 }

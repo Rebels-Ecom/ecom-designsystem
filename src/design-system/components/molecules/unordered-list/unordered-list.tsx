@@ -1,9 +1,9 @@
-import React from 'react'
-import styles from './unordered-list.module.css'
 import cx from 'classnames'
+import React from 'react'
 import { Loader } from '../../atoms'
+import styles from './unordered-list.module.css'
 
-export type TSpacing = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type TSpacing = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'none'
 export interface IUnorderedList {
   children: Array<React.ReactNode>
   loading?: boolean
@@ -15,6 +15,8 @@ export interface IUnorderedList {
 const UnorderedList = ({ children, loading, withSeparatingLines, spacing = 'md', className }: IUnorderedList) => {
   function getItemsSpacing(spacing: TSpacing) {
     switch (spacing) {
+      case 'none':
+        return 'spacing-none'
       case 'xs':
         return 'spacing-xs'
       case 'sm':
@@ -38,7 +40,14 @@ const UnorderedList = ({ children, loading, withSeparatingLines, spacing = 'md',
       ) : (
         <ul className={styles.list}>
           {children?.map((item: React.ReactNode) => (
-            <li key={Math.random()} className={cx(styles.listItem, withSeparatingLines ? styles.withSeparatingLines : '', styles[getItemsSpacing(spacing)])}>
+            <li
+              key={Math.random()}
+              className={cx(
+                styles.listItem,
+                withSeparatingLines ? styles.withSeparatingLines : '',
+                styles[getItemsSpacing(spacing)]
+              )}
+            >
               {item}
             </li>
           ))}
