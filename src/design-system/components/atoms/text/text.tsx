@@ -1,6 +1,6 @@
+import cx from 'classnames'
 import React from 'react'
 import styles from './text.module.css'
-import cx from 'classnames'
 
 export type TTextAlignment = 'left' | 'center' | 'right'
 export type TTextWeight = 'normal' | 'bold'
@@ -19,6 +19,7 @@ export interface IText {
   weight?: TTextWeight
   size?: TTextSize
   className?: string
+  overflowWrap?: boolean
   upperCase?: boolean
   color?: TTextColor
   paddingLeft?: TPadding
@@ -32,6 +33,7 @@ function Text({
   align = 'left',
   componentType,
   href,
+  overflowWrap = false,
   underline = false,
   borderBottom = false,
   weight,
@@ -94,6 +96,7 @@ function Text({
           [styles.textUnderlined]: underline,
           [styles.textWithBottomBorder]: borderBottom,
           [styles.upperCase]: upperCase,
+          [styles.overflowWrap]: overflowWrap,
           [styles[color ?? '']]: color,
         }
       )}
