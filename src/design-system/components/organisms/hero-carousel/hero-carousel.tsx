@@ -1,10 +1,10 @@
-import { IHero, Hero } from '../../molecules/hero/hero'
+import { Hero, IHero } from '../../molecules/hero/hero'
 import { Carousel, CarouselItem } from '../carousel/carousel'
 
 export interface IHeroCarousel {
   heroComponents: Array<IHero>
   autoplay?: boolean
-  onSlideChange?: CallableFunction;
+  onSlideChange?: CallableFunction
 }
 
 const HeroCarousel = ({ heroComponents, autoplay = true, onSlideChange }: IHeroCarousel) => {
@@ -17,8 +17,8 @@ const HeroCarousel = ({ heroComponents, autoplay = true, onSlideChange }: IHeroC
           autoplay: autoplay,
           pauseOnHover: true,
           gap: 0,
-          type: 'loop'
-        }
+          type: 'loop',
+        },
       }}
       breakpoints={{
         lg: {
@@ -33,8 +33,9 @@ const HeroCarousel = ({ heroComponents, autoplay = true, onSlideChange }: IHeroC
       {heroComponents.map((hero: IHero, index: number) => {
         return (
           <CarouselItem key={index}>
-            <Hero {...hero} fetchPriority={index === 0 ? 'high' : 'auto'} loading={index === 0 ? 'eager' : 'lazy'} />
-          </CarouselItem>)
+            <Hero {...hero} fetchPriority="high" loading="eager" />
+          </CarouselItem>
+        )
       })}
     </Carousel>
   )
