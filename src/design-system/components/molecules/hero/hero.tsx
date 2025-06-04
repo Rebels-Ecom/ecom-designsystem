@@ -2,7 +2,6 @@ import cx from 'classnames'
 import { ILinkButton, LinkButton } from '../../atoms/link-button/link-button'
 import { IPicture, Picture, TPictureFetchPriority, TPictureLoading } from '../../atoms/picture/picture'
 import { IVideo, Video } from '../../atoms/video/video'
-import { ContentWrapper } from '../../layouts'
 import styles from './hero.module.css'
 
 export type alignContent = 'left' | 'right' | 'center'
@@ -66,21 +65,19 @@ const Hero = ({
         )}
       </div>
       <div className={styles.outerWrapper}>
-        <ContentWrapper>
-          <div className={styles.innerWrapper}>
-            <div className={cx(styles.content, getAlignContent(alignContent))}>
-              {(topHeading || heading) && (
-                <div className={styles.textContent}>
-                  {topHeading && <h2 className={cx('body', 'fontRegular', styles.topHeading)}>{topHeading}</h2>}
-                  {heading && <h1 className={styles.heading}>{heading}</h1>}
-                </div>
-              )}
-              {contentImage && <Picture {...contentImage} fetchPriority={fetchPriority} loading={loading}></Picture>}
-              {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
-              {link?.href && <LinkButton {...link} className={styles.linkButton} />}
-            </div>
+        <div className={styles.innerWrapper}>
+          <div className={cx(styles.content, getAlignContent(alignContent))}>
+            {(topHeading || heading) && (
+              <div className={styles.textContent}>
+                {topHeading && <h2 className={cx('body', 'fontRegular', styles.topHeading)}>{topHeading}</h2>}
+                {heading && <h1 className={styles.heading}>{heading}</h1>}
+              </div>
+            )}
+            {contentImage && <Picture {...contentImage} fetchPriority={fetchPriority} loading={loading}></Picture>}
+            {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
+            {link?.href && <LinkButton {...link} className={styles.linkButton} />}
           </div>
-        </ContentWrapper>
+        </div>
       </div>
     </section>
   )

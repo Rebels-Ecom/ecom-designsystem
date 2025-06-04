@@ -5,7 +5,7 @@
 }
 
 .mediaWrapper {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1 / 1;
   width: 100%;
   position: relative;
   
@@ -26,6 +26,15 @@
   display: flex;
   width: 100%;
   height: 100%;
+  padding: 0 1rem;
+  
+  @media (min-width: 48rem) {
+    padding: 0 2rem;
+  }
+  
+  @media (min-width: 64rem) {
+    padding: 0 4rem;
+  }
 }
 
 .content {

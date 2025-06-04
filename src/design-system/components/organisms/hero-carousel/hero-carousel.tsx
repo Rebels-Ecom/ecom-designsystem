@@ -29,6 +29,7 @@ const HeroCarousel = ({ heroComponents, autoplay = true, onSlideChange }: IHeroC
         },
       }}
       lightArrows
+      offsetArrows
     >
       {heroComponents.map((hero: IHero, index: number) => {
         return (
