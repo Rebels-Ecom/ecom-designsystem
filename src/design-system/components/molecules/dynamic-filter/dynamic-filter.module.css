@@ -61,6 +61,17 @@
     padding: 0.5rem 0;
     cursor: pointer;
 
+    &.inActive {
+      & .checkbox {
+        background-color: var(--border-disabled);
+        border-color: transparent;
+      }
+      
+      & .label {
+        color: var(--border-on-x);
+      }
+    }
+
     & .checkbox {
       margin-left: 0.25rem;
     }
@@ -162,6 +173,7 @@
   padding: 0.25rem 0.5rem 0.25rem 0.75rem;
   border-radius: 1.25rem;
   border: 1px solid transparent;
+
   
   & span {
     font-size: 1rem;
@@ -170,6 +182,19 @@
   
   &.active {
     background: var(--border-grey);
+    
+    &:hover {
+      background-color: var(--border-on-secondary-disabled);
+    }
+  }
+  
+  &.inActive {
+    background: var(--grey-400);
+    color: var(--grey-800);
+    
+    &:hover {
+      background-color: var(--grey-500);
+    }
   }
   
   &.clear {
