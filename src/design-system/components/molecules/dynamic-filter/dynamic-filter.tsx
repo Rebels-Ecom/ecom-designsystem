@@ -355,7 +355,8 @@ const DynamicFilter = ({
                     <Slider
                       min={minVal}
                       max={getMinAndMaxValues(filter.options)?.max ?? 10}
-                      defaultMinVal={!!defMin ? (defMin >= 10 ? defMin : 0) : undefined}
+                      defaultMinVal={!!defMin ? defMin : 0}
+                      // defaultMinVal={!!defMin ? (defMin >= 10 ? defMin : 0) : undefined}
                       defaultMaxVal={defMax}
                       withFields={!hideSliderFields}
                       formatLabel={filter.formatLabel || 'kr'}
