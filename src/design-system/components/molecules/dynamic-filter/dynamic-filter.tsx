@@ -5,6 +5,7 @@ import { Button, Checkbox, ExpandableWrapper, Icon, Slider } from '../../atoms'
 import { Above, Below, FlexContainer } from '../../layouts'
 import { AnimatePresence, motion } from 'framer-motion'
 import cx from 'classnames'
+import { RangeInput } from '../../atoms/range-input/range-input'
 
 type TCheckbox = {
   type: 'checkbox'
@@ -283,6 +284,19 @@ const DynamicFilter = ({
     )
   }
 
+  function createStepsArray(options: any): number[] {
+    const stepsSet = new Set<number>()
+
+    options?.forEach(({ name }: any) => {
+      const num = Number(name)
+      if (!isNaN(num)) {
+        stepsSet.add(num)
+      }
+    })
+
+    return Array.from(stepsSet).sort((a, b) => a - b)
+  }
+
   const numberOfSelectedFilters = selectedFilters?.flatMap((x) => x?.selectedOptions)?.length
 
   return (
@@ -343,6 +357,8 @@ const DynamicFilter = ({
               (getMinAndMaxValues(filter.options)?.min ?? 0) >= 10 ? getMinAndMaxValues(filter.options)?.min ?? 0 : 0
             const isExpanded = openOptions.includes(filter.name)
 
+            const steps = createStepsArray(filter.options)
+
             return (
               <div className={styles.filterCategory} key={`${filter.name}-${i}`}>
                 <button className={styles.filterItem} onClick={() => handleClickFilterItem(filter.name)}>
@@ -351,16 +367,17 @@ const DynamicFilter = ({
                 </button>
 
                 <ExpandableWrapper open={isSelected} className={styles.expandableWrapper}>
-                  {filter.type === 'range' ? (
-                    <Slider
-                      min={minVal}
-                      max={getMinAndMaxValues(filter.options)?.max ?? 10}
+                  {filter.type === 'range' && steps.length > 0 ? (
+                    <RangeInput
+                      steps={steps}
+                      // min={minVal}
+                      // max={getMinAndMaxValues(filter.options)?.max ?? 10}
                       defaultMinVal={!!defMin ? defMin : 0}
                       // defaultMinVal={!!defMin ? (defMin >= 10 ? defMin : 0) : undefined}
                       defaultMaxVal={defMax}
                       withFields={!hideSliderFields}
                       formatLabel={filter.formatLabel || 'kr'}
-                      step={filter.step || 10}
+                      // step={filter.step || 10}
                       onChange={(range) =>
                         handleChangeRange(
                           filter.name,

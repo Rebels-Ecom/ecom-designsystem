@@ -9,17 +9,10 @@ import { useDebounce } from '../../../../helpers/generic-helper'
 type TSlider = {
   min: number
   max: number
-  // Defines a different pre selected min value
   defaultMinVal?: number
-  // Defines a different pre selected max value
   defaultMaxVal?: number
   onChange?: (range: number | Range) => void
-  // Unit to display after min and max values
   formatLabel?: string
-  /**
-   * Defines if input fields should be displayed above slider
-   * @default false
-   * */
   withFields?: boolean
   minLabel?: string
   maxLabel?: string
@@ -29,6 +22,15 @@ type TSlider = {
   disableDebounce?: boolean
 }
 
+const roundDownToStep = (val: number, step: number, min: number) => {
+  return Math.floor((val - min) / step) * step + min
+}
+
+const roundUpToStep = (val: number, step: number, min: number) => {
+  return Math.ceil((val - min) / step) * step + min
+}
+
+/** @deprecated Use RangeInput instead */
 const Slider = ({
   onChange,
   formatLabel,
@@ -44,14 +46,17 @@ const Slider = ({
   disabled,
   disableDebounce,
 }: TSlider) => {
-  const [value, setValue] = useState<number | Range>({ min: defaultMinVal ?? min, max: defaultMaxVal ?? max })
+  const [value, setValue] = useState<number | Range>({
+    min: defaultMinVal ?? min,
+    max: defaultMaxVal ?? max,
+  })
+
   const [sliderIsChanging, setSliderIsChanging] = useState(true)
 
   if (typeof value !== 'object') {
     return null
   }
 
-  // TODO: improve this logic. It is currently very customized for our dynamic filter and range select types
   const debouncedRequest = useDebounce(() => {
     if (value) {
       setSliderIsChanging(true)
@@ -86,13 +91,11 @@ const Slider = ({
   }, 1000)
 
   useEffect(() => {
-    // Only wanna use debounce for input changes
     if (!sliderIsChanging && !disableDebounce) {
       debouncedRequest()
     }
   }, [value])
 
-  // TODO: step must affect this function too. Otherwise sliding will reset value by this function.
   const handleInputChange = (val: string, name: string) => {
     const newRange = {
       min: name === 'min' ? Number(val) : value.min,
@@ -110,28 +113,14 @@ const Slider = ({
     }
   }
 
-  // const handleChange = (value: number | Range) => {
-  //   if (!sliderIsChanging) {
-  //     setSliderIsChanging(true);
-  //   }
-
-  //   if (typeof value === 'object' && value.min >= min && value.max <= max) {
-  //     setValue(value)
-  //   }
-  // }
-
-  const roundToStep = (val: number, base: number) => {
-    return Math.round((val - min) / base) * base + min
-  }
-
-  const handleChange = (value: number | Range) => {
+  const handleChange = (val: number | Range) => {
     if (!sliderIsChanging) {
       setSliderIsChanging(true)
     }
 
-    if (typeof value === 'object') {
-      const roundedMin = step ? roundToStep(value.min, step) : value.min
-      const roundedMax = step ? roundToStep(value.max, step) : value.max
+    if (typeof val === 'object') {
+      const roundedMin = step ? roundDownToStep(val.min, step, min) : val.min
+      const roundedMax = step ? roundUpToStep(val.max, step, min) : val.max
 
       const newValue = {
         min: Math.max(min, Math.min(roundedMin, max)),
@@ -142,8 +131,8 @@ const Slider = ({
     }
   }
 
-  const handleChangeComplete = (value: number | Range) => {
-    onChange?.(value)
+  const handleChangeComplete = (val: number | Range) => {
+    onChange?.(val)
   }
 
   return (
