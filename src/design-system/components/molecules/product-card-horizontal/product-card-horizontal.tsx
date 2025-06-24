@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion'; 
-import cx from 'classnames';
-import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input';
-import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg';
+import React, { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import cx from 'classnames'
+import { ProductQuantityInput } from '../product-quantity-input/product-quantity-input'
+import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultFallbackImage.svg'
 import {
   Picture,
   IconButton,
@@ -11,15 +11,15 @@ import {
   Icon,
   IconWithTooltip,
   AlertBox,
-  ComponentWithTooltip
-} from '../../atoms';
-import styles from './product-card-horizontal.module.css';
+  ComponentWithTooltip,
+} from '../../atoms'
+import styles from './product-card-horizontal.module.css'
 import { TagsList } from '../tags-list/tags-list'
 import { IProductCard, TProductCardHorizontal } from '../product-card/product-card'
 import { FlexContainer, mediaQueryHelper } from '../../layouts'
 import { DebounceInput } from '../../atoms/inputs/debounce-input/debounce-input'
-import { HorizontalVariants } from '../horizontal-variants/horiztonal-variants';
-import { useOnClickOutside } from '../../../hooks';
+import { HorizontalVariants } from '../horizontal-variants/horiztonal-variants'
+import { useOnClickOutside } from '../../../hooks'
 
 const ProductCardHorizontal = ({
   product,
@@ -58,9 +58,10 @@ const ProductCardHorizontal = ({
   onFavoriteIconClick,
   tooltips,
   isAddingToFavorites,
+  allowNegative,
 }: IProductCard & TProductCardHorizontal) => {
-  const alertBoxRef = useRef<HTMLDivElement>(null);
-  const { isMobile } = mediaQueryHelper();
+  const alertBoxRef = useRef<HTMLDivElement>(null)
+  const { isMobile } = mediaQueryHelper()
   const {
     activeCampaign,
     partNo,
@@ -87,9 +88,9 @@ const ProductCardHorizontal = ({
     aLabel,
     productVariantList,
     packaging,
-  } = product;
+  } = product
 
-  const [alertBoxOpen, setAlertBoxOpen] = useState(false);
+  const [alertBoxOpen, setAlertBoxOpen] = useState(false)
 
   function handleRemoveProduct(id: string) {
     onClickRemoveProduct && onClickRemoveProduct(id)
@@ -115,21 +116,21 @@ const ProductCardHorizontal = ({
     '--out-of-stock-product-color': outOfStock && outOfStockLabel ? '#e4b6c3' : '#FFF',
   }
 
-  const hasIconAndTags = sellerOnly || isAccessoryPotItem || !!tags?.length;
-  const isFavorite = isFavoriteProduct(partNo);
-  const isCampaignCard = activeCampaign?.title;
-  const isLimitedCard = !!((!activeCampaign) && isLimitedProduct && limitedLabel);
-  const isOutOfStockCard = !!((!activeCampaign) && outOfStock && outOfStockLabel);
-  const isSpecialCard = isCampaignCard || isLimitedCard || isOutOfStockCard;
+  const hasIconAndTags = sellerOnly || isAccessoryPotItem || !!tags?.length
+  const isFavorite = isFavoriteProduct(partNo)
+  const isCampaignCard = activeCampaign?.title
+  const isLimitedCard = !!(!activeCampaign && isLimitedProduct && limitedLabel)
+  const isOutOfStockCard = !!(!activeCampaign && outOfStock && outOfStockLabel)
+  const isSpecialCard = isCampaignCard || isLimitedCard || isOutOfStockCard
 
   const iconsAndTags = (
-    <FlexContainer alignItems='center' gap={0.5} minHeight={hasIconAndTags ? 2.25 : 0} stretch>
+    <FlexContainer alignItems="center" gap={0.5} minHeight={hasIconAndTags ? 2.25 : 0} stretch>
       {sellerOnly && (
         <>
           {tooltips?.sellerOnly ? (
             <IconWithTooltip content={tooltips.sellerOnly} icon={{ icon: 'icon-eye' }} />
           ) : (
-            <Icon icon='icon-eye' size='large' />
+            <Icon icon="icon-eye" size="large" />
           )}
         </>
       )}
@@ -154,34 +155,30 @@ const ProductCardHorizontal = ({
             noBorder
             noPadding
             size="large"
-            name='Remove product'
+            name="Remove product"
           />
         </div>
       )}
     </FlexContainer>
   )
 
-  useOnClickOutside({ ref: alertBoxRef, onClose: () => setAlertBoxOpen(false)});
+  useOnClickOutside({ ref: alertBoxRef, onClose: () => setAlertBoxOpen(false) })
 
   return (
     <div
-      className={cx(
-        styles.productCardHorizontal,
-        className,
-        {
-          [styles.specialCard]: isSpecialCard && !loading,
-          [styles.campaign]: isCampaignCard && !loading,
-          [styles.limitedProduct]: isLimitedCard && !loading,
-          [styles.outOfStockProduct]: isOutOfStockCard && !loading,
-        },
-      )}
+      className={cx(styles.productCardHorizontal, className, {
+        [styles.specialCard]: isSpecialCard && !loading,
+        [styles.campaign]: isCampaignCard && !loading,
+        [styles.limitedProduct]: isLimitedCard && !loading,
+        [styles.outOfStockProduct]: isOutOfStockCard && !loading,
+      })}
       style={style}
     >
       {!outOfStock && isCampaignCard && !loading && (
-        <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{activeCampaign.title}</div>
+        <div className={cx(styles.box, { [styles.noRemoveButton]: hideRemoveButton })}>{activeCampaign.title}</div>
       )}
       {isLimitedCard && !loading && (
-        <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{limitedLabel}</div>
+        <div className={cx(styles.box, { [styles.noRemoveButton]: hideRemoveButton })}>{limitedLabel}</div>
       )}
       {isOutOfStockCard && !loading && (
         <>
@@ -189,31 +186,31 @@ const ProductCardHorizontal = ({
             <ComponentWithTooltip
               content={tooltips.stockShortage}
               element={<div>{outOfStockLabel}</div>}
-              wrapperClassName={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}
+              wrapperClassName={cx(styles.box, { [styles.noRemoveButton]: hideRemoveButton })}
             />
           )}
           {tooltips?.outOfStock && (
             <ComponentWithTooltip
               content={tooltips.outOfStock}
               element={<div>{outOfStockLabel}</div>}
-              wrapperClassName={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}
+              wrapperClassName={cx(styles.box, { [styles.noRemoveButton]: hideRemoveButton })}
             />
           )}
           {!tooltips?.stockShortage && !tooltips?.outOfStock && (
-            <div className={cx(styles.box, {[styles.noRemoveButton]: hideRemoveButton})}>{outOfStockLabel}</div>
+            <div className={cx(styles.box, { [styles.noRemoveButton]: hideRemoveButton })}>{outOfStockLabel}</div>
           )}
         </>
       )}
       {loading ? (
         <>
           <div className={cx(styles.imageWrapper, styles.imageWrapperPlaceholder)}>
-            <Placeholder type='image' />
+            <Placeholder type="image" />
           </div>
           <div className={styles.placeholderContent}>
-            <Placeholder type='heading' />
-            <Placeholder type='p_long' />
-            <Placeholder type='p_short' />
-            <Placeholder type='p_short' />
+            <Placeholder type="heading" />
+            <Placeholder type="p_long" />
+            <Placeholder type="p_short" />
+            <Placeholder type="p_short" />
           </div>
         </>
       ) : (
@@ -237,18 +234,30 @@ const ProductCardHorizontal = ({
               />
             </div>
           )}
-          <FlexContainer flexDirection='column' className={styles.content} gap={0.25}>
+          <FlexContainer flexDirection="column" className={styles.content} gap={0.25}>
             {iconsAndTags}
             {productUrl && Link ? (
               <Link to={productUrl} href={productUrl} className={styles.mainLink} onClick={onClick}>
-                <h2 className={cx(styles.heading, 'h5', {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h2>
+                <h2
+                  className={cx(styles.heading, 'h5', {
+                    [styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard,
+                  })}
+                >
+                  {productName}
+                </h2>
               </Link>
             ) : (
-              <h2 className={cx(styles.heading, 'h5', {[styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard })}>{productName}</h2>
+              <h2
+                className={cx(styles.heading, 'h5', {
+                  [styles.extraPadding]: !hasIconAndTags && !hideRemoveButton && !isSpecialCard,
+                })}
+              >
+                {productName}
+              </h2>
             )}
             <div className={styles.cardInfoWrapper}>
               <div>
-                {(showPackaging && packaging) && <p className={cx(styles.packaging, 'bodyS')}>{packaging}</p>}
+                {showPackaging && packaging && <p className={cx(styles.packaging, 'bodyS')}>{packaging}</p>}
                 {!hidePrice && !isRestrictedUser && (
                   <p className={cx(styles.priceText, 'bodyS')}>{`${priceLabel}: ${
                     priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
@@ -256,7 +265,9 @@ const ProductCardHorizontal = ({
                 )}
 
                 {(country !== '' || partNo !== '') && !isRestrictedUser && (
-                  <p className={cx(styles.partNo, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${country && `- ${country}`}`}</p>
+                  <p className={cx(styles.partNo, 'bodyS')}>{`${partNo ? `${partNoLabel} ${partNo}` : ''} ${
+                    country && `- ${country}`
+                  }`}</p>
                 )}
 
                 {!isRestrictedUser && (
@@ -287,98 +298,97 @@ const ProductCardHorizontal = ({
                         disabled={productQuantityDisabled}
                         maxQuantity={maxQuantity}
                         hidePrice={hidePrice}
+                        allowNegative={allowNegative}
                       />
                     )}
                   </>
                 )}
               </div>
 
-              {/* {alertBox && <AlertBox className={styles.alertBox} {...alertBox}></AlertBox>} */}
-              
               <div className={styles.buttonsWrapper}>
                 {(!!productVariantList?.length ||
-                  (showAddToPurchaseListIcon &&onSaveToPurchaseListClick) ||
+                  (showAddToPurchaseListIcon && onSaveToPurchaseListClick) ||
                   (showFavoriteIcon && onFavoriteIconClick)) && (
-                  <FlexContainer gap={0.5} justifyContent='flex-end' alignItems='center'>
+                  <FlexContainer gap={0.5} justifyContent="flex-end" alignItems="center">
                     {productVariantList?.length > 1 && (
                       <ComponentWithTooltip
                         content={tooltips?.changeVariant}
-                        element={(
+                        element={
                           <IconButton
-                            type='button'
-                            icon='icon-layers'
+                            type="button"
+                            icon="icon-layers"
                             onClick={() => onVariantsButtonClick?.()}
                             noBorder
                             isTransparent
-                            size='medium'
+                            size="medium"
                             noPadding
-                            name='Open variants list'
+                            name="Open variants list"
                           />
-                        )}
+                        }
                       />
                     )}
                     {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
                       <ComponentWithTooltip
                         content={tooltips?.addToPurchaseList}
-                        element={(
+                        element={
                           <IconButton
-                            type='button'
-                            icon='icon-file-plus'
+                            type="button"
+                            icon="icon-file-plus"
                             onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
                             noBorder={true}
                             isTransparent={true}
-                            size='medium'
+                            size="medium"
                             noPadding={true}
-                            name='Add to purchase list'
+                            name="Add to purchase list"
                           />
-                        )}
+                        }
                       />
                     )}
                     {showFavoriteIcon && onFavoriteIconClick && (
                       <ComponentWithTooltip
                         content={isFavorite ? tooltips?.removeFromFavorites : tooltips?.addToFavorites}
-                        element={(
+                        element={
                           <IconButton
-                            type='button'
+                            type="button"
                             icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
                             onClick={() => onFavoriteIconClick(partNo, isFavorite, totalPrice)}
                             noBorder
                             isTransparent
-                            name='Add to favorite list'
+                            name="Add to favorite list"
                             className={isFavorite ? styles.favoriteIconActive : undefined}
-                            size='medium'
+                            size="medium"
                             noPadding
                             animate={isAddingToFavorites ? 'loading' : 'default'}
                           />
-                        )}
+                        }
                       />
                     )}
                     {alertBox && (
                       <>
                         {isMobile ? (
                           <Button
-                            type='button'
+                            type="button"
                             onClick={() => setAlertBoxOpen(true)}
                             className={styles.alertBoxButton}
                             children={alertBox.buttonText ?? 'Byt produkt'}
-                            surface='primary'
+                            surface="primary"
                             iconRight={{ icon: 'icon-alert-circle', color: 'error' }}
-                            size='x-small'
+                            size="x-small"
                           />
                         ) : (
                           <ComponentWithTooltip
                             content={alertBox.title}
-                            element={(
+                            element={
                               <Button
-                                type='button'
+                                type="button"
                                 onClick={alertBox.onClick}
                                 className={styles.alertBoxButton}
                                 children={alertBox.buttonText ?? 'Byt produkt'}
-                                surface='primary'
+                                surface="primary"
                                 iconRight={{ icon: 'icon-alert-circle', color: 'error' }}
-                                size='x-small'
+                                size="x-small"
                               />
-                            )}
+                            }
                           />
                         )}
                       </>
@@ -390,23 +400,23 @@ const ProductCardHorizontal = ({
                   <>
                     {isRestrictedUser ? (
                       <Button
-                        type='button'
+                        type="button"
                         onClick={() => addToCart(product)}
-                        surface='primary'
+                        surface="primary"
                         disabled={buttonLoading || loading || disabled || quantity <= '0'}
                         name={addToCartBtnLabel}
                         children={addToCartBtnLabel}
                       />
                     ) : (
                       <IconButton
-                        type='button'
-                        icon='icon-shopping-cart'
+                        type="button"
+                        icon="icon-shopping-cart"
                         onClick={() => addToCart(product)}
-                        surface='primary'
+                        surface="primary"
                         noBorder
                         disabled={buttonLoading || loading || disabled || quantity <= '0'}
                         name={addToCartBtnLabel}
-                        size='medium'
+                        size="medium"
                       />
                     )}
                   </>

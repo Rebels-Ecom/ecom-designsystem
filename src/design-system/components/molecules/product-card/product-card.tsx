@@ -82,6 +82,7 @@ export interface IProductCard {
     stockShortage?: string
     outOfStock?: string
   }
+  allowNegative?: boolean
 }
 
 export type TProductCard = IProductCard & (TProductCardVertical | TProductCardHorizontal)
@@ -122,6 +123,7 @@ function ProductCard({
   isAddingToFavorites,
   onVariantsButtonClick,
   onVariantChange,
+  allowNegative,
 }: TProductCard) {
   if (!cardDisplay) {
     throw new Error('cardDisplay must be assigned')
@@ -180,7 +182,7 @@ function ProductCard({
   function getQuantity(quantity: string) {
     const parsedQuantity = parseInt(quantity)
     if (!quantity || isNaN(parsedQuantity)) return '1'
-    if (parsedQuantity < 0) return '0'
+    if (parsedQuantity < 0 && !allowNegative) return '0'
     return quantity
   }
 
@@ -254,6 +256,7 @@ function ProductCard({
     favoriteProductsIds,
     onFavoriteIconClick,
     isAddingToFavorites,
+    allowNegative,
   }
 
   if (cardDisplay === 'horizontal') {

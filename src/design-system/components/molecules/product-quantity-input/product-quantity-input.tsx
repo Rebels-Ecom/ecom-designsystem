@@ -15,6 +15,7 @@ export interface IProductQuantityInput {
   maxQuantity?: number
   hidePrice?: boolean
   pricePerUnitText?: string
+  allowNegative?: boolean
 }
 
 const ProductQuantityInput = ({
@@ -30,6 +31,7 @@ const ProductQuantityInput = ({
   maxQuantity,
   hidePrice,
   pricePerUnitText,
+  allowNegative = false,
 }: IProductQuantityInput) => {
   const [val, setVal] = useState(quantity)
 
@@ -69,7 +71,7 @@ const ProductQuantityInput = ({
           disabledNoBorder={disabledNoBorder}
           type="number"
           className={styles.quantityInputField}
-          min="0"
+          min={allowNegative ? undefined : '0'}
           other={{
             onKeyDown: (e: React.KeyboardEvent) => {
               const illegalChars = ['-', '+', '.', ',', 'e', 'E']
