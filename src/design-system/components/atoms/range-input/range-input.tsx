@@ -74,6 +74,17 @@ const RangeInput = ({
   }, 1000)
 
   useEffect(() => {
+    if (!steps || steps.length === 0) return
+
+    const newMin = clamp(defaultMinVal ?? steps[0], steps[0], steps[steps.length - 1])
+    const newMax = clamp(defaultMaxVal ?? steps[steps.length - 1], steps[0], steps[steps.length - 1])
+
+    setFreeRange({ min: newMin, max: newMax })
+    setIndexRange({ minIdx: valueToIndex(newMin), maxIdx: valueToIndex(newMax) })
+    setSliderIsChanging(true)
+  }, [steps, defaultMinVal, defaultMaxVal])
+
+  useEffect(() => {
     if (!sliderIsChanging && !disableDebounce) {
       debouncedRequest()
     }
