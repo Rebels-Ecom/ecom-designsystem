@@ -15,6 +15,9 @@
         justify-content: center;
         text-align: center;
     }
+    &.primary {
+        color: var(--cta-primary-default);
+    }
     &.error {
         color: var(--error-red);
     }

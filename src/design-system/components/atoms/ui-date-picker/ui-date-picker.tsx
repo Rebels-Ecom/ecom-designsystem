@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import DatePicker, { CalendarContainer } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -19,8 +19,9 @@ export interface IUiDatePicker {
   onDateSelected: CallableFunction
   showDateLabel?: boolean
   className?: string
-  loading?: boolean;
-  onClick?: CallableFunction;
+  loading?: boolean
+  onClick?: CallableFunction
+  allowPastDay?: boolean
 }
 
 function UiDatePicker({
@@ -33,7 +34,8 @@ function UiDatePicker({
   showDateLabel,
   className,
   loading,
-  onClick
+  onClick,
+  allowPastDay,
 }: IUiDatePicker) {
   const datepickerRef = useRef<DatePicker | any>(null)
   const [open, setOpen] = useState(false)
@@ -42,11 +44,15 @@ function UiDatePicker({
   const holidayDaysStrings = getDateStrings(holidayDates)
   const customHeaderText = headerText ? headerText : 'Välj din leveransdag'
 
+  useEffect(() => {
+    setSelectedDate(new Date(selectedDeliveryDate))
+  }, [selectedDeliveryDate])
+
   const CustomInput = forwardRef(() => {
     const handleClick = () => {
       setOpen(!open)
       if (!open) {
-        onClick?.();
+        onClick?.()
       }
     }
 
@@ -55,7 +61,11 @@ function UiDatePicker({
         type="button"
         surface="x"
         size="x-small"
-        className={cx(styles.datePickerBtn, showDateLabel ? '' : styles.datePickerBtnHeader, className ? className : '')}
+        className={cx(
+          styles.datePickerBtn,
+          showDateLabel ? '' : styles.datePickerBtnHeader,
+          className ? className : ''
+        )}
         onClick={handleClick}
         disabled={loading}
         fullWidth
@@ -104,7 +114,7 @@ function UiDatePicker({
     } else if (holidayDaysStrings.includes(formatedDate) || date.getDay() === 0 || date.getDay() === 6) {
       return 'holidayDay'
     } else if (today > date) {
-      return 'pastDay'
+      return allowPastDay ? 'pastDay allowPastDay' : 'pastDay'
     }
     return 'day'
   }
@@ -112,7 +122,7 @@ function UiDatePicker({
   useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false) })
 
   if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) {
-    return null;
+    return null
   }
 
   return (

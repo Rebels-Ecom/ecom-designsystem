@@ -19,7 +19,7 @@ export interface IHeading {
    * @default '0'
    */
   margin?: Array<number> | number
-  color?: 'error' // TODO: add more options if needed
+  color?: 'primary' | 'error'
 }
 
 function getHeadingSize(size: TOrder) {

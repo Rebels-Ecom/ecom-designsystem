@@ -132,9 +132,14 @@
 .pastDay {
     background-color: rgba(241, 241, 241, 0.3);
     color: rgba(0, 62, 81, 0.1);
+
     &:hover {
         cursor: not-allowed;
         background-color: rgba(241, 241, 241, 0.3);
+    }
+
+    &.allowPastDay:hover {
+        cursor: pointer;
     }
 }
 
