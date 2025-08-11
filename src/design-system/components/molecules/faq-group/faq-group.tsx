@@ -8,19 +8,28 @@ type FAQGroupProps = {
   linkComponent?: any
   viewMoreLink?: string
   viewMoreLabel?: string
+  limit?: number
 } & Pick<FAQListProps, 'items'>
 
-export function FAQGroup({ title, imgSrc, items, linkComponent: Link, viewMoreLink, viewMoreLabel }: FAQGroupProps) {
+export function FAQGroup({
+  title,
+  imgSrc,
+  items,
+  linkComponent: Link,
+  viewMoreLink,
+  viewMoreLabel,
+  limit,
+}: FAQGroupProps) {
   if (!title) return null
 
   return (
     <li key={title} className={styles.faqGroup}>
       <div className={styles.titleContainer}>
-        {imgSrc && <img className={styles.image} src={imgSrc} alt={`Icon for ${title}`} width={100} />}
+        {imgSrc && <img className={styles.image} src={imgSrc} alt={`Icon for ${title}`} width={60} />}
         <h3 className={`h4 ${styles.title}`}>{title}</h3>
       </div>
       <article className={styles.listContainer}>
-        <FAQList items={items} />
+        <FAQList items={items} limit={limit} />
         {viewMoreLink && viewMoreLabel && (
           <Link to={viewMoreLink} aria-label={`Go to ${title}`}>
             {viewMoreLabel}

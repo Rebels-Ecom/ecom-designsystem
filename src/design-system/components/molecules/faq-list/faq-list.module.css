@@ -9,7 +9,7 @@
   gap: 1rem;
   
   @media (min-width: 48em) {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   & .faqListItem {
@@ -20,5 +20,11 @@
   & .hiddenContent {
     padding: 0.5rem;
     background-color: var(--border-grey);
+
+    & img {
+      max-width: 100%;
+      object-fit: contain;
+      object-position: top;
+    }
   }
 }

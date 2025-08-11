@@ -18,6 +18,7 @@
     font-size: 1rem;
     line-height: 1.25rem;
     font-family: var(--font-family-primary);
+    text-align: left;
   }
 
   &.small {
