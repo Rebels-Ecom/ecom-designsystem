@@ -18,6 +18,7 @@ export interface IHero {
   preamble?: string
   alignContent?: alignContent
   link?: ILinkButton
+  secondaryLink?: ILinkButton
   heroTheme?: heroTheme
   fetchPriority?: TPictureFetchPriority
   loading?: TPictureLoading
@@ -37,6 +38,7 @@ const Hero = ({
   contentImage,
   alignContent,
   link,
+  secondaryLink,
   heroTheme,
   fetchPriority,
   loading,
@@ -77,7 +79,12 @@ const Hero = ({
               )}
               {contentImage && <Picture {...contentImage} fetchPriority={fetchPriority} loading={loading}></Picture>}
               {preamble && <p className={cx('body', styles.preamble)}>{preamble}</p>}
-              {link?.href && <LinkButton {...link} className={styles.linkButton} />}
+              {(link?.href || secondaryLink?.href) && (
+                <div className={styles.linkWrapper}>
+                  {link?.href && <LinkButton {...link} className={styles.linkButton} />}
+                  {secondaryLink?.href && <LinkButton {...secondaryLink} className={styles.linkButton} />}
+                </div>
+              )}
             </div>
           </div>
         </ContentWrapper>

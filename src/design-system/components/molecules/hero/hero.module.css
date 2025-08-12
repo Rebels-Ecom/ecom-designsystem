@@ -112,6 +112,17 @@
   }
 }
 
+.linkWrapper {
+  display: flex;
+  flex-direction: column;
+  
+  @media (min-width: 48em) {
+    flex-direction: row;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+}
+
 .linkButton {
   margin-top: 1rem;
   font-size: 1rem;
