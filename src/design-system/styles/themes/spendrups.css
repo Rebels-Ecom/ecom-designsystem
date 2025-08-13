@@ -10,6 +10,7 @@
   --cta-primary-disabled: #E6ECEE;
 
   --cta-secondary-default: #ffffff;
+  --cta-secondary-default-opacity: rgba(255, 255, 255, 0.8);
   
   --cta-x-default: #ffffff;
 
@@ -273,6 +274,7 @@
   --cta-primary-disabled: #E6ECEE;
 
   --cta-secondary-default: #ffffff;
+  --cta-secondary-default-opacity: rgba(255, 255, 255, 0.8);
   
   --cta-x-default: #ffffff;
 

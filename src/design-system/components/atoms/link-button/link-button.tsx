@@ -14,6 +14,7 @@ export interface ILinkButton extends ILink {
   disabled?: boolean
   name?: string
   onClick?: CallableFunction
+  opacity?: boolean
 }
 
 export function getButtonSize(surface: TButtonSize) {
@@ -44,15 +45,23 @@ const LinkButton = ({
   round,
   disabled,
   name,
-  onClick
+  onClick,
+  opacity,
 }: ILinkButton) => {
-  const classNames = cx(styles.button, getButtonSize(size), styles[surface], {
-    [styles.fullWidth]: fullWidth,
-    [styles.rounded]: rounded,
-    [styles.round]: round,
-    [styles.disabled]: disabled,
-  }, className)
-  
+  const classNames = cx(
+    styles.button,
+    getButtonSize(size),
+    styles[surface],
+    {
+      [styles.fullWidth]: fullWidth,
+      [styles.rounded]: rounded,
+      [styles.round]: round,
+      [styles.disabled]: disabled,
+      [styles.opacity]: opacity,
+    },
+    className
+  )
+
   const Tag = isExternal ? 'a' : Link
   return (
     <Tag

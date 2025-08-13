@@ -37,6 +37,11 @@
   background-color: var(--cta-secondary-default);
   border-color: var(--border-on-secondary);
   color: var(--color-on-secondary);
+
+  &.opacity {
+    background-color: var(--cta-secondary-default-opacity);
+  }
+
   &:hover {
     background-color: var(--cta-secondary-default);
     border-color: var(--border-on-secondary-hover);
