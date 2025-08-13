@@ -22,6 +22,10 @@ export interface IUiDatePicker {
   loading?: boolean
   onClick?: CallableFunction
   allowPastDay?: boolean
+  orderStopDate?: {
+    title?: string
+    stopDates?: Array<string>
+  }
 }
 
 function UiDatePicker({
@@ -36,6 +40,7 @@ function UiDatePicker({
   loading,
   onClick,
   allowPastDay,
+  orderStopDate,
 }: IUiDatePicker) {
   const datepickerRef = useRef<DatePicker | any>(null)
   const [open, setOpen] = useState(false)
@@ -73,7 +78,7 @@ function UiDatePicker({
         <span className={styles.buttonLabelWrapper}>
           <span className={styles.buttonLabel}>{buttonLabel}</span>
           <span className={styles.buttonIconWrapper}>
-            <Icon className={styles.icon} icon={'icon-calendar'}></Icon>
+            <Icon className={styles.icon} icon="icon-calendar" />
           </span>
         </span>
       </Button>
@@ -85,6 +90,16 @@ function UiDatePicker({
       <CalendarContainer className={cx(className, styles.customHeaderContainer)}>
         <div className={styles.customHeaderTextWrapper}>{customHeaderText}</div>
         <div style={{ position: 'relative' }}>{children}</div>
+        {Boolean(orderStopDate?.stopDates?.length) && (
+          <div className={styles.orderStopDates}>
+            {orderStopDate?.title && <p className={styles.stopDateTitle}>{orderStopDate.title}</p>}
+            {orderStopDate?.stopDates?.map((stopDate) => (
+              <p key={stopDate} className={styles.stopDate}>
+                {stopDate}
+              </p>
+            ))}
+          </div>
+        )}
       </CalendarContainer>
     )
   }

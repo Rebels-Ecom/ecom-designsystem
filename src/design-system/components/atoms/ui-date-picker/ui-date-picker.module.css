@@ -94,6 +94,22 @@
     padding: 0.3125rem;
 }
 
+.orderStopDates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1rem 1.5rem;
+
+    & .stopDateTitle {
+        font-weight: bold;
+        margin: 0;
+    }
+
+    & .stopDate {
+        margin: 0;
+    }
+}
+
 .day {
     font-family: var(--font-family-primary);
     font-weight: bold;
