@@ -15,6 +15,7 @@ export interface ILinkButton extends ILink {
   name?: string
   onClick?: CallableFunction
   opacity?: boolean
+  noBorder?: boolean
 }
 
 export function getButtonSize(surface: TButtonSize) {
@@ -47,6 +48,7 @@ const LinkButton = ({
   name,
   onClick,
   opacity,
+  noBorder,
 }: ILinkButton) => {
   const classNames = cx(
     styles.button,
@@ -58,6 +60,7 @@ const LinkButton = ({
       [styles.round]: round,
       [styles.disabled]: disabled,
       [styles.opacity]: opacity,
+      [styles.noBorder]: noBorder,
     },
     className
   )

@@ -25,6 +25,7 @@ export interface IUiDatePicker {
   orderStopDate?: {
     title?: string
     stopDates?: Array<string>
+    note?: string
   }
 }
 
@@ -98,6 +99,11 @@ function UiDatePicker({
                 {stopDate}
               </p>
             ))}
+            {orderStopDate?.note && (
+              <p className={styles.stopDateNote}>
+                <em>{orderStopDate.note}</em>
+              </p>
+            )}
           </div>
         )}
       </CalendarContainer>
