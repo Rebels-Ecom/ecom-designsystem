@@ -15,4 +15,5 @@
     }
     &.light{background-color: rgba(245,246,248, 0.95);}
     &.dark{background-color: rgba(0, 62, 81, 0.3);}
+    &.transparent{background-color: transparent;}
 }

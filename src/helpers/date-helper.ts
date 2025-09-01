@@ -34,4 +34,27 @@ function getIsoString(date: Date) {
   )
 }
 
-export { getIsoString, convertToISOStringMidnight }
+function formatDateToDayMonthDMY(dateStr: string): string | undefined {
+  if (!dateStr) return
+
+  const normalized = dateStr.replace(/[-]/g, '/')
+  const parts = normalized.split('/')
+
+  let day: number, month: number
+
+  if (parts[0].length === 4) {
+    // Format is YYYY/MM/DD
+    ;[, month, day] = parts.map(Number)
+  } else {
+    // Format is DD/MM/YYYY
+    ;[day, month] = parts.map(Number)
+  }
+
+  if (isNaN(day) || isNaN(month) || day < 1 || day > 31 || month < 1 || month > 12) return
+
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
+
+  return `${day} ${monthNames[month - 1]}`
+}
+
+export { getIsoString, convertToISOStringMidnight, formatDateToDayMonthDMY }

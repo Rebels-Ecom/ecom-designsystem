@@ -3,7 +3,7 @@ import styles from './loading-overlay.module.css'
 import { Loader, TLoaderColor, TLoaderSize } from '../../atoms/loader/loader'
 import cx from 'classnames'
 
-export type TOverlayBackgroundColor = 'light' | 'dark'
+export type TOverlayBackgroundColor = 'light' | 'dark' | 'transparent'
 export type TOverlayPosition = 'fixed' | 'absolute'
 
 export interface ILoadingOverlay {
@@ -36,7 +36,14 @@ function LoadingOverlay({
   }
   if (!isVisible) return null
   return (
-    <div className={cx(styles.overlay, styles[overlayBkgColor], styles[getOverlayPosition(position)], className ? className : '')}>
+    <div
+      className={cx(
+        styles.overlay,
+        styles[overlayBkgColor],
+        styles[getOverlayPosition(position)],
+        className ? className : ''
+      )}
+    >
       <Loader visible={isVisible} size={loaderSize} text={text} position="absolute" color={loaderColor} />
     </div>
   )

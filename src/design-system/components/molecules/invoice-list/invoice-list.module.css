@@ -1,0 +1,201 @@
+.invoiceList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-self: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  & .invoiceItem {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    max-width: 600;
+    font-family: "Arial", sans-serif;
+    font-size: 0.875rem;
+
+    &:not(:last-child) {
+      border-bottom: 0.0625rem solid var(--grey-300);
+    }
+
+    @media (min-width: 64em) {
+      flex-direction: row;
+      padding: 0.75rem 1.25rem 0.75rem 0;
+    }
+
+    & .leftSide {
+      display: flex;
+      align-self: stretch;
+
+      @media (min-width: 64em) {
+        flex-direction: row;
+        align-self: flex-start;
+      }
+
+      & .dateCircle {
+        background-color: var(--grey-300);
+        border-radius: 50%;
+        width: 2.5rem;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        text-align: center;
+        margin-right: 1rem;
+        font-weight: bold;
+        font-size: .625rem;
+        padding: 0 0.25rem;
+        white-space: nowrap;
+
+        &.expired {
+          background-color: var(--error-red);
+          color: var(--cta-secondary-default);
+        }
+      }
+
+      & .titleButtonWrapper {
+        flex: 1;
+      }
+
+      & .titleButton {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        border: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;
+
+        @media (min-width: 64em) {
+          display: block;
+          width: auto;
+        }
+      }
+
+      & .title {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #1a202c;
+      }
+
+      & .titleIcon {
+        display: inline-block;
+        margin-left: 0.5rem;
+        vertical-align: bottom;
+        padding: 0 0.5rem;
+      }
+
+      & .firstRow {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-top: 0.25rem;
+        
+        @media (min-width: 64em) {
+          flex-wrap: wrap;
+          column-gap: 0.75rem;
+          row-gap: 0.125rem;;
+          flex-direction: row;
+        }
+      }
+
+      & .firstRowText {
+        font-size: 0.875rem;
+        color: var(--color-text-default);
+        margin-top: 0.125rem;
+      }
+
+      & .createdAtText {
+        color: var(--grey-700);
+        margin-top: 0.25rem;
+      }
+
+      & .expireInText {
+        font-size: 0.75rem;
+        color: var(--border-default);
+        margin-top: 0.25rem;
+      }
+    }
+
+    & .rightSide {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+
+      & .amount {
+        border: 0.0625rem solid var(--border-default);
+        border-radius: 1.25rem;
+        padding: 0.375rem 0.75rem;
+        font-weight: bold;
+        white-space: nowrap;
+
+        &.paidAmount {
+          border-color: transparent;
+        }
+
+        &.credit {
+          background-color: var(--grey-300);
+        }
+      }
+
+      & .downloadWrapper {
+        position: relative;
+        width: 2.25rem;
+        height: 2.25rem;
+      }
+    }
+  }
+
+  & .viewMoreBtn {
+    align-self: flex-start;
+    color: var(--cta-tertiary-default);
+    transition: colors;
+    border-radius: 0;
+
+    & span:first-of-type {
+      border-bottom: 0.0625rem solid var(--cta-tertiary-default);
+    }
+    
+    &:hover {
+      color: var(--cta-tertiary-hover);
+      
+      & span:first-of-type {
+        border-bottom-color: var(--cta-tertiary-hover);
+      }
+    }
+  }
+
+  & .skeletonBox {
+    background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.25rem;
+  }
+
+  & .skeletonCircle {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  & .monthTitle {
+    margin: 0 0 1rem;
+    border-bottom: 0.125rem solid var(--color-text-default);
+    padding-bottom: 1rem;
+  }
+
+  & .monthList {
+    padding: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
