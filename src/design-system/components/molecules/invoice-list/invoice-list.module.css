@@ -31,6 +31,10 @@
       display: flex;
       align-self: stretch;
 
+      &.alignCenter {
+        align-items: center;
+      }
+
       @media (min-width: 64em) {
         flex-direction: row;
         align-self: flex-start;

@@ -36,6 +36,7 @@ type TPaidInvoice = {
   expireIn?: string
   remainingDays?: string
   dueDate?: string
+  tooltipLabel?: string
 }
 
 interface IInvoiceList {
@@ -155,21 +156,24 @@ export function InvoiceList({
     if (invoice.type === 'paid') {
       return (
         <li key={invoice.orderNumber} className={styles.invoiceItem}>
-          <div className={styles.leftSide}>
+          <div className={cx(styles.leftSide, styles.alignCenter)}>
             <div className={styles.dateCircle}>{invoice.dueDate ? formatDateToDayMonthDMY(invoice.dueDate) : '-'}</div>
             <div>
               <div>
                 <span className={styles.title}>{invoice.orderNumber}</span>
               </div>
-              <div className={styles.firstRow}>
-                {invoice.invoiceNumber && <span className={styles.amount}>{invoice.invoiceNumber}</span>}
-              </div>
+              {invoice.invoiceNumber && (
+                <div className={styles.firstRow}>
+                  <span className={styles.amount}>{invoice.invoiceNumber}</span>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.rightSide}>
-            <div className={cx(styles.amount, styles.paidAmount)}>
+            {invoice.tooltipLabel && <div className={cx(styles.amount, styles.credit)}>{invoice.tooltipLabel}</div>}
+            {/* <div className={cx(styles.amount, styles.paidAmount)}>
               {invoice.amount || 0} {invoice.currency}
-            </div>
+            </div> */}
             <ComponentWithTooltip
               content={downloadTooltip}
               element={

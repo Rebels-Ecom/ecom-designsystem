@@ -8,7 +8,15 @@ import { InputField } from './components/input-field'
 import { validateField } from './helpers'
 import cx from 'classnames'
 
-const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, responseMessage, ...props }: IFormTemplateProps) => {
+const Form = ({
+  onSubmit,
+  onControlledSubmit,
+  formTitle,
+  formSubtitle,
+  loading,
+  responseMessage,
+  ...props
+}: IFormTemplateProps) => {
   const [fields, setFields] = useState<Array<TFormFieldType>>(props.fields)
   const [isValid, setIsValid] = useState(false)
 
@@ -94,7 +102,10 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
 
   // TODO: extract success message to separate component
   return responseMessage ? (
-    <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2 }}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.2 }}
+      animate={{ opacity: responseMessage ? 1 : 0, scale: responseMessage ? 1 : 0.2 }}
+    >
       <div className={styles.loaderContainer}>
         {responseMessage.icon && <Icon icon={responseMessage.icon} className={styles.successIcon} />}
         {responseMessage.title && (
@@ -129,7 +140,11 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
             return (
               <div
                 key={field.name}
-                className={cx(styles.field, props.alignSubmitButtonHorizontally ? styles.fieldDirectionRow : '', styles[field.size ?? 'half'])}
+                className={cx(
+                  styles.field,
+                  props.alignSubmitButtonHorizontally ? styles.fieldDirectionRow : '',
+                  styles[field.size ?? 'half']
+                )}
               >
                 {field.fieldType === 'input' && (
                   <InputField
@@ -189,7 +204,7 @@ const Form = ({ onSubmit, onControlledSubmit, formTitle, formSubtitle, loading, 
               className={cx(styles.link, { [styles.linkDisabled]: loading })}
               key={`${link.name}-${i}`}
               href={link.href}
-              target='_blank'
+              target="_blank"
               onClick={() => link.onClick?.()}
             >
               {link.name}
