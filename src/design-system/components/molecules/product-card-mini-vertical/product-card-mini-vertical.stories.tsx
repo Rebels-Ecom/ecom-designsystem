@@ -51,8 +51,6 @@ const ProductCardMiniVerticalStory: Story = {
       })
     }
 
-    console.log(itemsInCart)
-
     return (
       <div
         style={{
@@ -88,6 +86,7 @@ export const Product_Card_Mini_Vertical = {
     product: {
       ...productBeerArgs,
       quantity: '0',
+      priceStr: '10',
     },
     loading: false,
     linkComponent: 'a',

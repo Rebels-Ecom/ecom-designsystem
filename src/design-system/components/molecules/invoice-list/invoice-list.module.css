@@ -9,7 +9,6 @@
 
   & .invoiceItem {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
@@ -17,6 +16,10 @@
     max-width: 600;
     font-family: "Arial", sans-serif;
     font-size: 0.875rem;
+    
+    &.unpaid {
+      flex-direction: column;
+    }
 
     &:not(:last-child) {
       border-bottom: 0.0625rem solid var(--grey-300);
@@ -38,25 +41,6 @@
       @media (min-width: 64em) {
         flex-direction: row;
         align-self: flex-start;
-      }
-
-      & .dateCircle {
-        background-color: var(--grey-300);
-        border-radius: 50%;
-        width: 2.5rem;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        text-align: center;
-        margin-right: 1rem;
-        font-weight: bold;
-        font-size: .625rem;
-        padding: 0 0.25rem;
-        white-space: nowrap;
-
-        &.expired {
-          background-color: var(--error-red);
-          color: var(--cta-secondary-default);
-        }
       }
 
       & .titleButtonWrapper {
@@ -81,7 +65,7 @@
       & .title {
         font-weight: 600;
         font-size: 1rem;
-        color: #1a202c;
+        color: var(--color-text-default);
       }
 
       & .titleIcon {
@@ -196,6 +180,38 @@
 
   & .monthList {
     padding: 0;
+  }
+
+  & .dateDisplay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--grey-300);
+    width: 2.5rem;
+    min-height: 2.5rem;
+    height: auto;
+    padding: 0.5rem 0;
+    margin-right: 1rem;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 4rem;
+
+    &.expired {
+      background-color: var(--color-text-default);
+      color: var(--cta-secondary-default);
+    }
+
+    & .dateDay {
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      font-weight: bold;
+    }
+
+    & .dateMonth {
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
   }
 }
 

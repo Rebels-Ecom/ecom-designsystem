@@ -14,6 +14,10 @@ type ProductContentProps = {
   isRestrictedUser?: boolean
   hidePrice?: boolean
   icons?: ReactElement
+  priceLabel?: string
+  priceStr?: string
+  currencyLabel?: string
+  unitLabel?: string
 }
 
 const ProductContent: React.FC<ProductContentProps> = ({
@@ -28,6 +32,10 @@ const ProductContent: React.FC<ProductContentProps> = ({
   isRestrictedUser,
   hidePrice,
   icons,
+  priceLabel,
+  priceStr,
+  currencyLabel = 'kr',
+  unitLabel,
 }) => {
   return (
     <div className={`${styles.productContent}`}>
@@ -38,6 +46,12 @@ const ProductContent: React.FC<ProductContentProps> = ({
       ) : (
         <h2 className={cx(styles.productName, 'bodyS')}>{productName}</h2>
       )}
+      {!hidePrice && !isRestrictedUser && priceStr && (
+        <p className={cx(styles.textPurple, 'bodyS', styles.detail)}>
+          {`${priceLabel ?? ''}: ${priceStr} ${currencyLabel ?? ''}/${unitLabel?.toLowerCase() ?? ''}`}
+        </p>
+      )}
+
       <div className={styles.bottom}>
         <div className={styles.left}>
           {!hidePrice && !isRestrictedUser && (

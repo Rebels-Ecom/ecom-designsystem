@@ -37,20 +37,18 @@ function getIsoString(date: Date) {
 function formatDateToDayMonthDMY(dateStr: string): string | undefined {
   if (!dateStr) return
 
-  const normalized = dateStr.replace(/[-]/g, '/')
-  const parts = normalized.split('/')
+  // Normalize: remove dashes if present → "YYYYMMDD"
+  const normalized = dateStr.replace(/-/g, '')
 
-  let day: number, month: number
+  if (normalized.length !== 8) return
 
-  if (parts[0].length === 4) {
-    // Format is YYYY/MM/DD
-    ;[, month, day] = parts.map(Number)
-  } else {
-    // Format is DD/MM/YYYY
-    ;[day, month] = parts.map(Number)
+  const year = Number(normalized.slice(0, 4))
+  const month = Number(normalized.slice(4, 6))
+  const day = Number(normalized.slice(6, 8))
+
+  if (isNaN(year) || isNaN(month) || isNaN(day) || month < 1 || month > 12 || day < 1 || day > 31) {
+    return
   }
-
-  if (isNaN(day) || isNaN(month) || day < 1 || day > 31 || month < 1 || month > 12) return
 
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
 

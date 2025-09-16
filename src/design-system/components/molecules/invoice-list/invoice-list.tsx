@@ -6,37 +6,32 @@ import styles from './invoice-list.module.css'
 import cx from 'classnames'
 import { LoadingOverlay } from '../loading-overlay/loading-overlay'
 
-type TUnpaidInvoice = {
-  type: 'unpaid'
+type BaseInvoice = {
   invoiceNumber: string
   title: string
-  createdAt?: string
-  amount?: number
-  amountLabel?: string
   currency: string
-  paid?: number
-  remaining?: number
-  expireIn?: string
-  remainingDays?: string
+  createdAt?: string
   dueDate?: string
-  expired?: boolean
-  onClick?: (invoiceNumber: string) => void
-  creditLabel?: string
+  amount?: number
 }
 
-type TPaidInvoice = {
-  type: 'paid'
-  invoiceNumber: string
-  title: string
-  orderNumber: string
-  amount?: number
-  currency: string
-  onClick?: (invoiceNumber: string, orderNumber: string) => void
-  createdAt?: string
+type TUnpaidInvoice = BaseInvoice & {
+  type: 'unpaid'
+  amountLabel?: string
+  paid?: number
+  remaining?: number
+  expired?: boolean
+  creditLabel?: string
   expireIn?: string
-  remainingDays?: string
-  dueDate?: string
+  onClick?: (invoiceNumber: string) => void
+}
+
+type TPaidInvoice = BaseInvoice & {
+  type: 'paid'
+  orderNumber: string
+  customOrderNumber?: string
   tooltipLabel?: string
+  onClick?: (invoiceNumber: string, orderNumber: string) => void
 }
 
 interface IInvoiceList {
@@ -80,11 +75,12 @@ export function InvoiceList({
 
     if (invoice.type === 'unpaid') {
       return (
-        <li key={invoice.title} className={styles.invoiceItem}>
+        <li key={invoice.title} className={cx(styles.invoiceItem, styles.unpaid)}>
           <div className={styles.leftSide}>
-            <div className={cx(styles.dateCircle, { [styles.expired]: invoice.expired })}>
-              {invoice.dueDate ? formatDateToDayMonthDMY(invoice.dueDate) : '-'}
-            </div>
+            <DateDisplay
+              expired={invoice.expired}
+              dateString={invoice.dueDate ? formatDateToDayMonthDMY(invoice.dueDate) : '-'}
+            />
             <div className={styles.titleButtonWrapper}>
               <button type="button" className={styles.titleButton} onClick={() => toggleOpen(key)}>
                 <span className={styles.title}>{invoice.title}</span>
@@ -157,14 +153,21 @@ export function InvoiceList({
       return (
         <li key={invoice.orderNumber} className={styles.invoiceItem}>
           <div className={cx(styles.leftSide, styles.alignCenter)}>
-            <div className={styles.dateCircle}>{invoice.dueDate ? formatDateToDayMonthDMY(invoice.dueDate) : '-'}</div>
+            <div className={styles.dateCircle}>
+              <DateDisplay dateString={invoice.dueDate ? formatDateToDayMonthDMY(invoice.dueDate) : '-'} />
+            </div>
             <div>
               <div>
-                <span className={styles.title}>{invoice.orderNumber}</span>
+                <span className={styles.title}>{invoice.title}</span>
               </div>
               {invoice.invoiceNumber && (
                 <div className={styles.firstRow}>
                   <span className={styles.amount}>{invoice.invoiceNumber}</span>
+                </div>
+              )}
+              {invoice.customOrderNumber && (
+                <div className={styles.firstRow}>
+                  <span className={styles.amount}>{invoice.customOrderNumber}</span>
                 </div>
               )}
             </div>
@@ -276,5 +279,31 @@ export function InvoiceList({
         </>
       )}
     </ul>
+  )
+}
+
+type DateDisplayProps = {
+  dateString?: string | null
+  expired?: boolean
+}
+
+function DateDisplay({ dateString, expired }: DateDisplayProps) {
+  if (!dateString || typeof dateString !== 'string') {
+    return <span style={{ color: 'gray' }}>—</span>
+  }
+
+  const parts = dateString.trim().split(/\s+/)
+  const day = parts[0] ?? ''
+  const month = parts[1] ?? ''
+
+  if (!day || !month) {
+    return <span style={{ color: 'gray' }}>{dateString}</span>
+  }
+
+  return (
+    <span className={cx(styles.dateDisplay, { [styles.expired]: expired })}>
+      <span className={styles.dateMonth}>{month}</span>
+      <span className={styles.dateDay}>{day}</span>
+    </span>
   )
 }
