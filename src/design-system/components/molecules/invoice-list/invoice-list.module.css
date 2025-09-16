@@ -9,6 +9,7 @@
 
   & .invoiceItem {
     display: flex;
+    flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
@@ -19,15 +20,17 @@
     
     &.unpaid {
       flex-direction: column;
-    }
-
+    } 
+    
     &:not(:last-child) {
       border-bottom: 0.0625rem solid var(--grey-300);
     }
-
+    
     @media (min-width: 64em) {
-      flex-direction: row;
-      padding: 0.75rem 1.25rem 0.75rem 0;
+      &.unpaid {
+        flex-direction: row;
+        padding: 0.75rem 1.25rem 0.75rem 0;
+      } 
     }
 
     & .leftSide {
@@ -44,6 +47,7 @@
       }
 
       & .titleButtonWrapper {
+        align-self: center;
         flex: 1;
       }
 
