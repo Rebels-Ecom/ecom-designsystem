@@ -125,6 +125,7 @@
 
         & .expirationDateText {
           color: var(--grey-700);
+          flex-basis: 100%;
         }
 
         & > :last-child {
