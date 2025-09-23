@@ -15,7 +15,7 @@ export interface IGroupWrapper {
   noWrap?: boolean
   hasMaxWidth?: boolean
   withBorder?: boolean
-  withStrongBorder?: boolean;
+  withStrongBorder?: boolean
   align?: TAlign
   /**
    * If true, applies an even vertical padding in order to vertically center the button
@@ -35,6 +35,7 @@ export interface IGroupWrapper {
    */
   padding?: Array<number> | number
   backgroundColor?: 'light'
+  style?: React.CSSProperties
 }
 
 function BoxWrapper({
@@ -51,6 +52,7 @@ function BoxWrapper({
   noMargin = false,
   padding,
   backgroundColor,
+  style,
 }: IGroupWrapper) {
   function getGroupElementsPosition(position: TGroupPosition) {
     switch (position) {
@@ -140,7 +142,7 @@ function BoxWrapper({
           [styles.noMargin]: noMargin,
         }
       )}
-      style={{ padding: paddingValue }}
+      style={{ ...style, padding: paddingValue }}
     >
       {children}
     </div>

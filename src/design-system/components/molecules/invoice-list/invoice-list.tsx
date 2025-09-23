@@ -30,6 +30,7 @@ type TUnpaidInvoice = BaseInvoice & {
 type TPaidInvoice = BaseInvoice & {
   type: 'paid'
   orderNumber: string
+  downloadUrl?: string
   customOrderNumber?: string
   tooltipLabel?: string
   onClick?: (invoiceNumber: string, orderNumber: string) => void
@@ -228,6 +229,22 @@ export function InvoiceList({
                               loaderSize="xs"
                             />
                           </motion.div>
+                        ) : invoice.downloadUrl ? (
+                          <IconButton
+                            icon="icon-download"
+                            type="link"
+                            linkUrl={invoice.downloadUrl}
+                            isExternal
+                            target="_self"
+                            download
+                            className={styles.iconLink}
+                            linkComponent="a"
+                            round
+                            isTransparent
+                            noBorder
+                            name="Download invoice"
+                            weight="bold"
+                          />
                         ) : (
                           <IconButton
                             icon="icon-download"

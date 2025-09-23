@@ -68,6 +68,8 @@ const RangeInput = ({
       const newMax = clamp(freeRange.max + 1, minStep, maxStep)
       setFreeRange((prev) => ({ ...prev, max: newMax }))
       onChange?.({ min: freeRange.min, max: newMax })
+    } else if (freeRange.min > freeRange.max) {
+      setFreeRange({ min: freeRange.max, max: freeRange.min })
     } else {
       onChange?.({ min: freeRange.min, max: freeRange.max })
     }
@@ -92,12 +94,16 @@ const RangeInput = ({
 
   const handleInputChange = (val: string, name: 'min' | 'max') => {
     const numVal = Number(val)
+    if (isNaN(numVal)) return
 
-    const clampedVal = clamp(numVal, minStep, maxStep)
+    let newRange = {
+      min: name === 'min' ? numVal : freeRange.min,
+      max: name === 'max' ? numVal : freeRange.max,
+    }
 
-    const newRange = {
-      min: name === 'min' ? clampedVal : freeRange.min,
-      max: name === 'max' ? clampedVal : freeRange.max,
+    if (!allowSameValues && newRange.min === newRange.max) {
+      if (name === 'min') newRange.min = newRange.min - 1
+      if (name === 'max') newRange.max = newRange.max + 1
     }
 
     const newIndexRange = {
@@ -105,18 +111,7 @@ const RangeInput = ({
       maxIdx: valueToIndex(newRange.max),
     }
 
-    if (!allowSameValues && newRange.min === newRange.max) {
-      if (name === 'min') {
-        newRange.min = clamp(newRange.min - 1, minStep, maxStep)
-      }
-      if (name === 'max') {
-        newRange.max = clamp(newRange.max + 1, minStep, maxStep)
-      }
-    }
-
-    if (sliderIsChanging) {
-      setSliderIsChanging(false)
-    }
+    if (sliderIsChanging) setSliderIsChanging(false)
 
     setFreeRange(newRange)
     setIndexRange(newIndexRange)

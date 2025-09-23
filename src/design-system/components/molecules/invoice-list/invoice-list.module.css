@@ -69,6 +69,14 @@
               width: 2.25rem;
               height: 2.25rem;
             }
+
+            & .iconLink {
+              text-decoration: none;
+
+              &:hover {
+                color: var(--color-text-default);
+              }
+            }
           }
         }
       }
@@ -120,6 +128,10 @@
 
           &:not(:first-child) {
             margin-top: 0.125rem;
+
+            @media (min-width: 64em) {
+              margin-top: 0;
+            }
           }
         }
 
@@ -180,6 +192,7 @@
     margin: 0 0 1rem;
     border-bottom: 0.125rem solid var(--color-text-default);
     padding-bottom: 1rem;
+    text-transform: capitalize;
   }
 
   & .monthList {

@@ -6,11 +6,15 @@ import styles from './icon-button.module.css'
 
 export type TIconButtonSize = 'x-small' | 'small' | 'medium' | 'large'
 
+type AnchorTarget = React.ComponentProps<'a'>['target']
+
 type TWithLink = {
   type: 'link'
   linkUrl: string
   linkComponent?: any
   isExternal?: boolean
+  download?: boolean
+  target?: AnchorTarget
 }
 type TWithoutLink = {
   type: 'button'
@@ -63,8 +67,9 @@ const IconButton = (props: TIconButton) => {
             },
             props.className
           )}
+          download={props.download}
           href={props.linkUrl}
-          target="_blank"
+          target={props.target || '_blank'}
         >
           <Icon
             icon={props.icon}
