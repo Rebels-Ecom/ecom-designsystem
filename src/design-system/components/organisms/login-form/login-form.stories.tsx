@@ -13,9 +13,13 @@ export default meta
 type Story = StoryObj<typeof LoginForm>
 
 const LoginFormStoryTemplate: Story = {
-  render: ({ ...args }: ILoginForm & { success?: boolean } ) => (
+  render: ({ ...args }: ILoginForm & { success?: boolean }) => (
     <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
-      <LoginForm {...args} responseMessage={ args.success ? { title: 'Success!', message: 'Success message...'} : undefined} loading={args.loading} />
+      <LoginForm
+        {...args}
+        responseMessage={args.success ? { title: 'Success!', message: 'Success message...' } : undefined}
+        loading={args.loading}
+      />
     </div>
   ),
 }
@@ -31,30 +35,21 @@ export const LoginFormStory = {
     password: 'lösenord123',
     forgotPassword: {
       name: 'Glömt mitt lösenord?',
-      href: '#'
+      href: '#',
     },
     primarySubmitLabel: 'Logga in',
     secondarySubmitLabel: 'Bli e-handelskund',
     offerLink: {
       name: 'Ny på Spendrups & vill veta mer om vårat erbjudande?',
-      href: '#'
+      href: '#',
     },
-    onSubmit: (e) => {},
-    onPasswordChange: (e) => {},
-    onUsernameChange: (e) => {},
+    onSubmit: () => {},
+    onPasswordChange: () => {},
+    onUsernameChange: () => {},
     errorMessage: `Det verkar som att du fyllt i fel uppgifter. 
     <br>
     Försök igen, beställ ett nytt lösenord eller kontakta e-handelssupport på <a href="mailto:ehandel@spendrups.se">ehandel@spendrups.se</a> eller <a href="tel:+46771494910">0771-49 49 10</a>.`,
-    logo: {
-      src: logotype_desktop_horizontal,
-      alt: 'logo',
-      href: '/',
-      id: 'logo',
-      sources: [
-        { srcset: logotype_mobile_horiontal, media: `(max-width: 767px)` },
-        { srcset: logotype_desktop_horizontal, media: `(min-width: 768px)` },
-      ],
-    },
+    logo: <span>Logo goes here</span>,
     success: false,
     loading: false,
   },
@@ -76,6 +71,6 @@ export const LoginFormStory_Loading = {
     onSubmit: (e) => {},
     onPasswordChange: (e) => {},
     onUsernameChange: (e) => {},
-    loading: true
+    loading: true,
   },
 }

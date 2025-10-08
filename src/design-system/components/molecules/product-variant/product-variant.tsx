@@ -2,6 +2,7 @@ import fallbackProductImageUrl from '../../../../assets/fallback-images/defaultF
 import { Icon, IconWithTooltip } from '../../atoms'
 import { RadioButton } from '../../atoms/inputs/radio-button/radio-button'
 import { IPicture, Picture } from '../../atoms/picture/picture'
+import { ITag } from '../../atoms/tag/tag'
 import { FlexContainer } from '../../layouts'
 import styles from './product-variant.module.css'
 
@@ -24,6 +25,8 @@ export interface IProductVariant {
   sellerOnlyTooltipText?: string
   isRestrictedUser?: boolean
   outOfStock?: boolean
+  isAccessoryPotItem?: boolean
+  tags?: Array<ITag>
 }
 
 const ProductVariant = ({

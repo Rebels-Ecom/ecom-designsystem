@@ -320,3 +320,8 @@ a {
     color: var(--interactive-hover);
   }
 }
+
+img, video {
+  width: 100%;
+  height: auto;
+}
