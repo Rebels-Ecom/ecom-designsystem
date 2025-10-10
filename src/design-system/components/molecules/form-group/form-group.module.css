@@ -2,6 +2,16 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+
+  &.start {
+    align-items: flex-start;
+  }
+  &.center {
+    align-items: center;
+  }
+  &.end {
+    align-items: flex-end;
+  }
 }
 
 .fullWidth {

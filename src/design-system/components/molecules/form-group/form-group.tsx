@@ -16,6 +16,7 @@ export interface IFormGroup {
   labelRightText?: string | React.ReactNode
   isToggleBtnLabel?: boolean
   fullWidth?: boolean
+  alignItems?: 'normal' | 'start' | 'center' | 'end'
 }
 
 const FormGroup = ({
@@ -29,18 +30,28 @@ const FormGroup = ({
   labelRightText,
   isToggleBtnLabel = false,
   fullWidth,
+  alignItems = 'normal',
 }: IFormGroup) => {
   return (
-    <div className={cx(styles.formGroup, className, fullWidth && styles.fullWidth)}>
-      <label className={styles.labelWrapper} htmlFor={formElementId}>
-        <span className={cx('body', styles.label, helperText && styles.hasHelpText, isToggleBtnLabel && styles.isToggleBtnLabel)}>
-          <span>
-            {label} {requiredText}
+    <div className={cx(styles.formGroup, className, fullWidth && styles.fullWidth, styles[alignItems])}>
+      {(label || helperText) && (
+        <label className={styles.labelWrapper} htmlFor={formElementId}>
+          <span
+            className={cx(
+              'body',
+              styles.label,
+              helperText && styles.hasHelpText,
+              isToggleBtnLabel && styles.isToggleBtnLabel
+            )}
+          >
+            <span>
+              {label} {requiredText}
+            </span>
+            {labelRightText && <span>{labelRightText}</span>}
           </span>
-          {labelRightText && <span>{labelRightText}</span>}
-        </span>
-        {helperText && <InlineHelperText className={styles.helperText}>{helperText}</InlineHelperText>}
-      </label>
+          {helperText && <InlineHelperText className={styles.helperText}>{helperText}</InlineHelperText>}
+        </label>
+      )}
       <>
         {children}
         {errorText && <InlineErrorText className={styles.errorText}>{errorText}</InlineErrorText>}

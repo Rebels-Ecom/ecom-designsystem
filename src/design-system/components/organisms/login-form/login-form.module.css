@@ -15,6 +15,17 @@
   & .logoWrapper {
     margin-bottom: 1rem;
   }
+  
+  & .backLink {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+    color: var(--cta-primary-default);
+  }
 
   & h1 {
     margin: 0 0 10px 0;

@@ -5,6 +5,8 @@ import { IButton } from '../../atoms/button/button'
 import { validateField } from '../../molecules/form/helpers'
 import { IFormTemplateProps, TFormFieldType } from '../../molecules/form/types'
 import { ILinkButton } from '../../atoms/link-button/link-button'
+import { LinkComponent } from '../../atoms/ui-link/ui-link'
+import { Icon } from '../../atoms'
 
 type ILink = {
   name: string
@@ -42,6 +44,12 @@ export interface ILoginForm extends Pick<IFormTemplateProps, 'responseMessage' |
   logo: React.ReactNode
   captcha?: JSX.Element
   submitDisabled?: boolean
+  backLinkComponent?: any
+  backLink?: {
+    name: string
+    href: string
+    onClick?: CallableFunction
+  }
 }
 
 const LoginForm = ({
@@ -65,6 +73,8 @@ const LoginForm = ({
   captcha,
   actions,
   linkActions,
+  backLink,
+  backLinkComponent: BackLink = LinkComponent,
 }: ILoginForm) => {
   const links: ILink[] = useMemo(() => {
     const x: ILink[] = []
@@ -113,6 +123,12 @@ const LoginForm = ({
   return (
     <div className={styles.loginForm}>
       <div className={styles.logoWrapper}>{logo && logo}</div>
+      {backLink?.href && (
+        <BackLink className={styles.backLink} to={backLink.href}>
+          {backLink.name}
+          <Icon icon="icon-x" />
+        </BackLink>
+      )}
       <Form
         formTitle={title}
         formSubtitle={description}
