@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { IProduct } from '../../../../types/product'
 import { mediaQueryHelper } from '../../layouts/breakpoints/hooks'
 import { Carousel } from '../../organisms'
@@ -15,6 +16,7 @@ export interface IProductCarousel extends Pick<TProductCard, 'productArea'> {
   offsetArrows?: boolean
   noPadding?: boolean
   onNavigation?: CallableFunction
+  onViewportEnter?: CallableFunction
 }
 
 const ProductCarousel = ({
@@ -28,35 +30,43 @@ const ProductCarousel = ({
   productArea,
   noPadding,
   onNavigation,
+  onViewportEnter,
 }: IProductCarousel) => {
   const { isMobile } = mediaQueryHelper()
 
   const renderProductCards = () =>
     productCards?.map((productCard: TProductCard, index: number) => (
       <CarouselItem key={index}>
-        {isMobile ? (
-          <ProductCardMiniVertical
-            {...productCard}
-            addToCart={(p: IProduct) => addToCart(p, index)}
-            onClick={undefined}
-            onChangeQuantity={(p: IProduct) => addToCart(p, index)}
-            productArea={productArea}
-            imagePriority={{
-              loading: index < 4 ? 'eager' : 'lazy',
-              fetchPriority: index < 4 ? 'high' : 'low',
-            }}
-          />
-        ) : (
-          <ProductCard
-            {...productCard}
-            addToCart={(p: IProduct) => addToCart(p, index)}
-            productArea={productArea}
-            imagePriority={{
-              loading: index < 4 ? 'eager' : 'lazy',
-              fetchPriority: index < 4 ? 'high' : 'low',
-            }}
-          />
-        )}
+        <motion.div
+          style={{ width: '100%' }}
+          onViewportEnter={onViewportEnter?.(productCard?.product, index)}
+          viewport={{ once: true, amount: 0.5 }}
+        >
+          {isMobile ? (
+            <ProductCardMiniVertical
+              {...productCard}
+              addToCart={(p: IProduct) => addToCart(p, index)}
+              onClick={undefined}
+              onChangeQuantity={(p: IProduct) => addToCart(p, index)}
+              productArea={productArea}
+              fullWidth
+              imagePriority={{
+                loading: index < 4 ? 'eager' : 'lazy',
+                fetchPriority: index < 4 ? 'high' : 'low',
+              }}
+            />
+          ) : (
+            <ProductCard
+              {...productCard}
+              addToCart={(p: IProduct) => addToCart(p, index)}
+              productArea={productArea}
+              imagePriority={{
+                loading: index < 4 ? 'eager' : 'lazy',
+                fetchPriority: index < 4 ? 'high' : 'low',
+              }}
+            />
+          )}
+        </motion.div>
       </CarouselItem>
     ))
 
