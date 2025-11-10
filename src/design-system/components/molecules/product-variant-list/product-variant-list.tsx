@@ -16,6 +16,7 @@ export interface IProductVariantList {
   isRestrictedUser?: boolean
   absolutePositioned?: boolean
   open?: boolean
+  hideBottomBtn?: boolean
 }
 
 const ProductVariantList = ({
@@ -27,6 +28,7 @@ const ProductVariantList = ({
   onCloseVariants,
   isRestrictedUser,
   absolutePositioned,
+  hideBottomBtn,
 }: IProductVariantList) => {
   const [selectedProductVariantId, setSelectedProductVariantId] = useState(selectedVariantId)
   const [hasReachedBottom, setHasReachedBottom] = useState(false)
@@ -113,7 +115,7 @@ const ProductVariantList = ({
             />
           </li>
         ))}
-        {variantsList?.length > 2 && (
+        {variantsList?.length > 2 && !hideBottomBtn && (
           <div className={styles.showMoreContainer}>
             <AnimatePresence initial={false} exitBeforeEnter>
               {hasReachedBottom && (

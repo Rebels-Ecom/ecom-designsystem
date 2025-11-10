@@ -1,0 +1,44 @@
+.actions {
+  display: flex;
+  flex-direction: column;
+
+  &.mobileActions {
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+    background: white;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    box-shadow: 0px 0px 1.25rem rgba(0, 0, 0, 0.2);
+
+    & .productName {
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    & .specsText {
+      margin: 0;
+    }
+
+    & .priceRow {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &.desktopActions {
+    gap: 1rem;
+
+    & .row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    & .variantBtn {
+      &:disabled {
+        color: var(--cta-primary-default);
+      }
+    }
+  }
+}

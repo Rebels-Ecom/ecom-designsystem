@@ -23,6 +23,8 @@ export interface IButton {
   disabled?: boolean
   id?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
+  onMouseDown?: React.MouseEventHandler<HTMLButtonElement>
+  onTouchStart?: React.TouchEventHandler<HTMLButtonElement>
   /**
    * If true, displays a loading spinner and disables the button
    * @default undefined
@@ -73,6 +75,8 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       rounded,
       disabled,
       onClick,
+      onMouseDown,
+      onTouchStart,
       id,
       className,
       loading,
@@ -108,6 +112,8 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
           className
         )}
         disabled={disabled || loading}
+        onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
         onClick={onClick}
         {...props}
       >

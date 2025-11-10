@@ -1,0 +1,30 @@
+.variantSelector {
+  position: fixed;
+  bottom: 3.375rem;
+  background: white;
+  left: 0;
+  right: 0;
+  box-shadow: 0 -1.25rem 1rem rgba(0,0,0,0.2);
+  z-index: calc(var(--menu-z-index) + 5);
+  max-height: calc(100vh - 3.375rem);
+  overflow-y: auto;
+
+  &.alignBottom {
+    bottom: 0;
+    max-height: 100vh;
+  }
+
+  @media (min-width: 64em) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    box-shadow: none;
+  }
+
+  & .list {
+    padding: 2.5rem 1rem 2rem;
+  }
+}

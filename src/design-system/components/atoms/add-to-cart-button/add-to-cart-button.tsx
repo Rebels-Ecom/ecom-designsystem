@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { IconButton } from '../icon-button/icon-button'
+import cx from 'classnames'
 import styles from './add-to-cart-button.module.css'
 
 export type TAddToCartButton = {
@@ -22,6 +23,7 @@ const AddToCartButton = ({
   disabled = false,
   onChange = () => {},
   maxQuantity,
+  className = '',
 }: TAddToCartButton) => {
   const [val, setVal] = useState<number | ''>(quantity)
   const [isFocused, setIsFocused] = useState(false)
@@ -81,7 +83,7 @@ const AddToCartButton = ({
 
   return (
     <AnimatePresence>
-      <div className={styles.addToCartButton} role="group" aria-label="Quantity changer">
+      <div className={cx(styles.addToCartButton, className)} role="group" aria-label="Quantity changer">
         {(val === 0 || val === '') && !isFocused ? (
           <motion.button
             key="add-button"
