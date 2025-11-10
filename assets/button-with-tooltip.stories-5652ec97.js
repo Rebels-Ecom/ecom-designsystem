@@ -1,4 +1,0 @@
-import{B as i}from"./button-with-tooltip-73094a66.js";import{j as n}from"./jsx-runtime-03333307.js";import"./index-9d35675b.js";import"./index-145cfc81.js";import"./index-821951ec.js";import"./index-09749a66.js";import"./button-1de8d46b.js";import"./icon-a32914e5.js";import"./loader-5c06d14e.js";import"./button.module-867d0823.js";const T={title:"Design System/Atoms/ButtonWithTooltip",component:i},s={render:()=>n.jsx(i,{content:"Välj variant",children:"Click me",type:"button",surface:"secondary",iconRight:{icon:"icon-layers"},rounded:!0,onClick:()=>{},name:"Select packaging",side:"right",align:"center"})},t={...s,args:{}};var o,r,e;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`{
-  ...ButtonWithTooltipStoryTemplate,
-  args: {}
-}`,...(e=(r=t.parameters)==null?void 0:r.docs)==null?void 0:e.source}}};const B=["ButtonWithTooltipStory"];export{t as ButtonWithTooltipStory,B as __namedExportsOrder,T as default};
