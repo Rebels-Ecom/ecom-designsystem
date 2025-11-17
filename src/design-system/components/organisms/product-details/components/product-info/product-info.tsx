@@ -41,12 +41,14 @@ const ProductInfo = ({
         className={cx(styles.textPurple, styles.specsText, 'bodyS')}
       >{`${priceLabel}: ${packagePriceString} ${currencyLabel}/${salesUnit.toLowerCase()}`}</p>
 
-      <p className={cx(styles.specsText, 'bodyS')}>
+      <p className={cx(styles.specsText, 'bodyS')}>{`${partNoLabel} ${partNo}`}</p>
+
+      <p className={cx(styles.specsText, 'bodyS', { [styles.largeText]: isMobile })}>
         {`${quantityPerPackageLabel} ${itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${priceStr} ${currencyLabel}`}
       </p>
-      <p className={cx(styles.specsText, 'bodyS')}>{`${partNoLabel} ${partNo}`}</p>
+
       {isMobile && (
-        <p className={cx(styles.specsText, styles.totalPrice, 'bodyS')}>
+        <p className={cx(styles.specsText, styles.totalPrice, 'bodyS', styles.largeText)}>
           {totalPrice} {currencyLabel}
         </p>
       )}

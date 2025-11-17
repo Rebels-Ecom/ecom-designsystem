@@ -8,17 +8,19 @@ interface IProductSpecs {
 }
 
 function getProductSpecs(specs: Array<IProductSpec>) {
-  if (specs && Array.isArray(specs) && specs.length > 0) {
-    return specs.map((spec, index) => {
-      return (
-        spec.value &&
-        spec.value !== 'False' && (
-          <p key={index} className={cx(styles.specsText, 'bodyS')}>{`${spec.name} : ${spec.value}`}</p>
+  return (
+    specs
+      ?.filter((spec) => spec.value && spec.value !== 'False')
+      .map((spec, index) => {
+        const displayValue = spec.value === 'True' ? '' : `: ${spec.value}`
+        return (
+          <p key={index} className={cx(styles.specsText, 'bodyS')}>
+            {spec.name}
+            {displayValue}
+          </p>
         )
-      )
-    })
-  }
-  return null
+      }) || null
+  )
 }
 
 const ProductSpecs = ({ specs = [] }: IProductSpecs) => {

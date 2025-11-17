@@ -115,7 +115,7 @@ const ProductDetails = ({
   const productVariants = productVariantList || []
   const initialVariantId = productVariants.find((pV) => pV.variantId === partNo)?.variantId || null
   const { isMobile, isTablet } = mediaQueryHelper()
-  const [showFixedActions, setShowFixedActions] = useState(false)
+  const [showFixedActions, setShowFixedActions] = useState(true)
   const [product, setProduct] = useState(() => {
     const initialCartItem = variantsInCart.find((item) => item.variantId === initialVariantId)
     const initialQuantity = initialCartItem ? initialCartItem.quantity : 0
