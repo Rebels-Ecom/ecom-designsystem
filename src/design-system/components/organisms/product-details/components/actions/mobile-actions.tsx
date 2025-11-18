@@ -2,6 +2,7 @@ import React from 'react'
 import { AddToCartButton, Button } from '../../../../atoms'
 import { IProductDetailsActions } from './actions'
 import styles from './mobile-actions.module.css'
+import cx from 'classnames'
 
 type TMobileActions = Pick<
   IProductDetailsActions,
@@ -16,7 +17,9 @@ type TMobileActions = Pick<
   | 'availableForOrder'
   | 'loading'
   | 'outOfStock'
->
+> & {
+  isFixed?: boolean
+}
 
 export default function MobileActions({
   addToCartLabel,
@@ -30,13 +33,14 @@ export default function MobileActions({
   outOfStock,
   availableForOrder,
   loading,
+  isFixed,
 }: TMobileActions) {
   return (
     <div className={styles.mobileAddToCart}>
       <Button
         surface="secondary"
         type="button"
-        className={styles.mobileVariantBtn}
+        className={cx(styles.mobileVariantBtn, { [styles.bigger]: !isFixed })}
         rounded
         onMouseDown={(e) => e?.stopPropagation()}
         onTouchStart={(e) => e?.stopPropagation()}
@@ -54,7 +58,7 @@ export default function MobileActions({
         onChange={(val) => handleQuantityChange(val, partNo)}
         quantity={Number(inputQuantity || 0)}
         disabled={!availableForOrder || loading || outOfStock}
-        className={styles.mobileAddToCartBtn}
+        className={cx(styles.mobileAddToCartBtn, { [styles.bigger]: !isFixed })}
       />
     </div>
   )

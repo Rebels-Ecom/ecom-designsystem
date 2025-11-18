@@ -92,14 +92,16 @@ const Actions = ({
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             <p className={styles.productName}>{productName}</p>
-            <div className={styles.priceRow}>
-              <p className={cx(styles.specsText, 'bodyS')}>
-                {`${quantityPerPackageLabel} ${itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${priceStr} ${currencyLabel}`}
-              </p>
-              <p className={cx(styles.specsText, 'bodyS')}>
-                {totalPrice} {currencyLabel}
-              </p>
-            </div>
+            {!isRestrictedUser && (
+              <div className={styles.priceRow}>
+                <p className={cx(styles.specsText, 'bodyS')}>
+                  {`${quantityPerPackageLabel} ${itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${priceStr} ${currencyLabel}`}
+                </p>
+                <p className={cx(styles.specsText, 'bodyS')}>
+                  {totalPrice} {currencyLabel}
+                </p>
+              </div>
+            )}
             <MobileActions
               addToCartLabel={addToCartLabel}
               handleAddToCart={handleAddToCart}
@@ -112,6 +114,7 @@ const Actions = ({
               variantList={variantList}
               availableForOrder={availableForOrder}
               loading={loading}
+              isFixed
             />
           </motion.div>
         )}
