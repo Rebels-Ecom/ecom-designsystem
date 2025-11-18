@@ -14,7 +14,12 @@ function getProductSpecs(specs: Array<IProductSpec>) {
       .map((spec, index) => {
         const displayValue = spec.value === 'True' ? '' : `: ${spec.value}`
         return (
-          <p key={index} className={cx(styles.specsText, 'bodyS')}>
+          <p
+            key={index}
+            className={cx(styles.specsText, 'bodyS', {
+              [styles.bold]: spec.value === 'True',
+            })}
+          >
             {spec.name}
             {displayValue}
           </p>

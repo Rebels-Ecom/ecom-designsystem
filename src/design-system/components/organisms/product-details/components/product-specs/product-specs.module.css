@@ -12,4 +12,8 @@
     margin-bottom: 0.5rem;
     color: var(--color-text-decorative-purple);
   }
+
+  & .bold {
+    font-weight: bold;
+  }
 }
