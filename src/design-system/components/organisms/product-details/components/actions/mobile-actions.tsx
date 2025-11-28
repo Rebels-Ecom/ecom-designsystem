@@ -47,6 +47,7 @@ export default function MobileActions({
         iconRight={variantList.length <= 1 ? undefined : { icon: 'icon-layers' }}
         onClick={() => handleVariantsButtonClick()}
         disabled={variantList.length <= 1}
+        name="Välj variant"
       >
         {packaging}
       </Button>

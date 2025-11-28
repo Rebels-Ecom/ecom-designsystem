@@ -132,7 +132,7 @@ const Actions = ({
           rounded
           onClick={() => handleVariantsButtonClick()}
           disabled={variantList.length <= 1}
-          name="Select packaging"
+          name="Välj variant"
           side={isTablet ? 'top' : 'right'}
           align={isTablet ? 'end' : 'center'}
           fullWidth
@@ -159,6 +159,7 @@ const Actions = ({
             onClick={addToCart}
             disabled={quantity === '0' || outOfStock || !availableForOrder}
             fullWidth
+            name="Lägg i varukorg"
           >
             {addToCartLabel}
           </Button>
@@ -172,7 +173,7 @@ const Actions = ({
               isTransparent
               noBorder
               noPadding
-              name="Add to purchase list"
+              name="Lägg till i inköpslista"
             />
           )}
           {showFavoriteIcon && onFavoriteIconClick && (
@@ -185,7 +186,7 @@ const Actions = ({
               isTransparent
               noBorder
               noPadding
-              name="Add to favorite list"
+              name="Lägg till i favoriter"
             />
           )}
         </div>

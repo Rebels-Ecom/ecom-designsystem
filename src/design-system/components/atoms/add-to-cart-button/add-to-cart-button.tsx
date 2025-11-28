@@ -93,7 +93,7 @@ const AddToCartButton = ({
             animate={{ scale: val === 0 ? 1 : 0 }}
             exit={{ scale: 0.2 }}
             disabled={disabled}
-            aria-label="Add item to cart"
+            aria-label="Lägg i varukorg"
           >
             {buttonLabel}
           </motion.button>
@@ -114,7 +114,7 @@ const AddToCartButton = ({
               size="small"
               icon="icon-minus"
               type="button"
-              name="Decrease quantity"
+              name="Minska antal"
               noBorder
               surface="white"
               disabled={disabled}
@@ -131,7 +131,7 @@ const AddToCartButton = ({
               onFocus={handleOnFocus}
               onBlur={handleOnBlur}
               className={styles.quantityInput}
-              aria-label="Current quantity"
+              aria-label="Antal"
               min="0"
               placeholder="0"
               disabled={disabled}
@@ -144,7 +144,7 @@ const AddToCartButton = ({
               onClick={handleIncrement}
               icon="icon-plus"
               type="button"
-              name="Increase quantity"
+              name="Öka antal"
               noBorder
               surface="white"
               round
