@@ -5,9 +5,10 @@ import { IProductSpec } from '../../product-details'
 
 interface IProductSpecs {
   specs?: Array<IProductSpec>
+  boldKeys?: boolean
 }
 
-function getProductSpecs(specs: Array<IProductSpec>) {
+function getProductSpecs(specs: Array<IProductSpec>, boldKeys?: boolean) {
   return (
     specs
       ?.filter((spec) => spec.value && spec.value !== 'False')
@@ -20,7 +21,7 @@ function getProductSpecs(specs: Array<IProductSpec>) {
               [styles.bold]: spec.value === 'True',
             })}
           >
-            {spec.name}
+            <span className={boldKeys ? styles.bold : ''}>{spec.name}</span>
             {displayValue}
           </p>
         )
@@ -28,8 +29,8 @@ function getProductSpecs(specs: Array<IProductSpec>) {
   )
 }
 
-const ProductSpecs = ({ specs = [] }: IProductSpecs) => {
-  return <div className={styles.productSpecs}>{getProductSpecs(specs)}</div>
+const ProductSpecs = ({ specs = [], boldKeys }: IProductSpecs) => {
+  return <div className={styles.productSpecs}>{getProductSpecs(specs, boldKeys)}</div>
 }
 
 export { ProductSpecs }

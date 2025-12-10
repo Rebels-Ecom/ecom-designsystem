@@ -4,7 +4,8 @@ import { Button } from '../../atoms/button/button'
 import { IProductDetail } from '../product-details/product-details'
 import { AnimatePresence, motion } from 'framer-motion'
 import cx from 'classnames'
-import { IIcon, Icon, TIcon } from '../../atoms/icon/icon'
+import { TIcon } from '../../atoms/icon/icon'
+import { ProductSpecs } from '../product-details/components/product-specs/product-specs'
 
 export interface IProductDescriptionItem {
   id: string
@@ -16,7 +17,7 @@ export interface IProductDescriptionItem {
 
 export interface IProductDescription {
   productDescriptionItems: Array<IProductDescriptionItem>
-  loading?: boolean;
+  loading?: boolean
 }
 
 const contentBoxAnimation = {
@@ -43,23 +44,6 @@ function ProductDescription({ productDescriptionItems, loading }: IProductDescri
       setIsOpen(true)
       setCurrentTab(e.currentTarget.id)
     }
-  }
-
-  function getProductSpecs(specs: any) {
-    if (specs && Array.isArray(specs) && specs.length > 0) {
-      return specs.map((spec, index) => {
-        return (
-          spec.value &&
-          spec.value !== 'False' && (
-            <p key={index} className={'bodyS'}>
-              <span className={styles.specTitle}>{`${spec.name}: `}</span>
-              {spec.value}
-            </p>
-          )
-        )
-      })
-    }
-    return null
   }
 
   return (
@@ -90,8 +74,9 @@ function ProductDescription({ productDescriptionItems, loading }: IProductDescri
                 <motion.div className={styles.contentWrapper} {...contentBoxAnimation}>
                   {currentTab === `${item.id}` && (
                     <div className={styles.content}>
-                      {item.descriptionContent?.invisibleDescription && <p className={styles.description}> {item.descriptionContent.invisibleDescription}</p>}
-                      {item.descriptionContent.invisibleSpecs && getProductSpecs(item.descriptionContent.invisibleSpecs)}
+                      {item.descriptionContent.invisibleSpecs && (
+                        <ProductSpecs specs={item.descriptionContent.invisibleSpecs} boldKeys />
+                      )}
                     </div>
                   )}
                 </motion.div>

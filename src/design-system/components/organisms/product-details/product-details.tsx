@@ -34,7 +34,6 @@ export interface IProductDetail {
   visibleSpecs?: Array<IProductSpec>
   visibleDescription: string
   invisibleSpecs: Array<IProductSpec>
-  invisibleDescription: string
   tags: Array<ITag>
   loaderValues: Array<ILoadingBar>
 }

@@ -2,7 +2,12 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { IProductDetail, ProductDetails } from './product-details'
 import { IProduct } from '../../../../types/product'
-import { dummyBeerProduct, dummyWineProduct, dummyWineProductNoVariants, dummyWineProduct_VariantDefaultImg } from './dummy-product'
+import {
+  dummyBeerProduct,
+  dummyWineProduct,
+  dummyWineProductNoVariants,
+  dummyWineProduct_VariantDefaultImg,
+} from './dummy-product'
 import { getProductPicture } from '../../../../helpers/picture-helper'
 import { Button_Large_Icon_Right } from '../../atoms/button/button.stories'
 import { convertNumToStr } from '../../../../helpers/format-helper'
@@ -20,8 +25,10 @@ type Story = StoryObj<typeof ProductDetails>
 
 const ProductDetailsStoryTemplate: Story = {
   render: ({ ...args }) => {
-    function handleAddToCart(product) {
-      alert(`Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`)
+    function handleAddToCart(product: IProduct) {
+      alert(
+        `Adding to cart - ${product.productName} - ${product.packaging}. Quantity: ${product.quantity}, Total: ${product.totalPrice}`
+      )
     }
 
     return (
@@ -67,7 +74,6 @@ function getProductDetails(productDetailsData: any): IProductDetail {
     visibleSpecs: getSpecifications(productDetailsData.VisibleInfo.Specifications),
     visibleDescription: productDetailsData.VisibleInfo.FullDescription,
     invisibleSpecs: getSpecifications(productDetailsData.InvisibleInfo.Specifications),
-    invisibleDescription: productDetailsData.InvisibleInfo.FullDescription,
     tags: getProductTags(productDetailsData.Tags),
     loaderValues: getLoadingBars(productDetailsData.ClockValues, productDetailsData.CategoryString),
   }
@@ -92,7 +98,7 @@ function getVariantsList(productName: string, variantsList: any) {
   })
 }
 
-function getProduct(productData: any): IProduct {
+function getProduct(productData: any): Partial<IProduct> {
   const product = productData.Variants[0]
   return {
     partNo: product.PartNo,
