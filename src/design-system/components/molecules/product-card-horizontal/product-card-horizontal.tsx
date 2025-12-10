@@ -64,6 +64,7 @@ const ProductCardHorizontal = ({
   const { isMobile } = mediaQueryHelper()
   const {
     activeCampaign,
+    campaignTitle = '',
     partNo,
     partNoLabel,
     productName,
@@ -285,6 +286,7 @@ const ProductCardHorizontal = ({
                         disabled={productQuantityDisabled}
                         hidePrice={hidePrice}
                         pricePerUnitText={`${aLabel} ${pricePerUnit?.toFixed(2)?.replace('.', ',')} ${currencyLabel}`}
+                        isGift={campaignTitle === 'Gåva'}
                       />
                     ) : (
                       <ProductQuantityInput

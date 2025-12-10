@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import cx from 'classnames';
+import cx from 'classnames'
 import { TOther } from '../../../../../types/other'
 import { useDebounce } from '../../../../../helpers/generic-helper'
 import styles from './debounce-input.module.css'
 
-type acceptedTypes = 'number' | 'text';
+type acceptedTypes = 'number' | 'text'
 
 export interface IDebounceInput {
   quantityInputId: string
@@ -14,16 +14,17 @@ export interface IDebounceInput {
   totalPrice: string
   disabled?: boolean
   maxQuantity?: number
-  hidePrice?: boolean;
+  hidePrice?: boolean
   /** decides how delayed the debouncedEvent will be (ms)
    * @default 1000
    */
-  debounceVal?: number;
-  debouncedEvent: CallableFunction;
-  type?: acceptedTypes;
-  min?: string;
-  rest?: TOther;
-  pricePerUnitText?: string;
+  debounceVal?: number
+  debouncedEvent: CallableFunction
+  type?: acceptedTypes
+  min?: string
+  rest?: TOther
+  pricePerUnitText?: string
+  isGift?: boolean
 }
 
 const DebounceInput = ({
@@ -37,49 +38,53 @@ const DebounceInput = ({
   disabled,
   quantityInputId,
   debounceVal = 1000,
-  pricePerUnitText
- }: IDebounceInput) => {
-  const [value, setValue] = useState(quantity);
+  pricePerUnitText,
+  isGift,
+}: IDebounceInput) => {
+  const [value, setValue] = useState(quantity)
 
   useEffect(() => {
     setValue(quantity)
-  }, [quantity]);
+  }, [quantity])
 
   const debouncedRequest = useDebounce(() => {
     if (value !== '') {
-      debouncedEvent(value);
+      if (isGift) {
+        setValue(quantity)
+      }
+      debouncedEvent(value)
     }
-  }, debounceVal);
+  }, debounceVal)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (maxQuantity && Number(e.target.value) > maxQuantity) {
-      return;
+      return
     }
-    
-    setValue(e.target.value);
-    
-    debouncedRequest();
-  };
+
+    setValue(e.target.value)
+
+    debouncedRequest()
+  }
 
   const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
-      setValue('0');
-      debouncedRequest();
+      setValue('0')
+      debouncedRequest()
     }
   }
 
-  const priceDetail = `${itemNumberPerSalesUnit} styck ${pricePerUnitText ?? ''}`;
+  const priceDetail = `${itemNumberPerSalesUnit} styck ${pricePerUnitText ?? ''}`
 
   return (
     <div className={`${styles.debounceQuantityWrapper}`}>
       <input
         id={quantityInputId}
-        type='number'
+        type="number"
         min="0"
         className={cx('body', styles.debounceQuantityInput)}
         onChange={onChange}
         value={value}
-        placeholder='0'
+        placeholder="0"
         onBlur={handleBlur}
         onKeyDown={(e: React.KeyboardEvent) => {
           const illegalChars = ['-', '+', '.', ',', 'e', 'E']
@@ -99,7 +104,7 @@ const DebounceInput = ({
         {!hidePrice && <p className={`${styles.textPrice} bodyS fontBold`}>{`Pris: ${totalPrice} kr`}</p>}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export { DebounceInput }

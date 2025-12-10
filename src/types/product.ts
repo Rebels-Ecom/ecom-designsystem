@@ -27,6 +27,7 @@ export interface IProduct {
   activeCampaign?: TCampaignBox
   isLimitedProduct?: boolean
   isAccessoryPotItem?: boolean
+  campaignTitle?: string
 
   //Translation labels
   partNoLabel?: string
