@@ -27,11 +27,12 @@ export interface IOrderItem {
   title?: string
   children: React.ReactNode
   orderDate?: string
-  orderDateLabel?: string;
+  orderDateLabel?: string
   btnLabel?: string
-  onClick?: () => void;
-  customOrderNumber?: string;
-  customOrderNumberLabel?: string;
+  onClick?: () => void
+  customOrderNumber?: string
+  customOrderNumberLabel?: string
+  readOnly?: boolean
 }
 
 const OrderItem = ({
@@ -54,7 +55,8 @@ const OrderItem = ({
   border,
   statusIcon,
   customOrderNumber,
-  customOrderNumberLabel
+  customOrderNumberLabel,
+  readOnly,
 }: IOrderItem) => {
   const getIcon = (): TIcon => {
     switch (statusIcon) {
@@ -69,7 +71,7 @@ const OrderItem = ({
   }
   return (
     <div className={cx(styles.orderItem, { [styles.border]: border })}>
-      {linkUrl ? (
+      {linkUrl && !readOnly ? (
         <>
           <div className={styles.firstRow}>
             {orderNumber && orderNumberLabel && (
@@ -89,15 +91,26 @@ const OrderItem = ({
               </Link>
             </div>
           </div>
-          {(customOrderNumber && customOrderNumberLabel) && (
+          {customOrderNumber && customOrderNumberLabel && (
             <div className={styles.secondRow}>
-              <p className={styles.deliveryDate}>{customOrderNumberLabel} <span>{customOrderNumber}</span></p>
+              <p className={styles.deliveryDate}>
+                {customOrderNumberLabel} <span>{customOrderNumber}</span>
+              </p>
             </div>
           )}
           <div className={styles.secondRow}>
-            {deliveryDate && deliveryDateLabel && <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
+            {deliveryDate && deliveryDateLabel && (
+              <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>
+            )}
             {downloadLabel && downloadUrl && (
-              <UILink download className={styles.downloadLink} onSurface="transparent" linkComponent="a" isExternal href={downloadUrl}>
+              <UILink
+                download
+                className={styles.downloadLink}
+                onSurface="transparent"
+                linkComponent="a"
+                isExternal
+                href={downloadUrl}
+              >
                 {downloadLabel}
               </UILink>
             )}
@@ -107,18 +120,34 @@ const OrderItem = ({
       ) : (
         <>
           <div className={styles.firstRow}>
-            {orderNumber && orderNumberLabel && onClick && <h4 className={styles.orderNumber} onClick={onClick}>{`${orderNumberLabel} ${orderNumber}`}</h4>}
-            {btnLabel && onClick && (
-              <div className={cx(styles.statusWrapper, styles.btn)}>
-                <Button type={'button'} surface='link' onClick={onClick}>
+            {orderNumber && orderNumberLabel && onClick && !readOnly && (
+              <h4
+                className={cx(styles.orderNumber, styles.clickable)}
+                onClick={onClick}
+              >{`${orderNumberLabel} ${orderNumber}`}</h4>
+            )}
+            {orderNumber && orderNumberLabel && readOnly && (
+              <h4 className={styles.orderNumber}>{`${orderNumberLabel} ${orderNumber}`}</h4>
+            )}
+            <div className={cx(styles.statusWrapper, styles.btn)}>
+              {orderStatus && (
+                <span className={styles.status}>
+                  {orderStatus}
+                  {statusIcon && <Icon className={styles.statusIcon} icon={getIcon()} />}
+                </span>
+              )}
+              {btnLabel && onClick && !readOnly && (
+                <Button type={'button'} surface="link" onClick={onClick}>
                   {btnLabel}
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-          <div className={cx(styles.secondRow, styles.secondRowCol, {[styles.hasChildren]: !!children })}>
+          <div className={cx(styles.secondRow, styles.secondRowCol, { [styles.hasChildren]: !!children })}>
             {orderDate && orderDateLabel && <p className={styles.deliveryDate}>{`${orderDateLabel} ${orderDate}`}</p>}
-            {deliveryDate && deliveryDateLabel && <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>}
+            {deliveryDate && deliveryDateLabel && (
+              <p className={styles.deliveryDate}>{`${deliveryDateLabel} ${deliveryDate}`}</p>
+            )}
           </div>
           {children && <div>{children}</div>}
         </>

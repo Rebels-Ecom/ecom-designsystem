@@ -42,10 +42,12 @@
         & .orderNumber {
             color: var(--cta-primary-default);
             margin: 0;
-            
-            &:hover {
-                color: var(--interactive-hover);
-                cursor: pointer;
+
+            &.clickable {
+                &:hover {
+                    color: var(--interactive-hover);
+                    cursor: pointer;
+                }
             }
         }
 
