@@ -140,6 +140,34 @@ function UiDatePicker({
     return 'day'
   }
 
+  useEffect(() => {
+    const el = document.body
+    if (el) {
+      if (open) {
+        el.classList.add('no-scroll')
+      } else {
+        el.classList.remove('no-scroll')
+      }
+    }
+    return () => el?.classList?.remove('no-scroll')
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const frameId = requestAnimationFrame(() => {
+      const calendar = document.querySelector('.react-datepicker') as HTMLElement
+      if (calendar) {
+        const rect = calendar.getBoundingClientRect()
+        calendar.style.maxHeight = `${window.innerHeight - rect.top - 16}px`
+        calendar.style.overflowY = 'auto'
+        calendar.style.overflowX = 'hidden'
+        calendar.style.setProperty('-webkit-overflow-scrolling', 'touch')
+        calendar.style.touchAction = 'pan-y'
+      }
+    })
+    return () => cancelAnimationFrame(frameId)
+  }, [open])
+
   useOnClickOutside({ ref: datepickerRef, onClose: () => setOpen(false) })
 
   if (!selectedDeliveryDate || !deliveryDates || !holidayDates || holidayDates.length === 0 || !onDateSelected) {
