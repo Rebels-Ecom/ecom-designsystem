@@ -129,7 +129,16 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const { partNo, primaryImageUrl, pricePerUnit, itemNumberPerSalesUnit, quantity, priceStr, activeCampaign } = product
+  const {
+    partNo,
+    primaryImageUrl,
+    pricePerUnit,
+    itemNumberPerSalesUnit,
+    quantity,
+    priceStr,
+    activeCampaign,
+    outOfStock,
+  } = product
   const [variantsListOpen, setVariantsListOpen] = useState<boolean>(false)
   const [myProduct, setProduct] = useState({
     ...product,
@@ -163,8 +172,9 @@ function ProductCard({
           (defaultQuantity ?? getQuantity(quantity) ? parseInt(defaultQuantity ?? getQuantity(quantity)) : 0)
       ),
       activeCampaign: activeCampaign,
+      outOfStock: outOfStock,
     }))
-  }, [quantity, priceStr, pricePerUnit, activeCampaign])
+  }, [quantity, priceStr, pricePerUnit, activeCampaign, outOfStock])
 
   function handleOnChangeQuantity(productQuantity: number) {
     if (maxQuantity && productQuantity > maxQuantity) {
