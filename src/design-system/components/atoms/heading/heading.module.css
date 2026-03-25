@@ -21,6 +21,9 @@
     &.error {
         color: var(--error-red);
     }
+    &.white {
+        color: var(--cta-secondary-default);
+    }
 }
 
 .headingButtonWrapper{

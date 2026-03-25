@@ -59,7 +59,6 @@
 
   &:focus {
     outline:none;
-    background: var(--input-background-focused);
     border-color: var(--input-border-color);
   }
 

@@ -9,6 +9,7 @@ type acceptedTypes = 'text' | 'email' | 'tel' | 'password' | 'number'
 
 export interface IInputText {
   id: string
+  ariaLabel?: string
   className?: string
   wrapperClassName?: string
   type?: acceptedTypes
@@ -36,6 +37,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
   (
     {
       id,
+      ariaLabel,
       className,
       wrapperClassName,
       type = 'text',
@@ -95,6 +97,7 @@ const InputText = forwardRef<HTMLInputElement, IInputText>(
           onChange={handleOnChange}
           onBlur={handleOnBlur}
           onFocus={handleOnFocus}
+          aria-label={ariaLabel}
           disabled={disabled}
           placeholder={placeholder}
           required={required}

@@ -1,0 +1,74 @@
+.faqHero {
+  background-color: var(--cta-primary-default);
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--cta-secondary-default);
+
+  & .title {
+    color: var(--cta-secondary-default);
+    margin: 2rem 0 1rem;
+    text-align: center;
+    font-size: var(--heading-m-mobile-font-size);
+    line-height: var(--heading-m-mobile-line-height);
+
+    @media (min-width: 48em) {
+      font-size: var(--heading-l-desktop-font-size);
+      line-height: var(--heading-l-desktop-line-height);
+    }
+  }
+
+  & .faqHeroSubtitle {
+    margin: 0.5rem 0 2rem;
+    font-size: 1rem;
+    color: var(--cta-secondary-default);
+  }
+
+  & .faqHeroSearch {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 3rem;
+
+    & input {
+      width: 100%;
+      padding: 0.75rem 2.75rem;
+      border-radius: 0.25rem;
+      border: none;
+      font-size: 1rem;
+      color: var(--default-black);
+    }
+  }
+
+  & .faqHeroSearchIcon,
+  & .faqHeroSpinner,
+  & .clearBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cta-primary-default);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+  }
+
+  & .faqHeroSearchIcon {
+    left: 1rem;
+  }
+  
+  & .faqHeroSpinner {
+    right: 1rem;
+  }
+
+  & .clearBtn {
+    right: 0.5rem;
+    pointer-events: all;
+  }
+}
+
+.faqHero ~ * mark {
+  background-color: #f9e4b7;
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 2px;
+}

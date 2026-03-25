@@ -7,19 +7,40 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  &.card {
+    gap: 0.5rem;
+  }
   
   @media (min-width: 48em) {
     margin-bottom: 2rem;
   }
-
+  
   & .faqListItem {
     display: grid;
     gap: 0.5rem;
+    
+    &.card {
+      padding: 1rem 1rem 0.5rem;
+      border: 1px solid var(--border-grey);
+      border-radius: 0.5rem;
+      background-color: var(--cta-secondary-default);
+    }
+  }
+
+  & mark {
+    background-color: var(--highlight, #fff176);
+    color: inherit;
   }
 
   & .hiddenContent {
     padding: 0.5rem;
     background-color: var(--border-grey);
+
+    &.card {
+      background-color: transparent;
+      padding: 0.5rem 0;
+    }
 
     & img {
       max-width: 100%;

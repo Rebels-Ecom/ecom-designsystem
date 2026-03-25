@@ -1,10 +1,11 @@
+import React from 'react'
 import { Icon, TIcon } from '../../atoms/icon/icon'
 import styles from './clickable-list-item.module.css'
 import cx from 'classnames'
 
 type TClickableListItem = {
   onClick: () => void
-  label: string
+  label: React.ReactNode
   icon?: TIcon
   weight?: 'normal' | 'bold'
   color?: 'default' | 'blue' | 'orange'
