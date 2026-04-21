@@ -1,12 +1,12 @@
 .faqHero {
   background-color: var(--cta-primary-default);
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
   text-align: center;
   color: var(--cta-secondary-default);
 
   & .title {
     color: var(--cta-secondary-default);
-    margin: 2rem 0 1rem;
+    margin: 0 0 1rem;
     text-align: center;
     font-size: var(--heading-m-mobile-font-size);
     line-height: var(--heading-m-mobile-line-height);
