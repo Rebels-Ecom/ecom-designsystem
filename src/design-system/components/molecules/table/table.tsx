@@ -1,8 +1,9 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'react'
-import { Heading, Loader } from '../../atoms'
+import { Heading } from '../../atoms'
 import { Button, IButton } from '../../atoms/button/button'
 import { IconButton, TIconButton } from '../../atoms/icon-button/icon-button'
+import { GhostTable } from './ghost-table'
 import styles from './table.module.css'
 
 type TListItem = { [key: string]: string | TIconButton }
@@ -43,7 +44,16 @@ export interface ITable {
   action?: IButton
 }
 
-const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = false, listGap = 0, loading, initialSortBy, title, action }: ITable) => {
+const Table = ({
+  listItems = [],
+  hideColumnTitles = false,
+  equalWidthColumns = false,
+  listGap = 0,
+  loading,
+  initialSortBy,
+  title,
+  action,
+}: ITable) => {
   const [sortBy, setSortBy] = useState<{ by: string; dir: 'asc' | 'desc' }>()
   const listItem = listItems?.sort((a, b) => Object.keys(b).length - Object.keys(a).length)[0]
   const columnTitles = listItems.length ? Object.keys(listItem) : []
@@ -80,7 +90,17 @@ const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = f
   const renderIcon = (obj: TIconButton, i: string) => {
     if (!obj) return null
 
-    return <IconButton key={i} {...obj} size="medium" noPadding isTransparent noBorder name={obj.icon === 'icon-edit' ? 'Edit field' : 'Delete field'} />
+    return (
+      <IconButton
+        key={i}
+        {...obj}
+        size="medium"
+        noPadding
+        isTransparent
+        noBorder
+        name={obj.icon === 'icon-edit' ? 'Edit field' : 'Delete field'}
+      />
+    )
   }
 
   const renderList = (columnTitle: string) => {
@@ -104,7 +124,7 @@ const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = f
   }
 
   return loading ? (
-    <Loader visible size="md" />
+    <GhostTable title={title} />
   ) : (
     <div className={styles.table} style={style}>
       <div className={styles.top}>
@@ -121,13 +141,21 @@ const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = f
               {nonIcons?.length
                 ? nonIcons.map(([key, value]) => (
                     <div key={`${key}-${i}`} className={styles.row}>
-                      {!hideColumnTitles && !key.includes('icon') ? <span className={styles.columnTitle}>{`${key}: `}</span> : ''}
-                      <span className={styles.item}>{typeof value === 'object' ? renderIcon(value, `${key}-${i}`) : value}</span>
+                      {!hideColumnTitles && !key.includes('icon') ? (
+                        <span className={styles.columnTitle}>{`${key}: `}</span>
+                      ) : (
+                        ''
+                      )}
+                      <span className={styles.item}>
+                        {typeof value === 'object' ? renderIcon(value, `${key}-${i}`) : value}
+                      </span>
                     </div>
                   ))
                 : null}
               {icons?.length ? (
-                <div className={styles.icons}>{icons.map(([key, value]) => typeof value === 'object' && renderIcon(value, `${key}-${i}`))}</div>
+                <div className={styles.icons}>
+                  {icons.map(([key, value]) => typeof value === 'object' && renderIcon(value, `${key}-${i}`))}
+                </div>
               ) : null}
             </div>
           )
@@ -153,9 +181,16 @@ const Table = ({ listItems = [], hideColumnTitles = false, equalWidthColumns = f
                     <>
                       <span className={styles.columnTitleText}>{columnTitle}</span>
                       <IconButton
-                        icon={sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'icon-chevron-down' : 'icon-chevron-up'}
+                        icon={
+                          sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'icon-chevron-down' : 'icon-chevron-up'
+                        }
                         type="button"
-                        onClick={() => setSortBy({ by: columnTitle, dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc' })}
+                        onClick={() =>
+                          setSortBy({
+                            by: columnTitle,
+                            dir: sortBy?.by === columnTitle && sortBy?.dir === 'asc' ? 'desc' : 'asc',
+                          })
+                        }
                         isTransparent
                         noBorder
                         name="Sort by"
