@@ -135,7 +135,7 @@ const ProductDetails = ({
       salesUnit,
       itemNumberPerSalesUnit,
       quantity: '1',
-      totalPrice: packagePrice ? convertNumToStr(packagePrice) : '',
+      totalPrice: packagePrice !== null ? convertNumToStr(packagePrice) : null,
       productVariantList,
       selectedVariantId: partNo,
       priceLabel,

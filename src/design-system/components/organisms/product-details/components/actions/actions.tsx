@@ -37,7 +37,7 @@ export interface IProductDetailsActions {
   aLabel?: string
   priceStr: string
   currencyLabel?: string
-  totalPrice?: string
+  totalPrice?: string | null
   productName?: string
   handleOnChangeQuantity?: CallableFunction
   salesUnit: string

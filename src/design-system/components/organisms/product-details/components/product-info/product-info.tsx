@@ -15,7 +15,7 @@ interface IProductInfo {
   priceStr: string
   partNoLabel?: string
   partNo: string
-  totalPrice?: string
+  totalPrice?: string | null
   isMobile?: boolean
 }
 
@@ -47,7 +47,7 @@ const ProductInfo = ({
         {`${quantityPerPackageLabel} ${itemNumberPerSalesUnit} ${unitLabel} ${aLabel} ${priceStr} ${currencyLabel}`}
       </p>
 
-      {isMobile && (
+      {isMobile && totalPrice && (
         <p className={cx(styles.specsText, styles.totalPrice, 'bodyS', styles.largeText)}>
           {totalPrice} {currencyLabel}
         </p>
