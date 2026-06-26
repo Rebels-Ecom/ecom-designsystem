@@ -7,11 +7,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Arkiv
+legacy/
+
+# Dependency directories
 node_modules
-storybook-static
+.pnpm-store
+
+# Build output
 dist
 dist-ssr
+storybook-static
+*.tsbuildinfo
+
+# Env and local files
 *.local
+.env
+.env.local
+.env.*.local
 
 # Editor directories and files 
 .vscode/*
