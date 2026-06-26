@@ -72,13 +72,12 @@ const ProductCardHorizontal = ({
     tags,
     isLimitedProduct,
     country,
-    priceStr,
     totalPrice,
     quantity,
     outOfStock,
     salesUnit,
     itemNumberPerSalesUnit,
-    priceLabel,
+    pricePerUnitString,
     currencyLabel,
     unitLabel,
     outOfStockLabel,
@@ -162,6 +161,21 @@ const ProductCardHorizontal = ({
       )}
     </FlexContainer>
   )
+
+  const getQuantityLabel = (): string => {
+    const unitSuffix = unitLabel === 'Kolli' ? `/${unitLabel.toLocaleLowerCase()}` : ''
+
+    const baseLabel = `Antal${unitSuffix}`
+
+    if (!itemNumberPerSalesUnit) {
+      return baseLabel
+    }
+
+    const separationLabel = aLabel ?? 'á'
+    const currency = currencyLabel ?? ''
+
+    return `${baseLabel} ${itemNumberPerSalesUnit} st ${separationLabel} ${pricePerUnitString} ${currency}`.trim()
+  }
 
   useOnClickOutside({ ref: alertBoxRef, onClose: () => setAlertBoxOpen(false) })
 
@@ -259,10 +273,9 @@ const ProductCardHorizontal = ({
             <div className={styles.cardInfoWrapper}>
               <div>
                 {showPackaging && packaging && <p className={cx(styles.packaging, 'bodyS')}>{packaging}</p>}
+
                 {!hidePrice && !isRestrictedUser && (
-                  <p className={cx(styles.priceText, 'bodyS')}>{`${priceLabel}: ${
-                    priceStr ? `${priceStr} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}` : ''
-                  }`}</p>
+                  <p className={cx(styles.priceText, 'bodyS')}>{getQuantityLabel()}</p>
                 )}
 
                 {(country !== '' || partNo !== '') && !isRestrictedUser && (

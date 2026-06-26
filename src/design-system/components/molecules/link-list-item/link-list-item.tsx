@@ -47,7 +47,7 @@ function LinkListItem({
             </>
           ) : (
             <>
-              {date1 || date2 ? (
+              {date1 || date2 || onDownloadClick ? (
                 <div className={styles.tagsWrapper}>
                   {date1 && <Tag text={date1} shape={'rectangular'} color={'grey'} />}
                   {date2 && (
