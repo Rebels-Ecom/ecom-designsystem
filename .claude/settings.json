@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "claude-opus-4-8-20260205",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm test)",
+      "Bash(pnpm run lint)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Read(src/**/*.ts)",
+      "Read(src/**/*.tsx)",
+      "Read(legacy/**/*.ts)",
+      "Read(legacy/**/*.tsx)",
+      "Read(package.json)",
+      "Read(vite.config.ts)",
+      "Read(CLAUDE.md)"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Read(*.pem)",
+      "Read(node_modules/**)",
+      "Write(.env*)",
+      "Write(legacy/**)",
+      "Bash(rm -rf *)"
+    ],
+    "ask": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm add *)"
+    ]
+  }
+}
