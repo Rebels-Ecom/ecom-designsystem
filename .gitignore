@@ -36,3 +36,6 @@ storybook-static
 *.njsproj
 *.sln
 *.sw?
+
+# Claude
+.claude/CLAUDE-PERSONAL.md
