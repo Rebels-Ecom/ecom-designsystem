@@ -32,7 +32,7 @@ Create the following three files in the target V2 directory.
 
 - **Strict Typing:** Write a strict TypeScript interface for props. The `any` type is strictly forbidden.
 - **React 19:** Pass `ref` as a standard prop. Explicitly type `children` as `React.ReactNode`.
-- **Styling:** Implement styling exclusively using Tailwind CSS classes.
+- **Styling:** Implement styling using Tailwind CSS classes. For the conversion of styles from the legacy source, invoke the tailwind-migrator skill to ensure strict adherence to .claude/docs/STYLE-GUIDE.md and to automatically exclude dead tokens.
 - **Accessibility:** Include all necessary `aria` attributes and ensure visible focus states for keyboard navigation.
 
 ### 2. The Storybook File (`ComponentName.stories.tsx`)

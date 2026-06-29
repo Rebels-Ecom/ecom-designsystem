@@ -18,4 +18,11 @@ Scan the `legacy/` directory to extract global CSS variables exclusively from th
 
 ## Output Requirement
 
-Do not modify any source code. Generate a new file named `.claude/docs/EXTRACTED_VARIABLES.md` containing the consolidated list. Format it as a clean markdown checklist so the user can easily review, delete, and rename variables before implementing the Tailwind v4 `@theme`.
+Do not modify any source code. Generate a new file named `.claude/docs/EXTRACTED-VARIABLES.md` containing the consolidated list. Format it as a clean markdown checklist so the user can easily review, delete, and rename variables before implementing the Tailwind v4 `@theme`.
+
+## Post-Extraction Analysis
+
+After generating the list, perform a quick audit:
+
+- Identify and flag any "competitor" variables that share similar semantic names or values but are defined differently (e.g., `--color-brand-blue` vs `--blue-primary`).
+- Provide a brief recommendation for which version to keep as the "single source of truth" for the new Tailwind @theme.
