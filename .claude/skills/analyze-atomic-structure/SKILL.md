@@ -21,11 +21,11 @@ Parse the imports of every component in the `legacy/` directory and apply the fo
 
 ## Output Requirement
 
-Do not modify any source code during this analysis. Generate a new file named `.claude/docs/ATOMIC_MAP.md` containing the proposed structure for the user to review.
+Do not modify any source code during this analysis. Generate a new file named `.claude/docs/ATOMIC-MAP.md` containing the proposed structure for the user to review.
 
 ## Output Format
 
-Structure the `ATOMIC_MAP.md` document using the exact format below:
+Structure the `ATOMIC-MAP.md` document using the exact format below:
 
 # V2 Folder Structure Proposal
 

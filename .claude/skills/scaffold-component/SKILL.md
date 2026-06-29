@@ -15,7 +15,7 @@ Run this skill when instructed to migrate or build a specific component (e.g., "
 
 **Step 1: Location Verification**
 
-- Read `.claude/docs/ATOMIC_MAP.md` to find the target component.
+- Read `.claude/docs/ATOMIC-MAP.md` to find the target component.
 - Identify its correct V2 destination (e.g., `src/components/atoms/Button`).
 - Identify its legacy source path for reference.
 

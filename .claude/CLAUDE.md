@@ -13,6 +13,7 @@
 - **Explicit Dependency Handling**: Always verify peerDependencies in package.json against the React 19 target. Never include react or react-dom in dependencies.
 - **Accessibility (WCAG)**: Strict adherence to semantic HTML and WCAG 2.2 AA. Do NOT copy accessibility patterns from legacy code. Independently generate correct `aria` attributes, `role` definitions, and ensure full keyboard navigation from scratch.
 - **Performance**: Rely on the React 19 Compiler. Do not use manual `useMemo` or `useCallback` patterns unless strictly necessary. Keep DOM trees shallow.
+- **Post-task behavior**: When a task is complete, provide a one-sentence confirmation of success. Do not summarize the task, and do not provide verbose explanations unless explicitly asked.
 
 ## Tailwind CSS v4 & Styling Rules
 
