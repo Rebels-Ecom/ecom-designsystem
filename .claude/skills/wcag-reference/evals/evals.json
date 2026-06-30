@@ -1,0 +1,56 @@
+{
+  "skill_name": "wcag-reference",
+  "notes": "Process: build + verify + integration test (not the full benchmark loop). Eval 3 exercises the scaffold-component cross-reference. Assertions are objectively checkable against the skill's response/output.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "For our V2 design system, what does WCAG 2.2 success criterion 1.4.3 require, and how should I satisfy it using our Tailwind tokens?",
+      "expected_output": "A focused lookup of 1.4.3 Contrast (Minimum): the 4.5:1 / 3:1-large-text ratio, guidance to use vetted semantic color tokens against their intended surfaces (and the caution about low-contrast orange tokens), and verification via axe in the Storybook a11y panel.",
+      "files": [],
+      "assertions": [
+        { "text": "States the 4.5:1 minimum ratio and the 3:1 large-text threshold", "passed": null, "evidence": "" },
+        { "text": "References this repo's semantic color tokens (e.g. text-default / text-subdued / bg-surface-default) rather than inventing hex values", "passed": null, "evidence": "" },
+        { "text": "Names axe via the Storybook a11y addon as the verification method", "passed": null, "evidence": "" },
+        { "text": "Does not introduce arbitrary Tailwind values like text-[#003E51]", "passed": null, "evidence": "" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm about to build the Modal component for the design system. Which accessibility requirements apply, and how do I verify each one?",
+      "expected_output": "Identifies the Overlay archetype, unions it with the universal baseline, and surfaces the dialog-specific criteria with concrete implementation + verification notes.",
+      "files": [],
+      "assertions": [
+        { "text": "Surfaces 2.1.2 escapable focus trap (Tab cycles inside, Escape closes)", "passed": null, "evidence": "" },
+        { "text": "Surfaces 2.4.3 focus moves into the dialog on open and returns to the trigger on close", "passed": null, "evidence": "" },
+        { "text": "Surfaces 4.1.2 role=\"dialog\" + aria-modal=\"true\" labelled by its heading", "passed": null, "evidence": "" },
+        { "text": "Surfaces 2.4.11 focused control not obscured by sticky chrome", "passed": null, "evidence": "" },
+        { "text": "Gives verification via play functions run by pnpm test:visual (open/Tab/Escape/focus-return)", "passed": null, "evidence": "" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Scaffold the Button component.",
+      "expected_output": "scaffold-component runs and, at its Step 3, consults wcag-reference (component-checklist -> Interactive control archetype). The generated Button uses a real <button>, a focus-visible outline ring, a >=24px (ideally 44px) target, aria state for toggle/loading variants, and an aria-label path for icon-only. The .stories.tsx includes a play function plus an a11y story.",
+      "files": [],
+      "assertions": [
+        { "text": "Reads/consults wcag-reference (component-checklist.md) to derive the Accessibility Spec before generating code", "passed": null, "evidence": "" },
+        { "text": "Generated Button renders a native <button> and uses focus-visible: outline utilities for the focus ring", "passed": null, "evidence": "" },
+        { "text": "Enforces a minimum target size (e.g. min-h-11 / min-h-6) per 2.5.8 / 2.5.5", "passed": null, "evidence": "" },
+        { "text": "stories file contains at least one play function AND an accessibility-oriented story/variant", "passed": null, "evidence": "" },
+        { "text": "No use of the any type and no arbitrary Tailwind values", "passed": null, "evidence": "" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Axe in Storybook is reporting a 'target-size' violation on our pagination number buttons. What WCAG criterion is this and what's the minimum I need to fix it?",
+      "expected_output": "Identifies 2.5.8 Target Size (Minimum), states the 24x24 CSS px floor (or 24px spacing alternative), references 2.5.5 as the adopted 44px preference, and gives a token-safe Tailwind fix.",
+      "files": [],
+      "assertions": [
+        { "text": "Identifies the criterion as 2.5.8 Target Size (Minimum)", "passed": null, "evidence": "" },
+        { "text": "States the 24x24 CSS px minimum (or the >=24px spacing alternative)", "passed": null, "evidence": "" },
+        { "text": "Offers a concrete Tailwind fix using scale utilities (e.g. min-h-6/min-w-6 plus padding) without arbitrary values", "passed": null, "evidence": "" },
+        { "text": "Mentions 2.5.5 (44px) as the adopted stronger target", "passed": null, "evidence": "" }
+      ]
+    }
+  ]
+}

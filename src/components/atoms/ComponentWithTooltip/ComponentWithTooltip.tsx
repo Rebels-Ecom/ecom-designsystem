@@ -1,5 +1,23 @@
-import { cloneElement, useId, useState, type KeyboardEvent, type ReactElement, type Ref } from 'react'
+import {
+  cloneElement,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactElement,
+  type Ref,
+} from 'react'
 import { cn } from '../../../lib/cn'
+
+/**
+ * Grace period before a hover-out actually closes the tooltip. WCAG 2.2 SC 1.4.13
+ * ("hoverable") requires the pointer be able to travel onto the tooltip body. Because
+ * the tip is rendered with a small offset gap from the trigger, leaving the trigger
+ * fires `mouseleave`; deferring the close lets the pointer reach the tip, where
+ * `mouseenter` re-fires and cancels the close.
+ */
+const CLOSE_GRACE_MS = 150
 
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 export type TooltipAlign = 'start' | 'center' | 'end'
@@ -50,13 +68,38 @@ function ComponentWithTooltip({
 }: ComponentWithTooltipProps) {
   const [open, setOpen] = useState(false)
   const tooltipId = useId()
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Cancel a pending close if we unmount, so we never setState on a gone component.
+  useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current)
+    },
+    [],
+  )
 
   if (!content) return element
 
-  const show = () => setOpen(true)
-  const hide = () => setOpen(false)
+  const show = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+
+  // Deferred close — entering the tooltip body (a descendant of the wrapper) re-fires
+  // `mouseenter` -> show(), which clears this timer. See CLOSE_GRACE_MS above (SC 1.4.13).
+  const hide = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => setOpen(false), CLOSE_GRACE_MS)
+  }
+
+  // Escape dismisses immediately, without the grace period (SC 1.4.13 "dismissible").
+  const dismiss = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setOpen(false)
+  }
+
   const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>) => {
-    if (event.key === 'Escape') hide()
+    if (event.key === 'Escape') dismiss()
   }
 
   // Attach the description to the focusable trigger itself so screen readers
