@@ -1,1 +1,268 @@
 @import 'tailwindcss';
+
+/* ============================================================================
+ * Design System V2 — Tailwind v4 theme
+ * Ported from .claude/docs/STYLE-GUIDE.md (source of truth). Only the live
+ * tokens are carried over; the 148 💀 dead tokens are intentionally dropped.
+ * Primitives live in `@theme`; semantic tokens in `@theme inline` so utilities
+ * emit the resolved value. Layering uses named utilities (no z-[…] arbitraries).
+ * ========================================================================== */
+
+@theme {
+  /* — Color primitives (live ramp steps only) — */
+  --color-blue-500: #003e51;
+  --color-blue-400: #336574; /* hover tints */
+  --color-orange-500: #f08a00;
+  --color-orange-600: #da7e00;
+  --color-orange-accent: #de9034;
+  --color-orange-muted: #c79a48;
+  --color-grey-200: #f7f9fa;
+  --color-grey-300: #e6ecee;
+  --color-grey-400: #cfd4d6;
+  --color-grey-500: #b8bdbe;
+  --color-grey-700: #8a8e8f;
+  --color-grey-800: #676a6b;
+  --color-grey-900: #000709;
+  --color-purple: #9a576f;
+  --color-red-critical: #cc0028;
+  --color-red-error: #ce0b0b;
+  --color-green-success: #38b000;
+  --color-black: #1d1d1b;
+  --color-white: #ffffff;
+  --color-yellow-50: #fff9e8;
+
+  /* — Typography: families & weight — */
+  --font-primary: 'spendrups_primary', Arial, sans-serif;
+  --font-secondary: 'spendrups_secondary', sans-serif;
+  --font-weight-bold: 700;
+
+  /* — Type scale (mobile) with paired line-height modifiers — */
+  --text-h-xl: 2.5rem;
+  --text-h-xl--line-height: 3.25rem;
+  --text-h-l: 2.25rem;
+  --text-h-l--line-height: 2.875rem;
+  --text-h-m: 2rem;
+  --text-h-m--line-height: 2.75rem;
+  --text-h-s: 1.375rem;
+  --text-h-s--line-height: 1.75rem;
+  --text-h-xs: 1.125rem;
+  --text-h-xs--line-height: 1.5rem;
+
+  /* Headings — desktop steps (applied via md:) */
+  --text-h-xl-lg: 3.625rem;
+  --text-h-xl-lg--line-height: 4.25rem;
+  --text-h-l-lg: 2.5rem;
+  --text-h-l-lg--line-height: 3.5rem;
+  --text-h-m-lg: 2.25rem;
+  --text-h-m-lg--line-height: 2.875rem;
+
+  /* Body */
+  --text-body: 1rem;
+  --text-body--line-height: 1.25rem;
+  --text-body-s: 0.875rem;
+  --text-body-s--line-height: 1.125rem;
+
+  /* CTA labels */
+  --text-cta-s: 0.875rem;
+  --text-cta-s--line-height: 1.125rem;
+  --text-cta-l: 1rem;
+  --text-cta-l--line-height: 1.25rem;
+
+  /* Tag labels */
+  --text-tag-rect: 0.75rem;
+  --text-tag-rect--line-height: 1.25rem;
+  --text-tag-rect-lg: 1rem;
+  --text-tag-rect-lg--line-height: 1.875rem;
+
+  /* Icon glyph sizes — small/medium/large map to the standard scale
+     (text-base / text-xl / text-2xl); xlarge (1.75rem) is off-scale. */
+  --text-icon-xl: 1.75rem;
+
+  /* — Letter spacing — */
+  --tracking-cta-s: 0.02rem;
+  --tracking-cta-l: 0.03rem;
+
+  /* — Containers (max-width) — */
+  --container-content-wide: 103rem;
+  --container-content-md: 80rem;
+  --container-content-narrow: 73rem;
+  --container-content-text: 52rem;
+  --container-content-lg: 77.5rem;
+  --container-listing-m: 37.5rem;
+  --container-product-card: 18.75rem;
+  --container-cta-default: 13.75rem;
+
+  /* — Component dimensions — */
+  --spacing-product-card-v: 30.5rem;
+  --spacing-breadcrumbs-mobile: 10rem;
+  --spacing-breadcrumbs-desktop: 13rem;
+  --spacing-footer-bar-mobile: 4.25rem;
+  --spacing-footer-bar-desktop: 6rem;
+  --spacing-logotype-mobile: 2rem;
+  --spacing-logotype-desktop: 2.25rem;
+}
+
+@theme inline {
+  /* Action — primary (blue) */
+  --color-action-primary: var(--color-blue-500);
+  --color-action-primary-hover: var(--color-blue-400);
+  --color-action-primary-disabled: var(--color-grey-300);
+
+  /* Action — secondary (white) */
+  --color-action-secondary: var(--color-white);
+  --color-action-secondary-opacity: rgb(255 255 255 / 0.8);
+
+  /* Action — tertiary (orange) */
+  --color-action-tertiary: var(--color-orange-500);
+  --color-action-tertiary-hover: #f3a133;
+  --color-action-tertiary-disabled: #fef3e6;
+
+  /* Action — neutral "x" */
+  --color-action-x: var(--color-white);
+
+  /* Action — icon */
+  --color-action-icon-bg: var(--color-yellow-50);
+  --color-action-icon: var(--color-blue-500);
+
+  /* Interactive (links / controls) */
+  --color-interactive: var(--color-orange-500);
+  --color-interactive-hover: var(--color-orange-600);
+  --color-interactive-disabled: #d5d5d5;
+
+  /* Text */
+  --color-text-default: var(--color-black);
+  --color-text-white: var(--color-white);
+  --color-text-subdued: var(--color-grey-800);
+  --color-text-blue: var(--color-blue-500);
+  --color-text-orange: var(--color-orange-accent);
+  --color-text-critical: var(--color-red-critical);
+  --color-text-input: var(--color-blue-500);
+  --color-text-decorative-grey: #4e4e5c;
+  --color-text-decorative-orange: var(--color-orange-muted);
+  --color-text-decorative-purple: var(--color-purple);
+  --color-text-on-primary: var(--color-white);
+  --color-text-on-primary-disabled: var(--color-grey-700);
+  --color-text-on-secondary: var(--color-blue-500);
+  --color-text-on-secondary-hover: var(--color-blue-400);
+  --color-text-on-secondary-disabled: #547e8a;
+  --color-text-on-tertiary: var(--color-black);
+  --color-text-on-tertiary-disabled: var(--color-grey-700);
+
+  /* Surface */
+  --color-surface-default: var(--color-white);
+  --color-surface-subdued: #f7f7f7;
+  --color-surface-disabled: #f7f7f7;
+  --color-surface-critical: var(--color-red-critical);
+  --color-surface-critical-subdued: #ffe6eb;
+
+  /* Border */
+  --color-border-default: #b3b3b3;
+  --color-border-disabled: #d5d5d5;
+  --color-border-critical: var(--color-red-critical);
+  --color-border-grey: #e5ecee;
+  --color-border-orange: var(--color-orange-600);
+  --color-border-on-secondary: var(--color-blue-500);
+  --color-border-on-secondary-hover: var(--color-blue-400);
+  --color-border-on-secondary-disabled: #b0c3c9;
+  --color-border-on-x: #b7b5b5;
+
+  /* Background / surfaces by region */
+  --color-background: #fbfaf9;
+  --color-background-light-orange: var(--color-yellow-50);
+  --color-background-nav: #f2efea;
+  --color-background-sub-nav: #fbfaf9;
+  --color-background-top-nav: var(--color-blue-500);
+  --color-background-product-desc: #fbfaf9;
+  --color-background-footer: #f2efea;
+
+  /* Navigation text */
+  --color-nav-text-default: var(--color-blue-500);
+  --color-nav-text-hover: var(--color-blue-400);
+  --color-nav-text-focus: var(--color-blue-400);
+  --color-nav-border-subdued: rgb(240 138 0 / 0.4);
+  --color-nav-surface-default: var(--color-white);
+  --color-top-nav-text-default: var(--color-white);
+  --color-top-nav-text-hover: var(--color-orange-500);
+  --color-top-nav-text-focus: var(--color-orange-500);
+
+  /* Tags */
+  --color-tag-green: #3d5b49;
+  --color-tag-mint: #c0e1d7;
+  --color-tag-blue: var(--color-blue-500);
+  --color-tag-orange: var(--color-orange-accent);
+  --color-tag-white: var(--color-white);
+  --color-tag-grey: #f1f1f1;
+  --color-tag-yellow: var(--color-yellow-50);
+  --color-tag-purple: var(--color-purple);
+  --color-tag-black: var(--color-black);
+
+  /* Loading bar */
+  --color-bar-bg-orange: #eee1c8;
+  --color-bar-bg-purple: #e1cdd4;
+  --color-bar-fill-orange: var(--color-orange-muted);
+  --color-bar-fill-purple: var(--color-purple);
+
+  /* Inputs */
+  --color-input-bg-readonly: #fef9ea;
+  --color-input-bg-focused: rgb(255 196 22 / 0.1);
+  --color-input-border: var(--color-orange-accent);
+
+  /* Alerts */
+  --color-alert-error-bg: #cd8aa2;
+  --color-alert-warning-bg: #fadbb0;
+  --color-alert-info-bg: #3d5b49;
+  --color-alert-icon-error-bg: #e4b6c3;
+  --color-alert-icon-warning-bg: var(--color-yellow-50);
+  --color-alert-icon-info-bg: #708e7c;
+
+  /* Icons */
+  --color-icon-blue: var(--color-blue-500);
+  --color-icon-critical: var(--color-red-error);
+  --color-icon-decorative-orange: var(--color-orange-600);
+  --color-icon-bg-blue: #eaeaeb;
+
+  /* Misc */
+  --color-decorative-image: #f7f7f7;
+}
+
+/* Layering scale — named utilities keep intent readable and z-[…] forbidden. */
+@layer utilities {
+  .z-select {
+    z-index: 10;
+  }
+  .z-backdrop {
+    z-index: 99;
+  }
+  .z-menu {
+    z-index: 100;
+  }
+  .z-menu-icon {
+    z-index: 101;
+  }
+  .z-drawer-backdrop {
+    z-index: 997;
+  }
+  .z-drawer {
+    z-index: 998;
+  }
+  .z-modal-backdrop {
+    z-index: 999;
+  }
+}
+
+/* Dark theme — overrides only the tokens that diverge (same names, new values). */
+.dark {
+  --color-background: var(--color-black);
+  --color-surface-default: #333333;
+  --color-surface-subdued: #555555;
+  --color-surface-disabled: #777777;
+  --color-surface-critical: #ee0030;
+  --color-border-default: #777777;
+  --color-border-disabled: #777777;
+  --color-border-critical: #ee0030;
+  --color-interactive-hover: #f3a133;
+  --color-interactive-disabled: #777777;
+  --color-background-footer: #333333;
+  --color-alert-error-bg: #e4b6c3;
+  --color-alert-warning-bg: var(--color-yellow-50);
+}

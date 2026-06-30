@@ -9,4 +9,24 @@
  *
  * Categorize each export by strict Atomic Design (atoms / molecules / organisms).
  */
-export {};
+
+/* ── Atoms ────────────────────────────────────────────────────────────── */
+export { CampaignBanner } from './components/atoms/CampaignBanner'
+export type { CampaignBannerProps, Campaign } from './components/atoms/CampaignBanner'
+
+export { ComponentWithTooltip } from './components/atoms/ComponentWithTooltip'
+export type {
+  ComponentWithTooltipProps,
+  TooltipSide,
+  TooltipAlign,
+  TooltipColor,
+} from './components/atoms/ComponentWithTooltip'
+
+export { ExpandableWrapper } from './components/atoms/ExpandableWrapper'
+export type { ExpandableWrapperProps } from './components/atoms/ExpandableWrapper'
+
+export { Heading } from './components/atoms/Heading'
+export type { HeadingProps, HeadingOrder, HeadingAlignment, HeadingColor } from './components/atoms/Heading'
+
+export { Icon } from './components/atoms/Icon'
+export type { IconProps, IconName, IconSize, IconColor } from './components/atoms/Icon'

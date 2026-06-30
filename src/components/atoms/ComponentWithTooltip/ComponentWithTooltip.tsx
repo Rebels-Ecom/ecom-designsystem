@@ -1,0 +1,97 @@
+import { cloneElement, useId, useState, type KeyboardEvent, type ReactElement, type Ref } from 'react'
+import { cn } from '../../../lib/cn'
+
+export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
+export type TooltipAlign = 'start' | 'center' | 'end'
+export type TooltipColor = 'black' | 'pink'
+
+export interface ComponentWithTooltipProps {
+  /** The trigger element the tooltip describes. */
+  element: ReactElement
+  /** Tooltip text. When omitted the element is rendered without a tooltip. */
+  content?: string
+  wrapperClassName?: string
+  /** @default 'top' */
+  side?: TooltipSide
+  /** @default 'center' */
+  align?: TooltipAlign
+  /** @default 'black' */
+  color?: TooltipColor
+  ref?: Ref<HTMLSpanElement>
+}
+
+const colorClasses: Record<TooltipColor, string> = {
+  black: 'bg-black text-text-white',
+  pink: 'bg-alert-icon-error-bg text-text-default',
+}
+
+const sideClasses: Record<TooltipSide, string> = {
+  top: 'bottom-full mb-1',
+  bottom: 'top-full mt-1',
+  left: 'right-full mr-1',
+  right: 'left-full ml-1',
+}
+
+const alignClasses: Record<TooltipSide, Record<TooltipAlign, string>> = {
+  top: { start: 'left-0', center: 'left-1/2 -translate-x-1/2', end: 'right-0' },
+  bottom: { start: 'left-0', center: 'left-1/2 -translate-x-1/2', end: 'right-0' },
+  left: { start: 'top-0', center: 'top-1/2 -translate-y-1/2', end: 'bottom-0' },
+  right: { start: 'top-0', center: 'top-1/2 -translate-y-1/2', end: 'bottom-0' },
+}
+
+function ComponentWithTooltip({
+  element,
+  content,
+  wrapperClassName,
+  side = 'top',
+  align = 'center',
+  color = 'black',
+  ref,
+}: ComponentWithTooltipProps) {
+  const [open, setOpen] = useState(false)
+  const tooltipId = useId()
+
+  if (!content) return element
+
+  const show = () => setOpen(true)
+  const hide = () => setOpen(false)
+  const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>) => {
+    if (event.key === 'Escape') hide()
+  }
+
+  // Attach the description to the focusable trigger itself so screen readers
+  // announce it. aria-describedby is valid on any host element.
+  const trigger = cloneElement(element as ReactElement<{ 'aria-describedby'?: string }>, {
+    'aria-describedby': open ? tooltipId : undefined,
+  })
+
+  return (
+    <span
+      ref={ref}
+      className={cn('relative inline-flex', wrapperClassName)}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
+      onKeyDown={handleKeyDown}
+    >
+      {trigger}
+      {open && (
+        <span
+          role="tooltip"
+          id={tooltipId}
+          className={cn(
+            'absolute z-menu-icon flex max-w-64 rounded px-2 py-1.5 text-body-s whitespace-normal',
+            colorClasses[color],
+            sideClasses[side],
+            alignClasses[side][align],
+          )}
+        >
+          {content}
+        </span>
+      )}
+    </span>
+  )
+}
+
+export { ComponentWithTooltip }

@@ -2,7 +2,7 @@
 
 ## Initialization
 
-- **Local Overrides**: Always check if a file named CLAUDE-PERSONAL.md exists in the root directory. If it exists, you must silently read it and strictly follow all supplementary instructions provided within it.
+- **Local Overrides**: Always check if a file named CLAUDE-PERSONAL.md exists in the .claude directory. If it exists, you must silently read it and strictly follow all supplementary instructions provided within it.
 
 ## Core Directives
 

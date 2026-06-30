@@ -32,6 +32,7 @@ Create the following three files in the target V2 directory.
 
 - **Strict Typing:** Write a strict TypeScript interface for props. The `any` type is strictly forbidden.
 - **React 19:** Pass `ref` as a standard prop. Explicitly type `children` as `React.ReactNode`.
+- **Imports:** Use explicit relative imports. Ensure all imports follow the V2 structure, not legacy paths.
 - **Styling:** Implement styling using Tailwind CSS classes. For the conversion of styles from the legacy source, invoke the tailwind-migrator skill to ensure strict adherence to .claude/docs/STYLE-GUIDE.md and to automatically exclude dead tokens.
 - **Accessibility:** Include all necessary `aria` attributes and ensure visible focus states for keyboard navigation.
 
@@ -46,12 +47,16 @@ Create the following three files in the target V2 directory.
 
 **Step 4: Update Public API (src/index.ts)**
 
-- Open the package entry file: `src/index.ts`. (Create it if it does not exist).
-- Safely append the named export for the newly created component AND its strict TypeScript interface.
-- Use clean, explicit relative paths. Format exactly like this:
+- **Safe Append:** Read `src/index.ts` entirely before modification to check for existing exports. If an export already exists, skip it.
+- **Formatting:** Append named exports cleanly. Format exactly like this:
   `export { ComponentName } from './components/category/ComponentName';`
   `export type { ComponentNameProps } from './components/category/ComponentName';`
-- Strictly verify that you do NOT create duplicate exports or overwrite the existing content in the file.
+
+**Step 5: Cleanup & Verification**
+
+- Verify that all files have been created.
+- Ensure no duplicate exports exist in `src/index.ts`.
+- Run a brief validation to confirm the component is ready for linting.
 
 ## Output Requirement
 

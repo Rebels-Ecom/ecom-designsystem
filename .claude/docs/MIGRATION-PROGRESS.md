@@ -6,25 +6,25 @@
 
 ## Current Batch Status
 
-- **Active Category**: None
+- **Active Category**: atoms
 - **Last Updated**: 2026-06-29
-- **Current Micro-Batch**: Not started
+- **Current Micro-Batch**: Batch 1 — atoms 1–5 (complete; `tsc --noEmit` + `pnpm build` pass. Storybook a11y/Playwright visual suite not yet run.)
 
 ## Summary
 
 - Total Components: 155
-- Completed: 0 / 155
-- Remaining: 155
+- Completed: 5 / 155
+- Remaining: 150
 
 ## Components Checklist
 
 ### src/components/atoms
 
-- [ ] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
-- [ ] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
-- [ ] ExpandableWrapper (Legacy: legacy/src/design-system/components/atoms/expandable-wrapper)
-- [ ] Heading (Legacy: legacy/src/design-system/components/atoms/heading)
-- [ ] Icon (Legacy: legacy/src/design-system/components/atoms/icon)
+- [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
+- [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
+- [x] ExpandableWrapper (Legacy: legacy/src/design-system/components/atoms/expandable-wrapper)
+- [x] Heading (Legacy: legacy/src/design-system/components/atoms/heading)
+- [x] Icon (Legacy: legacy/src/design-system/components/atoms/icon)
 - [ ] Checkbox (Legacy: legacy/src/design-system/components/atoms/inputs/checkbox)
 - [ ] DebounceInput (Legacy: legacy/src/design-system/components/atoms/inputs/debounce-input)
 - [ ] InputFile (Legacy: legacy/src/design-system/components/atoms/inputs/input-file)

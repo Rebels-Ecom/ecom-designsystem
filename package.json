@@ -53,5 +53,9 @@
   "repository": "https://github.com/Rebels-Ecom/ecom-designsystem",
   "publishConfig": {
     "@rebels-ecom:registry": "https://npm.pkg.github.com"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
   }
 }
