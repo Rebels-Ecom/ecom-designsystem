@@ -18,7 +18,7 @@
 ## Tailwind CSS v4 & Styling Rules
 
 - **CSS-First Engine**: Tailwind v4 uses a CSS-only configuration. Do NOT attempt to create or modify `tailwind.config.js`. Use `@theme` directives in the main CSS entry point if customizations are needed.
-- **Migration Enforcement**: When converting legacy CSS/Styled Components, you MUST strictly follow the execution rules defined in the `tailwind_migrator` skill (dead code elimination, strict theming, no arbitrary values).
+- **Migration Enforcement**: When converting legacy CSS/Styled Components, you MUST strictly follow the execution rules defined in the `tailwind-migrator` skill (dead code elimination, strict theming, no arbitrary values).
 - **Class Merging**: Always use `tailwind-merge` (and optionally `clsx` or `cva`) to resolve utility class conflicts when combining default component styles with external `className` props.
 
 ## Build & Test Commands
