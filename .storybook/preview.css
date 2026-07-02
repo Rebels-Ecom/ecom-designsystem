@@ -1,0 +1,12 @@
+/*
+ * Storybook-only canvas styling (NOT shipped in the library bundle).
+ *
+ * The legacy visual baselines in `legacy-snapshots/` were captured on the design system's
+ * page background, so render the Storybook canvas on the same token (`--color-background`,
+ * defined by src/styles/index.css) instead of the default white — otherwise every visual
+ * diff fails on the empty canvas alone. Paired with `layout: 'fullscreen'` on the `Visual`
+ * parity stories, content then sits flush like the legacy captures.
+ */
+body {
+  background-color: var(--color-background);
+}

@@ -54,3 +54,23 @@ export const Clickable: Story = {
     await expect(args.onClick).toHaveBeenCalled()
   },
 }
+
+// Reproduces the legacy `heading--heading-story` frame — all five levels, text "Heading here"
+// — for the visual-regression diff. Static (no `play`); `layout: 'fullscreen'` so it sits flush
+// like the legacy capture. Mapped in tests/visual/baseline-map.ts.
+export const Visual: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  // `render` supplies every level explicitly; `args` is only here because Heading's required
+  // props make it mandatory on the Story type.
+  args: { order: 1, children: 'Heading here' },
+  render: () => (
+    <>
+      <Heading order={1} margin={[2.5, 0]}>Heading here</Heading>
+      <Heading order={2}>Heading here</Heading>
+      <Heading order={3}>Heading here</Heading>
+      <Heading order={4}>Heading here</Heading>
+      <Heading order={5}>Heading here</Heading>
+    </>
+  ),
+}

@@ -31,6 +31,10 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   `style={{ … }}`.
 - **Always merge external `className` through `cn()`** (`src/lib/cn.ts`) — never
   raw template literals.
+- **Brand fonts** live in `src/styles/fonts/` (Edmondsans → `spendrups_primary`,
+  RobotoSlab → `spendrups_secondary`) with `@font-face` rules at the top of
+  `src/styles/index.css`; the `--font-primary` / `--font-secondary` tokens reference
+  those families. Adding a weight means adding both the file and its `@font-face`.
 
 ### ⚠ `cn()` must know our custom font-size tokens
 
@@ -99,12 +103,48 @@ Patterns established so far:
   Must pass with zero TS errors.
 - `pnpm test-storybook` → `@storybook/addon-vitest` runs every story in headless
   Chromium: `play` functions (interaction) + axe (a11y, fails on violations).
-- `pnpm test:visual` → Playwright visual-regression (`tests/visual/*.spec.ts`).
-  **Scaffolded but not yet implemented** — `playwright.config.ts` exists, but there
-  are no specs/baselines, so it currently reports "No tests found". Planned approach:
-  seed baselines from the already-approved legacy components on the `main` branch
-  (legacy needs Radix/`classnames`/React 16, so it must be rendered in main's own
-  environment, not this toolchain), diff V2 against them, then let accepted V2 renders
-  become the ongoing drift baseline. A separate concern from the a11y/interaction tests.
+- `pnpm test:visual` → Playwright visual-regression against the **frozen** legacy
+  baseline in `legacy-snapshots/` (see [Visual regression](#visual-regression)).
 - React, React DOM and Framer Motion are **peerDependencies** and externalized
   by Vite — never bundled. `clsx` / `tailwind-merge` are regular deps (bundled).
+- **CSS output:** `src/index.ts` imports `src/styles/index.css`, so the build emits a single
+  `dist/ecom-designsystem.css` (Tailwind theme + utilities + `@font-face`). `package.json`
+  `sideEffects: ["**/*.css"]` keeps that import through tree-shaking while JS stays
+  tree-shakeable. Vite lib mode base64-inlines CSS assets, so a build-only plugin in
+  `vite.config.ts` (`externalizeFonts`, guarded on `build.lib` — never runs in the Storybook
+  build) extracts the woff2 fonts to `dist/assets/fonts/` and rewrites the CSS to relative
+  `url()`s, keeping the CSS lean (~23 kB) and the fonts cacheable. Consumers import
+  `@rebels-ecom/ecom-designsystem/styles.css`.
+
+## Visual regression
+
+`pnpm test:visual` (Playwright, `tests/visual/`) renders each migrated V2 component in Storybook
+and pixel-diffs it against the **frozen** legacy screenshot in `legacy-snapshots/` — the definitive
+baseline captured from `main` (desktop 1280×800, mobile 375×667, both at devicePixelRatio 1). It's a
+migration parity check, independent of the a11y/interaction suite.
+
+- **Baselines are read-only.** Playwright reads the PNGs directly via `snapshotPathTemplate` and
+  never writes them. Do **not** run `--update-snapshots` — it would overwrite the reference images.
+- **Story ↔ baseline map.** V2 story ids and renders don't match legacy 1:1, so the pairing is
+  explicit in `tests/visual/baseline-map.ts`: each entry maps a static, `['visual']`-tagged `Visual`
+  story to a legacy basename. `scaffold-component` adds one entry per migrated component that has a
+  baseline; components with no legacy counterpart (e.g. `Icon`, `ExpandableWrapper`) get none.
+- **Threshold = the gate.** `playwright.config.ts` sets `maxDiffPixelRatio: 0.02` (+ per-pixel
+  `threshold: 0.2`); a larger diff fails. A Tailwind rewrite is rarely pixel-identical, so review
+  failures in `playwright-report/` and either drive the component toward parity or, for an
+  intentional/approved change, widen the threshold with a comment.
+- **Cadence.** Scoped per component during scaffolding (`pnpm exec playwright test --grep <component>`,
+  reusing a running `pnpm storybook`), then the full `pnpm test:visual` suite as the batch gate.
+
+### CI (still to wire up)
+
+Two environment issues must be handled before this gates CI:
+
+1. **`legacy-snapshots/` is git-ignored**, so CI has no baselines. Commit them (they are the
+   reference, ~650 PNGs), or restore them in the job from an artifact / LFS / dedicated branch before
+   running.
+2. **Font/anti-aliasing rendering differs across OS.** The baselines were captured on macOS; the same
+   render on a Linux CI runner diffs heavily. Generate *and* run the visual tests in the pinned
+   Playwright Linux container (`mcr.microsoft.com/playwright:v<version>-jammy`) so capture and
+   comparison share one environment. `retries: 2` and `forbidOnly` are already set for CI in
+   `playwright.config.ts`.

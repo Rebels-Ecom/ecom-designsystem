@@ -9,6 +9,7 @@ lerna-debug.log*
 
 # Arkiv
 legacy/
+legacy-snapshots/
 
 # Dependency directories
 node_modules
@@ -19,6 +20,11 @@ dist
 dist-ssr
 storybook-static
 *.tsbuildinfo
+
+# Playwright visual-regression output (baselines live in legacy-snapshots/)
+test-results
+playwright-report
+playwright-report/index.html
 
 # Env and local files
 *.local

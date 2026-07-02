@@ -10,6 +10,12 @@
  * Categorize each export by strict Atomic Design (atoms / molecules / organisms).
  */
 
+/* Bundle the design system's styles (Tailwind theme + @font-face brand fonts) into the
+ * library's CSS output (`dist/ecom-designsystem.css`). package.json `sideEffects` whitelists
+ * CSS, so this side-effect-only import survives tree-shaking while JS modules stay
+ * tree-shakeable for consumers. */
+import './styles/index.css'
+
 /* ── Atoms ────────────────────────────────────────────────────────────── */
 export { CampaignBanner } from './components/atoms/CampaignBanner'
 export type { CampaignBannerProps, Campaign } from './components/atoms/CampaignBanner'

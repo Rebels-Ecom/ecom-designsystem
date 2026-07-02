@@ -44,7 +44,7 @@ rather than from memory:
 - Write a short **Accessibility Spec**: the semantic element, `aria`/`role` + state, focus treatment,
   keyboard model, contrast tokens, and target sizes — plus the checks to encode in stories.
 
-Carry this spec into Steps 4–6.
+Carry this spec into Steps 4–7.
 
 **Step 4 — Generate the three files**
 
@@ -74,6 +74,14 @@ class merging.
   an a11y story rendering the variants/states the criteria call out so `@storybook/addon-a11y`'s axe
   pass scans them, and add `play` assertions for the behavioural checks (keyboard activation, focus
   move/return on overlays, `aria-*` toggling, `Escape`-to-dismiss).
+- **Visual parity:** add one static story `export const Visual` tagged `['visual']`, with **no `play`**
+  (the captured frame must not mutate) and `parameters: { layout: 'fullscreen' }` (the legacy baselines
+  were captured with no Storybook padding). **Read the legacy `*.stories.*` file and reproduce that
+  story's exact frame** — same variants, props, and text — because a mismatched frame produces a
+  meaningless diff (e.g. legacy `heading-story` renders all five levels with the text "Heading here", so
+  the parity story renders exactly that, not a lone heading). The canvas background already matches
+  legacy globally via `.storybook/preview.css`, so you don't set it per story. This is the frame the
+  visual-regression suite diffs against the legacy baseline (wired in Step 6, run in Step 7).
 
 *3. `index.ts`* — re-export the component and every exported type.
 
@@ -169,17 +177,48 @@ export const KeyboardActivation: Story = {
   - `export { ComponentName } from './components/category/ComponentName'`
   - `export type { ComponentNameProps } from './components/category/ComponentName'`
 
-**Step 6 — Verify**
+**Step 6 — Register the visual baseline**
+
+The visual-regression suite (`pnpm test:visual`) renders each mapped story and pixel-diffs it against
+the **frozen** legacy PNG in `legacy-snapshots/` — the definitive baseline. Wire the new component in:
+
+- Find its legacy baseline: `ls legacy-snapshots | grep -i <component>`. Pick the file whose render your
+  Step-4 `Visual` story reproduces, then strip the `-desktop`/`-mobile` suffix to get the basename
+  (e.g. `design-system-atoms-heading--heading-story`).
+- Append a strictly-typed entry to `tests/visual/baseline-map.ts` mapping the `Visual` story id (the
+  kebab-cased `title` + export, e.g. `design-system-atoms-heading--visual`) to that basename.
+- **If no legacy baseline exists** (a brand-new component, or one only ever rendered inside a legacy
+  parent), add no entry — it simply gets no visual test. Record that in the migration log (Step 8).
+- Never run `playwright test --update-snapshots`: the legacy PNGs are the reference and must not be
+  overwritten.
+
+**Step 7 — Verify**
 
 - All three files exist; no duplicate exports in `src/index.ts`.
 - Every criterion in the Accessibility Spec has an implementation and a matching story / `play` check.
 - Type-check and run the new component's tests:
   - `pnpm build` — must pass with zero TypeScript errors (it runs `tsc --noEmit` before the Vite build).
   - `pnpm test-storybook` — runs the play functions and the `@storybook/addon-a11y` axe pass.
-- (`pnpm test:visual` is the Playwright visual-regression layer and is currently deferred — don't rely
-  on it to confirm behaviour.)
+  - `pnpm exec playwright test --grep <component>` — visual regression for **just this component**
+    against its legacy baseline (the `pnpm test:visual -- --grep` form does **not** forward the flag).
+    A diff beyond the configured threshold fails; open the Playwright HTML report to review it. Keep
+    `pnpm storybook` running so this reuses the live server instead of rebuilding. (Skip only if the
+    component has no baseline — Step 6.)
+- **Cadence:** run the scoped `test:visual` per component (above) for tight feedback while you're in
+  context, then run the **full** suite once at the end of the 5-component batch (`pnpm test:visual`) as
+  the regression gate before moving on.
+
+**Step 8 — Update the migration log**
+
+`.claude/docs/MIGRATION-PROGRESS.md` is the batch's source of truth — keep it in lockstep:
+
+- Flip the component's `[ ]` to `[x]` once all three files exist, `pnpm build` is green, and its
+  `test-storybook` + scoped `test:visual` have run. Add a short note if the visual diff needs human
+  sign-off, or if the component has no baseline.
+- Bump the **Completed / Remaining** counts and the **Current Micro-Batch** line.
+- Do this before starting the next component; never advance a batch with a stale log.
 
 ## Output
 
 Write the files directly; don't paste the generated code into the chat. Confirm completion in one
-sentence, noting what the `play` function covers.
+sentence, noting what the `play` function covers and whether a legacy visual baseline was mapped.

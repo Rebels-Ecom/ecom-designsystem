@@ -44,3 +44,19 @@ export const Disabled: Story = {
     await expect(args.campaigns[0]?.onClick).not.toHaveBeenCalled()
   },
 }
+
+// Static frame diffed against the legacy baseline by `pnpm test:visual` (no `play`, no
+// enter animation). Mapped in tests/visual/baseline-map.ts.
+export const Visual: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    position: 'relative',
+    animate: false,
+    campaigns: [
+      { title: 'Campaign Banner', color: '#9a576f' },
+      { title: 'Campaign Banner 2', color: '#3d5b49' },
+      { title: 'Campaign Banner 3', color: '#1d1d1d' },
+    ],
+  },
+}

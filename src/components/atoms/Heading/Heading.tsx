@@ -33,6 +33,19 @@ const sizeByOrder: Record<HeadingOrder, string> = {
   5: 'text-h-xs',
 }
 
+/**
+ * Default bottom spacing per level, on Tailwind's standard spacing scale (larger heading →
+ * more space). Tailwind's preflight resets native `h1`–`h5` margins to 0, so without this a
+ * heading has no default spacing. Overridden by `noMargin` (→ `m-0`) and the `margin` prop.
+ */
+const marginByOrder: Record<HeadingOrder, string> = {
+  1: 'mb-8',
+  2: 'mb-6',
+  3: 'mb-5',
+  4: 'mb-4',
+  5: 'mb-3',
+}
+
 const alignmentClasses: Record<HeadingAlignment, string> = {
   left: 'justify-start text-left',
   center: 'justify-center text-center',
@@ -66,6 +79,7 @@ function Heading({
   const classes = cn(
     'flex font-primary font-bold text-text-default',
     sizeByOrder[order],
+    marginByOrder[order],
     alignmentClasses[align],
     noMargin && 'm-0',
     color && colorClasses[color],

@@ -1,14 +1,19 @@
 ## Instructions for AI Assistant
 
-- Update this file after every micro-batch of 5 components.
-- Change `[ ]` to `[x]` when a component is fully generated, strictly typed, and passes local verification.
+- Update this file as you go — flip `[ ]` to `[x]` as each component lands, and always before starting
+  the next one (the `scaffold-component` skill drives this at its Step 8).
+- A component is done when it is fully generated, strictly typed, `pnpm build` is green, and it passes
+  local verification: `pnpm test-storybook` (interaction + a11y) and, if it has a legacy baseline,
+  `pnpm exec playwright test --grep <component>` (visual regression vs `legacy-snapshots/`). Note any diff
+  that needs human sign-off, or components that have no baseline.
+- Run the full `pnpm test:visual` as the gate at the end of each 5-component micro-batch.
 - Never proceed to the next batch without updating this progress log.
 
 ## Current Batch Status
 
 - **Active Category**: atoms
 - **Last Updated**: 2026-06-29
-- **Current Micro-Batch**: Batch 1 — atoms 1–5 (complete; `tsc --noEmit` + `pnpm build` pass. Storybook a11y/Playwright visual suite not yet run.)
+- **Current Micro-Batch**: Batch 1 — atoms 1–5 (complete; `tsc --noEmit` + `pnpm build` pass. Visual-regression suite now wired: parity stories + baseline map added for Heading, CampaignBanner, ComponentWithTooltip; Icon & ExpandableWrapper have no legacy baseline, so no visual test. Run `pnpm test:visual` to review diffs.)
 
 ## Summary
 

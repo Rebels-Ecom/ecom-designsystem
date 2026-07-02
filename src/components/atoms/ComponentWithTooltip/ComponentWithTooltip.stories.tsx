@@ -99,3 +99,18 @@ export const Hoverable: Story = {
     await waitFor(() => expect(canvas.queryByRole('tooltip')).not.toBeInTheDocument())
   },
 }
+
+// Static frame diffed against the legacy baseline by `pnpm test:visual`. No `play`, so the
+// tooltip stays closed and we capture just the trigger. Mapped in tests/visual/baseline-map.ts.
+export const Visual: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    content: 'Välj variant',
+    element: (
+      <button type="button" className={triggerClass}>
+        Hover me
+      </button>
+    ),
+  },
+}

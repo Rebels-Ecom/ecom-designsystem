@@ -1,5 +1,38 @@
 @import 'tailwindcss';
 
+/* — Brand fonts (ported from legacy `spendrups-font-face.css`) —
+ * `spendrups_primary` = Edmondsans, `spendrups_secondary` = RobotoSlab. The theme
+ * `--font-*` tokens below reference these families, so without these faces the UI
+ * silently falls back to Arial (the cause of visual-regression font drift). */
+@font-face {
+  font-family: 'spendrups_primary';
+  src: url('./fonts/Edmondsans/EdmondsansRegular_web.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'spendrups_primary';
+  src: url('./fonts/Edmondsans/EdmondsansBold_web.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'spendrups_secondary';
+  src: url('./fonts/RobotoSlab/RobotoSlab-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'spendrups_secondary';
+  src: url('./fonts/RobotoSlab/RobotoSlab-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ============================================================================
  * Design System V2 — Tailwind v4 theme
  * Ported from .claude/docs/STYLE-GUIDE.md (source of truth). Only the live

@@ -52,7 +52,7 @@ Every component directory must include:
 - **Public API Strategy**: Use a "Flat Export" strategy. Maintain a central `src/index.ts` file that acts as the single entry point for all components.
   - Export format: `export { Component } from './components/category/Component';`
   - Always export both the component and its type definition (`export type { ComponentProps } ...`).
-- **Performance**: Configure `package.json` with `"sideEffects": false` to ensure modern bundlers can perform effective tree-shaking for consumers.
+- **Performance**: Configure `package.json` `sideEffects` to whitelist stylesheets only — `["**/*.css"]`, NOT `false`. The library entry (`src/index.ts`) imports `src/styles/index.css` so the build emits `dist/ecom-designsystem.css`; a blanket `false` tree-shakes that side-effect-only import away and ships no CSS. Whitelisting CSS keeps the stylesheet while JS components stay tree-shakeable for consumers.
 - **Encapsulation**: Use the `exports` field in `package.json` to strictly map the public API to the central `src/index.ts` file, preventing deep imports from external applications.
 - **Peer Dependencies**: React, React DOM, and Framer Motion must NEVER be bundled. List them strictly as `peerDependencies` in `package.json` and configure Vite to externalize them.
 
