@@ -102,7 +102,9 @@ export default defineConfig({
     },
     rollupOptions: {
       // React, React DOM and Framer Motion must never be bundled (peerDependencies).
-      external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion'],
+      // lucide-react is a regular dependency, externalized so a consumer app that also
+      // uses lucide doesn't ship two copies.
+      external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion', 'lucide-react'],
       output: {
         globals: {
           react: 'React',

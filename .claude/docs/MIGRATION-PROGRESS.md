@@ -12,8 +12,9 @@
 ## Current Batch Status
 
 - **Active Category**: atoms
-- **Last Updated**: 2026-06-29
-- **Current Micro-Batch**: Batch 1 — atoms 1–5 (complete; `tsc --noEmit` + `pnpm build` pass. Visual-regression suite now wired: parity stories + baseline map added for Heading, CampaignBanner, ComponentWithTooltip; Icon & ExpandableWrapper have no legacy baseline, so no visual test. Run `pnpm test:visual` to review diffs.)
+- **Last Updated**: 2026-07-02
+- **Current Micro-Batch**: Batch 1 — atoms 1–5 (complete; `tsc --noEmit` + `pnpm build` pass. Visual-regression suite wired: parity stories + baseline map for Heading, CampaignBanner, ComponentWithTooltip, and Icon; ExpandableWrapper has no legacy baseline, so no visual test. Full `pnpm test:visual` passing 8/8.)
+- **2026-07-02 — Icon re-migrated to `lucide-react`**: the icomoon font class was dead in V2 (no `@font-face` shipped), so Icon rendered nothing. Now renders Lucide SVGs via a strict `Record<IconName, IconGlyph>` map (legacy icomoon set was Feather — Lucide's ancestor — so glyphs map 1:1). Exceptions kept working: `icon-facebook`/`icon-instagram`/`icon-linkedin` (Lucide ships no brand icons) use vectors extracted from legacy `selection.json`; `icon-heart-o` → Lucide `Heart`, `icon-heart1` → `Heart` filled. Visual baseline `design-system-atoms-icon--icon-story` wired and passing; `pnpm test-storybook` 16/16.
 
 ## Summary
 

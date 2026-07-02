@@ -34,4 +34,8 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-atoms-componentwithtooltip--visual',
     legacyBaseline: 'design-system-atoms-componentwithtooltip--component-with-tooltip-story',
   },
+  {
+    storyId: 'design-system-atoms-icon--visual',
+    legacyBaseline: 'design-system-atoms-icon--icon-story',
+  },
 ]

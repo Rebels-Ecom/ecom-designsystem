@@ -35,6 +35,18 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   RobotoSlab → `spendrups_secondary`) with `@font-face` rules at the top of
   `src/styles/index.css`; the `--font-primary` / `--font-secondary` tokens reference
   those families. Adding a weight means adding both the file and its `@font-face`.
+- **Icons come from `lucide-react`**, exclusively through the `Icon` atom's
+  `iconMap` (`src/components/atoms/Icon/Icon.tsx`) — never import a Lucide
+  component directly in another component. The legacy icomoon font was built
+  from the Feather set (Lucide's ancestor), so legacy `icon-*` names map 1:1;
+  the map key type (`IconName`) preserves those names verbatim. To add an icon,
+  add the name to the `IconName` union and its Lucide component to `iconMap`
+  (the `Record` type enforces completeness). Glyphs render at `1em`, so they
+  scale with font-size exactly like the old font icons. Three brand icons
+  (facebook/instagram/linkedin) have no Lucide equivalent and are local SVGs
+  extracted from the legacy set. `lucide-react` is a regular `dependency`,
+  externalized in the library build (`vite.config.ts`) so consumers don't
+  bundle a second copy.
 
 ### ⚠ `cn()` must know our custom font-size tokens
 
