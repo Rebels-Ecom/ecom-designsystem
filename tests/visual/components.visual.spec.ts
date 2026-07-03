@@ -10,12 +10,19 @@ import { visualBaselines } from './baseline-map'
  * Titles embed the story id, so a single component can be run in isolation:
  *   pnpm test:visual --grep heading
  */
-for (const { storyId, legacyBaseline } of visualBaselines) {
-  test(`${storyId} matches legacy baseline`, async ({ page }) => {
+for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
+  test(`${storyId} matches legacy baseline`, async ({ page }, testInfo) => {
+    test.skip(
+      viewports !== undefined && !viewports.includes(testInfo.project.name as 'desktop' | 'mobile'),
+      'No usable legacy baseline for this viewport (see baseline-map.ts)',
+    )
+
     await page.goto(`/iframe.html?id=${storyId}&viewMode=story`)
 
     // Wait until Storybook has rendered the story into its root before capturing.
-    await expect(page.locator('#storybook-root')).toBeVisible()
+    // (`toBeAttached`, not `toBeVisible`: absolutely-positioned stories like Loader take
+    // the root out of flow, leaving it zero-height and technically "hidden".)
+    await expect(page.locator('#storybook-root > *').first()).toBeAttached()
     await page.waitForLoadState('networkidle')
 
     await expect(page).toHaveScreenshot(`${legacyBaseline}.png`)
