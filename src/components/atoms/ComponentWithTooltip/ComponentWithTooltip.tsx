@@ -28,6 +28,7 @@ export interface ComponentWithTooltipProps {
   element: ReactElement
   /** Tooltip text. When omitted the element is rendered without a tooltip. */
   content?: string
+  /** Extra classes for the wrapping `<span>`, merged with the component's own via `cn()`. */
   wrapperClassName?: string
   /** @default 'top' */
   side?: TooltipSide
@@ -35,6 +36,7 @@ export interface ComponentWithTooltipProps {
   align?: TooltipAlign
   /** @default 'black' */
   color?: TooltipColor
+  /** Forwarded to the wrapping `<span>`. */
   ref?: Ref<HTMLSpanElement>
 }
 
@@ -57,6 +59,15 @@ const alignClasses: Record<TooltipSide, Record<TooltipAlign, string>> = {
   right: { start: 'top-0', center: 'top-1/2 -translate-y-1/2', end: 'bottom-0' },
 }
 
+/**
+ * Wraps a trigger element with an accessible tooltip (atom). The tip opens on hover and on focus
+ * (via `onMouseEnter`/`onFocus` on the wrapping `<span>`) and is rendered with `role="tooltip"`
+ * and a generated `id`; that id is cloned onto the trigger as `aria-describedby` only while open,
+ * so screen readers announce it. Meeting WCAG 2.2 SC 1.4.13, Escape dismisses it immediately and a
+ * grace period on close lets the pointer travel onto the hoverable tip. When `content` is empty the
+ * bare `element` is returned unwrapped. Consumers must pass a genuinely focusable trigger as
+ * `element` so keyboard and screen-reader users can reach the description.
+ */
 function ComponentWithTooltip({
   element,
   content,

@@ -216,15 +216,20 @@ export const iconMap: Record<IconName, IconGlyph> = {
 }
 
 export interface IconProps {
+  /** Which glyph to render, keyed by legacy icomoon name (see `iconMap`). */
   icon: IconName
+  /** Glyph size token; when omitted the icon inherits the surrounding font-size. */
   size?: IconSize
+  /** Semantic colour token; when omitted the icon inherits the current text colour. */
   color?: IconColor
+  /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
   /**
    * Accessible name. Provide when the icon conveys meaning on its own;
    * omit for purely decorative icons (then rendered `aria-hidden`).
    */
   label?: string
+  /** Forwarded to the wrapping `<span>`. */
   ref?: Ref<HTMLSpanElement>
 }
 
@@ -240,6 +245,13 @@ const colorClasses: Record<IconColor, string> = {
   success: 'text-tag-green',
 }
 
+/**
+ * Single vector icon (atom), rendered inside a `<span>` wrapping a Lucide/brand SVG sized in `em`.
+ * Accessibility is driven by `label`: with a `label` the span gets `role="img"` and that
+ * `aria-label` as its accessible name; without one the span is `aria-hidden` (purely decorative)
+ * and the inner SVG is always `aria-hidden`. Consumers MUST pass `label` whenever the icon carries
+ * meaning on its own (e.g. an icon-only control), and omit it when adjacent text already conveys it.
+ */
 function Icon({ icon, size, color, className, label, ref }: IconProps) {
   const Glyph = iconMap[icon]
   const accessibility = label

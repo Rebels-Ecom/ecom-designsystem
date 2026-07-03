@@ -6,12 +6,19 @@ export type LoaderColor = 'default' | 'orange'
 export type LoaderPosition = 'absolute' | 'relative'
 
 export interface LoaderProps {
+  /** When false the component renders nothing. */
   visible: boolean
+  /** CSS positioning: `absolute` fills its relative parent, `relative` flows inline. @default 'absolute' */
   position?: LoaderPosition
+  /** Diameter of the spinning ring. @default 'sm' */
   size?: LoaderSize
+  /** Optional label rendered below the spinner. */
   text?: string
+  /** Colour of the ring's leading edge. @default 'default' */
   color?: LoaderColor
+  /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
+  /** Forwarded to the underlying `<div>`. */
   ref?: Ref<HTMLDivElement>
 }
 

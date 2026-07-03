@@ -60,6 +60,18 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   extracted from the legacy set. `lucide-react` is a regular `dependency`,
   externalized in the library build (`vite.config.ts`) so consumers don't
   bundle a second copy.
+- **Animations are theme tokens, and skeletons share one utility.** Custom
+  keyframe animations live in `@theme` as `--animate-*` (+ their `@keyframes`),
+  so they're used as `animate-<name>` utilities instead of arbitrary CSS —
+  currently `animate-grow` (LoadingBar's bar grow-in) and `animate-shimmer`
+  (the loading pulse). The decorative loading-skeleton look is a single
+  `@utility skeleton-shimmer` (the gradient + background-size the shimmer sweeps),
+  reused by `Placeholder` and `Picture`'s loading state — don't hand-roll a new
+  skeleton gradient per component, and don't inline it as `bg-[…]`. **Always
+  gate decorative motion with `motion-reduce:animate-none`** at the call site so
+  `prefers-reduced-motion` is honoured (WCAG 2.3.3†); Playwright's
+  `animations: 'disabled'` freezes these at their end state, so a one-shot
+  `forwards` grow captures at full height deterministically.
 
 ### ⚠ `cn()` must know our custom font-size tokens
 
@@ -122,12 +134,40 @@ Patterns established so far:
 - Collapsed/animated-away content is `inert` + `aria-hidden` so it leaves the
   tab order.
 
+## Documentation
+
+Component docs are **written once as TSDoc** and surface in two places, so there's
+no separate doc artefact to keep in sync:
+
+- the emitted `.d.ts` — consumers get every prop description as IDE hover / IntelliSense;
+- the Storybook **autodocs** page — a generated page per component (description +
+  interactive props table + live stories). Enabled globally in `.storybook/preview.ts`
+  (`tags: ['autodocs']`); the props table is built by `react-docgen-typescript`
+  (configured in `.storybook/main.ts`), which reads the TSDoc off the TS types.
+
+So the rule is simply **keep the TSDoc good**:
+
+- **Component summary** — a `/** … */` block directly above `function ComponentName(`:
+  one line on what it is, then its accessibility contract (roles/aria it sets, keyboard
+  model, what the *consumer* must supply). This becomes the docs-page description.
+- **Every prop** gets a TSDoc line — purpose, `@default`, units, a11y constraint. An
+  undocumented prop renders a blank table row; even the conventional
+  `className`/`ref`/`children` get a short standard note so no row is empty.
+- **First non-`visual` story is the canonical one** — autodocs uses it as the primary preview.
+- **`.mdx` only when warranted** — overlays, forms, or anything with a keyboard contract get
+  a sibling `ComponentName.mdx` (`<Meta of>`, `<Canvas>`, an Accessibility section, a
+  Do/Don't). Simple atoms don't need one.
+
+`scaffold-component` drives all of this at its Step 5; verify with `pnpm build-storybook`.
+
 ## Build & verify
 
 - `pnpm build` → `tsc --noEmit` (×2 configs) + `vite build` in library mode.
   Must pass with zero TS errors.
 - `pnpm test-storybook` → `@storybook/addon-vitest` runs every story in headless
   Chromium: `play` functions (interaction) + axe (a11y, fails on violations).
+- `pnpm build-storybook` → compiles Storybook incl. every component's **autodocs**
+  page; the doc-specific check (a broken MDX or missing docgen surfaces here).
 - `pnpm test:visual` → Playwright visual-regression against the **frozen** legacy
   baseline in `legacy-snapshots/` (see [Visual regression](#visual-regression)).
 - React, React DOM and Framer Motion are **peerDependencies** and externalized

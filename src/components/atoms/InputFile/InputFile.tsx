@@ -2,6 +2,7 @@ import type { ChangeEvent, FocusEvent, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 
 export interface InputFileProps {
+  /** Id of the underlying `<input type="file">`, linked to the visible `<label>` via `htmlFor`. */
   id: string
   /** Visible text of the pick-a-file affordance. */
   label: string
@@ -9,11 +10,17 @@ export interface InputFileProps {
   placeholder: string
   /** Selected file name to display. Display-only — file inputs are uncontrolled. */
   value?: string
+  /** Change handler receiving the native input event when a file is picked. */
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  /** Blur handler receiving the native focus event. */
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void
+  /** Disables the input and applies the disabled styling. */
   disabled?: boolean
+  /** Sets the native `required` constraint. */
   required?: boolean
+  /** Extra classes, merged onto the wrapper `<div>` via `cn()`. */
   className?: string
+  /** Forwarded to the underlying `<input>`. */
   ref?: Ref<HTMLInputElement>
 }
 

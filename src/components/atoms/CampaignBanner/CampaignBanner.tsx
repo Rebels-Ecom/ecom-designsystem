@@ -3,20 +3,26 @@ import { motion } from 'framer-motion'
 import { cn } from '../../../lib/cn'
 
 export interface Campaign {
+  /** Banner label, rendered uppercase and centred; also serves as the button's accessible name. */
   title: string
   /** Banner background colour. Resolved at runtime, so applied as an inline style. */
   color: string
+  /** Runs when the banner button is activated (click, Enter, or Space). */
   onClick?: () => void
+  /** When true the banner button is disabled (no `onClick`, disabled styling). @default false */
   disabled?: boolean
 }
 
 export interface CampaignBannerProps {
+  /** The banners to render, one clickable `<button>` per entry (keyed by title + index). */
   campaigns: Campaign[]
   /** @default 'absolute' */
   position?: 'absolute' | 'fixed' | 'relative'
   /** When true, each banner plays an enter animation. @default false */
   animate?: boolean
+  /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
+  /** Forwarded to the wrapping `<div>`. */
   ref?: Ref<HTMLDivElement>
 }
 
@@ -26,6 +32,13 @@ const positionClasses: Record<NonNullable<CampaignBannerProps['position']>, stri
   fixed: 'fixed top-0 right-0 left-0 z-menu-icon',
 }
 
+/**
+ * Stack of full-width, clickable promotional banners (atom). Renders each campaign as a native
+ * `<button>`, so activation is keyboard-operable (Enter/Space) with a visible focus ring, and a
+ * disabled campaign uses the real `disabled` attribute. Each button's accessible name comes from
+ * its `title`, so consumers must give every campaign a meaningful, non-empty title. Positioning
+ * (`absolute`/`fixed` pinning to the top) is layout only and adds no landmark semantics.
+ */
 function CampaignBanner({
   campaigns,
   position = 'absolute',

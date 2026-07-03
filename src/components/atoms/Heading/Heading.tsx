@@ -6,20 +6,29 @@ export type HeadingAlignment = 'left' | 'center' | 'right'
 export type HeadingColor = 'primary' | 'error' | 'white'
 
 export interface HeadingProps {
+  /** Heading text content. */
   children: ReactNode
   /** Semantic heading level (h1–h5) and matching type-scale size. */
   order: HeadingOrder
+  /**
+   * When provided, the text is wrapped in a real `<button>` inside the heading tag and this
+   * runs on activation (keyboard-operable, focus-ring). Omit for a plain, non-interactive heading.
+   */
   onClick?: () => void
   /** @default 'left' */
   align?: HeadingAlignment
+  /** Drop the level's default bottom margin (applies `m-0`). @default false */
   noMargin?: boolean
+  /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
   /**
    * Margin in rem — a single number (e.g. 1) or an array applied clockwise
    * (e.g. [1, 0] → top/bottom · right/left). Set as an inline style.
    */
   margin?: number[] | number
+  /** Text colour token. Defaults to `text-text-default` when omitted. */
   color?: HeadingColor
+  /** Forwarded to the underlying `<h1>`–`<h5>` element. */
   ref?: Ref<HTMLHeadingElement>
 }
 
@@ -64,6 +73,14 @@ function toMargin(margin: number[] | number | undefined): string | undefined {
   return margin.map((value) => `${value}rem`).join(' ')
 }
 
+/**
+ * Semantic heading (atom). Renders an `<h1>`–`<h5>` chosen by `order`, so the visual size and
+ * the document outline level are set together — pick `order` for correct heading hierarchy, not
+ * for looks alone. When `onClick` is supplied the text becomes a real `<button>` nested in the
+ * heading tag, giving native keyboard activation (Enter/Space) and a visible focus ring;
+ * without it the heading is non-interactive. Consumer must provide meaningful, non-empty
+ * `children` as the accessible name.
+ */
 function Heading({
   children,
   order = 3,

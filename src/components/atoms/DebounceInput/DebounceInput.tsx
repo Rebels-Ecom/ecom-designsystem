@@ -5,25 +5,49 @@ import { cn } from '../../../lib/cn'
 const ILLEGAL_KEYS = ['-', '+', '.', ',', 'e', 'E']
 
 export interface DebounceInputProps {
+  /** Id of the underlying `<input>`, also used to derive the details element's id. */
   quantityInputId: string
+  /** Controlled quantity value — resets the internal display when it changes. */
   quantity: string
+  /** Sales-unit label rendered beside the field, e.g. the packaging unit. */
   salesUnit: string
+  /** Number of items per sales unit, shown in the price detail line. */
   itemNumberPerSalesUnit: number
+  /** Formatted total price rendered when the price is shown. */
   totalPrice: string
+  /** Disables the input and applies the disabled styling. */
   disabled?: boolean
+  /** Upper bound — changes exceeding it are ignored. */
   maxQuantity?: number
+  /** When true, hides the price line and shows only the item count. */
   hidePrice?: boolean
   /** Delay before `debouncedEvent` fires (ms). @default 1000 */
   debounceVal?: number
+  /** Called with the current value after the debounce elapses. */
   debouncedEvent: (value: string) => void
+  /** Suffix text appended to the per-unit price detail. */
   pricePerUnitText?: string
+  /** When true, treats the quantity as fixed and snaps the display back before notifying. */
   isGift?: boolean
   /** Accessible name for the quantity field. @default 'Antal' */
   ariaLabel?: string
+  /** Extra classes, merged onto the wrapper `<div>` via `cn()`. */
   className?: string
+  /** Forwarded to the underlying `<input>`. */
   ref?: Ref<HTMLInputElement>
 }
 
+/**
+ * Debounced numeric quantity input atom — a native `<input type="number">` paired with a
+ * price/unit detail block, notifying the consumer only after typing settles.
+ *
+ * Accessibility contract: the real number input gets its accessible name from `ariaLabel`
+ * (there is no visible `<label>`, so the consumer relies on this default/override) and is tied
+ * to the detail text via `aria-describedby`. It draws a `focus-visible` outline ring. Keyboard
+ * model: `-`, `+`, `.`, `,`, `e`/`E` are blocked on keydown and paste is prevented (WCAG 3.3.8
+ * safe for a quantity field); a blur on an empty field coerces the value to `'0'`. The consumer
+ * must supply the controlled `quantity` and a `debouncedEvent` handler to receive changes.
+ */
 function DebounceInput({
   quantityInputId,
   quantity,

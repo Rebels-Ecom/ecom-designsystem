@@ -2,23 +2,42 @@ import type { ChangeEvent, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 
 export interface CheckboxProps {
+  /** Id of the underlying `<input>`. Wire an external `<label htmlFor>` to it for the accessible name. */
   id: string
+  /** Form field name submitted with the value. */
   name: string
+  /** Value submitted when checked. */
   value?: string
+  /** Controlled checked state — drive it with `onChange`. */
   checked: boolean
+  /** Change handler receiving the native input event. */
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  /** Disables the input and applies the disabled styling. */
   disabled?: boolean
   /** Marks the field as failing validation — styled and exposed via `aria-invalid`. */
   isErroneous?: boolean
+  /** Sets the native `required` constraint. */
   required?: boolean
   /** Accessible name for standalone use. Prefer an external `<label htmlFor>`. */
   ariaLabel?: string
   /** Id of the element describing the field, e.g. an inline error message. */
   ariaDescribedBy?: string
+  /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
+  /** Forwarded to the underlying `<input>`. */
   ref?: Ref<HTMLInputElement>
 }
 
+/**
+ * Checkbox atom — a styled native `<input type="checkbox">`.
+ *
+ * Accessibility contract: renders a real checkbox, so `aria-checked` and keyboard toggling
+ * (Space) come from the browser for free. It draws a `focus-visible` outline ring and, when
+ * `isErroneous` is set, exposes `aria-invalid`. It has no built-in label — the consumer must
+ * supply the accessible name via an external `<label htmlFor={id}>` (preferred) or `ariaLabel`,
+ * wire any error text through `ariaDescribedBy`, and provide `name`/`value` plus the controlled
+ * `checked`/`onChange` pair. The 18px box relies on the WCAG 2.5.8 ≥24px-spacing exception.
+ */
 function Checkbox({
   id,
   name,

@@ -2,20 +2,29 @@ import type { ChangeEvent, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 
 export interface RadioButtonProps {
+  /** Id of the underlying `<input>`. Wire an external `<label htmlFor>` to it for the accessible name. */
   id: string
+  /** Radio group name — shared across the mutually exclusive options. */
   name: string
+  /** Value submitted when this option is selected. */
   value?: string
+  /** Controlled selected state — drive it with `onChange`. */
   checked: boolean
+  /** Change handler receiving the native input event. */
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  /** Disables the input and applies the disabled styling. */
   disabled?: boolean
   /** Marks the field as failing validation — styled and exposed via `aria-invalid`. */
   isErroneous?: boolean
+  /** Sets the native `required` constraint. */
   required?: boolean
   /** Accessible name for standalone use. Prefer an external `<label htmlFor>`. */
   ariaLabel?: string
   /** Id of the element describing the field, e.g. an inline error message. */
   ariaDescribedBy?: string
+  /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
+  /** Forwarded to the underlying `<input>`. */
   ref?: Ref<HTMLInputElement>
 }
 
