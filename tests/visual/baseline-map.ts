@@ -73,4 +73,22 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-atoms-radiobutton--visual',
     legacyBaseline: 'design-system-atoms-inputs-radio-button--radio-button-story',
   },
+  {
+    storyId: 'design-system-atoms-loadingbar--visual',
+    legacyBaseline: 'design-system-atoms-loadingbar--loading-bar-story-beska',
+  },
+  {
+    storyId: 'design-system-atoms-menubutton--visual',
+    legacyBaseline: 'design-system-atoms-menubutton--menu-button-story',
+  },
+  {
+    storyId: 'design-system-atoms-inlinehelper--visual',
+    legacyBaseline: 'design-system-atoms-messages--inline-helper-text-story',
+  },
+  // NOTE: Picture has NO entry on purpose. The legacy `picture-story` PNGs were captured
+  // with network-loaded images and a time-based skeleton/opacity transition, so a
+  // deterministic V2 frame can't reproduce them. Its behaviour is covered by the
+  // interaction/a11y play tests (load-settles-aria-busy, fallback-on-error).
+  // NOTE: Placeholder has NO entry — the legacy component shipped no story and no
+  // snapshot, so there is no baseline to diff against.
 ]

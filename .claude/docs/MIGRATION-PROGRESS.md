@@ -1,7 +1,7 @@
 ## Instructions for AI Assistant
 
 - Update this file as you go — flip `[ ]` to `[x]` as each component lands, and always before starting
-  the next one (the `scaffold-component` skill drives this at its Step 8).
+  the next one (the `scaffold-component` skill drives this at its Step 9).
 - A component is done when it is fully generated, strictly typed, `pnpm build` is green, and it passes
   local verification: `pnpm test-storybook` (interaction + a11y) and, if it has a legacy baseline,
   `pnpm exec playwright test --grep <component>` (visual regression vs `legacy-snapshots/`). Note any diff
@@ -12,8 +12,14 @@
 ## Current Batch Status
 
 - **Active Category**: atoms
-- **Last Updated**: 2026-07-02
-- **Current Micro-Batch**: Batch 2 — atoms 6–10 (complete; Checkbox, DebounceInput, InputFile, RadioButton, Loader. `pnpm build` green, `pnpm test-storybook` 34/34, full `pnpm test:visual` 17 passed / 1 documented skip. All five mapped to legacy baselines.)
+- **Last Updated**: 2026-07-03
+- **Current Micro-Batch**: Batch 3 — atoms 11–15 (complete; LoadingBar, MenuButton, InlineHelper, Picture, Placeholder. `pnpm build` green, `pnpm test-storybook` 56/56, full `pnpm test:visual` 21 passed / 1 documented skip. 3 of 5 mapped to legacy baselines — Picture & Placeholder documented as baseline-less.)
+- **2026-07-03 — Batch 3 findings & harness changes**:
+  - **Shared skeleton/animation tokens (new permanent standard)**: `src/styles/index.css` gained three reusable primitives used by this batch and every future skeleton/motion atom — `--animate-grow` (LoadingBar bar grow-in), `--animate-shimmer` + `@keyframes shimmer`, and an `@utility skeleton-shimmer` (the decorative loading gradient). They live in the theme so no component ships an arbitrary `bg-[…]`/keyframe. All are gated with `motion-reduce:animate-none` at call sites (2.3.3†). Documented in docs/DEVELOPMENT.md.
+  - **LoadingBar**: legacy shipped zero a11y — it's really a value-on-a-scale bar (e.g. "Beska" bitterness 6/12), so V2 exposes `role="meter"` (`aria-valuemin=0`/`max=12`/`now`) named by its visible label. The fill height is data-driven (`value/12`) so it's an inline `style` (a runtime value, not a design token — the one allowed non-utility dimension). The `bar-fill-*`/`bar-bg-*` token pair's non-text contrast (1.4.11) is borderline and flagged in-component for design review; axe doesn't gate it.
+  - **MenuButton**: legacy button was a 23px target with `outline:none` (fails 2.5.8 + 2.4.7). V2 wraps the 23px glyph in a 44px `size-11` touch target (2.5.5†) with a real `focus-visible` ring; SVG stroke via `stroke-action-primary`. Framer path morph honours `prefers-reduced-motion` and uses `initial={false}` so the closed frame is static for the visual capture. Visual diff passes both viewports despite the target growth (glyph shift ≪ 2% gate).
+  - **Picture**: no visual baseline mapped — the legacy `picture-story` PNGs used network-loaded images + a time-based skeleton/opacity transition, so a deterministic V2 frame can't reproduce them (behaviour covered by load/fallback play tests instead). Ported the loading/fallback state machine to React 19 (ref-as-prop merged with the internal `complete`-check ref; `fetchPriority` camelCase; dropped legacy dead `onLoadStart`, `content-visibility`/`will-change` perf hints, and the bespoke blur-gradient skeleton in favour of the shared `skeleton-shimmer`). Opacity scrim uses `bg-white/30`/`bg-black/50` (token + opacity modifier, not arbitrary).
+  - **Placeholder**: legacy had **no** `.stories.tsx` and no snapshot, so no baseline. Decorative skeleton → `aria-hidden`. Odd legacy percentages (90%) snapped to nearest standard fractions/steps (`w-11/12`, `h-5`, `mb-2.5`) to keep zero arbitrary values; cosmetically irrelevant with no baseline to match.
 - **2026-07-02 — Batch 2 dead-CSS findings & harness changes**:
   - **RadioButton**: legacy `radio-button.module.css` never applied (broken `&input[type="radio"]` nesting → selector `.radioButtoninput[…]`), so legacy rendered an unstyled native radio. V2 restores the intended styling (`h-4 w-5`, `accent-action-primary`, error → `accent-surface-critical`); pixel impact is tiny and the visual diff passes both viewports.
   - **InputFile**: legacy referenced non-existent `.button`/`.small` button-module classes, so the "button" was effectively plain secondary-blue text — V2 ports that effective rendering (baseline parity), not the intended button chrome. Revisit the affordance once the V2 Button molecule lands (needs human/design sign-off). Legacy also hid the input with `visibility: hidden` (keyboard-unreachable, WCAG 2.1.1 fail); V2 uses `sr-only`, which fixes it but removes the layout-overflow bug that made the legacy **mobile** PNG 420px wide — that viewport is structurally incomparable, so the baseline entry is desktop-only (`viewports: ['desktop']`).
@@ -26,8 +32,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 10 / 155
-- Remaining: 145
+- Completed: 15 / 155
+- Remaining: 140
 
 ## Components Checklist
 
@@ -43,11 +49,11 @@
 - [x] InputFile (Legacy: legacy/src/design-system/components/atoms/inputs/input-file) — visual: desktop only (legacy mobile PNG incomparable, see batch notes)
 - [x] RadioButton (Legacy: legacy/src/design-system/components/atoms/inputs/radio-button) — intent restored over dead legacy CSS, see batch notes
 - [x] Loader (Legacy: legacy/src/design-system/components/atoms/loader)
-- [ ] LoadingBar (Legacy: legacy/src/design-system/components/atoms/loading-bar)
-- [ ] MenuButton (Legacy: legacy/src/design-system/components/atoms/menu-button)
-- [ ] InlineHelper (Legacy: legacy/src/design-system/components/atoms/messages/inline-helper)
-- [ ] Picture (Legacy: legacy/src/design-system/components/atoms/picture)
-- [ ] Placeholder (Legacy: legacy/src/design-system/components/atoms/placeholder)
+- [x] LoadingBar (Legacy: legacy/src/design-system/components/atoms/loading-bar) — role="meter" restored over dead legacy a11y, see batch notes
+- [x] MenuButton (Legacy: legacy/src/design-system/components/atoms/menu-button)
+- [x] InlineHelper (Legacy: legacy/src/design-system/components/atoms/messages/inline-helper)
+- [x] Picture (Legacy: legacy/src/design-system/components/atoms/picture) — no visual baseline (network + skeleton non-deterministic, see batch notes)
+- [x] Placeholder (Legacy: legacy/src/design-system/components/atoms/placeholder) — no legacy story/baseline
 - [ ] SingleSelect (Legacy: legacy/src/design-system/components/atoms/single-select)
 - [ ] Tag (Legacy: legacy/src/design-system/components/atoms/tag)
 - [ ] Text (Legacy: legacy/src/design-system/components/atoms/text)

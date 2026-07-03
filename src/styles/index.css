@@ -133,6 +133,29 @@
   --spacing-footer-bar-desktop: 6rem;
   --spacing-logotype-mobile: 2rem;
   --spacing-logotype-desktop: 2.25rem;
+
+  /* — Component animations — */
+  /* LoadingBar bar grows from the baseline once, then settles (essential progress
+   * flourish → exempt from 2.2.2, gated behind motion-reduce by consumers). */
+  --animate-grow: grow 1.5s ease-out forwards;
+  /* Skeleton shimmer for Placeholder / Picture loading states (paired with the
+   * `skeleton-shimmer` utility below; slow 2s cycle keeps it well under 2.3.1). */
+  --animate-shimmer: shimmer 2s linear infinite;
+
+  @keyframes grow {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1200px 0;
+    }
+    100% {
+      background-position: 1200px 0;
+    }
+  }
 }
 
 @theme inline {
@@ -256,6 +279,20 @@
 
   /* Misc */
   --color-decorative-image: #f7f7f7;
+}
+
+/* Skeleton shimmer gradient — the decorative loading-placeholder treatment shared by
+ * Placeholder and Picture. The animated background-position (see `--animate-shimmer`)
+ * sweeps this gradient across a track wider than the element. Kept as a single utility
+ * so the bespoke gradient lives in one place instead of an arbitrary `bg-[...]` literal. */
+@utility skeleton-shimmer {
+  background-image: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.08) 0%,
+    rgb(0 0 0 / 0.15) 15%,
+    rgb(0 0 0 / 0.08) 30%
+  );
+  background-size: 1200px 100%;
 }
 
 /* Global document font. Legacy set `html { font-family: var(--font-family-primary), 'Arial' }`
