@@ -42,6 +42,11 @@ export const Disabled: Story = {
     await expect(banner).toBeDisabled()
     await userEvent.click(banner)
     await expect(args.campaigns[0]?.onClick).not.toHaveBeenCalled()
+
+    // axe exempts disabled controls from contrast, so guard the label's legibility here:
+    // on the light disabled surface the text must NOT stay white (would be ~1.1:1, invisible).
+    const label = within(banner).getByText('Sold out')
+    await expect(getComputedStyle(label).color).not.toBe('rgb(255, 255, 255)')
   },
 }
 

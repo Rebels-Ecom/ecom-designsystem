@@ -62,9 +62,9 @@ function CampaignBanner({
             whileTap={campaign.disabled ? undefined : { scale: 0.95 }}
             onClick={campaign.onClick}
             disabled={campaign.disabled}
-            className="flex w-full cursor-pointer items-center justify-center border-none bg-transparent py-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:bg-surface-disabled"
+            className="group flex w-full cursor-pointer items-center justify-center border-none bg-transparent py-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:bg-surface-disabled"
           >
-            <span className="text-center font-secondary text-body text-text-white uppercase">
+            <span className="text-center font-secondary text-body text-text-white uppercase group-disabled:text-text-subdued">
               {campaign.title}
             </span>
           </motion.button>
