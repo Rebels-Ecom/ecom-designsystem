@@ -13,14 +13,21 @@
 
 - **Active Category**: atoms
 - **Last Updated**: 2026-07-02
-- **Current Micro-Batch**: Batch 1 — atoms 1–5 (complete; `tsc --noEmit` + `pnpm build` pass. Visual-regression suite wired: parity stories + baseline map for Heading, CampaignBanner, ComponentWithTooltip, and Icon; ExpandableWrapper has no legacy baseline, so no visual test. Full `pnpm test:visual` passing 8/8.)
+- **Current Micro-Batch**: Batch 2 — atoms 6–10 (complete; Checkbox, DebounceInput, InputFile, RadioButton, Loader. `pnpm build` green, `pnpm test-storybook` 34/34, full `pnpm test:visual` 17 passed / 1 documented skip. All five mapped to legacy baselines.)
+- **2026-07-02 — Batch 2 dead-CSS findings & harness changes**:
+  - **RadioButton**: legacy `radio-button.module.css` never applied (broken `&input[type="radio"]` nesting → selector `.radioButtoninput[…]`), so legacy rendered an unstyled native radio. V2 restores the intended styling (`h-4 w-5`, `accent-action-primary`, error → `accent-surface-critical`); pixel impact is tiny and the visual diff passes both viewports.
+  - **InputFile**: legacy referenced non-existent `.button`/`.small` button-module classes, so the "button" was effectively plain secondary-blue text — V2 ports that effective rendering (baseline parity), not the intended button chrome. Revisit the affordance once the V2 Button molecule lands (needs human/design sign-off). Legacy also hid the input with `visibility: hidden` (keyboard-unreachable, WCAG 2.1.1 fail); V2 uses `sr-only`, which fixes it but removes the layout-overflow bug that made the legacy **mobile** PNG 420px wide — that viewport is structurally incomparable, so the baseline entry is desktop-only (`viewports: ['desktop']`).
+  - **Harness**: `baseline-map.ts` gained an optional per-entry `viewports` filter (documented skip instead of a red test), and the spec now waits with `toBeAttached` on the story's first child instead of `toBeVisible` on `#storybook-root` (absolutely-positioned stories like Loader leave the root zero-height). Both documented in docs/DEVELOPMENT.md.
+  - **Checkbox/RadioButton target size**: 18px/16–20px visual boxes rely on the WCAG 2.5.8 ≥24px-spacing exception — consumers must keep neighbouring targets ≥24px apart (noted in component comments).
+- **2026-07-03 — Batch-1 audit via review gallery**: re-checked all 5 batch-1 atoms now that the global font is in place. Heading (Edmondsans, minor pre-existing vertical-rhythm drift within tolerance), CampaignBanner (pixel-identical), and Icon (map-pin glyph) all match; ExpandableWrapper has no baseline. **The font gap never actually bit batch-1** — the only text-bearing atoms set `font-primary` explicitly. One real finding: **ComponentWithTooltip's visual test was meaningless** — its `Visual` story renders a "Hover me" button while the legacy baseline is an `IconButton icon='icon-x'` close button; it passed only because the trigger is <0.5% of the canvas (under the 2% gate). Resolution: **removed ComponentWithTooltip from `tests/visual/baseline-map.ts`** (documented) since a faithful frame needs the unmigrated `IconButton` molecule — **re-add its visual mapping when IconButton is migrated** and the Visual story can reproduce the legacy trigger. Behaviour stays covered by its interaction/a11y play tests. Full-canvas false-green pitfall documented in docs/DEVELOPMENT.md.
+- **2026-07-03 — visual-review findings resolved (font + input background)**: eyeballing the new tool (`pnpm visual:review`) surfaced three "wrong font" reports (DebounceInput, InputFile, Loader) plus a DebounceInput input-background diff. Root cause of the font issue was systemic, not per-component: legacy set a global `html { font-family: var(--font-family-primary) }`, but V2's `src/styles/index.css` only defined `--font-primary` as a token and never applied it to the document, so Tailwind's preflight left everything that didn't set `font-primary` explicitly in system-sans (batch-1 atoms passed only because they set it). Fixed once for the whole library with an `@layer base { html { font-family: var(--font-primary) } }` rule; batch-1 unaffected (no-op), form atoms now inherit Edmondsans. Caveat captured in docs/DEVELOPMENT.md: **form controls don't inherit font-family**, so `DebounceInput`'s numeric field keeps its explicit `font-primary`. Separately, that field needed `bg-surface-default` — Tailwind preflight leaves inputs transparent, so the off-white page showed through where legacy relied on the browser's default white field. Re-verified: `pnpm build` green, full `pnpm test:visual` 17 passed / 1 skipped, all three findings confirmed fixed in the regenerated gallery.
 - **2026-07-02 — Icon re-migrated to `lucide-react`**: the icomoon font class was dead in V2 (no `@font-face` shipped), so Icon rendered nothing. Now renders Lucide SVGs via a strict `Record<IconName, IconGlyph>` map (legacy icomoon set was Feather — Lucide's ancestor — so glyphs map 1:1). Exceptions kept working: `icon-facebook`/`icon-instagram`/`icon-linkedin` (Lucide ships no brand icons) use vectors extracted from legacy `selection.json`; `icon-heart-o` → Lucide `Heart`, `icon-heart1` → `Heart` filled. Visual baseline `design-system-atoms-icon--icon-story` wired and passing; `pnpm test-storybook` 16/16.
 
 ## Summary
 
 - Total Components: 155
-- Completed: 5 / 155
-- Remaining: 150
+- Completed: 10 / 155
+- Remaining: 145
 
 ## Components Checklist
 
@@ -31,11 +38,11 @@
 - [x] ExpandableWrapper (Legacy: legacy/src/design-system/components/atoms/expandable-wrapper)
 - [x] Heading (Legacy: legacy/src/design-system/components/atoms/heading)
 - [x] Icon (Legacy: legacy/src/design-system/components/atoms/icon)
-- [ ] Checkbox (Legacy: legacy/src/design-system/components/atoms/inputs/checkbox)
-- [ ] DebounceInput (Legacy: legacy/src/design-system/components/atoms/inputs/debounce-input)
-- [ ] InputFile (Legacy: legacy/src/design-system/components/atoms/inputs/input-file)
-- [ ] RadioButton (Legacy: legacy/src/design-system/components/atoms/inputs/radio-button)
-- [ ] Loader (Legacy: legacy/src/design-system/components/atoms/loader)
+- [x] Checkbox (Legacy: legacy/src/design-system/components/atoms/inputs/checkbox)
+- [x] DebounceInput (Legacy: legacy/src/design-system/components/atoms/inputs/debounce-input)
+- [x] InputFile (Legacy: legacy/src/design-system/components/atoms/inputs/input-file) — visual: desktop only (legacy mobile PNG incomparable, see batch notes)
+- [x] RadioButton (Legacy: legacy/src/design-system/components/atoms/inputs/radio-button) — intent restored over dead legacy CSS, see batch notes
+- [x] Loader (Legacy: legacy/src/design-system/components/atoms/loader)
 - [ ] LoadingBar (Legacy: legacy/src/design-system/components/atoms/loading-bar)
 - [ ] MenuButton (Legacy: legacy/src/design-system/components/atoms/menu-button)
 - [ ] InlineHelper (Legacy: legacy/src/design-system/components/atoms/messages/inline-helper)

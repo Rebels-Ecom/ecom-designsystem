@@ -35,6 +35,19 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   RobotoSlab → `spendrups_secondary`) with `@font-face` rules at the top of
   `src/styles/index.css`; the `--font-primary` / `--font-secondary` tokens reference
   those families. Adding a weight means adding both the file and its `@font-face`.
+- **The document defaults to `--font-primary`** via an `@layer base { html { … } }`
+  rule in `src/styles/index.css`, mirroring legacy's global `html { font-family }`.
+  So regular elements (headings, paragraphs, spans, divs) inherit Edmondsans for
+  free — only reach for the `font-secondary` utility to opt out. **But form controls
+  (`input`, `textarea`, `select`, `button`) do NOT inherit `font-family`** — the
+  browser resets them — so any text *inside a form control* still needs an explicit
+  `font-primary` utility (e.g. `DebounceInput`'s numeric field). Forgetting this is
+  invisible under `tsc` and easy to miss on small text; the [review gallery](#reviewing-a-green-run--the-review-gallery)
+  is how it gets caught.
+- **Form controls need an explicit surface too.** Tailwind's preflight leaves an
+  `<input>` background transparent, so on the design system's off-white page a bare
+  field shows the page through it. Set `bg-surface-default` (or the intended token)
+  on inputs whose legacy counterpart relied on the browser's default white field.
 - **Icons come from `lucide-react`**, exclusively through the `Icon` atom's
   `iconMap` (`src/components/atoms/Icon/Icon.tsx`) — never import a Lucide
   component directly in another component. The legacy icomoon font was built
@@ -141,12 +154,52 @@ migration parity check, independent of the a11y/interaction suite.
   explicit in `tests/visual/baseline-map.ts`: each entry maps a static, `['visual']`-tagged `Visual`
   story to a legacy basename. `scaffold-component` adds one entry per migrated component that has a
   baseline; components with no legacy counterpart (e.g. `Icon`, `ExpandableWrapper`) get none.
+- **Per-viewport opt-out.** An entry may restrict `viewports` when one legacy PNG is structurally
+  incomparable — e.g. `InputFile`'s mobile baseline is 420px wide at a 375px viewport because the
+  legacy component's absolutely-positioned hidden file input overflowed the capture; V2 fixes that
+  overflow (`sr-only`), so only the desktop frame is diffed. Always leave a comment explaining why.
+- **Dead legacy CSS ≠ design intent.** Several legacy modules contain selectors that never matched
+  (broken `&input[…]` nesting in `radio-button`, non-existent `.button`/`.small` classes in
+  `input-file`), so the frozen baseline shows the *effective* rendering, not the intended one. Rule of
+  thumb when migrating: port the effective rendering when restoring intent would visibly diverge from
+  the baseline (InputFile's plain-text affordance), but restore obvious intent when the pixel impact is
+  within the diff gate (RadioButton's `accent-color`/sizing). Note the call in
+  `.claude/docs/MIGRATION-PROGRESS.md` either way.
 - **Threshold = the gate.** `playwright.config.ts` sets `maxDiffPixelRatio: 0.02` (+ per-pixel
   `threshold: 0.2`); a larger diff fails. A Tailwind rewrite is rarely pixel-identical, so review
   failures in `playwright-report/` and either drive the component toward parity or, for an
   intentional/approved change, widen the threshold with a comment.
+- **Beware false-green on small frames.** `maxDiffPixelRatio` is a share of the *whole* 1280×800 /
+  375×667 canvas, so a component that paints only a small element (a lone button, a single icon) can
+  render **completely wrong** and still pass — the differing pixels never reach 2% of the frame.
+  ComponentWithTooltip hit exactly this: its parity story showed a "Hover me" button while the legacy
+  baseline was an `IconButton` close-icon, and the gate stayed green. Two defences: make `Visual`
+  frames reproduce the legacy story faithfully (per `scaffold-component` Step 4), and eyeball them in
+  the review gallery below rather than trusting the pass. If a faithful frame isn't buildable yet
+  (e.g. it needs an unmigrated dependency), drop the baseline-map entry with a comment instead of
+  shipping a trivially-green one.
 - **Cadence.** Scoped per component during scaffolding (`pnpm exec playwright test --grep <component>`,
   reusing a running `pnpm storybook`), then the full `pnpm test:visual` suite as the batch gate.
+
+### Reviewing a green run — the review gallery
+
+`pnpm test:visual` passing means each diff was ≤ `maxDiffPixelRatio` (2%), **not** that the renders are
+identical — up to 2% of drift can hide in a pass, and Playwright only attaches its expected/actual/diff
+images on *failure*, so a green run leaves nothing to eyeball. `pnpm visual:review` fills that gap:
+
+- It runs `scripts/visual-review.spec.ts` under its own scoped config
+  (`scripts/visual-review.config.ts`, `testDir: ./scripts`) so it's **isolated from the gate** — the
+  gate runs everything under `./tests/visual` and never touches the generator, and vice-versa.
+- It reads the same `tests/visual/baseline-map.ts` (so it honours the `viewports` opt-out — InputFile
+  shows desktop-only), captures the current V2 render at each viewport, pairs it with the legacy PNG,
+  and writes `visual-review/index.html` (git-ignored, regenerated each run). It prints a `file://…` link.
+- Each pair gets **Legacy | Current | Compare**; the Compare pane has an onion-skin opacity slider and a
+  `mix-blend-mode: difference` toggle (matching pixels go black). Pure CSS — no extra deps.
+- It also surfaces a **size-mismatch** badge (read straight from each PNG's IHDR) and renders any
+  `['visual']`-tagged story that has *no* baseline entry as a current-only tile (discovered via the live
+  Storybook `index.json`), so nothing with a Visual story silently escapes review.
+- Reuses a running `pnpm storybook` on :6006 if present; otherwise builds and serves the static book.
+  This is a manual review aid, never a gate — don't wire it into CI.
 
 ### CI (still to wire up)
 

@@ -258,6 +258,19 @@
   --color-decorative-image: #f7f7f7;
 }
 
+/* Global document font. Legacy set `html { font-family: var(--font-family-primary), 'Arial' }`
+ * in typography/spendrups.css, so every element inherited the brand font (Edmondsans) unless
+ * it opted into `font-secondary`. Tailwind's preflight otherwise defaults the document to a
+ * system-sans stack, which silently leaves any component that doesn't set `font-primary`
+ * explicitly in the wrong typeface. Restoring the global default here fixes it once for the
+ * whole library. NOTE: form controls (`input`/`textarea`/`select`/`button`) don't inherit
+ * font-family — those still need an explicit `font-primary` utility. */
+@layer base {
+  html {
+    font-family: var(--font-primary);
+  }
+}
+
 /* Layering scale — named utilities keep intent readable and z-[…] forbidden. */
 @layer utilities {
   .z-select {
