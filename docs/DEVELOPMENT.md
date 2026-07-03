@@ -133,6 +133,22 @@ Patterns established so far:
   without it vanishing — never close synchronously on the trigger's `mouseleave`.
 - Collapsed/animated-away content is `inert` + `aria-hidden` so it leaves the
   tab order.
+- **Auto-playing media carries a control (2.2.2).** A background/looping video (`Video`) always
+  renders a keyboard-operable pause/play button (44px target, `focus-visible` ring, an `aria-label`
+  that flips with state), stays `muted` (1.4.2), suppresses auto-play under
+  `prefers-reduced-motion` (2.3.3), and exposes a `tracks` slot for captions/descriptions. Because
+  atoms may not import other UI atoms (e.g. `Icon`), the control uses inline SVG glyphs. Stories
+  pass a minimal WebVTT `<track>` so axe's `video-caption` rule stays green.
+- **The a11y gate can conflict with a legacy baseline — fix the component, not the test.** With
+  `a11y.test: 'error'`, a `Visual` parity story cannot reproduce a legacy frame that itself fails
+  AA (every story, including `visual`-tagged ones, is axe-scanned). When that happens: (1) **fix**
+  the component if the correct behaviour is unambiguous and the pixel delta stays under the diff
+  gate — e.g. `Text`'s link moved from legacy orange/undecorated (~2:1, fails 1.4.1 + 1.4.3) to
+  blue + underline; the mapping still passes because the change is confined to small glyphs. (2)
+  Otherwise **don't map** the failing frame and flag the token for design review — e.g. `Tag`'s
+  white-on-`tag-orange` (~2.6:1) round-L frame is unmapped, and sub-AA colour options (`Tag` orange,
+  `Text` `warning`) are kept as props but never rendered in a scanned story. Record the call in
+  `MIGRATION-PROGRESS.md`.
 
 ## Documentation
 
@@ -198,6 +214,11 @@ migration parity check, independent of the a11y/interaction suite.
   incomparable — e.g. `InputFile`'s mobile baseline is 420px wide at a 375px viewport because the
   legacy component's absolutely-positioned hidden file input overflowed the capture; V2 fixes that
   overflow (`sr-only`), so only the desktop frame is diffed. Always leave a comment explaining why.
+  A second, recurring cause: **a mobile story taller than the 375×667 viewport.** The legacy PNG was
+  captured **full-page** (e.g. `Textarea`'s five-field stack → 375×705), but the V2 harness
+  (`expect(page).toHaveScreenshot()`) captures the **viewport** (375×667), so the dimensions can
+  never match — map such stories `viewports: ['desktop']`. Desktop content that fits in 1280×800 is
+  unaffected.
 - **Dead legacy CSS ≠ design intent.** Several legacy modules contain selectors that never matched
   (broken `&input[…]` nesting in `radio-button`, non-existent `.button`/`.small` classes in
   `input-file`), so the frozen baseline shows the *effective* rendering, not the intended one. Rule of

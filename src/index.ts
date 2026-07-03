@@ -73,3 +73,26 @@ export type {
 
 export { Placeholder } from './components/atoms/Placeholder'
 export type { PlaceholderProps, PlaceholderType } from './components/atoms/Placeholder'
+
+export { SingleSelect } from './components/atoms/SingleSelect'
+export type { SingleSelectProps, SingleSelectOption } from './components/atoms/SingleSelect'
+
+export { Tag } from './components/atoms/Tag'
+export type { TagProps, TagShape, TagSize, TagColor } from './components/atoms/Tag'
+
+export { Text } from './components/atoms/Text'
+export type {
+  TextProps,
+  TextAlignment,
+  TextWeight,
+  TextSize,
+  TextComponentType,
+  TextPadding,
+  TextColor,
+} from './components/atoms/Text'
+
+export { Textarea } from './components/atoms/Textarea'
+export type { TextareaProps } from './components/atoms/Textarea'
+
+export { Video } from './components/atoms/Video'
+export type { VideoProps, VideoOpacity, VideoTrack } from './components/atoms/Video'

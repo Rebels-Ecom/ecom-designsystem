@@ -28,6 +28,7 @@ const twMerge = extendTailwindMerge({
             'cta-l',
             'tag-rect',
             'tag-rect-lg',
+            'tag-sm',
             'icon-xl',
           ],
         },

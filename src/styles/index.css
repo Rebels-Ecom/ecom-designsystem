@@ -106,6 +106,9 @@
   --text-tag-rect--line-height: 1.25rem;
   --text-tag-rect-lg: 1rem;
   --text-tag-rect-lg--line-height: 1.875rem;
+  /* Small rectangular-tag label (Tag size="sm"); off the standard type scale. */
+  --text-tag-sm: 0.625rem;
+  --text-tag-sm--line-height: 1.25rem;
 
   /* Icon glyph sizes — small/medium/large map to the standard scale
      (text-base / text-xl / text-2xl); xlarge (1.75rem) is off-scale. */
@@ -133,6 +136,13 @@
   --spacing-footer-bar-desktop: 6rem;
   --spacing-logotype-mobile: 2rem;
   --spacing-logotype-desktop: 2.25rem;
+
+  /* Tag box dimensions (bespoke, ported from legacy tag.module.css — off the 0.25rem scale) */
+  --spacing-tag-rect-min: 5.156rem; /* rectangular min-width */
+  --spacing-tag-rect-md: 1.875rem; /* medium rectangular height */
+  --spacing-tag-rect-lg: 2.063rem; /* large rectangular height */
+  --spacing-tag-round-sm: 4.75rem; /* small/medium round diameter */
+  --spacing-tag-round-lg: 8.625rem; /* large round diameter */
 
   /* — Component animations — */
   /* LoadingBar bar grows from the baseline once, then settles (essential progress

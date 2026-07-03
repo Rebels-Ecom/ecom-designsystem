@@ -13,7 +13,13 @@
 
 - **Active Category**: atoms
 - **Last Updated**: 2026-07-03
-- **Current Micro-Batch**: Batch 3 — atoms 11–15 (complete; LoadingBar, MenuButton, InlineHelper, Picture, Placeholder. `pnpm build` green, `pnpm test-storybook` 56/56, full `pnpm test:visual` 21 passed / 1 documented skip. 3 of 5 mapped to legacy baselines — Picture & Placeholder documented as baseline-less.)
+- **Current Micro-Batch**: Batch 4 — atoms 16–20 (complete; SingleSelect, Tag, Text, Textarea, Video. `pnpm build` green, scoped `pnpm test-storybook` 25/25 (interaction + a11y), full `pnpm test:visual` 36 passed / 2 documented skips. 8 visual mappings added (Tag ×3, Text ×4, Textarea ×1 desktop-only); SingleSelect & Video documented as baseline-less.)
+- **2026-07-03 — Batch 4 findings & harness changes**:
+  - **New Tag dimension tokens (permanent)**: `src/styles/index.css` gained `--text-tag-sm` (0.625rem, the small rectangular-tag label — registered in `cn.ts`'s font-size group so twMerge keeps size + colour) plus five bespoke `--spacing-tag-*` box tokens (`-rect-min`/`-rect-md`/`-rect-lg`/`-round-sm`/`-round-lg`) — the legacy tag heights/diameters (2.063rem, 4.75rem, 8.625rem, 5.156rem) are off the 0.25rem scale, so they're tokens rather than arbitrary values. Documented in docs/DEVELOPMENT.md.
+  - **a11y gate vs legacy baselines (recurring pattern)**: `a11y.test: 'error'` means axe **fails** `test-storybook`, so a Visual parity story can't reproduce a legacy frame that itself fails AA. Two low-contrast oranges hit this: **Tag** white-on-`tag-orange` (~2.6:1) and **Text**'s legacy orange link (~2:1, undecorated). Resolution: (1) Tag maps only the AA-passing frames (rectangular-l/s, round-s); the orange **round-L** frame is **not** mapped and the orange token is flagged for design review in-component. (2) **Text link fixed** to blue + underline (1.4.1 + 1.4.3) — an intentional divergence from the orange baseline; the change is confined to the small glyphs so the diff stays under the 2% gate and the mapping still passes. `warning` (orange) text is kept as a prop option but never rendered in a scanned story (sub-AA for normal-weight text). Documented in docs/DEVELOPMENT.md.
+  - **Video — 2.2.2 restored over legacy autoplay**: legacy autoplayed a muted, looping background video with **no** pause control (fails 2.2.2). V2 always renders a keyboard-operable pause/play button (44px `size-11` target, `focus-visible` ring, `aria-label` that flips with state), suppresses auto-play under `prefers-reduced-motion` (2.3.3), stays muted (1.4.2), and exposes a `tracks` slot for captions/descriptions (1.2.2–1.2.5). Atoms can't import `Icon`, so the control uses inline SVG glyphs (like MenuButton). **No visual baseline mapped**: the legacy `video-story` PNG is a non-deterministic auto-playing frame (no poster) and V2 adds the control — a pixel diff is meaningless (same reasoning as Picture). The V2 Video stories pass a minimal WebVTT captions `<track>` so axe's `video-caption` rule stays green.
+  - **SingleSelect**: `@deprecated` (→ SelectList) preserved. Native `<select>` restores a `focus-visible` ring over the legacy `outline:none`; accessible name via `ariaLabel` (no visible label in legacy); `onChange` reports only — never auto-navigates (3.2.2, play-tested). No legacy story/snapshot → baseline-less.
+  - **Textarea mobile baseline incomparable (harness gotcha)**: the legacy `textarea-story` **mobile** PNG is 375×**705** — the five-field stack overflows the 375×667 viewport, so legacy captured it **full-page**, whereas the V2 harness captures the **viewport** (375×667). Any mobile story taller than the viewport is therefore structurally incomparable → mapped **desktop-only** (`viewports: ['desktop']`, like InputFile). Desktop (1280×800) fits and matches. Documented in docs/DEVELOPMENT.md.
 - **2026-07-03 — Batch 3 findings & harness changes**:
   - **Shared skeleton/animation tokens (new permanent standard)**: `src/styles/index.css` gained three reusable primitives used by this batch and every future skeleton/motion atom — `--animate-grow` (LoadingBar bar grow-in), `--animate-shimmer` + `@keyframes shimmer`, and an `@utility skeleton-shimmer` (the decorative loading gradient). They live in the theme so no component ships an arbitrary `bg-[…]`/keyframe. All are gated with `motion-reduce:animate-none` at call sites (2.3.3†). Documented in docs/DEVELOPMENT.md.
   - **LoadingBar**: legacy shipped zero a11y — it's really a value-on-a-scale bar (e.g. "Beska" bitterness 6/12), so V2 exposes `role="meter"` (`aria-valuemin=0`/`max=12`/`now`) named by its visible label. The fill height is data-driven (`value/12`) so it's an inline `style` (a runtime value, not a design token — the one allowed non-utility dimension). The `bar-fill-*`/`bar-bg-*` token pair's non-text contrast (1.4.11) is borderline and flagged in-component for design review; axe doesn't gate it.
@@ -32,8 +38,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 15 / 155
-- Remaining: 140
+- Completed: 20 / 155
+- Remaining: 135
 
 ## Components Checklist
 
@@ -54,11 +60,11 @@
 - [x] InlineHelper (Legacy: legacy/src/design-system/components/atoms/messages/inline-helper)
 - [x] Picture (Legacy: legacy/src/design-system/components/atoms/picture) — no visual baseline (network + skeleton non-deterministic, see batch notes)
 - [x] Placeholder (Legacy: legacy/src/design-system/components/atoms/placeholder) — no legacy story/baseline
-- [ ] SingleSelect (Legacy: legacy/src/design-system/components/atoms/single-select)
-- [ ] Tag (Legacy: legacy/src/design-system/components/atoms/tag)
-- [ ] Text (Legacy: legacy/src/design-system/components/atoms/text)
-- [ ] Textarea (Legacy: legacy/src/design-system/components/atoms/textarea)
-- [ ] Video (Legacy: legacy/src/design-system/components/atoms/video)
+- [x] SingleSelect (Legacy: legacy/src/design-system/components/atoms/single-select) — `@deprecated`→SelectList preserved; no baseline (no legacy story), see batch notes
+- [x] Tag (Legacy: legacy/src/design-system/components/atoms/tag) — 3 baselines mapped; orange round-L unmapped (white-on-orange fails AA), see batch notes
+- [x] Text (Legacy: legacy/src/design-system/components/atoms/text) — link fixed to accessible blue+underline (intentional divergence), see batch notes
+- [x] Textarea (Legacy: legacy/src/design-system/components/atoms/textarea) — visual desktop-only (legacy mobile PNG full-page 705px), see batch notes
+- [x] Video (Legacy: legacy/src/design-system/components/atoms/video) — pause control restored over legacy autoplay (2.2.2); no baseline (non-deterministic), see batch notes
 - [ ] WaveDivider (Legacy: legacy/src/design-system/components/atoms/wave-divider)
 - [ ] Breakpoints (Legacy: legacy/src/design-system/components/layouts/breakpoints)
 - [ ] ContentWrapper (Legacy: legacy/src/design-system/components/layouts/content-wrapper)

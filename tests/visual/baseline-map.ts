@@ -91,4 +91,50 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // interaction/a11y play tests (load-settles-aria-busy, fallback-on-error).
   // NOTE: Placeholder has NO entry — the legacy component shipped no story and no
   // snapshot, so there is no baseline to diff against.
+
+  // ── Batch 4 (atoms 16–20) ──
+  // Tag: three AA-passing frames mapped. The legacy round-L frame (white on
+  // --color-tag-orange) is NOT mapped: white-on-orange fails AA, so no axe-scanned story can
+  // render it — the orange token contrast is flagged for design review in Tag.tsx.
+  {
+    storyId: 'design-system-atoms-tag--visual',
+    legacyBaseline: 'design-system-atoms-tag--tag-story-rectangular-l',
+  },
+  {
+    storyId: 'design-system-atoms-tag--visual-rectangular-s',
+    legacyBaseline: 'design-system-atoms-tag--tag-story-rectangular-s',
+  },
+  {
+    storyId: 'design-system-atoms-tag--visual-round-s',
+    legacyBaseline: 'design-system-atoms-tag--tag-story-round-s',
+  },
+  {
+    storyId: 'design-system-atoms-text--visual',
+    legacyBaseline: 'design-system-atoms-text--text-story',
+  },
+  {
+    storyId: 'design-system-atoms-text--visual-error',
+    legacyBaseline: 'design-system-atoms-text--text-story-error',
+  },
+  // The V2 link diverges intentionally: blue + underline (AA) vs legacy orange, undecorated
+  // (failed 1.4.1 + 1.4.3). The change is confined to the small text glyphs — under the 2% gate.
+  {
+    storyId: 'design-system-atoms-text--visual-link',
+    legacyBaseline: 'design-system-atoms-text--text-story-link',
+  },
+  {
+    storyId: 'design-system-atoms-text--visual-span',
+    legacyBaseline: 'design-system-atoms-text--text-story-span',
+  },
+  {
+    storyId: 'design-system-atoms-textarea--visual',
+    legacyBaseline: 'design-system-atoms-textarea--textarea-story',
+    // Desktop only. The five-field stack overflows the 375×667 mobile viewport, so the legacy
+    // mobile PNG was captured full-page (375×705); the V2 harness captures the viewport (375×667),
+    // making the mobile frame structurally incomparable. Desktop (1280×800) fits and matches.
+    viewports: ['desktop'],
+  },
+  // NOTE: SingleSelect has NO entry — the legacy component shipped no story and no snapshot.
+  // NOTE: Video has NO entry — the legacy `video-story` PNG captured a non-deterministic
+  // auto-playing frame (no poster) and V2 adds a pause control, so a pixel diff is meaningless.
 ]
