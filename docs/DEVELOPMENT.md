@@ -134,6 +134,36 @@ lossy.
   favour of the hooks. This keeps the "standard hooks, no new runtime deps" rule and drops the
   `react-responsive` dependency entirely.
 
+## Molecules & composition
+
+- **Molecules live in `src/components/molecules/` and may import atoms** (e.g. `Button` → `Icon`,
+  `Loader`; `UiLink` → `Icon`) — the atom rule ("never import another component") applies only to
+  atoms. Category is decided by Atomic-Design reclassification (`ATOMIC-MAP.md`), not the legacy
+  folder, so many legacy `atoms/*` land in `molecules/`.
+- **Batches are picked from the dependency-ordered _Build queue_ in `MIGRATION-PROGRESS.md`**, not
+  alphabetically — each entry's `needs:` are migrated in an earlier tier, so the next N unchecked are
+  always buildable. Regenerate the tiers from the legacy import graph with the session scratch scripts
+  if the map drifts.
+- **Polymorphic links go through `src/lib/link.tsx`.** Any component that renders a navigational link
+  (`UiLink`, and the button-as-link family) takes an optional `linkComponent?: LinkComponentType` prop
+  and defaults to `DefaultLink` — a real semantic `<a>` (focusable, exposed as a link → 4.1.2).
+  Consumers inject their router's link (adapted to accept `href`) for SPA navigation. This replaces the
+  legacy `LinkComponent` `<div>` stub. `ref` forwards via a `ref` member on `LinkRenderProps` (React 19
+  ref-as-prop). An interactive control that performs an *action* stays a `<button>` (e.g. `Button`'s
+  `surface="link"` is a button styled as a link, not an anchor).
+- **Render the legacy _intent_, not a legacy bug — then still map the baseline if the diff fits the
+  gate.** Two divergences landed with the first molecules: legacy `Button` referenced an **undefined**
+  font token (so its baselines rendered in the UA font) — V2 applies the brand `font-primary`; and
+  legacy links are **orange** (fails AA) — V2 links (`UiLink`, `Text`) use accessible
+  `text-text-blue` + `underline`. Both **are mapped**: the changed pixels are confined to a small
+  label/glyph, a tiny fraction of the full-screen canvas, so the diff stays under the 2% gate and the
+  `visual:review` gallery pairs current-vs-legacy for human sign-off. Don't pre-judge "the font/colour
+  differs, so a diff is meaningless" — *measure* it; only genuinely **unreproducible** frames go
+  unmapped (non-deterministic renders like `Picture`/`Video`, unmigrated children like `BoxWrapper`,
+  or no legacy story at all). Note the legacy reference PNG is never axe-scanned — only the V2 story
+  is — so "the legacy frame fails AA" is not a reason to skip the map; render the V2 frame accessibly
+  and diff against the legacy image.
+
 ## Accessibility
 
 Generate a11y from scratch (don't copy legacy). `@storybook/addon-a11y` runs in

@@ -1,5 +1,9 @@
 ## Instructions for AI Assistant
 
+- **Pick the next batch from the dependency-ordered _Build queue_ below** (take the next unchecked
+  entries top-to-bottom): every entry's `needs:` are migrated in an earlier tier, so the next N are
+  always buildable. Composition within that window is free — group by archetype where you can. When a
+  component lands, move its line up into _Completed_ (keep any per-component note).
 - Update this file as you go — flip `[ ]` to `[x]` as each component lands, and always before starting
   the next one (the `scaffold-component` skill drives this at its Step 9).
 - A component is done when it is fully generated, strictly typed, `pnpm build` is green, and it passes
@@ -11,9 +15,15 @@
 
 ## Current Batch Status
 
-- **Active Category**: atoms (complete — molecules next)
+- **Active Category**: molecules
 - **Last Updated**: 2026-07-06
-- **Current Micro-Batch**: Batch 6 — atoms 26–28 (complete; BoxWrapper, FlexItem, GroupWrapper — the final layout atoms, **closing the atoms category**. `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 5/5 (interaction + a11y), full `pnpm test:visual` 42 passed / 4 documented skips. 1 visual mapping added (GroupWrapper desktop-only); BoxWrapper baseline-less (unmigrated child molecules) & FlexItem baseline-less (no legacy story).)
+- **Current Micro-Batch**: Batch 7 — molecules, button/link foundation (complete; **Button** + **UiLink**, the two Tier-0 keystones that unblock the most downstream molecules — Button 28, UiLink 6). `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 10/10 (interaction + a11y across every surface/size + link variants), full `pnpm test:visual` 52 passed / 4 documented skips. Both map single-frame visual baselines (Button → `button-small` + icon-left/right + `button-large`; UiLink → `ui-link-story`) reproducing one legacy story each — their divergences (Button's brand font, UiLink's accessible blue) are confined to small glyphs and stay under the 2% gate, so they pass and the `visual:review` gallery pairs each current-vs-legacy for human sign-off. The Tier-1 button/link variants (IconButton, LinkButton) are the natural next batch.
+- **2026-07-06 — checklist restructured to a dependency-ordered build queue**: the legacy import graph was analysed (direct imports + JSX usage of barrel imports) and the 127 pending components tiered topologically (keystone-first within each tier). The `## Components Checklist` is now the queue — "next N unchecked" are always buildable. This replaced the old alphabetical by-category list, which was **unbuildable in order** (molecules import atoms/molecules that came later alphabetically). Scripts kept in the session scratchpad (`deps.cjs` → `emit.cjs`).
+- **2026-07-06 — Batch 7 findings & harness changes**:
+  - **Molecules layer opened + `src/components/molecules/` populated.** Public API (`src/index.ts`) gained a `── Molecules ──` section. Molecules may import atoms (Button → Icon, Loader; UiLink → Icon), unlike atoms.
+  - **Shared polymorphic-link helper (new permanent util)**: `src/lib/link.tsx` exports `DefaultLink` (a real semantic `<a>`, replacing the legacy `LinkComponent` `<div>` stub → links are focusable + exposed as links, 4.1.2), plus `LinkComponentType`/`LinkRenderProps`. UiLink (and the coming IconButton/LinkButton/IconLink) take an optional `linkComponent` prop to inject a router link, defaulting to `DefaultLink`. Ref is forwarded via a `ref` member on `LinkRenderProps` (React 19 ref-as-prop). Documented in docs/DEVELOPMENT.md.
+  - **Button — baseline mapped despite a font divergence** (initially skipped, then corrected after review feedback): legacy `button.module.css` set `font-family: var(--font-family-secondaryBold)`, a token that is **never defined**, and the global `button {}` reset only sets `color` (no `font-family: inherit`) — so the legacy baselines rendered in the **UA default font**, while V2 applies the brand `font-primary` (the undefined token was a bug). I first read that as "diff is meaningless, don't map" — wrong: the label is a tiny fraction of the full-screen canvas, so the diff is **well under the 2% gate**. `--visual` (→ `button-small`), `--visual-icon-left/right` and `--visual-large` are all mapped and pass, and the review gallery now pairs each current-vs-legacy so the minor type difference gets human sign-off instead of escaping review. New token `--spacing-button-min-l: 8.125rem` (`min-w-button-min-l`) for the off-scale large min-width. Also dropped legacy's `aria-label={name}` misuse — the visible `children` is the accessible name (4.1.2/2.5.3); `name` is now the real HTML attribute. Icon-only buttons → use IconButton. Sub-44px sizes (small/x-small/xx-small) rely on the 2.5.8 ≥24px-spacing exception (noted in-component); only `large` meets 2.5.5†.
+  - **UiLink — baseline mapped despite a colour divergence**: the legacy link is orange (`--interactive-default`, fails 4.5:1 on white); V2 uses accessible `text-text-blue` + `underline` (1.4.1/1.4.3) — the same intentional divergence applied to the `Text` link in batch 4. The colour change is confined to the small link glyphs, so `--visual` (→ `ui-link-story`) diffs **under the 2% gate** and is mapped; the gallery surfaces the orange→blue change for sign-off. (The V2 story renders blue → passes the axe gate; the orange legacy PNG is only the reference image, never scanned — so "legacy fails AA" was never a reason not to map.) Icons are decorative (`aria-hidden`); accessible name is the visible text (no more `aria-label={children}`).
 - **2026-07-06 — Batch 6 findings & harness changes**:
   - **Runtime responsive value → CSS-var + media-query `@utility` (new permanent standard)**: FlexItem's `flex` is a per-breakpoint runtime prop (`{sm,md,lg}`), which can't be a build-time Tailwind class. Ported the legacy CSS-var pattern: the component sets `--flex-sm/md/lg` inline, and a new `@utility flex-responsive` (in `src/styles/index.css`) reads them at the `md` (48rem) / `lg` (64rem) cut-ins. Confirms Tailwind v4 `@utility` accepts nested `@media` (emits correctly in `dist/ecom-designsystem.css`). This is the sanctioned way to make a runtime value responsive without an arbitrary literal — reuse it for any future per-breakpoint runtime dimension. Documented in docs/DEVELOPMENT.md.
   - **New shared tokens (permanent)**: `--spacing-wrapper-xs: 0.3rem` (the `spacing='xs'` cluster gap shared by GroupWrapper + BoxWrapper; 0.3rem is off the 0.25rem scale — sm/md/lg/xl map to standard `gap-2/4/6/8`; consumed as `gap-wrapper-xs`) and `--container-box: 43.75rem` (BoxWrapper's `hasMaxWidth` cap, ported from legacy `max-width: 43.75rem`; consumed as `max-w-box` — v4 strips the `--container-` prefix). Documented in docs/DEVELOPMENT.md.
@@ -50,12 +60,28 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 28 / 155
-- Remaining: 127
+- Completed: 30 / 155
+- Remaining: 125
 
 ## Components Checklist
 
-### src/components/atoms
+**Ordering is dependency-first, not alphabetical.** Regenerated from the legacy import graph: each
+entry's `needs:` list names the *pending* components it imports, and every one of those sits in an
+earlier tier — so **to start a batch, take the next unchecked entries top-to-bottom and their deps are
+guaranteed already done.** `[atom]`/`[mol]`/`[org]` is the V2 destination dir
+(`src/components/<category>`, after Atomic-Design reclassification — many legacy `atoms/*` are V2
+molecules). `unblocks N` = how many pending components import this one (higher = more foundational;
+that's why each tier is keystone-first — e.g. Button unblocks 28, IconButton 22).
+
+Regenerate after large changes with the scratch scripts (`deps.cjs` → `emit.cjs`), or just move a
+finished line into _Completed_ by hand (tiers rarely shift).
+
+> **Cycle note.** The legacy product-card family is mutually recursive — `ProductCard` ↔
+> `ProductCardHorizontal`/`-Vertical`/`-Restricted`, and `ProductSearch` ↔
+> `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
+> shells first and wire the cross-references last rather than expecting one clean topological pass.
+
+### Completed (30)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -85,136 +111,157 @@
 - [x] BoxWrapper (Legacy: legacy/src/design-system/components/molecules/box-wrapper) — reclassified molecule→atom; presentational vertical stack; dead `direction`/`style`/`.noPadding` dropped; no visual baseline (unmigrated child molecules), see batch notes
 - [x] FlexItem (Legacy: legacy/src/design-system/components/molecules/flex-item) — reclassified molecule→atom; per-breakpoint runtime `flex` via `flex-responsive` @utility; no baseline (no legacy story)
 - [x] GroupWrapper (Legacy: legacy/src/design-system/components/molecules/group-wrapper) — reclassified molecule→atom; enum→utility maps; visual desktop-only (single large Heading amplifies known rhythm drift on mobile), see batch notes
+- [x] Button `[mol]` (Legacy: legacy/src/design-system/components/atoms/button) — keystone (unblocks 28); 5 surfaces × 4 sizes, icons, loading (`aria-busy` + sr-only label); `font-primary` over undefined legacy token; 4 baselines mapped (font divergence, under 2% gate), see batch notes
+- [x] UiLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-link) — polymorphic `<a>` via `src/lib/link` `DefaultLink`; accessible blue+underline over legacy orange; baseline mapped (colour divergence, under gate), see batch notes
 
-### src/components/molecules
+### Build queue (125 pending, dependency-ordered)
 
-- [ ] AddToCartButton (Legacy: legacy/src/design-system/components/atoms/add-to-cart-button)
-- [ ] AdminSearch (Legacy: legacy/src/design-system/components/atoms/admin-search)
-- [ ] AlertBox (Legacy: legacy/src/design-system/components/atoms/alert-box)
-- [ ] AlertMessage (Legacy: legacy/src/design-system/components/atoms/alert-message)
-- [ ] Button (Legacy: legacy/src/design-system/components/atoms/button)
-- [ ] ButtonWithTooltop (Legacy: legacy/src/design-system/components/atoms/button-with-tooltop)
-- [ ] CampaignBox (Legacy: legacy/src/design-system/components/atoms/campaign-box)
-- [ ] CampaignMessage (Legacy: legacy/src/design-system/components/atoms/campaign-message)
-- [ ] CookieBar (Legacy: legacy/src/design-system/components/atoms/cookie-bar)
-- [ ] IconButton (Legacy: legacy/src/design-system/components/atoms/icon-button)
-- [ ] IconLink (Legacy: legacy/src/design-system/components/atoms/icon-link)
-- [ ] IconWithTooltip (Legacy: legacy/src/design-system/components/atoms/icon-with-tooltip)
-- [ ] InputText (Legacy: legacy/src/design-system/components/atoms/inputs/input-text)
-- [ ] LinkButton (Legacy: legacy/src/design-system/components/atoms/link-button)
-- [ ] MessageBanner (Legacy: legacy/src/design-system/components/atoms/message-banner)
-- [ ] MessagePopup (Legacy: legacy/src/design-system/components/atoms/message-popup)
-- [ ] InlineError (Legacy: legacy/src/design-system/components/atoms/messages/inline-error)
-- [ ] MultiSelect (Legacy: legacy/src/design-system/components/atoms/multi-select)
-- [ ] Search (Legacy: legacy/src/design-system/components/atoms/search)
-- [ ] SocialMediaLink (Legacy: legacy/src/design-system/components/atoms/social-media-link)
-- [ ] UiDatePicker (Legacy: legacy/src/design-system/components/atoms/ui-date-picker)
-- [ ] UiLink (Legacy: legacy/src/design-system/components/atoms/ui-link)
-- [ ] AccountBox (Legacy: legacy/src/design-system/components/molecules/account-box)
-- [ ] AgeVerificationForm (Legacy: legacy/src/design-system/components/molecules/age-verification-form)
-- [ ] ArticleCard (Legacy: legacy/src/design-system/components/molecules/article-card)
-- [ ] CheckboxListItem (Legacy: legacy/src/design-system/components/molecules/checkbox-list-item)
-- [ ] ClickableListItem (Legacy: legacy/src/design-system/components/molecules/clickable-list-item)
-- [ ] DeliveryInfoBar (Legacy: legacy/src/design-system/components/molecules/delivery-info-bar)
-- [ ] DrawerSidebar (Legacy: legacy/src/design-system/components/molecules/drawer-sidebar)
-- [ ] DropdownList (Legacy: legacy/src/design-system/components/molecules/dropdown-list)
-- [ ] FaqHero (Legacy: legacy/src/design-system/components/molecules/faq-hero)
-- [ ] FooterTopBar (Legacy: legacy/src/design-system/components/molecules/footer-top-bar)
-- [ ] Form (Legacy: legacy/src/design-system/components/molecules/form)
-- [ ] FormGroup (Legacy: legacy/src/design-system/components/molecules/form-group)
-- [ ] Hero (Legacy: legacy/src/design-system/components/molecules/hero)
-- [ ] InfoSummaryBox (Legacy: legacy/src/design-system/components/molecules/info-summary-box)
-- [ ] IntroBlock (Legacy: legacy/src/design-system/components/molecules/intro-block)
-- [ ] LinkListItem (Legacy: legacy/src/design-system/components/molecules/link-list-item)
-- [ ] LoadingBars (Legacy: legacy/src/design-system/components/molecules/loading-bars)
-- [ ] LoadingOverlay (Legacy: legacy/src/design-system/components/molecules/loading-overlay)
-- [ ] Logotype (Legacy: legacy/src/design-system/components/molecules/logotype)
-- [ ] Modal (Legacy: legacy/src/design-system/components/molecules/modal)
-- [ ] Newsletter (Legacy: legacy/src/design-system/components/molecules/newsletter)
-- [ ] OfferCard (Legacy: legacy/src/design-system/components/molecules/offer-card)
-- [ ] OrderConfirmationDetails (Legacy: legacy/src/design-system/components/molecules/order-confirmation-details)
-- [ ] OrderItem (Legacy: legacy/src/design-system/components/molecules/order-item)
-- [ ] Pagination (Legacy: legacy/src/design-system/components/molecules/pagination)
-- [ ] PopUp (Legacy: legacy/src/design-system/components/molecules/pop-up)
-- [ ] ProductQuantityInput (Legacy: legacy/src/design-system/components/molecules/product-quantity-input)
-- [ ] ProductVariant (Legacy: legacy/src/design-system/components/molecules/product-variant)
-- [ ] PurchaseList (Legacy: legacy/src/design-system/components/molecules/purchase-list)
-- [ ] QuantityChanger (Legacy: legacy/src/design-system/components/molecules/quantity-changer)
-- [ ] ScrollableList (Legacy: legacy/src/design-system/components/molecules/scrollable-list)
-- [ ] SelectList (Legacy: legacy/src/design-system/components/molecules/select-list)
-- [ ] SocialMediaLinks (Legacy: legacy/src/design-system/components/molecules/social-media-links)
-- [ ] SortableList (Legacy: legacy/src/design-system/components/molecules/sortable-list)
-- [ ] SortableListItem (Legacy: legacy/src/design-system/components/molecules/sortable-list-item)
-- [ ] Table (Legacy: legacy/src/design-system/components/molecules/table)
-- [ ] Tabs (Legacy: legacy/src/design-system/components/molecules/tabs)
-- [ ] TagsDescription (Legacy: legacy/src/design-system/components/molecules/tags-description)
-- [ ] TagsList (Legacy: legacy/src/design-system/components/molecules/tags-list)
-- [ ] Teaser (Legacy: legacy/src/design-system/components/molecules/teaser)
-- [ ] TopNavBar (Legacy: legacy/src/design-system/components/molecules/top-nav-bar)
-- [ ] UnorderedList (Legacy: legacy/src/design-system/components/molecules/unordered-list)
-- [ ] UserInfoSummary (Legacy: legacy/src/design-system/components/molecules/user-info-summary)
-- [ ] RichText (Legacy: legacy/src/design-system/components/organisms/rich-text)
+#### Tier 0 — buildable now (deps already migrated)
 
-### src/components/organisms
+- [ ] InputText `[mol]` (Legacy: legacy/src/design-system/components/atoms/inputs/input-text) — leaf · unblocks 8
+- [ ] IconWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-with-tooltip) — leaf · unblocks 7
+- [ ] Carousel `[org]` (Legacy: legacy/src/design-system/components/organisms/carousel) — leaf · unblocks 6
+- [ ] TagsList `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-list) — leaf · unblocks 4
+- [ ] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — leaf · unblocks 3
+- [ ] LoadingOverlay `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-overlay) — leaf · unblocks 2
+- [ ] ArticleCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/article-card) — leaf · unblocks 1
+- [ ] ClickableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/clickable-list-item) — leaf · unblocks 1
+- [ ] InlineError `[mol]` (Legacy: legacy/src/design-system/components/atoms/messages/inline-error) — leaf · unblocks 1
+- [ ] LoadingBars `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-bars) — leaf · unblocks 1
+- [ ] OfferCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/offer-card) — leaf · unblocks 1
+- [ ] CheckboxListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/checkbox-list-item) — leaf
+- [ ] DeliveryInfoBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/delivery-info-bar) — leaf
+- [ ] DropdownList `[mol]` (Legacy: legacy/src/design-system/components/molecules/dropdown-list) — leaf
+- [ ] InfoSummaryBox `[mol]` (Legacy: legacy/src/design-system/components/molecules/info-summary-box) — leaf
+- [ ] IntroBlock `[mol]` (Legacy: legacy/src/design-system/components/molecules/intro-block) — leaf
+- [ ] MessageBanner `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-banner) — leaf
+- [ ] OrderConfirmationDetails `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-confirmation-details) — leaf
+- [ ] Pagination `[mol]` (Legacy: legacy/src/design-system/components/molecules/pagination) — leaf
+- [ ] PopUp `[mol]` (Legacy: legacy/src/design-system/components/molecules/pop-up) — leaf
+- [ ] PurchaseList `[mol]` (Legacy: legacy/src/design-system/components/molecules/purchase-list) — leaf
+- [ ] RichText `[mol]` (Legacy: legacy/src/design-system/components/organisms/rich-text) — leaf
+- [ ] ScrollableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/scrollable-list) — leaf
+- [ ] SortableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list-item) — leaf
+- [ ] TagsDescription `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-description) — leaf
+- [ ] UnorderedList `[mol]` (Legacy: legacy/src/design-system/components/molecules/unordered-list) — leaf
+- [ ] UserInfoSummary `[mol]` (Legacy: legacy/src/design-system/components/molecules/user-info-summary) — leaf
+- [ ] BrandPage `[org]` (Legacy: legacy/src/design-system/components/templates/brand-page) — leaf
+- [ ] CampaignPage `[org]` (Legacy: legacy/src/design-system/components/templates/campaign-page) — leaf
+- [ ] Cart `[org]` (Legacy: legacy/src/design-system/components/templates/cart) — leaf
+- [ ] CartDeliveryDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-delivery-details) — leaf
+- [ ] CartOrderDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-order-details) — leaf
+- [ ] CartProductList `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-product-list) — leaf
+- [ ] CartSidebar `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-sidebar) — leaf
+- [ ] ChooseUserPage `[org]` (Legacy: legacy/src/design-system/components/templates/choose-user-page) — leaf
+- [ ] ContactPage `[org]` (Legacy: legacy/src/design-system/components/templates/contact-page) — leaf
+- [ ] ContentPage `[org]` (Legacy: legacy/src/design-system/components/templates/content-page) — leaf
+- [ ] InspirationPage `[org]` (Legacy: legacy/src/design-system/components/templates/inspiration-page) — leaf
+- [ ] LoginPage `[org]` (Legacy: legacy/src/design-system/components/templates/login-page) — leaf
+- [ ] MySpendrupsPage `[org]` (Legacy: legacy/src/design-system/components/templates/my-spendrups-page) — leaf
+- [ ] OrderConfirmation `[org]` (Legacy: legacy/src/design-system/components/organisms/order-confirmation) — leaf
+- [ ] OrderConfirmationPage `[org]` (Legacy: legacy/src/design-system/components/templates/order-confirmation-page) — leaf
+- [ ] ProductCategoryListingPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-category-listing-page) — leaf
+- [ ] ProductPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-page) — leaf
+- [ ] ShoppingListPage `[org]` (Legacy: legacy/src/design-system/components/templates/shopping-list-page) — leaf
+- [ ] StartPageTemplate `[org]` (Legacy: legacy/src/design-system/components/templates/start-page-template) — leaf
 
-- [ ] ProductSearchResultItem (Legacy: legacy/src/design-system/components/atoms/product-search-result-item)
-- [ ] RangeInput (Legacy: legacy/src/design-system/components/atoms/range-input)
-- [ ] Slider (Legacy: legacy/src/design-system/components/atoms/slider)
-- [ ] CartProduct (Legacy: legacy/src/design-system/components/molecules/cart-product)
-- [ ] DynamicFilter (Legacy: legacy/src/design-system/components/molecules/dynamic-filter)
-- [ ] FaqGroup (Legacy: legacy/src/design-system/components/molecules/faq-group)
-- [ ] FaqList (Legacy: legacy/src/design-system/components/molecules/faq-list)
-- [ ] HorizontalVariant (Legacy: legacy/src/design-system/components/molecules/horizontal-variant)
-- [ ] HorizontalVariants (Legacy: legacy/src/design-system/components/molecules/horizontal-variants)
-- [ ] InvoiceList (Legacy: legacy/src/design-system/components/molecules/invoice-list)
-- [ ] MiniProductToast (Legacy: legacy/src/design-system/components/molecules/mini-product-toast)
-- [ ] DesktopNavigation (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation)
-- [ ] MobileNavigation (Legacy: legacy/src/design-system/components/molecules/navigation/mobile-navigation)
-- [ ] ProductCard (Legacy: legacy/src/design-system/components/molecules/product-card)
-- [ ] ProductCardHorizontal (Legacy: legacy/src/design-system/components/molecules/product-card-horizontal)
-- [ ] ProductCardMini (Legacy: legacy/src/design-system/components/molecules/product-card-mini)
-- [ ] ProductCardMiniVertical (Legacy: legacy/src/design-system/components/molecules/product-card-mini-vertical)
-- [ ] ProductCardRestricted (Legacy: legacy/src/design-system/components/molecules/product-card-restricted)
-- [ ] ProductCardVertical (Legacy: legacy/src/design-system/components/molecules/product-card-vertical)
-- [ ] ProductCarousel (Legacy: legacy/src/design-system/components/molecules/product-carousel)
-- [ ] ProductSearch (Legacy: legacy/src/design-system/components/molecules/product-search)
-- [ ] ProductToast (Legacy: legacy/src/design-system/components/molecules/product-toast)
-- [ ] ProductVariantList (Legacy: legacy/src/design-system/components/molecules/product-variant-list)
-- [ ] UserProfileDropdown (Legacy: legacy/src/design-system/components/molecules/user-profile-dropdown)
-- [ ] VerticalVariants (Legacy: legacy/src/design-system/components/molecules/vertical-variants)
-- [ ] AccountBoxList (Legacy: legacy/src/design-system/components/organisms/account-box-list)
-- [ ] ArticleList (Legacy: legacy/src/design-system/components/organisms/article-list)
-- [ ] BrandDetails (Legacy: legacy/src/design-system/components/organisms/brand-details)
-- [ ] Breadcrumbs (Legacy: legacy/src/design-system/components/organisms/breadcrumbs)
-- [ ] Carousel (Legacy: legacy/src/design-system/components/organisms/carousel)
-- [ ] CartDeliveryDetails (Legacy: legacy/src/design-system/components/organisms/cart-delivery-details)
-- [ ] CartOrderDetails (Legacy: legacy/src/design-system/components/organisms/cart-order-details)
-- [ ] CartProductList (Legacy: legacy/src/design-system/components/organisms/cart-product-list)
-- [ ] CartSidebar (Legacy: legacy/src/design-system/components/organisms/cart-sidebar)
-- [ ] CreateListForm (Legacy: legacy/src/design-system/components/organisms/create-list-form)
-- [ ] DeliveryForm (Legacy: legacy/src/design-system/components/organisms/delivery-form)
-- [ ] Footer (Legacy: legacy/src/design-system/components/organisms/footer)
-- [ ] Header (Legacy: legacy/src/design-system/components/organisms/header)
-- [ ] HeroCarousel (Legacy: legacy/src/design-system/components/organisms/hero-carousel)
-- [ ] LoginForm (Legacy: legacy/src/design-system/components/organisms/login-form)
-- [ ] OfferCardList (Legacy: legacy/src/design-system/components/organisms/offer-card-list)
-- [ ] OrderConfirmation (Legacy: legacy/src/design-system/components/organisms/order-confirmation)
-- [ ] ProductBlock (Legacy: legacy/src/design-system/components/organisms/product-block)
-- [ ] ProductCardList (Legacy: legacy/src/design-system/components/organisms/product-card-list)
-- [ ] ProductDescription (Legacy: legacy/src/design-system/components/organisms/product-description)
-- [ ] ProductDetails (Legacy: legacy/src/design-system/components/organisms/product-details)
-- [ ] ResetPasswordForm (Legacy: legacy/src/design-system/components/organisms/reset-password-form)
-- [ ] BrandPage (Legacy: legacy/src/design-system/components/templates/brand-page)
-- [ ] CampaignPage (Legacy: legacy/src/design-system/components/templates/campaign-page)
-- [ ] Cart (Legacy: legacy/src/design-system/components/templates/cart)
-- [ ] ChooseUserPage (Legacy: legacy/src/design-system/components/templates/choose-user-page)
-- [ ] ContactPage (Legacy: legacy/src/design-system/components/templates/contact-page)
-- [ ] ContentPage (Legacy: legacy/src/design-system/components/templates/content-page)
-- [ ] InspirationPage (Legacy: legacy/src/design-system/components/templates/inspiration-page)
-- [ ] LoginPage (Legacy: legacy/src/design-system/components/templates/login-page)
-- [ ] MySpendrupsPage (Legacy: legacy/src/design-system/components/templates/my-spendrups-page)
-- [ ] OrderConfirmationPage (Legacy: legacy/src/design-system/components/templates/order-confirmation-page)
-- [ ] ProductCategoryListingPage (Legacy: legacy/src/design-system/components/templates/product-category-listing-page)
-- [ ] ProductPage (Legacy: legacy/src/design-system/components/templates/product-page)
-- [ ] ShoppingListPage (Legacy: legacy/src/design-system/components/templates/shopping-list-page)
-- [ ] StartPageTemplate (Legacy: legacy/src/design-system/components/templates/start-page-template)
+#### Tier 1 — unlocked after Tier 0
+
+- [ ] IconButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-button) — needs: UiLink · unblocks 22
+- [ ] LinkButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/link-button) — needs: UiLink · unblocks 6
+- [ ] ProductVariant `[mol]` (Legacy: legacy/src/design-system/components/molecules/product-variant) — needs: IconWithTooltip · unblocks 5
+- [ ] ProductQuantityInput `[mol]` (Legacy: legacy/src/design-system/components/molecules/product-quantity-input) — needs: InputText · unblocks 4
+- [ ] AlertBox `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-box) — needs: Button · unblocks 3
+- [ ] FormGroup `[mol]` (Legacy: legacy/src/design-system/components/molecules/form-group) — needs: InlineError · unblocks 2
+- [ ] AccountBox `[mol]` (Legacy: legacy/src/design-system/components/molecules/account-box) — needs: Button · unblocks 1
+- [ ] CampaignBox `[mol]` (Legacy: legacy/src/design-system/components/atoms/campaign-box) — needs: Button · unblocks 1
+- [ ] IconLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-link) — needs: UiLink · unblocks 1
+- [ ] Newsletter `[mol]` (Legacy: legacy/src/design-system/components/molecules/newsletter) — needs: InputText, Button · unblocks 1
+- [ ] UiDatePicker `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-date-picker) — needs: Button · unblocks 1
+- [ ] FaqList `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-list) — needs: ClickableListItem · unblocks 1
+- [ ] AdminSearch `[mol]` (Legacy: legacy/src/design-system/components/atoms/admin-search) — needs: InputText
+- [ ] AgeVerificationForm `[mol]` (Legacy: legacy/src/design-system/components/molecules/age-verification-form) — needs: Button
+- [ ] ButtonWithTooltop `[mol]` (Legacy: legacy/src/design-system/components/atoms/button-with-tooltop) — needs: Button
+- [ ] CampaignMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/campaign-message) — needs: Button
+- [ ] CookieBar `[mol]` (Legacy: legacy/src/design-system/components/atoms/cookie-bar) — needs: Button
+- [ ] MultiSelect `[mol]` (Legacy: legacy/src/design-system/components/atoms/multi-select) — needs: Button
+- [ ] OrderItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-item) — needs: Button
+- [ ] Search `[mol]` (Legacy: legacy/src/design-system/components/atoms/search) — needs: InputText, Button
+- [ ] SelectList `[mol]` (Legacy: legacy/src/design-system/components/molecules/select-list) — needs: Button
+- [ ] Tabs `[mol]` (Legacy: legacy/src/design-system/components/molecules/tabs) — needs: Button
+- [ ] ArticleList `[org]` (Legacy: legacy/src/design-system/components/organisms/article-list) — needs: ArticleCard, Carousel
+- [ ] BrandDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/brand-details) — needs: TagsList
+- [ ] Breadcrumbs `[org]` (Legacy: legacy/src/design-system/components/organisms/breadcrumbs) — needs: UiLink
+- [ ] MobileNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/mobile-navigation) — needs: Button
+- [ ] OfferCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/offer-card-list) — needs: OfferCard, Carousel
+
+#### Tier 2 — unlocked after Tier 1
+
+- [ ] ProductVariantList `[org]` (Legacy: legacy/src/design-system/components/molecules/product-variant-list) — needs: ProductVariant, IconButton · unblocks 5
+- [ ] Form `[mol]` (Legacy: legacy/src/design-system/components/molecules/form) — needs: UiLink, Button, LinkButton · unblocks 4
+- [ ] AddToCartButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/add-to-cart-button) — needs: IconButton · unblocks 2
+- [ ] DrawerSidebar `[mol]` (Legacy: legacy/src/design-system/components/molecules/drawer-sidebar) — needs: IconButton · unblocks 2
+- [ ] FooterTopBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/footer-top-bar) — needs: LinkButton · unblocks 1
+- [ ] Hero `[mol]` (Legacy: legacy/src/design-system/components/molecules/hero) — needs: LinkButton · unblocks 1
+- [ ] SocialMediaLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/social-media-link) — needs: LinkButton · unblocks 1
+- [ ] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — needs: ProductQuantityInput, IconButton · unblocks 1
+- [ ] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — needs: IconButton · unblocks 1
+- [ ] HorizontalVariant `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variant) — needs: ProductVariant, IconWithTooltip · unblocks 1
+- [ ] ProductSearch `[org]` (Legacy: legacy/src/design-system/components/molecules/product-search) — needs: ProductVariant, InputText, ProductSearchResultItem · unblocks 1
+- [ ] AlertMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-message) — needs: IconButton
+- [ ] FaqHero `[mol]` (Legacy: legacy/src/design-system/components/molecules/faq-hero) — needs: InputText, IconButton
+- [ ] LinkListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/link-list-item) — needs: IconButton, IconLink
+- [ ] MessagePopup `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-popup) — needs: IconButton
+- [ ] Modal `[mol]` (Legacy: legacy/src/design-system/components/molecules/modal) — needs: IconButton
+- [ ] QuantityChanger `[mol]` (Legacy: legacy/src/design-system/components/molecules/quantity-changer) — needs: IconButton
+- [ ] SortableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list) — needs: IconButton
+- [ ] Table `[mol]` (Legacy: legacy/src/design-system/components/molecules/table) — needs: Button, IconButton
+- [ ] Teaser `[mol]` (Legacy: legacy/src/design-system/components/molecules/teaser) — needs: LinkButton
+- [ ] TopNavBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/top-nav-bar) — needs: UiDatePicker
+- [ ] AccountBoxList `[org]` (Legacy: legacy/src/design-system/components/organisms/account-box-list) — needs: AccountBox
+- [ ] CreateListForm `[org]` (Legacy: legacy/src/design-system/components/organisms/create-list-form) — needs: LoadingOverlay, Logotype, FormGroup, InputText, Button
+- [ ] DeliveryForm `[org]` (Legacy: legacy/src/design-system/components/organisms/delivery-form) — needs: FormGroup, InputText
+- [ ] FaqGroup `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-group) — needs: FaqList
+- [ ] InvoiceList `[org]` (Legacy: legacy/src/design-system/components/molecules/invoice-list) — needs: LoadingOverlay, IconButton, Button
+
+#### Tier 3 — unlocked after Tier 2
+
+- [ ] HorizontalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variants) — needs: ProductVariantList, HorizontalVariant, Carousel · unblocks 1
+- [ ] ProductCardRestricted `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-restricted) — needs: ProductVariantList, TagsList, ProductCard, IconWithTooltip, Button · unblocks 1
+- [ ] ProductCardVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-vertical) — needs: ProductCard, ProductQuantityInput, ProductVariantList, TagsList, IconWithTooltip, Button, IconButton · unblocks 1
+- [ ] ProductDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/product-details) — needs: ProductVariant, ProductQuantityInput, Button, IconButton, AddToCartButton, AlertBox, CampaignBox, IconWithTooltip, ProductVariantList, LoadingBars · unblocks 1
+- [ ] ProductSearchResultItem `[org]` (Legacy: legacy/src/design-system/components/atoms/product-search-result-item) — needs: ProductSearch, IconButton, IconWithTooltip · unblocks 1
+- [ ] Slider `[org]` (Legacy: legacy/src/design-system/components/atoms/slider) — needs: Form · unblocks 1
+- [ ] VerticalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/vertical-variants) — needs: ProductVariant, ProductVariantList, Carousel · unblocks 1
+- [ ] SocialMediaLinks `[mol]` (Legacy: legacy/src/design-system/components/molecules/social-media-links) — needs: SocialMediaLink
+- [ ] Footer `[org]` (Legacy: legacy/src/design-system/components/organisms/footer) — needs: Newsletter, FooterTopBar, Logotype
+- [ ] Header `[org]` (Legacy: legacy/src/design-system/components/organisms/header) — needs: DesktopNavigation
+- [ ] HeroCarousel `[org]` (Legacy: legacy/src/design-system/components/organisms/hero-carousel) — needs: Hero, Carousel
+- [ ] LoginForm `[org]` (Legacy: legacy/src/design-system/components/organisms/login-form) — needs: Button, Form, LinkButton, UiLink
+- [ ] ProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/product-toast) — needs: CartProduct, IconButton
+- [ ] ResetPasswordForm `[org]` (Legacy: legacy/src/design-system/components/organisms/reset-password-form) — needs: Logotype, Form
+- [ ] UserProfileDropdown `[org]` (Legacy: legacy/src/design-system/components/molecules/user-profile-dropdown) — needs: DrawerSidebar, IconButton, Button
+
+#### Tier 4 — unlocked after Tier 3
+
+- [ ] ProductCardHorizontal `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-horizontal) — needs: ProductQuantityInput, TagsList, ProductCard, HorizontalVariants, IconWithTooltip, IconButton, Button, AlertBox · unblocks 1
+- [ ] ProductCardMiniVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini-vertical) — needs: VerticalVariants, IconButton, Button, AddToCartButton · unblocks 1
+- [ ] RangeInput `[org]` (Legacy: legacy/src/design-system/components/atoms/range-input) — needs: Form, Slider · unblocks 1
+- [ ] ProductDescription `[org]` (Legacy: legacy/src/design-system/components/organisms/product-description) — needs: Button, ProductDetails
+
+#### Tier 5 — unlocked after Tier 4
+
+- [ ] ProductCard `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card) — needs: AlertBox, ProductCardHorizontal, ProductCardRestricted, ProductCardVertical · unblocks 7
+- [ ] DynamicFilter `[org]` (Legacy: legacy/src/design-system/components/molecules/dynamic-filter) — needs: DrawerSidebar, RangeInput, Button
+
+#### Tier 6 — unlocked after Tier 5
+
+- [ ] ProductCardMini `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini) — needs: ProductCard · unblocks 1
+- [ ] ProductBlock `[org]` (Legacy: legacy/src/design-system/components/organisms/product-block) — needs: ProductCard
+- [ ] ProductCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/product-card-list) — needs: ProductCard
+- [ ] ProductCarousel `[org]` (Legacy: legacy/src/design-system/components/molecules/product-carousel) — needs: Carousel, ProductCardMiniVertical, ProductCard
+
+#### Tier 7 — unlocked after Tier 6
+
+- [ ] MiniProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/mini-product-toast) — needs: ProductCardMini, IconButton
+

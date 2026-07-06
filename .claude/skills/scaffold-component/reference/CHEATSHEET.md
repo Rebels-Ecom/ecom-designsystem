@@ -105,6 +105,21 @@ Common legacy `var()` → V2 utility:
    `autoPlay`. Pass a captions `<track>` in stories so axe's `video-caption` rule stays green.
 8. Asset imports (`*.mp4`, `*.png`, `*.svg`) type-check via `vite/client` (already referenced in
    `src/vite-env.d.ts`) — no extra declaration needed.
+9. **A `['visual']`-tagged static story is UNconditional — even with no baseline.** The baseline-map
+   entry (Step 7) is what's conditional. The `['visual']` tag feeds two things: the regression gate
+   (only if also in the map) *and* the `visual:review` gallery, which renders every `['visual']`
+   story — mapped ones current-vs-legacy, unmapped ones current-only. Skip the tag on a no-baseline
+   component (e.g. `BoxWrapper`, `MaxWidth`) and it vanishes from the review gallery entirely — no
+   error, just silent loss of the human review surface. The `['visual']` story should be **one
+   representative frame that reproduces a real legacy story** (so it can be mapped and pairs against
+   the baseline), *not* an all-variants grid — a grid has no legacy counterpart to diff against.
+10. **Don't pre-judge a divergence as "unmappable" — measure the diff.** A font/colour fix (brand
+   `font-primary` over a legacy UA font; accessible blue over orange) changes only a small
+   label/glyph, a tiny fraction of the full-screen canvas, so it lands **under the 2% gate** and
+   *should* be mapped — the gallery then surfaces it for sign-off (Button, UiLink, Text). Only
+   genuinely non-reproducible frames go unmapped (non-deterministic media, unmigrated children, no
+   legacy story). The legacy PNG is never axe-scanned — only the V2 story is — so "legacy fails AA"
+   is not a reason to skip the map: render the V2 frame accessibly and diff against the legacy image.
 
 ---
 

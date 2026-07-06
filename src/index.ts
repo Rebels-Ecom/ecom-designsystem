@@ -151,3 +151,16 @@ export type {
   GroupSpacing,
   GroupAlign,
 } from './components/atoms/GroupWrapper'
+
+/* ── Molecules ────────────────────────────────────────────────────────── */
+export { Button } from './components/molecules/Button'
+export type {
+  ButtonProps,
+  ButtonType,
+  ButtonSurface,
+  ButtonSize,
+  ButtonWeight,
+} from './components/molecules/Button'
+
+export { UiLink } from './components/molecules/UiLink'
+export type { UiLinkProps, UiLinkTarget, UiLinkSurface } from './components/molecules/UiLink'

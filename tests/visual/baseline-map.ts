@@ -175,6 +175,33 @@ export const visualBaselines: readonly VisualBaseline[] = [
     // divergence. Desktop (one line, drift diluted across the 1280px canvas) matches.
     viewports: ['desktop'],
   },
+  // ── Batch 7 (molecules — button/link foundation) ──
+  // Button: intentional font divergence (legacy's `--font-family-secondaryBold` was undefined → UA
+  // font; V2 uses brand `font-primary`). The label is a tiny fraction of the full-screen canvas, so
+  // the diff stays under the 2% gate; mapping pairs it in the review gallery for human sign-off.
+  {
+    storyId: 'design-system-molecules-button--visual',
+    legacyBaseline: 'design-system-atoms-buttons--button-small',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-icon-left',
+    legacyBaseline: 'design-system-atoms-buttons--button-small-icon-left',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-icon-right',
+    legacyBaseline: 'design-system-atoms-buttons--button-small-icon-right',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-large',
+    legacyBaseline: 'design-system-atoms-buttons--button-large',
+  },
+  // UiLink: intentional colour divergence (legacy orange link fails AA → V2 accessible blue +
+  // underline, same as the Text link). Confined to small glyphs, so under the 2% gate.
+  {
+    storyId: 'design-system-molecules-uilink--visual',
+    legacyBaseline: 'design-system-atoms-uilink--ui-link-story',
+  },
+
   // NOTE: BoxWrapper has NO entry — every legacy `box-wrapper-story-*` frame composes molecules that
   // aren't migrated yet (Button, InfoSummaryBox, OrderItem, Tabs, TagsList, OrderConfirmationDetails,
   // ScrollableList), so a faithful parity frame can't be reproduced and a partial one would be a
