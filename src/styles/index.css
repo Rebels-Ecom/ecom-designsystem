@@ -127,6 +127,10 @@
   --container-listing-m: 37.5rem;
   --container-product-card: 18.75rem;
   --container-cta-default: 13.75rem;
+  /* BoxWrapper `hasMaxWidth` cap — the readable content measure (ported from legacy
+   * box-wrapper.module.css `max-width: 43.75rem`). Consumed as `max-w-box` (v4 strips the
+   * `--container-` prefix). */
+  --container-box: 43.75rem;
 
   /* — Breakpoints — extend (not replace) Tailwind's defaults. `3xl` = 90rem (1440px) is the legacy
    * "big screen" cut-in: it matches the xl:1440 JS breakpoint in the Breakpoints atom and the
@@ -141,6 +145,11 @@
   --spacing-footer-bar-desktop: 6rem;
   --spacing-logotype-mobile: 2rem;
   --spacing-logotype-desktop: 2.25rem;
+
+  /* Cluster gap shared by GroupWrapper + BoxWrapper `spacing='xs'`. 0.3rem is off the 0.25rem
+   * scale (ported from the legacy `.spacing-xs { gap: 0.3rem }` rule), so it's a token rather than
+   * an arbitrary value; sm/md/lg/xl map to the standard gap-2/4/6/8 steps. Consumed as `gap-wrapper-xs`. */
+  --spacing-wrapper-xs: 0.3rem;
 
   /* Tag box dimensions (bespoke, ported from legacy tag.module.css — off the 0.25rem scale) */
   --spacing-tag-rect-min: 5.156rem; /* rectangular min-width */
@@ -334,6 +343,20 @@
 }
 @utility wave-w-xl {
   width: 50%;
+}
+
+/* FlexItem per-breakpoint `flex`. The value is a runtime prop (e.g. `'1 0 auto'`), so it can't be a
+ * build-time Tailwind class; the component sets `--flex-sm/md/lg` inline and this utility reads them at
+ * the `md` (48rem) and `lg` (64rem) cut-ins. Ported from legacy flex-item.module.css, whose CSS-var +
+ * media-query pattern is the only way to make a runtime value responsive without an arbitrary literal. */
+@utility flex-responsive {
+  flex: var(--flex-sm, 1);
+  @media (min-width: 48rem) {
+    flex: var(--flex-md, 1);
+  }
+  @media (min-width: 64rem) {
+    flex: var(--flex-lg, 1);
+  }
 }
 
 /* Global document font. Legacy set `html { font-family: var(--font-family-primary), 'Arial' }`

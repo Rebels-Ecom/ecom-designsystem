@@ -93,7 +93,17 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   **free-form runtime** props (`flex`, `gap`, `minHeight`, `padding`) inline via `style={{ … }}` —
   that's the sanctioned exception to no-arbitrary-values, since they're consumer-supplied at runtime.
   Off-scale design values still get tokenised: `WaveDivider`'s 20/30/40/50% desktop widths are
-  `@utility wave-w-*` (30% has no standard Tailwind fraction) rather than `w-[30%]`.
+  `@utility wave-w-*` (30% has no standard Tailwind fraction) rather than `w-[30%]`. The
+  `BoxWrapper`/`GroupWrapper`/`FlexItem` trio (final layout atoms) follow the same split; their
+  off-scale `spacing='xs'` gap is the shared `--spacing-wrapper-xs: 0.3rem` token (`gap-wrapper-xs`)
+  and `BoxWrapper`'s max-width cap is `--container-box: 43.75rem` (`max-w-box`).
+- **A runtime value that must be *responsive* → CSS-var + a media-query `@utility`.** Inline
+  `style={{ … }}` handles a single runtime dimension, but it can't carry breakpoints. When a runtime
+  prop needs a different value per breakpoint (e.g. `FlexItem`'s `flex={{sm,md,lg}}`), set the values
+  as inline CSS custom properties (`--flex-sm/md/lg`) and read them from a custom utility that owns
+  the media queries — `@utility flex-responsive { flex: var(--flex-sm,1); @media (min-width:48rem){…} }`.
+  Tailwind v4 `@utility` accepts nested `@media`, so the breakpoint logic stays in the theme and the
+  component stays arbitrary-value-free. `FlexItem` is the reference.
 
 ### ⚠ `cn()` must know our custom font-size tokens
 

@@ -130,3 +130,24 @@ export type {
 
 export { MaxWidth } from './components/atoms/MaxWidth'
 export type { MaxWidthProps, ContentMaxWidth } from './components/atoms/MaxWidth'
+
+export { BoxWrapper } from './components/atoms/BoxWrapper'
+export type {
+  BoxWrapperProps,
+  BoxPosition,
+  BoxAlign,
+  BoxSpacing,
+  BoxBackground,
+} from './components/atoms/BoxWrapper'
+
+export { FlexItem } from './components/atoms/FlexItem'
+export type { FlexItemProps, FlexItemFlex } from './components/atoms/FlexItem'
+
+export { GroupWrapper } from './components/atoms/GroupWrapper'
+export type {
+  GroupWrapperProps,
+  GroupDirection,
+  GroupPosition,
+  GroupSpacing,
+  GroupAlign,
+} from './components/atoms/GroupWrapper'

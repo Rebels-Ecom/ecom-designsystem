@@ -11,9 +11,15 @@
 
 ## Current Batch Status
 
-- **Active Category**: atoms
-- **Last Updated**: 2026-07-03
-- **Current Micro-Batch**: Batch 5 — atoms 21–25 (complete; WaveDivider, Breakpoints, ContentWrapper, FlexContainer, MaxWidth. `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 10/10 (interaction + a11y), full `pnpm test:visual` 41 passed / 3 documented skips. 3 visual mappings added (WaveDivider both, ContentWrapper both, FlexContainer desktop-only); Breakpoints & MaxWidth documented as baseline-less.)
+- **Active Category**: atoms (complete — molecules next)
+- **Last Updated**: 2026-07-06
+- **Current Micro-Batch**: Batch 6 — atoms 26–28 (complete; BoxWrapper, FlexItem, GroupWrapper — the final layout atoms, **closing the atoms category**. `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 5/5 (interaction + a11y), full `pnpm test:visual` 42 passed / 4 documented skips. 1 visual mapping added (GroupWrapper desktop-only); BoxWrapper baseline-less (unmigrated child molecules) & FlexItem baseline-less (no legacy story).)
+- **2026-07-06 — Batch 6 findings & harness changes**:
+  - **Runtime responsive value → CSS-var + media-query `@utility` (new permanent standard)**: FlexItem's `flex` is a per-breakpoint runtime prop (`{sm,md,lg}`), which can't be a build-time Tailwind class. Ported the legacy CSS-var pattern: the component sets `--flex-sm/md/lg` inline, and a new `@utility flex-responsive` (in `src/styles/index.css`) reads them at the `md` (48rem) / `lg` (64rem) cut-ins. Confirms Tailwind v4 `@utility` accepts nested `@media` (emits correctly in `dist/ecom-designsystem.css`). This is the sanctioned way to make a runtime value responsive without an arbitrary literal — reuse it for any future per-breakpoint runtime dimension. Documented in docs/DEVELOPMENT.md.
+  - **New shared tokens (permanent)**: `--spacing-wrapper-xs: 0.3rem` (the `spacing='xs'` cluster gap shared by GroupWrapper + BoxWrapper; 0.3rem is off the 0.25rem scale — sm/md/lg/xl map to standard `gap-2/4/6/8`; consumed as `gap-wrapper-xs`) and `--container-box: 43.75rem` (BoxWrapper's `hasMaxWidth` cap, ported from legacy `max-width: 43.75rem`; consumed as `max-w-box` — v4 strips the `--container-` prefix). Documented in docs/DEVELOPMENT.md.
+  - **Dead legacy code dropped**: BoxWrapper's `direction` prop was a no-op (its `.direction-*` rules are scoped under `.groupWrapper`, never `.boxWrapper`) — dropped (BoxWrapper is always a column stack). Also dropped the never-referenced `.noPadding` class and the raw `style` passthrough (V2 exposes `className` + the specific runtime `padding` prop instead). GroupWrapper's numeric `spacing` (legacy silently mapped any number → `xl`) narrowed to the `xs|sm|md|lg|xl` enum.
+  - **BoxWrapper — no visual baseline (unmigrated children)**: every legacy `box-wrapper-story-*` frame composes molecules not yet migrated (Button, InfoSummaryBox, OrderItem, Tabs, TagsList, OrderConfirmationDetails, ScrollableList), so a faithful parity frame is impossible and a partial one would be a false-green (full-canvas pitfall). Not mapped; re-map when those children land. Behaviour covered by play tests.
+  - **GroupWrapper mobile — single-large-Heading amplifies the known rhythm drift (harness pattern)**: the legacy `group-wrapper-story` frame's only content is one `order=1` Heading. It inherits the Heading vertical-rhythm drift that batch-1 accepted "within tolerance" — but where the multi-heading `heading-story` averages that sub-10px offset under the 2% gate, a single large heading wrapping to two lines on the 375px mobile canvas magnifies it to ~4%. GroupWrapper adds no vertical box, so this is a Heading-rendering incomparability, not a wrapper divergence → mapped **desktop-only** (like FlexContainer/Textarea/InputFile). Desktop (one line, drift diluted) matches. Documented in docs/DEVELOPMENT.md.
 - **2026-07-03 — Batch 5 findings & harness changes**:
   - **New layout tokens (permanent)**: `src/styles/index.css` gained `--breakpoint-3xl: 90rem` (the legacy "big screen" cut-in — extends, doesn't replace, Tailwind's breakpoints; = the `xl` JS breakpoint & the `isBigScreen` 90em query) and a custom `@utility max-w-content-fluid` = `calc(100% - 4rem)` (full width minus 2rem gutters) plus `@utility wave-w-{sm,md,lg,xl}` for WaveDivider's 20/30/40/50% desktop widths (30% has no standard Tailwind fraction). All documented in docs/DEVELOPMENT.md.
   - **Tailwind `--container-*` → `max-w-*` naming gotcha**: the container tokens are consumed as `max-w-content-narrow`/`-wide`/`-text`/`-lg` — Tailwind v4 **strips the `--container-` prefix**, so `max-w-container-content-*` silently generates nothing. Separately, that namespace also feeds `@container` sizes and **rejects a percentage `calc()`**, which is why the fluid width is a custom `@utility`, not a `--container-content-fluid` token. First discovered this batch (first layout components); cost one build cycle. Documented in DEVELOPMENT.md.
@@ -44,8 +50,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 25 / 155
-- Remaining: 130
+- Completed: 28 / 155
+- Remaining: 127
 
 ## Components Checklist
 
@@ -76,9 +82,9 @@
 - [x] ContentWrapper (Legacy: legacy/src/design-system/components/layouts/content-wrapper) — fluid gutter + `3xl` cap; baseline mapped (both viewports)
 - [x] FlexContainer (Legacy: legacy/src/design-system/components/layouts/flex-container) — enum props → utilities, runtime props inline; visual desktop-only (non-wrapping row overflows mobile viewport), see batch notes
 - [x] MaxWidth (Legacy: legacy/src/design-system/components/layouts/max-width) — `max-w-content-*` presets; no baseline (no legacy story)
-- [ ] BoxWrapper (Legacy: legacy/src/design-system/components/molecules/box-wrapper)
-- [ ] FlexItem (Legacy: legacy/src/design-system/components/molecules/flex-item)
-- [ ] GroupWrapper (Legacy: legacy/src/design-system/components/molecules/group-wrapper)
+- [x] BoxWrapper (Legacy: legacy/src/design-system/components/molecules/box-wrapper) — reclassified molecule→atom; presentational vertical stack; dead `direction`/`style`/`.noPadding` dropped; no visual baseline (unmigrated child molecules), see batch notes
+- [x] FlexItem (Legacy: legacy/src/design-system/components/molecules/flex-item) — reclassified molecule→atom; per-breakpoint runtime `flex` via `flex-responsive` @utility; no baseline (no legacy story)
+- [x] GroupWrapper (Legacy: legacy/src/design-system/components/molecules/group-wrapper) — reclassified molecule→atom; enum→utility maps; visual desktop-only (single large Heading amplifies known rhythm drift on mobile), see batch notes
 
 ### src/components/molecules
 

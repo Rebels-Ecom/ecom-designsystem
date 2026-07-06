@@ -159,4 +159,25 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // NOTE: MaxWidth has NO entry — the legacy component shipped no story and no snapshot.
   // NOTE: Breakpoints has NO entry — it is a viewport-utility module (hooks + conditional-render
   // helpers), not a visual component; legacy shipped no story and no snapshot.
+
+  // ── Batch 6 (atoms 26–28) ──
+  {
+    // Reclassified molecules → atoms, so the V2 story is under Atoms while the legacy baseline
+    // keeps its `molecules` id. The Visual story reproduces the legacy frame using the migrated
+    // V2 Heading atom (a single order=1 heading in a max-width-1800 wrapper).
+    storyId: 'design-system-atoms-groupwrapper--visual',
+    legacyBaseline: 'design-system-molecules-groupwrapper--group-wrapper-story',
+    // Desktop only. The frame's only content is one `order=1` Heading, so it inherits the known
+    // Heading vertical-rhythm drift (accepted "within tolerance" in batch-1). On the multi-heading
+    // `heading-story` baseline that sub-10px offset averages under the 2% gate; here a single large
+    // heading wrapping to two lines on the 375px mobile canvas magnifies it to ~4%. GroupWrapper
+    // itself adds no vertical box, so this is a Heading-rendering incomparability, not a wrapper
+    // divergence. Desktop (one line, drift diluted across the 1280px canvas) matches.
+    viewports: ['desktop'],
+  },
+  // NOTE: BoxWrapper has NO entry — every legacy `box-wrapper-story-*` frame composes molecules that
+  // aren't migrated yet (Button, InfoSummaryBox, OrderItem, Tabs, TagsList, OrderConfirmationDetails,
+  // ScrollableList), so a faithful parity frame can't be reproduced and a partial one would be a
+  // false-green (gotcha 3). Re-map once those children land. Behaviour is covered by its play tests.
+  // NOTE: FlexItem has NO entry — the legacy component shipped no story and no snapshot.
 ]
