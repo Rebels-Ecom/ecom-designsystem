@@ -72,6 +72,28 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   `prefers-reduced-motion` is honoured (WCAG 2.3.3†); Playwright's
   `animations: 'disabled'` freezes these at their end state, so a one-shot
   `forwards` grow captures at full height deterministically.
+- **Container widths & the `--container-*` → `max-w-*` naming.** The content max-widths live in
+  `@theme` as `--container-content-*` (`narrow` 73rem, `wide` 103rem, `text` 52rem, `lg` 77.5rem).
+  Tailwind v4 exposes the `--container-*` namespace as `max-w-*` utilities **with the `--container-`
+  prefix stripped** — so the class is `max-w-content-narrow`, **not** `max-w-container-content-narrow`
+  (the latter silently generates nothing). Gotcha: **the `--container-*` namespace also feeds
+  `@container` sizes and rejects a percentage-based `calc()`**, so the fluid content width
+  (`calc(100% - 4rem)`, full width minus 2rem side gutters) can't be a `--container-*` token — it's a
+  custom `@utility max-w-content-fluid` instead. `MaxWidth` and `ContentWrapper` are the reference
+  consumers.
+- **Breakpoints extend, not replace, Tailwind's defaults.** `@theme` adds `--breakpoint-3xl: 90rem`
+  (1440px) — the legacy "big screen" cut-in — usable as the `3xl:` variant (e.g. ContentWrapper's
+  max-width cap). Defining any `--breakpoint-*` merges with the defaults; it only clears them if you
+  set the namespace to `initial`. 1440px/90rem is the same value as the `xl` JS breakpoint in the
+  `Breakpoints` atom and the `isBigScreen` (`90em`) media query — keep the three in sync.
+- **Layout primitives split enum props from runtime values.** `FlexContainer`, `ContentWrapper`,
+  `MaxWidth`, `WaveDivider` are presentational `<div>`/`<svg>` atoms with **no role** (1.3.1) — they
+  never disturb the a11y tree of the content they arrange. Map **enumerable** props (flex direction,
+  alignment, justification, wrap, size) to Tailwind utilities via a `Record<Enum, string>`; apply
+  **free-form runtime** props (`flex`, `gap`, `minHeight`, `padding`) inline via `style={{ … }}` —
+  that's the sanctioned exception to no-arbitrary-values, since they're consumer-supplied at runtime.
+  Off-scale design values still get tokenised: `WaveDivider`'s 20/30/40/50% desktop widths are
+  `@utility wave-w-*` (30% has no standard Tailwind fraction) rather than `w-[30%]`.
 
 ### ⚠ `cn()` must know our custom font-size tokens
 
@@ -94,6 +116,13 @@ lossy.
 - Type `children` as `React.ReactNode`.
 - Lean on the React Compiler — no reflexive `useMemo` / `useCallback`.
 - `any` is forbidden; the build runs `tsc --noEmit` under `strict`.
+- **Media queries use a native `useSyncExternalStore` hook, not `react-responsive`.** The
+  `Breakpoints` atom exposes `useMediaQuery(query)` (subscribes to `window.matchMedia`, SSR-safe via a
+  `false` server snapshot) and `useBreakpoint()` (the modern replacement for legacy `mediaQueryHelper`,
+  returning `isMobile`/`isTablet`/`isDesktop`/`isBigScreen`). The legacy `Above`/`Below`/`Between`
+  render-helpers are preserved (still supporting the render-prop `children`) but `@deprecated` in
+  favour of the hooks. This keeps the "standard hooks, no new runtime deps" rule and drops the
+  `react-responsive` dependency entirely.
 
 ## Accessibility
 

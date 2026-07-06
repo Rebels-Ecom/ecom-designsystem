@@ -46,6 +46,7 @@ The criteria live in reference files, grouped by WCAG principle. Read only the f
 | `references/understandable.md` | Principle 3 — readable, predictable, input assistance (forms, errors, auth) | Forms, labels, errors, language, consistent UI, authentication |
 | `references/robust.md` | Principle 4 — compatible (name/role/value, status messages) | ARIA correctness, custom widgets, live regions / toasts |
 | `references/component-checklist.md` | Archetype → applicable criteria map | **Start here when working on a specific component** |
+| `references/archetype-cards.md` | Pre-unioned archetype recipes (baseline + criteria + distilled Implementation/Verify + snippets) | **Fast path when scaffolding** — read the one card for your archetype instead of the four principle files; deep-dive a principle file only for an unusual criterion |
 
 ## Entry schema
 
@@ -66,7 +67,9 @@ Every criterion entry follows this exact shape so it reads predictably:
 1. Open `references/component-checklist.md` and find the archetype(s) matching the component
    (e.g. Button → *Interactive control*; Modal → *Overlay*; InputText → *Form field*). A component can
    match several archetypes — union their criteria.
-2. For each listed criterion ID, read its full entry in the matching principle file.
+2. **Fast path:** read the matching card(s) in `references/archetype-cards.md` — each pre-unions the
+   Universal baseline with the archetype criteria and distils Implementation + Verify. Fall back to the
+   principle file for a criterion the card doesn't cover or to confirm the normative text.
 3. Apply every **Implementation** note to the component, and turn every **Verify** note into an a11y
    story / `play` assertion.
 

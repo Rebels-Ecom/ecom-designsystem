@@ -13,7 +13,13 @@
 
 - **Active Category**: atoms
 - **Last Updated**: 2026-07-03
-- **Current Micro-Batch**: Batch 4 — atoms 16–20 (complete; SingleSelect, Tag, Text, Textarea, Video. `pnpm build` green, scoped `pnpm test-storybook` 25/25 (interaction + a11y), full `pnpm test:visual` 36 passed / 2 documented skips. 8 visual mappings added (Tag ×3, Text ×4, Textarea ×1 desktop-only); SingleSelect & Video documented as baseline-less.)
+- **Current Micro-Batch**: Batch 5 — atoms 21–25 (complete; WaveDivider, Breakpoints, ContentWrapper, FlexContainer, MaxWidth. `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 10/10 (interaction + a11y), full `pnpm test:visual` 41 passed / 3 documented skips. 3 visual mappings added (WaveDivider both, ContentWrapper both, FlexContainer desktop-only); Breakpoints & MaxWidth documented as baseline-less.)
+- **2026-07-03 — Batch 5 findings & harness changes**:
+  - **New layout tokens (permanent)**: `src/styles/index.css` gained `--breakpoint-3xl: 90rem` (the legacy "big screen" cut-in — extends, doesn't replace, Tailwind's breakpoints; = the `xl` JS breakpoint & the `isBigScreen` 90em query) and a custom `@utility max-w-content-fluid` = `calc(100% - 4rem)` (full width minus 2rem gutters) plus `@utility wave-w-{sm,md,lg,xl}` for WaveDivider's 20/30/40/50% desktop widths (30% has no standard Tailwind fraction). All documented in docs/DEVELOPMENT.md.
+  - **Tailwind `--container-*` → `max-w-*` naming gotcha**: the container tokens are consumed as `max-w-content-narrow`/`-wide`/`-text`/`-lg` — Tailwind v4 **strips the `--container-` prefix**, so `max-w-container-content-*` silently generates nothing. Separately, that namespace also feeds `@container` sizes and **rejects a percentage `calc()`**, which is why the fluid width is a custom `@utility`, not a `--container-content-fluid` token. First discovered this batch (first layout components); cost one build cycle. Documented in DEVELOPMENT.md.
+  - **Breakpoints — `react-responsive` dropped for native hooks**: legacy `Above`/`Below`/`Between` + `mediaQueryHelper` depended on `react-responsive`. V2 implements `useMediaQuery` on `useSyncExternalStore` (concurrent- and SSR-safe: `false` server snapshot) and `useBreakpoint` (replaces `mediaQueryHelper`), per the React 19 "standard hooks, no new deps" rule. `Above`/`Below`/`Between` are preserved (render-prop `children` still supported) but `@deprecated` → the hooks. Utility module: no story/snapshot → baseline-less.
+  - **FlexContainer mobile baseline incomparable (harness pattern, recurring)**: the legacy `flex-container-story` **mobile** PNG is 464×667 — six non-wrapping 4rem swatches (6×64 + 5×16 gap = 464px) overflow the 375px viewport, so legacy captured full-page; the V2 harness captures the viewport (375×667). Mapped **desktop-only** (`viewports: ['desktop']`, same class as InputFile/Textarea). Desktop (1280) fits and matches.
+  - **Layout-primitive convention (new permanent standard)**: enum props → `Record<Enum, string>` Tailwind utility maps; free-form runtime props (`flex`/`gap`/`minHeight`/`padding`) → inline `style` (the sanctioned no-arbitrary exception); presentational `<div>`/`<svg>`, no role (1.3.1). Documented in docs/DEVELOPMENT.md.
 - **2026-07-03 — Batch 4 findings & harness changes**:
   - **New Tag dimension tokens (permanent)**: `src/styles/index.css` gained `--text-tag-sm` (0.625rem, the small rectangular-tag label — registered in `cn.ts`'s font-size group so twMerge keeps size + colour) plus five bespoke `--spacing-tag-*` box tokens (`-rect-min`/`-rect-md`/`-rect-lg`/`-round-sm`/`-round-lg`) — the legacy tag heights/diameters (2.063rem, 4.75rem, 8.625rem, 5.156rem) are off the 0.25rem scale, so they're tokens rather than arbitrary values. Documented in docs/DEVELOPMENT.md.
   - **a11y gate vs legacy baselines (recurring pattern)**: `a11y.test: 'error'` means axe **fails** `test-storybook`, so a Visual parity story can't reproduce a legacy frame that itself fails AA. Two low-contrast oranges hit this: **Tag** white-on-`tag-orange` (~2.6:1) and **Text**'s legacy orange link (~2:1, undecorated). Resolution: (1) Tag maps only the AA-passing frames (rectangular-l/s, round-s); the orange **round-L** frame is **not** mapped and the orange token is flagged for design review in-component. (2) **Text link fixed** to blue + underline (1.4.1 + 1.4.3) — an intentional divergence from the orange baseline; the change is confined to the small glyphs so the diff stays under the 2% gate and the mapping still passes. `warning` (orange) text is kept as a prop option but never rendered in a scanned story (sub-AA for normal-weight text). Documented in docs/DEVELOPMENT.md.
@@ -38,8 +44,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 20 / 155
-- Remaining: 135
+- Completed: 25 / 155
+- Remaining: 130
 
 ## Components Checklist
 
@@ -65,11 +71,11 @@
 - [x] Text (Legacy: legacy/src/design-system/components/atoms/text) — link fixed to accessible blue+underline (intentional divergence), see batch notes
 - [x] Textarea (Legacy: legacy/src/design-system/components/atoms/textarea) — visual desktop-only (legacy mobile PNG full-page 705px), see batch notes
 - [x] Video (Legacy: legacy/src/design-system/components/atoms/video) — pause control restored over legacy autoplay (2.2.2); no baseline (non-deterministic), see batch notes
-- [ ] WaveDivider (Legacy: legacy/src/design-system/components/atoms/wave-divider)
-- [ ] Breakpoints (Legacy: legacy/src/design-system/components/layouts/breakpoints)
-- [ ] ContentWrapper (Legacy: legacy/src/design-system/components/layouts/content-wrapper)
-- [ ] FlexContainer (Legacy: legacy/src/design-system/components/layouts/flex-container)
-- [ ] MaxWidth (Legacy: legacy/src/design-system/components/layouts/max-width)
+- [x] WaveDivider (Legacy: legacy/src/design-system/components/atoms/wave-divider) — decorative `aria-hidden` svg; bespoke `wave-w-*` widths (30% off the fraction scale); baseline mapped (size='sm')
+- [x] Breakpoints (Legacy: legacy/src/design-system/components/layouts/breakpoints) — viewport-utility module; `react-responsive` replaced with native `useMediaQuery`/`useBreakpoint`; no baseline (utility, no story)
+- [x] ContentWrapper (Legacy: legacy/src/design-system/components/layouts/content-wrapper) — fluid gutter + `3xl` cap; baseline mapped (both viewports)
+- [x] FlexContainer (Legacy: legacy/src/design-system/components/layouts/flex-container) — enum props → utilities, runtime props inline; visual desktop-only (non-wrapping row overflows mobile viewport), see batch notes
+- [x] MaxWidth (Legacy: legacy/src/design-system/components/layouts/max-width) — `max-w-content-*` presets; no baseline (no legacy story)
 - [ ] BoxWrapper (Legacy: legacy/src/design-system/components/molecules/box-wrapper)
 - [ ] FlexItem (Legacy: legacy/src/design-system/components/molecules/flex-item)
 - [ ] GroupWrapper (Legacy: legacy/src/design-system/components/molecules/group-wrapper)

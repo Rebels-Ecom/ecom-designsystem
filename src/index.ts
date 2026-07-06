@@ -96,3 +96,37 @@ export type { TextareaProps } from './components/atoms/Textarea'
 
 export { Video } from './components/atoms/Video'
 export type { VideoProps, VideoOpacity, VideoTrack } from './components/atoms/Video'
+
+export { WaveDivider } from './components/atoms/WaveDivider'
+export type { WaveDividerProps, WaveDividerSize } from './components/atoms/WaveDivider'
+
+export {
+  breakpoints,
+  useMediaQuery,
+  useBreakpoint,
+  Above,
+  Below,
+  Between,
+} from './components/atoms/Breakpoints'
+export type {
+  Breakpoint,
+  Breakpoints,
+  BreakpointFlags,
+  AboveProps,
+  BelowProps,
+  BetweenProps,
+} from './components/atoms/Breakpoints'
+
+export { ContentWrapper } from './components/atoms/ContentWrapper'
+export type { ContentWrapperProps } from './components/atoms/ContentWrapper'
+
+export { FlexContainer } from './components/atoms/FlexContainer'
+export type {
+  FlexContainerProps,
+  FlexDirection,
+  FlexAlignItems,
+  FlexJustifyContent,
+} from './components/atoms/FlexContainer'
+
+export { MaxWidth } from './components/atoms/MaxWidth'
+export type { MaxWidthProps, ContentMaxWidth } from './components/atoms/MaxWidth'

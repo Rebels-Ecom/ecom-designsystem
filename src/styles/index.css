@@ -128,6 +128,11 @@
   --container-product-card: 18.75rem;
   --container-cta-default: 13.75rem;
 
+  /* — Breakpoints — extend (not replace) Tailwind's defaults. `3xl` = 90rem (1440px) is the legacy
+   * "big screen" cut-in: it matches the xl:1440 JS breakpoint in the Breakpoints atom and the
+   * mediaQueryHelper `isBigScreen` 90em query. ContentWrapper uses it to cap the content max-width. */
+  --breakpoint-3xl: 90rem;
+
   /* — Component dimensions — */
   --spacing-product-card-v: 30.5rem;
   --spacing-breadcrumbs-mobile: 10rem;
@@ -303,6 +308,32 @@
     rgb(0 0 0 / 0.08) 30%
   );
   background-size: 1200px 100%;
+}
+
+/* Fluid content width: full viewport width minus the standard 2rem side gutters. ContentWrapper
+ * applies it from `md` up to the `3xl` cap. Defined as a custom utility rather than a
+ * `--container-*` token because that namespace feeds `@container` sizes and rejects a
+ * percentage-based `calc()`; this keeps the value tokenised instead of an arbitrary
+ * `max-w-[calc(100%-4rem)]` literal (ported from legacy content-wrapper `calc(100% - 4rem)`). */
+@utility max-w-content-fluid {
+  max-width: calc(100% - 4rem);
+}
+
+/* WaveDivider desktop widths (≥64rem / `lg`). The divider's four sizes map to 20/30/40/50%; 30%
+ * (the `md` default) has no standard Tailwind fraction utility, so the whole set is defined here as
+ * bespoke utilities rather than an arbitrary `w-[30%]` literal. Below `lg` the divider is a flat
+ * `w-1/2` (see WaveDivider.tsx). Registered via `@utility` so the `lg:` variant composes. */
+@utility wave-w-sm {
+  width: 20%;
+}
+@utility wave-w-md {
+  width: 30%;
+}
+@utility wave-w-lg {
+  width: 40%;
+}
+@utility wave-w-xl {
+  width: 50%;
 }
 
 /* Global document font. Legacy set `html { font-family: var(--font-family-primary), 'Arial' }`

@@ -137,4 +137,26 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // NOTE: SingleSelect has NO entry — the legacy component shipped no story and no snapshot.
   // NOTE: Video has NO entry — the legacy `video-story` PNG captured a non-deterministic
   // auto-playing frame (no poster) and V2 adds a pause control, so a pixel diff is meaningless.
+
+  // ── Batch 5 (atoms 21–25) ──
+  {
+    storyId: 'design-system-atoms-wavedivider--visual',
+    legacyBaseline: 'design-system-atoms-wavedivider--wave-divider-story',
+  },
+  {
+    storyId: 'design-system-atoms-contentwrapper--visual',
+    legacyBaseline: 'design-system-atoms-contentwrapper--content-wrapper-story',
+  },
+  {
+    storyId: 'design-system-atoms-flexcontainer--visual',
+    legacyBaseline: 'design-system-atoms-flexcontainer--flex-container-story',
+    // Desktop only. The story lays six 4rem swatches in a non-wrapping row: 6×64px + 5×16px gaps
+    // = 464px, which overflows the 375px mobile viewport, so the legacy PNG was captured full-page
+    // (464×667). The V2 harness captures the viewport (375×667), making the mobile frame
+    // structurally incomparable. Desktop (1280×800) fits and matches.
+    viewports: ['desktop'],
+  },
+  // NOTE: MaxWidth has NO entry — the legacy component shipped no story and no snapshot.
+  // NOTE: Breakpoints has NO entry — it is a viewport-utility module (hooks + conditional-render
+  // helpers), not a visual component; legacy shipped no story and no snapshot.
 ]

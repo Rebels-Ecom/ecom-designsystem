@@ -21,6 +21,11 @@ component through this flow rather than building it by hand.
 
 **Step 1 — Locate the component**
 
+- **First, once per session/batch:** read `reference/CHEATSHEET.md` (in this skill's directory) — the
+  batch primer: the per-batch reading map, a token quick-map, the reference-component-per-archetype table,
+  the gotchas that fail the build, and the verify commands. It exists so you don't re-read STYLE-GUIDE /
+  `cn.ts` / `index.css` / the four WCAG principle files wholesale every batch. Skip if it's already in
+  context this session.
 - Read `.claude/docs/ATOMIC-MAP.md` to find the target and its V2 category (atom / molecule / organism).
 - Derive the destination, e.g. `src/components/atoms/Button`, and note the legacy source path.
 
@@ -38,9 +43,11 @@ rather than from memory:
 - Read `.claude/skills/wcag-reference/references/component-checklist.md`. Find the component in the §3
   lookup (or classify it by behaviour via §2) to get its **archetype(s)** — a component can match
   several; union them.
-- Union the archetype criteria with the **Universal baseline** (§1).
-- For each criterion ID, read its entry in the matching principle file (`perceivable.md`, `operable.md`,
-  `understandable.md`, `robust.md`) and note its **Implementation** and **Verify** guidance.
+- **Fast path:** read the matching card(s) in `.claude/skills/wcag-reference/references/archetype-cards.md`
+  — each pre-unions the Universal baseline with the archetype's criteria and distils the **Implementation**
+  + **Verify** into what to write. Union multiple cards when the component matches several. Open a principle
+  file (`perceivable.md` / `operable.md` / `understandable.md` / `robust.md`) only for an unusual criterion
+  the card doesn't cover, or to confirm the normative text.
 - Write a short **Accessibility Spec**: the semantic element, `aria`/`role` + state, focus treatment,
   keyboard model, contrast tokens, and target sizes — plus the checks to encode in stories.
 

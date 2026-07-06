@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type Ref } from 'react'
 import { cn } from '../../../lib/cn'
+import { mergeRefs } from '../../../lib/mergeRefs'
 
 export type VideoOpacity = 'light' | 'dark'
 
@@ -55,6 +56,16 @@ function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+// Set the muted *property* the instant the node attaches (before effects run). React doesn't reliably
+// reflect the `muted` attribute onto the property, and browsers only permit autoplay for muted video —
+// so this is what actually lets autoplay start (and keeps audio silent, 1.4.2).
+function forceMuted(node: HTMLVideoElement | null) {
+  if (node) {
+    node.muted = true
+    node.defaultMuted = true
+  }
+}
+
 function PauseGlyph() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-5">
@@ -98,22 +109,6 @@ function Video({
   const [playing, setPlaying] = useState(() => autoPlay && !prefersReducedMotion())
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  function assignRef(node: HTMLVideoElement | null) {
-    videoRef.current = node
-    // Set the muted *property* the instant the node attaches (before effects run). React doesn't
-    // reliably reflect the `muted` attribute onto the property, and browsers only permit autoplay
-    // for muted video — so this is what actually lets autoplay start (and keeps audio silent, 1.4.2).
-    if (node) {
-      node.muted = true
-      node.defaultMuted = true
-    }
-    if (typeof ref === 'function') {
-      ref(node)
-    } else if (ref) {
-      ;(ref as { current: HTMLVideoElement | null }).current = node
-    }
-  }
-
   useEffect(() => {
     // Swap to the mobile source on narrow viewports (legacy behaviour).
     if (typeof window !== 'undefined' && window.innerWidth <= 767 && mobileUrl) {
@@ -136,7 +131,7 @@ function Video({
   return (
     <div className={cn('relative', className)}>
       <video
-        ref={assignRef}
+        ref={mergeRefs<HTMLVideoElement>(videoRef, ref, forceMuted)}
         aria-label={label}
         poster={poster}
         autoPlay={playing}

@@ -3,6 +3,10 @@
 This is the entry point when working on a **specific component**. It maps each UI archetype to the WCAG
 2.2 success criteria that actually apply, so you load only what's relevant instead of all 60 entries.
 
+> **Tip:** once you know the archetype(s), `archetype-cards.md` has a **pre-unioned recipe** per archetype
+> (baseline + criteria + distilled Implementation/Verify + snippets) — read that instead of opening all
+> four principle files, and only deep-dive a principle file for an unusual criterion.
+
 ## How to use (and how `scaffold-component` uses it)
 
 1. Identify the component's **archetype(s)** from §2. A component often matches more than one — e.g.

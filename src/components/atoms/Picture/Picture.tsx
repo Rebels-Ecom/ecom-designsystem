@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type Ref } from 'react'
 import { cn } from '../../../lib/cn'
+import { mergeRefs } from '../../../lib/mergeRefs'
 
 export type PictureLoading = 'eager' | 'lazy'
 export type PictureDecoding = 'sync' | 'async' | 'auto'
@@ -94,15 +95,6 @@ function Picture({
   const [isLoading, setIsLoading] = useState(true)
   const imgRef = useRef<HTMLImageElement | null>(null)
 
-  function assignRef(node: HTMLImageElement | null) {
-    imgRef.current = node
-    if (typeof ref === 'function') {
-      ref(node)
-    } else if (ref) {
-      ;(ref as { current: HTMLImageElement | null }).current = node
-    }
-  }
-
   useEffect(() => {
     setImageSources({ src: isValidUrl(src) ? src : '', sources })
     setIsLoading(true)
@@ -140,7 +132,7 @@ function Picture({
           />
         ))}
         <img
-          ref={assignRef}
+          ref={mergeRefs<HTMLImageElement>(imgRef, ref)}
           src={imageSources.src || fallbackImageUrl}
           alt={alt}
           aria-busy={isLoading}
