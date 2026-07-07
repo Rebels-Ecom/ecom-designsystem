@@ -97,6 +97,12 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   `BoxWrapper`/`GroupWrapper`/`FlexItem` trio (final layout atoms) follow the same split; their
   off-scale `spacing='xs'` gap is the shared `--spacing-wrapper-xs: 0.3rem` token (`gap-wrapper-xs`)
   and `BoxWrapper`'s max-width cap is `--container-box: 43.75rem` (`max-w-box`).
+- **Semi-transparent scrims: token + opacity modifier, reuse a primitive where it exists.** The
+  loading-overlay light scrim (legacy `rgba(245,246,248,0.95)`) has no matching primitive, so it's the
+  semantic token `--color-surface-overlay: #f5f6f8` consumed as `bg-surface-overlay/95`. The dark scrim
+  (legacy `rgba(0,62,81,0.3)`) *is* an existing primitive, so it needs no new token — it's just
+  `bg-blue-500/30`. Prefer `bg-<token>/<alpha>` over a bespoke rgba token; only mint a token when the
+  base colour isn't already in the theme. `LoadingOverlay` is the reference.
 - **A runtime value that must be *responsive* → CSS-var + a media-query `@utility`.** Inline
   `style={{ … }}` handles a single runtime dimension, but it can't carry breakpoints. When a runtime
   prop needs a different value per breakpoint (e.g. `FlexItem`'s `flex={{sm,md,lg}}`), set the values
@@ -264,6 +270,17 @@ Patterns established so far:
   white-on-`tag-orange` (~2.6:1) round-L frame is unmapped, and sub-AA colour options (`Tag` orange,
   `Text` `warning`) are kept as props but never rendered in a scanned story. Record the call in
   `MIGRATION-PROGRESS.md`.
+- **Decorative images carry no ARIA (`presentation-role-conflict`).** An `<img alt="">` is
+  presentational, so any global ARIA attribute on it (e.g. `aria-busy`) is invalid and axe fails it.
+  `Picture` therefore gates its loading flag on the alt — `aria-busy={alt ? isLoading : undefined}` —
+  so decorative images stay clean while described images still expose load state. This first surfaced
+  when `ArticleCard` rendered a decorative teaser image; the a11y gate caught a latent atom bug the
+  moment a new consumer exercised the empty-`alt` path. When an image sits inside a link, prefer
+  `alt=""` + a descriptive `aria-label` on the link (one accessible name, no double announcement).
+- **Redundant card links: one AT/keyboard path, image as pointer-only.** When a card links its image
+  *and* shows a read-more link to the same URL (`ArticleCard`), the read-more `UiLink` is the
+  keyboard/AT path (its accessible name includes the heading, 2.4.4) and the image link is taken out of
+  the tab order with `tabIndex={-1}` (still clickable by pointer), avoiding a duplicate keyboard stop.
 
 ## Documentation
 
@@ -354,6 +371,14 @@ migration parity check, independent of the a11y/interaction suite.
   the review gallery below rather than trusting the pass. If a faithful frame isn't buildable yet
   (e.g. it needs an unmigrated dependency), drop the baseline-map entry with a comment instead of
   shipping a trivially-green one.
+- **Reproduce a `fixed` full-screen frame with an `absolute` overlay in a viewport-sized box.** A
+  `position: fixed` overlay in a story escapes its Storybook block and covers the whole autodocs page
+  (a 0.95-opaque scrim would bury the props table). Keep the component's API default `fixed`, but have
+  its `['visual']` story render `position="absolute"` inside a `relative h-screen w-full` box — the
+  absolute overlay fills the viewport-sized box, producing pixels identical to the legacy fixed scrim,
+  without the page-covering layer. Use story-level `render` (not a meta `decorators`) so the Visual
+  frame doesn't inherit the demo wrapper. `LoadingOverlay` is the reference (four scrim variants, both
+  viewports).
 - **Cadence.** Scoped per component during scaffolding (`pnpm exec playwright test --grep <component>`,
   reusing a running `pnpm storybook`), then the full `pnpm test:visual` suite as the batch gate.
 
@@ -374,6 +399,14 @@ images on *failure*, so a green run leaves nothing to eyeball. `pnpm visual:revi
 - It also surfaces a **size-mismatch** badge (read straight from each PNG's IHDR) and renders any
   `['visual']`-tagged story that has *no* baseline entry as a current-only tile (discovered via the live
   Storybook `index.json`), so nothing with a Visual story silently escapes review.
+- **The current batch is pinned on top.** With ~90 frames the gallery is long, and you almost always
+  want the batch you just built. The generator parses the `Current Micro-Batch` bullet in
+  `MIGRATION-PROGRESS.md` (which scaffold-component bold-lists every batch) for the batch's component
+  names, then: (1) renders a `★ Latest — Batch N` group first, ahead of `Earlier batches`; (2) badges
+  and green-accents those cards; (3) offers a header **filter** box (by component / story id) and a
+  **"Batch N only"** toggle. No per-entry annotation — the migration log is the single source, and the
+  feature degrades to a flat list if that line is ever missing. Matching is by story id (`-<name>--`),
+  so it works for both mapped and no-baseline `['visual']` stories.
 - Reuses a running `pnpm storybook` on :6006 if present; otherwise builds and serves the static book.
   This is a manual review aid, never a gate — don't wire it into CI.
 

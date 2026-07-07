@@ -143,3 +143,59 @@ export const VisualLarge: Story = {
   parameters: { layout: 'fullscreen' },
   args: { surface: 'primary', size: 'large', children: 'Button secondary' },
 }
+
+/** Reproduces `button-large-icon-left`. */
+export const VisualLargeIconLeft: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'large', children: 'Button secondary', iconLeft: 'icon-users' },
+}
+
+/** Reproduces `button-large-icon-right`. */
+export const VisualLargeIconRight: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'large', children: 'Button secondary', iconRight: 'icon-users' },
+}
+
+/** Reproduces `button-x-small`. */
+export const VisualXSmall: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'x-small', children: 'Button secondary' },
+}
+
+/** Reproduces `button-x-small-icon-left`. */
+export const VisualXSmallIconLeft: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'x-small', children: 'Button secondary', iconLeft: 'icon-users' },
+}
+
+/** Reproduces `button-x-small-icon-right`. */
+export const VisualXSmallIconRight: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'x-small', children: 'Button secondary', iconRight: 'icon-users' },
+}
+
+/** Reproduces `button-xx-small`. */
+export const VisualXxSmall: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'xx-small', children: 'Button secondary' },
+}
+
+/** Reproduces `button-xx-small-icon-left`. */
+export const VisualXxSmallIconLeft: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'xx-small', children: 'Button secondary', iconLeft: 'icon-users' },
+}
+
+/** Reproduces `button-xx-small-icon-right`. */
+export const VisualXxSmallIconRight: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { surface: 'primary', size: 'xx-small', children: 'Button secondary', iconRight: 'icon-users' },
+}

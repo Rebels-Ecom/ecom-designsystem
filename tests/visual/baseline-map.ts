@@ -209,8 +209,14 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-molecules-inputtext--visual',
     legacyBaseline: 'design-system-atoms-inputs-inputtext--input-text-story',
   },
-  // NOTE: IconWithTooltip has NO entry — legacy shipped no snapshot for it. Its `Visual` story is
-  // tagged `['visual']` (gallery-only, current-only) so it still surfaces for human review.
+  // IconWithTooltip: the legacy `tooltip-story` frame (icon-alert-circle trigger, closed). Only
+  // divergence is icon size (legacy `size='sm'`; V2 uses a fixed larger icon) — a tiny top-left glyph,
+  // under the 2% gate. (Earlier logged as "no snapshot" — a false negative from grepping the
+  // hyphenated `icon-with-tooltip`; snapshot ids de-hyphenate the component segment → `iconwithtooltip`.)
+  {
+    storyId: 'design-system-molecules-iconwithtooltip--visual',
+    legacyBaseline: 'design-system-atoms-iconwithtooltip--tooltip-story',
+  },
   // NOTE: Carousel — a legacy baseline PNG DOES exist (`design-system-organisms-carousel--carousel-story`,
   // desktop + mobile), but it is intentionally NOT mapped yet. The legacy `carousel-story` renders
   // `<ArticleList swipe>` — 5 `ArticleCard`s (Picture of blog-images/Content9.png + green Tag + h4 +
@@ -233,4 +239,142 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // ScrollableList), so a faithful parity frame can't be reproduced and a partial one would be a
   // false-green (gotcha 3). Re-map once those children land. Behaviour is covered by its play tests.
   // NOTE: FlexItem has NO entry — the legacy component shipped no story and no snapshot.
+
+  // ── Batch 9 (molecules — Tier-0 leaves) ──
+  // InlineError: text in `text-critical` (AA on white) + decorative icon; reproduces the legacy
+  // `inline-error-text-story` (message "Fält är obligatorisk" in a 616px column). No divergence.
+  {
+    storyId: 'design-system-molecules-inlineerror--visual',
+    legacyBaseline: 'design-system-atoms-messages--inline-error-text-story',
+  },
+  // LoadingBars: four identical "Beska" bars (value 6, orange) — same as legacy `loading-bars-story`.
+  {
+    storyId: 'design-system-molecules-loadingbars--visual',
+    legacyBaseline: 'design-system-molecules-loadingbars--loading-bars-story',
+  },
+  // ClickableListItem: default colour, "Click me" + icon-x, full-width in a 1800px wrapper. V2 adds a
+  // 24px min target height (2.5.8) the legacy row lacked — a ≤4px height change confined to the small
+  // label/icon, well under the 2% gate.
+  {
+    storyId: 'design-system-molecules-clickablelistitem--visual',
+    legacyBaseline: 'design-system-molecules-clickablelistitem--clickable-list-item-loka',
+  },
+  // LoadingOverlay: four scrim variants. The V2 story renders an `absolute` overlay in a full-viewport
+  // box, reproducing the legacy `fixed` full-screen scrim's pixels. Legacy `loaderColor: 'blue'` → V2
+  // 'default'. Scrims are exact ports (light #f5f6f8/95, dark blue-500/30).
+  {
+    storyId: 'design-system-molecules-loadingoverlay--visual-light',
+    legacyBaseline: 'design-system-molecules-loadingoverlay--loading-overlay-story-light',
+  },
+  {
+    storyId: 'design-system-molecules-loadingoverlay--visual-dark',
+    legacyBaseline: 'design-system-molecules-loadingoverlay--loading-overlay-story-dark',
+  },
+  {
+    storyId: 'design-system-molecules-loadingoverlay--visual-with-text',
+    legacyBaseline: 'design-system-molecules-loadingoverlay--loading-overlay-story-with-text',
+  },
+  {
+    storyId: 'design-system-molecules-loadingoverlay--visual-small',
+    legacyBaseline: 'design-system-molecules-loadingoverlay--loading-overlay-story-small',
+  },
+  // NOTE: ArticleCard has NO entry — legacy shipped no `article-card` story/snapshot. Its visual
+  // baseline is DEFERRED to ArticleList, whose Default story reproduces the legacy carousel frame (see
+  // the queue reminder in MIGRATION-PROGRESS.md). Its `['visual']` story is gallery-only (current-only).
+
+  // ── Batch 9 backfill (2026-07-07) — variant frames whose legacy snapshots already existed but were
+  // only partially mapped (one primary frame per component). Same divergences as each component's base
+  // frame (InputText none; Button font; UiLink orange→blue). ──
+  // InputText variants:
+  {
+    storyId: 'design-system-molecules-inputtext--visual-placeholder',
+    legacyBaseline: 'design-system-atoms-inputs-inputtext--input-text-story-place-holder',
+  },
+  {
+    storyId: 'design-system-molecules-inputtext--visual-error',
+    legacyBaseline: 'design-system-atoms-inputs-inputtext--input-text-story-error',
+  },
+  {
+    storyId: 'design-system-molecules-inputtext--visual-disabled',
+    legacyBaseline: 'design-system-atoms-inputs-inputtext--input-text-story-disabled',
+  },
+  {
+    storyId: 'design-system-molecules-inputtext--visual-check-icon',
+    legacyBaseline: 'design-system-atoms-inputs-inputtext--input-text-story-check-icon',
+  },
+  // Checkbox variants (unchecked, per the legacy render):
+  {
+    storyId: 'design-system-atoms-checkbox--visual-error',
+    legacyBaseline: 'design-system-atoms-inputs-checkbox--checkbox-story-error',
+  },
+  {
+    storyId: 'design-system-atoms-checkbox--visual-disabled',
+    legacyBaseline: 'design-system-atoms-inputs-checkbox--checkbox-story-disabled',
+  },
+  // RadioButton variants (checked, per the legacy render):
+  {
+    storyId: 'design-system-atoms-radiobutton--visual-error',
+    legacyBaseline: 'design-system-atoms-inputs-radio-button--radio-button-story-error',
+  },
+  {
+    storyId: 'design-system-atoms-radiobutton--visual-disabled',
+    legacyBaseline: 'design-system-atoms-inputs-radio-button--radio-button-story-disabled',
+  },
+  // Button size/icon frames (icon-only excluded — those are IconButton's job). Same font divergence
+  // as the base Button frames, under the 2% gate.
+  {
+    storyId: 'design-system-molecules-button--visual-large-icon-left',
+    legacyBaseline: 'design-system-atoms-buttons--button-large-icon-left',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-large-icon-right',
+    legacyBaseline: 'design-system-atoms-buttons--button-large-icon-right',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-x-small',
+    legacyBaseline: 'design-system-atoms-buttons--button-x-small',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-x-small-icon-left',
+    legacyBaseline: 'design-system-atoms-buttons--button-x-small-icon-left',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-x-small-icon-right',
+    legacyBaseline: 'design-system-atoms-buttons--button-x-small-icon-right',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-xx-small',
+    legacyBaseline: 'design-system-atoms-buttons--button-xx-small',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-xx-small-icon-left',
+    legacyBaseline: 'design-system-atoms-buttons--button-xx-small-icon-left',
+  },
+  {
+    storyId: 'design-system-molecules-button--visual-xx-small-icon-right',
+    legacyBaseline: 'design-system-atoms-buttons--button-xx-small-icon-right',
+  },
+  // InputFile disabled — desktop-only, like the base frame (legacy mobile PNG structurally incomparable).
+  {
+    storyId: 'design-system-atoms-inputfile--visual-disabled',
+    legacyBaseline: 'design-system-atoms-inputs-inputfile--input-file-story-disabled',
+    viewports: ['desktop'],
+  },
+  // Loader large (lg spinner, no text):
+  {
+    storyId: 'design-system-atoms-loader--visual-large',
+    legacyBaseline: 'design-system-atoms-loader--loader-story-large',
+  },
+  // NOTE: Heading `heading-delivery-form-story` is NOT mapped. It's the same five-level structure as the
+  // mapped `heading-story`, only with longer text ("Dina leverans uppgifter") and the order-1 default
+  // margin. The known Heading vertical-rhythm drift (sub-pixel line-height/margin difference) accumulates
+  // down the five-heading stack; with this frame's larger text that pushes the diff to ~4% on desktop
+  // (verified) — over the gate. `heading-story` (shorter text, same drift, under the gate) is the
+  // representative Heading baseline; delivery-form adds no new component coverage, so its
+  // `VisualDeliveryForm` story stays gallery-only (`['visual']`, current-only) for human review.
+  // UiLink blog ("Läs mer"): same accessible orange→blue divergence as the base frame.
+  {
+    storyId: 'design-system-molecules-uilink--visual-blog',
+    legacyBaseline: 'design-system-atoms-uilink--ui-link-blog-story',
+  },
 ]

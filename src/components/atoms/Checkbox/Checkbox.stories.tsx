@@ -112,3 +112,44 @@ export const Visual: Story = {
     </div>
   ),
 }
+
+// Reproduces `checkbox-story-error`: unchecked checkbox in the error state (legacy rendered it
+// unchecked regardless of `checked`). Mapped in tests/visual/baseline-map.ts.
+export const VisualError: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    id: 'checkbox-visual-error',
+    name: 'group',
+    value: 'input_1',
+    checked: false,
+    isErroneous: true,
+    ariaLabel: 'Checkbox',
+    onChange: fn(),
+  },
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <Checkbox {...args} />
+    </div>
+  ),
+}
+
+// Reproduces `checkbox-story-disabled`: unchecked, disabled. Mapped in tests/visual/baseline-map.ts.
+export const VisualDisabled: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    id: 'checkbox-visual-disabled',
+    name: 'group',
+    value: 'input_1',
+    checked: false,
+    disabled: true,
+    ariaLabel: 'Checkbox',
+    onChange: fn(),
+  },
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <Checkbox {...args} />
+    </div>
+  ),
+}

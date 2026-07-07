@@ -21,7 +21,12 @@ Read per component (genuinely unavoidable):
 - The legacy `*.tsx` + `*.module.css` + `*.stories.tsx`.
 - The component's line in `.claude/docs/ATOMIC-MAP.md` (category + any reclassification).
 - Current `src/index.ts` and `tests/visual/baseline-map.ts` (you append to both).
-- `ls legacy-snapshots | grep -i <name>` (does a baseline exist? how many variants?).
+- `ls legacy-snapshots | grep -i <name>` (does a baseline exist? how many variants?). **⚠ Snapshot ids
+  de-hyphenate the component segment** (`icon-with-tooltip` → `iconwithtooltip`, `single-select` →
+  `singleselect`), so grep the **de-hyphenated** form (or a loose stem like `tooltip`) — grepping the
+  kebab name gives a false "no baseline". Also check for **variant** frames (`-story-disabled`,
+  `-error`, `-large`, `-blog`) and for coverage that lives in a **parent** story (ArticleCard has no
+  `article-card` snapshot; it's covered by `articlelist--*`).
 
 Do **not** re-read STYLE-GUIDE / index.css / cn.ts wholesale — use the token map below + `grep`.
 Open a **reference component** only when the archetype is new to you (table below); otherwise the

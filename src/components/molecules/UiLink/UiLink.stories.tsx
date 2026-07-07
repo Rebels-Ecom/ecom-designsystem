@@ -84,3 +84,26 @@ export const Visual: Story = {
     </div>
   ),
 }
+
+/**
+ * Reproduces the legacy `ui-link-blog-story`: same three-link layout, "Läs mer". Same intentional
+ * orange→blue divergence as the base frame (confined to small glyphs, under the 2% gate).
+ */
+export const VisualBlog: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { children: 'Läs mer' },
+  render: (args) => (
+    <div>
+      <div style={{ marginBottom: '1rem' }}>
+        <UiLink {...args} />
+      </div>
+      <div style={{ marginBottom: '1rem' }}>
+        <UiLink {...args} iconLeft="icon-arrow-right" />
+      </div>
+      <div style={{ marginBottom: '1rem' }}>
+        <UiLink {...args} iconRight="icon-arrow-right" />
+      </div>
+    </div>
+  ),
+}

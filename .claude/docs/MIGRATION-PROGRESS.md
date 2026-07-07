@@ -17,6 +17,63 @@
 
 - **Active Category**: molecules
 - **Last Updated**: 2026-07-07
+- **Current Micro-Batch**: Batch 9 — Tier-0 molecule leaves (complete; **InlineError**, **LoadingBars**,
+  **ClickableListItem**, **LoadingOverlay**, **ArticleCard** — the top-5 unchecked queue entries,
+  unblocking FaqList/FormGroup and the ArticleList carousel-baseline chain). `pnpm build` green,
+  `pnpm build-storybook` green, full `pnpm test-storybook` 158/158 (interaction + a11y), full
+  `pnpm test:visual` 68 passed / 4 documented skips. **7 new baselines mapped** (InlineError,
+  LoadingBars, ClickableListItem + LoadingOverlay ×4 scrim variants), all passing both viewports;
+  **ArticleCard has no baseline** (legacy shipped no story — its visual comparison is deferred to
+  ArticleList, per the queue reminder). The Tier-1 button/link variants (IconButton unblocks 22,
+  LinkButton 6) are the natural next batch.
+- **2026-07-07 — Batch 9 findings & harness changes**:
+  - **a11y hard-gate caught a latent Picture bug via a new consumer.** ArticleCard is the first
+    component to render a **decorative** `<img alt="">` through the `Picture` atom, which surfaced
+    `presentation-role-conflict` in axe: `Picture` unconditionally set `aria-busy` on the `<img>`, but a
+    global ARIA attribute on a presentational (empty-`alt`) image is invalid. Fixed **in `Picture`**
+    (`aria-busy={alt ? isLoading : undefined}`) so decorative images carry no ARIA — a durable fix for
+    every consumer, test-safe (all Picture stories use non-empty `alt`). Documented in docs/DEVELOPMENT.md.
+  - **New `--color-surface-overlay` scrim token (permanent).** LoadingOverlay's light scrim
+    (`rgba(245,246,248,0.95)`) has no existing token → added `--color-surface-overlay: #f5f6f8`, consumed
+    as `bg-surface-overlay/95`. The dark scrim reuses `bg-blue-500/30` (= legacy `rgba(0,62,81,0.3)`), so
+    it needs no new token. Both are exact ports, so all 4 LoadingOverlay baselines pass. Documented.
+  - **Reproducing a `fixed` full-screen overlay without polluting autodocs (harness pattern).** A
+    `position: fixed` overlay in a Storybook story escapes its block and covers the whole docs page
+    (a 0.95-opaque scrim would hide the props table). LoadingOverlay's API default stays `fixed`, but its
+    **stories render `position="absolute"` inside a sized relative box** — a full-viewport
+    (`h-screen w-full`) box for the `['visual']` frames (identical pixels to the legacy fixed scrim) and a
+    contained (`h-80`) box for the demos. Story-level `render` (not decorators) keeps the Visual frames
+    from inheriting the demo wrapper. Documented in docs/DEVELOPMENT.md.
+  - **ClickableListItem — 24px min target restored (2.5.8).** The legacy row was a ~20px-tall full-width
+    `<button>` with `outline:none` (fails 2.5.8 + 2.4.7). V2 adds `min-h-6` + the standard `focus-visible`
+    ring; the ≤4px height change is confined to the small label/icon, well under the 2% gate, so the
+    baseline still maps. `orange` (orange-600, ~3:1 on white) is kept as a prop for parity but flagged
+    sub-AA and never rendered in a scanned story.
+  - **ArticleCard — `text` de-HTML'd; layout deferred to the parent list.** Legacy rendered `text` via
+    `dangerouslySetInnerHTML` (CMS excerpt) and applied a dead `.maxHeight` class; V2 renders `text` as
+    escaped plain text with a real `maxChar` truncation, routing rich content through `richText: ReactNode`.
+    The card is a real `<article>` with an `<h3>`; when linked it exposes one read-more `UiLink` (keyboard/AT
+    path, name includes the heading, 2.4.4) plus a secondary pointer-only image link (`tabIndex={-1}`);
+    overlaid tags are `pointer-events-none`. The legacy per-breakpoint flex-basis calc columns are dropped
+    as the *list's* responsibility (Atomic-Design correction) — no baseline enforces them.
+  - **Baseline-coverage audit (all 40 migrated components) + the hyphenation grep trap.**
+    `legacy-snapshots/` is the **complete** frozen set (652 PNGs / all 155 legacy components), so any
+    unmapped snapshot for a *migrated* component is a coverage gap. Audit result: **IconWithTooltip was a
+    real miss** — `iconwithtooltip--tooltip-story` exists but was logged "no snapshot" because the grep
+    used the hyphenated `icon-with-tooltip` while snapshot ids **de-hyphenate** the component segment
+    (`iconwithtooltip`). Now mapped + passing. **ArticleCard is correctly baseline-less** — legacy shipped
+    no `article-card` story; its coverage lives in `articlelist--{default,full-width,three-cards}`
+    (organism, unmigrated) → still deferred, confirmed by the audit. All other 0-mapped components are
+    **intentional, documented deferrals** (Picture ×31 non-deterministic, Video, BoxWrapper ×11 unmigrated
+    children, Carousel→ArticleList, Logotype real-brand-SVG, ComponentWithTooltip→IconButton, Tag round-L
+    fails-AA). **Variant frames (backfilled 2026-07-07):** (disabled/error/large/blog/place-holder for
+    Checkbox, RadioButton, InputText, InputFile, Loader, Heading, UiLink, Button sizes) exist but only the
+    primary frame was mapped per component. **All now backfilled: 19 new mapped frames** added as static
+    `Visual<Variant>` stories (Button icon-only excluded → IconButton's; Heading `delivery-form` left
+    gallery-only — its longer text amplifies the accumulated vertical-rhythm drift to ~4% on desktop, so
+    `heading-story` stays the representative Heading baseline). Full `pnpm test:visual` 107 passed / 5
+    desktop-only skips; `pnpm test-storybook` 178/178. CHEATSHEET updated with the de-hyphenate rule so
+    this trap can't recur.
 - **2026-07-07 — post-Batch-8 fixes (Logotype + tooltip positioning)**:
   - **Logotype reworked to ship the real brand mark.** Dropped the `Picture`-URL-wrapper (it required consumers to pass an image URL); it now renders the actual Spendrups **vector** SVGs (`src/assets/logos/spendrups-logo-{horizontal,vertical}.svg`, pulled from `legacy/src/logotypes/`, SVGO'd ~71KB→~38KB) via a responsive `<picture>`/`<img>` (`variant` prop). **The frontend-app "logo components" (`SpendrupsLogoSmall/Large.js`) and its `public/logotypes/*.svg` are base64 PNGs** — rejected; only the legacy DS repo had true vectors. **Vite lib mode inlines all JS-imported assets regardless of size** (documented; it's why `externalizeFonts` exists for CSS), so the ~38KB traces currently inline — acceptable as an interim because the design team is supplying a fully-optimized brand SVG (~3–4KB), after which inlining is a non-issue. `--spacing-logo` token removed (no longer needed). Stories moved to `Design System/Foundation/Logotype` (brand foundation) with a `Design System/Molecules/Logotype` reference kept (exported component).
   - **Tooltip made viewport-aware (`ComponentWithTooltip`).** `IconWithTooltip` delegates positioning to `ComponentWithTooltip`, which used static CSS side/align classes with no collision handling → the tip could render off-screen. Added measured **flip** (to the opposite side when the preferred side lacks room) + cross-axis **shift** to clamp inside the viewport (recomputed on scroll/resize, idempotent), applied via the resolved side class + an inline transform composed with the align translate. All existing behavior preserved (role="tooltip", `aria-describedby`, Escape, hover-grace — the tip stays a wrapper descendant, never portalled). New `StaysInViewport` story asserts the corner-placed tip's rect is fully in-bounds. Documented in docs/DEVELOPMENT.md.
@@ -71,8 +128,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 35 / 155
-- Remaining: 120
+- Completed: 40 / 155
+- Remaining: 115
 
 ## Components Checklist
 
@@ -92,7 +149,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (35)
+### Completed (40)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -125,20 +182,20 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] Button `[mol]` (Legacy: legacy/src/design-system/components/atoms/button) — keystone (unblocks 28); 5 surfaces × 4 sizes, icons, loading (`aria-busy` + sr-only label); `font-primary` over undefined legacy token; 4 baselines mapped (font divergence, under 2% gate), see batch notes
 - [x] UiLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-link) — polymorphic `<a>` via `src/lib/link` `DefaultLink`; accessible blue+underline over legacy orange; baseline mapped (colour divergence, under gate), see batch notes
 - [x] InputText `[mol]` (Legacy: legacy/src/design-system/components/atoms/inputs/input-text) — native input + optional decorative trailing icon; number-input spinner styling ported from DebounceInput; baseline mapped both viewports (no divergence), see batch notes
-- [x] IconWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-with-tooltip) — composes the ComponentWithTooltip atom (Radix dropped); dark-on-orange badge over legacy white-on-orange; no baseline (gallery-only), see batch notes
+- [x] IconWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-with-tooltip) — composes the ComponentWithTooltip atom (Radix dropped); dark-on-orange badge over legacy white-on-orange; **baseline mapped** (`iconwithtooltip--tooltip-story`, both viewports; icon-size divergence under the gate — corrected 2026-07-07, was a false "no snapshot" from the hyphenation grep trap)
 - [x] Carousel `[org]` (Legacy: legacy/src/design-system/components/organisms/carousel) — **first organism**; Splide dropped for a dependency-free scroll-snap rewrite + `carousel-slide` @utility; legacy baseline PNG exists but is an ArticleList of 5 cards (~95% unmigrated content) → mapping **deferred to ArticleList migration**, not "no baseline"; see batch notes
 - [x] TagsList `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-list) — clean wrapping `<ul>`/`<li>` of Tags; dead legacy overflow/max-width CSS eliminated; no baseline (no legacy snapshot), see batch notes
+- [x] InlineError `[mol]` (Legacy: legacy/src/design-system/components/atoms/messages/inline-error) — reclassified atom→molecule; `role="alert"` live region, icon+text (never colour-only), `text-critical` (AA); baseline mapped both viewports, see batch notes
+- [x] LoadingBars `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-bars) — flex-col stack of LoadingBar meters (each self-labelled); keyed by index; baseline mapped both viewports (4 Beska bars), see batch notes
+- [x] ClickableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/clickable-list-item) — full-width `<button>`; `min-h-6` (2.5.8) + `focus-visible` ring restored over dead legacy a11y; `orange` kept but flagged sub-AA; baseline mapped both viewports, see batch notes
+- [x] LoadingOverlay `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-overlay) — scrim + Loader (status live region); new `--color-surface-overlay` token, dark = `blue-500/30`; 4 baselines mapped both viewports; stories render `absolute` to avoid `fixed`-overlay autodocs pollution, see batch notes
+- [x] ArticleCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/article-card) — composes Picture+Tag+UiLink; `<article>`/`<h3>`, one read-more link + pointer-only image link; `text` de-HTML'd → escaped + `maxChar`; **no baseline** (legacy shipped no story; deferred to ArticleList), see batch notes. Surfaced+fixed a latent `Picture` `aria-busy`/decorative-image conflict.
 - [x] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — renders the **official Spendrups logos** (from the brand EPS, exported via Illustrator, SVGO-safe) via responsive `<picture>`/`<img>`; stories under **Foundations** (main) + a Molecules reference; no baseline (different rendition than legacy PNG), see batch notes. **⚠️ Known tradeoff (accepted 2026-07-07):** each SVG embeds a ~33KB PNG raster (the "1897" gradient — the brand source stores it as raster, not vector), so the two logos add ~96KB raw to the bundle and don't gzip. Safe SVGO only; raster untouched for fidelity. **The design team that made this logo is gone**, so no clean vector source exists. Future levers (lossy pngquant ~halves it, or a vector redraw) are documented in [`src/assets/logos/README.md`](../../../src/assets/logos/README.md).
 
-### Build queue (120 pending, dependency-ordered)
+### Build queue (115 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated)
 
-- [ ] LoadingOverlay `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-overlay) — leaf · unblocks 2
-- [ ] ArticleCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/article-card) — leaf · unblocks 1
-- [ ] ClickableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/clickable-list-item) — leaf · unblocks 1
-- [ ] InlineError `[mol]` (Legacy: legacy/src/design-system/components/atoms/messages/inline-error) — leaf · unblocks 1
-- [ ] LoadingBars `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-bars) — leaf · unblocks 1
 - [ ] OfferCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/offer-card) — leaf · unblocks 1
 - [ ] CheckboxListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/checkbox-list-item) — leaf
 - [ ] DeliveryInfoBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/delivery-info-bar) — leaf

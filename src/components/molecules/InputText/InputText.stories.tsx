@@ -99,9 +99,61 @@ export const CheckIcon: Story = {
   ),
 }
 
-/** Static frame reproducing the legacy `input-text-story` (empty field, 616px wrapper). */
+// ── Visual-regression frames — each reproduces one legacy `input-text-story-*` baseline in the
+// legacy 616px wrapper. ariaLabel supplies the accessible name the legacy field lacked (invisible, so
+// pixel-neutral). Same brand font as legacy → no divergence. ──
+
+/** Reproduces the legacy `input-text-story` (empty field, 616px wrapper). */
 export const Visual: Story = {
   args: { id: 'input_1', ariaLabel: 'Exempelfält' },
+  parameters: { layout: 'fullscreen' },
+  tags: ['visual'],
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <InputText {...args} />
+    </div>
+  ),
+}
+
+/** Reproduces `input-text-story-place-holder`. */
+export const VisualPlaceholder: Story = {
+  args: { id: 'input-visual-placeholder', ariaLabel: 'Exempelfält', placeholder: 'Write anything you like' },
+  parameters: { layout: 'fullscreen' },
+  tags: ['visual'],
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <InputText {...args} />
+    </div>
+  ),
+}
+
+/** Reproduces `input-text-story-error` (red border, no message — as the legacy frame). */
+export const VisualError: Story = {
+  args: { id: 'input-visual-error', ariaLabel: 'Exempelfält', isErroneous: true },
+  parameters: { layout: 'fullscreen' },
+  tags: ['visual'],
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <InputText {...args} />
+    </div>
+  ),
+}
+
+/** Reproduces `input-text-story-disabled` (empty disabled field). */
+export const VisualDisabled: Story = {
+  args: { id: 'input-visual-disabled', ariaLabel: 'Exempelfält', disabled: true },
+  parameters: { layout: 'fullscreen' },
+  tags: ['visual'],
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <InputText {...args} />
+    </div>
+  ),
+}
+
+/** Reproduces `input-text-story-check-icon` (empty field, decorative trailing check). */
+export const VisualCheckIcon: Story = {
+  args: { id: 'input-visual-check', ariaLabel: 'Exempelfält', iconRight: 'icon-check' },
   parameters: { layout: 'fullscreen' },
   tags: ['visual'],
   render: (args) => (

@@ -41,6 +41,51 @@ interface Row {
   legacyDims?: Dims
   note: RowNote
   error?: string
+  /** True when this story's component belongs to the batch currently in progress. */
+  isCurrent?: boolean
+}
+
+interface CurrentBatch {
+  /** Human label, e.g. "Batch 9" (empty if it couldn't be parsed). */
+  label: string
+  /** Lowercased component names in the current batch (e.g. `inlineerror`). */
+  names: Set<string>
+}
+
+/**
+ * Read the current batch's component names from the single source of truth that scaffold-component
+ * already updates every batch (`MIGRATION-PROGRESS.md`, Step 9): the `Current Micro-Batch` bullet,
+ * which bold-lists the batch's components (e.g. `**InlineError**, **LoadingBars**, …`). Parsed here
+ * so the gallery can surface "what I just built" without any extra per-entry annotation. Degrades
+ * gracefully to an empty set (no grouping) if the file/line/format ever changes.
+ */
+function readCurrentBatch(): CurrentBatch {
+  try {
+    const md = readFileSync(resolve(ROOT, '.claude/docs/MIGRATION-PROGRESS.md'), 'utf8')
+    const lines = md.split('\n')
+    const start = lines.findIndex((l) => /Current Micro-Batch/i.test(l))
+    if (start === -1) return { label: '', names: new Set() }
+    // The bullet may wrap across several physical lines — gather until the next bullet/heading/blank.
+    const block = [lines[start]]
+    for (let i = start + 1; i < lines.length; i++) {
+      if (/^\s*-\s/.test(lines[i]) || /^#{1,6}\s/.test(lines[i]) || lines[i].trim() === '') break
+      block.push(lines[i])
+    }
+    const text = block.join(' ')
+    const label = text.match(/Batch\s+\d+/i)?.[0] ?? 'Latest batch'
+    const names = new Set<string>()
+    // Single-word **BoldNames** are the component names; `**Current Micro-Batch**` (has spaces) and
+    // prose references like FaqList/ArticleList (not bold) are correctly ignored.
+    for (const m of text.matchAll(/\*\*([A-Za-z0-9]+)\*\*/g)) names.add(m[1].toLowerCase())
+    return { label, names }
+  } catch {
+    return { label: '', names: new Set() }
+  }
+}
+
+/** A story id like `design-system-molecules-inlineerror--visual` carries `-<component>--`. */
+function isCurrentStory(storyId: string, names: Set<string>): boolean {
+  return [...names].some((name) => storyId.includes(`-${name}--`))
 }
 
 interface Dims {
@@ -115,11 +160,12 @@ function noteBadge(row: Row): string {
   return `<span class="badge ok">mapped</span>`
 }
 
-function renderCard(row: Row, i: number): string {
+function renderCard(row: Row, i: number, batchLabel: string): string {
   const header = `
     <div class="card-head">
       <code>${esc(row.storyId)}</code>
       <span class="badge vp">${row.viewport}</span>
+      ${row.isCurrent ? `<span class="badge latest">★ ${esc(batchLabel)}</span>` : ''}
       ${noteBadge(row)}
       ${dimsBadge(row)}
       ${row.error ? `<span class="badge err">${esc(row.error)}</span>` : ''}
@@ -142,17 +188,40 @@ function renderCard(row: Row, i: number): string {
     </figure>`
     : `<figure><figcaption>Compare</figcaption><div class="frame empty">needs a baseline</div></figure>`
 
-  return `<section class="card">${header}<div class="panes">${legacyPane}${currentPane}${comparePane}</div></section>`
+  return `<section class="card${row.isCurrent ? ' current' : ''}" data-current="${row.isCurrent ? 'true' : 'false'}" data-story="${esc(row.storyId.toLowerCase())}">${header}<div class="panes">${legacyPane}${currentPane}${comparePane}</div></section>`
 }
 
-function renderHtml(rows: Row[]): string {
+function renderHtml(rows: Row[], batch: CurrentBatch): string {
   const mapped = rows.filter((r) => r.note !== 'unmapped').length
   const unmapped = rows.filter((r) => r.note === 'unmapped').length
   const mismatches = rows.filter(
     (r) => r.legacyDims && r.currentDims && (r.legacyDims.w !== r.currentDims.w || r.legacyDims.h !== r.currentDims.h),
   ).length
 
-  const cards = rows.map((row, i) => renderCard(row, i)).join('\n')
+  // Surface the batch you just built first: current-batch frames on top, everything else below.
+  const currentRows = rows.filter((r) => r.isCurrent)
+  const restRows = rows.filter((r) => !r.isCurrent)
+  const ordered = [...currentRows, ...restRows]
+  const cardHtml = ordered.map((row, i) => renderCard(row, i, batch.label))
+
+  const groups: string[] = []
+  if (currentRows.length) {
+    groups.push(
+      `<h2 class="group-head">★ Latest — ${esc(batch.label || 'current batch')} <span class="count">${currentRows.length} frame(s)</span></h2>`,
+      ...cardHtml.slice(0, currentRows.length),
+    )
+  }
+  if (restRows.length) {
+    groups.push(
+      `<h2 class="group-head muted">Earlier batches <span class="count">${restRows.length} frame(s)</span></h2>`,
+      ...cardHtml.slice(currentRows.length),
+    )
+  }
+  const cards = groups.join('\n')
+
+  const currentControl = currentRows.length
+    ? `<label class="ctl"><input type="checkbox" id="current-only"> ${esc(batch.label || 'Current batch')} only</label>`
+    : ''
 
   return `<!doctype html>
 <html lang="en">
@@ -189,13 +258,28 @@ function renderHtml(rows: Row[]): string {
   .frame.stack img { }
   .frame.stack .overlay { position: absolute; inset: 0; }
   .frame.stack .overlay.diff { mix-blend-mode: difference; }
+  .badge.latest { background: #123b1c; color: #8ff0b0; border-color: #2c5a38; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 10px; }
+  .controls input[type=search] { min-width: 260px; padding: 6px 10px; border-radius: 8px; font: inherit;
+    background: #0e1113; border: 1px solid #2a2f34; color: #e6e9ec; }
+  .controls .ctl { display: inline-flex; gap: 6px; align-items: center; color: #cdd6de; font-size: 13px; user-select: none; }
+  .group-head { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .02em; color: #cfe3ff; }
+  .group-head.muted { color: #9aa4ad; }
+  .group-head .count { font-weight: 400; color: #9aa4ad; }
+  .card.current { border-color: #3c5a2f; box-shadow: inset 3px 0 0 #7ee2a8; }
+  .card.hidden { display: none; }
+  body.current-only .card[data-current="false"], body.current-only .group-head.muted { display: none; }
   @media (max-width: 1000px) { .panes { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <header>
   <h1>Visual review gallery</h1>
-  <p>${rows.length} frame(s) — ${mapped} mapped, ${unmapped} visual-only (no baseline)${mismatches ? ` · ${mismatches} size mismatch` : ''}. Compare pane: drag <em>onion</em> to crossfade current over legacy; tick <em>difference</em> to highlight changed pixels (matching areas turn black).</p>
+  <p>${rows.length} frame(s) — ${mapped} mapped, ${unmapped} visual-only (no baseline)${mismatches ? ` · ${mismatches} size mismatch` : ''}${currentRows.length ? ` · ${currentRows.length} in ${esc(batch.label || 'current batch')}` : ''}. Compare pane: drag <em>onion</em> to crossfade current over legacy; tick <em>difference</em> to highlight changed pixels (matching areas turn black).</p>
+  <div class="controls">
+    <input type="search" id="filter" placeholder="Filter by component / story id…" autocomplete="off" spellcheck="false">
+    ${currentControl}
+  </div>
 </header>
 <main>
 ${cards}
@@ -213,6 +297,23 @@ ${cards}
       if (overlay) overlay.classList.toggle('diff', el.checked)
     })
   })
+  // Live filter by component / story id.
+  const filter = document.getElementById('filter')
+  if (filter) {
+    filter.addEventListener('input', () => {
+      const q = filter.value.trim().toLowerCase()
+      document.querySelectorAll('.card').forEach((card) => {
+        card.classList.toggle('hidden', !!q && !card.dataset.story.includes(q))
+      })
+    })
+  }
+  // "Current batch only" toggle.
+  const currentOnly = document.getElementById('current-only')
+  if (currentOnly) {
+    currentOnly.addEventListener('change', () => {
+      document.body.classList.toggle('current-only', currentOnly.checked)
+    })
+  }
 </script>
 </body>
 </html>
@@ -227,6 +328,7 @@ test('generate visual review gallery', async ({ browser, request }) => {
 
   const rows: Row[] = []
   const mappedIds = new Set(visualBaselines.map((b) => b.storyId))
+  const batch = readCurrentBatch()
 
   for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
     const wanted = viewports ?? ALL_VIEWPORTS
@@ -269,8 +371,13 @@ test('generate visual review gallery', async ({ browser, request }) => {
     }
   }
 
-  const htmlPath = resolve(OUT, 'index.html')
-  writeFileSync(htmlPath, renderHtml(rows))
+  for (const row of rows) row.isCurrent = isCurrentStory(row.storyId, batch.names)
 
-  console.log(`\n  Visual review gallery ready:\n  file://${htmlPath}\n`)
+  const htmlPath = resolve(OUT, 'index.html')
+  writeFileSync(htmlPath, renderHtml(rows, batch))
+
+  const currentCount = rows.filter((r) => r.isCurrent).length
+  console.log(
+    `\n  Visual review gallery ready${batch.label ? ` (${currentCount} frame(s) in ${batch.label})` : ''}:\n  file://${htmlPath}\n`,
+  )
 })

@@ -33,8 +33,10 @@ export const TextBadge: Story = {
 }
 
 /**
- * Static frame for the review gallery — reproduces the legacy `icon-with-tooltip` trigger (closed).
- * No legacy PNG baseline exists, so this is not mapped in `baseline-map.ts` (gallery-only).
+ * Static frame for the review gallery — reproduces the legacy `tooltip-story` trigger (closed):
+ * same `icon-alert-circle` + "Icon with tooltip story". Mapped in `baseline-map.ts`. The only
+ * divergence is icon size (legacy `size='sm'`; V2 dropped the size prop for a fixed larger icon),
+ * a tiny top-left glyph well under the 2% gate.
  */
 export const Visual: Story = {
   args: { icon: 'icon-alert-circle', content: 'Icon with tooltip story' },

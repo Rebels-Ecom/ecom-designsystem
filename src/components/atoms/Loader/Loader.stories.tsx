@@ -39,3 +39,11 @@ export const Visual: Story = {
   parameters: { layout: 'fullscreen' },
   args: { visible: true, text: 'Loading' },
 }
+
+// Reproduces the legacy `loader-story-large` frame: a large (lg) spinner, no text. Mapped in
+// tests/visual/baseline-map.ts.
+export const VisualLarge: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { visible: true, size: 'lg' },
+}

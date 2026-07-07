@@ -135,7 +135,10 @@ function Picture({
           ref={mergeRefs<HTMLImageElement>(imgRef, ref)}
           src={imageSources.src || fallbackImageUrl}
           alt={alt}
-          aria-busy={isLoading}
+          // A decorative image (empty `alt`) is presentational; a global ARIA attribute like
+          // `aria-busy` on it triggers axe's presentation-role-conflict, so only expose the
+          // loading state on images that are actually in the accessibility tree.
+          aria-busy={alt ? isLoading : undefined}
           width={width}
           height={height}
           loading={loading}

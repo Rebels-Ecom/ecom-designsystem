@@ -65,3 +65,23 @@ export const Visual: Story = {
     </div>
   ),
 }
+
+// Reproduces `input-file-story-disabled`. Mapped desktop-only, like the base frame (the legacy
+// mobile PNG is structurally incomparable — see the base entry in baseline-map.ts).
+export const VisualDisabled: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    id: 'input-file-visual-disabled',
+    label: 'Välj fil',
+    placeholder: 'Ingen fil har valts',
+    value: '',
+    disabled: true,
+    onChange: fn(),
+  },
+  render: (args) => (
+    <div style={{ margin: '0 0 1rem 0', maxWidth: '616px' }}>
+      <InputFile {...args} />
+    </div>
+  ),
+}

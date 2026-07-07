@@ -129,3 +129,43 @@ export const Visual: Story = {
     </div>
   ),
 }
+
+// Reproduces `radio-button-story-error`: a checked radio in the error state. Mapped in baseline-map.ts.
+export const VisualError: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    id: 'radio-visual-error',
+    name: 'group_1',
+    value: 'input_1',
+    checked: true,
+    isErroneous: true,
+    ariaLabel: 'Radio button',
+    onChange: fn(),
+  },
+  render: (args) => (
+    <div style={{ margin: '0 0 2rem 0', maxWidth: '616px' }}>
+      <RadioButton {...args} />
+    </div>
+  ),
+}
+
+// Reproduces `radio-button-story-disabled`: a checked, disabled radio. Mapped in baseline-map.ts.
+export const VisualDisabled: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    id: 'radio-visual-disabled',
+    name: 'group_1',
+    value: 'input_1',
+    checked: true,
+    disabled: true,
+    ariaLabel: 'Radio button',
+    onChange: fn(),
+  },
+  render: (args) => (
+    <div style={{ margin: '0 0 2rem 0', maxWidth: '616px' }}>
+      <RadioButton {...args} />
+    </div>
+  ),
+}

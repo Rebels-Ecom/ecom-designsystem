@@ -74,3 +74,21 @@ export const Visual: Story = {
     </>
   ),
 }
+
+// Reproduces the legacy `heading-delivery-form-story` frame: all five levels with the text
+// "Dina leverans uppgifter" and the order-1 default margin (legacy passed no margin here).
+// Mapped in tests/visual/baseline-map.ts.
+export const VisualDeliveryForm: Story = {
+  tags: ['visual'],
+  parameters: { layout: 'fullscreen' },
+  args: { order: 1, children: 'Dina leverans uppgifter' },
+  render: () => (
+    <>
+      <Heading order={1}>Dina leverans uppgifter</Heading>
+      <Heading order={2}>Dina leverans uppgifter</Heading>
+      <Heading order={3}>Dina leverans uppgifter</Heading>
+      <Heading order={4}>Dina leverans uppgifter</Heading>
+      <Heading order={5}>Dina leverans uppgifter</Heading>
+    </>
+  ),
+}
