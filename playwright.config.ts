@@ -36,7 +36,10 @@ export default defineConfig({
     },
   },
   use: {
-    baseURL: 'http://localhost:6006',
+    // Use 127.0.0.1, NOT localhost: `http-server` binds IPv4 `0.0.0.0` only, but Node resolves
+    // `localhost` to IPv6 `::1` first — so a `localhost` webServer health check gets ECONNREFUSED on
+    // `::1:6006` and times out. 127.0.0.1 pins the reachable IPv4 address.
+    baseURL: 'http://127.0.0.1:6006',
     trace: 'on-first-retry',
     browserName: 'chromium',
     deviceScaleFactor: 1,
@@ -49,7 +52,7 @@ export default defineConfig({
     // Reused if a Storybook is already on :6006 (e.g. `pnpm storybook`) so per-component
     // scoped runs are fast; CI always does the clean static build.
     command: 'pnpm build-storybook && pnpm dlx http-server storybook-static -p 6006 --silent',
-    url: 'http://localhost:6006',
+    url: 'http://127.0.0.1:6006',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

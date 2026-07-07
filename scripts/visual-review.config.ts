@@ -12,10 +12,14 @@ import { defineConfig } from '@playwright/test'
 export default defineConfig({
   testDir: '.',
   testMatch: /visual-review\.spec\.ts$/,
+  // The single generator test captures every ['visual'] frame serially; `test.setTimeout` in the
+  // spec sets the real budget — this matches it so the config never caps it lower.
   reporter: 'list',
-  timeout: 180_000,
+  timeout: 600_000,
   use: {
-    baseURL: 'http://localhost:6006',
+    // 127.0.0.1, NOT localhost — see the note in playwright.config.ts: `http-server` is IPv4-only,
+    // Node probes `localhost` as IPv6 `::1`, so a localhost health check times out with ECONNREFUSED.
+    baseURL: 'http://127.0.0.1:6006',
     browserName: 'chromium',
     deviceScaleFactor: 1,
   },
@@ -24,7 +28,12 @@ export default defineConfig({
     // fast; otherwise a clean static build is served. This is a local dev tool — always
     // reuse, even under CI.
     command: 'pnpm build-storybook && pnpm dlx http-server storybook-static -p 6006 --silent',
-    url: 'http://localhost:6006',
+    // Pin cwd to the PROJECT ROOT. Playwright defaults `webServer.cwd` to the config file's
+    // directory — which for this config is `scripts/`, so `http-server storybook-static` would
+    // serve the nonexistent `scripts/storybook-static` and return 404 (the health check then
+    // times out). `pnpm visual:review` runs from the repo root, so `process.cwd()` is correct.
+    cwd: process.cwd(),
+    url: 'http://127.0.0.1:6006',
     reuseExistingServer: true,
     timeout: 120_000,
   },

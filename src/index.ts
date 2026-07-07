@@ -206,6 +206,47 @@ export type {
   ArticleCardType,
 } from './components/molecules/ArticleCard'
 
+export { OfferCard } from './components/molecules/OfferCard'
+export type { OfferCardProps, OfferCardHeadingLevel } from './components/molecules/OfferCard'
+
+export { CheckboxListItem } from './components/molecules/CheckboxListItem'
+export type { CheckboxListItemProps } from './components/molecules/CheckboxListItem'
+
+export { DeliveryInfoBar } from './components/molecules/DeliveryInfoBar'
+export type { DeliveryInfoBarProps } from './components/molecules/DeliveryInfoBar'
+
+export { DropdownList } from './components/molecules/DropdownList'
+export type {
+  DropdownListProps,
+  DropdownListLink,
+  DropdownListTarget,
+} from './components/molecules/DropdownList'
+
+export { InfoSummaryBox } from './components/molecules/InfoSummaryBox'
+export type {
+  InfoSummaryBoxProps,
+  InfoSummaryBoxBackground,
+} from './components/molecules/InfoSummaryBox'
+
+export { IntroBlock } from './components/molecules/IntroBlock'
+export type { IntroBlockProps } from './components/molecules/IntroBlock'
+
+export { MessageBanner } from './components/molecules/MessageBanner'
+export type { MessageBannerProps, MessageBannerType } from './components/molecules/MessageBanner'
+
+export { OrderConfirmationDetails } from './components/molecules/OrderConfirmationDetails'
+export type {
+  OrderConfirmationDetailsProps,
+  OrderConfirmationItem,
+  OrderConfirmationPadding,
+} from './components/molecules/OrderConfirmationDetails'
+
+export { Pagination } from './components/molecules/Pagination'
+export type { PaginationProps } from './components/molecules/Pagination'
+
+export { PopUp } from './components/molecules/PopUp'
+export type { PopUpProps, PopUpContentPosition } from './components/molecules/PopUp'
+
 /* ── Organisms ────────────────────────────────────────────────────────── */
 export { Carousel, CarouselItem } from './components/organisms/Carousel'
 export type {

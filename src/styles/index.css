@@ -95,6 +95,13 @@
   --text-body-s: 0.875rem;
   --text-body-s--line-height: 1.125rem;
 
+  /* IntroBlock title — a bespoke display size (legacy `.title` overrode the h2 scale):
+     2rem→2.875rem at `md`, with its own line-heights. Not on the heading token scale. */
+  --text-intro-title: 2rem;
+  --text-intro-title--line-height: 2.25rem;
+  --text-intro-title-lg: 2.875rem;
+  --text-intro-title-lg--line-height: 3.25rem;
+
   /* CTA labels */
   --text-cta-s: 0.875rem;
   --text-cta-s--line-height: 1.125rem;
@@ -111,8 +118,10 @@
   --text-tag-sm--line-height: 1.25rem;
 
   /* Icon glyph sizes — small/medium/large map to the standard scale
-     (text-base / text-xl / text-2xl); xlarge (1.75rem) is off-scale. */
+     (text-base / text-xl / text-2xl); xlarge (1.75rem) and 2xl (3.5rem, the
+     centred OfferCard feature glyph) are off-scale. */
   --text-icon-xl: 1.75rem;
+  --text-icon-2xl: 3.5rem;
 
   /* — Letter spacing — */
   --tracking-cta-s: 0.02rem;
@@ -242,6 +251,11 @@
    * consumed with an opacity modifier, e.g. `bg-surface-overlay/95`. The dark scrim reuses
    * `blue-500/30` (= legacy rgba(0,62,81,0.3)), so it needs no dedicated token. */
   --color-surface-overlay: #f5f6f8;
+  /* MessageBanner default (neutral) background — the warm grey also used by nav/footer. */
+  --color-surface-banner: #f2efea;
+  /* OrderConfirmationDetails highlight fill — a near-white cream (legacy used a flat
+   * #FFFDF8 over its gradient). Distinct from the yellower `yellow-50` (#fff9e8). */
+  --color-surface-cream: #fffdf8;
   --color-surface-critical: var(--color-red-critical);
   --color-surface-critical-subdued: #ffe6eb;
 
@@ -403,10 +417,18 @@
  * system-sans stack, which silently leaves any component that doesn't set `font-primary`
  * explicitly in the wrong typeface. Restoring the global default here fixes it once for the
  * whole library. NOTE: form controls (`input`/`textarea`/`select`/`button`) don't inherit
- * font-family — those still need an explicit `font-primary` utility. */
+ * font-family — those still need an explicit `font-primary` utility.
+ *
+ * `line-height: normal` restores the legacy base leading. Legacy `html`/`body` set NO
+ * line-height, so all un-tokened text rendered at the font's `normal` (~1.2); Tailwind's
+ * preflight instead forces `1.5` on `html`, which inflated every bare-text line-box (taller
+ * text blocks, and icon/text rows misaligning under `align-items` because the text line-box
+ * outgrew the glyph). Components that need a specific leading set it via a `text-*` token
+ * (those win over this base), so this only realigns bare text back to the frozen baselines. */
 @layer base {
   html {
     font-family: var(--font-primary);
+    line-height: normal;
   }
 }
 

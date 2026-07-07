@@ -44,6 +44,16 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   `font-primary` utility (e.g. `DebounceInput`'s numeric field). Forgetting this is
   invisible under `tsc` and easy to miss on small text; the [review gallery](#reviewing-a-green-run--the-review-gallery)
   is how it gets caught.
+- **The document base line-height is `normal`, not Tailwind's `1.5`.** The same
+  `@layer base { html { … } }` rule also sets `line-height: normal`. Legacy `html`/`body`
+  set no line-height, so all un-tokened text rendered at the font's `normal` (~1.2), but
+  Tailwind v4 preflight forces `1.5` on `html` — which inflated every bare-text line-box
+  vs the frozen baselines (taller text blocks; icon/text flex rows misaligning because the
+  text line-box outgrew the glyph). Setting the base to `normal` realigns bare text to
+  legacy. **This only affects text with no explicit leading** — components that need a
+  specific line-height set it via a `text-*` type token (`text-body` = 1.25rem, the
+  `text-h-*` scale, etc.), and those win over the base. So: rely on the type tokens for
+  anything multi-line; the base just keeps stray single-line text faithful.
 - **Form controls need an explicit surface too.** Tailwind's preflight leaves an
   `<input>` background transparent, so on the design system's off-white page a bare
   field shows the page through it. Set `bg-surface-default` (or the intended token)
@@ -72,6 +82,19 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   `prefers-reduced-motion` is honoured (WCAG 2.3.3†); Playwright's
   `animations: 'disabled'` freezes these at their end state, so a one-shot
   `forwards` grow captures at full height deterministically.
+- **Framer entrance/exit animations: gate on `useReducedMotion()`; the harness settles
+  the frame by emulating reduced motion.** For a JS-driven Framer transition (e.g.
+  DeliveryInfoBar's slide-down + fade), gate it on `useReducedMotion()` —
+  `initial={reduce ? false : {…}}`, and make the reduced path instant/settled — so
+  motion-sensitive users get the resting state (2.3.3†) **and** captures are deterministic.
+  `useReducedMotion()` reads the `prefers-reduced-motion` **media query** — NOT a
+  `MotionConfig reducedMotion` prop (that only tunes framer's own engine and leaves the
+  hook untouched; an earlier note here claimed otherwise — it was wrong). So the lever is
+  the harness: **`pnpm visual:review` creates its capture contexts with
+  `reducedMotion: 'reduce'`**, which flips the hook true and renders the settled first
+  frame (no mid-fade). The gate (`pnpm test:visual`) additionally uses Playwright's
+  `animations: 'disabled'`. A per-story `MotionConfig` wrapper does nothing here — don't
+  add one.
 - **Container widths & the `--container-*` → `max-w-*` naming.** The content max-widths live in
   `@theme` as `--container-content-*` (`narrow` 73rem, `wide` 103rem, `text` 52rem, `lg` 77.5rem).
   Tailwind v4 exposes the `--container-*` namespace as `max-w-*` utilities **with the `--container-`
@@ -394,6 +417,17 @@ images on *failure*, so a green run leaves nothing to eyeball. `pnpm visual:revi
 - It reads the same `tests/visual/baseline-map.ts` (so it honours the `viewports` opt-out — InputFile
   shows desktop-only), captures the current V2 render at each viewport, pairs it with the legacy PNG,
   and writes `visual-review/index.html` (git-ignored, regenerated each run). It prints a `file://…` link.
+- **It reports a per-frame Δ and ranks by it — you read numbers, not every image.** For each mapped
+  frame it computes Δ = the share of perceptibly-different pixels, using the **same YIQ colour model
+  pixelmatch (the gate) uses**, in-browser via a canvas (both PNGs passed as data URLs — no pngjs/
+  pixelmatch dependency). Frames sort **worst-Δ first**, each carries a `Δ x%` badge (green ≤0.2% /
+  amber / red "review" ≥2%), and the header summarises "N to review, M minor drift". So a sub-gate drift
+  is surfaced as a sorted number instead of something you have to catch by eye.
+  **Δ is a review-sensitivity metric, NOT the gate verdict:** it omits pixelmatch's anti-aliasing
+  detection, so it reads a little high on text-heavy frames (it counts the Edmondsans-vs-legacy font-edge
+  drift the gate forgives). Treat Δ≥2% as "look at this," not "failed" — `pnpm test:visual` is
+  authoritative for pass/fail. (This is why the known Heading / GroupWrapper vertical-rhythm drift shows
+  ~2–2.5% Δ yet passes the gate.)
 - Each pair gets **Legacy | Current | Compare**; the Compare pane has an onion-skin opacity slider and a
   `mix-blend-mode: difference` toggle (matching pixels go black). Pure CSS — no extra deps.
 - It also surfaces a **size-mismatch** badge (read straight from each PNG's IHDR) and renders any
@@ -409,6 +443,18 @@ images on *failure*, so a green run leaves nothing to eyeball. `pnpm visual:revi
   so it works for both mapped and no-baseline `['visual']` stories.
 - Reuses a running `pnpm storybook` on :6006 if present; otherwise builds and serves the static book.
   This is a manual review aid, never a gate — don't wire it into CI.
+
+**Two webServer gotchas both configs must respect** (they bit us once — a stale dual-stack `storybook
+dev` on :6006 masked them all session, and only surfaced when it was killed and the `http-server`
+fallback ran):
+- **Probe `127.0.0.1`, not `localhost`.** `http-server` binds IPv4 `0.0.0.0` only, but Node resolves
+  `localhost` to IPv6 `::1` first — so a `localhost` health check gets `ECONNREFUSED ::1:6006` forever
+  and times out. Both `webServer.url` and `use.baseURL` use `http://127.0.0.1:6006`.
+- **Pin `webServer.cwd` to the repo root for `scripts/visual-review.config.ts`.** Playwright defaults
+  `cwd` to the *config file's* directory; for a config under `scripts/` that makes
+  `http-server storybook-static` serve the nonexistent `scripts/storybook-static` → 404 on `/` → the
+  health check never goes green. `cwd: process.cwd()` fixes it (`pnpm visual:review` runs from root).
+  The gate's config lives at the root, so it doesn't need this — but it *did* need the 127.0.0.1 fix.
 
 ### CI (still to wire up)
 

@@ -1,5 +1,5 @@
 import { test } from '@playwright/test'
-import type { APIRequestContext, Browser } from '@playwright/test'
+import type { APIRequestContext, Page } from '@playwright/test'
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { visualBaselines } from '../tests/visual/baseline-map'
@@ -15,6 +15,11 @@ import { visualBaselines } from '../tests/visual/baseline-map'
  * Stories tagged `['visual']` that have no baseline entry are rendered current-only so
  * nothing silently escapes review. The page is dependency-free (blend/opacity are pure CSS).
  *
+ * It also COMPUTES a per-frame Δ (share of perceptibly-different pixels, YIQ colour model) and
+ * SORTS frames worst-first with a Δ badge + summary — so divergence is reported as numbers, not
+ * hunted for by eye. Δ is a review-sensitivity metric (see `computeDiffRatio`), stricter than the
+ * gate on font anti-aliasing; `pnpm test:visual` stays authoritative for pass/fail.
+ *
  * Run: `pnpm visual:review` — see scripts/visual-review.config.ts.
  */
 
@@ -25,7 +30,8 @@ const VIEWPORTS = {
 type Viewport = keyof typeof VIEWPORTS
 const ALL_VIEWPORTS = Object.keys(VIEWPORTS) as Viewport[]
 
-const BASE = 'http://localhost:6006'
+// 127.0.0.1, NOT localhost: http-server binds IPv4 only; localhost can resolve to IPv6 ::1 (see config).
+const BASE = 'http://127.0.0.1:6006'
 const ROOT = process.cwd()
 const OUT = resolve(ROOT, 'visual-review')
 const LEGACY_DIR = resolve(ROOT, 'legacy-snapshots')
@@ -43,6 +49,12 @@ interface Row {
   error?: string
   /** True when this story's component belongs to the batch currently in progress. */
   isCurrent?: boolean
+  /**
+   * Fraction of pixels that visibly differ between current and legacy (0–1), computed when both
+   * exist and their dimensions match. This is what makes the gallery self-reporting: frames sort
+   * by it (worst first) and show it as a badge, so a sub-gate drift doesn't hide behind a green run.
+   */
+  diffRatio?: number
 }
 
 interface CurrentBatch {
@@ -108,24 +120,88 @@ function pngSize(file: string): Dims | undefined {
   }
 }
 
-async function captureCurrent(browser: Browser, storyId: string, viewport: Viewport): Promise<string> {
-  const context = await browser.newContext({ viewport: VIEWPORTS[viewport], deviceScaleFactor: 1 })
+/**
+ * Capture one story on a reused per-viewport page. The page/context are created once by the caller
+ * and reused across every capture — spinning up a fresh context per frame (there are 100+) added
+ * ~0.25s each and pushed the whole run past the timeout as the baseline map grew.
+ */
+async function captureCurrent(page: Page, storyId: string, viewport: Viewport): Promise<string> {
+  await page.goto(`${BASE}/iframe.html?id=${storyId}&viewMode=story`)
+  // Wait for the story's first child (not `#storybook-root` itself — absolutely-positioned
+  // stories like Loader leave the root zero-height). Tolerate a story that never paints.
+  await page
+    .locator('#storybook-root > *')
+    .first()
+    .waitFor({ state: 'attached', timeout: 10_000 })
+    .catch(() => {})
+  // Cap the settle wait: an un-timed `networkidle` blocks up to the 30s default per frame if a
+  // story never goes idle, which alone can blow the run's budget. A short cap is enough to settle.
+  await page.waitForLoadState('networkidle', { timeout: 3_000 }).catch(() => {})
+  const file = `${storyId}-${viewport}.current.png`
+  await page.screenshot({ path: resolve(OUT, file) })
+  return file
+}
+
+/**
+ * Fraction of pixels that perceptibly differ between two PNGs, computed in-browser (no pngjs/pixelmatch
+ * dependency): both files are handed to the page as data URLs, drawn to a canvas, and compared with the
+ * **same YIQ perceptual colour model pixelmatch uses** (the gate's algorithm) at its `threshold: 0.2`.
+ *
+ * This is a *sensitivity* indicator for human review, NOT the gate's verdict: it omits pixelmatch's
+ * anti-aliasing detection, so it counts sub-pixel font-edge drift (Edmondsans vs the legacy face) that
+ * the gate forgives — i.e. it reads a bit high on text-heavy frames. Use it to rank frames and spot
+ * divergence; `pnpm test:visual` remains authoritative for pass/fail. Returns undefined if dimensions
+ * differ (not comparable).
+ */
+async function computeDiffRatio(page: Page, currentAbs: string, legacyAbs: string): Promise<number | undefined> {
+  const toDataUrl = (file: string) => `data:image/png;base64,${readFileSync(file).toString('base64')}`
   try {
-    const page = await context.newPage()
-    await page.goto(`${BASE}/iframe.html?id=${storyId}&viewMode=story`)
-    // Wait for the story's first child (not `#storybook-root` itself — absolutely-positioned
-    // stories like Loader leave the root zero-height). Tolerate a story that never paints.
-    await page
-      .locator('#storybook-root > *')
-      .first()
-      .waitFor({ state: 'attached', timeout: 10_000 })
-      .catch(() => {})
-    await page.waitForLoadState('networkidle').catch(() => {})
-    const file = `${storyId}-${viewport}.current.png`
-    await page.screenshot({ path: resolve(OUT, file) })
-    return file
-  } finally {
-    await context.close()
+    return await page.evaluate(
+      async ([curUrl, legUrl]) => {
+        const load = (src: string) =>
+          new Promise<HTMLImageElement>((res, rej) => {
+            const img = new Image()
+            img.onload = () => res(img)
+            img.onerror = rej
+            img.src = src
+          })
+        const [cur, leg] = await Promise.all([load(curUrl as string), load(legUrl as string)])
+        if (cur.width !== leg.width || cur.height !== leg.height) return undefined
+        const w = cur.width
+        const h = cur.height
+        const read = (img: HTMLImageElement) => {
+          const canvas = document.createElement('canvas')
+          canvas.width = w
+          canvas.height = h
+          const ctx = canvas.getContext('2d', { willReadFrequently: true })!
+          ctx.drawImage(img, 0, 0)
+          return ctx.getImageData(0, 0, w, h).data
+        }
+        const a = read(cur)
+        const b = read(leg)
+        // pixelmatch's threshold: a pixel differs when its YIQ delta exceeds 35215 · threshold² (0.2).
+        const maxDelta = 35215 * 0.2 * 0.2
+        let differing = 0
+        for (let i = 0; i < a.length; i += 4) {
+          const r1 = a[i]
+          const g1 = a[i + 1]
+          const b1 = a[i + 2]
+          const r2 = b[i]
+          const g2 = b[i + 1]
+          const b2 = b[i + 2]
+          if (r1 === r2 && g1 === g2 && b1 === b2) continue
+          const y = 0.29889531 * (r1 - r2) + 0.58662247 * (g1 - g2) + 0.11448223 * (b1 - b2)
+          const iq1 = 0.595979 * (r1 - r2) - 0.274176 * (g1 - g2) - 0.321802 * (b1 - b2)
+          const q = 0.211470 * (r1 - r2) - 0.522617 * (g1 - g2) + 0.311147 * (b1 - b2)
+          const delta = 0.5053 * y * y + 0.299 * iq1 * iq1 + 0.1957 * q * q
+          if (delta > maxDelta) differing++
+        }
+        return differing / (w * h)
+      },
+      [toDataUrl(currentAbs), toDataUrl(legacyAbs)] as const,
+    )
+  } catch {
+    return undefined
   }
 }
 
@@ -160,6 +236,24 @@ function noteBadge(row: Row): string {
   return `<span class="badge ok">mapped</span>`
 }
 
+// Review tiers for the Δ sensitivity metric (NOT the gate — see computeDiffRatio). `REVIEW_RATIO` is set
+// at the gate's 2% budget as a "definitely look at this" line; `CLEAN_RATIO` is the noise floor below
+// which font-edge/anti-alias drift makes a frame effectively a match.
+const REVIEW_RATIO = 0.02
+const CLEAN_RATIO = 0.002
+
+function diffPct(ratio: number): string {
+  const pct = ratio * 100
+  return pct >= 1 ? `${pct.toFixed(1)}%` : pct >= 0.01 ? `${pct.toFixed(2)}%` : '<0.01%'
+}
+
+function diffBadge(row: Row): string {
+  if (row.diffRatio === undefined) return ''
+  const tone = row.diffRatio >= REVIEW_RATIO ? 'err' : row.diffRatio > CLEAN_RATIO ? 'warn' : 'ok'
+  const label = row.diffRatio >= REVIEW_RATIO ? 'review ' : ''
+  return `<span class="badge ${tone}" title="Δ = share of perceptibly different pixels (YIQ); sensitivity metric, not the gate verdict">${label}Δ ${diffPct(row.diffRatio)}</span>`
+}
+
 function renderCard(row: Row, i: number, batchLabel: string): string {
   const header = `
     <div class="card-head">
@@ -167,6 +261,7 @@ function renderCard(row: Row, i: number, batchLabel: string): string {
       <span class="badge vp">${row.viewport}</span>
       ${row.isCurrent ? `<span class="badge latest">★ ${esc(batchLabel)}</span>` : ''}
       ${noteBadge(row)}
+      ${diffBadge(row)}
       ${dimsBadge(row)}
       ${row.error ? `<span class="badge err">${esc(row.error)}</span>` : ''}
     </div>`
@@ -198,11 +293,17 @@ function renderHtml(rows: Row[], batch: CurrentBatch): string {
     (r) => r.legacyDims && r.currentDims && (r.legacyDims.w !== r.currentDims.w || r.legacyDims.h !== r.currentDims.h),
   ).length
 
+  // Within each group, float the biggest divergences to the top so review starts where it matters
+  // (a frame with no computed ratio — unmapped / size-mismatch — sorts last).
+  const byDiffDesc = (a: Row, b: Row) => (b.diffRatio ?? -1) - (a.diffRatio ?? -1)
   // Surface the batch you just built first: current-batch frames on top, everything else below.
-  const currentRows = rows.filter((r) => r.isCurrent)
-  const restRows = rows.filter((r) => !r.isCurrent)
+  const currentRows = rows.filter((r) => r.isCurrent).sort(byDiffDesc)
+  const restRows = rows.filter((r) => !r.isCurrent).sort(byDiffDesc)
   const ordered = [...currentRows, ...restRows]
   const cardHtml = ordered.map((row, i) => renderCard(row, i, batch.label))
+
+  const needsReview = rows.filter((r) => (r.diffRatio ?? 0) >= REVIEW_RATIO).length
+  const flagged = rows.filter((r) => (r.diffRatio ?? 0) > CLEAN_RATIO && (r.diffRatio ?? 0) < REVIEW_RATIO).length
 
   const groups: string[] = []
   if (currentRows.length) {
@@ -275,7 +376,8 @@ function renderHtml(rows: Row[], batch: CurrentBatch): string {
 <body>
 <header>
   <h1>Visual review gallery</h1>
-  <p>${rows.length} frame(s) — ${mapped} mapped, ${unmapped} visual-only (no baseline)${mismatches ? ` · ${mismatches} size mismatch` : ''}${currentRows.length ? ` · ${currentRows.length} in ${esc(batch.label || 'current batch')}` : ''}. Compare pane: drag <em>onion</em> to crossfade current over legacy; tick <em>difference</em> to highlight changed pixels (matching areas turn black).</p>
+  <p>${rows.length} frame(s) — ${mapped} mapped, ${unmapped} visual-only (no baseline)${mismatches ? ` · ${mismatches} size mismatch` : ''}${currentRows.length ? ` · ${currentRows.length} in ${esc(batch.label || 'current batch')}` : ''}.
+  <strong>${needsReview} to review (Δ≥${(REVIEW_RATIO * 100).toFixed(0)}%)</strong>, ${flagged} minor drift (Δ>${(CLEAN_RATIO * 100).toFixed(1)}%). Frames are sorted worst-Δ first. <em>Δ</em> = share of perceptibly-different pixels (YIQ colour model), a review-sensitivity metric that includes font anti-aliasing the gate forgives — so it reads a little high on text; <code>pnpm test:visual</code> is authoritative for pass/fail. Compare pane: drag <em>onion</em> to crossfade current over legacy; tick <em>difference</em> to highlight changed pixels (matching areas turn black).</p>
   <div class="controls">
     <input type="search" id="filter" placeholder="Filter by component / story id…" autocomplete="off" spellcheck="false">
     ${currentControl}
@@ -321,7 +423,10 @@ ${cards}
 }
 
 test('generate visual review gallery', async ({ browser, request }) => {
-  test.setTimeout(180_000)
+  // Generous ceiling: this is a serial capture of every ['visual'] frame (100+ and growing each
+  // batch), so the budget scales with the library. The per-frame speed-ups (reused contexts + a
+  // capped settle wait) keep a real run well under this; the cap is just a safety net.
+  test.setTimeout(600_000)
 
   rmSync(OUT, { recursive: true, force: true })
   mkdirSync(OUT, { recursive: true })
@@ -330,45 +435,73 @@ test('generate visual review gallery', async ({ browser, request }) => {
   const mappedIds = new Set(visualBaselines.map((b) => b.storyId))
   const batch = readCurrentBatch()
 
-  for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
-    const wanted = viewports ?? ALL_VIEWPORTS
-    for (const viewport of ALL_VIEWPORTS) {
-      const row: Row = { storyId, viewport, currentFile: '', note: 'mapped' }
-      try {
-        row.currentFile = await captureCurrent(browser, storyId, viewport)
-        row.currentDims = pngSize(resolve(OUT, row.currentFile))
+  // One context + page per viewport, reused across every capture (see captureCurrent).
+  const pages = {} as Record<Viewport, Page>
+  const contexts = await Promise.all(
+    ALL_VIEWPORTS.map(async (viewport) => {
+      // Emulate reduced motion so components that gate a Framer entrance on `useReducedMotion()`
+      // (DeliveryInfoBar, PopUp, …) render their settled state on the first frame — otherwise the
+      // capture races a 0.5–0.8s fade and lands mid-animation (a faint frame). This is the correct
+      // lever: `useReducedMotion()` reads `prefers-reduced-motion`, which this sets — a `MotionConfig`
+      // prop does NOT drive that hook. Decorative CSS motion (`motion-reduce:animate-none`) also settles.
+      const context = await browser.newContext({
+        viewport: VIEWPORTS[viewport],
+        deviceScaleFactor: 1,
+        reducedMotion: 'reduce',
+      })
+      pages[viewport] = await context.newPage()
+      return context
+    }),
+  )
 
-        const legacySrc = resolve(LEGACY_DIR, `${legacyBaseline}-${viewport}.png`)
-        // A viewport dropped from `viewports` (or simply missing) has no comparable baseline.
-        if (wanted.includes(viewport) && existsSync(legacySrc)) {
-          const legacyFile = `${storyId}-${viewport}.legacy.png`
-          copyFileSync(legacySrc, resolve(OUT, legacyFile))
-          row.legacyFile = legacyFile
-          row.legacyDims = pngSize(resolve(OUT, legacyFile))
-        } else {
-          row.note = 'no-baseline-viewport'
+  try {
+    for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
+      const wanted = viewports ?? ALL_VIEWPORTS
+      for (const viewport of ALL_VIEWPORTS) {
+        const row: Row = { storyId, viewport, currentFile: '', note: 'mapped' }
+        try {
+          row.currentFile = await captureCurrent(pages[viewport], storyId, viewport)
+          row.currentDims = pngSize(resolve(OUT, row.currentFile))
+
+          const legacySrc = resolve(LEGACY_DIR, `${legacyBaseline}-${viewport}.png`)
+          // A viewport dropped from `viewports` (or simply missing) has no comparable baseline.
+          if (wanted.includes(viewport) && existsSync(legacySrc)) {
+            const legacyFile = `${storyId}-${viewport}.legacy.png`
+            copyFileSync(legacySrc, resolve(OUT, legacyFile))
+            row.legacyFile = legacyFile
+            row.legacyDims = pngSize(resolve(OUT, legacyFile))
+            row.diffRatio = await computeDiffRatio(
+              pages[viewport],
+              resolve(OUT, row.currentFile),
+              resolve(OUT, legacyFile),
+            )
+          } else {
+            row.note = 'no-baseline-viewport'
+          }
+        } catch (err) {
+          row.error = err instanceof Error ? err.message : String(err)
         }
-      } catch (err) {
-        row.error = err instanceof Error ? err.message : String(err)
+        rows.push(row)
       }
-      rows.push(row)
     }
-  }
 
-  // Stories tagged ['visual'] that aren't in the baseline map (e.g. Icon, ExpandableWrapper)
-  // — rendered current-only so nothing with a Visual story escapes review.
-  const unmappedIds = await findUnmappedVisualIds(request, mappedIds)
-  for (const storyId of unmappedIds) {
-    for (const viewport of ALL_VIEWPORTS) {
-      const row: Row = { storyId, viewport, currentFile: '', note: 'unmapped' }
-      try {
-        row.currentFile = await captureCurrent(browser, storyId, viewport)
-        row.currentDims = pngSize(resolve(OUT, row.currentFile))
-      } catch (err) {
-        row.error = err instanceof Error ? err.message : String(err)
+    // Stories tagged ['visual'] that aren't in the baseline map (e.g. Icon, ExpandableWrapper)
+    // — rendered current-only so nothing with a Visual story escapes review.
+    const unmappedIds = await findUnmappedVisualIds(request, mappedIds)
+    for (const storyId of unmappedIds) {
+      for (const viewport of ALL_VIEWPORTS) {
+        const row: Row = { storyId, viewport, currentFile: '', note: 'unmapped' }
+        try {
+          row.currentFile = await captureCurrent(pages[viewport], storyId, viewport)
+          row.currentDims = pngSize(resolve(OUT, row.currentFile))
+        } catch (err) {
+          row.error = err instanceof Error ? err.message : String(err)
+        }
+        rows.push(row)
       }
-      rows.push(row)
     }
+  } finally {
+    await Promise.all(contexts.map((context) => context.close()))
   }
 
   for (const row of rows) row.isCurrent = isCurrentStory(row.storyId, batch.names)

@@ -17,6 +17,120 @@
 
 - **Active Category**: molecules
 - **Last Updated**: 2026-07-07
+- **Current Micro-Batch**: Batch 11 — Tier-0 molecule leaves (complete; **IntroBlock**, **MessageBanner**,
+  **OrderConfirmationDetails**, **Pagination**, **PopUp** — the top-5 unchecked queue entries). `pnpm build`
+  green, `pnpm build-storybook` green, full `pnpm exec vitest --project=storybook` **215/215** (interaction +
+  a11y, stable over 2 reruns — one earlier failure was port contention from concurrent servers), full
+  `pnpm test:visual` **135 passed / 5 documented desktop-only skips**. **6 new baselines mapped both
+  viewports** (MessageBanner ×2, OrderConfirmationDetails ×3, Pagination ×1). **IntroBlock and PopUp are
+  intentionally unmapped** (see findings). Four tokens added (`--text-intro-title(-lg)`,
+  `--color-surface-banner`, `--color-surface-cream`). The next batch continues Tier-0: **PurchaseList**,
+  **RichText**, **ScrollableList**, **SortableListItem**, **TagsDescription**.
+- **2026-07-07 — Systemic base line-height fix (library-wide vertical rhythm)**: a second visual-review
+  pass flagged that icon/text rows (MessageBanner) and text blocks across *many* components sat with
+  slightly-too-tall spacing. Root cause was global, not per-component: **Tailwind v4 preflight forces
+  `html { line-height: 1.5 }`, but legacy `html`/`body` set no line-height** (bare text rendered at the
+  font's `normal`, ~1.2). So every un-tokened text element (spans, strings, labels) had inflated line-boxes
+  vs the frozen baselines — and in icon+text flex rows the oversized text line-box pushed the glyph out of
+  alignment (MessageBanner mobile was off by 4px). **Fixed once for the whole library**: the base layer now
+  sets `html { line-height: normal }` (tokened `text-*` line-heights still win, so this only realigns bare
+  text). Also set MessageBanner to `items-center` on all viewports (legacy only centered at `md`). Verified:
+  full `pnpm test:visual` **133 passed / 5 skipped (no regressions)**, `vitest --project=storybook` 215/215;
+  MessageBanner icon/text offset now 0 on both viewports. Documented in docs/DEVELOPMENT.md.
+- **2026-07-07 — Batch 10/11 visual-review pass (sub-gate diffs fixed)**: eyeballing `pnpm visual:review`
+  surfaced real divergences that passed the 2% gate but looked wrong. Fixed:
+  - **OfferCard heading** rendered at `text-body` (1rem) — I'd assumed a UA-default `<h4>`, but legacy has
+    a **global heading stylesheet** (`h4`/`.headingS` = `--text-h-s` 1.375rem bold). Any raw heading in
+    legacy inherits it. Fixed to `text-h-s`. (Lesson: legacy raw headings are NOT UA-sized — check
+    `styles/typography/spendrups.css`.)
+  - **InfoSummaryBox box fill** was `bg-surface-default` (white) over the cream page — a visible rectangle.
+    Legacy `--background` was undefined → transparent. Fixed the default to transparent (only
+    `withBackground`/`backgroundColor` paint).
+  - **OrderConfirmationDetails total row** inflated its neighbours — `text-h-l` carries a 2.875rem
+    line-height, but the legacy total inherits the compact `.body` 1.25rem line-height. Fixed with
+    `leading-5` on the `isTotal` value.
+  - **DeliveryInfoBar** unmapped — the legacy baseline is **blank** (delay:0.5 entrance from opacity:0 →
+    captured pre-animation), an invalid oracle. Also hardened its reduced-motion path to always settle at
+    `opacity:1,y:0`.
+  - **Fixed the visual-review gallery capturing Framer entrances mid-animation** (the faint DeliveryInfoBar/
+    PopUp tiles). Root cause: the `MotionConfig reducedMotion="always"` story wrappers were no-ops —
+    `useReducedMotion()` reads `prefers-reduced-motion`, not the config prop. Fix: `visual:review` capture
+    contexts now set `reducedMotion: 'reduce'`, which flips the hook true so gated entrances render settled;
+    the `MotionConfig` wrappers were removed from the DeliveryInfoBar/PopUp stories. (Lesson: a green gate
+    isn't proof a frame is right — the mid-fade slipped under the 2% gate against a blank baseline.)
+  - Verified: full `pnpm test:visual` 133 passed / 5 skipped, `vitest --project=storybook` 215/215.
+    CheckboxListItem, DropdownList, MessageBanner, Pagination were already faithful (no change).
+- **2026-07-07 — Batch 11 findings & harness changes**:
+  - **Legacy `<p><span>` key/value pairs → semantic `<dl>` (a11y upgrade).** OrderConfirmationDetails now
+    renders a real description list (`<dl>`/`<dt>`/`<dd>`), so AT announces each value against its term
+    (1.3.1) — the legacy generic paragraphs had no term/description relationship. Visual layout is
+    unchanged, so all three frames (delivery/pricing/total-payment) map cleanly.
+  - **A stray heading level in consumer content fails the axe heading-order gate.** IntroBlock's legacy
+    rich body (Word-paste) contained a lone `<h5>` jumping straight from the `<h1>` title → axe
+    `heading-order`. It's emphasised body copy, not a section heading, so the parity story renders it as
+    **bold text** (visually identical, no bogus heading in the outline). General rule: don't carry stray
+    heading levels from CMS/Word content into V2 markup.
+  - **IntroBlock is baseline-less — the frame depends on CSS V2 intentionally drops.** Its legacy
+    `intro-block-story` is dominated by Word-paste rich body whose rendering relied on browser UA margins,
+    `&nbsp;`-driven line wrapping, and global bold-heading rules — all reset by V2's Tailwind preflight.
+    Mobile PNG is full-page (375×1025, structurally incomparable); desktop reflows ~5% (over gate) purely
+    from that consumer text, not an IntroBlock divergence. Gallery-only `['visual']`; own rendering covered
+    by play tests. (New bespoke `--text-intro-title(-lg)` tokens, 2rem→2.875rem, match the legacy `.title`
+    which overrode the heading scale.)
+  - **PopUp is baseline-less — the legacy story captures the *closed* state.** `pop-up-story` renders with
+    `open` starting false, so the frozen PNG is just a bare trigger button (the panel never shows).
+    Reproducing that is a full-canvas false-green (gotcha 3); there's no legacy image of the open panel.
+    Gallery-only Visual shows it open. PopUp stays a **presentational** animated panel (reduced-motion
+    gated) — dialog role/labelling/focus-trap belong to the future **Modal** molecule (Tier 2), not this
+    low-level primitive.
+  - **New tokens (permanent):** `--text-intro-title`/`-lg` (+ line-heights, registered in `cn.ts`),
+    `--color-surface-banner` (#f2efea, MessageBanner default = the nav/footer neutral),
+    `--color-surface-cream` (#fffdf8, OrderConfirmationDetails highlight — distinct from the yellower
+    `yellow-50`). Reused `--spacing-wrapper-xs` (0.3rem) for the detail-row margin. Legacy
+    `--cta-primary-default` resolved to #003E51 = V2 `action-primary`, so Pagination needed no colour
+    divergence.
+- **Current Micro-Batch**: Batch 10 — Tier-0 molecule leaves (complete; **OfferCard**, **CheckboxListItem**,
+  **DeliveryInfoBar**, **DropdownList**, **InfoSummaryBox** — the top-5 unchecked queue entries). `pnpm build`
+  green, `pnpm build-storybook` green, full `pnpm exec vitest --project=storybook` **197/197** (interaction +
+  a11y), full `pnpm test:visual` **123 passed / 5 documented desktop-only skips**. **8 new baselines mapped,
+  all both-viewport, all with real legacy comparisons**: OfferCard ×2 (no divergence), CheckboxListItem ×2
+  (no divergence), DeliveryInfoBar (settled-motion capture), DropdownList (nav colour is an exact token
+  match), InfoSummaryBox ×2 (orange→blue action link, under the gate). Two shared atoms were extended to
+  serve these molecules (Checkbox `ariaLabelledBy`; new `--text-icon-2xl` token) — see findings. The next
+  batch continues Tier-0: **IntroBlock**, **MessageBanner**, **OrderConfirmationDetails**, **Pagination**,
+  **PopUp**.
+- **2026-07-07 — Batch 10 findings & harness changes**:
+  - **Deterministic visual capture of a Framer *entrance* animation.** A Framer entrance (slide-down +
+    fade) can be captured mid-animation. The component gates the entrance on `useReducedMotion()` (2.3.3† —
+    required anyway) and makes the reduced path instant/settled. **⚠️ Correction (2026-07-07 visual-review
+    pass):** the original fix here wrapped the `Visual` story in `<MotionConfig reducedMotion="always">`,
+    claiming it forces `useReducedMotion()` true — **it does not**. `useReducedMotion()` reads the
+    `prefers-reduced-motion` media query, not the `MotionConfig` prop, so the entrance still ran and the
+    gallery captured a faint mid-fade frame. The real lever: **`pnpm visual:review` creates its capture
+    contexts with `reducedMotion: 'reduce'`** (the gate additionally uses `animations: 'disabled'`). The
+    `MotionConfig` wrappers were removed. Documented correctly now in docs/DEVELOPMENT.md + CHEATSHEET.
+  - **Extending an atom when a new molecule surfaces an a11y gap (recurring methodology).** Like Batch-9's
+    Picture `aria-busy` fix, CheckboxListItem needed to name a native checkbox with **rich** label content
+    (a Heading + article number) that can't live inside a `<label>` (phrasing-content rule). Added a small,
+    backward-compatible **`ariaLabelledBy`** prop to the Checkbox atom (`aria-labelledby` wins over
+    `aria-label` per ARIA name computation); the molecule points it at a `useId()` wrapper around its
+    children. The legacy row left the checkbox entirely unlabelled — a real AT gap now closed at the atom
+    level for every future consumer.
+  - **New `--text-icon-2xl: 3.5rem` token (permanent) + `cn.ts` registration.** OfferCard's centred feature
+    glyph is 3.5rem — off the Icon atom's `size` scale (max `xlarge` = 1.75rem). Added the token and
+    registered `icon-2xl` in `cn.ts`'s `font-size` group so twMerge keeps both the size and the
+    `text-icon-decorative-orange` colour when both are passed to the Icon via `className` (the CHEATSHEET
+    twMerge trap). OfferCard passes `text-icon-2xl text-icon-decorative-orange`.
+  - **`useId` + `role="group"` replaces the invalid legacy `<label htmlFor="infoSummary">`.** InfoSummaryBox's
+    legacy label pointed a `<label>` at a non-form `<div>` **with a hard-coded id** (broke with >1 instance).
+    V2 makes the box a `role="group"` named by the label via `aria-labelledby` + a per-instance `useId()`.
+    Only the two Text-only frames (dina-uppgifter, anvandare) are baseline-mapped; the composite frames wait
+    on OrderItem/CartProduct/GroupWrapper/UnorderedList.
+  - **Dead legacy code dropped.** DeliveryInfoBar's unused `altText` prop and the story's phantom
+    `isAnonymousUser`/`position` args; DropdownList's defined-but-unused Framer `itemVariants` and its
+    `linkComponent: any` (→ the shared `LinkComponentType`). DropdownList's nav colour needed **no**
+    divergence — legacy `--navigation-text-default` is `#003E51`, exactly V2's `nav-text-default` (blue-500),
+    which clears AA on white.
 - **Current Micro-Batch**: Batch 9 — Tier-0 molecule leaves (complete; **InlineError**, **LoadingBars**,
   **ClickableListItem**, **LoadingOverlay**, **ArticleCard** — the top-5 unchecked queue entries,
   unblocking FaqList/FormGroup and the ArticleList carousel-baseline chain). `pnpm build` green,
@@ -128,8 +242,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 40 / 155
-- Remaining: 115
+- Completed: 50 / 155
+- Remaining: 105
 
 ## Components Checklist
 
@@ -149,7 +263,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (40)
+### Completed (50)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -190,22 +304,22 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] ClickableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/clickable-list-item) — full-width `<button>`; `min-h-6` (2.5.8) + `focus-visible` ring restored over dead legacy a11y; `orange` kept but flagged sub-AA; baseline mapped both viewports, see batch notes
 - [x] LoadingOverlay `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-overlay) — scrim + Loader (status live region); new `--color-surface-overlay` token, dark = `blue-500/30`; 4 baselines mapped both viewports; stories render `absolute` to avoid `fixed`-overlay autodocs pollution, see batch notes
 - [x] ArticleCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/article-card) — composes Picture+Tag+UiLink; `<article>`/`<h3>`, one read-more link + pointer-only image link; `text` de-HTML'd → escaped + `maxChar`; **no baseline** (legacy shipped no story; deferred to ArticleList), see batch notes. Surfaced+fixed a latent `Picture` `aria-busy`/decorative-image conflict.
+- [x] OfferCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/offer-card) — composes the Icon atom (decorative `aria-hidden`); centred icon + configurable-level heading + `richText` (legacy `& p` subdued styling ported as `[&_p]` so a bare string still matches the baseline); new `--text-icon-2xl` (3.5rem) token; both `offer-card-story-1/2` baselines mapped, both viewports (no divergence)
+- [x] CheckboxListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/checkbox-list-item) — Heading/Text content + Checkbox atom; **checkbox now named** via `aria-labelledby` → item content (added `ariaLabelledBy` to the Checkbox atom; legacy left it unlabelled); loka + heineken baselines mapped both viewports
+- [x] DeliveryInfoBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/delivery-info-bar) — full-width `<button>` (truck Icon + message = accessible name) in ContentWrapper; framer entrance gated by `prefers-reduced-motion` (animates to a settled `opacity:1,y:0`; reduced-motion = instant); dead `altText` prop dropped. **No baseline** — the legacy frame is blank (its `delay:0.5` entrance from `opacity:0` meant Storybook captured it before the animation ran); gallery-only Visual (unmapped 2026-07-07 during the batch-10/11 visual-review pass), behaviour covered by play tests
+- [x] DropdownList `[mol]` (Legacy: legacy/src/design-system/components/molecules/dropdown-list) — `<ul role="list">` of polymorphic links (shared `DefaultLink`/`linkComponent`, `any` dropped); dead framer `itemVariants` removed; active link → `aria-current="page"` + bold (not colour); legacy `--navigation-text-default` #003E51 == V2 `nav-text-default`, so baseline maps with **no divergence** both viewports
+- [x] InfoSummaryBox `[mol]` (Legacy: legacy/src/design-system/components/molecules/info-summary-box) — labelled `role="group"` via `aria-labelledby` + `useId` (fixed invalid legacy `<label htmlFor=div>`); action button orange→accessible blue+underline; `dina-uppgifter` + `anvandare` (Text-only) frames mapped both viewports; composite frames (OrderItem/CartProduct/GroupWrapper/UnorderedList children) deferred until those land
+- [x] IntroBlock `[mol]` (Legacy: legacy/src/design-system/components/molecules/intro-block) — composes ContentWrapper/MaxWidth/FlexContainer atoms; `<h1>` title on new bespoke `--text-intro-title(-lg)` tokens (2rem→2.875rem, off the heading scale) + uppercase `font-secondary` ingress; **no baseline** (legacy frame is Word-paste rich body dependent on UA margins/`&nbsp;` wrapping/global heading CSS that V2 preflight resets — mobile PNG full-page, desktop reflows ~5%); gallery-only Visual, behaviour covered by play tests
+- [x] MessageBanner `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-banner) — reclassified atom→molecule; `role="status"` live region + decorative type icon; new `--color-surface-banner` (#f2efea) default, custom `color` inline→white text; success + link frames mapped both viewports (no divergence)
+- [x] OrderConfirmationDetails `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-confirmation-details) — legacy `<p><span>` pairs upgraded to a semantic `<dl>`/`<dt>`/`<dd>` (1.3.1); new `--color-surface-cream` (#fffdf8) highlight; reused `--spacing-wrapper-xs` (0.3rem) row margin; delivery/pricing/total-payment frames mapped both viewports
+- [x] Pagination `[mol]` (Legacy: legacy/src/design-system/components/molecules/pagination) — `<nav aria-label>` landmark of real buttons; prev/next `aria-label` + `disabled`, active page `aria-current="page"` + bold/underline (not colour); `useBreakpoint().isMobile` window (5 desktop/3 mobile); legacy `name=` misuse dropped; baseline mapped both viewports (btn colour #003E51 == action-primary, no divergence)
+- [x] PopUp `[mol]` (Legacy: legacy/src/design-system/components/molecules/pop-up) — presentational animated bottom panel (AnimatePresence, reduced-motion-gated); **no baseline** (legacy `pop-up-story` captures the *closed* state — a bare trigger button, no open-panel image to diff, gotcha 3); gallery-only Visual shows it open; dialog semantics/focus deferred to the future Modal molecule
 - [x] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — renders the **official Spendrups logos** (from the brand EPS, exported via Illustrator, SVGO-safe) via responsive `<picture>`/`<img>`; stories under **Foundations** (main) + a Molecules reference; no baseline (different rendition than legacy PNG), see batch notes. **⚠️ Known tradeoff (accepted 2026-07-07):** each SVG embeds a ~33KB PNG raster (the "1897" gradient — the brand source stores it as raster, not vector), so the two logos add ~96KB raw to the bundle and don't gzip. Safe SVGO only; raster untouched for fidelity. **The design team that made this logo is gone**, so no clean vector source exists. Future levers (lossy pngquant ~halves it, or a vector redraw) are documented in [`src/assets/logos/README.md`](../../../src/assets/logos/README.md).
 
 ### Build queue (115 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated)
 
-- [ ] OfferCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/offer-card) — leaf · unblocks 1
-- [ ] CheckboxListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/checkbox-list-item) — leaf
-- [ ] DeliveryInfoBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/delivery-info-bar) — leaf
-- [ ] DropdownList `[mol]` (Legacy: legacy/src/design-system/components/molecules/dropdown-list) — leaf
-- [ ] InfoSummaryBox `[mol]` (Legacy: legacy/src/design-system/components/molecules/info-summary-box) — leaf
-- [ ] IntroBlock `[mol]` (Legacy: legacy/src/design-system/components/molecules/intro-block) — leaf
-- [ ] MessageBanner `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-banner) — leaf
-- [ ] OrderConfirmationDetails `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-confirmation-details) — leaf
-- [ ] Pagination `[mol]` (Legacy: legacy/src/design-system/components/molecules/pagination) — leaf
-- [ ] PopUp `[mol]` (Legacy: legacy/src/design-system/components/molecules/pop-up) — leaf
 - [ ] PurchaseList `[mol]` (Legacy: legacy/src/design-system/components/molecules/purchase-list) — leaf
 - [ ] RichText `[mol]` (Legacy: legacy/src/design-system/components/organisms/rich-text) — leaf
 - [ ] ScrollableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/scrollable-list) — leaf

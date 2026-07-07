@@ -36,7 +36,12 @@ export default defineConfig({
             enabled: true,
             provider: playwright({}),
             headless: true,
-            instances: [{ browser: 'chromium' }],
+            // Emulate `prefers-reduced-motion: reduce` so components that gate a Framer entrance on
+            // `useReducedMotion()` (PopUp, DeliveryInfoBar) render their settled state on the first frame.
+            // Otherwise axe (run in `afterEach`) can scan mid-fade — the reduced opacity drops effective
+            // contrast and fails color-contrast intermittently, even though the browser a11y panel (which
+            // scans after the animation settles) passes. Matches the visual-review capture.
+            instances: [{ browser: 'chromium', context: { reducedMotion: 'reduce' } }],
           },
         },
       },

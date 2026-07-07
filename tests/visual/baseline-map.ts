@@ -377,4 +377,97 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-molecules-uilink--visual-blog',
     legacyBaseline: 'design-system-atoms-uilink--ui-link-blog-story',
   },
+
+  // ── Batch 10 (molecules — Tier-0 leaves) ──
+  // OfferCard: centred icon + heading + lorem body, full-width card. No divergence (icon is decorative,
+  // heading is plain UA-weight text). Both frames map both viewports.
+  {
+    storyId: 'design-system-molecules-offercard--visual',
+    legacyBaseline: 'design-system-molecules-offercard--offer-card-story-1',
+  },
+  {
+    storyId: 'design-system-molecules-offercard--visual-story-2',
+    legacyBaseline: 'design-system-molecules-offercard--offer-card-story-2',
+  },
+  // CheckboxListItem: Heading + Art.nr on the left, unchecked Checkbox on the right, in the 1800px wrapper.
+  // No divergence (the added aria-labelledby is invisible).
+  {
+    storyId: 'design-system-molecules-checkboxlistitem--visual',
+    legacyBaseline: 'design-system-molecules-checkboxlistitem--checkbox-list-item-loka',
+  },
+  {
+    storyId: 'design-system-molecules-checkboxlistitem--visual-heineken',
+    legacyBaseline: 'design-system-molecules-checkboxlistitem--checkbox-list-item-heineken',
+  },
+  // NOTE: DeliveryInfoBar has NO entry on purpose. Its legacy `delivery-info-bar-story` frame is BLANK:
+  // the legacy entrance used `transition={{ delay: 0.5 }}` from `opacity: 0`, and Storybook captured the
+  // frame before that delay elapsed, so the PNG is an empty canvas. Diffing the settled V2 bar against a
+  // blank image proves nothing (an invalid oracle, like PopUp's closed-state frame). Its `['visual']` story
+  // renders the settled bar gallery-only (current-only); behaviour is covered by the interaction/a11y tests.
+  // DropdownList: the 12-entry account menu. Legacy `--navigation-text-default` is #003E51, exactly the V2
+  // `nav-text-default` (blue-500) token, so the link colour matches with no divergence.
+  {
+    storyId: 'design-system-molecules-dropdownlist--visual',
+    legacyBaseline: 'design-system-molecules-dropdownlist--dropdown-list-story',
+  },
+  // InfoSummaryBox: only the two Text-only frames are reproducible. The top-right action link diverges
+  // orange→blue (legacy orange fails AA) — a small element, under the 2% gate, same as UiLink/Text.
+  {
+    storyId: 'design-system-molecules-infosummarybox--visual',
+    legacyBaseline: 'design-system-molecules-infosummarybox--info-summary-box-story-dina-uppgifter',
+  },
+  {
+    storyId: 'design-system-molecules-infosummarybox--visual-anvandare',
+    legacyBaseline: 'design-system-molecules-infosummarybox--info-summary-box-story-anvandare',
+  },
+  // NOTE: InfoSummaryBox's other legacy frames (produkter, inkopslistor, mina-ordrar, shopping-list,
+  // pdf-category-*, purchase-list-item, word-filters, checkbox-list-*) compose components that aren't
+  // migrated yet (OrderItem, CartProduct(List), GroupWrapper+Button, UnorderedList), so a faithful parity
+  // frame can't be reproduced — deferred until those children land. The two Text-only frames above already
+  // validate InfoSummaryBox's own rendering (border, label, action link, padding).
+
+  // ── Batch 11 (molecules — Tier-0 leaves) ──
+  // NOTE: IntroBlock has NO entry on purpose. Its legacy `intro-block-story` frame is dominated by a
+  // Word-paste rich body whose exact rendering depended on browser UA margins, `&nbsp;`-driven line
+  // wrapping, and the global bold-heading CSS — all of which V2's Tailwind preflight intentionally resets.
+  // The mobile PNG is full-page (375×1025, structurally incomparable like Textarea/FlexContainer), and the
+  // desktop frame reflows ~5% (over the gate) purely from that consumer rich-body text, not from any
+  // IntroBlock rendering divergence. Its `['visual']` story stays gallery-only (current-only); IntroBlock's
+  // own rendering (layout atoms + bespoke title + uppercase ingress) is covered by the interaction/a11y
+  // stories. Re-map only if a deterministic, preflight-independent rich-body frame is introduced.
+  // MessageBanner: success (neutral bg, dark text, check-circle) + link (#432365 bg, white text, arrow).
+  // No divergence — both pairings pass AA and are axe-scanned.
+  {
+    storyId: 'design-system-molecules-messagebanner--visual',
+    legacyBaseline: 'design-system-atoms-messagebanner--message-banner-story-success',
+  },
+  {
+    storyId: 'design-system-molecules-messagebanner--visual-link',
+    legacyBaseline: 'design-system-atoms-messagebanner--message-banner-story-link',
+  },
+  // OrderConfirmationDetails: all three frames (delivery, pricing, total-payment). The V2 markup is a
+  // semantic <dl> vs the legacy <p><span> pairs, but the visual layout (label/value rows) is identical.
+  {
+    storyId: 'design-system-molecules-orderconfirmationdetails--visual',
+    legacyBaseline: 'design-system-molecules-orderconfirmationdetails--order-confirmation-details-story-delivery',
+  },
+  {
+    storyId: 'design-system-molecules-orderconfirmationdetails--visual-pricing',
+    legacyBaseline: 'design-system-molecules-orderconfirmationdetails--order-confirmation-details-story-pricing',
+  },
+  {
+    storyId: 'design-system-molecules-orderconfirmationdetails--visual-total-payment',
+    legacyBaseline: 'design-system-molecules-orderconfirmationdetails--order-confirmation-details-story-total-payment',
+  },
+  // Pagination: 100 items / 25 per page = 4 pages, on page 1 (prev disabled, page 1 active). Legacy btn
+  // colour --cta-primary-default is #003E51 = V2 action-primary, so no divergence.
+  {
+    storyId: 'design-system-molecules-pagination--visual',
+    legacyBaseline: 'design-system-molecules-pagination--pagination-story',
+  },
+  // NOTE: PopUp has NO entry on purpose. The legacy `pop-up-story` renders with `open` starting false, so
+  // the captured frame is the *closed* state — just its trigger button, not the panel. Reproducing that
+  // would be a full-canvas false-green (gotcha 3) that proves nothing about PopUp; there is no legacy image
+  // of the open panel to diff against. Its `['visual']` story shows the open panel gallery-only
+  // (current-only); behaviour is covered by the interaction/a11y play tests.
 ]

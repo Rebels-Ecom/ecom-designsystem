@@ -11,5 +11,9 @@
     "skipLibCheck": true,
     "types": ["node", "vite/client"]
   },
-  "include": ["vite.config.ts", "playwright.config.ts", ".storybook/**/*.ts", "tests/**/*.ts", "scripts/**/*.ts"]
+  // NOTE: `scripts/` (the `visual:review` gallery tool) is intentionally NOT type-checked by the build.
+  // It runs only via Playwright's own loader (`pnpm visual:review`) and contains browser-context DOM code
+  // inside `page.evaluate` that this node-lib config can't type. It's a local dev aid, never a build/CI
+  // gate — so a change there must never be able to fail `pnpm build`.
+  "include": ["vite.config.ts", "playwright.config.ts", ".storybook/**/*.ts", "tests/**/*.ts"]
 }

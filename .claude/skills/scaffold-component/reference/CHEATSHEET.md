@@ -77,6 +77,10 @@ Common legacy `var()` → V2 utility:
 
 - **Fonts:** `html` sets `font-primary` globally, **but form controls** (`input`/`select`/`textarea`/`button`)
   don't inherit it — set `font-primary` explicitly on those.
+- **Legacy raw `h1`–`h6` are NOT UA-sized.** `legacy/src/design-system/styles/typography/spendrups.css`
+  globally styles every heading (`h4`/`.headingS` = 1.375rem bold, etc.). A migrated component using a raw
+  heading must match with the matching `text-h-*` token (h1→`h-xl`, h2→`h-l`, h3→`h-m`, h4→`h-s`, h5→`h-xs`)
+  or use the `Heading` atom — never assume the 16px UA default (that under-sizes it and shows in review).
 - **Canonical focus ring:** `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary`.
 - **New `--text-*` token?** Also register it in `src/lib/cn.ts`'s `font-size` group, or `tailwind-merge`
   treats it as a colour and drops one of {size, colour}. **New bespoke dimension** off the 0.25rem scale?
@@ -118,6 +122,12 @@ Common legacy `var()` → V2 utility:
    error, just silent loss of the human review surface. The `['visual']` story should be **one
    representative frame that reproduces a real legacy story** (so it can be mapped and pairs against
    the baseline), *not* an all-variants grid — a grid has no legacy counterpart to diff against.
+11. **Framer entrance/exit animation?** Gate it on `useReducedMotion()` (2.3.3† anyway) and make the
+   reduced path instant/settled (`initial={reduce ? false : {…}}`). Captures then settle automatically:
+   the review gallery creates its contexts with `reducedMotion: 'reduce'` and the gate uses
+   `animations: 'disabled'`. **`useReducedMotion()` reads the `prefers-reduced-motion` media query — a
+   `MotionConfig reducedMotion` prop does NOT drive it**, so don't wrap `Visual` stories in `MotionConfig`
+   (it's a no-op for capture). See DeliveryInfoBar / PopUp.
 10. **Don't pre-judge a divergence as "unmappable" — measure the diff.** A font/colour fix (brand
    `font-primary` over a legacy UA font; accessible blue over orange) changes only a small
    label/glyph, a tiny fraction of the full-screen canvas, so it lands **under the 2% gate** and

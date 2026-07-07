@@ -20,6 +20,12 @@ export interface CheckboxProps {
   required?: boolean
   /** Accessible name for standalone use. Prefer an external `<label htmlFor>`. */
   ariaLabel?: string
+  /**
+   * Id(s) of the element(s) that name the field, for when the label is rich content that can't
+   * be a `<label>` (e.g. a heading + metadata). Sets `aria-labelledby`; takes precedence over
+   * `ariaLabel` per the ARIA name-computation order.
+   */
+  ariaLabelledBy?: string
   /** Id of the element describing the field, e.g. an inline error message. */
   ariaDescribedBy?: string
   /** Extra classes, merged with the component's own via `cn()`. */
@@ -48,6 +54,7 @@ function Checkbox({
   isErroneous,
   required,
   ariaLabel,
+  ariaLabelledBy,
   ariaDescribedBy,
   className,
   ref,
@@ -64,7 +71,8 @@ function Checkbox({
       disabled={disabled}
       required={required}
       aria-invalid={isErroneous || undefined}
-      aria-label={ariaLabel}
+      aria-label={ariaLabelledBy ? undefined : ariaLabel}
+      aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       className={cn(
         // 18px visual box (legacy size). Under WCAG 2.5.8 it relies on the ≥24px-spacing
