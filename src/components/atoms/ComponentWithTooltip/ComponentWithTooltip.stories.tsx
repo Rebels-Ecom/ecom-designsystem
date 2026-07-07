@@ -100,6 +100,40 @@ export const Hoverable: Story = {
   },
 }
 
+// Viewport collision: a trigger pinned to the top-left corner would push a top-centered tooltip
+// off-screen (above + left). The positioning logic must flip it below and shift it right so it stays
+// fully visible. Asserts the tip's rect is within the viewport bounds.
+export const StaysInViewport: Story = {
+  args: {
+    content: 'This tooltip must stay fully inside the viewport even in the corner',
+    side: 'top',
+    element: (
+      <button type="button" className={triggerClass}>
+        Corner
+      </button>
+    ),
+  },
+  render: (args) => (
+    <div style={{ position: 'fixed', top: 0, left: 0 }}>
+      <ComponentWithTooltip {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.hover(canvas.getByRole('button', { name: 'Corner' }))
+    const tip = await canvas.findByRole('tooltip')
+    await waitFor(() => {
+      const rect = tip.getBoundingClientRect()
+      const vw = document.documentElement.clientWidth
+      const vh = document.documentElement.clientHeight
+      expect(rect.top).toBeGreaterThanOrEqual(0)
+      expect(rect.left).toBeGreaterThanOrEqual(0)
+      expect(rect.right).toBeLessThanOrEqual(vw)
+      expect(rect.bottom).toBeLessThanOrEqual(vh)
+    })
+  },
+}
+
 // Static frame diffed against the legacy baseline by `pnpm test:visual`. No `play`, so the
 // tooltip stays closed and we capture just the trigger. Mapped in tests/visual/baseline-map.ts.
 export const Visual: Story = {

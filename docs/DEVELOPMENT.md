@@ -103,7 +103,11 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   as inline CSS custom properties (`--flex-sm/md/lg`) and read them from a custom utility that owns
   the media queries — `@utility flex-responsive { flex: var(--flex-sm,1); @media (min-width:48rem){…} }`.
   Tailwind v4 `@utility` accepts nested `@media`, so the breakpoint logic stays in the theme and the
-  component stays arbitrary-value-free. `FlexItem` is the reference.
+  component stays arbitrary-value-free. `FlexItem` is the reference. `Carousel` reuses the exact
+  pattern for slide widths: it sets `--cs-per-sm/md/lg` (slides-per-page) on the scroll track and each
+  `CarouselItem` reads the **inherited** var via `@utility carousel-slide` to derive its `flex-basis`
+  per breakpoint — CSS custom properties inherit, so the parent sets them once and every slide picks
+  them up.
 
 ### ⚠ `cn()` must know our custom font-size tokens
 
@@ -134,12 +138,46 @@ lossy.
   favour of the hooks. This keeps the "standard hooks, no new runtime deps" rule and drops the
   `react-responsive` dependency entirely.
 
-## Molecules & composition
+## Molecules, organisms & composition
 
 - **Molecules live in `src/components/molecules/` and may import atoms** (e.g. `Button` → `Icon`,
   `Loader`; `UiLink` → `Icon`) — the atom rule ("never import another component") applies only to
   atoms. Category is decided by Atomic-Design reclassification (`ATOMIC-MAP.md`), not the legacy
-  folder, so many legacy `atoms/*` land in `molecules/`.
+  folder, so many legacy `atoms/*` land in `molecules/`. **Organisms** live in
+  `src/components/organisms/` (opened with `Carousel`) and may compose molecules + atoms.
+- **Compose an existing V2 primitive rather than re-porting a third-party dependency.** When a legacy
+  component's behaviour is already implemented by a migrated atom/molecule, wrap that — don't re-import
+  the legacy library. `IconWithTooltip` is built on the `ComponentWithTooltip` atom (legacy's
+  `@radix-ui/react-tooltip` is not a V2 dependency), inheriting its WCAG 1.4.13 tooltip contract for
+  free; `Logotype` is a thin wrapper over the `Picture` atom.
+- **A legacy dependency that isn't in `package.json` gets rewritten from scratch, not added.** V2's
+  runtime deps are deliberately minimal (`clsx`, `lucide-react`, `tailwind-merge`). `Carousel`'s legacy
+  impl was `@splidejs/react-splide` (absent from deps, and not React-19-compatible), so it's a
+  dependency-free **CSS scroll-snap** rewrite. It keeps the full legacy **capability** surface —
+  responsive `perPage`/`perMove`, `direction` (horizontal **and** vertical, i.e. Splide's `ttb`), `gap`,
+  peek `padding`, `dotPerItem` pagination, per-breakpoint `hideArrows`, and the arrow-placement variants
+  (`arrowsBottom`/`offsetArrows`/`lightArrows`) — but not Splide's implementation-internal knobs
+  (`splideProps` passthrough, `noGrid` [our track is flex, not grid], `zeroOffset`, the Intersection
+  auto-pause extension), which have no meaning in a flex/scroll-snap model. **Navigation is slide-index
+  based, measured from real slide offsets** (`slide.offsetLeft − first.offsetLeft`), NOT
+  `scrollLeft / clientWidth` — the pixel-division approach breaks when the last page is partial
+  (`ceil(scrollWidth/clientWidth)` pages never line up with `round(scrollLeft/clientWidth)`, so the last
+  dot/next-arrow desync). Real slide (`<button>`) arrows + dots are the keyboard/single-pointer non-drag
+  alternative (2.5.1/2.5.7/2.1.1); the track is `tabIndex={0}` + `role="group"` + `aria-label` (axe
+  `scrollable-region-focusable`) and moves slide-by-slide on arrow keys / Home / End; no auto-advance
+  (2.2.2 n/a); `motion-reduce:scroll-auto` + `behavior:'auto'` under reduced motion. `perPage` is
+  **derived from layout** (`round(clientSize/stride)`) so it auto-tracks the CSS breakpoints instead of
+  being re-resolved in JS; only `perMove`/`hideArrows` are matched via `matchMedia`. This is the
+  reference pattern for any future carousel/slider.
+- **Hiding a scrollbar is WCAG-safe when operation is preserved — use the `scrollbar-none` `@utility`.**
+  `@utility scrollbar-none` (in `index.css`: `scrollbar-width: none` + `-ms-overflow-style: none` +
+  `&::-webkit-scrollbar { display: none }`) hides only the bar's *rendering*; the element stays
+  scrollable by wheel/touch/keyboard/programmatic scroll. There is no SC requiring a visible scrollbar,
+  so it's safe **as long as** the region keeps keyboard operation (2.1.1) and a visible single-pointer
+  alternative to dragging (2.5.7) — `Carousel` has both (focusable track with arrow-key/Home/End + the
+  arrow/dot buttons, whose dots also convey scroll position/count in the bar's place). Rule of thumb:
+  hide the bar, never the operation. Reuse this utility for any horizontal scroll region (Carousel now;
+  future ScrollableList / DropdownList / overflow tag rows).
 - **Batches are picked from the dependency-ordered _Build queue_ in `MIGRATION-PROGRESS.md`**, not
   alphabetically — each entry's `needs:` are migrated in an earlier tier, so the next N unchecked are
   always buildable. Regenerate the tiers from the legacy import graph with the session scratch scripts
@@ -200,6 +238,14 @@ Patterns established so far:
   stay **hoverable** (WCAG 2.2 SC 1.4.13): closing is deferred by a short grace
   period so the pointer can cross the gap from the trigger onto the tooltip body
   without it vanishing — never close synchronously on the trigger's `mouseleave`.
+- **Tooltips must stay in the viewport (collision-aware positioning).** `ComponentWithTooltip`
+  treats `side`/`align` as the *preferred* placement, then on open (and on scroll/resize) measures the
+  trigger + tip rects and **flips** the side when the preferred one lacks room and **shifts** the tip
+  on the cross axis to clamp it inside the viewport (idempotent — measured from the unshifted
+  baseline). Applied via the resolved side class + an inline `transform` that composes with the align
+  translate. The tip stays a **DOM descendant of the wrapper** (never portalled) so the hoverable
+  grace period keeps working. `IconWithTooltip` and any other consumer inherit this for free — don't
+  reimplement positioning per component.
 - Collapsed/animated-away content is `inert` + `aria-hidden` so it leaves the
   tab order.
 - **Auto-playing media carries a control (2.2.2).** A background/looping video (`Video`) always

@@ -202,6 +202,32 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-atoms-uilink--ui-link-story',
   },
 
+  // ── Batch 8 (molecules/organisms — Tier-0 leaves) ──
+  // InputText: same brand `font-primary` as legacy (no font divergence) — an empty field in a 616px
+  // wrapper; both viewports fit the frame, so it's mapped without a viewport restriction.
+  {
+    storyId: 'design-system-molecules-inputtext--visual',
+    legacyBaseline: 'design-system-atoms-inputs-inputtext--input-text-story',
+  },
+  // NOTE: IconWithTooltip has NO entry — legacy shipped no snapshot for it. Its `Visual` story is
+  // tagged `['visual']` (gallery-only, current-only) so it still surfaces for human review.
+  // NOTE: Carousel — a legacy baseline PNG DOES exist (`design-system-organisms-carousel--carousel-story`,
+  // desktop + mobile), but it is intentionally NOT mapped yet. The legacy `carousel-story` renders
+  // `<ArticleList swipe>` — 5 `ArticleCard`s (Picture of blog-images/Content9.png + green Tag + h4 +
+  // body text + orange "Läs mer" UILink). The Carousel's own pixels (dots + next-arrow) are ~5% of the
+  // frame; ~95% is ArticleList/ArticleCard, neither migrated. Reproducing it means rebuilding that card
+  // (and the orange link is now intentionally accessible blue), so a diff here would be a full-canvas
+  // false-green/false-red (gotcha 3), not a Carousel signal. DEFERRED: map this baseline when
+  // ArticleList/ArticleCard land — their Default story reproduces this exact frame (see the queue
+  // reminder in MIGRATION-PROGRESS.md). Until then Carousel's `Visual` story stays gallery-only
+  // (current-only); behaviour is covered by the interaction/a11y play tests.
+  // NOTE: TagsList has NO entry — legacy shipped no snapshot for it. Its `Visual` story is
+  // `['visual']` (gallery-only) so it still surfaces for review.
+  // NOTE: Logotype has NO entry — it renders the real Spendrups brand SVGs (bundled vectors), which
+  // are a different rendition than the legacy `logotype-story` PNG (that loaded the old Spendrups
+  // image asset). Its `['visual']` story (under `Design System/Foundations/Logotype`, story id
+  // `design-system-foundations-logotype--visual`) is gallery-only.
+
   // NOTE: BoxWrapper has NO entry — every legacy `box-wrapper-story-*` frame composes molecules that
   // aren't migrated yet (Button, InfoSummaryBox, OrderItem, Tabs, TagsList, OrderConfirmationDetails,
   // ScrollableList), so a faithful parity frame can't be reproduced and a partial one would be a

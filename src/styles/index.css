@@ -365,6 +365,34 @@
   }
 }
 
+/* Carousel slide sizing. `perPage` is a runtime prop that differs per breakpoint, so — like
+ * FlexItem's `flex-responsive` — the Carousel sets `--cs-per-sm/md/lg` inline on the scroll track
+ * and each slide (with this utility) reads the inherited value to derive its flex-basis at the
+ * md (48rem) / lg (64rem) cut-ins. `--cs-gap` (default 1rem) must match the track's `gap-4`. Keeps a
+ * per-breakpoint runtime dimension out of arbitrary literals. */
+@utility carousel-slide {
+  flex: 0 0 calc((100% - (var(--cs-per-sm, 1) - 1) * var(--cs-gap, 1rem)) / var(--cs-per-sm, 1));
+  @media (min-width: 48rem) {
+    flex-basis: calc((100% - (var(--cs-per-md, 2) - 1) * var(--cs-gap, 1rem)) / var(--cs-per-md, 2));
+  }
+  @media (min-width: 64rem) {
+    flex-basis: calc((100% - (var(--cs-per-lg, 4) - 1) * var(--cs-gap, 1rem)) / var(--cs-per-lg, 4));
+  }
+}
+
+/* Hide the native scrollbar's *rendering* only — the element stays scrollable by wheel/touch/keyboard
+ * and programmatic scroll. Safe for WCAG as long as the component keeps keyboard operation (2.1.1) and
+ * a visible single-pointer alternative to dragging (2.5.7) — Carousel provides both via its focusable
+ * track + arrow/dot buttons. Reusable for any horizontal scroll region (Carousel, and future
+ * ScrollableList / DropdownList / TagsList overflow rows). */
+@utility scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge/IE */
+  &::-webkit-scrollbar {
+    display: none; /* Chromium / WebKit */
+  }
+}
+
 /* Global document font. Legacy set `html { font-family: var(--font-family-primary), 'Arial' }`
  * in typography/spendrups.css, so every element inherited the brand font (Edmondsans) unless
  * it opted into `font-secondary`. Tailwind's preflight otherwise defaults the document to a

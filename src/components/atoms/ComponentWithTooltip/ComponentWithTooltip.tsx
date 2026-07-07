@@ -2,6 +2,7 @@ import {
   cloneElement,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type KeyboardEvent,
@@ -9,6 +10,7 @@ import {
   type Ref,
 } from 'react'
 import { cn } from '../../../lib/cn'
+import { mergeRefs } from '../../../lib/mergeRefs'
 
 /**
  * Grace period before a hover-out actually closes the tooltip. WCAG 2.2 SC 1.4.13
@@ -18,6 +20,14 @@ import { cn } from '../../../lib/cn'
  * `mouseenter` re-fires and cancels the close.
  */
 const CLOSE_GRACE_MS = 150
+
+/** Trigger↔tip gap (matches the mb-1/mt-1 anchor) and the viewport safety margin, in px. */
+const GAP = 4
+const VIEWPORT_MARGIN = 8
+
+// useLayoutEffect on the client so the tip is positioned before paint (never a flash off-screen);
+// useEffect on the server to avoid React's "useLayoutEffect does nothing on the server" warning.
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 export type TooltipAlign = 'start' | 'center' | 'end'
@@ -30,7 +40,7 @@ export interface ComponentWithTooltipProps {
   content?: string
   /** Extra classes for the wrapping `<span>`, merged with the component's own via `cn()`. */
   wrapperClassName?: string
-  /** @default 'top' */
+  /** Preferred side; auto-flips to the opposite side if it would overflow the viewport. @default 'top' */
   side?: TooltipSide
   /** @default 'center' */
   align?: TooltipAlign
@@ -52,12 +62,16 @@ const sideClasses: Record<TooltipSide, string> = {
   right: 'left-full ml-1',
 }
 
-const alignClasses: Record<TooltipSide, Record<TooltipAlign, string>> = {
-  top: { start: 'left-0', center: 'left-1/2 -translate-x-1/2', end: 'right-0' },
-  bottom: { start: 'left-0', center: 'left-1/2 -translate-x-1/2', end: 'right-0' },
-  left: { start: 'top-0', center: 'top-1/2 -translate-y-1/2', end: 'bottom-0' },
-  right: { start: 'top-0', center: 'top-1/2 -translate-y-1/2', end: 'bottom-0' },
+// Cross-axis anchor only — the centering translate is applied inline so it can compose with the
+// viewport-clamp shift (an inline `transform` would otherwise clobber a Tailwind translate class).
+const alignAnchor: Record<TooltipSide, Record<TooltipAlign, string>> = {
+  top: { start: 'left-0', center: 'left-1/2', end: 'right-0' },
+  bottom: { start: 'left-0', center: 'left-1/2', end: 'right-0' },
+  left: { start: 'top-0', center: 'top-1/2', end: 'bottom-0' },
+  right: { start: 'top-0', center: 'top-1/2', end: 'bottom-0' },
 }
+
+const isVertical = (s: TooltipSide): boolean => s === 'top' || s === 'bottom'
 
 /**
  * Wraps a trigger element with an accessible tooltip (atom). The tip opens on hover and on focus
@@ -67,6 +81,11 @@ const alignClasses: Record<TooltipSide, Record<TooltipAlign, string>> = {
  * grace period on close lets the pointer travel onto the hoverable tip. When `content` is empty the
  * bare `element` is returned unwrapped. Consumers must pass a genuinely focusable trigger as
  * `element` so keyboard and screen-reader users can reach the description.
+ *
+ * Positioning is viewport-aware: `side`/`align` are the *preferred* placement, but on open (and on
+ * scroll/resize) the tip is measured and the side is flipped when it lacks room, then shifted along
+ * the cross axis to stay clamped inside the viewport — so it is always fully visible. The tip stays a
+ * DOM descendant of the wrapper (never portalled) so the hoverable grace period keeps working.
  */
 function ComponentWithTooltip({
   element,
@@ -78,8 +97,14 @@ function ComponentWithTooltip({
   ref,
 }: ComponentWithTooltipProps) {
   const [open, setOpen] = useState(false)
+  const [placement, setPlacement] = useState<{ side: TooltipSide; shiftX: number; shiftY: number }>(
+    () => ({ side, shiftX: 0, shiftY: 0 }),
+  )
   const tooltipId = useId()
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const wrapperRef = useRef<HTMLSpanElement>(null)
+  const tooltipRef = useRef<HTMLSpanElement>(null)
+  const appliedShift = useRef({ x: 0, y: 0 })
 
   // Cancel a pending close if we unmount, so we never setState on a gone component.
   useEffect(
@@ -88,6 +113,68 @@ function ComponentWithTooltip({
     },
     [],
   )
+
+  // Keep the open tip inside the viewport: flip the side when the preferred side lacks room, then
+  // shift on the cross axis to clamp within the viewport. Recomputed on open and on scroll/resize.
+  useIsomorphicLayoutEffect(() => {
+    if (!open) return
+    const wrapperEl = wrapperRef.current
+    const tipEl = tooltipRef.current
+    if (!wrapperEl || !tipEl) return
+
+    const reposition = () => {
+      const w = wrapperEl.getBoundingClientRect()
+      const t = tipEl.getBoundingClientRect()
+      const vw = document.documentElement.clientWidth
+      const vh = document.documentElement.clientHeight
+
+      // 1) Flip the main-axis side when the preferred side doesn't fit (kept on the same axis).
+      let resolvedSide = side
+      if (isVertical(side)) {
+        const spaceAbove = w.top
+        const spaceBelow = vh - w.bottom
+        const need = t.height + GAP + VIEWPORT_MARGIN
+        if (side === 'top' && spaceAbove < need && spaceBelow > spaceAbove) resolvedSide = 'bottom'
+        else if (side === 'bottom' && spaceBelow < need && spaceAbove > spaceBelow) resolvedSide = 'top'
+      } else {
+        const spaceLeft = w.left
+        const spaceRight = vw - w.right
+        const need = t.width + GAP + VIEWPORT_MARGIN
+        if (side === 'left' && spaceLeft < need && spaceRight > spaceLeft) resolvedSide = 'right'
+        else if (side === 'right' && spaceRight < need && spaceLeft > spaceRight) resolvedSide = 'left'
+      }
+
+      // 2) Shift on the cross axis to clamp inside the viewport. Measured from the UNSHIFTED
+      //    baseline (subtract the currently-applied shift) so the correction is idempotent and can't
+      //    oscillate on scroll/resize.
+      let shiftX = 0
+      let shiftY = 0
+      if (isVertical(side)) {
+        const baseLeft = t.left - appliedShift.current.x
+        const baseRight = t.right - appliedShift.current.x
+        const overLeft = VIEWPORT_MARGIN - baseLeft
+        const overRight = baseRight - (vw - VIEWPORT_MARGIN)
+        shiftX = overLeft > 0 ? overLeft : overRight > 0 ? -overRight : 0
+      } else {
+        const baseTop = t.top - appliedShift.current.y
+        const baseBottom = t.bottom - appliedShift.current.y
+        const overTop = VIEWPORT_MARGIN - baseTop
+        const overBottom = baseBottom - (vh - VIEWPORT_MARGIN)
+        shiftY = overTop > 0 ? overTop : overBottom > 0 ? -overBottom : 0
+      }
+
+      appliedShift.current = { x: shiftX, y: shiftY }
+      setPlacement({ side: resolvedSide, shiftX, shiftY })
+    }
+
+    reposition()
+    window.addEventListener('scroll', reposition, true)
+    window.addEventListener('resize', reposition)
+    return () => {
+      window.removeEventListener('scroll', reposition, true)
+      window.removeEventListener('resize', reposition)
+    }
+  }, [open, side, content])
 
   if (!content) return element
 
@@ -119,9 +206,15 @@ function ComponentWithTooltip({
     'aria-describedby': open ? tooltipId : undefined,
   })
 
+  const resolvedSide = placement.side
+  // Compose the centering translate (only for align='center') with the viewport-clamp shift.
+  const baseX = isVertical(resolvedSide) && align === 'center' ? '-50%' : '0px'
+  const baseY = !isVertical(resolvedSide) && align === 'center' ? '-50%' : '0px'
+  const tooltipTransform = `translate(calc(${baseX} + ${placement.shiftX}px), calc(${baseY} + ${placement.shiftY}px))`
+
   return (
     <span
-      ref={ref}
+      ref={mergeRefs<HTMLSpanElement>(wrapperRef, ref)}
       className={cn('relative inline-flex', wrapperClassName)}
       onMouseEnter={show}
       onMouseLeave={hide}
@@ -132,13 +225,15 @@ function ComponentWithTooltip({
       {trigger}
       {open && (
         <span
+          ref={tooltipRef}
           role="tooltip"
           id={tooltipId}
+          style={{ transform: tooltipTransform }}
           className={cn(
             'absolute z-menu-icon flex max-w-64 rounded px-2 py-1.5 text-body-s whitespace-normal',
             colorClasses[color],
-            sideClasses[side],
-            alignClasses[side][align],
+            sideClasses[resolvedSide],
+            alignAnchor[resolvedSide][align],
           )}
         >
           {content}

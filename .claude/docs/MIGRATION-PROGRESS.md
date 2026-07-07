@@ -16,8 +16,19 @@
 ## Current Batch Status
 
 - **Active Category**: molecules
-- **Last Updated**: 2026-07-06
-- **Current Micro-Batch**: Batch 7 — molecules, button/link foundation (complete; **Button** + **UiLink**, the two Tier-0 keystones that unblock the most downstream molecules — Button 28, UiLink 6). `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 10/10 (interaction + a11y across every surface/size + link variants), full `pnpm test:visual` 52 passed / 4 documented skips. Both map single-frame visual baselines (Button → `button-small` + icon-left/right + `button-large`; UiLink → `ui-link-story`) reproducing one legacy story each — their divergences (Button's brand font, UiLink's accessible blue) are confined to small glyphs and stay under the 2% gate, so they pass and the `visual:review` gallery pairs each current-vs-legacy for human sign-off. The Tier-1 button/link variants (IconButton, LinkButton) are the natural next batch.
+- **Last Updated**: 2026-07-07
+- **2026-07-07 — post-Batch-8 fixes (Logotype + tooltip positioning)**:
+  - **Logotype reworked to ship the real brand mark.** Dropped the `Picture`-URL-wrapper (it required consumers to pass an image URL); it now renders the actual Spendrups **vector** SVGs (`src/assets/logos/spendrups-logo-{horizontal,vertical}.svg`, pulled from `legacy/src/logotypes/`, SVGO'd ~71KB→~38KB) via a responsive `<picture>`/`<img>` (`variant` prop). **The frontend-app "logo components" (`SpendrupsLogoSmall/Large.js`) and its `public/logotypes/*.svg` are base64 PNGs** — rejected; only the legacy DS repo had true vectors. **Vite lib mode inlines all JS-imported assets regardless of size** (documented; it's why `externalizeFonts` exists for CSS), so the ~38KB traces currently inline — acceptable as an interim because the design team is supplying a fully-optimized brand SVG (~3–4KB), after which inlining is a non-issue. `--spacing-logo` token removed (no longer needed). Stories moved to `Design System/Foundation/Logotype` (brand foundation) with a `Design System/Molecules/Logotype` reference kept (exported component).
+  - **Tooltip made viewport-aware (`ComponentWithTooltip`).** `IconWithTooltip` delegates positioning to `ComponentWithTooltip`, which used static CSS side/align classes with no collision handling → the tip could render off-screen. Added measured **flip** (to the opposite side when the preferred side lacks room) + cross-axis **shift** to clamp inside the viewport (recomputed on scroll/resize, idempotent), applied via the resolved side class + an inline transform composed with the align translate. All existing behavior preserved (role="tooltip", `aria-describedby`, Escape, hover-grace — the tip stays a wrapper descendant, never portalled). New `StaysInViewport` story asserts the corner-placed tip's rect is fully in-bounds. Documented in docs/DEVELOPMENT.md.
+- **Current Micro-Batch**: Batch 8 — Tier-0 leaves, molecules + first organism (complete; **InputText**, **IconWithTooltip**, **Carousel**, **TagsList**, **Logotype** — the top-5 unchecked queue entries, unblocking 8/7/6/4/3). `pnpm build` green, `pnpm build-storybook` green, scoped `test-storybook` 17/17 (interaction + a11y), full `pnpm test:visual` 54 passed / 4 documented skips. Only **InputText** maps a legacy baseline (`input-text-story`, both viewports — same brand font, no divergence). The other four are gallery-only `['visual']` (no reproducible legacy PNG — see per-component notes). **Opened `src/components/organisms/`** with Carousel; the public API gained an `── Organisms ──` section. The Tier-1 button/link variants (IconButton unblocks 22, LinkButton 6) are the natural next batch — they were unblocked once Button/UiLink landed but sit below the Tier-0 leaves in the top-to-bottom queue, which this batch cleared.
+- **2026-07-06 — Batch 8 findings & harness changes**:
+  - **`src/components/organisms/` opened.** Carousel is the first organism; `src/index.ts` gained an `── Organisms ──` section. Organisms may compose molecules + atoms.
+  - **Carousel — Splide dropped for a dependency-free scroll-snap rewrite (new permanent standard).** `@splidejs/react-splide` is **not** in `package.json` (deps are only clsx, lucide-react, tailwind-merge) and isn't React-19-compatible, so per CLAUDE.md the carousel is rewritten from scratch: a CSS scroll-snap track (swipe for free) + real `<button>` arrows/dots as the non-drag, keyboard-operable alternative (2.5.1/2.5.7/2.1.1, incl. arrow-key/Home/End on the focusable track). No auto-advance → 2.2.2 n/a; smooth scroll gated by `motion-reduce`; track `tabIndex={0}` + `role="group"` + `aria-label` (axe `scrollable-region-focusable`). Documented in docs/DEVELOPMENT.md. **Full legacy capability parity**: responsive `perPage`/`perMove`, `direction` horizontal+vertical (Splide `ttb`), `gap`, peek `padding`, `dotPerItem`, per-breakpoint `hideArrows`, and the `arrowsBottom`/`offsetArrows`/`lightArrows` placements + `onNavigation`/`onSlideChange`. Only Splide implementation-internals (`splideProps` passthrough, `noGrid`, `zeroOffset`, Intersection auto-pause) are dropped — no equivalent in a flex/scroll-snap model.
+  - **Carousel navigation is slide-index based (correctness).** Nav/pagination measure real slide offsets (`slide.offsetLeft − first.offsetLeft`), NOT `scrollLeft / clientWidth`: the pixel-division approach desyncs the last dot/next-arrow whenever the final page is partial (`ceil(scrollWidth/clientWidth)` pages don't line up with `round(scrollLeft/clientWidth)`). `perPage` is derived from layout so it auto-tracks the CSS breakpoints; scroll handling is rAF-throttled; a `KeyboardToEnd` play test proves `End` reaches `maxIndex` and disables "next" on a partial last page.
+  - **New `carousel-slide` `@utility` + `--spacing-logo` token (permanent).** `perPage` is a per-breakpoint runtime value, so — exactly like FlexItem's `flex-responsive` — Carousel sets `--cs-per-sm/md/lg` inline on the track and each `CarouselItem` (with the `carousel-slide` utility) reads the inherited var to derive its `flex-basis` at the md/lg cut-ins (no arbitrary literal). Documented in docs/DEVELOPMENT.md. (Logotype's `--spacing-logo` token was dropped when it stopped being a Picture wrapper — see the 2026-07-07 Logotype rework below.)
+  - **IconWithTooltip — composes the `ComponentWithTooltip` atom instead of re-porting Radix.** Legacy used `@radix-ui/react-tooltip` (not a V2 dep); the migrated molecule wraps a real `<button aria-label={content}>` (icon or text-badge trigger) in the existing tooltip atom, inheriting its 1.4.13 contract. **Badge contrast fixed**: legacy white-on-orange (~2.3:1) → dark-on-orange (`text-text-default`), the same accessible-divergence pattern as Text/UiLink; no baseline exists, so no pixel gate constrains it.
+  - **TagsList — dead legacy CSS eliminated.** The legacy `.tagsList` combined `overflow-x: scroll` + `max-width: 80vw` + `white-space: nowrap` with `flex-wrap: wrap`, but wrap makes the tags wrap before they can overflow, so the scroll/max-width was dead. V2 is a clean wrapping `<ul>`/`<li>` (`flex flex-wrap gap-1`) — proper list semantics (1.3.1), no arbitrary `80vw`.
+  - **No mapped baseline, gallery-only (recurring).** IconWithTooltip, Carousel, TagsList, Logotype aren't mapped: IconWithTooltip/TagsList have no legacy snapshot; Logotype renders the real brand vectors (a different rendition than the legacy PNG — see the 2026-07-07 rework); **Carousel's legacy PNG *does* exist but is an `ArticleList` of 5 cards (~95% unmigrated content), so its mapping is *deferred* to ArticleList migration — not absent.** Each still ships a `['visual']` `Visual` story (gallery-only, current-only per gotcha 9) and a documented note in `baseline-map.ts`, so they stay in the `visual:review` surface without a false-green diff.
 - **2026-07-06 — checklist restructured to a dependency-ordered build queue**: the legacy import graph was analysed (direct imports + JSX usage of barrel imports) and the 127 pending components tiered topologically (keystone-first within each tier). The `## Components Checklist` is now the queue — "next N unchecked" are always buildable. This replaced the old alphabetical by-category list, which was **unbuildable in order** (molecules import atoms/molecules that came later alphabetically). Scripts kept in the session scratchpad (`deps.cjs` → `emit.cjs`).
 - **2026-07-06 — Batch 7 findings & harness changes**:
   - **Molecules layer opened + `src/components/molecules/` populated.** Public API (`src/index.ts`) gained a `── Molecules ──` section. Molecules may import atoms (Button → Icon, Loader; UiLink → Icon), unlike atoms.
@@ -60,8 +71,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 30 / 155
-- Remaining: 125
+- Completed: 35 / 155
+- Remaining: 120
 
 ## Components Checklist
 
@@ -81,7 +92,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (30)
+### Completed (35)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -113,16 +124,16 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] GroupWrapper (Legacy: legacy/src/design-system/components/molecules/group-wrapper) — reclassified molecule→atom; enum→utility maps; visual desktop-only (single large Heading amplifies known rhythm drift on mobile), see batch notes
 - [x] Button `[mol]` (Legacy: legacy/src/design-system/components/atoms/button) — keystone (unblocks 28); 5 surfaces × 4 sizes, icons, loading (`aria-busy` + sr-only label); `font-primary` over undefined legacy token; 4 baselines mapped (font divergence, under 2% gate), see batch notes
 - [x] UiLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-link) — polymorphic `<a>` via `src/lib/link` `DefaultLink`; accessible blue+underline over legacy orange; baseline mapped (colour divergence, under gate), see batch notes
+- [x] InputText `[mol]` (Legacy: legacy/src/design-system/components/atoms/inputs/input-text) — native input + optional decorative trailing icon; number-input spinner styling ported from DebounceInput; baseline mapped both viewports (no divergence), see batch notes
+- [x] IconWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-with-tooltip) — composes the ComponentWithTooltip atom (Radix dropped); dark-on-orange badge over legacy white-on-orange; no baseline (gallery-only), see batch notes
+- [x] Carousel `[org]` (Legacy: legacy/src/design-system/components/organisms/carousel) — **first organism**; Splide dropped for a dependency-free scroll-snap rewrite + `carousel-slide` @utility; legacy baseline PNG exists but is an ArticleList of 5 cards (~95% unmigrated content) → mapping **deferred to ArticleList migration**, not "no baseline"; see batch notes
+- [x] TagsList `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-list) — clean wrapping `<ul>`/`<li>` of Tags; dead legacy overflow/max-width CSS eliminated; no baseline (no legacy snapshot), see batch notes
+- [x] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — renders the **official Spendrups logos** (from the brand EPS, exported via Illustrator, SVGO-safe) via responsive `<picture>`/`<img>`; stories under **Foundations** (main) + a Molecules reference; no baseline (different rendition than legacy PNG), see batch notes. **⚠️ Known tradeoff (accepted 2026-07-07):** each SVG embeds a ~33KB PNG raster (the "1897" gradient — the brand source stores it as raster, not vector), so the two logos add ~96KB raw to the bundle and don't gzip. Safe SVGO only; raster untouched for fidelity. **The design team that made this logo is gone**, so no clean vector source exists. Future levers (lossy pngquant ~halves it, or a vector redraw) are documented in [`src/assets/logos/README.md`](../../../src/assets/logos/README.md).
 
-### Build queue (125 pending, dependency-ordered)
+### Build queue (120 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated)
 
-- [ ] InputText `[mol]` (Legacy: legacy/src/design-system/components/atoms/inputs/input-text) — leaf · unblocks 8
-- [ ] IconWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-with-tooltip) — leaf · unblocks 7
-- [ ] Carousel `[org]` (Legacy: legacy/src/design-system/components/organisms/carousel) — leaf · unblocks 6
-- [ ] TagsList `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-list) — leaf · unblocks 4
-- [ ] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — leaf · unblocks 3
 - [ ] LoadingOverlay `[mol]` (Legacy: legacy/src/design-system/components/molecules/loading-overlay) — leaf · unblocks 2
 - [ ] ArticleCard `[mol]` (Legacy: legacy/src/design-system/components/molecules/article-card) — leaf · unblocks 1
 - [ ] ClickableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/clickable-list-item) — leaf · unblocks 1
@@ -189,7 +200,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [ ] Search `[mol]` (Legacy: legacy/src/design-system/components/atoms/search) — needs: InputText, Button
 - [ ] SelectList `[mol]` (Legacy: legacy/src/design-system/components/molecules/select-list) — needs: Button
 - [ ] Tabs `[mol]` (Legacy: legacy/src/design-system/components/molecules/tabs) — needs: Button
-- [ ] ArticleList `[org]` (Legacy: legacy/src/design-system/components/organisms/article-list) — needs: ArticleCard, Carousel
+- [ ] ArticleList `[org]` (Legacy: legacy/src/design-system/components/organisms/article-list) — needs: ArticleCard, Carousel · **when migrated, its `Default` story (5 ArticleCards in a swipe Carousel) reproduces the legacy `carousel-story` frame → map `design-system-organisms-carousel--carousel-story` (desktop + mobile) here to finally give Carousel a real visual comparison. Copy `legacy/src/assets/blog-images/Content9.png` into `src/assets/`. Expect the "Läs mer" link to diverge orange→blue (documented AA fix).**
 - [ ] BrandDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/brand-details) — needs: TagsList
 - [ ] Breadcrumbs `[org]` (Legacy: legacy/src/design-system/components/organisms/breadcrumbs) — needs: UiLink
 - [ ] MobileNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/mobile-navigation) — needs: Button
