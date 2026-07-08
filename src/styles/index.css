@@ -140,6 +140,9 @@
    * box-wrapper.module.css `max-width: 43.75rem`). Consumed as `max-w-box` (v4 strips the
    * `--container-` prefix). */
   --container-box: 43.75rem;
+  /* OrderConfirmation card cap (ported from legacy order-confirmation.module.css
+   * `max-width: 58.125rem`). Consumed as `max-w-order-confirmation`. */
+  --container-order-confirmation: 58.125rem;
 
   /* — Breakpoints — extend (not replace) Tailwind's defaults. `3xl` = 90rem (1440px) is the legacy
    * "big screen" cut-in: it matches the xl:1440 JS breakpoint in the Breakpoints atom and the

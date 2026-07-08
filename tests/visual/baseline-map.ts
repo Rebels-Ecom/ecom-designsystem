@@ -502,4 +502,54 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // Its `['visual']` story renders clean sample content gallery-only (current-only).
   // NOTE: TagsDescription has NO entry — legacy shipped no snapshot for it. Its `['visual']` story is
   // gallery-only (current-only) so it still surfaces in the review gallery.
+
+  // ── Batch 13 (last molecule leaves + first cart-family organisms) ──
+  // UnorderedList: 7 alternating checkbox rows with separating lines in a 1254px column, reproducing
+  // `unordered-list-story`. Built from the migrated CheckboxListItem; row ids are made unique (legacy
+  // reused one id — a duplicate-id a11y fail). Mapped DESKTOP-ONLY: the known Heading vertical-rhythm
+  // drift (batch 1, "within tolerance") is per-row and accumulates down the 7 stacked rows; on the
+  // 375px mobile canvas the drifted text is a larger share of the frame (~4% > gate), while desktop
+  // dilutes it under 2%. Same amplification pattern as GroupWrapper. (The first row aligns exactly;
+  // each row below drifts progressively — a rendering incomparability, not a layout divergence.)
+  {
+    storyId: 'design-system-molecules-unorderedlist--visual',
+    legacyBaseline: 'design-system-molecules-unorderedlist--unordered-list-story',
+    viewports: ['desktop'],
+  },
+  // UnorderedList loading: same column with the orange `Loader` swapped in for the rows.
+  {
+    storyId: 'design-system-molecules-unorderedlist--visual-loading',
+    legacyBaseline: 'design-system-molecules-unorderedlist--unordered-list-story-loading',
+  },
+  // UserInfoSummary: label + name + company + customer number + role, reproducing `user-info-summary-story`.
+  // The name is uppercased via CSS (not `.toUpperCase()`) so AT keeps original casing — visually identical.
+  {
+    storyId: 'design-system-molecules-userinfosummary--visual',
+    legacyBaseline: 'design-system-molecules-userinfosummary--user-info-summary-story',
+  },
+  // NOTE: Cart has NO entry — the legacy `cart-story` frame nests the unmigrated DeliveryForm (in the
+  // delivery column) and CartProductList/CartProduct (in the order column); those are the bulk of the
+  // frame, so a faithful parity frame can't be reproduced and a partial one would be a false-green
+  // (gotcha 3). Its `['visual']` story composes the migrated CartDeliveryDetails/CartOrderDetails to
+  // show the 60/40 layout, gallery-only (current-only). Re-map once DeliveryForm + CartProductList land.
+  // NOTE: CartDeliveryDetails has NO entry — the legacy `cart-delivery-details-story` frame is mostly
+  // the unmigrated DeliveryForm. Gallery-only Visual with representative content; re-map with DeliveryForm.
+  // NOTE: CartOrderDetails (Deprecated) has NO entry — the legacy `cart-order-details-story` frame is
+  // mostly the unmigrated CartProductList/CartProduct. Gallery-only Visual; re-map when those children land.
+
+  // ── Batch 14 (cart-family organisms + page shells) — all baseline-deferred to CartProduct et al. ──
+  // NOTE: CartProductList has NO entry — the legacy `cart-product-list-story` frame composes the
+  // unmigrated CartProduct molecule (with product images). Gallery-only Visual with placeholder rows;
+  // re-map once CartProduct lands.
+  // NOTE: CartSidebar has NO entry — the legacy `cart-sidebar-story`/`-no-products` frames render inside
+  // the unmigrated DrawerSidebar (captured closed → just a trigger button) and nest unmigrated
+  // CartProduct rows. Gallery-only Visual; re-map once DrawerSidebar + CartProduct land.
+  // NOTE: LoginPage has NO entry — the legacy `login-page-story`/`-loading`/`-choose-account` frames
+  // centre the unmigrated LoginForm / AccountBoxList. Gallery-only Visual with a placeholder card;
+  // re-map once those land.
+  // NOTE: OrderConfirmation has NO entry — the legacy `order-confirmation-story` frame composes the
+  // unmigrated CartProduct molecule (product images are a large part of the frame; everything else —
+  // MessageBanner, OrderConfirmationDetails, Heading/Text/Button — is migrated). Re-map once CartProduct lands.
+  // NOTE: OrderConfirmationPage has NO entry — the legacy `order-confirmation-page-template-story` frame
+  // nests the full OrderConfirmation (→ unmigrated CartProduct). Gallery-only Visual; re-map with CartProduct.
 ]

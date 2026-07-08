@@ -15,8 +15,72 @@
 
 ## Current Batch Status
 
-- **Active Category**: molecules
-- **Last Updated**: 2026-07-07
+- **Active Category**: organisms (cart-family + page shells)
+- **Last Updated**: 2026-07-08
+- **Current Micro-Batch**: Batch 14 — cart-family organisms + page shells (complete; **CartProductList**,
+  **CartSidebar**, **LoginPage**, **OrderConfirmation**, **OrderConfirmationPage** — all `[org]`,
+  reclassifying the two `templates/*-page` entries with real `.tsx` files into organisms). `pnpm build`
+  green, `pnpm build-storybook` green, scoped `vitest --project=storybook` **11/11** (interaction + a11y),
+  full `pnpm test:visual` **144 passed / 6 skipped** (unchanged — **no new baselines mapped this batch**).
+  **All 5 are baseline-deferred**: every legacy frame's bulk is the not-yet-migrated **CartProduct**
+  molecule (or DrawerSidebar / LoginForm / AccountBoxList) — gallery-only Visuals with placeholder
+  content, re-map when those children land. New `--container-order-confirmation` (58.125rem) token.
+  **Applied the Batch-13 story-only-template rule**: verified each queue entry against its legacy source
+  first, then **flagged 5 more false-leaf pages `⛔ BLOCKED`** (ChooseUserPage, ContactPage, ContentPage,
+  InspirationPage, MySpendrupsPage — all story-only, no `.tsx`). The next batch continues Tier-0 with the
+  next genuine `.tsx` leaves: **ProductCategoryListingPage**, **ProductPage**, **ShoppingListPage**,
+  **StartPageTemplate** (verify each has a `.tsx` first) — then Tier-1 opens with **IconButton**.
+- **2026-07-08 — Batch 14 findings & harness changes**:
+  - **A product-row name is a label, not a document heading (heading-order gate catch).** First cut
+    rendered cart-product-row names as `Heading order={5}` inside stories that already had an `order={3}`
+    section heading — axe's `heading-order` (a hard-gate rule) failed on the h3→h5 jump. A price/name row
+    in a summary list isn't a section of the document outline, so it became bold `Text`, not a heading.
+    Rule: only use `Heading` for real outline nodes; don't reach for it just to get bold/large text —
+    that fabricates an invalid outline the a11y gate rejects.
+  - **Restore dead-CSS *intent* when it's the accessible choice.** Legacy `CartProductList` declared
+    `.list`/`.listItem` CSS (a `<ul>` of bordered rows) but the component rendered a plain `<div>` of
+    children — the list CSS never applied. V2 renders the intended `<ul role="list">`/`<li>` (1.3.1),
+    which is both the legacy design intent *and* the correct semantics for a product list. Dead code can
+    encode intent worth reviving — but only when it aligns with the a11y target (same call as UnorderedList).
+  - **Page-shell templates with a real `.tsx` reclassify to organisms and own no landmark.** LoginPage /
+    OrderConfirmationPage are full-page layout shells (centred card on `bg-blue-500`). They stay
+    presentational `<div>`s — the consumer's app shell owns `<main>`, so the component adds no landmark
+    (nesting `<main>` would fail axe `landmark-unique`). Landmarks/headings come from the card inside.
+- **Current Micro-Batch**: Batch 13 — last molecule leaves + first cart-family organisms (complete;
+  **UnorderedList**, **UserInfoSummary** `[mol]` + **Cart**, **CartDeliveryDetails**, **CartOrderDetails**
+  `[org]`). `pnpm build` green, `pnpm build-storybook` green, scoped `vitest --project=storybook`
+  **14/14** (interaction + a11y), full `pnpm test:visual` **144 passed / 6 documented skips**. **3 new
+  baselines mapped**: UnorderedList `-story` **desktop-only** (7 stacked Headings amplify the known
+  vertical-rhythm drift to ~4% on mobile — GroupWrapper pattern) + `-story-loading` both viewports, and
+  UserInfoSummary both viewports (no divergence). **Cart / CartDeliveryDetails / CartOrderDetails are
+  baseline-less** (deferred — their legacy frames are mostly the unmigrated DeliveryForm /
+  CartProductList / CartProduct; gallery-only Visuals, re-map when those land). **⛔ BrandPage +
+  CampaignPage were SKIPPED, not built** — they are story-only "GUIDELINE" templates (no `.tsx`), so
+  the dep graph wrongly marked them leaves; their real deps (Header/Footer/Hero/BrandDetails/HeroCarousel)
+  are unmigrated. Flagged BLOCKED in the queue. The next batch continues Tier-0: **CartProductList**,
+  **CartSidebar**, **LoginPage**, **OrderConfirmation**, **OrderConfirmationPage** (all genuine
+  component leaves with `.tsx` files + 0 internal deps).
+- **2026-07-08 — Batch 13 findings & harness changes**:
+  - **Dependency graph is blind to story-only "GUIDELINE" templates (queue-ordering flaw, recurring).**
+    Several legacy `templates/*-page` entries ship **no `.tsx`** — they are pure `*.stories.tsx` that
+    compose organisms as documentation of "how to lay out a page". `deps.cjs` builds the tier graph from
+    `.tsx` import edges, so a component with no `.tsx` has zero edges and is mis-tiered as a **leaf**,
+    even though its stories import wholly-unmigrated organisms. BrandPage/CampaignPage tripped this. Rule
+    going forward: **before building a queued `[org]`/template, confirm it has a `.tsx`**; if it's
+    story-only, its true deps live in the stories file — treat those as the gate and defer until they're
+    migrated. The other story-only pages downstream (ContactPage, ContentPage, ChooseUserPage,
+    InspirationPage, MySpendrupsPage, and the rest) will hit the same wall. Documented in DEVELOPMENT.md.
+  - **Loading overlay → `inert` content + `aria-busy` (new a11y standard for busy containers).**
+    CartDeliveryDetails' legacy `loading` scrim only *dimmed* the panel; the underlying controls stayed
+    keyboard-focusable *behind* the overlay (a focus trap in reverse). V2 keeps the decorative
+    `aria-hidden` scrim but adds `aria-busy` on the region (4.1.3 announces the update) **and `inert` on
+    the content wrapper** so the dimmed controls are genuinely non-operable — React 19 renders `inert`
+    natively as a boolean prop. This is the correct pattern for any "dim + block while busy" container.
+  - **Uppercase display text belongs in CSS, not `String.toUpperCase()`.** UserInfoSummary's legacy
+    `userName.toUpperCase()` bakes all-caps into the DOM, which some screen readers spell out letter by
+    letter. V2 renders the original string and applies the `uppercase` utility — visually identical (the
+    baseline still matches both viewports), but AT reads the name naturally. Same class of fix as
+    "colour is never the sole cue".
 - **Current Micro-Batch**: Batch 12 — Tier-0 molecule leaves (complete; **PurchaseList**, **RichText**,
   **ScrollableList**, **SortableListItem**, **TagsDescription** — the top-5 unchecked queue entries).
   `pnpm build` green, `pnpm build-storybook` green, full `pnpm exec vitest --project=storybook` **230/230**
@@ -292,8 +356,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 55 / 155
-- Remaining: 100
+- Completed: 65 / 155
+- Remaining: 90
 
 ## Components Checklist
 
@@ -313,7 +377,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (55)
+### Completed (65)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -370,29 +434,29 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] SortableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list-item) — clickable row via a stretched overlay `<button aria-label={name}>` (legacy `<button>`-wrapping-a-heading is invalid HTML); restores the dead `name` prop; new `@utility sortable-item-cols` (50%/auto/auto+5%); chevron CSS-gated `hidden lg:flex`; both frames mapped both viewports (visually identical), see batch notes
 - [x] TagsDescription `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-description) — `<ul role="list">` colour legend; imports only the `TagColor` *type* from Tag; decorative swatches (`aria-hidden`) + meaning text (colour never sole cue, 1.4.1); no snapshot → gallery-only Visual, see batch notes
 - [x] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — renders the **official Spendrups logos** (from the brand EPS, exported via Illustrator, SVGO-safe) via responsive `<picture>`/`<img>`; stories under **Foundations** (main) + a Molecules reference; no baseline (different rendition than legacy PNG), see batch notes. **⚠️ Known tradeoff (accepted 2026-07-07):** each SVG embeds a ~33KB PNG raster (the "1897" gradient — the brand source stores it as raster, not vector), so the two logos add ~96KB raw to the bundle and don't gzip. Safe SVGO only; raster untouched for fidelity. **The design team that made this logo is gone**, so no clean vector source exists. Future levers (lossy pngquant ~halves it, or a vector redraw) are documented in [`src/assets/logos/README.md`](../../../src/assets/logos/README.md).
+- [x] UnorderedList `[mol]` (Legacy: legacy/src/design-system/components/molecules/unordered-list) — `<ul role="list">` container; `Math.random()` keys→`Children.toArray`; dead `number` spacing dropped (legacy switch never matched a number → always fell to xl); loading swaps in the orange `Loader`; `unordered-list-story` mapped **desktop-only** (7 stacked Headings accumulate the known vertical-rhythm drift → ~4% on mobile, like GroupWrapper) + `-loading` mapped both viewports, see batch notes
+- [x] UserInfoSummary `[mol]` (Legacy: legacy/src/design-system/components/molecules/user-info-summary) — label + `<h5>` name + detail `<p>`s; name uppercased via CSS `uppercase` (not `.toUpperCase()`) so AT keeps original casing; all text consumer-supplied (no hardcoded strings); baseline mapped both viewports (no divergence), see batch notes
+- [x] Cart `[org]` (Legacy: legacy/src/design-system/components/templates/cart) — presentational 60/40 two-column shell (`[&>*:first-child]:lg:w-3/5` child-selector variants); no role, DOM order preserved; **no baseline** (legacy `cart-story` nests unmigrated DeliveryForm + CartProductList/CartProduct — the bulk of the frame); gallery-only Visual composes the migrated cart panels, deferred, see batch notes
+- [x] CartDeliveryDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-delivery-details) — container with a busy state: `loading` lays a decorative `aria-hidden` scrim (`bg-surface-overlay/80`) + `aria-busy` region + **`inert` content** (legacy left dimmed controls focusable — a11y fix); **no baseline** (legacy frame is mostly the unmigrated DeliveryForm); gallery-only Visual, deferred, see batch notes
+- [x] CartOrderDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-order-details) — `@deprecated` preserved (story under `Design System/Deprecated/`); white flex-col surface (`bg-surface-default`); **no baseline** (legacy frame is mostly the unmigrated CartProductList/CartProduct); gallery-only Visual, deferred, see batch notes
+- [x] CartProductList `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-product-list) — **restored the dead-CSS list intent**: `<ul role="list">`/`<li>` (legacy named `.list`/`.listItem` but rendered a plain div); `Math.random()` keys→`Children.toArray`; dead `.collapsed`/`.expanded` scroll CSS dropped; **no baseline** (legacy frame composes unmigrated CartProduct), gallery-only Visual, deferred, see batch notes
+- [x] CartSidebar `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-sidebar) — presentational white vertical stack; non-idiomatic `classNames: string[]`→standard `className`; dead sibling CSS (`.headingWrapper`/`.text`/`.buttonsWrapper`) dropped; **no baseline** (legacy frame is inside the unmigrated DrawerSidebar, captured closed; nests CartProduct), gallery-only Visual, deferred, see batch notes
+- [x] LoginPage `[org]` (Legacy: legacy/src/design-system/components/templates/login-page) — reclassified template→organism; full-viewport centred shell (`min-h-screen`, `bg-blue-500`); presentational (consumer owns `<main>`); **no baseline** (legacy frames centre the unmigrated LoginForm/AccountBoxList), gallery-only Visual, deferred, see batch notes
+- [x] OrderConfirmation `[org]` (Legacy: legacy/src/design-system/components/organisms/order-confirmation) — centred content card, new `--container-order-confirmation` (58.125rem) token + `bg-background`; **no baseline** (all children migrated **except** the unmigrated CartProduct, which is a large part of the frame), gallery-only Visual, deferred, see batch notes
+- [x] OrderConfirmationPage `[org]` (Legacy: legacy/src/design-system/components/templates/order-confirmation-page) — reclassified template→organism; centred shell on `bg-blue-500`; **no baseline** (nests the full OrderConfirmation → unmigrated CartProduct), gallery-only Visual, deferred, see batch notes
 
-### Build queue (115 pending, dependency-ordered)
+### Build queue (105 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated)
 
-- [ ] UnorderedList `[mol]` (Legacy: legacy/src/design-system/components/molecules/unordered-list) — leaf
-- [ ] UserInfoSummary `[mol]` (Legacy: legacy/src/design-system/components/molecules/user-info-summary) — leaf
-- [ ] BrandPage `[org]` (Legacy: legacy/src/design-system/components/templates/brand-page) — leaf
-- [ ] CampaignPage `[org]` (Legacy: legacy/src/design-system/components/templates/campaign-page) — leaf
-- [ ] Cart `[org]` (Legacy: legacy/src/design-system/components/templates/cart) — leaf
-- [ ] CartDeliveryDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-delivery-details) — leaf
-- [ ] CartOrderDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-order-details) — leaf
-- [ ] CartProductList `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-product-list) — leaf
-- [ ] CartSidebar `[org]` (Legacy: legacy/src/design-system/components/organisms/cart-sidebar) — leaf
-- [ ] ChooseUserPage `[org]` (Legacy: legacy/src/design-system/components/templates/choose-user-page) — leaf
-- [ ] ContactPage `[org]` (Legacy: legacy/src/design-system/components/templates/contact-page) — leaf
-- [ ] ContentPage `[org]` (Legacy: legacy/src/design-system/components/templates/content-page) — leaf
-- [ ] InspirationPage `[org]` (Legacy: legacy/src/design-system/components/templates/inspiration-page) — leaf
-- [ ] LoginPage `[org]` (Legacy: legacy/src/design-system/components/templates/login-page) — leaf
-- [ ] MySpendrupsPage `[org]` (Legacy: legacy/src/design-system/components/templates/my-spendrups-page) — leaf
-- [ ] OrderConfirmation `[org]` (Legacy: legacy/src/design-system/components/organisms/order-confirmation) — leaf
-- [ ] OrderConfirmationPage `[org]` (Legacy: legacy/src/design-system/components/templates/order-confirmation-page) — leaf
-- [ ] ProductCategoryListingPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-category-listing-page) — leaf
+- [ ] ⛔ **BLOCKED** BrandPage `[org]` (Legacy: legacy/src/design-system/components/templates/brand-page) — **NOT a leaf.** Story-only "GUIDELINE" template (no `.tsx`); the dep graph mis-marked it a leaf because `deps.cjs` only reads `.tsx` imports and this component has none. Its real deps live in `brand-page.stories.tsx`: Header, Footer, Hero, BrandDetails (all **unmigrated**). Build after those organisms land.
+- [ ] ⛔ **BLOCKED** CampaignPage `[org]` (Legacy: legacy/src/design-system/components/templates/campaign-page) — **NOT a leaf** (same story-only flaw). Real deps in `campaign-page.stories.tsx`: Header, Footer, HeroCarousel (all **unmigrated**). Build after those land.
+- [ ] ⛔ **BLOCKED** ChooseUserPage `[org]` (Legacy: legacy/src/design-system/components/templates/choose-user-page) — story-only "GUIDELINE" template (no `.tsx`; dep-graph false leaf). Real deps live in the stories file (unmigrated organisms). Build after those land — verify against source before scaffolding.
+- [ ] ⛔ **BLOCKED** ContactPage `[org]` (Legacy: legacy/src/design-system/components/templates/contact-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
+- [ ] ⛔ **BLOCKED** ContentPage `[org]` (Legacy: legacy/src/design-system/components/templates/content-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
+- [ ] ⛔ **BLOCKED** InspirationPage `[org]` (Legacy: legacy/src/design-system/components/templates/inspiration-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
+- [ ] ⛔ **BLOCKED** MySpendrupsPage `[org]` (Legacy: legacy/src/design-system/components/templates/my-spendrups-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
+- [ ] ProductCategoryListingPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-category-listing-page) — leaf *(verify `.tsx` exists before building — see the story-only-template rule)*
 - [ ] ProductPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-page) — leaf
 - [ ] ShoppingListPage `[org]` (Legacy: legacy/src/design-system/components/templates/shopping-list-page) — leaf
 - [ ] StartPageTemplate `[org]` (Legacy: legacy/src/design-system/components/templates/start-page-template) — leaf

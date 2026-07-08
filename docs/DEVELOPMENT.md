@@ -211,6 +211,17 @@ lossy.
   alphabetically — each entry's `needs:` are migrated in an earlier tier, so the next N unchecked are
   always buildable. Regenerate the tiers from the legacy import graph with the session scratch scripts
   if the map drifts.
+- **⚠ The dependency graph is blind to story-only "GUIDELINE" templates — verify a `.tsx` exists before
+  building a queued template/organism.** Several legacy `templates/*-page` folders ship **no component
+  `.tsx`**, only a `*.stories.tsx` that composes organisms to document "how to lay out this page". The
+  tier generator (`deps.cjs`) builds edges from `.tsx` imports, so a story-only entry has **zero edges
+  and is mis-tiered as a `leaf`** even though its stories import wholly-unmigrated organisms. BrandPage
+  and CampaignPage hit this in Batch 13 (their stories pull Header/Footer/Hero/BrandDetails/HeroCarousel,
+  none migrated) and were **skipped and flagged `⛔ BLOCKED`** in the queue, not built. Before scaffolding
+  a queued `[org]`/template: `ls legacy/.../<name>/` — **if there's no `<name>.tsx`, it is not a real
+  leaf**; its true deps live in the stories file, so treat those as the gate and defer until they land.
+  The remaining story-only pages (ContactPage, ContentPage, ChooseUserPage, InspirationPage,
+  MySpendrupsPage, …) will hit the same wall.
 - **Polymorphic links go through `src/lib/link.tsx`.** Any component that renders a navigational link
   (`UiLink`, and the button-as-link family) takes an optional `linkComponent?: LinkComponentType` prop
   and defaults to `DefaultLink` — a real semantic `<a>` (focusable, exposed as a link → 4.1.2).
@@ -319,6 +330,26 @@ Patterns established so far:
   percentage, `auto`s, and a second percentage — not expressible with Tailwind's fraction-based grid
   utilities, and arbitrary literals are forbidden. Add a named `@utility` (`sortable-item-cols`) with the
   template (and its `@media` cut-in) instead, the same approach as `flex-responsive` / `carousel-slide`.
+- **A "dim while busy" container must `inert` its content, not just scrim it.** A loading overlay that
+  only lays a translucent `<div>` over a panel (legacy `CartDeliveryDetails`) leaves the underlying
+  controls keyboard-focusable *behind* the scrim — the user can Tab into invisible/disabled-looking
+  fields. The V2 pattern: keep the decorative scrim (`aria-hidden` — it conveys nothing), mark the busy
+  region `aria-busy` (4.1.3, so AT announces the update), **and set `inert` on the content wrapper** so
+  the dimmed controls are genuinely non-operable and drop out of the tab order. React 19 renders `inert`
+  natively as a boolean prop (`inert={loading}` — omitted when false). Use this for any "block + dim
+  while working" surface (`CartDeliveryDetails`; future Modal/Drawer busy states).
+- **Uppercase display text is CSS, never `String.toUpperCase()`.** Baking all-caps into the DOM
+  (legacy `UserInfoSummary` did `userName.toUpperCase()`) makes some screen readers spell the word out
+  letter by letter. Render the original string and apply the `uppercase` utility — visually identical
+  (the visual baseline still matches), but AT reads it naturally. Same class of fix as "colour is never
+  the sole cue": keep the *semantic* content intact, style the *presentation*.
+- **`Heading` is for the document outline, not for bold/large text — or the `heading-order` gate fails.**
+  axe's `heading-order` is a hard-gate rule: heading levels may not skip (an `<h3>` followed by an
+  `<h5>` fails). Reaching for `Heading order={5}` just to get bold emphasis inside a section that already
+  has an `<h3>` fabricates an invalid outline and fails the gate — this bit the cart-product-row names in
+  Batch 14 (a price/name row is a *label*, not an outline node → it became bold `Text`). Rule: use
+  `Heading` only for real section headings at the correct sequential level; for emphasis that isn't an
+  outline node, use `Text` with `font-bold`. (This also applies inside stories — every story is scanned.)
 
 ## Internationalisation (i18n)
 
