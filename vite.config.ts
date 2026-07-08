@@ -106,6 +106,13 @@ export default defineConfig({
       // uses lucide doesn't ship two copies.
       external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion', 'lucide-react'],
       output: {
+        // The whole library is client components (hooks throughout), so mark the bundled entry
+        // with the React `'use client'` directive. Without it, a React Server Components consumer
+        // (Next.js App Router) importing from the barrel fails to build ("useState only works in a
+        // Client Component"). `banner` prepends to the JS chunks only (not the CSS asset) and is
+        // sourcemap-aware, so it lands before the imports on both the .mjs and .cjs entry and the
+        // maps stay aligned. Single-entry bundle → emitted exactly once.
+        banner: `'use client';`,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',

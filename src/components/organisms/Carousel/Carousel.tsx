@@ -26,6 +26,30 @@ export interface CarouselBreakpoints {
   lg?: CarouselBreakpoint
 }
 
+/**
+ * Overridable UI strings (accessible names for the built-in controls). Defaults are English so
+ * the library carries no baked-in locale; a consumer localises by passing `labels`. Parameterised
+ * entries are functions, not templates, so interpolation stays type-safe. See the i18n convention
+ * in docs/DEVELOPMENT.md.
+ */
+export interface CarouselLabels {
+  /** Accessible name for the "previous" arrow. @default 'Previous' */
+  previous?: string
+  /** Accessible name for the "next" arrow. @default 'Next' */
+  next?: string
+  /** Accessible name for a per-page dot. @default (page, total) => `Go to page ${page} of ${total}` */
+  goToPage?: (page: number, total: number) => string
+  /** Accessible name for a per-slide dot (`dotPerItem`). @default (slide, total) => `Go to slide ${slide} of ${total}` */
+  goToSlide?: (slide: number, total: number) => string
+}
+
+const defaultCarouselLabels: Required<CarouselLabels> = {
+  previous: 'Previous',
+  next: 'Next',
+  goToPage: (page, total) => `Go to page ${page} of ${total}`,
+  goToSlide: (slide, total) => `Go to slide ${slide} of ${total}`,
+}
+
 /** Inline style carrying the responsive slides-per-page + gap custom properties. */
 interface CarouselTrackStyle extends CSSProperties {
   '--cs-per-sm': number
@@ -63,6 +87,8 @@ export interface CarouselProps {
   onNavigation?: (index: number) => void
   /** Called with the active slide index whenever it changes (including swipe/scroll). */
   onSlideChange?: (index: number) => void
+  /** Overridable accessible names for the arrows and pagination dots (default English). */
+  labels?: CarouselLabels
   /** Extra classes, merged onto the wrapping `<section>` via `cn()`. */
   className?: string
   /** Extra classes, merged onto the scroll track via `cn()` (set a height here for `vertical`). */
@@ -128,10 +154,12 @@ function Carousel({
   offsetArrows,
   onNavigation,
   onSlideChange,
+  labels,
   className,
   trackClassName,
   ref,
 }: CarouselProps) {
+  const t = { ...defaultCarouselLabels, ...labels }
   const horizontal = direction !== 'vertical'
   const trackRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef(0)
@@ -317,7 +345,7 @@ function Carousel({
         <>
           <button
             type="button"
-            aria-label="Föregående"
+            aria-label={t.previous}
             disabled={activeIndex <= 0}
             onClick={() => navigateTo(activeIndex - config.perMove)}
             className={cn(arrowBase, prevPlacement)}
@@ -326,7 +354,7 @@ function Carousel({
           </button>
           <button
             type="button"
-            aria-label="Nästa"
+            aria-label={t.next}
             disabled={activeIndex >= config.maxIndex}
             onClick={() => navigateTo(activeIndex + config.perMove)}
             className={cn(arrowBase, nextPlacement)}
@@ -342,7 +370,7 @@ function Carousel({
             <button
               key={index}
               type="button"
-              aria-label={`Gå till ${dotPerItem ? 'bild' : 'sida'} ${index + 1} av ${dotCount}`}
+              aria-label={dotPerItem ? t.goToSlide(index + 1, dotCount) : t.goToPage(index + 1, dotCount)}
               aria-current={index === activeDot ? 'true' : undefined}
               onClick={() => navigateTo(dotPerItem ? index : Math.min(index * config.visible, config.maxIndex))}
               className="flex size-6 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"

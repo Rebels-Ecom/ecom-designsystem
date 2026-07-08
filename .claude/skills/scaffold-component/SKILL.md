@@ -72,6 +72,18 @@ class merging.
 - **Accessibility:** implement every item in the Step 3 spec — correct element, `aria`/`role`/state,
   full keyboard operation, and a visible keyboard focus ring via `focus-visible:` utilities per
   `2.4.7`/`2.4.13` (e.g. `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary`).
+- **Localisation (no hardcoded UI strings):** any human-readable text the component renders that the
+  consumer does **not** already supply — control accessible-names (`aria-label`s on arrows/steppers/
+  close buttons), landmark names, visible built-in labels, status messages — must be an **overridable
+  prop with an English default**, never a baked-in literal (this library ships to consumers of any
+  locale). Group a component's strings in one optional `labels` object prop typed by a
+  `ComponentNameLabels` interface, merge over module-level `defaultXxxLabels`
+  (`const t = { ...defaultXxxLabels, ...labels }`), and type any interpolated string as a **function**
+  (`goToPage?: (page: number) => string`), not a template. Export the `Labels` type from `index.ts` and
+  `src/index.ts`, and add a `Localized` story whose `play` overrides `labels` and asserts the new name —
+  so the prop is covered by the a11y/interaction gate. Consumer-supplied content (`children`, `alt`,
+  `label` text passed in) is exempt — that's already the consumer's to localise. See the i18n convention
+  in docs/DEVELOPMENT.md; Carousel and Pagination are the reference implementations.
 
 *2. `ComponentName.stories.tsx`* — Storybook 10 CSF.
 

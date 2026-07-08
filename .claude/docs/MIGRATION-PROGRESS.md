@@ -17,6 +17,56 @@
 
 - **Active Category**: molecules
 - **Last Updated**: 2026-07-07
+- **Current Micro-Batch**: Batch 12 — Tier-0 molecule leaves (complete; **PurchaseList**, **RichText**,
+  **ScrollableList**, **SortableListItem**, **TagsDescription** — the top-5 unchecked queue entries).
+  `pnpm build` green, `pnpm build-storybook` green, full `pnpm exec vitest --project=storybook` **230/230**
+  (interaction + a11y), full `pnpm test:visual` **139 passed / 5 documented desktop-only skips**. **3 new
+  baselines mapped, both viewports**: PurchaseList ×1 (orange "updated" badge white→dark text, under the
+  gate) and SortableListItem ×2 (overlay-button rewrite is visually identical). **TagsDescription,
+  RichText, ScrollableList are baseline-less** (documented — no snapshot / unmigrated children / Word-paste
+  HTML). One new `@utility sortable-item-cols`. The next batch continues Tier-0: **UnorderedList**,
+  **UserInfoSummary**, then the first template/organism leaves (**BrandPage**, **CampaignPage**, **Cart**).
+- **2026-07-07 — Batch 12 findings & harness changes**:
+  - **Clickable row that contains a heading → stretched overlay button (not `<button>`-wrapping-heading).**
+    SortableListItem's legacy row wrapped a `Heading` inside a `<button>` — invalid HTML (a `<button>`'s
+    content model is phrasing content, so it may not contain a heading) and AT mishandles heading semantics
+    inside a control. V2 renders the content in a `<div>` (heading stays valid) and overlays a stretched
+    `<button aria-label={name}>` (`absolute inset-0`, focus-visible ring) as the row's single click target —
+    the same overlay pattern ArticleCard uses. This **restored the previously-dead `name` prop** as the
+    button's accessible name (the legacy `id`/`name` were declared but never used). Visually identical
+    (transparent button), so both `e-handel`/`leverans` baselines map both viewports. New
+    `@utility sortable-item-cols` ports the legacy `grid-template-columns: 50% auto auto` (+ a `5%` chevron
+    column at lg) — a 50%/auto/5% mix that Tailwind's fraction grid utilities can't express. Chevron is
+    CSS-gated `hidden lg:flex` (no JS/`isMobile` branch, no hydration divergence). Documented in DEVELOPMENT.md.
+  - **PurchaseList — duplicate nav links deduped, checkbox named, orange badge fixed, dead code dropped.**
+    Each row had two same-destination links (name + chevron); V2 keeps the name link as the keyboard/AT path
+    (accessible name = the visible name) and makes the chevron a pointer-only duplicate (`aria-hidden` +
+    `tabIndex={-1}`), the ArticleCard pattern. The selection checkbox is now named via `aria-labelledby` →
+    the row name (legacy left it unlabelled — only a form `name`). The legacy `updated` badge was white on
+    `--cta-tertiary-default` (#f08a00, ~2.3:1, **fails AA**); V2 keeps the orange fill with **dark text**
+    (1.4.3) — a tiny date pill, under the 2% gate, so it's mapped (same accessible-divergence class as
+    IconWithTooltip's badge). Dead `loading` prop dropped (declared, never used); `linkComponent: any` →
+    shared `LinkComponentType`/`DefaultLink`.
+  - **RichText (reclassified organism→molecule) — baseline-less prose renderer.** `dangerouslySetInnerHTML`
+    is kept (inherent to a CMS renderer) but typed `string` (was `any`). The bespoke legacy widths
+    (37.5rem/73rem/70%) collapse to the canonical `MaxWidth` reading measure (`text`, 52rem); prose styling
+    is descendant utilities (`[&_p]`/`[&_h2]`/`[&_li]`…), links upgraded to accessible blue+underline, and
+    the IcoMoon `li:before` bullet (font absent in V2) replaced by real `list-disc`. **No baseline** (like
+    IntroBlock): the legacy `rich-text-story` frames are Word-paste HTML dependent on UA margins, an IcoMoon
+    bullet font, and 404-ing image paths — all reset/absent under V2 preflight. Markup a11y (heading order,
+    `alt`, link purpose) is the consumer's responsibility (documented); **stories model clean, valid HTML**
+    because the legacy dummy content's empty `<h2></h2>`/`<strong></strong>` would fail the axe hard gate.
+  - **ScrollableList — dead fade dropped, random keys fixed, scroll region made keyboard-operable.** The
+    legacy `hasFade` gated an **entirely commented-out** mask (dead CSS) via a scroll-state machine that
+    rendered nothing — dropped (dead-code elimination). `key={Math.random()}` replaced with
+    `Children.toArray` stable keys. Height now caps via the measured first-item height × `visibleItemsNumber`
+    as `maxHeight` (shows ≤N; shorter lists don't stretch). The scroll region is now keyboard-operable and
+    named — `role="list"` + `tabIndex={0}` + `aria-label` + focus-visible ring (2.1.1, axe
+    `scrollable-region-focusable`; the Carousel pattern) — which the legacy row lacked. **No baseline**
+    (every legacy `scrollable-list-*` frame composes unmigrated CartProduct/LinkListItem children).
+  - **TagsDescription — type-only Tag dependency.** Imports just the `TagColor` *type* from the Tag atom
+    (no runtime coupling) and renders a `<ul role="list">` of decorative colour swatches (`aria-hidden`) +
+    meaning text, so colour is never the sole cue (1.4.1). No legacy snapshot → gallery-only `['visual']`.
 - **Current Micro-Batch**: Batch 11 — Tier-0 molecule leaves (complete; **IntroBlock**, **MessageBanner**,
   **OrderConfirmationDetails**, **Pagination**, **PopUp** — the top-5 unchecked queue entries). `pnpm build`
   green, `pnpm build-storybook` green, full `pnpm exec vitest --project=storybook` **215/215** (interaction +
@@ -242,8 +292,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 50 / 155
-- Remaining: 105
+- Completed: 55 / 155
+- Remaining: 100
 
 ## Components Checklist
 
@@ -263,7 +313,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (50)
+### Completed (55)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -314,17 +364,17 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] OrderConfirmationDetails `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-confirmation-details) — legacy `<p><span>` pairs upgraded to a semantic `<dl>`/`<dt>`/`<dd>` (1.3.1); new `--color-surface-cream` (#fffdf8) highlight; reused `--spacing-wrapper-xs` (0.3rem) row margin; delivery/pricing/total-payment frames mapped both viewports
 - [x] Pagination `[mol]` (Legacy: legacy/src/design-system/components/molecules/pagination) — `<nav aria-label>` landmark of real buttons; prev/next `aria-label` + `disabled`, active page `aria-current="page"` + bold/underline (not colour); `useBreakpoint().isMobile` window (5 desktop/3 mobile); legacy `name=` misuse dropped; baseline mapped both viewports (btn colour #003E51 == action-primary, no divergence)
 - [x] PopUp `[mol]` (Legacy: legacy/src/design-system/components/molecules/pop-up) — presentational animated bottom panel (AnimatePresence, reduced-motion-gated); **no baseline** (legacy `pop-up-story` captures the *closed* state — a bare trigger button, no open-panel image to diff, gotcha 3); gallery-only Visual shows it open; dialog semantics/focus deferred to the future Modal molecule
+- [x] PurchaseList `[mol]` (Legacy: legacy/src/design-system/components/molecules/purchase-list) — `<ul role="list">` of saved lists; name link is the AT path (chevron = pointer-only `aria-hidden`/`tabIndex=-1` duplicate), checkbox named via `aria-labelledby`→row name (legacy unlabelled); orange "updated" badge white→dark text (AA); dead `loading` dropped, `linkComponent: any`→`LinkComponentType`; baseline mapped both viewports (badge divergence under gate), see batch notes
+- [x] RichText `[mol]` (Legacy: legacy/src/design-system/components/organisms/rich-text) — reclassified organism→molecule; CMS `dangerouslySetInnerHTML` typed `string` (was `any`) in a `MaxWidth` reading measure; prose via descendant utilities, accessible blue+underline links, IcoMoon bullet→`list-disc`; **no baseline** (Word-paste HTML depends on UA margins/IcoMoon/404 images — like IntroBlock); stories model clean valid HTML, markup a11y is the consumer's, see batch notes
+- [x] ScrollableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/scrollable-list) — height-capped scroll region; dead commented-out fade + `hasFade` machinery dropped, `Math.random()` keys→`Children.toArray`; `role="list"`+`tabIndex=0`+`aria-label`+focus ring make it keyboard-operable (2.1.1) over legacy's none; **no baseline** (legacy frames compose unmigrated CartProduct/LinkListItem), see batch notes
+- [x] SortableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list-item) — clickable row via a stretched overlay `<button aria-label={name}>` (legacy `<button>`-wrapping-a-heading is invalid HTML); restores the dead `name` prop; new `@utility sortable-item-cols` (50%/auto/auto+5%); chevron CSS-gated `hidden lg:flex`; both frames mapped both viewports (visually identical), see batch notes
+- [x] TagsDescription `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-description) — `<ul role="list">` colour legend; imports only the `TagColor` *type* from Tag; decorative swatches (`aria-hidden`) + meaning text (colour never sole cue, 1.4.1); no snapshot → gallery-only Visual, see batch notes
 - [x] Logotype `[mol]` (Legacy: legacy/src/design-system/components/molecules/logotype) — renders the **official Spendrups logos** (from the brand EPS, exported via Illustrator, SVGO-safe) via responsive `<picture>`/`<img>`; stories under **Foundations** (main) + a Molecules reference; no baseline (different rendition than legacy PNG), see batch notes. **⚠️ Known tradeoff (accepted 2026-07-07):** each SVG embeds a ~33KB PNG raster (the "1897" gradient — the brand source stores it as raster, not vector), so the two logos add ~96KB raw to the bundle and don't gzip. Safe SVGO only; raster untouched for fidelity. **The design team that made this logo is gone**, so no clean vector source exists. Future levers (lossy pngquant ~halves it, or a vector redraw) are documented in [`src/assets/logos/README.md`](../../../src/assets/logos/README.md).
 
 ### Build queue (115 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated)
 
-- [ ] PurchaseList `[mol]` (Legacy: legacy/src/design-system/components/molecules/purchase-list) — leaf
-- [ ] RichText `[mol]` (Legacy: legacy/src/design-system/components/organisms/rich-text) — leaf
-- [ ] ScrollableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/scrollable-list) — leaf
-- [ ] SortableListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list-item) — leaf
-- [ ] TagsDescription `[mol]` (Legacy: legacy/src/design-system/components/molecules/tags-description) — leaf
 - [ ] UnorderedList `[mol]` (Legacy: legacy/src/design-system/components/molecules/unordered-list) — leaf
 - [ ] UserInfoSummary `[mol]` (Legacy: legacy/src/design-system/components/molecules/user-info-summary) — leaf
 - [ ] BrandPage `[org]` (Legacy: legacy/src/design-system/components/templates/brand-page) — leaf

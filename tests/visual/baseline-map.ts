@@ -470,4 +470,36 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // would be a full-canvas false-green (gotcha 3) that proves nothing about PopUp; there is no legacy image
   // of the open panel to diff against. Its `['visual']` story shows the open panel gallery-only
   // (current-only); behaviour is covered by the interaction/a11y play tests.
+
+  // ── Batch 12 (molecules — Tier-0 leaves) ──
+  // PurchaseList: the two-row list under a "Delete" button in a ContentWrapper. The legacy orange
+  // "updated" badge used white text (~2.3:1, fails AA); V2 keeps the orange fill with dark text — a
+  // tiny date pill, well under the 2% gate. (Legacy story passed linkComponent="p"; V2 uses a real
+  // <a>, visually identical text.)
+  {
+    storyId: 'design-system-molecules-purchaselist--visual',
+    legacyBaseline: 'design-system-atoms-purchaselist--purchase-list-story',
+  },
+  // SortableListItem: both row frames, reproduced with the migrated Heading/Text/GroupWrapper children
+  // in the 1800px wrapper. V2 replaces the legacy `<button>`-wrapping-a-heading (invalid: a button may
+  // not contain a heading) with a stretched overlay button — visually identical (transparent), so the
+  // frames map. Chevron shows at lg (desktop) and is hidden on mobile, matching legacy.
+  {
+    storyId: 'design-system-molecules-sortablelistitem--visual',
+    legacyBaseline: 'design-system-molecules-sortablelistitem--sortable-list-item-e-handel',
+  },
+  {
+    storyId: 'design-system-molecules-sortablelistitem--visual-leverans',
+    legacyBaseline: 'design-system-molecules-sortablelistitem--sortable-list-item-leverans',
+  },
+  // NOTE: ScrollableList has NO entry — every legacy `scrollable-list-*` frame composes CartProduct /
+  // LinkListItem children that aren't migrated yet (like BoxWrapper), so a faithful parity frame can't
+  // be reproduced and a partial one would be a false-green (gotcha 3). Re-map once those children land.
+  // Its `['visual']` story is gallery-only (current-only); behaviour is covered by the play tests.
+  // NOTE: RichText has NO entry — the legacy `rich-text-story` frames render Word-paste HTML that
+  // depended on browser UA margins, an IcoMoon bullet font, and 404-ing image paths (all reset/absent
+  // under V2's preflight), so a deterministic pixel diff isn't reproducible (same class as IntroBlock).
+  // Its `['visual']` story renders clean sample content gallery-only (current-only).
+  // NOTE: TagsDescription has NO entry — legacy shipped no snapshot for it. Its `['visual']` story is
+  // gallery-only (current-only) so it still surfaces in the review gallery.
 ]

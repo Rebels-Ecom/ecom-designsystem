@@ -69,6 +69,27 @@ export const FallsBackOnError: Story = {
   },
 }
 
+// Regression: a root-relative `src` (the common Next.js / same-origin case) must survive the
+// mount effect. `isValidUrl` used to parse with `new URL(src)` and no base, which throws for
+// relative paths, so the effect blanked a valid `src` to '' — a visible flash-to-fallback.
+export const RelativeSrc: Story = {
+  args: {
+    id: 'picture-relative',
+    src: '/images/hero.jpg',
+    sources: [{ srcset: '/images/hero.jpg' }],
+    alt: 'Root-relative source',
+    loading: 'eager',
+    width: 160,
+    height: 160,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const img = canvas.getByRole('img', { name: 'Root-relative source' })
+    // The relative path is kept, not blanked to '' (which would render the empty fallback).
+    await expect(img).toHaveAttribute('src', '/images/hero.jpg')
+  },
+}
+
 // Static frame for the review gallery. No legacy visual baseline is mapped: the legacy
 // `picture-story` PNGs depend on network image loading + a time-based skeleton state,
 // which can't be reproduced deterministically (see MIGRATION-PROGRESS batch notes).

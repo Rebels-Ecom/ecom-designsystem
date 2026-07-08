@@ -50,12 +50,34 @@ export const Default: Story = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement)
-    // Prev is disabled at the start (nothing before slide 0).
-    await expect(canvas.getByRole('button', { name: 'Föregående' })).toBeDisabled()
+    // Prev is disabled at the start (nothing before slide 0). Control names default to English.
+    await expect(canvas.getByRole('button', { name: 'Previous' })).toBeDisabled()
     // The non-drag alternative: activating the arrow navigates by one slide (2.5.7 / 2.1.1).
-    const next = await canvas.findByRole('button', { name: 'Nästa' })
+    const next = await canvas.findByRole('button', { name: 'Next' })
     await userEvent.click(next)
     await expect(args.onNavigation).toHaveBeenCalledWith(1)
+  },
+}
+
+/**
+ * Localisation: control accessible-names default to English and are overridden via `labels`
+ * (here, Swedish). Proves the i18n convention — the library bakes in no locale.
+ */
+export const Localized: Story = {
+  args: {
+    ariaLabel: 'Utvalda produkter',
+    breakpoints: { sm: { perPage: 1 }, md: { perPage: 2 }, lg: { perPage: 3 } },
+    labels: {
+      previous: 'Föregående',
+      next: 'Nästa',
+      goToPage: (page, total) => `Gå till sida ${page} av ${total}`,
+    },
+    children: <DemoSlides />,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('button', { name: 'Föregående' })).toBeInTheDocument()
+    await expect(canvas.getByRole('button', { name: 'Nästa' })).toBeInTheDocument()
   },
 }
 
@@ -72,13 +94,13 @@ export const KeyboardToEnd: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const track = await canvas.findByRole('group', { name: 'Utvalda produkter' })
-    const nextBtn = canvas.getByRole('button', { name: 'Nästa' })
+    const nextBtn = canvas.getByRole('button', { name: 'Next' })
     await expect(nextBtn).toBeEnabled()
     track.focus()
     await userEvent.keyboard('{End}')
     // After reaching the end, "next" disables and "previous" is available.
     await waitFor(() => expect(nextBtn).toBeDisabled(), { timeout: 2000 })
-    await expect(canvas.getByRole('button', { name: 'Föregående' })).toBeEnabled()
+    await expect(canvas.getByRole('button', { name: 'Previous' })).toBeEnabled()
   },
 }
 
@@ -127,8 +149,8 @@ export const Vertical: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     // Vertical arrows are up/down and follow the same disabled-at-start rule.
-    await expect(await canvas.findByRole('button', { name: 'Föregående' })).toBeDisabled()
-    await expect(canvas.getByRole('button', { name: 'Nästa' })).toBeEnabled()
+    await expect(await canvas.findByRole('button', { name: 'Previous' })).toBeDisabled()
+    await expect(canvas.getByRole('button', { name: 'Next' })).toBeEnabled()
   },
 }
 

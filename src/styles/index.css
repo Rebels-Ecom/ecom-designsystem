@@ -398,6 +398,17 @@
   }
 }
 
+/* SortableListItem row grid. Legacy `grid-template-columns: 50% auto auto` (a wide primary column
+ * plus two meta columns), gaining a trailing `5%` column for the chevron affordance at lg (64rem).
+ * The 50%/auto/5% mix can't be expressed with Tailwind's fraction-based grid utilities, so it lives
+ * here as a named utility rather than an arbitrary `grid-cols-[…]` literal. */
+@utility sortable-item-cols {
+  grid-template-columns: 50% auto auto;
+  @media (min-width: 64rem) {
+    grid-template-columns: 50% auto auto 5%;
+  }
+}
+
 /* Hide the native scrollbar's *rendering* only — the element stays scrollable by wheel/touch/keyboard
  * and programmatic scroll. Safe for WCAG as long as the component keeps keyboard operation (2.1.1) and
  * a visible single-pointer alternative to dragging (2.5.7) — Carousel provides both via its focusable

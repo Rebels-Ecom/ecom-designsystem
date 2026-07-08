@@ -3,6 +3,30 @@ import { cn } from '../../../lib/cn'
 import { Icon } from '../../atoms/Icon'
 import { useBreakpoint } from '../../atoms/Breakpoints'
 
+/**
+ * Overridable UI strings (accessible names for the landmark + controls). Defaults are English so
+ * the library carries no baked-in locale; a consumer localises by passing `labels`. The
+ * parameterised entry is a function, not a template, so interpolation stays type-safe. See the
+ * i18n convention in docs/DEVELOPMENT.md.
+ */
+export interface PaginationLabels {
+  /** Accessible name for the `<nav>` landmark. @default 'Pagination' */
+  nav?: string
+  /** Accessible name for the previous-page control. @default 'Previous page' */
+  previous?: string
+  /** Accessible name for the next-page control. @default 'Next page' */
+  next?: string
+  /** Accessible name for a page-number button. @default (page) => `Go to page ${page}` */
+  goToPage?: (page: number) => string
+}
+
+const defaultPaginationLabels: Required<PaginationLabels> = {
+  nav: 'Pagination',
+  previous: 'Previous page',
+  next: 'Next page',
+  goToPage: (page) => `Go to page ${page}`,
+}
+
 export interface PaginationProps {
   /** Total number of items being paginated. */
   itemsCount: number
@@ -18,6 +42,8 @@ export interface PaginationProps {
   onNextClick: () => void
   /** Optional element (e.g. a "back to top" link) shown alongside the controls. */
   scrollToTopEl?: ReactElement
+  /** Overridable accessible names for the landmark + controls (default English). */
+  labels?: PaginationLabels
   /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
   /** Forwarded to the root `<nav>`. */
@@ -46,9 +72,11 @@ function Pagination({
   onPreviousClick,
   onNextClick,
   scrollToTopEl,
+  labels,
   className,
   ref,
 }: PaginationProps) {
+  const t = { ...defaultPaginationLabels, ...labels }
   const { isMobile } = useBreakpoint()
   const pageCount = Math.ceil(itemsCount / pageSize)
   if (pageCount <= 1) return null
@@ -63,11 +91,11 @@ function Pagination({
   for (let page = startPage; page <= endPage; page++) pages.push(page)
 
   return (
-    <nav ref={ref} aria-label="Paginering" className={cn('relative flex flex-col items-center md:flex-row', className)}>
+    <nav ref={ref} aria-label={t.nav} className={cn('relative flex flex-col items-center md:flex-row', className)}>
       <div className="flex w-full flex-1 justify-center md:mx-auto md:max-w-80">
         <button
           type="button"
-          aria-label="Föregående sida"
+          aria-label={t.previous}
           onClick={onPreviousClick}
           disabled={currentPage === 1}
           className={cn(btnBase, stepBtn)}
@@ -77,7 +105,7 @@ function Pagination({
         <div className="flex w-full items-center justify-center gap-8 md:w-auto md:gap-0">
           {startPage > 1 && (
             <>
-              <button type="button" aria-label="Gå till sida 1" onClick={() => onPageChange(1)} className={cn(btnBase, pageBtn)}>
+              <button type="button" aria-label={t.goToPage(1)} onClick={() => onPageChange(1)} className={cn(btnBase, pageBtn)}>
                 1
               </button>
               {startPage > 2 && <span aria-hidden className="text-action-primary">…</span>}
@@ -87,7 +115,7 @@ function Pagination({
             <button
               key={page}
               type="button"
-              aria-label={`Gå till sida ${page}`}
+              aria-label={t.goToPage(page)}
               aria-current={currentPage === page ? 'page' : undefined}
               onClick={() => onPageChange(page)}
               className={cn(btnBase, pageBtn, currentPage === page && 'font-bold underline')}
@@ -100,7 +128,7 @@ function Pagination({
               {endPage < pageCount - 1 && <span aria-hidden className="text-action-primary">…</span>}
               <button
                 type="button"
-                aria-label={`Gå till sida ${pageCount}`}
+                aria-label={t.goToPage(pageCount)}
                 onClick={() => onPageChange(pageCount)}
                 className={cn(btnBase, pageBtn)}
               >
@@ -111,7 +139,7 @@ function Pagination({
         </div>
         <button
           type="button"
-          aria-label="Nästa sida"
+          aria-label={t.next}
           onClick={onNextClick}
           disabled={currentPage === pageCount}
           className={cn(btnBase, stepBtn)}

@@ -25,11 +25,12 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement)
-    await expect(canvas.getByRole('button', { name: 'Föregående sida' })).toBeDisabled()
-    await expect(canvas.getByRole('button', { name: 'Gå till sida 1' })).toHaveAttribute('aria-current', 'page')
-    await userEvent.click(canvas.getByRole('button', { name: 'Gå till sida 3' }))
+    // Control names default to English (overridable via `labels` — see Localized).
+    await expect(canvas.getByRole('button', { name: 'Previous page' })).toBeDisabled()
+    await expect(canvas.getByRole('button', { name: 'Go to page 1' })).toHaveAttribute('aria-current', 'page')
+    await userEvent.click(canvas.getByRole('button', { name: 'Go to page 3' }))
     await expect(args.onPageChange).toHaveBeenCalledWith(3)
-    await userEvent.click(canvas.getByRole('button', { name: 'Nästa sida' }))
+    await userEvent.click(canvas.getByRole('button', { name: 'Next page' }))
     await expect(args.onNextClick).toHaveBeenCalled()
   },
 }
@@ -39,8 +40,29 @@ export const MiddlePage: Story = {
   args: { itemsCount: 500, pageSize: 25, currentPage: 10 },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    await expect(canvas.getByRole('button', { name: 'Gå till sida 10' })).toHaveAttribute('aria-current', 'page')
-    await expect(canvas.getByRole('button', { name: 'Gå till sida 20' })).toBeInTheDocument()
+    await expect(canvas.getByRole('button', { name: 'Go to page 10' })).toHaveAttribute('aria-current', 'page')
+    await expect(canvas.getByRole('button', { name: 'Go to page 20' })).toBeInTheDocument()
+  },
+}
+
+/**
+ * Localisation: landmark + control names default to English and are overridden via `labels`
+ * (here, Swedish). Proves the i18n convention — the library bakes in no locale.
+ */
+export const Localized: Story = {
+  args: {
+    labels: {
+      nav: 'Paginering',
+      previous: 'Föregående sida',
+      next: 'Nästa sida',
+      goToPage: (page) => `Gå till sida ${page}`,
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('navigation', { name: 'Paginering' })).toBeInTheDocument()
+    await expect(canvas.getByRole('button', { name: 'Föregående sida' })).toBeInTheDocument()
+    await expect(canvas.getByRole('button', { name: 'Gå till sida 1' })).toHaveAttribute('aria-current', 'page')
   },
 }
 

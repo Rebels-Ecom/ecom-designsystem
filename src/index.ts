@@ -242,10 +242,25 @@ export type {
 } from './components/molecules/OrderConfirmationDetails'
 
 export { Pagination } from './components/molecules/Pagination'
-export type { PaginationProps } from './components/molecules/Pagination'
+export type { PaginationProps, PaginationLabels } from './components/molecules/Pagination'
 
 export { PopUp } from './components/molecules/PopUp'
 export type { PopUpProps, PopUpContentPosition } from './components/molecules/PopUp'
+
+export { PurchaseList } from './components/molecules/PurchaseList'
+export type { PurchaseListProps, PurchaseListItem } from './components/molecules/PurchaseList'
+
+export { RichText } from './components/molecules/RichText'
+export type { RichTextProps } from './components/molecules/RichText'
+
+export { ScrollableList } from './components/molecules/ScrollableList'
+export type { ScrollableListProps } from './components/molecules/ScrollableList'
+
+export { SortableListItem } from './components/molecules/SortableListItem'
+export type { SortableListItemProps } from './components/molecules/SortableListItem'
+
+export { TagsDescription } from './components/molecules/TagsDescription'
+export type { TagsDescriptionProps, TagDescriptionEntry } from './components/molecules/TagsDescription'
 
 /* ── Organisms ────────────────────────────────────────────────────────── */
 export { Carousel, CarouselItem } from './components/organisms/Carousel'
@@ -255,4 +270,5 @@ export type {
   CarouselDirection,
   CarouselBreakpoint,
   CarouselBreakpoints,
+  CarouselLabels,
 } from './components/organisms/Carousel'

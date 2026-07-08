@@ -1,0 +1,88 @@
+name: CI
+
+# Quality gate for the V2 migration: typecheck + library build, then the Storybook
+# interaction (play) + a11y (axe) suite. Neither is pixel-based, so both are OS-stable and
+# need no committed baselines — unlike visual regression, which is intentionally left out for
+# now (see the commented `visual` job below and docs/DEVELOPMENT.md → "CI").
+#
+# SCOPED TO THE MIGRATION BRANCH ONLY (deliberate). `main` is in production during the migration
+# and must not be touched by CI, so triggers are limited to `Upgrade/**` pushes — this workflow
+# cannot run in any `main`-related context (no `main` push trigger, no `pull_request`). It still
+# gates every batch as it lands on the migration branch.
+#
+# TODO — BEFORE MERGING TO `main`: restore the production triggers so CI gates main pushes + PRs.
+# Replace the `on:` block below with:
+#   on:
+#     push:
+#       branches: [main, 'Upgrade/**']
+#     pull_request:
+on:
+  push:
+    branches: ['Upgrade/**']
+
+# A newer push to the same branch/PR cancels the in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # tsc --noEmit (x2 configs) + vite library build. Fails on any TS error.
+      - name: Build
+        run: pnpm build
+
+      # @storybook/addon-vitest runs every story in headless Chromium, so the browser binary
+      # (+ its Linux system deps) must be present before the test step.
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      # play functions (interaction) + axe (a11y, `a11y.test: 'error'` → fails on violations).
+      - name: Storybook tests (interaction + a11y)
+        run: pnpm test-storybook
+
+  # ─────────────────────────────────────────────────────────────────────────────────────────
+  # Visual regression — intentionally NOT wired yet.
+  #
+  # The legacy-diff harness (tests/visual + legacy-snapshots/) is being retired: visual parity
+  # is checked manually per batch via `pnpm visual:review`, and the legacy snapshots will be
+  # deleted once the migration completes. The replacement is a self-referential V2 baseline
+  # (the approved V2 render becomes the reference).
+  #
+  # When standing that up, GENERATE and COMPARE inside one pinned Playwright Linux container so
+  # capture and diff share a font/anti-aliasing environment — otherwise macOS-authored baselines
+  # diff heavily on the Linux runner (the reason legacy visual testing never went to CI). Sketch:
+  #
+  # visual:
+  #   runs-on: ubuntu-latest
+  #   container: mcr.microsoft.com/playwright:v1.61.1-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: pnpm/action-setup@v4
+  #       with: { version: 10 }
+  #     - uses: actions/setup-node@v4
+  #       with: { node-version: 22, cache: pnpm }
+  #     - run: pnpm install --frozen-lockfile
+  #     - run: pnpm test:visual   # diffs V2 stories against COMMITTED, in-container-generated V2 baselines
+  # ─────────────────────────────────────────────────────────────────────────────────────────

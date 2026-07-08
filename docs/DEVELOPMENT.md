@@ -304,6 +304,50 @@ Patterns established so far:
   *and* shows a read-more link to the same URL (`ArticleCard`), the read-more `UiLink` is the
   keyboard/AT path (its accessible name includes the heading, 2.4.4) and the image link is taken out of
   the tab order with `tabIndex={-1}` (still clickable by pointer), avoiding a duplicate keyboard stop.
+- **A whole-row control that contains a heading → stretched overlay button, never a
+  `<button>` wrapping the content.** A `<button>`'s content model is phrasing content, so it may not
+  contain a heading (or any flow content) — legacy `SortableListItem` wrapped a `Heading` in a
+  `<button>`, which is invalid HTML and makes AT mishandle the heading. The fix: render the rich content
+  in a plain container (heading semantics preserved) and lay a single stretched
+  `<button aria-label={name}>` over it (`relative` parent + `absolute inset-0`, canonical focus-visible
+  ring). The button's accessible name comes from an explicit `name`/label prop (the visible content is
+  not its label). Same overlay idea as the redundant-card-links pattern; requires the row's children to
+  be **non-interactive** (a nested control would sit under the overlay and be unreachable). This is the
+  general answer for any "click the whole card/row, but it has a heading inside" control.
+- **A runtime layout grid Tailwind can't express → a named `@utility`, not `grid-cols-[…]`.**
+  `SortableListItem`'s `grid-template-columns: 50% auto auto` (+ a `5%` column at `lg`) mixes a
+  percentage, `auto`s, and a second percentage — not expressible with Tailwind's fraction-based grid
+  utilities, and arbitrary literals are forbidden. Add a named `@utility` (`sortable-item-cols`) with the
+  template (and its `@media` cut-in) instead, the same approach as `flex-responsive` / `carousel-slide`.
+
+## Internationalisation (i18n)
+
+**No component may hardcode a human-readable UI string it renders itself.** This library ships to
+consumers of any locale, so any text the component produces that the consumer doesn't already supply —
+control accessible-names (`aria-label`s on arrows, steppers, close buttons), landmark names, visible
+built-in labels, status messages — must be **overridable, with an English default**. Consumer-supplied
+content (`children`, `alt`, label text passed in as a prop) is exempt; that's already theirs to localise.
+
+The convention:
+
+- Group a component's strings in **one optional `labels` object prop**, typed by an exported
+  `ComponentNameLabels` interface (each field optional, `@default` documented in TSDoc).
+- Define module-level `defaultXxxLabels` and merge at the top of the component:
+  `const t = { ...defaultXxxLabels, ...labels }`. Use `t.previous` etc. in the markup.
+- **Parameterised strings are functions, not templates** — `goToPage?: (page: number) => string`,
+  default `(page) => \`Go to page ${page}\`` — so interpolation is type-safe and the consumer controls
+  word order.
+- Export the `Labels` type from the component `index.ts` **and** `src/index.ts`.
+- Add a **`Localized` story** whose `play` passes a `labels` override and asserts the new accessible
+  name, so the prop is exercised by the a11y/interaction gate (`pnpm test-storybook`).
+
+Reference implementations: [`Carousel`](../src/components/organisms/Carousel/Carousel.tsx) (`CarouselLabels`)
+and [`Pagination`](../src/components/molecules/Pagination/Pagination.tsx) (`PaginationLabels`).
+
+> **Default language is English, deliberately.** A design system shouldn't bake in a locale, even though
+> today's only consumer (the Spendrups storefront) is Swedish. **Migration note:** that app must now pass
+> `labels` to keep Swedish AT announcements — otherwise these controls announce in English. This is the
+> one intentional behaviour change from the label refactor.
 
 ## Documentation
 
@@ -343,6 +387,12 @@ So the rule is simply **keep the TSDoc good**:
   baseline in `legacy-snapshots/` (see [Visual regression](#visual-regression)).
 - React, React DOM and Framer Motion are **peerDependencies** and externalized
   by Vite — never bundled. `clsx` / `tailwind-merge` are regular deps (bundled).
+- **`'use client'` banner:** the whole library is client components (hooks throughout), so
+  `rollupOptions.output.banner: "'use client';"` prepends the directive to the bundled `.mjs`/`.cjs`
+  entry. Without it, a React Server Components consumer (Next.js App Router) importing from the
+  barrel fails to build (_"useState only works in a Client Component"_). `banner` is sourcemap-aware
+  and applies to JS chunks only (not the CSS asset); the single-entry bundle emits it once. Verify
+  after a build: `head -c 20 dist/index.mjs` and `dist/index.cjs` both start with `'use client';`.
 - **CSS output:** `src/index.ts` imports `src/styles/index.css`, so the build emits a single
   `dist/ecom-designsystem.css` (Tailwind theme + utilities + `@font-face`). `package.json`
   `sideEffects: ["**/*.css"]` keeps that import through tree-shaking while JS stays

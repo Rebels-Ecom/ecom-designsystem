@@ -4,6 +4,7 @@ export type {
   CarouselDirection,
   CarouselBreakpoint,
   CarouselBreakpoints,
+  CarouselLabels,
 } from './Carousel'
 export { CarouselItem } from './CarouselItem'
 export type { CarouselItemProps } from './CarouselItem'

@@ -52,9 +52,17 @@ export interface PictureProps {
   ref?: Ref<HTMLImageElement>
 }
 
+/**
+ * Is `url` a usable image source? Accepts absolute URLs (`https://…`, `data:…`), root-relative
+ * (`/images/hero.jpg`) and document-relative (`img.webp`) paths. `new URL(url)` with no base
+ * throws for the relative forms, so we resolve against a dummy base — those paths are the common
+ * case (Next.js, any app serving images off its own origin) and must not be blanked. Only
+ * empty/whitespace-only input is rejected so the component falls back.
+ */
 const isValidUrl = (url: string): boolean => {
+  if (!url?.trim()) return false
   try {
-    new URL(url)
+    new URL(url, 'http://localhost')
     return true
   } catch {
     return false
