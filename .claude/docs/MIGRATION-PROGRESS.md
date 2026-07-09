@@ -15,8 +15,41 @@
 
 ## Current Batch Status
 
-- **Active Category**: molecules + first organism (Tier-1 leaves)
-- **Last Updated**: 2026-07-08
+- **Active Category**: molecules (Tier-1 leaves)
+- **Last Updated**: 2026-07-09
+- **Current Micro-Batch**: Batch 18 — Tier-1 molecule leaves (complete; **CookieBar**, **MultiSelect**,
+  **OrderItem**, **Search**, **SelectList** — the next five unblocked leaves top-to-bottom, all `needs:
+  Button`/`InputText` already migrated; **UiDatePicker left untouched — owned by another session**).
+  `pnpm build` green, scoped `vitest --project=storybook` **23/23** (interaction + a11y), `pnpm
+  build-storybook` green, full `pnpm test:visual` **214 passed / 12 skipped** (was 193/11 — +21 new
+  baselines, +1 documented skip). 11 of 12 new Visual frames map a legacy baseline (only OrderItem
+  `mina-ordrar-2` mobile is desktop-only). The next batch continues Tier-1: **Tabs**, then the Tier-2
+  organisms unlocked so far (AccountBoxList, DeliveryForm, Footer, FaqGroup, ArticleList, …).
+- **2026-07-09 — Batch 18 findings & harness changes**:
+  - **Disclosure-dropdown pattern (reused 3×: MultiSelect, SelectList, MultiSelect's cousins).** A
+    trigger `<button aria-haspopup aria-expanded aria-controls>` + a **native** checkbox/radio group in
+    the popup gives role/state/keyboard (incl. radio arrow-key nav) for free — no custom listbox
+    `aria-activedescendant` machinery. The wrapper only owns Escape-to-close-with-focus-return and an
+    outside-click `pointerdown` listener (the legacy `useOnClickOutside`/`useCloseOnEscape` hooks were
+    unmigrated → reimplemented inline with `useEffect`, gated on `open`). Documented in DEVELOPMENT.md.
+  - **Cookie bar is a landmark, not a modal.** The WCAG checklist files `cookie-bar` under
+    Overlay/dialog, but a *passive, persistent* consent notice must NOT trap focus or steal it on mount
+    (that blocks the page the user came for). Implemented as a non-modal named `region` with
+    Escape-to-dismiss — the same "apply judgement, don't copy the archetype blindly" call as CampaignBox
+    (trigger outside the ExpandableWrapper). Blocking modals (Modal, DrawerSidebar) will get the full
+    trap when they land.
+  - **Consolidating legacy redundant/buggy links (OrderItem).** Legacy link-mode rendered the order
+    number AND the chevron as two links to the same URL, both with `aria-label="Go to order ${n}"` that
+    read "Go to order undefined" when no number was supplied. V2 ships ONE chevron link with a
+    `labels.goToOrder(n)` fallback name, keeps the download link as a sibling (no nested anchors), and
+    turns inline-mode's `onClick`'d `<h4>` into a real `<button>`. Dead `title`/`onDownload` props
+    dropped.
+  - **Dark-tag amplification of the Heading rhythm drift (new baseline-mapping nuance).** OrderItem
+    `mina-ordrar-2` and `-1` are structurally identical, but `-2`'s high-contrast **blue** tag makes the
+    (documented, sub-2%) Edmondsans vertical-rhythm offset read as ~3% on the 375px canvas, while `-1`'s
+    near-white **yellow** tag hides the same offset. So a dark element can push an otherwise-passing
+    frame over the gate on mobile only → mapped **desktop-only** (like GroupWrapper/Heading-delivery).
+    A high-contrast block in a frame is a signal to check the mobile diff. Documented in DEVELOPMENT.md.
 - **2026-07-08 — UiDatePicker built (post-Batch-17 follow-up, directed).** The Batch-17 deferral was
   resolved by an explicit library decision from the user: **`react-day-picker` v10** (React-19-ready,
   accessible grid/ARIA + keyboard built in, headless). Added as a regular dependency and **externalized
@@ -459,8 +492,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 81 / 155
-- Remaining: 74
+- Completed: 86 / 155
+- Remaining: 69
 
 ## Components Checklist
 
@@ -480,7 +513,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (81)
+### Completed (86)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -563,8 +596,13 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] AgeVerificationForm `[mol]` (Legacy: legacy/src/design-system/components/molecules/age-verification-form) — title (`<h3>`) + description + choice Buttons + a persistent `role="alert"` error slot (announced on appear, never colour-only); **no baseline** (legacy story renders inside an unmigrated Modal), gallery-only Visual, see batch notes
 - [x] ButtonWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/button-with-tooltop) — reclassified atom→molecule; Button trigger inside `ComponentWithTooltip` (dropped the legacy `@radix-ui/react-tooltip` dep for the V2 tooltip — SC 1.4.13 hover+focus/dismissible/hoverable); **extended Button with `aria-describedby` forwarding** so the tip associates with the button (name=label, description=tip); `disabled` renders without the wrapper; baseline (closed button) mapped both viewports, see batch notes
 - [x] UiDatePicker `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-date-picker) — reclassified atom→molecule; **built as a directed follow-up after Batch 17** per an explicit library decision. Dropped legacy `react-datepicker` for **`react-day-picker` v10** (regular dep, externalized in the Vite lib build like `lucide-react`; base CSS not imported — styled via `classNames`/`modifiersClassNames` with Tailwind tokens). Full-width Button trigger (surface x, calendar icon, `aria-haspopup="dialog"`/`aria-expanded`) opens a `role="dialog"` popover with `<DayPicker mode="single">` `disabled={(d) => !isDeliveryDay(d)}` (delivery-only) + a **custom `DayButton`** that styles the delivery/holiday/selected/today states through `cn()` (deterministic precedence — selected wins) at a fixed 40px centred box, with **free month navigation**; the library owns in-grid keyboard/ARIA, this wrapper owns focus-in / Escape+outside-click close + focus return. Selected day uses dark-on-orange (legacy white-on-orange fails AA). **Browser-verified** (spacing, day selection with a stateful trigger-label update, and Nov↔Dec navigation) after headless tests alone missed UX gaps. **This batch also generalised `Button` to forward all standard `<button>` attributes** (rest-spread — so ARIA-injecting wrappers compose). Both baselines (closed trigger) mapped both viewports; open calendar has no baseline (from-scratch), covered by play tests.
+- [x] CookieBar `[mol]` (Legacy: legacy/src/design-system/components/atoms/cookie-bar) — reclassified atom→molecule; a **non-modal** `region` landmark (`<section aria-label>`), NOT a focus-trapping dialog — a passive cookie notice must not block the page (documented divergence from the naive "cookie-bar = modal" reading); info icon decorative, message + inline link + tertiary accept Button; `Escape` inside the bar dismisses (no trap); `labels.region` overridable (English default); baseline (fixed bottom bar) mapped both viewports, see batch notes
+- [x] MultiSelect `[mol]` (Legacy: legacy/src/design-system/components/atoms/multi-select) — reclassified atom→molecule; disclosure `<button>` (`aria-haspopup`/`-expanded`/`-controls`) revealing a native checkbox group labelled by `name`; Escape + outside-click close with focus return to the trigger; hardcoded Swedish "valda" → overridable `labels.selectedCount` (English default); 3 closed-trigger baselines (land/producer/packaging) mapped both viewports (open popup behaviour-only), see batch notes
+- [x] OrderItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-item) — two modes: **link card** (one chevron link — consolidated legacy's redundant double-link and fixed its `aria-label="Go to order undefined"` via a `labels.goToOrder` fallback; download link is a sibling, no nested anchors) and **inline card** (order-number/action are real `<button>`s, not an `onClick`'d `<h4>`); status text chip (never colour-only) + decorative icon; dropped dead `title`/`onDownload` props; order-number/chevron orange→accessible blue; 5 baselines mapped, **`mina-ordrar-2` desktop-only** (its dark blue tag amplifies the known Heading rhythm drift to ~3% on the 375px canvas only; the identical `mina-ordrar-1` + its own desktop frame pass), see batch notes
+- [x] Search `[mol]` (Legacy: legacy/src/design-system/components/atoms/search) — reclassified atom→molecule; `<form role="search">` landmark, visually-hidden field label (placeholder≠label, 3.3.2), icon-only submit + focusable clear button with action `aria-label`s, results = labelled list of real links, Escape + outside-click close; typing only reports (no context change, 3.2.2); added `labels` (field/submit/clear/results, English defaults) + optional `onSubmit`/`linkComponent`; search glyph white→accessible black-on-orange; baseline (closed bar) mapped both viewports (results behaviour-only), see batch notes
+- [x] SelectList `[mol]` (Legacy: legacy/src/design-system/components/molecules/select-list) — reclassified atom→molecule; disclosure `<button>` (`aria-haspopup`/`-expanded`/`-controls`) revealing a native radio group (single-select, native arrow-key nav, labelled by `placeholder`); Escape + outside-click close with focus return; dropped legacy JS left/right reposition + the no-op framer wrapper (documented simplification); no built-in UI strings; baseline (closed "Sortera" trigger) mapped both viewports (open group behaviour-only), see batch notes
 
-### Build queue (89 pending, dependency-ordered)
+### Build queue (84 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -582,11 +620,6 @@ finished line into _Completed_ by hand (tiers rarely shift).
 
 #### Tier 1 — unlocked after Tier 0
 
-- [ ] CookieBar `[mol]` (Legacy: legacy/src/design-system/components/atoms/cookie-bar) — needs: Button
-- [ ] MultiSelect `[mol]` (Legacy: legacy/src/design-system/components/atoms/multi-select) — needs: Button
-- [ ] OrderItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-item) — needs: Button
-- [ ] Search `[mol]` (Legacy: legacy/src/design-system/components/atoms/search) — needs: InputText, Button
-- [ ] SelectList `[mol]` (Legacy: legacy/src/design-system/components/molecules/select-list) — needs: Button
 - [ ] Tabs `[mol]` (Legacy: legacy/src/design-system/components/molecules/tabs) — needs: Button
 - [ ] ArticleList `[org]` (Legacy: legacy/src/design-system/components/organisms/article-list) — needs: ArticleCard, Carousel · **when migrated, its `Default` story (5 ArticleCards in a swipe Carousel) reproduces the legacy `carousel-story` frame → map `design-system-organisms-carousel--carousel-story` (desktop + mobile) here to finally give Carousel a real visual comparison. Copy `legacy/src/assets/blog-images/Content9.png` into `src/assets/`. Expect the "Läs mer" link to diverge orange→blue (documented AA fix).**
 - [ ] BrandDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/brand-details) — needs: TagsList

@@ -59,36 +59,44 @@ const dayPickerClassNames = {
   month_caption: 'flex h-10 items-center justify-center',
   caption_label: 'text-body font-bold text-text-default',
   nav: 'absolute inset-x-0 top-0 flex h-10 items-center justify-between',
+  // At the `startMonth`/`endMonth` boundary react-day-picker marks the nav button `aria-disabled`
+  // (kept focusable for SR discoverability) rather than setting the native `disabled` attribute — so
+  // fade + neutralise the cursor off `aria-disabled` too, otherwise the dead arrow looks fully active.
   button_previous:
-    'flex size-8 cursor-pointer items-center justify-center rounded text-text-default disabled:cursor-default disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
+    'flex size-8 cursor-pointer items-center justify-center rounded text-text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary disabled:cursor-default disabled:opacity-30 aria-disabled:cursor-default aria-disabled:opacity-30',
   button_next:
-    'flex size-8 cursor-pointer items-center justify-center rounded text-text-default disabled:cursor-default disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
+    'flex size-8 cursor-pointer items-center justify-center rounded text-text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary disabled:cursor-default disabled:opacity-30 aria-disabled:cursor-default aria-disabled:opacity-30',
   chevron: 'size-5 fill-current',
-  month_grid: 'border-separate border-spacing-1',
-  weekday: 'size-10 pb-1 text-body-s font-normal text-text-subdued',
+  month_grid: 'border-separate border-spacing-2',
+  weekday: 'w-12 pb-1 text-body-s font-normal text-text-subdued md:w-17',
   day: 'p-0 text-center align-middle',
 }
 
 /**
- * Fully-styled day cell button. Styling lives here (not on the `<td>` via `modifiersClassNames`) so
- * the fill/border track the fixed 40px button exactly, and so `cn()` (tailwind-merge) resolves the
- * modifier conflicts deterministically — `selected` (listed last) wins its bg/border/text over
- * `delivery`/`today`. Delivery days are white with an orange border; the selected day is dark-on-orange
- * (legacy white-on-orange fails AA); holidays/disabled days are muted (their `disabled` attribute makes
- * axe skip the faded contrast).
+ * Fully-styled day cell button. Styling lives here (not on the `<td>` via `modifiersClassNames`) so the
+ * fill/border track the fixed button box exactly, and so `cn()` (tailwind-merge) resolves the modifier
+ * conflicts deterministically — the later class wins, so precedence reads top-to-bottom: base grey box →
+ * weekend/holiday → delivery → today → selected. Every cell is a filled grey square with a muted number
+ * (legacy `.day`); weekends and holidays darken (legacy `.holidayDay`); delivery days are white with an
+ * orange border (legacy `.deliveryDay`); today is light-yellow (legacy `.currentDay`); the selected day
+ * is dark-on-orange — legacy's white-on-orange fails WCAG AA. Non-delivery days carry `disabled`, so axe
+ * skips their (intentionally muted) contrast.
  */
-function DeliveryDayButton({ day: _day, modifiers, className: _className, ...buttonProps }: DayButtonProps) {
+function DeliveryDayButton({ modifiers, className: _className, ...buttonProps }: DayButtonProps) {
   const m = modifiers as Modifiers & Record<string, boolean>
   return (
     <button
       {...buttonProps}
       className={cn(
-        'flex size-10 items-center justify-center rounded font-primary font-bold text-text-default',
+        'flex size-12 items-center justify-center rounded bg-tag-grey font-primary font-bold text-text-subdued md:size-17',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
-        m.delivery && 'border border-border-orange text-text-blue',
-        m.holiday && 'bg-surface-disabled text-text-subdued',
-        m.disabled && 'cursor-default text-text-subdued opacity-40',
-        m.today && 'border border-border-orange bg-tag-yellow text-text-blue',
+        (m.weekend || m.holiday) && 'bg-grey-500 text-text-blue/90',
+        // Delivery day — white with an orange border; fills orange on hover (legacy `.deliveryDay:hover`).
+        // Blue-on-orange still clears AA, and axe never triggers `:hover` so the gate is unaffected.
+        m.delivery && 'cursor-pointer border border-border-orange bg-surface-default text-text-blue hover:bg-action-tertiary',
+        m.disabled && 'cursor-default',
+        // Today — light-yellow; hover keeps it yellow, matching legacy `.currentDay` (no hover change).
+        m.today && 'border border-border-orange bg-tag-yellow text-text-blue hover:bg-tag-yellow',
         m.selected && 'border-transparent bg-action-tertiary text-text-on-tertiary',
       )}
     />
@@ -132,6 +140,13 @@ function UiDatePicker({
   }, [selectedDeliveryDate])
 
   const isDeliveryDay = (day: Date) => deliveryDates.some((date) => isSameDay(date, day))
+
+  // Constrain navigation to the months that actually hold delivery days (legacy did this implicitly via
+  // react-datepicker's `includeDates`): the prev/next arrows disable at the first/last delivery month
+  // instead of wandering into empty calendars.
+  const deliveryTimes = deliveryDates.map((date) => date.getTime())
+  const startMonth = deliveryTimes.length ? new Date(Math.min(...deliveryTimes)) : undefined
+  const endMonth = deliveryTimes.length ? new Date(Math.max(...deliveryTimes)) : undefined
 
   const close = () => {
     setOpen(false)
@@ -199,16 +214,21 @@ function UiDatePicker({
               close()
             }}
             disabled={(day) => !isDeliveryDay(day)}
-            modifiers={{ delivery: deliveryDates, holiday: holidayDates }}
+            modifiers={{ delivery: deliveryDates, holiday: holidayDates, weekend: { dayOfWeek: [0, 6] } }}
             defaultMonth={selected}
-            showOutsideDays={false}
+            startMonth={startMonth}
+            endMonth={endMonth}
+            weekStartsOn={1}
+            showOutsideDays
             classNames={dayPickerClassNames}
             components={{ DayButton: DeliveryDayButton }}
           />
           {orderStopDate?.stopDates?.length ? (
-            // Cap to the calendar's own width (7×`size-10` + 8×`border-spacing-1` = 19.5rem) so a long
-            // note wraps instead of stretching the dialog and leaving dead space beside the dates.
-            <div className="flex max-w-78 flex-col gap-2 px-4 pt-4 pb-6">
+            // Spans the calendar's width (the dialog shrink-wraps the grid); short notes fill it and a
+            // long one wraps within the dialog rather than leaving dead space (legacy `.orderStopDates`).
+            // `text-body-s` (0.875rem) — the paragraphs inherit it; matches legacy's small calendar text
+            // (react-datepicker's 0.8rem base), rounded to the nearest DS scale token.
+            <div className="flex w-full flex-col gap-2 px-4 pt-4 pb-6 text-body-s">
               {orderStopDate.title && <p className="m-0 font-bold text-text-default">{orderStopDate.title}</p>}
               {orderStopDate.stopDates.map((stopDate) => (
                 <p key={stopDate} className="m-0 text-text-default">

@@ -253,6 +253,24 @@ lossy.
   or no legacy story at all). Note the legacy reference PNG is never axe-scanned — only the V2 story
   is — so "the legacy frame fails AA" is not a reason to skip the map; render the V2 frame accessibly
   and diff against the legacy image.
+- **Disclosure-dropdown pattern — native controls in the popup, wrapper owns open/close only.** For
+  every "trigger reveals a small set of choices" molecule (`MultiSelect`, `SelectList`, and the same
+  shape in `AdminSearch`), the trigger is a real `<button>` with `aria-haspopup` + `aria-expanded` +
+  `aria-controls`, and the popup holds **native** form controls — `<input type="checkbox">` for
+  multi-select, `<input type="radio">` (shared `name`) for single-select — each wrapped in a `<label>`.
+  That buys role, checked/selected state, and keyboard operation (radio **arrow-key** navigation!) for
+  free, with no listbox `aria-activedescendant`/roving-tabindex machinery to hand-roll. The wrapper only
+  owns: open on activation (not focus, 3.2.1), `Escape` → close **and return focus to the trigger**, and
+  an outside-click `pointerdown` listener registered in a `useEffect` **gated on the open state** (so no
+  global listener when closed). The legacy `useOnClickOutside`/`useCloseOnEscape` hooks were never
+  migrated — reimplement that behaviour inline; it's ~8 lines and avoids a shared-hook dependency.
+- **Consolidate legacy redundant/buggy interactivity — don't reproduce it.** Legacy `OrderItem`'s link
+  mode rendered the order number **and** a chevron as two separate anchors to the same URL, both labelled
+  `"Go to order ${orderNumber}"` — which read "Go to order undefined" whenever no number was supplied.
+  V2 ships **one** link (the chevron; the order number is static text), gives it a `labels.goToOrder(n)`
+  accessible name with a sensible fallback, keeps any download link as a **sibling** (never nest anchors),
+  and promotes inline mode's `onClick`'d `<h4>` to a real `<button>`. Same principle as the a11y rule
+  below: extract the *intent* (a card that navigates), regenerate the mechanics correctly.
 
 ## Accessibility
 
@@ -388,6 +406,16 @@ Patterns established so far:
   `id` — sitting *above* the `ExpandableWrapper`, which contains only the revealed content.
   `ExpandableWrapper` takes an `id` for this; it stays presentational (it owns no button/`aria-expanded`
   — the consumer wires the trigger). Applies to any accordion/expander built on it.
+- **A passive, persistent notice is a landmark, not a modal — don't trap focus.** The `wcag-reference`
+  checklist files `cookie-bar` under the Overlay/dialog archetype, whose recipe is `role="dialog"` +
+  `aria-modal` + a focus trap + move-focus-in-on-open. That's correct for a **blocking** dialog (Modal,
+  DrawerSidebar), but wrong for a notice the user can ignore while they use the page: trapping focus or
+  stealing it on mount blocks the content they came for. `CookieBar` is therefore a **non-modal named
+  `region`** (`<section aria-label>`) — discoverable/skippable as a landmark, with `Escape`-to-dismiss
+  as a convenience but **no** trap and **no** autofocus. The archetype card gives you the criteria;
+  which subset applies is a judgement call (blocking vs passive) — same "apply judgement, don't copy the
+  lookup blindly" call as the disclosure-trigger rule above. Reserve the full trap for genuinely modal
+  overlays.
 - **A field's helper/error must be programmatically tied to the control, not just placed near it.**
   `FormGroup` `cloneElement`-injects `aria-describedby` (pointing at generated helper + error ids) and
   `aria-invalid` onto the control passed as `children`; `Newsletter` wires its `role="alert"` message
@@ -508,7 +536,15 @@ migration parity check, independent of the a11y/interaction suite.
   captured **full-page** (e.g. `Textarea`'s five-field stack → 375×705), but the V2 harness
   (`expect(page).toHaveScreenshot()`) captures the **viewport** (375×667), so the dimensions can
   never match — map such stories `viewports: ['desktop']`. Desktop content that fits in 1280×800 is
-  unaffected.
+  unaffected. A third cause: **a high-contrast block amplifying the known vertical-rhythm drift on
+  mobile.** The Edmondsans-vs-legacy line-height/margin offset is a fixed few-pixel shift; how many
+  diff pixels it produces depends on what's *at* the shifted position. `OrderItem`'s `mina-ordrar-2`
+  and `mina-ordrar-1` frames are structurally identical, but `-2`'s dark **blue** tag makes the shift
+  read ~3% on the 375px canvas (over the gate) while `-1`'s near-white **yellow** tag hides the same
+  shift under 2% — so the same drift crosses the gate for one frame and not the other. When a frame
+  contains a dark/high-contrast element over stacked text, check the mobile diff specifically; if it's
+  pure vertical ghosting (no structural/colour/size change) it's this drift, not a component bug →
+  map `viewports: ['desktop']` with a comment. Desktop dilutes the offset across the wider canvas.
 - **Dead legacy CSS ≠ design intent.** Several legacy modules contain selectors that never matched
   (broken `&input[…]` nesting in `radio-button`, non-existent `.button`/`.small` classes in
   `input-file`), so the frozen baseline shows the *effective* rendering, not the intended one. Rule of

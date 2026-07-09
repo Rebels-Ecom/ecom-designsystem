@@ -723,4 +723,67 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-molecules-uidatepicker--visual-date-label',
     legacyBaseline: 'design-system-atoms-uidatepicker--ui-date-picker-story-date-label',
   },
+
+  // ── Batch 18 (molecules — Tier-1/2 leaves) ──
+  // CookieBar: full-width bottom banner (info icon + message/link + accept button), fixed to the
+  // viewport. Reclassified atom → molecule; the legacy title kept the hyphenated `cookie-bar` id.
+  {
+    storyId: 'design-system-molecules-cookiebar--visual',
+    legacyBaseline: 'design-system-atoms-cookie-bar--cookie-bar-story',
+  },
+  // MultiSelect: the CLOSED filter trigger (name + icon) for each of the three legacy option sets.
+  // The open checkbox popup is behaviour-only (covered by play tests).
+  {
+    storyId: 'design-system-molecules-multiselect--visual-land',
+    legacyBaseline: 'design-system-atoms-multiselect--multi-select-story-land',
+  },
+  {
+    storyId: 'design-system-molecules-multiselect--visual-producer',
+    legacyBaseline: 'design-system-atoms-multiselect--multi-select-story-producer',
+  },
+  {
+    storyId: 'design-system-molecules-multiselect--visual-packaging',
+    legacyBaseline: 'design-system-atoms-multiselect--multi-select-story-packaging',
+  },
+  // OrderItem: the five captured legacy frames — one inline card (clickable order no.) and four link
+  // cards (chevron link + rich children). The order-number/chevron colour diverges orange →
+  // accessible blue (documented AA fix), a small glyph well under the 2% gate.
+  {
+    storyId: 'design-system-molecules-orderitem--visual-default',
+    legacyBaseline: 'design-system-molecules-orderitem--default-order-item',
+  },
+  {
+    storyId: 'design-system-molecules-orderitem--visual-min-senaste-order',
+    legacyBaseline: 'design-system-molecules-orderitem--order-item-min-senaste-order',
+  },
+  {
+    storyId: 'design-system-molecules-orderitem--visual-mina-ordrar-1',
+    legacyBaseline: 'design-system-molecules-orderitem--order-item-mina-ordrar-1',
+  },
+  {
+    storyId: 'design-system-molecules-orderitem--visual-mina-ordrar-2',
+    legacyBaseline: 'design-system-molecules-orderitem--order-item-mina-ordrar-2',
+    // Desktop-only: the diff is pure vertical ghosting — the known Heading vertical-rhythm drift
+    // (Edmondsans metrics, documented since Batch 1/6) shifts the whole stack a few px. This is the
+    // ONLY OrderItem frame whose dark, high-contrast blue "Skickas" tag amplifies that otherwise
+    // sub-2% offset to ~3% on the narrow 375px canvas; the structurally identical `mina-ordrar-1`
+    // (near-white yellow tag) and this frame's own desktop capture both pass, so it's a rendering
+    // incomparability, not a component divergence. Mobile behaviour stays covered by play tests.
+    viewports: ['desktop'],
+  },
+  {
+    storyId: 'design-system-molecules-orderitem--visual-sommarfest',
+    legacyBaseline: 'design-system-molecules-orderitem--order-item-sommarfest',
+  },
+  // Search: the CLOSED search bar (icon submit button + input, empty query → no dropdown). The
+  // results list is behaviour-only. Search-glyph colour diverges white → accessible black-on-orange.
+  {
+    storyId: 'design-system-molecules-search--visual',
+    legacyBaseline: 'design-system-atoms-search--search-story',
+  },
+  // SelectList: the CLOSED trigger ("Sortera" + chevron-down). The open radio group is behaviour-only.
+  {
+    storyId: 'design-system-molecules-selectlist--visual',
+    legacyBaseline: 'design-system-atoms-select-list--select-list-story',
+  },
 ]

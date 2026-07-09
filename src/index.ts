@@ -336,6 +336,34 @@ export type { UnorderedListProps, UnorderedListSpacing } from './components/mole
 export { UserInfoSummary } from './components/molecules/UserInfoSummary'
 export type { UserInfoSummaryProps, UserSummary } from './components/molecules/UserInfoSummary'
 
+export { CookieBar, defaultCookieBarLabels } from './components/molecules/CookieBar'
+export type { CookieBarProps, CookieBarLabels } from './components/molecules/CookieBar'
+
+export { MultiSelect, defaultMultiSelectLabels } from './components/molecules/MultiSelect'
+export type {
+  MultiSelectProps,
+  MultiSelectOption,
+  MultiSelectLabels,
+} from './components/molecules/MultiSelect'
+
+export { OrderItem, defaultOrderItemLabels } from './components/molecules/OrderItem'
+export type {
+  OrderItemProps,
+  OrderItemStatusIcon,
+  OrderItemLabels,
+} from './components/molecules/OrderItem'
+
+export { Search, defaultSearchLabels } from './components/molecules/Search'
+export type {
+  SearchProps,
+  SearchResult,
+  SearchNoResult,
+  SearchLabels,
+} from './components/molecules/Search'
+
+export { SelectList } from './components/molecules/SelectList'
+export type { SelectListProps, SelectListOption } from './components/molecules/SelectList'
+
 /* ── Organisms ────────────────────────────────────────────────────────── */
 export { FaqList } from './components/organisms/FaqList'
 export type { FaqListProps, FaqItem } from './components/organisms/FaqList'
