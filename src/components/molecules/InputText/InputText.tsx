@@ -1,8 +1,8 @@
-import type { ChangeEvent, FocusEvent, Ref } from 'react'
+import type { ChangeEvent, ClipboardEvent, FocusEvent, KeyboardEvent, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 import { Icon, type IconName } from '../../atoms/Icon'
 
-export type InputTextType = 'text' | 'email' | 'tel' | 'password' | 'number'
+export type InputTextType = 'text' | 'email' | 'tel' | 'password' | 'number' | 'search'
 
 export interface InputTextProps {
   /** Id of the underlying `<input>`. Wire an external `<label htmlFor>` to it for the accessible name. */
@@ -45,6 +45,10 @@ export interface InputTextProps {
   onFocus?: (event: FocusEvent<HTMLInputElement>) => void
   /** Blur handler receiving the native input event. */
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void
+  /** Key-down handler — e.g. to block illegal characters in a numeric field. */
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
+  /** Paste handler — e.g. to reject pasted content in a constrained field. */
+  onPaste?: (event: ClipboardEvent<HTMLInputElement>) => void
   /** Accessible name for standalone use. Prefer an external `<label htmlFor>`. */
   ariaLabel?: string
   /** Id of the element describing the field, e.g. an inline error message (3.3.1). */
@@ -87,6 +91,8 @@ function InputText({
   onChange,
   onFocus,
   onBlur,
+  onKeyDown,
+  onPaste,
   ariaLabel,
   ariaDescribedBy,
   className,
@@ -116,6 +122,8 @@ function InputText({
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
+        onPaste={onPaste}
         className={cn(
           'h-12 w-full appearance-none rounded border border-input-border bg-surface-default px-3 py-2 font-primary text-body text-text-input',
           'placeholder:text-text-subdued',

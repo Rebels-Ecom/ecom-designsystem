@@ -183,6 +183,10 @@
   /* Skeleton shimmer for Placeholder / Picture loading states (paired with the
    * `skeleton-shimmer` utility below; slow 2s cycle keeps it well under 2.3.1). */
   --animate-shimmer: shimmer 2s linear infinite;
+  /* IconButton "busy" pulse — a slow scale throb signalling background activity (e.g.
+   * add-to-cart). Decorative → gated behind `motion-reduce:animate-none` at the call site
+   * (2.3.3†); the 1.5s cycle stays well under 2.3.1's 3-flashes/sec ceiling. */
+  --animate-icon-pulse: icon-pulse 1.5s ease-in-out infinite;
 
   @keyframes grow {
     from {
@@ -196,6 +200,16 @@
     }
     100% {
       background-position: 1200px 0;
+    }
+  }
+
+  @keyframes icon-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
     }
   }
 }
@@ -302,6 +316,10 @@
   --color-tag-yellow: var(--color-yellow-50);
   --color-tag-purple: var(--color-purple);
   --color-tag-black: var(--color-black);
+
+  /* Vivid text-highlight fill for `<mark>` (FaqList keyword highlighting). Dark text on it clears
+   * 4.5:1; distinct from the near-white `--color-tag-yellow` which is a surface tint, not a marker. */
+  --color-highlight: #fff176;
 
   /* Loading bar */
   --color-bar-bg-orange: #eee1c8;

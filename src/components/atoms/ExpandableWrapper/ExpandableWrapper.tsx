@@ -11,6 +11,8 @@ export interface ExpandableWrapperProps {
   className?: string
   /** Collapsed height (number → px, or any CSS length). @default 0 */
   initialHeight?: number | string
+  /** Element id — so a disclosure trigger can point `aria-controls` at the revealed region (4.1.2). */
+  id?: string
   /** Forwarded to the underlying `<div>`. */
   ref?: Ref<HTMLDivElement>
 }
@@ -28,11 +30,13 @@ function ExpandableWrapper({
   children,
   className,
   initialHeight = 0,
+  id,
   ref,
 }: ExpandableWrapperProps) {
   return (
     <motion.div
       ref={ref}
+      id={id}
       // Collapsed content is removed from the a11y tree and tab order.
       aria-hidden={open ? undefined : true}
       inert={!open}

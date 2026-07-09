@@ -15,8 +15,111 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms (cart-family + page shells)
+- **Active Category**: molecules + first organism (Tier-1 leaves)
 - **Last Updated**: 2026-07-08
+- **2026-07-08 — UiDatePicker built (post-Batch-17 follow-up, directed).** The Batch-17 deferral was
+  resolved by an explicit library decision from the user: **`react-day-picker` v10** (React-19-ready,
+  accessible grid/ARIA + keyboard built in, headless). Added as a regular dependency and **externalized
+  in the Vite lib build** (like `lucide-react`), base CSS *not* imported — styled with Tailwind tokens
+  via `classNames`/`modifiersClassNames`. Full-width Button trigger (the two frozen baselines, closed
+  popover) → `role="dialog"` with `<DayPicker mode="single">` restricted to delivery days; the library
+  owns in-grid keyboard/ARIA, the wrapper owns focus-in / Escape+outside-click close + focus return.
+  While wiring the trigger, **generalised `Button` to forward all standard `<button>` attributes**
+  (rest-spread — supersedes the ad-hoc `aria-describedby` prop; lets ARIA-injecting wrappers compose).
+  `pnpm build` green (bundle +~4.5KB → react-day-picker externalized, not bundled), full
+  `vitest --project=storybook` **334/334**, full `pnpm test:visual` **193 passed / 11 skipped**. Both
+  closed-trigger baselines mapped both viewports; open calendar covered by play tests. The next batch:
+  the Tier-2 organisms unlocked so far (AccountBoxList, DeliveryForm, Footer, FaqGroup, ArticleList, …).
+- **Current Micro-Batch**: Batch 17 — Tier-1 leaves (complete; **CampaignMessage**, **FaqList** `[org]`,
+  **AdminSearch**, **AgeVerificationForm**, **ButtonWithTooltip** — 4 molecules + 1 organism, three
+  reclassified `atoms/*`→molecules). **UiDatePicker was DEFERRED** (see below), so the next genuine
+  leaves were pulled forward. `pnpm build` green, `pnpm build-storybook` green, full
+  `vitest --project=storybook` **328/328** (interaction + a11y), full `pnpm test:visual`
+  **189 passed / 11 skipped**. **4 new baselines mapped**: AdminSearch (closed bar) + ButtonWithTooltip
+  (both viewports), CampaignMessage (**desktop-only** — mobile wrap flip). **FaqList + AgeVerificationForm
+  are baseline-less** (no legacy story / renders inside an unmigrated Modal) — gallery-only. Extended
+  two shared components: **Button** now forwards `aria-describedby` (tooltip association — later
+  generalised to all attrs, see the follow-up note above); **InputText** gained a `'search'` type. New
+  `--color-highlight` token (FaqList `<mark>`). UiDatePicker (deferred at batch close) was then built as
+  a directed follow-up (see the note above).
+- **2026-07-08 — Batch 17 findings & harness changes**:
+  - **Deferring a component is a legitimate, documented call — not silent skipping.** UiDatePicker is
+    the next queue entry but is an outlier: a faithful port means rewriting `react-datepicker` (a heavy
+    dep V2 doesn't carry) as a from-scratch WCAG calendar grid, *and* it needs a UX-direction decision
+    (calendar grid vs. restricted-date listbox). It only unblocks 1. Rushing it into a shared batch slot
+    would under-serve its a11y. Flagged **⏸️ DEFERRED** in the queue (deps met, not BLOCKED) and pulled
+    the next genuine leaf forward. Rule: when the top entry is disproportionately large or needs a
+    product decision, defer-with-documentation and continue — don't stall the batch or rush the build.
+  - **Reuse the from-scratch primitive; drop the legacy 3rd-party dep.** ButtonWithTooltip dropped
+    `@radix-ui/react-tooltip` for the existing `ComponentWithTooltip` atom (same as Carousel dropped
+    Splide, UiDatePicker will drop react-datepicker). Composing it surfaced that the V2 `Button` didn't
+    forward `aria-describedby` (its interface is closed) — so the tooltip couldn't associate. Fixed by
+    adding the one prop to Button. Lesson: composing a strict-interface component into a
+    prop-injecting wrapper (cloneElement) needs the target to forward the injected ARIA attr.
+  - **A legacy component whose only story renders inside an unmigrated parent has no usable baseline.**
+    AgeVerificationForm's legacy story mounts it inside an (unmigrated) Modal, so the snapshot is the
+    modal, not the form → gallery-only Visual, behaviour covered by play tests. (Same spirit as the
+    cart-family deferrals: don't map a frame dominated by an unmigrated ancestor/child.)
+- **Current Micro-Batch**: Batch 16 — Tier-1 leaves (complete; **FormGroup**, **AccountBox**,
+  **CampaignBox**, **IconLink**, **Newsletter** — all `[mol]`, reclassifying the two `atoms/*` legacy
+  entries that import components into molecules). `pnpm build` green, `pnpm build-storybook` green,
+  full `vitest --project=storybook` **312/312** (interaction + a11y), full `pnpm test:visual`
+  **184 passed / 10 skipped**. **13 new baselines mapped**: FormGroup ×8 (InputText/Textarea × 4
+  states, both viewports), CampaignBox ×2 + IconLink ×2 + Newsletter ×1 (both viewports), AccountBox
+  ×2 (**desktop-only** — mobile line-spacing drift >2%). Extended three shared components with reusable
+  props: InlineError + ExpandableWrapper gained an `id` (for `aria-describedby`/`aria-controls`),
+  InputText gained `onKeyDown`/`onPaste` (Batch 15). The next batch continues Tier-1:
+  **UiDatePicker**, then the Tier-2 organisms unlocked by this batch (AccountBoxList, DeliveryForm,
+  Footer, ArticleList, …).
+- **2026-07-08 — Batch 16 findings & harness changes**:
+  - **A disclosure trigger must live OUTSIDE the collapsing region when that region goes `inert`.**
+    V2 `ExpandableWrapper` sets `inert`/`aria-hidden` on its content while collapsed (so no hidden
+    focusable descendants). Legacy `CampaignBox` nested its expand toggle *inside* the wrapper — under
+    the V2 wrapper that toggle would become inert while collapsed, i.e. un-clickable, trapping the
+    component shut. Rebuilt to the correct shape: an always-visible header (title + toggle + action)
+    above the `ExpandableWrapper` panel, with the toggle a real `<button aria-expanded aria-controls>`
+    pointing at the panel's `id`. Rule: header/trigger outside the collapsible; only the revealed
+    content inside. Documented in DEVELOPMENT.md.
+  - **Wire field messages to the control; never signal by colour/border alone (recurring 1.4.1/3.3.1).**
+    Legacy `FormGroup` rendered helper/error as loose siblings and `Newsletter` showed invalid email as
+    a red border only. V2 `FormGroup` `cloneElement`-injects `aria-describedby` (→ helper + error ids)
+    and `aria-invalid` onto its child control; `Newsletter` renders a `role="alert"` message wired the
+    same way. The messages carry `id`s, so InlineError gained an `id` prop.
+  - **Give migrated form controls a real accessible name (recurring).** Both `Newsletter`'s email field
+    and (Batch 15) `ProductQuantityInput`'s number field shipped nameless in legacy (placeholder-only,
+    3.3.2). V2 names them via a localisable `labels.*` prop. Placeholders are never labels.
+- **Current Micro-Batch**: Batch 15 — first Tier-1 leaves (complete; **IconButton**, **LinkButton**,
+  **ProductVariant**, **ProductQuantityInput**, **AlertBox** — all `[mol]`, reclassifying the four
+  `atoms/*` legacy entries that import other components into molecules). `pnpm build` green,
+  `pnpm build-storybook` green, full `vitest --project=storybook` **287/287** (interaction + a11y),
+  full `pnpm test:visual` **156 passed / 8 skipped**. **7 new baselines mapped**: IconButton
+  `small-button` + `over-100-products` (both viewports), LinkButton (both), ProductQuantityInput
+  (both), AlertBox `warning` (both) + `error`/`information` (**desktop-only** — mobile full-width
+  button amplifies the Button font divergence >2%). **ProductVariant is baseline-less** (legacy frame
+  non-deterministic: remote CDN image + `undefined` labels). **Tier-0 is now exhausted** — before
+  building, confirmed all four remaining `templates/*-page` "leaves" (ProductCategoryListingPage,
+  ProductPage, ShoppingListPage, StartPageTemplate) are **story-only (no `.tsx`)** → flagged
+  ⛔ BLOCKED, same false-leaf flaw as BrandPage/CampaignPage. The next batch continues Tier-1:
+  **FormGroup**, **AccountBox**, **CampaignBox**, **IconLink**, **Newsletter**.
+- **2026-07-08 — Batch 15 findings & harness changes**:
+  - **A `<button>` must never wrap another interactive control (axe `nested-interactive`, hard gate).**
+    Legacy ProductVariant nested a `<RadioButton>` inside a clickable `<button>` — two controls, invalid
+    HTML. V2 rebuilds it as the **selectable-card pattern**: a `<label>` wraps the visual content *and*
+    a single native radio, so the whole card is the radio's click target with exactly one control. Same
+    class of fix as SortableListItem's `<button>`-wrapping-a-heading. Documented in DEVELOPMENT.md.
+  - **Icon-only / previously-unnamed controls MUST be given an accessible name on migration.** Legacy
+    IconButton's *link* variant set no `aria-label`, and ProductQuantityInput's number field had no
+    label at all — both would fail axe. V2 makes the name a **required** prop (IconButton `label`) or a
+    localisable one (`labels.quantity`). Never carry a legacy control's missing name forward.
+  - **Extend a shared atom via standard props when a molecule needs a real handler (recurring).** The
+    quantity field needed to block illegal keys/paste; legacy used a `{ other: {...} }` grab-bag. V2
+    added typed `onKeyDown`/`onPaste` passthroughs to **InputText** (general, reusable) rather than an
+    `any`-typed escape hatch — same methodology as earlier atom extensions.
+  - **Legacy block-level "links" (`display:flex` on a `<div>`/`<a>`) render full-width; keep the width
+    but fix the element.** LinkButton's baseline is a full-width bar because legacy's `LinkComponent`
+    was a block `<div>`. V2 renders a semantic `<a>` but stays full-width by default to match the
+    design intent; IconButton's link baselines are the *opposite* lesson — its legacy block-`<div>`
+    link is a shape V2's correct inline `<a>` can't reproduce, so those frames go unmapped.
 - **Current Micro-Batch**: Batch 14 — cart-family organisms + page shells (complete; **CartProductList**,
   **CartSidebar**, **LoginPage**, **OrderConfirmation**, **OrderConfirmationPage** — all `[org]`,
   reclassifying the two `templates/*-page` entries with real `.tsx` files into organisms). `pnpm build`
@@ -356,8 +459,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 65 / 155
-- Remaining: 90
+- Completed: 81 / 155
+- Remaining: 74
 
 ## Components Checklist
 
@@ -377,7 +480,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (65)
+### Completed (81)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -444,10 +547,26 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] LoginPage `[org]` (Legacy: legacy/src/design-system/components/templates/login-page) — reclassified template→organism; full-viewport centred shell (`min-h-screen`, `bg-blue-500`); presentational (consumer owns `<main>`); **no baseline** (legacy frames centre the unmigrated LoginForm/AccountBoxList), gallery-only Visual, deferred, see batch notes
 - [x] OrderConfirmation `[org]` (Legacy: legacy/src/design-system/components/organisms/order-confirmation) — centred content card, new `--container-order-confirmation` (58.125rem) token + `bg-background`; **no baseline** (all children migrated **except** the unmigrated CartProduct, which is a large part of the frame), gallery-only Visual, deferred, see batch notes
 - [x] OrderConfirmationPage `[org]` (Legacy: legacy/src/design-system/components/templates/order-confirmation-page) — reclassified template→organism; centred shell on `bg-blue-500`; **no baseline** (nests the full OrderConfirmation → unmigrated CartProduct), gallery-only Visual, deferred, see batch notes
+- [x] IconButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-button) — reclassified atom→molecule; keystone (unblocks 22); `type: 'button' | 'link'` union (link renders a semantic `<a>` via `src/lib/link` `DefaultLink` — legacy's link stub was a non-semantic `<div>`); **required `label`** → `aria-label` (legacy's link variant had NO accessible name); count badge dark-on-orange (white fails AA) + decorative (fold count into `label`); `busy` pulse via new `--animate-icon-pulse` token, motion-reduce gated; dropped dead `weight`/`animate:'updated'`. `small-button` + `over-100-products` baselines mapped both viewports (badge divergence under gate); `large-link`/`go-to-product` unmapped (legacy block-`<div>` link ≠ V2 inline `<a>`), see batch notes
+- [x] LinkButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/link-button) — reclassified atom→molecule; button-styled semantic `<a>` (via `DefaultLink`), same surface tokens as Button; full-width block CTA by default (legacy `display:flex` parity — dropped dead `fullWidth`); disabled drops `href`/`onClick` + `aria-disabled` + leaves tab order; `link-button-story` baseline mapped both viewports (font divergence under gate; `-go-to-cart` is an identical frame), see batch notes
+- [x] ProductVariant `[mol]` (Legacy: legacy/src/design-system/components/molecules/product-variant) — **restored valid semantics**: legacy wrapped a `<button>` around a `<RadioButton>` (nested interactive → axe `nested-interactive` fail); V2 is a `<label>`-wrapped single radio (selectable-card), `ariaLabel={variantName}`; dropped 6 dead props (country/salesUnit/itemNumberPerSalesUnit/outOfStock/isAccessoryPotItem/tags); decorative thumbnail; **no baseline** (legacy frame non-deterministic — remote CDN image + `undefined` label text), gallery-only Visual, see batch notes
+- [x] ProductQuantityInput `[mol]` (Legacy: legacy/src/design-system/components/molecules/product-quantity-input) — number field (composes InputText) + price readout; **named the previously-unnamed input** via `labels.quantity` (3.3.1/4.1.2); illegal-char/paste guard via new InputText `onKeyDown`/`onPaste` passthrough props; all Swedish copy → `labels` object (English defaults); `input-quantity-story` baseline mapped both viewports (Visual overrides `labels` to Swedish), see batch notes
+- [x] AlertBox `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-box) — reclassified atom→molecule; live region (`role="alert"` for error, `role="status"` for warning/information) + `aria-busy` loading over decorative Placeholder skeleton; icon+text (never colour-only); all contrast tokens ≥4.5:1; error/warning/information baselines mapped — **error + information desktop-only** (mobile full-width button amplifies the Button font divergence >2%, like GroupWrapper/UnorderedList), warning both viewports, see batch notes
+- [x] FormGroup `[mol]` (Legacy: legacy/src/design-system/components/molecules/form-group) — labelled field wrapper; `cloneElement`-injects `aria-describedby` (→ helper + error ids) and `aria-invalid` onto the child control — the a11y upgrade over legacy's loose sibling messages (3.3.1); helper linked, error is a `role="alert"`; `labelRightText` (a link) renders beside the `<label>`, not inside it; extended InlineError with an `id` prop. All 8 baselines mapped (InputText/Textarea × 4 states); right-label link is accessible blue (orange fails AA, under gate), see batch notes
+- [x] AccountBox `[mol]` (Legacy: legacy/src/design-system/components/molecules/account-box) — account-summary card + primary Button (label from `chooseAccountBtn.children`); presentational `<p>` lines (company name is bold `Text`, not a heading — no `heading-order` perturbation); both baselines mapped **desktop-only** (legacy's looser line-spacing drifts ~12px down the 5 info lines → >2% on the narrow mobile canvas only), see batch notes
+- [x] CampaignBox `[mol]` (Legacy: legacy/src/design-system/components/atoms/campaign-box) — reclassified atom→molecule; expandable disclosure card — **restructured so the header/trigger sit OUTSIDE the ExpandableWrapper** (its collapsed content is `inert`; legacy nested the toggle inside → it would trap the trigger); toggle is a `<button aria-expanded aria-controls>` (extended ExpandableWrapper with an `id` prop); white-on-`color` text (consumer supplies ≥4.5:1); both baselines mapped both viewports, see batch notes
+- [x] IconLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-link) — reclassified atom→molecule; vertical CTA — underlined label above a circular icon badge, one `<a>` (via `DefaultLink`); label accessible blue+underline (legacy orange fails AA, small centred glyph under gate), badge glyph decorative; both baselines mapped both viewports, see batch notes
+- [x] Newsletter `[mol]` (Legacy: legacy/src/design-system/components/molecules/newsletter) — email field + tertiary submit in a real `<form>` (Enter submits); **named the previously-unnamed input** (`labels.input`) and **added a `role="alert"` error message** wired via `aria-invalid`/`aria-describedby` — legacy signalled invalid email by red border only (1.4.1); Swedish copy → `labels` object; capped at `max-w-80` to match the legacy UA-intrinsic-width row; baseline mapped both viewports, see batch notes
+- [x] CampaignMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/campaign-message) — reclassified atom→molecule; bordered box (decorative icon + uppercased message + primary CTA); message uppercased via CSS (`uppercase`, not `.toUpperCase()`) so AT reads it naturally; new `--color-highlight` token added this batch (for FaqList's `<mark>`); baseline mapped **desktop-only** (mobile `w-fit` box wraps the message one/two lines on a knife-edge vs the legacy capture), see batch notes
+- [x] FaqList `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-list) — reclassified molecule→organism; `role="list"` accordion of ClickableListItem disclosures (`aria-expanded`/`aria-controls`) + ExpandableWrapper panels (`role="region"`/`aria-labelledby`, APG pattern); `==kw==`→`<mark class="bg-highlight">`; answer typed `ReactNode` (legacy rendered an FC reference — a bug); **no baseline** (legacy shipped no story), gallery-only Visual, see batch notes
+- [x] AdminSearch `[mol]` (Legacy: legacy/src/design-system/components/atoms/admin-search) — reclassified atom→molecule; controlled search + results dropdown; **named the previously-unnamed field** (`labels.input`), focusable labelled clear button, `role="status"` result-count announcement (`labels.results`), Escape/outside-click close; results are action `<button>`s in a labelled `role="list"` (not a formal combobox — results are actions, documented); added `'search'` to `InputTextType`; baseline = the closed bar mapped both viewports (dropdown behaviour-only), see batch notes
+- [x] AgeVerificationForm `[mol]` (Legacy: legacy/src/design-system/components/molecules/age-verification-form) — title (`<h3>`) + description + choice Buttons + a persistent `role="alert"` error slot (announced on appear, never colour-only); **no baseline** (legacy story renders inside an unmigrated Modal), gallery-only Visual, see batch notes
+- [x] ButtonWithTooltip `[mol]` (Legacy: legacy/src/design-system/components/atoms/button-with-tooltop) — reclassified atom→molecule; Button trigger inside `ComponentWithTooltip` (dropped the legacy `@radix-ui/react-tooltip` dep for the V2 tooltip — SC 1.4.13 hover+focus/dismissible/hoverable); **extended Button with `aria-describedby` forwarding** so the tip associates with the button (name=label, description=tip); `disabled` renders without the wrapper; baseline (closed button) mapped both viewports, see batch notes
+- [x] UiDatePicker `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-date-picker) — reclassified atom→molecule; **built as a directed follow-up after Batch 17** per an explicit library decision. Dropped legacy `react-datepicker` for **`react-day-picker` v10** (regular dep, externalized in the Vite lib build like `lucide-react`; base CSS not imported — styled via `classNames`/`modifiersClassNames` with Tailwind tokens). Full-width Button trigger (surface x, calendar icon, `aria-haspopup="dialog"`/`aria-expanded`) opens a `role="dialog"` popover with `<DayPicker mode="single">` `disabled={(d) => !isDeliveryDay(d)}` (delivery-only) + a **custom `DayButton`** that styles the delivery/holiday/selected/today states through `cn()` (deterministic precedence — selected wins) at a fixed 40px centred box, with **free month navigation**; the library owns in-grid keyboard/ARIA, this wrapper owns focus-in / Escape+outside-click close + focus return. Selected day uses dark-on-orange (legacy white-on-orange fails AA). **Browser-verified** (spacing, day selection with a stateful trigger-label update, and Nov↔Dec navigation) after headless tests alone missed UX gaps. **This batch also generalised `Button` to forward all standard `<button>` attributes** (rest-spread — so ARIA-injecting wrappers compose). Both baselines (closed trigger) mapped both viewports; open calendar has no baseline (from-scratch), covered by play tests.
 
-### Build queue (105 pending, dependency-ordered)
+### Build queue (89 pending, dependency-ordered)
 
-#### Tier 0 — buildable now (deps already migrated)
+#### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
 - [ ] ⛔ **BLOCKED** BrandPage `[org]` (Legacy: legacy/src/design-system/components/templates/brand-page) — **NOT a leaf.** Story-only "GUIDELINE" template (no `.tsx`); the dep graph mis-marked it a leaf because `deps.cjs` only reads `.tsx` imports and this component has none. Its real deps live in `brand-page.stories.tsx`: Header, Footer, Hero, BrandDetails (all **unmigrated**). Build after those organisms land.
 - [ ] ⛔ **BLOCKED** CampaignPage `[org]` (Legacy: legacy/src/design-system/components/templates/campaign-page) — **NOT a leaf** (same story-only flaw). Real deps in `campaign-page.stories.tsx`: Header, Footer, HeroCarousel (all **unmigrated**). Build after those land.
@@ -456,29 +575,13 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [ ] ⛔ **BLOCKED** ContentPage `[org]` (Legacy: legacy/src/design-system/components/templates/content-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
 - [ ] ⛔ **BLOCKED** InspirationPage `[org]` (Legacy: legacy/src/design-system/components/templates/inspiration-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
 - [ ] ⛔ **BLOCKED** MySpendrupsPage `[org]` (Legacy: legacy/src/design-system/components/templates/my-spendrups-page) — story-only (no `.tsx`; false leaf). Deps in stories, unmigrated. Defer.
-- [ ] ProductCategoryListingPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-category-listing-page) — leaf *(verify `.tsx` exists before building — see the story-only-template rule)*
-- [ ] ProductPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-page) — leaf
-- [ ] ShoppingListPage `[org]` (Legacy: legacy/src/design-system/components/templates/shopping-list-page) — leaf
-- [ ] StartPageTemplate `[org]` (Legacy: legacy/src/design-system/components/templates/start-page-template) — leaf
+- [ ] ⛔ **BLOCKED** ProductCategoryListingPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-category-listing-page) — **NOT a leaf** (story-only, no `.tsx`; dep-graph false leaf, verified 2026-07-08). Real deps in `product-category-listing-page.stories.tsx`: Header, Footer, Breadcrumbs, DynamicFilter + atoms/molecules barrels (all **unmigrated**). Build after those land.
+- [ ] ⛔ **BLOCKED** ProductPage `[org]` (Legacy: legacy/src/design-system/components/templates/product-page) — **NOT a leaf** (story-only, no `.tsx`). Real deps in `product-page.stories.tsx`: Header, Footer, ProductDescription, ProductDetails (all **unmigrated**). Defer.
+- [ ] ⛔ **BLOCKED** ShoppingListPage `[org]` (Legacy: legacy/src/design-system/components/templates/shopping-list-page) — **NOT a leaf** (story-only, no `.tsx`). Real deps in `shopping-list-page.stories.tsx`: Header, Footer, MessagePopup, InfoSummaryBox, OrderConfirmationDetails, ScrollableList (all **unmigrated**). Defer.
+- [ ] ⛔ **BLOCKED** StartPageTemplate `[org]` (Legacy: legacy/src/design-system/components/templates/start-page-template) — **NOT a leaf** (story-only, no `.tsx`). Real deps in `start-page-template.stories.tsx`: Header, Footer, HeroCarousel, OfferCardList, Teaser (all **unmigrated**). Defer.
 
 #### Tier 1 — unlocked after Tier 0
 
-- [ ] IconButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-button) — needs: UiLink · unblocks 22
-- [ ] LinkButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/link-button) — needs: UiLink · unblocks 6
-- [ ] ProductVariant `[mol]` (Legacy: legacy/src/design-system/components/molecules/product-variant) — needs: IconWithTooltip · unblocks 5
-- [ ] ProductQuantityInput `[mol]` (Legacy: legacy/src/design-system/components/molecules/product-quantity-input) — needs: InputText · unblocks 4
-- [ ] AlertBox `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-box) — needs: Button · unblocks 3
-- [ ] FormGroup `[mol]` (Legacy: legacy/src/design-system/components/molecules/form-group) — needs: InlineError · unblocks 2
-- [ ] AccountBox `[mol]` (Legacy: legacy/src/design-system/components/molecules/account-box) — needs: Button · unblocks 1
-- [ ] CampaignBox `[mol]` (Legacy: legacy/src/design-system/components/atoms/campaign-box) — needs: Button · unblocks 1
-- [ ] IconLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/icon-link) — needs: UiLink · unblocks 1
-- [ ] Newsletter `[mol]` (Legacy: legacy/src/design-system/components/molecules/newsletter) — needs: InputText, Button · unblocks 1
-- [ ] UiDatePicker `[mol]` (Legacy: legacy/src/design-system/components/atoms/ui-date-picker) — needs: Button · unblocks 1
-- [ ] FaqList `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-list) — needs: ClickableListItem · unblocks 1
-- [ ] AdminSearch `[mol]` (Legacy: legacy/src/design-system/components/atoms/admin-search) — needs: InputText
-- [ ] AgeVerificationForm `[mol]` (Legacy: legacy/src/design-system/components/molecules/age-verification-form) — needs: Button
-- [ ] ButtonWithTooltop `[mol]` (Legacy: legacy/src/design-system/components/atoms/button-with-tooltop) — needs: Button
-- [ ] CampaignMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/campaign-message) — needs: Button
 - [ ] CookieBar `[mol]` (Legacy: legacy/src/design-system/components/atoms/cookie-bar) — needs: Button
 - [ ] MultiSelect `[mol]` (Legacy: legacy/src/design-system/components/atoms/multi-select) — needs: Button
 - [ ] OrderItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-item) — needs: Button

@@ -5,6 +5,11 @@ import { Icon } from '../../atoms/Icon'
 export interface InlineErrorProps {
   /** The error message. Write actionable copy that says how to fix the problem (3.3.3). */
   children: ReactNode
+  /**
+   * id so the offending field can reference this message via `aria-describedby` (paired with the
+   * field's `aria-invalid`), letting assistive tech read the error together with the field (3.3.1).
+   */
+  id?: string
   /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
   /** Forwarded to the underlying `<div>`. */
@@ -18,9 +23,9 @@ export interface InlineErrorProps {
  * is carried by the text in `text-critical` (≥4.5:1 on the light surface, 1.4.3), never by colour
  * alone — the icon reinforces it and is decorative (`aria-hidden`, 1.4.1).
  */
-function InlineError({ children, className, ref }: InlineErrorProps) {
+function InlineError({ children, id, className, ref }: InlineErrorProps) {
   return (
-    <div ref={ref} role="alert" className={cn('flex items-center gap-1 text-body', className)}>
+    <div ref={ref} id={id} role="alert" className={cn('flex items-center gap-1 text-body', className)}>
       <Icon icon="icon-x-circle" size="medium" color="error" />
       <span className="text-text-critical">{children}</span>
     </div>

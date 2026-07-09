@@ -102,9 +102,9 @@ export default defineConfig({
     },
     rollupOptions: {
       // React, React DOM and Framer Motion must never be bundled (peerDependencies).
-      // lucide-react is a regular dependency, externalized so a consumer app that also
-      // uses lucide doesn't ship two copies.
-      external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion', 'lucide-react'],
+      // lucide-react and react-day-picker are regular dependencies, externalized so a consumer app
+      // that also uses them doesn't ship two copies.
+      external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion', 'lucide-react', 'react-day-picker'],
       output: {
         // The whole library is client components (hooks throughout), so mark the bundled entry
         // with the React `'use client'` directive. Without it, a React Server Components consumer

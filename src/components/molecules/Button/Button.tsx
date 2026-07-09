@@ -1,4 +1,4 @@
-import type { MouseEventHandler, ReactNode, Ref, TouchEventHandler } from 'react'
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 import { Icon, type IconName } from '../../atoms/Icon'
 import { Loader } from '../../atoms/Loader'
@@ -8,7 +8,7 @@ export type ButtonSurface = 'primary' | 'secondary' | 'tertiary' | 'x' | 'link'
 export type ButtonSize = 'large' | 'small' | 'x-small' | 'xx-small'
 export type ButtonWeight = 'normal' | 'bold'
 
-export interface ButtonProps {
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'color'> {
   /** Visible label — this is the button's accessible name, so it must describe the action. */
   children: ReactNode
   /** Native button behaviour. @default 'button' */
@@ -25,8 +25,6 @@ export interface ButtonProps {
   fullWidth?: boolean
   /** Fully rounded (pill) corners. @default false */
   rounded?: boolean
-  /** Disable the button (also set automatically while `loading`). */
-  disabled?: boolean
   /** Show a spinner and disable the button; exposes `aria-busy`. @default false */
   loading?: boolean
   /** Label weight. @default 'normal' */
@@ -35,14 +33,13 @@ export interface ButtonProps {
   isTransparent?: boolean
   /** Remove the visible border. @default false */
   noBorder?: boolean
-  /** Underlying element id. */
-  id?: string
-  /** Native `name` attribute (useful for `type="submit"` forms). */
-  name?: string
-  onClick?: MouseEventHandler<HTMLButtonElement>
-  onMouseDown?: MouseEventHandler<HTMLButtonElement>
-  onTouchStart?: TouchEventHandler<HTMLButtonElement>
-  /** Extra classes, merged with the component's own via `cn()`. */
+  /**
+   * Extra classes, merged with the component's own via `cn()`.
+   *
+   * All standard `<button>` attributes (`id`, `name`, `onClick`, `disabled`, `aria-*`, `data-*`, …)
+   * are also accepted and forwarded to the underlying element — so this button composes into wrappers
+   * that inject ARIA (e.g. a tooltip's `aria-describedby`, a disclosure's `aria-expanded`).
+   */
   className?: string
   /** Forwarded to the underlying `<button>`. */
   ref?: Ref<HTMLButtonElement>
@@ -89,28 +86,20 @@ function Button({
   weight = 'normal',
   isTransparent,
   noBorder,
-  id,
-  name,
-  onClick,
-  onMouseDown,
-  onTouchStart,
   className,
   ref,
+  ...rest
 }: ButtonProps) {
   const hasIcon = Boolean(iconLeft || iconRight)
   const showLoader = loading && size !== 'xx-small'
 
   return (
     <button
+      {...rest}
       ref={ref}
-      id={id}
-      name={name}
       type={type}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart}
       className={cn(
         'relative inline-flex cursor-pointer items-center justify-center rounded border border-transparent font-primary text-text-default',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',

@@ -73,8 +73,9 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
 - **Animations are theme tokens, and skeletons share one utility.** Custom
   keyframe animations live in `@theme` as `--animate-*` (+ their `@keyframes`),
   so they're used as `animate-<name>` utilities instead of arbitrary CSS —
-  currently `animate-grow` (LoadingBar's bar grow-in) and `animate-shimmer`
-  (the loading pulse). The decorative loading-skeleton look is a single
+  currently `animate-grow` (LoadingBar's bar grow-in), `animate-shimmer`
+  (the loading pulse), and `animate-icon-pulse` (IconButton's `busy` scale
+  throb). The decorative loading-skeleton look is a single
   `@utility skeleton-shimmer` (the gradient + background-size the shimmer sweeps),
   reused by `Placeholder` and `Picture`'s loading state — don't hand-roll a new
   skeleton gradient per component, and don't inline it as `bg-[…]`. **Always
@@ -198,6 +199,17 @@ lossy.
   **derived from layout** (`round(clientSize/stride)`) so it auto-tracks the CSS breakpoints instead of
   being re-resolved in JS; only `perMove`/`hideArrows` are matched via `matchMedia`. This is the
   reference pattern for any future carousel/slider.
+- **Rewrite-from-scratch vs. replace-with-a-vetted-lib is a judgment call — not always rewrite.** The
+  default (above) is to rewrite an absent legacy dep dependency-free (Carousel←Splide;
+  tooltip←radix). But when a faithful, *accessible* rewrite would be disproportionate or high-risk, add
+  a vetted, React-19-ready, headless replacement instead. `UiDatePicker` did this: a from-scratch
+  WCAG-2.2 calendar grid (dialog + `role=grid` + roving focus) is a large, easy-to-get-wrong surface, so
+  it uses **`react-day-picker`** (legacy's `react-datepicker` is absent + not React-19-safe). It's a
+  regular `dependency`, **externalized** in `vite.config.ts` like `lucide-react` (consumers install it;
+  never bundled), and styled **headless** — base CSS not imported, only Tailwind tokens via
+  `classNames`/`modifiersClassNames`. We still own the shell (trigger `aria-haspopup`/`aria-expanded`,
+  `role="dialog"`, focus-in, Escape/outside-click close + focus return); the library owns the in-grid
+  keyboard/ARIA. Prefer this over a bespoke calendar/date-grid; keep owning the wrapper's dialog a11y.
 - **Hiding a scrollbar is WCAG-safe when operation is preserved — use the `scrollbar-none` `@utility`.**
   `@utility scrollbar-none` (in `index.css`: `scrollbar-width: none` + `-ms-overflow-style: none` +
   `&::-webkit-scrollbar { display: none }`) hides only the bar's *rendering*; the element stays
@@ -350,6 +362,48 @@ Patterns established so far:
   Batch 14 (a price/name row is a *label*, not an outline node → it became bold `Text`). Rule: use
   `Heading` only for real section headings at the correct sequential level; for emphasis that isn't an
   outline node, use `Text` with `font-bold`. (This also applies inside stories — every story is scanned.)
+- **A clickable card that contains a form control → wrap it in a `<label>`, never a `<button>`
+  (`nested-interactive`).** axe's `nested-interactive` is a hard-gate rule: an interactive element may
+  not contain another (a `<button>` wrapping a `<RadioButton>` is two controls — invalid, and AT
+  can't operate the inner one). Legacy `ProductVariant` did exactly this. The V2 **selectable-card**
+  pattern: make the card a `<label htmlFor={id}>` that wraps the visual content **and** a single native
+  radio/checkbox; the label is not interactive, so clicking anywhere on the card toggles the one real
+  control (with `ariaLabel` for a concise accessible name). A non-labelable nested control (e.g. an
+  `IconWithTooltip` button) is fine — it handles its own clicks and the label targets the input via
+  `htmlFor`. Contrast with the *stretched-overlay-button* pattern above: use `<label>`+control when the
+  card **selects** a form value; use the overlay button when it **triggers an action** and has no form
+  control. Never carry a legacy "button-wraps-a-control" forward.
+- **Constrained fields extend the shared input via typed handler props, not an `any` grab-bag.** A
+  numeric quantity field must block sign/decimal/exponent keys and paste; legacy passed these through a
+  loose `{ other: {...} }` prop. V2 added typed `onKeyDown`/`onPaste` passthroughs to the `InputText`
+  molecule (general and reusable) and `ProductQuantityInput` wires its `preventDefault` guard through
+  them. When a composed field needs a native handler the shared control doesn't expose, add the typed
+  prop to the shared control — don't reach for an untyped escape hatch or a one-off wrapper.
+- **A disclosure's trigger belongs OUTSIDE the collapsing region (which goes `inert`).**
+  `ExpandableWrapper` sets `inert` + `aria-hidden` on its content while collapsed, so nothing inside is
+  focusable or clickable. A trigger nested inside it would therefore become inert *while collapsed* —
+  un-clickable, permanently trapping the panel shut (legacy `CampaignBox` nested its expand toggle in
+  the wrapper). The correct structure: an always-visible header holding the trigger — a real
+  `<button>` with `aria-expanded` bound to the open state and `aria-controls` pointing at the panel's
+  `id` — sitting *above* the `ExpandableWrapper`, which contains only the revealed content.
+  `ExpandableWrapper` takes an `id` for this; it stays presentational (it owns no button/`aria-expanded`
+  — the consumer wires the trigger). Applies to any accordion/expander built on it.
+- **A field's helper/error must be programmatically tied to the control, not just placed near it.**
+  `FormGroup` `cloneElement`-injects `aria-describedby` (pointing at generated helper + error ids) and
+  `aria-invalid` onto the control passed as `children`; `Newsletter` wires its `role="alert"` message
+  the same way. The message components carry `id`s for this (`InlineError`/`InlineHelper` both take one).
+  This is the general fix wherever a validation/instruction message accompanies an input — legacy
+  rendered them as loose siblings (or, worse, signalled errors with a red border only, failing 1.4.1).
+- **Composing a component into a `cloneElement` wrapper needs it to forward the injected ARIA attr.**
+  `ComponentWithTooltip` clones its trigger to add `aria-describedby` (linking the tip). A raw
+  `<button>` accepts it, but a strict-interface component only forwards props it declares. This bit
+  `Button` twice (tooltip's `aria-describedby`; the date-picker trigger's `aria-haspopup`/`aria-expanded`),
+  so **`Button` now extends `ButtonHTMLAttributes` and rest-spreads all standard `<button>` attributes**
+  onto the element (the `ClickableListItem` pattern) — DS-specific props (`surface`, `size`, `loading`, …)
+  stay explicit/documented, everything else (`id`, `name`, `onClick`, `aria-*`, `data-*`) flows through.
+  So `Button` composes into any ARIA-injecting wrapper. When wrapping a design-system component in a
+  prop-injecting wrapper (`cloneElement`, or a dialog/tooltip trigger), confirm the target forwards
+  arbitrary attributes rather than assuming it behaves like a native element.
 
 ## Internationalisation (i18n)
 

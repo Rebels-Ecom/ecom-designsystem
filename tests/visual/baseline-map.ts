@@ -552,4 +552,175 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // MessageBanner, OrderConfirmationDetails, Heading/Text/Button — is migrated). Re-map once CartProduct lands.
   // NOTE: OrderConfirmationPage has NO entry — the legacy `order-confirmation-page-template-story` frame
   // nests the full OrderConfirmation (→ unmigrated CartProduct). Gallery-only Visual; re-map with CartProduct.
+
+  // ── Batch 15 (Tier-1 leaves) ──
+  // IconButton: the small neutral chip (map-pin + orange count badge). Two divergences under the 2% gate —
+  // dark-on-orange badge (legacy white-on-orange fails AA) and lucide vs icomoon map-pin.
+  {
+    storyId: 'design-system-molecules-iconbutton--visual-small-button',
+    legacyBaseline: 'design-system-atoms-iconbutton--icon-button-story-small-button',
+  },
+  {
+    storyId: 'design-system-molecules-iconbutton--visual-over-100-products',
+    legacyBaseline: 'design-system-atoms-iconbutton--icon-button-story-over-100-products',
+  },
+  // NOTE: IconButton `large-link` / `go-to-product` have NO entry — the legacy link rendered a
+  // non-semantic block `<div>` (full-width bar); V2's `DefaultLink` correctly renders an inline `<a>`,
+  // a different box shape too large to diff meaningfully. The `cart-*` / `remove-product` frames are
+  // transparent large buttons using shopping-cart / x-circle glyphs, left unmapped (small-button +
+  // over-100-products already exercise the chip faithfully with the verified map-pin glyph).
+
+  // LinkButton: the full-width primary CTA bar ("Read more here"). Same font divergence as Button,
+  // under the 2% gate. `link-button-story-go-to-cart` is an identical frame (same args) → not re-mapped.
+  {
+    storyId: 'design-system-molecules-linkbutton--visual',
+    legacyBaseline: 'design-system-atoms-linkbutton--link-button-story',
+  },
+  // NOTE: ProductVariant has NO entry — the legacy `product-variant-story` frame is non-deterministic
+  // (its image is a remote CDN URL that rendered broken in the capture) and the story passed no label
+  // props, so its meta rows read literal "undefined". Gallery-only Visual with a deterministic
+  // placeholder image + real labels; behaviour covered by play tests.
+  // ProductQuantityInput: the empty number field + "x KLI (15 styck)" / "Pris: 350,10 kr" readout.
+  // The `Visual` story overrides `labels` to the Swedish copy the legacy frame rendered.
+  {
+    storyId: 'design-system-molecules-productquantityinput--visual',
+    legacyBaseline: 'design-system-molecules-productquantityinput--input-quantity-story',
+  },
+  // AlertBox: the three severity panels (error / warning / information) with the Swedish copy.
+  // The two button-bearing frames (error, information) are mapped DESKTOP-ONLY: on mobile the action
+  // button is full-width, so the documented Button font divergence (legacy referenced an undefined
+  // `--font-family-secondaryBold` → UA font; V2 uses `font-primary`) spans the whole bar and — added
+  // to the title's minor edge diff — tips those frames ~1pt over the 2% gate (desktop's auto-width
+  // button stays under). Warning (no button) matches on both viewports. Same call as the mobile-only
+  // divergences on GroupWrapper / Textarea / UnorderedList.
+  {
+    storyId: 'design-system-molecules-alertbox--visual-error',
+    legacyBaseline: 'design-system-atoms-alertbox--alert-box-box-story-with-button-error',
+    viewports: ['desktop'],
+  },
+  {
+    storyId: 'design-system-molecules-alertbox--visual-warning',
+    legacyBaseline: 'design-system-atoms-alertbox--alert-box-box-story-no-button-warning',
+  },
+  {
+    storyId: 'design-system-molecules-alertbox--visual-information',
+    legacyBaseline: 'design-system-atoms-alertbox--alert-box-box-story-no-button-information',
+    viewports: ['desktop'],
+  },
+
+  // ── Batch 16 (Tier-1 leaves) ──
+  // FormGroup: label + helper + control + error, across InputText and Textarea × 4 states. The
+  // right-label-text frames render the link as an accessible blue `UiLink` (legacy orange fails AA) —
+  // a tiny top-right glyph, well under the 2% gate.
+  {
+    storyId: 'design-system-molecules-formgroup--visual-input-text',
+    legacyBaseline: 'design-system-molecules-formgroup-inputtext--form-group-input-text-story',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-input-text-error',
+    legacyBaseline: 'design-system-molecules-formgroup-inputtext--form-group-input-text-story-error',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-input-text-disabled',
+    legacyBaseline: 'design-system-molecules-formgroup-inputtext--form-group-input-text-story-disabled',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-input-text-right-label',
+    legacyBaseline: 'design-system-molecules-formgroup-inputtext--form-group-input-text-story-right-label-text',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-textarea',
+    legacyBaseline: 'design-system-molecules-formgroup-textarea--form-group-textarea-story',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-textarea-error',
+    legacyBaseline: 'design-system-molecules-formgroup-textarea--form-group-textarea-story-error',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-textarea-disabled',
+    legacyBaseline: 'design-system-molecules-formgroup-textarea--form-group-textarea-story-disabled',
+  },
+  {
+    storyId: 'design-system-molecules-formgroup--visual-textarea-right-label',
+    legacyBaseline: 'design-system-molecules-formgroup-textarea--form-group-textarea-story-right-label-text',
+  },
+  // AccountBox: the account card with/without a contact person. Button font divergence under the gate.
+  {
+    storyId: 'design-system-molecules-accountbox--visual',
+    legacyBaseline: 'design-system-molecules-accountbox--account-box-story',
+    viewports: ['desktop'],
+  },
+  {
+    storyId: 'design-system-molecules-accountbox--visual-no-contact',
+    legacyBaseline: 'design-system-molecules-accountbox--account-box-story-2',
+    viewports: ['desktop'],
+  },
+  // Note: both AccountBox frames are mapped DESKTOP-ONLY. The card content matches, but legacy's
+  // looser paragraph line-spacing accumulates a ~12px vertical drift down the 5 info lines; on the
+  // narrow mobile canvas the card fills most of the width, so that sub-pixel-per-line drift tips the
+  // frame just over the 2% gate (desktop, where the 360px card is a small fraction of 1280px, stays
+  // under). Same vertical-rhythm call as GroupWrapper / UnorderedList / AlertBox.
+  // CampaignBox: the collapsed purple bar, with the select button and limited (button-less) variants.
+  {
+    storyId: 'design-system-molecules-campaignbox--visual',
+    legacyBaseline: 'design-system-atoms-campaignbox--campaign-box-story',
+  },
+  {
+    storyId: 'design-system-molecules-campaignbox--visual-limited',
+    legacyBaseline: 'design-system-atoms-campaignbox--campaign-box-story-limited',
+  },
+  // IconLink: the centred underlined label above a circular icon badge (two frames differ by label).
+  // Label is accessible blue vs legacy orange (documented divergence), a small centred glyph under the gate.
+  {
+    storyId: 'design-system-molecules-iconlink--visual',
+    legacyBaseline: 'design-system-atoms-iconlink--icon-link-story-show-all-products',
+  },
+  {
+    storyId: 'design-system-molecules-iconlink--visual-recommended',
+    legacyBaseline: 'design-system-atoms-iconlink--icon-link-story-show-recommended-products',
+  },
+  // Newsletter: the empty email field joined to the orange "Nyhetsbrev" button, capped at max-w-80
+  // (~320px) to match the legacy row (whose width came from the UA-default input intrinsic size).
+  {
+    storyId: 'design-system-molecules-newsletter--visual',
+    legacyBaseline: 'design-system-molecules-newsletter--newsletter-story',
+  },
+
+  // ── Batch 17 (Tier-1 leaves; UiDatePicker deferred — outsized calendar rewrite) ──
+  // CampaignMessage: bordered box, decorative green alert icon, uppercased message, primary CTA.
+  // Mapped DESKTOP-ONLY: the box is `w-fit`, so whether the message fits one line depends on the exact
+  // available width. The legacy mobile capture (implicit Storybook padding) wrapped it to two lines,
+  // whereas the fullscreen 375px frame fits it on one — a knife-edge wrap flip that shifts the whole
+  // box >2%. Desktop (message comfortably one line) matches. Same class as AccountBox / AlertBox.
+  {
+    storyId: 'design-system-molecules-campaignmessage--visual',
+    legacyBaseline: 'design-system-atoms-campaignmessage--campaign-message-story',
+    viewports: ['desktop'],
+  },
+  // AdminSearch: the closed search bar (blue icon box + tinted input). The dropdown/loader are
+  // behaviour-only (legacy captured the closed bar; `admin-search-story-loading` is the same closed
+  // bar — query empty → no dropdown — so not separately mapped).
+  {
+    storyId: 'design-system-molecules-adminsearch--visual',
+    legacyBaseline: 'design-system-atoms-adminsearch--admin-search-story',
+  },
+  // NOTE: FaqList has NO entry (legacy shipped no story/snapshot); gallery-only Visual.
+  // ButtonWithTooltip: the secondary rounded "Click me" button (tooltip closed).
+  {
+    storyId: 'design-system-molecules-buttonwithtooltip--visual',
+    legacyBaseline: 'design-system-atoms-buttonwithtooltip--button-with-tooltip-story',
+  },
+  // NOTE: AgeVerificationForm has NO entry — the legacy story renders inside an unmigrated Modal;
+  // gallery-only Visual (behaviour covered by play tests).
+  // UiDatePicker: the CLOSED full-width trigger (long label + date-label variants). The calendar
+  // popover is a from-scratch react-day-picker rewrite with no open-state baseline (behaviour covered
+  // by play tests); legacy's react-datepicker popover was never captured either.
+  {
+    storyId: 'design-system-molecules-uidatepicker--visual',
+    legacyBaseline: 'design-system-atoms-uidatepicker--ui-date-picker-story',
+  },
+  {
+    storyId: 'design-system-molecules-uidatepicker--visual-date-label',
+    legacyBaseline: 'design-system-atoms-uidatepicker--ui-date-picker-story-date-label',
+  },
 ]
