@@ -432,6 +432,45 @@ Patterns established so far:
   So `Button` composes into any ARIA-injecting wrapper. When wrapping a design-system component in a
   prop-injecting wrapper (`cloneElement`, or a dialog/tooltip trigger), confirm the target forwards
   arbitrary attributes rather than assuming it behaves like a native element.
+- **The canonical modal overlay (`DrawerSidebar`) — and why `role="dialog"` goes on a `<div>`, not
+  `<aside>`.** A blocking overlay (the counterpart to the passive-notice rule above) implements the full
+  trap: `role="dialog"` + `aria-modal` (while a backdrop is shown), a required `ariaLabel` (a drawer has
+  no inherent heading, so it would otherwise be an unnamed dialog), move focus to the close button on
+  open, **trap Tab within the panel**, close on `Escape`/backdrop/outside-click, and **return focus to
+  whatever was focused before it opened**. Because the trigger belongs to the *consumer* (unlike
+  `MobileNavigation`, which owns its hamburger and can keep a `toggleRef`), capture the opener with
+  `previouslyFocused.current = document.activeElement` on open and `.focus()` it on close — the general
+  return-focus mechanism for any controlled overlay. Body scroll is locked (`document.body.style.overflow
+  = 'hidden'`) unless opted out; the Framer slide is gated on `useReducedMotion`. **Put the dialog role on
+  a `<div>`, not the legacy `<aside>`:** axe's `aria-allowed-role` is a hard-gate rule and rejects
+  `role="dialog"` on `<aside>` (whose implicit role is `complementary`). This only surfaces on the *open*
+  stories — a play test that opens then `Escape`-closes the drawer scans clean in `afterEach` because the
+  panel has unmounted, so add an always-open `Visual`/a11y story to exercise the mounted dialog.
+- **A row of small repeated controls (pagination dots) can't be as dense as legacy — 24px is the target
+  floor (2.5.8).** `Carousel`'s dots are 8px visuals inside 24px-square button targets. WCAG 2.5.8
+  requires each pointer target to be ≥24px *or* (if undersized) sit so a 24px-diameter circle centred on
+  it doesn't intersect a neighbour — i.e. ≥24px centre-to-centre either way. Legacy packed the dots ~15px
+  apart (sub-target), which fails; V2 matches the legacy dot *size* but caps density at `gap-0` (adjacent
+  24px targets, ~24px pitch) — the tightest compliant spacing. Don't chase a legacy layout that only
+  looks tight because its targets are too small. (`Carousel` also gained `arrowsWithDots`: the prev/next
+  arrows render in-flow on the pagination row, vertically centred with the dots and pushed to the edges —
+  a disabled arrow keeps its space via `opacity-0` so the dots stay centred, matching the legacy
+  bottom-arrow layout. `OfferCardList` uses it.)
+- **Reserve the error row so validation doesn't shift the layout (`FormGroup reserveErrorSpace`).** When
+  a field's error appears/clears, an un-reserved slot pushes everything below it down (CLS) — and in a
+  multi-column form grid it misaligns the row. `FormGroup` takes an opt-in `reserveErrorSpace` that keeps
+  a fixed `min-h-6` (1.5rem, matching the legacy fixed-height error slot) under the control even with no
+  error. Opt-in (default off) so single-field consumers and their frozen baselines are unaffected; `Form`
+  enables it for every field. Reserve space where messages come and go in a laid-out group; skip it for a
+  lone field where a shift is harmless.
+- **A radio-group container names itself with `<fieldset>`/`<legend>`, and a scrollable list of controls
+  needs no `tabindex`.** `ProductVariantList` renders its `ProductVariant` selectable-cards as one native
+  radio group inside a `<fieldset>` named by a visually-hidden `<legend>` (1.3.1) — arrow-key selection
+  and the group name come free, no custom `role="radiogroup"`/`aria-activedescendant` machinery. Its
+  `max-h` scroll region carries no `tabindex`: axe's `scrollable-region-focusable` only fires when a
+  scroll container has **no** focusable descendants, and the radios are focusable, so it's already
+  operable. (Add `tabindex={0}` only to a scroll region of *non-focusable* content, as `Carousel`'s track
+  does.)
 
 ## Internationalisation (i18n)
 

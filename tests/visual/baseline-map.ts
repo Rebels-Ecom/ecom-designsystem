@@ -855,4 +855,46 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-organisms-mobilenavigation--visual',
     legacyBaseline: 'design-system-molecules-mobilenavigation--default-mobile-navigation',
   },
+  // ── Batch 20 (Tier-1 OfferCardList + Tier-2 organisms/molecules) ──
+  // OfferCardList: six offer tiles in a swipe carousel. UNLIKE its sibling ArticleList (whose PNG is
+  // 1280×805 / full-page and so is dimensionally incomparable), the legacy OfferCardList PNG fits the
+  // capture viewport exactly (1280×800 desktop / 375×667 mobile — measured), so it IS pixel-mappable.
+  // Offer cards are text-only (decorative icon + heading + subdued body), no remote imagery, so the
+  // frame is deterministic. Maps both viewports.
+  {
+    storyId: 'design-system-organisms-offercardlist--visual',
+    legacyBaseline: 'design-system-organisms-offercardlist--offer-card-list-story',
+  },
+  // NOTE: ProductVariantList has NO entry — the legacy `product-variant-list-story` PNG is a full-page
+  // capture at BOTH viewports (1280×1195 desktop, 375×1195 mobile — measured), taller than the fixed
+  // 1280×800 / 375×667 capture viewport, so it is dimensionally incomparable (same class as
+  // Textarea/FlexContainer gotcha-2). On top of that the legacy frame's own child ProductVariant is
+  // non-deterministic (remote CDN thumbnails + `undefined` label text — see the ProductVariant note).
+  // Its `['visual']` story is gallery-only (current-only); behaviour is covered by the play tests.
+  // AddToCartButton: the resting pill at quantity 0 (the add-to-cart button; the stepper is
+  // behaviour-only, covered by play tests). The legacy frame fits the viewport (1280×800 / 375×667).
+  // The legacy story left `buttonLabel` empty (an unnamed button, which we cannot reproduce without
+  // failing axe), so the V2 frame shows the real CTA label — a tiny white-on-blue text delta inside a
+  // ~180×32px pill (<0.6% of the canvas), safely under the 2% gate. Maps both viewports.
+  {
+    storyId: 'design-system-molecules-addtocartbutton--visual',
+    legacyBaseline: 'design-system-atoms-add-to-cart-button--add-to-cart-button',
+  },
+  // NOTE: DrawerSidebar has NO entry — the legacy `sliding-sidebar-story` captures the CLOSED state (a
+  // bare "Open sidebar" trigger button that is NOT part of the component; a closed drawer renders
+  // nothing). There is nothing of DrawerSidebar in that frame to diff (a plain button on an empty
+  // canvas would false-green under the 2% gate, gotcha-3), so its `['visual']` story is gallery-only
+  // and rendered OPEN for human review. The modal focus-trap behaviour is covered by the play tests.
+  // Form: the config-driven form template, composing the already-baselined FormGroup + InputText +
+  // Button. Both legacy frames fit the viewport (1280×800 / 375×667). Any divergence is confined to the
+  // migrated child controls' own documented deltas (InputText matched with no divergence; Button font
+  // under-gate) — measured under the 2% gate at the batch visual pass.
+  {
+    storyId: 'design-system-molecules-form--visual',
+    legacyBaseline: 'design-system-atoms-form--standard-form',
+  },
+  {
+    storyId: 'design-system-molecules-form--visual-compare-two-fields',
+    legacyBaseline: 'design-system-atoms-form--compare-two-fields',
+  },
 ]

@@ -29,6 +29,12 @@ export interface FormGroupProps {
   labelRightText?: ReactNode
   /** Render the label in normal weight (for toggle-style labels). @default false */
   isToggleBtnLabel?: boolean
+  /**
+   * Always reserve the error row's vertical space (a fixed min-height) even when there is no error, so
+   * the layout doesn't shift when a validation message appears or clears — matches the legacy
+   * fixed-height error slot. Useful in multi-field grids where a shift would misalign the row. @default false
+   */
+  reserveErrorSpace?: boolean
   /** Stretch to the full width of the container. @default false */
   fullWidth?: boolean
   /** Cross-axis alignment of the stacked rows. @default 'normal' */
@@ -63,6 +69,7 @@ function FormGroup({
   requiredText,
   labelRightText,
   isToggleBtnLabel = false,
+  reserveErrorSpace = false,
   fullWidth,
   alignItems = 'normal',
   className,
@@ -100,7 +107,13 @@ function FormGroup({
       )}
       {helperText && <InlineHelper id={helperId}>{helperText}</InlineHelper>}
       {control}
-      {errorText && <InlineError id={errorId}>{errorText}</InlineError>}
+      {reserveErrorSpace ? (
+        <div className="min-h-6">
+          {errorText && <InlineError id={errorId}>{errorText}</InlineError>}
+        </div>
+      ) : (
+        errorText && <InlineError id={errorId}>{errorText}</InlineError>
+      )}
     </div>
   )
 }

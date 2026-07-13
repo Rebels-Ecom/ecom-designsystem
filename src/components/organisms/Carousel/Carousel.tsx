@@ -83,6 +83,12 @@ export interface CarouselProps {
   arrowsBottom?: boolean
   /** Push the arrows out to the very edges of the region. @default false */
   offsetArrows?: boolean
+  /**
+   * Render the previous/next arrows inline on the pagination row — vertically centred with the dots
+   * and pushed to the row's edges — instead of overlaying the track. Matches the legacy layout where
+   * the arrows sit level with the dots at the bottom. @default false
+   */
+  arrowsWithDots?: boolean
   /** Called with the target slide index after a user navigates via an arrow, dot or key. */
   onNavigation?: (index: number) => void
   /** Called with the active slide index whenever it changes (including swipe/scroll). */
@@ -152,6 +158,7 @@ function Carousel({
   lightArrows,
   arrowsBottom,
   offsetArrows,
+  arrowsWithDots,
   onNavigation,
   onSlideChange,
   labels,
@@ -298,7 +305,7 @@ function Carousel({
       : Math.floor(activeIndex / config.visible)
 
   const arrowBase = cn(
-    'absolute z-menu-icon flex size-11 items-center justify-center text-text-default',
+    'z-menu-icon flex size-11 shrink-0 items-center justify-center text-text-default',
     'transition-opacity disabled:pointer-events-none disabled:opacity-0',
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
     lightArrows && 'rounded-full bg-grey-300/75',
@@ -315,6 +322,61 @@ function Carousel({
         arrowsBottom ? 'bottom-0' : 'top-1/2 -translate-y-1/2',
       )
     : cn('left-1/2 -translate-x-1/2', offsetArrows ? 'bottom-0' : 'bottom-2')
+
+  // With `arrowsWithDots`, the arrows join the pagination row (in flow, vertically centred with the
+  // dots) rather than overlaying the track; a disabled arrow keeps its space (opacity-0) so the dots
+  // stay centred, matching the legacy bottom-arrow layout.
+  const inlineArrows = arrowsWithDots && showArrows
+
+  const renderArrow = (dir: 'prev' | 'next', placement?: string) => {
+    const isPrev = dir === 'prev'
+    return (
+      <button
+        type="button"
+        aria-label={isPrev ? t.previous : t.next}
+        disabled={isPrev ? activeIndex <= 0 : activeIndex >= config.maxIndex}
+        onClick={() => navigateTo(activeIndex + (isPrev ? -config.perMove : config.perMove))}
+        className={cn(arrowBase, placement)}
+      >
+        <Icon
+          icon={
+            horizontal
+              ? isPrev
+                ? 'icon-chevron-left'
+                : 'icon-chevron-right'
+              : isPrev
+                ? 'icon-chevron-up'
+                : 'icon-chevron-down'
+          }
+          size="large"
+        />
+      </button>
+    )
+  }
+
+  // gap-0 makes the 24px dot targets (2.5.8) adjacent — the tightest the dots can read while every dot
+  // stays a ≥24px pointer target. Legacy packed the dots ~15px apart, but WCAG 2.5.8 requires targets
+  // to sit ≥24px apart (even undersized ones, via the 24px-circle test), so this is the accessible
+  // floor: matched legacy dot *size* (8px), can't match its sub-target *density*.
+  const dotButtons = showDots
+    ? Array.from({ length: dotCount }, (_, index) => (
+        <button
+          key={index}
+          type="button"
+          aria-label={dotPerItem ? t.goToSlide(index + 1, dotCount) : t.goToPage(index + 1, dotCount)}
+          aria-current={index === activeDot ? 'true' : undefined}
+          onClick={() => navigateTo(dotPerItem ? index : Math.min(index * config.visible, config.maxIndex))}
+          className="flex size-6 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"
+        >
+          <span
+            className={cn(
+              'size-2 rounded-full bg-action-primary transition-opacity',
+              index === activeDot ? 'opacity-100' : 'opacity-50',
+            )}
+          />
+        </button>
+      ))
+    : null
 
   return (
     <section aria-roledescription="carousel" aria-label={ariaLabel} className={cn('relative', className)}>
@@ -341,50 +403,24 @@ function Carousel({
         {children}
       </div>
 
-      {showArrows && (
+      {/* Overlay arrows over the track — only when NOT inlined onto the pagination row. */}
+      {showArrows && !inlineArrows && (
         <>
-          <button
-            type="button"
-            aria-label={t.previous}
-            disabled={activeIndex <= 0}
-            onClick={() => navigateTo(activeIndex - config.perMove)}
-            className={cn(arrowBase, prevPlacement)}
-          >
-            <Icon icon={horizontal ? 'icon-chevron-left' : 'icon-chevron-up'} size="large" />
-          </button>
-          <button
-            type="button"
-            aria-label={t.next}
-            disabled={activeIndex >= config.maxIndex}
-            onClick={() => navigateTo(activeIndex + config.perMove)}
-            className={cn(arrowBase, nextPlacement)}
-          >
-            <Icon icon={horizontal ? 'icon-chevron-right' : 'icon-chevron-down'} size="large" />
-          </button>
+          {renderArrow('prev', cn('absolute', prevPlacement))}
+          {renderArrow('next', cn('absolute', nextPlacement))}
         </>
       )}
 
-      {showDots && (
-        <div className="mt-3 flex justify-center gap-1">
-          {Array.from({ length: dotCount }, (_, index) => (
-            <button
-              key={index}
-              type="button"
-              aria-label={dotPerItem ? t.goToSlide(index + 1, dotCount) : t.goToPage(index + 1, dotCount)}
-              aria-current={index === activeDot ? 'true' : undefined}
-              onClick={() => navigateTo(dotPerItem ? index : Math.min(index * config.visible, config.maxIndex))}
-              className="flex size-6 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"
-            >
-              <span
-                className={cn(
-                  'size-2 rounded-full bg-action-primary transition-opacity',
-                  index === activeDot ? 'opacity-100' : 'opacity-50',
-                )}
-              />
-            </button>
-          ))}
-        </div>
-      )}
+      {(inlineArrows || showDots) &&
+        (inlineArrows ? (
+          <div className="mt-3 flex items-center justify-between gap-2">
+            {renderArrow('prev')}
+            {showDots && <div className="flex items-center justify-center gap-0">{dotButtons}</div>}
+            {renderArrow('next')}
+          </div>
+        ) : (
+          <div className="mt-3 flex justify-center gap-0">{dotButtons}</div>
+        ))}
     </section>
   )
 }

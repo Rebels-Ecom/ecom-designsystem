@@ -15,9 +15,77 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms (Tier-1 leaves)
-- **Last Updated**: 2026-07-09
-- **Current Micro-Batch**: Batch 19 — first Tier-1 organisms + last molecule leaf (complete; **Tabs**
+- **Active Category**: organisms + molecules (Tier-1 → Tier-2)
+- **Last Updated**: 2026-07-13
+- **Current Micro-Batch**: Batch 20 — Tier-1 OfferCardList + first Tier-2 organisms/molecules (complete;
+  **OfferCardList** `[org]`, **ProductVariantList** `[org]`, **AddToCartButton** `[mol]`,
+  **DrawerSidebar** `[mol]`, **Form** `[mol]` — the next five unblocked queue entries top-to-bottom; deps
+  OfferCard/Carousel, ProductVariant/IconButton, UiLink/Button/LinkButton, FormGroup/InputText all
+  migrated). `pnpm build` green, full `vitest --project=storybook` **401/401** (interaction + a11y),
+  `pnpm build-storybook` green, full `pnpm test:visual` **231 passed / 13 skipped** (was 223/13 — **+8
+  baselines**: OfferCardList ×2, AddToCartButton ×2, Form standard ×2, Form compare-two-fields ×2).
+  **ProductVariantList + DrawerSidebar are gallery-only** (measured — see findings). The next batch
+  continues Tier-2: **FooterTopBar**, **Hero**, **SocialMediaLink**, **CartProduct**,
+  **DesktopNavigation**, then the rest of the Tier-2 molecules/organisms.
+- **2026-07-13 — Batch 20 findings & harness changes**:
+  - **Measure before inheriting a sibling's verdict — OfferCardList IS pixel-mappable where ArticleList
+    wasn't.** Both compose Carousel, and the queue reminder warned OfferCardList "likely can't be
+    pixel-diffed if the frame exceeds the capture viewport." Measured the legacy PNGs first: OfferCardList
+    is **1280×800 / 375×667** — fits the capture viewport exactly (ArticleList's were 1280×**805** /
+    full-page). Offer cards are text-only (decorative icon + heading + subdued body, no remote imagery), so
+    the frame is deterministic. Built it (thin ContentWrapper→Carousel wrapper, `offsetArrows`, lg
+    `perPage` = `maxPerPage`), mapped both viewports, and the diff passed clean. Rule reinforced: a
+    same-archetype sibling's "gallery-only" is a hypothesis, not a given — `file`-check the PNG dims first.
+  - **DrawerSidebar = the canonical modal focus-trap (deferred since CookieBar/MobileNavigation).** Full
+    dialog contract: `role="dialog"` + `aria-modal` (while the backdrop shows), named by a required
+    `ariaLabel`, focus moves to the close button on open and is trapped (Tab cycles), `Escape`/backdrop/
+    outside-click close (respecting `disableCloseOnOutsideClick`) and **return focus to whatever was
+    focused before open** (captured via `document.activeElement`, since the trigger is the consumer's — a
+    generalisation of MobileNavigation's `toggleRef` return). Body scroll-locked unless
+    `enableBackgroundScroll`; Framer slide gated on `useReducedMotion`. Legacy `useOnClickOutside` +
+    `no-scroll` class reimplemented inline.
+  - **`role="dialog"` on `<aside>` fails axe `aria-allowed-role` — use a `<div role="dialog">`.** The
+    legacy drawer was a `<motion.aside>`; keeping the element while adding the dialog role tripped
+    `aria-allowed-role` ("ARIA role dialog is not allowed for given element") in the a11y hard-gate (only
+    surfaced on the *open* stories — the closed-then-Escaped play story scanned clean because the panel had
+    unmounted by `afterEach`). Switched the panel to `motion.div`. Documented in DEVELOPMENT.md.
+  - **ProductVariantList = one `<fieldset>` radiogroup + one scroll-toggle (gallery-only).** The variants
+    are a single native radio group (shared `name`) inside a `<fieldset>` named by a visually-hidden
+    `<legend>` — arrow-key selection + group name for free; a non-modal dismissible region (close button +
+    `Escape` + outside-`pointerdown`, no focus trap). Collapsed the legacy two-swapping-Framer scroll
+    buttons into one toggle (down/up by scroll position). The scrollable `<ul>` needs no `tabindex` (its
+    radios are focusable descendants → axe `scrollable-region-focusable` satisfied). **Gallery-only**:
+    the legacy PNG is a full-page 1280×**1195** / 375×**1195** capture (taller than the viewport,
+    gotcha-2) and its child ProductVariant frame is non-deterministic (remote thumbnails + `undefined`
+    labels).
+  - **AddToCartButton = morphing add→stepper; the empty-label legacy frame is an axe fail we can't
+    reproduce (map anyway, under gate).** Reclassified atom→molecule (imports IconButton). At qty 0 it is
+    one `<button>` whose visible `buttonLabel` IS its accessible name (dropped the legacy empty label +
+    redundant `aria-label`); qty >0 becomes a labelled `role="group"` stepper (−/+ IconButtons + a named
+    number field, replacing the legacy conflicting `<label>`+`aria-label` pair). Framer scale animations
+    dropped (non-essential). The legacy baseline shows an **empty** blue pill (`buttonLabel` defaulted to
+    `''` → an unnamed button we cannot reproduce without failing axe), so the V2 frame renders the real
+    CTA — a white-on-blue text delta inside a ~180×32px pill (<0.6% of the canvas), which measured **under
+    the 2% gate** on both viewports (gotcha-10 in action).
+  - **Form = config-driven template over the already-baselined FormGroup + InputText; both frames mapped
+    clean.** Fields become `FormGroup`+`InputText` (grid `lg:grid-cols-2`, `size:'full'` → `col-span-2`);
+    submit gated on validity (required + `pattern` + `matchField` compare, e.g. confirm-password);
+    `role="alert"` general error, `role="status"` success panel replacing the form. Simplifications:
+    dropped `dangerouslySetInnerHTML` (→ `ReactNode`), the autofill-detection dance, the per-field
+    `focusOnRender` autofocus (no focus theft), and `noValidate` suppresses native bubbles in favour of
+    the inline `aria-describedby` errors. **Both legacy frames (standard-form, compare-two-fields) mapped
+    both viewports and passed** — the composed FormGroup/InputText carry their own already-verified
+    styling, so the form-level diff stayed under gate (no need to pre-judge it unmappable).
+  - **2026-07-13 design-diff follow-ups (all re-verified: build green, 401/401 storybook, scoped visual
+    6/6).** (1) **Carousel `arrowsWithDots`** — new opt-in prop rendering the prev/next arrows in-flow on
+    the pagination row (vertically centred with the dots, at the edges; disabled arrow keeps its space via
+    `opacity-0`), matching the legacy bottom-arrow layout; OfferCardList switched from `offsetArrows` →
+    `arrowsWithDots`. (2) **Dot spacing** tightened `gap-1` → `gap-0` — the tightest compliant pitch, since
+    each dot is a 24px target and WCAG 2.5.8 forbids <24px centre-to-centre; legacy's ~15px dot density is
+    a 2.5.8 violation V2 intentionally doesn't copy (matched dot *size*, not sub-target *density*). (3)
+    **FormGroup `reserveErrorSpace`** — new opt-in prop keeping a fixed `min-h-6` error slot (legacy parity)
+    so a field's error doesn't shift the layout / misalign the grid row; Form enables it per field. All
+    three documented in DEVELOPMENT.md.
   `[mol]`, **ArticleList** `[org]`, **BrandDetails** `[org]`, **Breadcrumbs** `[org]`,
   **MobileNavigation** `[org]` — the next five unblocked queue entries top-to-bottom, skipping the
   ⛔ BLOCKED story-only Tier-0 templates; all `needs:` — Button, ArticleCard/Carousel, TagsList, UiLink
@@ -565,7 +633,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (91)
+### Completed (96)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -658,8 +726,13 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] BrandDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/brand-details) — centred brand hero composing Picture/TagsList/Heading/Text/MaxWidth/UiLink; presentational (no landmark); `richText` typed `ReactNode` (legacy passed an un-rendered FC — a bug); dropped the CDN-only `?w=300` suffix; "Läs mer" orange→accessible blue. Copied `pang.png` into `src/assets/blog-images/`. Baseline mapped **desktop-only** (mobile Heading/Text vertical-rhythm drift ~5%, same amplification as GroupWrapper/AccountBox), see batch notes
 - [x] Breadcrumbs `[org]` (Legacy: legacy/src/design-system/components/organisms/breadcrumbs) — correct WCAG breadcrumb pattern: `<nav aria-label>` + `<ol>`, links via UiLink (orange→accessible blue), **last crumb = current page** (`aria-current="page"` plain text, no link, no trailing chevron), decorative chevron separators; dropped the dead `image`/`title`/`textWidth`/`location` props (legacy commented-out); 3 frames (with-bg/without-bg share one V2 story, sustainability) mapped both viewports, see batch notes
 - [x] MobileNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/mobile-navigation) — reclassified molecule→organism; native overlay drawer (Framer/`useOnClickOutside` reimplemented): hamburger toggle (`aria-expanded`/`-controls`) → mounted `<nav>` panel over a click-to-dismiss backdrop, focus-in + trap + `Escape`/backdrop close + focus return + body scroll-lock; nested `aria-expanded` accordion categories with `hidden` collapsed sub-lists; entrance simplified to a mount (non-essential); baseline = the CLOSED hamburger mapped both viewports (open panel behaviour-only), see batch notes
+- [x] OfferCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/offer-card-list) — thin ContentWrapper→Carousel wrapper composing OfferCard (`offsetArrows`, lg `perPage` = `maxPerPage`); presentational (no landmark; Carousel owns the labelled region + keyboard + swipe), required `ariaLabel`, `carouselLabels` forwarded. **Unlike its ArticleList sibling it IS pixel-mappable** — the legacy PNG fits the viewport (1280×800 / 375×667, measured) and offer cards are text-only/deterministic; baseline mapped both viewports (passed clean), see batch notes
+- [x] ProductVariantList `[org]` (Legacy: legacy/src/design-system/components/molecules/product-variant-list) — reclassified molecule→organism; single native radio group (`<fieldset>` + sr-only `<legend>`) of ProductVariant cards, non-modal dismiss (close IconButton + `Escape` + outside-`pointerdown`, no trap), legacy two-swapping-Framer scroll buttons collapsed into one scroll-toggle; **gallery-only** (legacy PNG full-page 1280×1195 / 375×1195 + non-deterministic child thumbnails), see batch notes
+- [x] AddToCartButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/add-to-cart-button) — reclassified atom→molecule; morphs qty-0 add `<button>` (visible `buttonLabel` = accessible name; dropped the legacy empty label + redundant `aria-label`) ↔ a labelled `role="group"` stepper (−/+ IconButtons + one-named number field); Framer scale drops. Legacy baseline is an **empty** pill (unnamed button — an axe fail), so the V2 frame shows the real CTA: a ~180×32px white-on-blue text delta (<0.6% canvas) **under the 2% gate**, mapped both viewports, see batch notes
+- [x] DrawerSidebar `[mol]` (Legacy: legacy/src/design-system/components/molecules/drawer-sidebar) — the canonical modal focus-trap: `<div role="dialog">` + `aria-modal`, required `ariaLabel`, focus-in to close button + Tab trap + `Escape`/backdrop/outside-click close + **focus return to the pre-open element** (`document.activeElement`, since the trigger is the consumer's), body scroll-lock, Framer slide gated on reduced-motion. `role="dialog"` on `<aside>` fails axe `aria-allowed-role` → panel is a `<div>`. **Gallery-only** (legacy captures only the closed state = a bare consumer trigger; Visual shown open), see batch notes
+- [x] Form `[mol]` (Legacy: legacy/src/design-system/components/molecules/form) — config-driven template composing FormGroup + InputText (grid, `size:'full'`→`col-span-2`) + Button/LinkButton/UiLink; submit gated on validity (required + `pattern` email/password/age + `matchField` compare), `role="alert"` general error, `role="status"` success panel; dropped `dangerouslySetInnerHTML`→`ReactNode`, autofill dance, `focusOnRender` autofocus, native bubbles (`noValidate`). Both baselines (standard-form + compare-two-fields) mapped both viewports (passed clean — composed children carry their own verified styling), see batch notes
 
-### Build queue (79 pending, dependency-ordered)
+### Build queue (74 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -675,16 +748,10 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [ ] ⛔ **BLOCKED** ShoppingListPage `[org]` (Legacy: legacy/src/design-system/components/templates/shopping-list-page) — **NOT a leaf** (story-only, no `.tsx`). Real deps in `shopping-list-page.stories.tsx`: Header, Footer, MessagePopup, InfoSummaryBox, OrderConfirmationDetails, ScrollableList (all **unmigrated**). Defer.
 - [ ] ⛔ **BLOCKED** StartPageTemplate `[org]` (Legacy: legacy/src/design-system/components/templates/start-page-template) — **NOT a leaf** (story-only, no `.tsx`). Real deps in `start-page-template.stories.tsx`: Header, Footer, HeroCarousel, OfferCardList, Teaser (all **unmigrated**). Defer.
 
-#### Tier 1 — unlocked after Tier 0
-
-- [ ] OfferCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/offer-card-list) — needs: OfferCard, Carousel · **like ArticleList, its swipe carousel of OfferCards likely can't be pixel-diffed if the frame exceeds the capture viewport — measure, then gallery-only if so.**
+#### Tier 1 — unlocked after Tier 0 — **exhausted** (OfferCardList landed in Batch 20; real leaves continue in Tier 2)
 
 #### Tier 2 — unlocked after Tier 1
 
-- [ ] ProductVariantList `[org]` (Legacy: legacy/src/design-system/components/molecules/product-variant-list) — needs: ProductVariant, IconButton · unblocks 5
-- [ ] Form `[mol]` (Legacy: legacy/src/design-system/components/molecules/form) — needs: UiLink, Button, LinkButton · unblocks 4
-- [ ] AddToCartButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/add-to-cart-button) — needs: IconButton · unblocks 2
-- [ ] DrawerSidebar `[mol]` (Legacy: legacy/src/design-system/components/molecules/drawer-sidebar) — needs: IconButton · unblocks 2
 - [ ] FooterTopBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/footer-top-bar) — needs: LinkButton · unblocks 1
 - [ ] Hero `[mol]` (Legacy: legacy/src/design-system/components/molecules/hero) — needs: LinkButton · unblocks 1
 - [ ] SocialMediaLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/social-media-link) — needs: LinkButton · unblocks 1
