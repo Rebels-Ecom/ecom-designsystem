@@ -223,10 +223,13 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // body text + orange "Läs mer" UILink). The Carousel's own pixels (dots + next-arrow) are ~5% of the
   // frame; ~95% is ArticleList/ArticleCard, neither migrated. Reproducing it means rebuilding that card
   // (and the orange link is now intentionally accessible blue), so a diff here would be a full-canvas
-  // false-green/false-red (gotcha 3), not a Carousel signal. DEFERRED: map this baseline when
-  // ArticleList/ArticleCard land — their Default story reproduces this exact frame (see the queue
-  // reminder in MIGRATION-PROGRESS.md). Until then Carousel's `Visual` story stays gallery-only
-  // (current-only); behaviour is covered by the interaction/a11y play tests.
+  // false-green/false-red (gotcha 3), not a Carousel signal. RESOLVED (Batch 19): ArticleList landed
+  // and its `VisualDefault` story reproduces this exact frame faithfully — but it is still NOT
+  // pixel-mappable: the legacy DESKTOP PNG is 1280×805 vs the fixed 1280×800 viewport (5px dimension
+  // mismatch → auto-fail) and the MOBILE PNG is a 375×746 full-page capture (> 375×667), on top of a
+  // ~40px title→cards vertical offset and the orange→blue link (20–32% before the dimension gap). See
+  // the Batch 19 ArticleList NOTE below for the full per-frame measurement. Carousel's `Visual` story
+  // stays gallery-only (current-only); behaviour is covered by the interaction/a11y play tests.
   // NOTE: TagsList has NO entry — legacy shipped no snapshot for it. Its `Visual` story is
   // `['visual']` (gallery-only) so it still surfaces for review.
   // NOTE: Logotype has NO entry — it renders the real Spendrups brand SVGs (bundled vectors), which
@@ -785,5 +788,71 @@ export const visualBaselines: readonly VisualBaseline[] = [
   {
     storyId: 'design-system-molecules-selectlist--visual',
     legacyBaseline: 'design-system-atoms-select-list--select-list-story',
+  },
+
+  // ── Batch 19 (Tier-1 leaves + first Tier-1 organisms) ──
+  // NOTE: Tabs has NO entry — the legacy `tabs-story` captures the pre-open state (a bare story
+  // toggle button; `isOpen` starts false → no Tabs rendered) and `tabs-story-mina-favoriter` is a
+  // deep composite (Tabs → GroupWrapper → InfoSummaryBox → OrderItem×2 + full-width Button) that
+  // stacks every nested component's documented sub-gate divergence (Button font, OrderItem heading
+  // rhythm, InfoSummaryBox), so a faithful pixel reproduction is not a meaningful oracle. Its
+  // `['visual']` story is gallery-only (current-only); behaviour is covered by the play tests.
+  //
+  // NOTE: ArticleList has NO entry — its `Visual*` stories reproduce the legacy frames FAITHFULLY
+  // (verified by eye: same cards, images, tags, dots, arrow — see the review gallery), but none is
+  // pixel-diffable against the frozen PNGs, for measured reasons per frame:
+  //   • default / carousel-story (5-card swipe carousel): the legacy DESKTOP PNG is 1280×805, but the
+  //     harness viewport is fixed at 1280×800 → a 5px dimension mismatch auto-fails toHaveScreenshot
+  //     regardless of content; the legacy MOBILE PNG is a 375×746 full-page capture (> the 375×667
+  //     viewport). On top of that, legacy leaves a larger title→cards gap (~40px vertical ghosting)
+  //     and the "Läs mer" links diverge orange → accessible blue — together 20–32% even before the
+  //     dimension gap. So Carousel's long-deferred baseline is now RESOLVED as reproduced-but-not-
+  //     pixel-mappable (see the updated Carousel note above), NOT still pending.
+  //   • three-cards: the legacy PNGs are full-page at BOTH viewports (1280×918 desktop, 375×1950
+  //     mobile) — a title + a tall row/column of image cards exceeds each capture viewport, so the
+  //     frame is dimensionally incomparable both ways (same class as Textarea/FlexContainer gotcha-2).
+  //   • full-width: the only dimensionally-comparable frame (1280×800 / 375×667), yet it diffs 70%
+  //     desktop / 11% mobile. Cause is a locked ArticleCard-level divergence: V2 `ArticleCard`
+  //     fullWidth uses `aspect-16/9` (a tall image) whereas the legacy full-width image is a short
+  //     wide banner (~4.8:1). ArticleCard was migrated/frozen in Batch 9 with no baseline of its own,
+  //     so re-tuning its aspect ratio is out of scope here (and would be an ArticleCard change).
+  // All three `Visual*` stories stay `['visual']` (gallery-only, current-only) for human review;
+  // ArticleList behaviour (layout heuristics, carousel region, localisation) is covered by play tests.
+  // BrandDetails: centred brand hero (logo + h3 name + reading-measure description + CTA), built from
+  // the migrated Picture/Heading/Text/MaxWidth/UiLink. The "Läs mer" link diverges orange → accessible
+  // blue (documented AA fix). Mapped DESKTOP-ONLY: the brand image matches exactly on both viewports,
+  // but the h3 name + three-sentence description carry the known Heading/Text vertical-rhythm drift
+  // (Edmondsans metrics, documented since Batch 1) — the text wraps identically but sits a few px
+  // offset, and on the narrow 375px mobile canvas that vertical ghosting is ~5% of the frame (> gate);
+  // desktop dilutes it across 1280px and matches. Same amplification call as GroupWrapper / UnorderedList
+  // / AccountBox / OrderItem mina-ordrar-2. Mobile layout is still covered by the play tests.
+  {
+    storyId: 'design-system-organisms-branddetails--visual',
+    legacyBaseline: 'design-system-organisms-brand-details--brand-details-story',
+    viewports: ['desktop'],
+  },
+  // Breadcrumbs: a top-of-page crumb row. The `with-background`/`without-background` legacy frames both
+  // render the same "Start > Öl" trail (the legacy image/title props were dead code), so one V2 `Visual`
+  // story maps to both. Divergences are confined to a thin top strip: crumb links go orange → accessible
+  // blue (documented AA fix), and the current page (Öl / the last crumb) is correctly non-linked with no
+  // trailing chevron (legacy left it a chevroned link).
+  {
+    storyId: 'design-system-organisms-breadcrumbs--visual',
+    legacyBaseline: 'design-system-organisms-breadcrumbs--breadcrumbs-story-with-background',
+  },
+  {
+    storyId: 'design-system-organisms-breadcrumbs--visual',
+    legacyBaseline: 'design-system-organisms-breadcrumbs--breadcrumbs-story-without-background',
+  },
+  {
+    storyId: 'design-system-organisms-breadcrumbs--visual-sustainability',
+    legacyBaseline: 'design-system-organisms-breadcrumbs--breadcrumbs-story-sustainability',
+  },
+  // MobileNavigation: the CLOSED state — a hamburger toggle in the top bar (the slide-in drawer/panel
+  // is behaviour-only, captured only closed by the legacy story, and covered by the play tests). Legacy
+  // `icon-menu` glyph vs the V2 lucide menu icon is the only divergence, a tiny top-right glyph.
+  {
+    storyId: 'design-system-organisms-mobilenavigation--visual',
+    legacyBaseline: 'design-system-molecules-mobilenavigation--default-mobile-navigation',
   },
 ]

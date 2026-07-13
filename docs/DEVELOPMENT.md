@@ -528,6 +528,20 @@ migration parity check, independent of the a11y/interaction suite.
   explicit in `tests/visual/baseline-map.ts`: each entry maps a static, `['visual']`-tagged `Visual`
   story to a legacy basename. `scaffold-component` adds one entry per migrated component that has a
   baseline; components with no legacy counterpart (e.g. `Icon`, `ExpandableWrapper`) get none.
+  **One story may map to several baselines** — the spec's test title embeds both `storyId` and
+  `legacyBaseline`, so a single `Visual` frame that legitimately reproduces two legacy captures (e.g.
+  ArticleList's `Default` swipe-carousel frame is also Carousel's `carousel-story` frame; Breadcrumbs'
+  shared `Start > Öl` row is both the `with-background` and `without-background` frames) gets one
+  baseline-map entry per baseline, and `--grep <name>` still isolates a component.
+- **A whole organism can be untestable when it's taller than the capture viewport.** The mobile
+  `viewports: ['desktop']` opt-out assumes desktop still fits 1280×800. But a tall organism (e.g.
+  `ArticleList` — a title over a stacked/rowed set of image cards) is captured **full-page** by legacy
+  at *both* viewports (three-cards was 1280×918 desktop, 375×1950 mobile), and even a swipe carousel can
+  come in a few px over (default was 1280×805 vs the fixed 800). The viewport-clipping harness can never
+  match those dimensions, so the component is **gallery-only** (no baseline-map entry) even though every
+  child is migrated and the frame reproduces faithfully by eye. This is measured, not assumed: build the
+  `Visual` story, map it, run `playwright --grep`, and read the dimension mismatch / diff ratio before
+  deciding — then drop the entries with a documented NOTE if they can't match.
 - **Per-viewport opt-out.** An entry may restrict `viewports` when one legacy PNG is structurally
   incomparable — e.g. `InputFile`'s mobile baseline is 420px wide at a 375px viewport because the
   legacy component's absolutely-positioned hidden file input overflowed the capture; V2 fixes that

@@ -7,11 +7,12 @@ import { visualBaselines } from './baseline-map'
  * `-<viewport>.png` reference is used — comes from the Playwright project (`desktop` /
  * `mobile`); see `playwright.config.ts`.
  *
- * Titles embed the story id, so a single component can be run in isolation:
- *   pnpm test:visual --grep heading
+ * Titles embed the story id AND the baseline name, so a single component can be run in isolation
+ * (`pnpm test:visual --grep heading`) and one story mapped to several baselines (e.g. ArticleList's
+ * Default frame is also Carousel's baseline) stays a unique, non-clashing test title.
  */
 for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
-  test(`${storyId} matches legacy baseline`, async ({ page }, testInfo) => {
+  test(`${storyId} matches legacy baseline ${legacyBaseline}`, async ({ page }, testInfo) => {
     test.skip(
       viewports !== undefined && !viewports.includes(testInfo.project.name as 'desktop' | 'mobile'),
       'No usable legacy baseline for this viewport (see baseline-map.ts)',

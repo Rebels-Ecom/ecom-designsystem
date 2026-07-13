@@ -15,8 +15,60 @@
 
 ## Current Batch Status
 
-- **Active Category**: molecules (Tier-1 leaves)
+- **Active Category**: organisms (Tier-1 leaves)
 - **Last Updated**: 2026-07-09
+- **Current Micro-Batch**: Batch 19 — first Tier-1 organisms + last molecule leaf (complete; **Tabs**
+  `[mol]`, **ArticleList** `[org]`, **BrandDetails** `[org]`, **Breadcrumbs** `[org]`,
+  **MobileNavigation** `[org]` — the next five unblocked queue entries top-to-bottom, skipping the
+  ⛔ BLOCKED story-only Tier-0 templates; all `needs:` — Button, ArticleCard/Carousel, TagsList, UiLink
+  — already migrated). `pnpm build` green, full `vitest --project=storybook` **380/380** (interaction +
+  a11y), `pnpm build-storybook` green, full `pnpm test:visual` **223 passed / 13 skipped** (was 214/12 —
+  **+9 baselines** [Breadcrumbs ×6, BrandDetails desktop ×1, MobileNavigation ×2], **+1 skip**
+  [BrandDetails mobile]). **Tabs + ArticleList are gallery-only** (see findings). Carousel's long-deferred
+  baseline is now **RESOLVED** (reproduced by ArticleList but not pixel-mappable — measured). The next
+  batch continues Tier-1 with **OfferCardList**, then the Tier-2 organisms (ProductVariantList, Form,
+  AddToCartButton, DrawerSidebar, AccountBoxList, DeliveryForm, FaqGroup, …).
+- **2026-07-09 — Batch 19 findings & harness changes**:
+  - **Tabs = compose the migrated Button as `role="tab"`, drop the `isOpen` self-mount anti-pattern.**
+    Built the WCAG/APG tabs pattern (`tablist`/`tab`/`tabpanel`, `aria-selected`, roving `tabindex` +
+    Arrow/Home/End). The active tab must stay focusable (legacy `disabled`-ed it — invalid for the
+    pattern), so selection is styled via `surface` (`primary` selected / `secondary` not) not `disabled`.
+    Panels render always with `hidden` on the inactive ones so every `aria-controls` target resolves and
+    collapsed content leaves the tree. Dropped `isOpen` (a component gating its own mount is redundant —
+    the consumer conditionally renders). **Gallery-only**: legacy `tabs-story` captures the pre-open
+    state (bare toggle, no Tabs) and `mina-favoriter` is a deep composite (Tabs → InfoSummaryBox →
+    OrderItem×2 + Button) that stacks every child's sub-gate divergence — not a meaningful oracle.
+  - **One story can now map to MANY legacy baselines (harness generalization).** The visual spec keyed
+    tests by `storyId` alone, so a story mapped to two baselines collided. Titles now embed `storyId` +
+    `legacyBaseline`, so `--grep <component>` still works AND ArticleList's Default frame can be diffed
+    against both `articlelist--default` and `carousel--carousel-story`. Documented in DEVELOPMENT.md.
+  - **ArticleList reproduces Carousel's frame faithfully but it's still not pixel-mappable — MEASURE,
+    don't pre-judge (and don't force a map either).** The queue reminder said "map carousel-story here."
+    I built it, mapped all 4 frames, and RAN the diff: default/carousel desktop legacy PNG is 1280×**805**
+    vs the fixed 800px viewport (dimension mismatch → auto-fail); mobile PNGs are full-page captures
+    (746–1950px > viewport); full-width diffs 70% because V2 `ArticleCard` fullWidth uses `aspect-16/9`
+    while legacy used a ~4.8:1 banner (a locked ArticleCard-level divergence, out of scope). So
+    **ArticleList is gallery-only**, and Carousel's deferral is resolved with evidence, not left dangling.
+    Rule reinforced: a from-scratch organism taller than the capture viewport can't be diffed by the
+    viewport-clipping harness even when every child is migrated.
+  - **Breadcrumbs = the correct `nav`/`ol` pattern; the last crumb is the current page.** Legacy rendered
+    a `FlexContainer` div of orange (fails-AA) links with a trailing chevron after the current page and a
+    redundant `aria-label="Go to X"`. V2: `<nav aria-label>` + `<ol>`, links → accessible blue `UiLink`,
+    the last crumb is `aria-current="page"` plain text (no link, no trailing chevron), chevrons decorative.
+    Dropped the dead `image`/`title`/`textWidth`/`location` props (all commented-out in legacy). All 3
+    frames map both viewports (tiny top-strip divergences under the gate).
+  - **BrandDetails desktop-only — the recurring vertical-rhythm amplification.** Brand image matches
+    exactly; the h3 name + description carry the Edmondsans rhythm drift (wraps identically, sits a few px
+    off) → ~5% on the 375px mobile canvas, under gate on desktop. Same call as GroupWrapper/AccountBox/etc.
+    Also typed `richText` as `ReactNode` (legacy passed an un-rendered FC — a bug) and dropped the CDN-only
+    `?w=300` suffix (a library can't assume a consumer's image CDN).
+  - **MobileNavigation = native overlay drawer (Framer/`useOnClickOutside` reimplemented).** Hamburger
+    toggle (`aria-expanded`/`-controls`) opens a mounted `<nav>` panel over a click-to-dismiss backdrop;
+    focus moves to the close button and is trapped, `Escape`/backdrop close and return focus to the
+    toggle, body scroll-locks. Categories are nested `aria-expanded` disclosures whose collapsed sub-list
+    is `hidden` (leaves the tree + tab order). Entrance simplified to a mount (non-essential; only the
+    closed hamburger is pixel-tested → maps both viewports). The canonical full modal trap still lands
+    with Modal/DrawerSidebar.
 - **Current Micro-Batch**: Batch 18 — Tier-1 molecule leaves (complete; **CookieBar**, **MultiSelect**,
   **OrderItem**, **Search**, **SelectList** — the next five unblocked leaves top-to-bottom, all `needs:
   Button`/`InputText` already migrated; **UiDatePicker left untouched — owned by another session**).
@@ -492,8 +544,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 86 / 155
-- Remaining: 69
+- Completed: 91 / 155
+- Remaining: 64
 
 ## Components Checklist
 
@@ -513,7 +565,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (86)
+### Completed (91)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -601,8 +653,13 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] OrderItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/order-item) — two modes: **link card** (one chevron link — consolidated legacy's redundant double-link and fixed its `aria-label="Go to order undefined"` via a `labels.goToOrder` fallback; download link is a sibling, no nested anchors) and **inline card** (order-number/action are real `<button>`s, not an `onClick`'d `<h4>`); status text chip (never colour-only) + decorative icon; dropped dead `title`/`onDownload` props; order-number/chevron orange→accessible blue; 5 baselines mapped, **`mina-ordrar-2` desktop-only** (its dark blue tag amplifies the known Heading rhythm drift to ~3% on the 375px canvas only; the identical `mina-ordrar-1` + its own desktop frame pass), see batch notes
 - [x] Search `[mol]` (Legacy: legacy/src/design-system/components/atoms/search) — reclassified atom→molecule; `<form role="search">` landmark, visually-hidden field label (placeholder≠label, 3.3.2), icon-only submit + focusable clear button with action `aria-label`s, results = labelled list of real links, Escape + outside-click close; typing only reports (no context change, 3.2.2); added `labels` (field/submit/clear/results, English defaults) + optional `onSubmit`/`linkComponent`; search glyph white→accessible black-on-orange; baseline (closed bar) mapped both viewports (results behaviour-only), see batch notes
 - [x] SelectList `[mol]` (Legacy: legacy/src/design-system/components/molecules/select-list) — reclassified atom→molecule; disclosure `<button>` (`aria-haspopup`/`-expanded`/`-controls`) revealing a native radio group (single-select, native arrow-key nav, labelled by `placeholder`); Escape + outside-click close with focus return; dropped legacy JS left/right reposition + the no-op framer wrapper (documented simplification); no built-in UI strings; baseline (closed "Sortera" trigger) mapped both viewports (open group behaviour-only), see batch notes
+- [x] Tabs `[mol]` (Legacy: legacy/src/design-system/components/molecules/tabs) — WCAG/APG tabs pattern (`tablist`/`tab`/`tabpanel`, `aria-selected`, roving `tabindex` + Arrow/Home/End); composes the migrated Button as `role="tab"` (selected = `surface="primary"`, kept focusable — legacy invalidly `disabled`-ed it); panels always rendered with `hidden` on inactive so `aria-controls` resolves; dropped the `isOpen` self-mount anti-pattern; **gallery-only** (legacy `tabs-story` = pre-open toggle, `mina-favoriter` = deep composite), see batch notes
+- [x] ArticleList `[org]` (Legacy: legacy/src/design-system/components/organisms/article-list) — composes ArticleCard + Carousel; legacy per-count size/height/width heuristics ported; `swipe` → responsive Carousel, else wrapping flex grid; presentational (no landmark), `<h2>` title over the cards' `<h3>`. **Gallery-only**: reproduces the legacy frames faithfully but none is pixel-diffable — carousel/default legacy PNG is 805px vs the 800px viewport (auto-fail) + mobile is full-page; three-cards is full-page both viewports; full-width diffs 70% (locked ArticleCard `aspect-16/9` vs legacy ~4.8:1 banner). **Resolves Carousel's deferred baseline** (reproduced, not mappable — measured), see batch notes. Copied `pang.png`? no — reused existing `content9.webp`.
+- [x] BrandDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/brand-details) — centred brand hero composing Picture/TagsList/Heading/Text/MaxWidth/UiLink; presentational (no landmark); `richText` typed `ReactNode` (legacy passed an un-rendered FC — a bug); dropped the CDN-only `?w=300` suffix; "Läs mer" orange→accessible blue. Copied `pang.png` into `src/assets/blog-images/`. Baseline mapped **desktop-only** (mobile Heading/Text vertical-rhythm drift ~5%, same amplification as GroupWrapper/AccountBox), see batch notes
+- [x] Breadcrumbs `[org]` (Legacy: legacy/src/design-system/components/organisms/breadcrumbs) — correct WCAG breadcrumb pattern: `<nav aria-label>` + `<ol>`, links via UiLink (orange→accessible blue), **last crumb = current page** (`aria-current="page"` plain text, no link, no trailing chevron), decorative chevron separators; dropped the dead `image`/`title`/`textWidth`/`location` props (legacy commented-out); 3 frames (with-bg/without-bg share one V2 story, sustainability) mapped both viewports, see batch notes
+- [x] MobileNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/mobile-navigation) — reclassified molecule→organism; native overlay drawer (Framer/`useOnClickOutside` reimplemented): hamburger toggle (`aria-expanded`/`-controls`) → mounted `<nav>` panel over a click-to-dismiss backdrop, focus-in + trap + `Escape`/backdrop close + focus return + body scroll-lock; nested `aria-expanded` accordion categories with `hidden` collapsed sub-lists; entrance simplified to a mount (non-essential); baseline = the CLOSED hamburger mapped both viewports (open panel behaviour-only), see batch notes
 
-### Build queue (84 pending, dependency-ordered)
+### Build queue (79 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -620,12 +677,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 
 #### Tier 1 — unlocked after Tier 0
 
-- [ ] Tabs `[mol]` (Legacy: legacy/src/design-system/components/molecules/tabs) — needs: Button
-- [ ] ArticleList `[org]` (Legacy: legacy/src/design-system/components/organisms/article-list) — needs: ArticleCard, Carousel · **when migrated, its `Default` story (5 ArticleCards in a swipe Carousel) reproduces the legacy `carousel-story` frame → map `design-system-organisms-carousel--carousel-story` (desktop + mobile) here to finally give Carousel a real visual comparison. Copy `legacy/src/assets/blog-images/Content9.png` into `src/assets/`. Expect the "Läs mer" link to diverge orange→blue (documented AA fix).**
-- [ ] BrandDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/brand-details) — needs: TagsList
-- [ ] Breadcrumbs `[org]` (Legacy: legacy/src/design-system/components/organisms/breadcrumbs) — needs: UiLink
-- [ ] MobileNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/mobile-navigation) — needs: Button
-- [ ] OfferCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/offer-card-list) — needs: OfferCard, Carousel
+- [ ] OfferCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/offer-card-list) — needs: OfferCard, Carousel · **like ArticleList, its swipe carousel of OfferCards likely can't be pixel-diffed if the frame exceeds the capture viewport — measure, then gallery-only if so.**
 
 #### Tier 2 — unlocked after Tier 1
 
