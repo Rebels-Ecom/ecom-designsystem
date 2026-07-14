@@ -15,18 +15,129 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms + molecules (Tier-1 → Tier-2)
+- **Active Category**: organisms + molecules (Tier-2)
 - **Last Updated**: 2026-07-13
-- **Current Micro-Batch**: Batch 20 — Tier-1 OfferCardList + first Tier-2 organisms/molecules (complete;
-  **OfferCardList** `[org]`, **ProductVariantList** `[org]`, **AddToCartButton** `[mol]`,
-  **DrawerSidebar** `[mol]`, **Form** `[mol]` — the next five unblocked queue entries top-to-bottom; deps
-  OfferCard/Carousel, ProductVariant/IconButton, UiLink/Button/LinkButton, FormGroup/InputText all
-  migrated). `pnpm build` green, full `vitest --project=storybook` **401/401** (interaction + a11y),
-  `pnpm build-storybook` green, full `pnpm test:visual` **231 passed / 13 skipped** (was 223/13 — **+8
-  baselines**: OfferCardList ×2, AddToCartButton ×2, Form standard ×2, Form compare-two-fields ×2).
-  **ProductVariantList + DrawerSidebar are gallery-only** (measured — see findings). The next batch
-  continues Tier-2: **FooterTopBar**, **Hero**, **SocialMediaLink**, **CartProduct**,
-  **DesktopNavigation**, then the rest of the Tier-2 molecules/organisms.
+- **Current Micro-Batch**: Batch 21 — Tier-2 molecules/organisms (complete;
+  **FooterTopBar** `[mol]`, **Hero** `[mol]`, **SocialMediaLink** `[mol]`, **CartProduct** `[org]`,
+  **DesktopNavigation** `[org]` — the next five unblocked queue entries top-to-bottom; deps LinkButton,
+  ProductQuantityInput, IconButton all migrated). `pnpm build` green, full `vitest --project=storybook`
+  **420/420** (interaction + a11y), `pnpm build-storybook` green, full `pnpm test:visual` **239 passed /
+  13 skipped** (was 231/13 — **+8 baselines**: FooterTopBar ×2, SocialMediaLink ×6 [facebook/instagram/
+  linkedin × desktop/mobile]). **Hero, CartProduct, DesktopNavigation are gallery-only** (measured — see
+  findings). The next batch continues Tier-2: **HorizontalVariant**, **ProductSearch**, **AlertMessage**,
+  **FaqHero**, **LinkListItem**, then the rest of the Tier-2 molecules/organisms.
+- **2026-07-13 — Batch 21 findings & harness changes**:
+  - **Icon-only-on-mobile links must carry an explicit accessible name (FooterTopBar).** The bar's pills
+    collapse to icon-only circles below `md`, hiding the label with `display:none` — which also drops it
+    from the a11y tree, so the legacy link became **unnamed on mobile**. V2 sets `ariaLabel={label}` on
+    every `LinkButton` unconditionally (name survives the hide) and only visually hides the text span when
+    a type icon is present. Reused the existing `--spacing-footer-bar-{mobile,desktop}` tokens
+    (`h-footer-bar-*`) rather than inlining the 4.25rem/6rem heights. Both viewports map (text + decorative
+    icons, deterministic — lucide vs icomoon glyph is a few px, under the 2% gate).
+  - **SocialMediaLink (atom→molecule) = a round `LinkButton` + decorative `Icon`.** Icon-only link → the
+    required `label` is the accessible name (`aria-label`), the platform glyph is `aria-hidden`; blue glyph
+    on the light `bg-icon-bg-blue` chip clears 1.4.11. Deterministic → all three legacy frames mapped
+    (the ~40px circle is <0.2% of the canvas, so the icon-set glyph delta is trivially under gate).
+  - **Hero = gallery-only; text-over-media passes axe via `<img>` overlap, not a scrim.** Every legacy
+    `heros--*` frame is a full-bleed REMOTE image/video (non-deterministic; a local placeholder is a
+    different picture), so no baseline is mapped — `Visual*` stories use local assets for the gallery only.
+    The overlaid heading/preamble sit over the media with no opaque ancestor bg, but the covering `<img>`
+    makes axe return *incomplete* (not a violation) for those text nodes, so the a11y hard-gate passes with
+    the faithful white/decorative-orange text. Coupled the heading's level+size behind a `headingLevel`
+    prop (default `1`); **dropped the legacy `fadeIn` entrance** as non-essential motion (2.3.3†).
+  - **CartProduct (molecule→organism) = gallery-only; the legacy product image is a *broken* remote image.**
+    The captured legacy frame shows the browser's broken-image placeholder (the CDN thumbnail 404'd), so
+    the image region (~4% of the canvas) is non-deterministic and unreproducible (same class as
+    ProductVariant/ProductVariantList) → no baseline. Rendered as an `<article>`; the name is an `<h5>`
+    that becomes a real `<a>` when `productUrl` is set; the remove control is an `IconButton` named via
+    `labels.remove` (legacy hard-coded "Remove product"); `loading` swaps in the `role="status"` Loader.
+    Verified `--color-purple` (#9a576f) price text clears 4.5:1 on white/cream.
+  - **DesktopNavigation (molecule→organism) = the batch's big a11y rewrite; gallery-only.** Legacy
+    hover-driven Framer mega-menu → an accessible **disclosure-nav**: labelled `<nav>` landmark, plain
+    top-level items are `<a href>`, category items are `<button aria-expanded aria-controls>` toggling one
+    panel at a time; `Escape` closes + **returns focus to the trigger**, a `pointerdown` outside closes,
+    and the active item carries `aria-current="page"` + bold (never colour-only). **Legacy active/hover
+    orange (#f08a00 ≈ 2.9:1 on white, fails 4.5:1) → accessible blue text + a blue underline indicator**
+    (same orange→blue precedent as Button/UiLink/Text). Framer entrance dropped. Gallery-only because the
+    *only* legacy baseline is the **empty loading state** (`categories: []`) captured mid-shimmer — the
+    real menu only appears on interaction, which the static capture never triggered.
+  - **Type reuse across two organisms (MobileNavigation ↔ DesktopNavigation).** Both consume the same
+    `NavItem`/`NavLink`/`NavCategory` model. DesktopNavigation **imports** them from MobileNavigation (the
+    owning module) instead of redeclaring — and `src/index.ts` exports them **once** (via MobileNavigation)
+    to avoid a duplicate-export collision. Convention: when two components share a type model, the earlier/
+    owning module owns the public export; siblings import it. (Documented for future shared-model batches.)
+  - **2026-07-14 remediation — `reviewOnly` baselines + full gallery-pairing audit (fixes a recurring
+    miss).** A `Visual` story that faithfully reproduces a legacy scene but can't clear the 2% pixel gate
+    was previously dropped to *gallery-only* — which meant the `visual:review` gallery showed it
+    **current-only, with no Legacy pane to compare against**. Added a **`reviewOnly: true`** flag to
+    `baseline-map.ts`: the pixel gate (`components.visual.spec.ts`) skips it, the gallery still pairs
+    Legacy | Current | Compare + Δ (badged "review-only"). **Root cause for Hero specifically:** its
+    `Visual*` stories used arbitrary `Teaser*` placeholders instead of the actual legacy hero images —
+    the legacy stories composed LOCAL assets (`Promo_Hero_C3/L1.png`), now copied into
+    `src/assets/hero-images/` and reproduced exactly, then mapped `reviewOnly` (image matches; brand-font
+    /larger-h1 text diverges). **Swept all 162 `['visual']` stories vs 326 legacy snapshots**: added 11
+    `reviewOnly` pairings where the V2 story already/now reproduces the legacy scene — Hero ×2,
+    ArticleList ×3, ProductVariant, ProductVariantList, Logotype, Heading (delivery-form), CartProduct,
+    DesktopNavigation (its `VisualLoading` reproduces the empty-shimmer baseline), CartProductList (now
+    composes real CartProduct rows — unblocked this batch). `pnpm test:visual` stays green (239 passed,
+    review-only skipped). Remaining current-only stories are legitimately unpairable: genuinely no legacy
+    snapshot (Placeholder, SingleSelect, ArticleCard, TagsList, TagsDescription, FaqList), or the legacy
+    frame is a *different scene* (closed overlay: DrawerSidebar/PopUp/CartSidebar/Tabs; blank/animation:
+    DeliveryInfoBar/Video; Word-paste/remote: RichText/IntroBlock/Picture) or composes still-unmigrated
+    children (Cart, CartDeliveryDetails, CartOrderDetails, OrderConfirmation(Page), LoginPage,
+    ScrollableList, AgeVerificationForm) — each carries a NOTE in `baseline-map.ts`.
+  - **2026-07-14 follow-up — re-paired the cart-family unblocked by CartProduct.** **OrderConfirmation**
+    and **OrderConfirmationPage** now compose the full legacy scene (heading, success banner, three
+    OrderConfirmationDetails blocks, real CartProduct rows, action buttons) — mapped `reviewOnly` (+2).
+    OrderConfirmationPage reuses OrderConfirmation's exact `confirmationContent` fragment (exported with
+    `excludeStories`), mirroring the legacy story import. **Gave CartProduct a `headingLevel` prop**
+    (default 5): the composed scene put its `<h5>` name under the `<h3>` "Grattis", tripping axe
+    `heading-order` (skips h4) — the fix makes the card's outline level context-driven (`4` here), which
+    a card should be anyway. **CartSidebar stays current-only** — NOT a child gap (DrawerSidebar +
+    CartProduct both landed); its legacy baseline was captured with the drawer CLOSED, so the frame is
+    just the consumer's bare "Open sidebar" trigger — a different scene from the open V2 sidebar, with no
+    open-state legacy frame to diff (same closed-overlay case as DrawerSidebar/PopUp). Note updated.
+  - **2026-07-14 visual-fidelity pass — 6 gallery diffs corrected against the legacy baselines** (found
+    by reviewing the paired `visual:review` frames; verified in the live Storybook via the preview tools):
+    1. **Hero** — heading was the DS `h1` size (`text-h-xl`, ~3.6rem); legacy is ~2.5rem, so overrode to
+       `text-2xl md:text-h-l-lg` (keeps `<h1>` semantics). Overlay read too light (measured luminance 64
+       vs legacy 40) — `Picture`'s `pictureWithOpacity` scrim under-darkened here, so replaced it with an
+       explicit scrim div in Hero (`bg-black/50` dark, `bg-white/30` light), confirmed 0.5 alpha over the
+       image.
+    2. **CartProduct** — image sat far-left in a wide column (the `<picture>` shrank as a flex item);
+       added `justify-center` + `self-stretch` and a fixed row height (`min-h-46 md:min-h-42`) so the 64px
+       image centres like legacy. Remove `IconButton` moved to top-right (dropped the `py-4` that pushed
+       it down; content is now `flex-1` so the icon is pushed to the far edge like legacy's `iconLink`).
+    3. **FooterTopBar** — desktop pills are now equal width: the `<ul>` is `md:inline-grid
+       md:grid-flow-col md:auto-cols-fr` (equal columns sized to the widest label → 3×181px).
+    4. **SocialMediaLink** — was a rounded square (`LinkButton round` sets the size but not the radius);
+       added `rounded-full` → a true circle.
+    5. **ArticleList full-width** — `ArticleCard` fullWidth used `aspect-16/9` (tall); a very wide aspect
+       box is overridden by the tall intrinsic image on a flex item, so switched to a fixed banner height
+       (`h-64 overflow-hidden`) + `object-cover`; added `px-4 md:px-8` to the static layout so it's
+       contained (not full-bleed) like the legacy ContentWrapper.
+    6. **ProductVariant** (mobile) — shrank the radio row (`min-h-8` → `min-h-5`, legacy tag line-height)
+       and top-aligned the content row (`items-center` → `items-start`) so the meta sits directly under
+       the radio, not floating mid-column.
+    The two GATED components (FooterTopBar, SocialMediaLink) still pass the 2% pixel gate — the changes
+    move them CLOSER to their legacy baselines; the rest are review-only.
+  - **2026-07-14 corrections (measured, not eyeballed — after review feedback).** The first Hero pass was
+    verified on desktop only and shipped three still-wrong mobile frames. Corrected by canvas-measuring
+    the mean RGB of each frame vs its legacy baseline at BOTH viewports:
+    - **Hero light overlay is responsive.** Legacy is white/30 on desktop (my scrim matched exactly:
+      current [214,172,121] vs legacy [214,173,122]) but ~white/78 on mobile — my flat white/30 left the
+      mobile frame pink. Fixed to `bg-white/75 md:bg-white/30` → mobile now [240,226,208] vs legacy
+      [242,231,216].
+    - **Hero dark overlay** ≈ 60–65% both viewports (mine was 50% → too light); set to `bg-black/65` →
+      mobile [53,51,39] vs legacy [49,47,31], desktop [54,49,47] vs [51,44,42].
+    - **Hero centre title** was left-aligned: the `Heading` is a flex element with its own
+      `justify-start`, so the parent `text-center` never reached it. Fixed by passing `align={alignContent}`
+      to `Heading` — verified centred at both viewports (mobile h1 centred in its column; desktop h1 box
+      centred on page centre 640).
+    - **CartProduct spacing**: my fallback image rendered ~31px (half of legacy's 63px) floating in a
+      20% column. Now the image fills a snug `w-20 md:w-24` column (`classNamePicture`/`classNameImg`
+      = `h-full w-full object-contain`), so the thumbnail hugs the left with a 16px gap to the content
+      (was 129px).
 - **2026-07-13 — Batch 20 findings & harness changes**:
   - **Measure before inheriting a sibling's verdict — OfferCardList IS pixel-mappable where ArticleList
     wasn't.** Both compose Carousel, and the queue reminder warned OfferCardList "likely can't be
@@ -612,8 +723,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 91 / 155
-- Remaining: 64
+- Completed: 96 / 155
+- Remaining: 59
 
 ## Components Checklist
 
@@ -633,7 +744,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (96)
+### Completed (101)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -731,8 +842,13 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] AddToCartButton `[mol]` (Legacy: legacy/src/design-system/components/atoms/add-to-cart-button) — reclassified atom→molecule; morphs qty-0 add `<button>` (visible `buttonLabel` = accessible name; dropped the legacy empty label + redundant `aria-label`) ↔ a labelled `role="group"` stepper (−/+ IconButtons + one-named number field); Framer scale drops. Legacy baseline is an **empty** pill (unnamed button — an axe fail), so the V2 frame shows the real CTA: a ~180×32px white-on-blue text delta (<0.6% canvas) **under the 2% gate**, mapped both viewports, see batch notes
 - [x] DrawerSidebar `[mol]` (Legacy: legacy/src/design-system/components/molecules/drawer-sidebar) — the canonical modal focus-trap: `<div role="dialog">` + `aria-modal`, required `ariaLabel`, focus-in to close button + Tab trap + `Escape`/backdrop/outside-click close + **focus return to the pre-open element** (`document.activeElement`, since the trigger is the consumer's), body scroll-lock, Framer slide gated on reduced-motion. `role="dialog"` on `<aside>` fails axe `aria-allowed-role` → panel is a `<div>`. **Gallery-only** (legacy captures only the closed state = a bare consumer trigger; Visual shown open), see batch notes
 - [x] Form `[mol]` (Legacy: legacy/src/design-system/components/molecules/form) — config-driven template composing FormGroup + InputText (grid, `size:'full'`→`col-span-2`) + Button/LinkButton/UiLink; submit gated on validity (required + `pattern` email/password/age + `matchField` compare), `role="alert"` general error, `role="status"` success panel; dropped `dangerouslySetInnerHTML`→`ReactNode`, autofill dance, `focusOnRender` autofocus, native bubbles (`noValidate`). Both baselines (standard-form + compare-two-fields) mapped both viewports (passed clean — composed children carry their own verified styling), see batch notes
+- [x] FooterTopBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/footer-top-bar) — labelled `<nav>` + `<ul>` of `LinkButton` pills (login/register/contact type→icon); pills collapse to icon-only circles below `md` and the label is `display:none`-hidden, so each link carries an explicit `ariaLabel={label}` (fixes the legacy unnamed-on-mobile link); reused `--spacing-footer-bar-*` tokens; baseline mapped both viewports (deterministic), see batch notes
+- [x] Hero `[mol]` (Legacy: legacy/src/design-system/components/molecules/hero) — full-bleed Picture/Video + overlaid content column (eyebrow, `Heading`, preamble, up to two `LinkButton` CTAs) in a ContentWrapper; `headingLevel` couples level+size; dropped the non-essential `fadeIn` entrance; text-over-media passes axe via `<img>` overlap (incomplete, not violation). **Gallery-only** (legacy frames are remote media — non-deterministic; local-asset `Visual*` for the gallery only), see batch notes
+- [x] SocialMediaLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/social-media-link) — reclassified atom→molecule; round `LinkButton` (`noBorder`, `bg-icon-bg-blue`) around a decorative `Icon`; required `label` = accessible name; three baselines (facebook/instagram/linkedin) mapped both viewports (the ~40px chip is <0.2% of the canvas → icon-set glyph delta under gate), see batch notes
+- [x] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — reclassified molecule→organism; `<article>` with a `<h5>` name (becomes an `<a>` when `productUrl` set) + purple price line + grey meta + read-only `ProductQuantityInput`; optional remove `IconButton` named via `labels.remove`; `loading`→`role="status"` Loader; consolidated legacy conflicting label/name pairs. **Gallery-only** (legacy product image is a broken remote CDN thumbnail — non-deterministic), see batch notes
+- [x] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — reclassified molecule→organism; legacy hover Framer mega-menu → accessible disclosure-nav: labelled `<nav>`, plain `<a>` top-levels + category `<button aria-expanded/aria-controls>` (one panel open), `Escape` closes + focus return, outside-`pointerdown` close, `aria-current` active item; legacy active-orange (fails AA on white) → accessible blue text + blue underline + bold; reuses MobileNavigation's `NavItem`/`NavLink`/`NavCategory` (exported once). **Gallery-only** (only legacy baseline is the empty loading shimmer; real menu needs interaction), see batch notes
 
-### Build queue (74 pending, dependency-ordered)
+### Build queue (69 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -752,11 +868,6 @@ finished line into _Completed_ by hand (tiers rarely shift).
 
 #### Tier 2 — unlocked after Tier 1
 
-- [ ] FooterTopBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/footer-top-bar) — needs: LinkButton · unblocks 1
-- [ ] Hero `[mol]` (Legacy: legacy/src/design-system/components/molecules/hero) — needs: LinkButton · unblocks 1
-- [ ] SocialMediaLink `[mol]` (Legacy: legacy/src/design-system/components/atoms/social-media-link) — needs: LinkButton · unblocks 1
-- [ ] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — needs: ProductQuantityInput, IconButton · unblocks 1
-- [ ] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — needs: IconButton · unblocks 1
 - [ ] HorizontalVariant `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variant) — needs: ProductVariant, IconWithTooltip · unblocks 1
 - [ ] ProductSearch `[org]` (Legacy: legacy/src/design-system/components/molecules/product-search) — needs: ProductVariant, InputText, ProductSearchResultItem · unblocks 1
 - [ ] AlertMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-message) — needs: IconButton

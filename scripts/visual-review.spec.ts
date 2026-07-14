@@ -47,6 +47,8 @@ interface Row {
   legacyDims?: Dims
   note: RowNote
   error?: string
+  /** Review-only pairing — shown for comparison but skipped by the pixel gate (see baseline-map.ts). */
+  reviewOnly?: boolean
   /** True when this story's component belongs to the batch currently in progress. */
   isCurrent?: boolean
   /**
@@ -233,6 +235,8 @@ function dimsBadge(row: Row): string {
 function noteBadge(row: Row): string {
   if (row.note === 'unmapped') return `<span class="badge info">no baseline (visual-only)</span>`
   if (row.note === 'no-baseline-viewport') return `<span class="badge info">no legacy baseline for this viewport</span>`
+  if (row.reviewOnly)
+    return `<span class="badge warn" title="Faithful reproduction that diverges beyond the 2% gate — paired for human review, skipped by pnpm test:visual">review-only</span>`
   return `<span class="badge ok">mapped</span>`
 }
 
@@ -455,10 +459,10 @@ test('generate visual review gallery', async ({ browser, request }) => {
   )
 
   try {
-    for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
+    for (const { storyId, legacyBaseline, viewports, reviewOnly } of visualBaselines) {
       const wanted = viewports ?? ALL_VIEWPORTS
       for (const viewport of ALL_VIEWPORTS) {
-        const row: Row = { storyId, viewport, currentFile: '', note: 'mapped' }
+        const row: Row = { storyId, viewport, currentFile: '', note: 'mapped', reviewOnly }
         try {
           row.currentFile = await captureCurrent(pages[viewport], storyId, viewport)
           row.currentDims = pngSize(resolve(OUT, row.currentFile))

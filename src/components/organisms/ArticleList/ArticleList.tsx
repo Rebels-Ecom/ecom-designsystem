@@ -115,7 +115,7 @@ function ArticleList({
           })}
         </Carousel>
       ) : (
-        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+        <div className="flex flex-col gap-4 px-4 sm:flex-row sm:flex-wrap md:px-8">
           {articles.map((article, index) => {
             const { id, ...content } = article
             return <ArticleCard key={id} {...content} {...cardLayout(total, index, grid)} />

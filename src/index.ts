@@ -393,6 +393,20 @@ export type { SelectListProps, SelectListOption } from './components/molecules/S
 export { Tabs } from './components/molecules/Tabs'
 export type { TabsProps, TabItem, TabsLabels } from './components/molecules/Tabs'
 
+export { FooterTopBar, defaultFooterTopBarLabels } from './components/molecules/FooterTopBar'
+export type {
+  FooterTopBarProps,
+  FooterTopBarLink,
+  FooterTopBarLinkType,
+  FooterTopBarLabels,
+} from './components/molecules/FooterTopBar'
+
+export { Hero } from './components/molecules/Hero'
+export type { HeroProps, HeroAlignment, HeroTheme } from './components/molecules/Hero'
+
+export { SocialMediaLink } from './components/molecules/SocialMediaLink'
+export type { SocialMediaLinkProps } from './components/molecules/SocialMediaLink'
+
 /* ── Organisms ────────────────────────────────────────────────────────── */
 export { FaqList } from './components/organisms/FaqList'
 export type { FaqListProps, FaqItem } from './components/organisms/FaqList'
@@ -473,3 +487,16 @@ export type {
   ProductVariantListItem,
   ProductVariantListLabels,
 } from './components/organisms/ProductVariantList'
+
+export { CartProduct, defaultCartProductLabels } from './components/organisms/CartProduct'
+export type {
+  CartProductProps,
+  CartProductItem,
+  CartProductLabels,
+} from './components/organisms/CartProduct'
+
+export { DesktopNavigation, defaultDesktopNavigationLabels } from './components/organisms/DesktopNavigation'
+export type {
+  DesktopNavigationProps,
+  DesktopNavigationLabels,
+} from './components/organisms/DesktopNavigation'

@@ -26,6 +26,20 @@ export interface VisualBaseline {
    * component with no baseline.
    */
   viewports?: readonly ('desktop' | 'mobile')[]
+  /**
+   * **Review-only pairing.** The V2 `Visual` story faithfully reproduces the same *scene* as this
+   * legacy baseline, but the two are NOT expected to pixel-match within the 2% gate — because the
+   * frame carries a locked, intentional divergence: a brand image rendered at a different
+   * intrinsic size, a full-bleed image over which the migrated text uses the brand font / accessible
+   * colours, or a legacy PNG captured at different pixel dimensions than the fixed viewport.
+   *
+   * A `reviewOnly` entry is **skipped by the pixel gate** (`pnpm test:visual`) but **still paired**
+   * (Legacy | Current | Compare + Δ) in the `visual:review` gallery — so a human can eyeball the
+   * migration instead of the frame silently rendering current-only with no legacy to compare against.
+   * Reach for it only when a faithful reproduction genuinely can't clear the gate; a frame that *can*
+   * match within 2% must be a normal (gated) entry.
+   */
+  reviewOnly?: boolean
 }
 
 export const visualBaselines: readonly VisualBaseline[] = [
@@ -541,20 +555,21 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // mostly the unmigrated CartProductList/CartProduct. Gallery-only Visual; re-map when those children land.
 
   // ── Batch 14 (cart-family organisms + page shells) — all baseline-deferred to CartProduct et al. ──
-  // NOTE: CartProductList has NO entry — the legacy `cart-product-list-story` frame composes the
-  // unmigrated CartProduct molecule (with product images). Gallery-only Visual with placeholder rows;
-  // re-map once CartProduct lands.
-  // NOTE: CartSidebar has NO entry — the legacy `cart-sidebar-story`/`-no-products` frames render inside
-  // the unmigrated DrawerSidebar (captured closed → just a trigger button) and nest unmigrated
-  // CartProduct rows. Gallery-only Visual; re-map once DrawerSidebar + CartProduct land.
+  // CartProductList: now that CartProduct has landed (Batch 21) its Visual story composes real
+  // CartProduct rows, faithfully reproducing the legacy frame — mapped `reviewOnly` in the Batch-21
+  // backfill below (the legacy product image rendered broken; V2 shows a local fallback).
+  // NOTE: CartSidebar stays current-only — NOT a child-migration gap (DrawerSidebar + CartProduct have
+  // both landed). The legacy `cart-sidebar-story`/`-no-products` frames were captured with the drawer
+  // CLOSED (`isOpen` starts false, no play), so the baseline is just the consumer's bare "Open sidebar"
+  // trigger button on an empty canvas — a different scene from the V2 Visual (the OPEN sidebar content),
+  // with no open-state legacy frame to diff against (same closed-overlay case as DrawerSidebar / PopUp).
+  // Its `['visual']` story shows the open sidebar for review; behaviour is covered by the play tests.
   // NOTE: LoginPage has NO entry — the legacy `login-page-story`/`-loading`/`-choose-account` frames
   // centre the unmigrated LoginForm / AccountBoxList. Gallery-only Visual with a placeholder card;
   // re-map once those land.
-  // NOTE: OrderConfirmation has NO entry — the legacy `order-confirmation-story` frame composes the
-  // unmigrated CartProduct molecule (product images are a large part of the frame; everything else —
-  // MessageBanner, OrderConfirmationDetails, Heading/Text/Button — is migrated). Re-map once CartProduct lands.
-  // NOTE: OrderConfirmationPage has NO entry — the legacy `order-confirmation-page-template-story` frame
-  // nests the full OrderConfirmation (→ unmigrated CartProduct). Gallery-only Visual; re-map with CartProduct.
+  // OrderConfirmation / OrderConfirmationPage: unblocked in the Batch-21 backfill (CartProduct landed) —
+  // their Visual stories now compose the full legacy scene incl. real CartProduct rows. Mapped
+  // `reviewOnly` below.
 
   // ── Batch 15 (Tier-1 leaves) ──
   // IconButton: the small neutral chip (map-pin + orange count badge). Two divergences under the 2% gate —
@@ -896,5 +911,142 @@ export const visualBaselines: readonly VisualBaseline[] = [
   {
     storyId: 'design-system-molecules-form--visual-compare-two-fields',
     legacyBaseline: 'design-system-atoms-form--compare-two-fields',
+  },
+
+  // ── Batch 21 (Tier-2 molecules/organisms) ──
+  // FooterTopBar: the dark brand bar with three quick-link pills (login / register / contact). The
+  // frame is text + decorative icons only (no remote media), and both legacy PNGs fit the capture
+  // viewport exactly (1280×800 / 375×667 — measured), so it maps both viewports. The only divergence
+  // is the lucide vs icomoon type glyphs, a few tiny icons well under the 2% gate. (Below md the pills
+  // collapse to icon-only circles, matching the legacy mobile frame.)
+  {
+    storyId: 'design-system-molecules-footertopbar--visual',
+    legacyBaseline: 'design-system-molecules-footertopbar--footer-top-bar-story',
+  },
+  // SocialMediaLink: the ~40px round icon chip (blue glyph on the light `icon-bg-blue` fill).
+  // Reclassified atom → molecule, so the V2 story sits under Molecules while the legacy baseline keeps
+  // its `atoms` id. Deterministic; the lucide vs icomoon brand glyph is a <0.2% fraction of the canvas
+  // (a single small circle top-left), so all three frames map both viewports.
+  {
+    storyId: 'design-system-molecules-socialmedialink--visual-facebook',
+    legacyBaseline: 'design-system-atoms-socialmedialink--social-media-link-story-facebook',
+  },
+  {
+    storyId: 'design-system-molecules-socialmedialink--visual-instagram',
+    legacyBaseline: 'design-system-atoms-socialmedialink--social-media-link-story-instagram',
+  },
+  {
+    storyId: 'design-system-molecules-socialmedialink--visual-linkedin',
+    legacyBaseline: 'design-system-atoms-socialmedialink--social-media-link-story-linkedin',
+  },
+  // Hero: the legacy `heros--hero-story-*` frames composed the migrated `Picture` atom over LOCAL hero
+  // assets (`legacy/src/assets/hero-images/Promo_Hero_*`), copied into `src/assets/hero-images/`, so the
+  // V2 `Visual*` stories reproduce the exact legacy scene. `reviewOnly`: the background image matches,
+  // but the overlaid text uses the brand font + accessible colours and the `h1` is the larger DS size,
+  // so the text block diverges beyond the 2% gate — paired for review, not gated.
+  {
+    storyId: 'design-system-molecules-hero--visual-left-dark',
+    legacyBaseline: 'design-system-molecules-heros--hero-story-left-1',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-molecules-hero--visual-center-light',
+    legacyBaseline: 'design-system-molecules-heros--hero-story-center',
+    reviewOnly: true,
+  },
+  // CartProduct: the row layout (name/packaging/price + quantity readout + remove) reproduces the legacy
+  // frame. `reviewOnly`: the legacy product image rendered BROKEN in the capture (the CDN thumbnail
+  // 404'd → browser broken-image placeholder) while V2 shows a deterministic local fallback, so the
+  // image region diverges — paired so the layout can be compared side-by-side, not gated.
+  {
+    storyId: 'design-system-organisms-cartproduct--visual',
+    legacyBaseline: 'design-system-molecules-cartproduct--cart-product-story-beer',
+    reviewOnly: true,
+  },
+  // DesktopNavigation: the ONLY legacy baseline is the empty loading state (`categories: []`), so the V2
+  // `VisualLoading` story reproduces exactly that. `reviewOnly`: the legacy PNG caught the shimmer
+  // mid-animation (a non-deterministic gradient position) while V2 settles it under reduced motion, so
+  // it can't pixel-gate — paired so the loading treatment is comparable. The real closed nav bar
+  // (`--visual`) stays current-only (no legacy counterpart — the mega-menu only appears on interaction).
+  {
+    storyId: 'design-system-organisms-desktopnavigation--visual-loading',
+    legacyBaseline: 'design-system-molecules-desktopnavigation--default-desktop-navigation',
+    reviewOnly: true,
+  },
+
+  // ── Backfill (2026-07-14) — review-only pairings for faithful reproductions that were previously
+  // left current-only (no legacy pane in the gallery). Each V2 `Visual` story reproduces the legacy
+  // scene; they diverge beyond the 2% gate for a locked, documented reason (remote/broken imagery,
+  // brand image at a different intrinsic size, legacy PNG captured at non-viewport dimensions, or the
+  // orange→accessible-blue link fix), so they are `reviewOnly`: paired in the gallery for human
+  // comparison, skipped by the pixel gate. Fixes the recurring "a baseline exists but nothing pairs it"
+  // gap — the pixel-comparable frames stay normal (gated) entries above. ──
+  // ArticleList: reproduces the three legacy carousel/grid frames faithfully; not pixel-diffable
+  // (default 1280×805 & mobile full-page dimension mismatch; three-cards full-page both viewports;
+  // full-width locked to ArticleCard's `aspect-16/9` vs the legacy short banner) — see the ArticleList
+  // NOTE above for the per-frame measurements.
+  {
+    storyId: 'design-system-organisms-articlelist--visual-default',
+    legacyBaseline: 'design-system-organisms-articlelist--default',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-articlelist--visual-full-width',
+    legacyBaseline: 'design-system-organisms-articlelist--full-width',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-articlelist--visual-three-cards',
+    legacyBaseline: 'design-system-organisms-articlelist--three-cards',
+    reviewOnly: true,
+  },
+  // ProductVariant: the variant card reproduces the legacy scene with a deterministic local image + real
+  // labels (legacy used a remote CDN thumbnail + `undefined` label text).
+  {
+    storyId: 'design-system-molecules-product-productvariant--visual',
+    legacyBaseline: 'design-system-molecules-product-productvariant--product-variant-story',
+    reviewOnly: true,
+  },
+  // ProductVariantList: reproduces the radio-group list; legacy PNG is full-page (1280×1195 / 375×1195,
+  // taller than the viewport) with non-deterministic child thumbnails.
+  {
+    storyId: 'design-system-organisms-productvariantlist--visual',
+    legacyBaseline: 'design-system-molecules-product-variants-list--product-variant-list-story',
+    reviewOnly: true,
+  },
+  // Logotype: renders the real bundled Spendrups brand SVGs — the same logo scene as the legacy PNG,
+  // but a different (vector vs raster) rendition, so it pairs for review rather than pixel-matching.
+  {
+    storyId: 'design-system-foundations-logotype--visual',
+    legacyBaseline: 'design-system-molecules-logotype--logotype-story',
+    reviewOnly: true,
+  },
+  // Heading delivery-form: the same five-level heading stack as the mapped `heading-story`, only with
+  // longer text; the known Heading vertical-rhythm drift accumulates to ~4% here (over the gate).
+  {
+    storyId: 'design-system-atoms-heading--visual-delivery-form',
+    legacyBaseline: 'design-system-atoms-heading--heading-delivery-form-story',
+    reviewOnly: true,
+  },
+  // CartProductList: a column of real CartProduct rows (settled + loading), unblocked now CartProduct
+  // landed. Same broken-image divergence as CartProduct, so review-only.
+  {
+    storyId: 'design-system-organisms-cartproductlist--visual',
+    legacyBaseline: 'design-system-organisms-cartproductlist--cart-product-list-story',
+    reviewOnly: true,
+  },
+  // OrderConfirmation: the full confirmation scene (heading, banner, three detail blocks, real
+  // CartProduct rows, actions) — every child migrated once CartProduct landed. Legacy PNG is a tall
+  // full-page capture and CartProduct carries the broken-image/font divergence, so review-only.
+  {
+    storyId: 'design-system-organisms-orderconfirmation--visual',
+    legacyBaseline: 'design-system-organisms-orderconfirmation--order-confirmation-story',
+    reviewOnly: true,
+  },
+  // OrderConfirmationPage: the same OrderConfirmation card inside the page frame; same divergences.
+  {
+    storyId: 'design-system-organisms-orderconfirmationpage--visual',
+    legacyBaseline: 'design-system-templates-orderconfirmationpage--order-confirmation-page-template-story',
+    reviewOnly: true,
   },
 ]

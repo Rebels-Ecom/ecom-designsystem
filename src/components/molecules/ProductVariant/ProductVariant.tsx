@@ -82,7 +82,7 @@ function ProductVariant({
         className,
       )}
     >
-      <div className="flex min-h-8 w-full items-center justify-end gap-2 pr-4 md:pr-0">
+      <div className="flex min-h-5 w-full items-center justify-end gap-2 pr-4 md:pr-0">
         {sellerOnly &&
           (sellerOnlyTooltipText ? (
             <IconWithTooltip content={sellerOnlyTooltipText} icon="icon-eye" />
@@ -100,7 +100,7 @@ function ProductVariant({
         />
       </div>
 
-      <div className="flex w-full items-center">
+      <div className="flex w-full items-start">
         <div className="relative flex min-h-32 w-1/4 items-center justify-center">
           <Picture
             {...image}

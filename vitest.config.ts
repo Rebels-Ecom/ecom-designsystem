@@ -30,6 +30,30 @@ export default defineConfig({
           storybookTest({ configDir: path.join(dirname, '.storybook') }),
         ],
         resolve: { dedupe: ['react', 'react-dom'] },
+        // Pre-bundle the story runtime up front. Without this, the browser-mode Vite server
+        // discovers these deps by crawling every story on first boot and then re-optimizes
+        // ("Re-optimizing dependencies because vite config has changed"). That cold optimize can
+        // push the server's ready-ack past the Storybook Vitest addon's boot window, so the UI
+        // shows "Server timed out. Please restart your Storybook server" even though the run then
+        // proceeds. Declaring the deps skips the crawl and makes boot deterministic and fast.
+        optimizeDeps: {
+          include: [
+            'react',
+            'react-dom',
+            'react-dom/client',
+            'react/jsx-runtime',
+            'react/jsx-dev-runtime',
+            'framer-motion',
+            'lucide-react',
+            'react-day-picker',
+            'clsx',
+            'tailwind-merge',
+          ],
+        },
+        // Isolate the browser project's dep cache from the CLI run (`pnpm test-storybook`) and the
+        // Storybook dev builder, so switching between them stops invalidating a shared cache and
+        // forcing a full re-optimize each time.
+        cacheDir: path.join(dirname, 'node_modules/.vite-storybook-test'),
         test: {
           name: 'storybook',
           browser: {

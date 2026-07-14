@@ -63,13 +63,17 @@ export interface ArticleCardProps {
   ref?: Ref<HTMLElement>
 }
 
-/** Image aspect ratio per card shape (no arbitrary literals — Tailwind v4 bare fractions). */
+/**
+ * Image box shape per card. Most shapes use a Tailwind v4 bare-fraction aspect ratio; `fullWidth` is a
+ * fixed-height wide banner instead — a very wide aspect box gets overridden by the tall intrinsic image
+ * when the card is a flex item, so a definite height is what actually clips it via `object-cover`.
+ */
 function imageAspect({
   fullWidth,
   equalHeights,
   type,
 }: Pick<ArticleCardProps, 'fullWidth' | 'equalHeights' | 'type'>): string {
-  if (fullWidth) return 'aspect-16/9'
+  if (fullWidth) return 'h-64 overflow-hidden'
   if (equalHeights) return 'aspect-5/6'
   if (type === 'large') return 'aspect-5/6 md:aspect-3/4'
   return 'aspect-5/6'

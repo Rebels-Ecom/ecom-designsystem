@@ -243,8 +243,21 @@ the **frozen** legacy PNG in `legacy-snapshots/` — the definitive baseline. Wi
   (e.g. `design-system-atoms-heading--heading-story`).
 - Append a strictly-typed entry to `tests/visual/baseline-map.ts` mapping the `Visual` story id (the
   kebab-cased `title` + export, e.g. `design-system-atoms-heading--visual`) to that basename.
-- **If no legacy baseline exists** (a brand-new component, or one only ever rendered inside a legacy
-  parent), add no entry — it simply gets no visual test. Record that in the migration log (Step 9).
+- **A legacy baseline exists but your faithful frame can't clear the 2% gate** (full-bleed brand
+  image + brand-font/accessible-colour text, a PNG captured at non-viewport dimensions, a legacy image
+  that rendered broken, a non-deterministic loading/animation frame, a vector-vs-raster rendition) →
+  add the entry with **`reviewOnly: true`**. The pixel gate skips it, but the `visual:review` gallery
+  still pairs Legacy | Current | Compare so a human can sign off. **Do NOT silently drop it to
+  gallery-only** (current-only, no Legacy pane) — that is the recurring "a baseline exists but nothing
+  pairs it" miss. `reviewOnly` is only for *faithful reproductions* of the legacy scene; if your
+  `Visual` story renders a *different* scene (a closed overlay where the legacy captured the open panel,
+  a placeholder standing in for an unmigrated child), leave it current-only with a NOTE and revisit once
+  the dependency lands.
+- **If no legacy baseline exists at all** (a brand-new component, or one only ever rendered inside a
+  legacy parent that has no snapshot), add no entry — it simply gets no visual test, and the `['visual']`
+  story is current-only in the gallery. Record that in the migration log (Step 9). ⚠ Confirm the snapshot
+  truly doesn't exist — grep the **de-hyphenated** component segment (`social-media-link` →
+  `socialmedialink`), since a hyphenated grep gives a false "no baseline".
 - Never run `playwright test --update-snapshots`: the legacy PNGs are the reference and must not be
   overwritten.
 

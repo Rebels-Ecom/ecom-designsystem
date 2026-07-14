@@ -122,6 +122,10 @@ Common legacy `var()` → V2 utility:
    error, just silent loss of the human review surface. The `['visual']` story should be **one
    representative frame that reproduces a real legacy story** (so it can be mapped and pairs against
    the baseline), *not* an all-variants grid — a grid has no legacy counterpart to diff against.
+   **Baseline exists but the faithful frame can't clear the 2% gate** (brand image + text, non-viewport
+   dims, broken/remote image, loading shimmer, vector-vs-raster) → map with **`reviewOnly: true`** (gate
+   skips, gallery still pairs). Never drop such a frame to current-only — that's the "a baseline exists
+   but nothing pairs it" miss. Faithful reproductions only; a *different* scene stays current-only + NOTE.
 11. **Framer entrance/exit animation?** Gate it on `useReducedMotion()` (2.3.3† anyway) and make the
    reduced path instant/settled (`initial={reduce ? false : {…}}`). Captures then settle automatically:
    the review gallery creates its contexts with `reducedMotion: 'reduce'` and the gate uses

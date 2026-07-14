@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, within } from 'storybook/test'
+import { expect, fn, within } from 'storybook/test'
 import { CartProductList } from './CartProductList'
 import { Text } from '../../atoms/Text'
+import { CartProduct, type CartProductItem } from '../CartProduct'
+import fallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 
 const meta = {
   title: 'Design System/Organisms/CartProductList',
@@ -38,12 +40,39 @@ export const Default: Story = {
   },
 }
 
-// Gallery-only: NOT mapped — the legacy `cart-product-list-story` frame composes the unmigrated
-// CartProduct molecule (with product images). Re-map once CartProduct lands. Shows placeholder rows.
+// Reproduces the legacy `cart-product-list-story` frame now that CartProduct has landed: a column of
+// CartProduct rows, alternating settled / loading (matching the legacy capture). `reviewOnly` in
+// baseline-map.ts — the row layout matches, but the legacy product image rendered broken (remote CDN)
+// while V2 shows a deterministic local fallback, so it's paired for review rather than pixel-gated.
+const beer: CartProductItem = {
+  partNo: '1105101',
+  productName: 'Norrlands Guld Export 5,3',
+  country: 'Sverige',
+  packaging: '50cl Returglas',
+  priceStr: '22,68',
+  currencyLabel: 'kr',
+  unitLabel: 'st',
+  quantity: '1',
+  salesUnit: 'KLI',
+  itemNumberPerSalesUnit: 15,
+  totalPrice: '340,15',
+}
+
 export const Visual: Story = {
   tags: ['visual'],
-  args: { children: rows(4) },
   parameters: { layout: 'fullscreen' },
+  args: {
+    children: [false, true, false, true].map((loading, i) => (
+      <CartProduct
+        key={i}
+        product={beer}
+        loading={loading}
+        removable
+        onRemove={fn()}
+        fallbackImageUrl={fallbackImage}
+      />
+    )),
+  },
   render: (args) => (
     <div style={{ margin: '0 auto', maxWidth: '1254px' }}>
       <CartProductList {...args} />

@@ -271,6 +271,20 @@ lossy.
   accessible name with a sensible fallback, keeps any download link as a **sibling** (never nest anchors),
   and promotes inline mode's `onClick`'d `<h4>` to a real `<button>`. Same principle as the a11y rule
   below: extract the *intent* (a card that navigates), regenerate the mechanics correctly.
+- **Site navigation is a *disclosure* pattern, not the ARIA `menu`/`menubar` pattern.** For a nav bar
+  whose triggers open panels of links (`DesktopNavigation`, and the drawer categories in
+  `MobileNavigation`), model each expandable top-level as a `<button aria-expanded aria-controls>` over a
+  labelled `<nav>` landmark — **not** `role="menubar"`/`menuitem`. The ARIA menu pattern demands full
+  arrow-key roving + type-ahead and is meant for app command menus; a website's link navigation is
+  simpler and more robust as native links + disclosure buttons (Tab to move, Enter/Space to toggle,
+  `Escape` to close + return focus, one panel open at a time, `aria-current="page"` on the active item).
+  This is the reference pattern for any future navigation organism.
+- **When two components share a type model, the owning module exports it once.** `DesktopNavigation` and
+  `MobileNavigation` both consume `NavItem`/`NavLink`/`NavCategory`. The earlier/owning module
+  (`MobileNavigation`) declares them and is the **single** public export in `src/index.ts`; the sibling
+  **imports** them (`import type { NavItem } from '../MobileNavigation'`) rather than redeclaring. Two
+  modules each re-exporting the same type name from `src/index.ts` is a duplicate-export build error —
+  and even if it compiled, two structurally-identical-but-distinct `NavItem`s would confuse consumers.
 
 ## Accessibility
 
@@ -626,6 +640,22 @@ migration parity check, independent of the a11y/interaction suite.
   without the page-covering layer. Use story-level `render` (not a meta `decorators`) so the Visual
   frame doesn't inherit the demo wrapper. `LoadingOverlay` is the reference (four scrim variants, both
   viewports).
+- **`reviewOnly` — pair for human comparison without gating.** A frame that *faithfully reproduces the
+  legacy scene* but legitimately can't clear the 2% gate — a full-bleed brand image over which the
+  migrated text uses the brand font / accessible colours (Hero), a legacy PNG captured at non-viewport
+  dimensions (ArticleList), a legacy image that rendered broken (CartProduct/CartProductList), a
+  non-deterministic loading shimmer (DesktopNavigation), or a different (vector-vs-raster) rendition
+  (Logotype) — must **not** be dropped to gallery-only. Dropping it means the review gallery shows the
+  V2 render *current-only, with no Legacy pane to compare against* — the exact gap that made "a baseline
+  exists but nothing pairs it" a recurring miss. Instead add a normal baseline-map entry with
+  `reviewOnly: true`: the pixel gate (`pnpm test:visual`) **skips** it, but the `visual:review` gallery
+  **still pairs** Legacy | Current | Compare + Δ so a human signs off. Reserve `reviewOnly` for genuine
+  faithful reproductions that can't gate; a frame that *can* match within 2% stays a normal (gated)
+  entry, and a story that renders a *different* scene than the baseline (a closed overlay vs the legacy's
+  open panel, a placeholder standing in for an unmigrated child) is NOT a faithful reproduction — leave
+  it current-only with a NOTE (pairing a mismatched scene misleads more than it helps). When a component
+  the frame depends on later lands, revisit the current-only NOTEs — a placeholder frame often becomes a
+  faithful `reviewOnly` pairing (CartProductList became pairable once CartProduct landed).
 - **Cadence.** Scoped per component during scaffolding (`pnpm exec playwright test --grep <component>`,
   reusing a running `pnpm storybook`), then the full `pnpm test:visual` suite as the batch gate.
 

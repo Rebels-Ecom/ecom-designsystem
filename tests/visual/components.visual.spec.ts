@@ -11,8 +11,12 @@ import { visualBaselines } from './baseline-map'
  * (`pnpm test:visual --grep heading`) and one story mapped to several baselines (e.g. ArticleList's
  * Default frame is also Carousel's baseline) stays a unique, non-clashing test title.
  */
-for (const { storyId, legacyBaseline, viewports } of visualBaselines) {
+for (const { storyId, legacyBaseline, viewports, reviewOnly } of visualBaselines) {
   test(`${storyId} matches legacy baseline ${legacyBaseline}`, async ({ page }, testInfo) => {
+    test.skip(
+      reviewOnly === true,
+      'Review-only pairing: faithfully reproduced but diverges beyond the 2% gate — compare in the visual:review gallery (see baseline-map.ts)',
+    )
     test.skip(
       viewports !== undefined && !viewports.includes(testInfo.project.name as 'desktop' | 'mobile'),
       'No usable legacy baseline for this viewport (see baseline-map.ts)',
