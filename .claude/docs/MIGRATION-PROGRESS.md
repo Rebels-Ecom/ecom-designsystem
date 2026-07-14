@@ -17,6 +17,47 @@
 
 - **Active Category**: organisms + molecules (Tier-2)
 - **Last Updated**: 2026-07-14
+- **Current Micro-Batch**: Batch 24 — Tier-2 molecules + organisms (complete; **Teaser** `[mol]`,
+  **TopNavBar** `[mol]`, **AccountBoxList** `[org]`, **CreateListForm** `[org]`, **DeliveryForm** `[org]` —
+  the next five unblocked queue entries top-to-bottom). `pnpm build` green (zero TS), scoped
+  `vitest --project=storybook` **17/17** (interaction + a11y), `pnpm build-storybook` green, full
+  `pnpm test:visual` **266 passed / 52 skipped / 0 failed** (was 261/47 — DeliveryForm ×2 +
+  CreateListForm-loading ×2 + CreateListForm-desktop **gated**; Teaser ×2 **reviewOnly**; CreateListForm
+  plain frame mapped desktop-only after a user-review spacing fix). **TopNavBar &
+  AccountBoxList are no-baseline** (blank legacy oracle / intentionally-fixed scene — see queue notes).
+  **CreateListForm was completed here, so Batch-23's Modal current-only note can be revisited** (its
+  legacy frame wrapped CreateListForm, now migrated). The next batch continues Tier-2:
+  **FaqGroup**, **InvoiceList**, then the ProductVariant-family organisms.
+- **2026-07-14 — Batch 24 findings & harness changes**:
+  - **A green-looking baseline can be an invalid oracle — always eyeball the legacy PNG before mapping.**
+    Every `top-nav-bar` legacy frame is BLANK from two compounding faults: the story passed `links` (the
+    component read `leftLinks`/`rightLinks`) AND the layout used `Above`/`Below` JS-media-query render-props
+    that returned nothing during capture → the component early-returned `null`. Same "blank frame = no valid
+    oracle" class as DeliveryInfoBar (delayed entrance) and PopUp (closed state). Resolution: no map,
+    gallery-only. Migration lesson: V2 replaced the JS-media-query render-props with responsive `display`
+    utilities (`lg:hidden` / `hidden lg:flex`) — the hidden branch leaves the a11y tree, so duplicated
+    content isn't double-announced (but `getByText` still matches it in tests → assert with `getAllByText`).
+  - **Dead CSS custom-property → runaway intrinsic image.** AccountBoxList's legacy logo set
+    `height: var(--logotype-height-mobile)` where that token was never defined, so the height was dropped and
+    the ~700px wordmark rendered at full size, overlapping the heading. V2 constrains it (`h-8 md:h-10`),
+    making the V2 frame an intentionally *different* (corrected) scene → current-only + NOTE, not reviewOnly.
+  - **The diff image tells you WHICH divergence to fix — don't guess from the total %.** CreateListForm's
+    plain frame diffed 4% (h1/`h-xl` title too large vs legacy). Shrinking the title to the legacy `.h3`
+    (=`headingM`=`h-m`) size made the *total* worse (6%) — but the diff PNG showed the heading now aligned
+    and the growth was a cumulative vertical drift from the two composed `FormGroup`s below it (V2's
+    label/control rhythm runs a few px taller than the legacy `input { margin }`). Kept the correct `h-m`
+    title; the `-loading` frame was gated + green throughout (the overlay covers the drifting body).
+  - **Field-spacing fix (user review) + why it's viewport-scoped.** Measured the drift (Playwright rects
+    vs a canvas row-scan of the legacy PNG): the two `FormGroup`s stacked with **0** gap while legacy's text
+    input carried `margin-bottom: 22px`, so V2's submit sat at y=461 vs legacy 490 (29px too high). Restored
+    the inter-field rhythm with a `space-y` between the groups → submit y=489. But it's **`md:`-scoped**: the
+    same measurement on mobile showed the *un-spaced* form already aligned (submit 431 vs 433) — legacy's
+    larger desktop padding/heading is what opens the gap at `md`+, so a viewport-blind `space-y` over-shifted
+    mobile by 28px. With `md:space-y-7`, desktop is now **gated + green**; the plain frame is mapped
+    **desktop-only** because a separate legacy quirk (the unconstrained ~70px logo vs V2's normalised 32px
+    `Logotype`) shifts the mobile stack >2% — the standard narrow-canvas amplification, same as AccountBoxList.
+    Lesson: field/rhythm spacing that must match a legacy frame is often **viewport-specific** — measure both
+    viewports before committing a spacing utility, or you fix one and break the other.
 - **Current Micro-Batch**: Batch 23 — Tier-2 molecules (complete; **MessagePopup** `[mol]`,
   **Modal** `[mol]`, **QuantityChanger** `[mol]`, **SortableList** `[mol]`, **Table** `[mol]` — the next
   five unblocked queue entries top-to-bottom, all `needs: IconButton`/`Button`, both migrated).
@@ -828,8 +869,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 102 / 155
-- Remaining: 53
+- Completed: 107 / 155
+- Remaining: 48
 
 ## Components Checklist
 
@@ -983,11 +1024,11 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] QuantityChanger `[mol]` (Legacy: legacy/src/design-system/components/molecules/quantity-changer) — Batch 23; labelled `role="group"` stepper (−/+ `IconButton`s + native number field with `aria-label`, spinner-hide, focus ring); bounds enforced by disabling at 0/`maxQuantity` (state not colour-only). No baseline (no legacy story/snapshot → no `['visual']` story)
 - [x] SortableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list) — Batch 23; composes migrated SortableListItem. Sort controls merged legacy's duplicate name-button+arrow into ONE `<button aria-pressed>` per option (bold+underline+chevron, never colour-only); `<ul>`/`<li>` + labelled sort row; `Loader` for loading. 1 baseline mapped **reviewOnly**: desktop matches within gate, but mobile ~3% (measured) from a font-metric wrap flip at the ~171px column ("E-HANDELSFRÅGOR" wraps in legacy, one line in V2; `order={5}` size is byte-identical) — both viewports stay paired for sign-off
 - [x] Table `[mol]` (Legacy: legacy/src/design-system/components/molecules/table) — Batch 23; reclassified atom→molecule + **div-grid → semantic `<table>`** (`<th scope>`, `aria-sort`, keyboard sort `<button>`s), action cells are named `IconButton`s, `role="status"` loading skeleton. **Desktop** columns pack left at natural width with the last text column absorbing slack (legacy `.lastTextColumn{flex:1}`) so actions push right; **mobile (< md)** gives way to the legacy **stacked "label: value" card** per row (matches the legacy mobile design pixel-close). 2 baselines mapped **reviewOnly** (semantic `<table>` still can't fully pixel-match the legacy `<div>` grid on desktop — lucide-vs-icomoon chevrons, cell borders; `table-story` desktop-only — its legacy mobile PNG was full-page 1436px)
-- [ ] Teaser `[mol]` (Legacy: legacy/src/design-system/components/molecules/teaser) — needs: LinkButton
-- [ ] TopNavBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/top-nav-bar) — needs: UiDatePicker
-- [ ] AccountBoxList `[org]` (Legacy: legacy/src/design-system/components/organisms/account-box-list) — needs: AccountBox
-- [ ] CreateListForm `[org]` (Legacy: legacy/src/design-system/components/organisms/create-list-form) — needs: LoadingOverlay, Logotype, FormGroup, InputText, Button
-- [ ] DeliveryForm `[org]` (Legacy: legacy/src/design-system/components/organisms/delivery-form) — needs: FormGroup, InputText
+- [x] Teaser `[mol]` (Legacy: legacy/src/design-system/components/molecules/teaser) — Batch 24. Both legacy frames (round + square) are full-page captures taller than the viewport → **reviewOnly** (faithful scene; RobotoSlab `font-secondary` heading for brand parity). `richText` typed as `ReactNode` (no RichText molecule dep).
+- [x] TopNavBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/top-nav-bar) — Batch 24. **No baseline** — every legacy PNG is blank (the story passed a `links` prop the component never read AND its layout used JS-media-query render-props that resolved to nothing at capture → early-returned `null`). V2 drives layout with responsive `display` utilities; gallery-only, behaviour covered by play tests.
+- [x] AccountBoxList `[org]` (Legacy: legacy/src/design-system/components/organisms/account-box-list) — Batch 24. **No baseline** — the legacy logo rendered at full intrinsic size (dead `--logotype-height-*` token) overlapping the heading; V2 constrains it → intentionally different (fixed) scene → gallery-only. Cards validated by AccountBox's mapped frames.
+- [x] CreateListForm `[org]` (Legacy: legacy/src/design-system/components/organisms/create-list-form) — Batch 24. **Gated + green.** Field spacing fixed (user review): the two `FormGroup`s stacked with 0 gap, so restored the legacy `input { margin-bottom }` rhythm with `md:space-y-7` between them → desktop submit y=489 vs legacy 490. Plain frame mapped **desktop-only** (legacy logo rendered unconstrained ~70px vs V2's normalised 32px `Logotype`; on the 375px canvas that shifts the stack >2% — same call as AccountBoxList's logo). `-loading` frame gated + green on both viewports (overlay covers the form). Title matched to legacy `.h3`=`h-m`; orange "read more" link → accessible blue+underline.
+- [x] DeliveryForm `[org]` (Legacy: legacy/src/design-system/components/organisms/delivery-form) — Batch 24. **Gated + green, both viewports.** Disclosure toggle (`aria-expanded`/`aria-controls`, `hidden` collapsed region); summary uses `role="group"` + `aria-labelledby` (legacy `<label htmlFor>`→`<div>` was invalid). Orange toggle → accessible blue+underline.
 - [ ] FaqGroup `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-group) — needs: FaqList
 - [ ] InvoiceList `[org]` (Legacy: legacy/src/design-system/components/molecules/invoice-list) — needs: LoadingOverlay, IconButton, Button
 

@@ -1136,4 +1136,63 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-atoms-table--table-story-two',
     reviewOnly: true,
   },
+
+  // ── Batch 24 (Tier-2 molecules + organisms) ──
+  // Teaser: both legacy frames (round + square) are FULL-PAGE captures taller than the fixed viewport
+  // (round 1280×1120 / 375×1314; square 1280×826 / 375×1042) — the two stacked teasers exceed the
+  // capture height — so a viewport screenshot can't pixel-match (gotcha 2). The V2 Visual stories
+  // reproduce the same scene faithfully (round/square image, "Kurs" tag, heading, preamble, CTA), so
+  // both are mapped `reviewOnly` (gate skipped, gallery pairs Legacy | Current for sign-off). The one
+  // intentional divergence within the scene is the accessible slab heading (RobotoSlab, brand parity).
+  {
+    storyId: 'design-system-molecules-teaser--visual',
+    legacyBaseline: 'design-system-molecules-teaser--teaser-round',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-molecules-teaser--visual-square',
+    legacyBaseline: 'design-system-molecules-teaser--teaser-square',
+    reviewOnly: true,
+  },
+  // NOTE: TopNavBar has NO entry — EVERY legacy `top-nav-bar` PNG is BLANK (an invalid oracle). Two
+  // faults compounded: the legacy story passed a `links` prop the component never read (it destructured
+  // `leftLinks`/`rightLinks`), AND the bar's layout used JS media-query render-props (`Above`/`Below`)
+  // that resolved to nothing during Storybook's capture — so the component early-returned `null`.
+  // There is no non-blank legacy frame to diff against. V2 drives the layout with responsive `display`
+  // utilities (no JS media query) so it renders correctly; its `['visual']` story is gallery-only
+  // (current-only) and behaviour is covered by the interaction/a11y play tests.
+  // NOTE: AccountBoxList has NO entry — the legacy `account-box-list-story` PNG renders the logo at full
+  // intrinsic size (its `--logotype-height-*` height token was dead), so the ~700px-wide wordmark
+  // overlaps the heading — a broken scene dominating the frame. V2 constrains the logo to a fixed
+  // height (a deliberate fix), so the V2 Visual is an intentionally *different* (corrected) scene, not a
+  // faithful reproduction → current-only + this NOTE (not `reviewOnly`). The account cards themselves
+  // are already validated by AccountBox's mapped frames.
+  // CreateListForm: the titled card with logo, empty (controlled) fields, submit/cancel and the "read
+  // more" link. Title matched to the legacy `.h3`=`headingM`=`h-m` token, and the inter-field rhythm the
+  // legacy `input { margin-bottom }` gave was restored with an `md:space-y-7` between the FormGroups (they
+  // stacked with 0 gap; the space only opens at `md`, where legacy's larger padding/heading needs it —
+  // desktop submit y=489 vs legacy 490). **Mapped DESKTOP-ONLY:** the legacy logo rendered *unconstrained*
+  // (~70px tall incl. the "1897" superscript, no height token) while V2's `Logotype` is normalised to 32px
+  // (same deliberate fix as AccountBoxList). On desktop that ~38px logo-height gap dilutes across 800px and
+  // the frame passes; on the 375px mobile canvas it shifts the whole stack (heading + fields) >2% (measured
+  // ~6%) — the standard narrow-canvas vertical-rhythm amplification (cf. AccountBox / BrandDetails /
+  // CampaignMessage). The only other divergence is the orange "read more" link → accessible blue+underline.
+  {
+    storyId: 'design-system-organisms-createlistform--visual',
+    legacyBaseline: 'design-system-organisms-createlistform--create-list-form-story',
+    viewports: ['desktop'],
+  },
+  // The `-loading` frame stays GATED on BOTH viewports and passes — the blocking overlay covers the whole
+  // form (logo included), so the scrim + spinner is what's diffed and it matches the legacy `fixed` scrim.
+  {
+    storyId: 'design-system-organisms-createlistform--visual-loading',
+    legacyBaseline: 'design-system-organisms-createlistform--create-list-form-story-loading',
+  },
+  // DeliveryForm: the collapsed summary (bold label + summary box) with the toggle. Viewport-sized
+  // frames → gated. Only divergence is the orange "Expandera" toggle → accessible blue+underline
+  // (documented AA fix), a tiny top-right element well under the 2% gate.
+  {
+    storyId: 'design-system-organisms-deliveryform--visual',
+    legacyBaseline: 'design-system-organisms-deliveryform--delivery-form-story',
+  },
 ]
