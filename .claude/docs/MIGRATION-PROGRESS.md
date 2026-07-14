@@ -16,16 +16,70 @@
 ## Current Batch Status
 
 - **Active Category**: organisms + molecules (Tier-2)
-- **Last Updated**: 2026-07-13
-- **Current Micro-Batch**: Batch 21 — Tier-2 molecules/organisms (complete;
-  **FooterTopBar** `[mol]`, **Hero** `[mol]`, **SocialMediaLink** `[mol]`, **CartProduct** `[org]`,
-  **DesktopNavigation** `[org]` — the next five unblocked queue entries top-to-bottom; deps LinkButton,
-  ProductQuantityInput, IconButton all migrated). `pnpm build` green, full `vitest --project=storybook`
-  **420/420** (interaction + a11y), `pnpm build-storybook` green, full `pnpm test:visual` **239 passed /
-  13 skipped** (was 231/13 — **+8 baselines**: FooterTopBar ×2, SocialMediaLink ×6 [facebook/instagram/
-  linkedin × desktop/mobile]). **Hero, CartProduct, DesktopNavigation are gallery-only** (measured — see
-  findings). The next batch continues Tier-2: **HorizontalVariant**, **ProductSearch**, **AlertMessage**,
-  **FaqHero**, **LinkListItem**, then the rest of the Tier-2 molecules/organisms.
+- **Last Updated**: 2026-07-14
+- **Current Micro-Batch**: Batch 22 — Tier-2 molecules/organisms (complete;
+  **HorizontalVariant** `[org]`, **ProductSearch** `[org]`, **ProductSearchResultItem** `[org]`,
+  **AlertMessage** `[mol]`, **FaqHero** `[mol]`, **LinkListItem** `[mol]` — the next five unblocked
+  queue entries top-to-bottom **plus** ProductSearchResultItem, pulled forward from Tier-3 because its
+  "needs: ProductSearch" is a type-only cycle, so the pair had to land together). `pnpm build` green,
+  full `vitest --project=storybook` **457/457** (interaction + a11y), `pnpm build-storybook` green, full
+  `pnpm test:visual` **259 passed / 41 skipped** (was 239/13 — **+20 baselines**, all gated: ProductSearch
+  ×2, AlertMessage ×6, LinkListItem ×10). **HorizontalVariant, ProductSearchResultItem, FaqHero are
+  gallery-only** (no legacy baseline — see findings). The next batch continues Tier-2: **MessagePopup**,
+  **Modal**, **QuantityChanger**, **SortableList**, **Table**, then the rest of Tier-2.
+- **2026-07-14 — Batch 22 findings & harness changes**:
+  - **Shared-type "circular" pair built together (ProductSearch ↔ ProductSearchResultItem).** The queue
+    flagged ProductSearch `needs: ProductSearchResultItem` and the item `needs: ProductSearch` — a
+    **type-only** cycle: the item imports only the `ProductSearchResult` *model* from ProductSearch, while
+    the runtime dependency is one-way (ProductSearch renders the item). Same resolution as Batch 21's
+    MobileNavigation↔DesktopNavigation: the **owning module (ProductSearch) declares + exports** the
+    `ProductSearchResult`/`ProductSearchVariant` model; the sibling does `import type`. No runtime cycle
+    (type imports are erased), so `pnpm build` is clean. Both reclassified atom/molecule → **organism**.
+  - **Both product-search baselines captured the CLOSED bar.** `product-search-story` and
+    `product-search-story-loading` were both authored with `isOpen: false` + empty query, so the dropdown
+    (and, for `-loading`, the spinner — which needs `isOpen && query`) never rendered. Both legacy PNGs
+    are therefore the same closed search bar; the two `Visual`/`VisualLoading` stories reproduce it and
+    map **gated** (both viewports pass — measured, not assumed).
+  - **AlertMessage: legacy `error` white-on-pink fails AA, and severity was colour-only.** White text on
+    the `#cd8aa2` error surface is ~2.6:1 (fails 1.4.3) — a faithful reproduction would trip the axe
+    hard-gate — so V2 uses dark ink on `error` (and `warning`); only the dark-green `info` keeps white.
+    Legacy also carried a dead `getAlertIcon` and conveyed severity by **background colour alone** (1.4.1);
+    V2 renders a **distinct severity glyph** (info/triangle/circle) with a localised label in place of the
+    legacy invisible spacer. `role` is type-driven: `error`→`alert` (assertive), else `status` (polite).
+    Both changes are tiny fractions of the full-width bar → all 6 baselines map **gated** (measured).
+  - **LinkListItem: one link, not two; `IconButton type=link` for the compact download.** Legacy rendered
+    the title *and* a chevron as two duplicate links to the same URL, both `aria-label="Navigate to …"`.
+    V2 exposes **one** link — the title heading (its text is the accessible name, 2.4.4, with a focus
+    ring) — and the chevron is a decorative affordance (`aria-hidden`). Legacy's download used `IconLink`
+    with `children={undefined}` (an unnamed, vertical-layout link that doesn't fit a tag row); V2 uses
+    **`IconButton type="link"`** with a title-specific `aria-label` — compact and named. Title heading is
+    sized to the legacy `heading-xs` via a `text-h-xs` className over `Heading order` (level stays
+    context-driven). 5 frames map gated (both viewports).
+  - **Icon-only download/expand controls that IconButton can't express → raw button.** IconButton forwards
+    only `aria-label`/`aria-busy`, not `aria-expanded`/`aria-controls`, so ProductSearchResultItem's
+    variant **disclosure toggle** is a raw `<button aria-expanded aria-controls>` with an `Icon` (same
+    pattern the `Search` molecule uses for its icon buttons); the add (+) controls stay as `IconButton`.
+- **2026-07-14 — Batch 22 design-fix follow-ups (user review)**:
+  - **LinkListItem mobile invoice frame reworked (mobile-only).** The legacy `align="center"` group floated
+    the invoice amounts centred while the title was left-aligned, and the chevron floated mid-block. Fixed
+    with `lg:`-guarded classes so **desktop stays byte-identical (gated)**: the row now top-aligns its
+    trailing controls on mobile (`items-start lg:items-center`) and the amounts left-align + tighten
+    (`items-start gap-2 lg:items-center lg:gap-4`). Mobile diff stays under the 2% gate (sparse text).
+  - **IconButton `noBorder` now actually removes the border (real bug fix).** `surfaceClasses.white` adds
+    `md:border-border-on-x md:bg-action-x` (a fill + border from `md` up, legacy parity), but `noBorder`
+    only cleared the *base* border — so every `noBorder` icon button still drew a **border ring on desktop**
+    (and `isTransparent` only killed the fill). Changed `noBorder` → `border-transparent md:border-transparent`.
+    Fixes the "borders around icons" report batch-wide; full `test:visual` stayed **259/41** (removing the
+    stray ring moved V2 *closer* to legacy, no regressions).
+  - **AlertMessage close button de-chipped + info X made visible.** The close relied on `surface='white'`,
+    whose `md:bg-action-x` fill won over the intended chip colour on desktop → a **white circle with a white
+    (invisible) X** on the `info` bar. Dropped the coloured chip entirely: the close is now `isTransparent
+    noBorder` with the X inheriting the type `ink` (white on `info`/green, dark on `warning`/`error`) — a
+    bare, contrast-safe glyph. All 6 alert baselines still gated-pass.
+  - **ProductSearch/ProductSearchResultItem thumbnails use a real product photo.** Replaced the grey
+    placeholder data-URI with a downscaled (214×320, 12 KB) beer-glass photo bundled from the legacy assets
+    (`src/assets/product-images/beer-glass.jpg`, from `legacy/.../rich-text-images/ol_glas_pils.jpg`) —
+    still deterministic/offline for the review gallery, but a realistic beverage thumbnail.
 - **2026-07-13 — Batch 21 findings & harness changes**:
   - **Icon-only-on-mobile links must carry an explicit accessible name (FooterTopBar).** The bar's pills
     collapse to icon-only circles below `md`, hiding the label with `display:none` — which also drops it
@@ -723,8 +777,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 96 / 155
-- Remaining: 59
+- Completed: 102 / 155
+- Remaining: 53
 
 ## Components Checklist
 
@@ -868,11 +922,11 @@ finished line into _Completed_ by hand (tiers rarely shift).
 
 #### Tier 2 — unlocked after Tier 1
 
-- [ ] HorizontalVariant `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variant) — needs: ProductVariant, IconWithTooltip · unblocks 1
-- [ ] ProductSearch `[org]` (Legacy: legacy/src/design-system/components/molecules/product-search) — needs: ProductVariant, InputText, ProductSearchResultItem · unblocks 1
-- [ ] AlertMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-message) — needs: IconButton
-- [ ] FaqHero `[mol]` (Legacy: legacy/src/design-system/components/molecules/faq-hero) — needs: InputText, IconButton
-- [ ] LinkListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/link-list-item) — needs: IconButton, IconLink
+- [x] HorizontalVariant `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variant) — Batch 22; reuses `ProductVariantProps` (radio-in-group model, `<label>`+hidden native radio); no baseline (gallery-only — only rendered inside the unmigrated `horizontal-variants` carousel)
+- [x] ProductSearch `[org]` (Legacy: legacy/src/design-system/components/molecules/product-search) — Batch 22; built as a pair with ProductSearchResultItem (owns the `ProductSearchResult`/`ProductSearchVariant` model + export); 2 baselines mapped (both legacy stories captured the CLOSED bar)
+- [x] AlertMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-message) — Batch 22; contrast fix (error white→dark ink) + distinct severity glyph (legacy severity was colour-only, 1.4.1); 3 baselines mapped
+- [x] FaqHero `[mol]` (Legacy: legacy/src/design-system/components/molecules/faq-hero) — Batch 22; real `ariaLabel` field name (not placeholder-as-label); no baseline (gallery-only — never captured standalone)
+- [x] LinkListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/link-list-item) — Batch 22; one row link (decorative chevron, dropped legacy's duplicate 2nd link) + `IconButton type=link` download; 5 baselines mapped
 - [ ] MessagePopup `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-popup) — needs: IconButton
 - [ ] Modal `[mol]` (Legacy: legacy/src/design-system/components/molecules/modal) — needs: IconButton
 - [ ] QuantityChanger `[mol]` (Legacy: legacy/src/design-system/components/molecules/quantity-changer) — needs: IconButton
@@ -892,7 +946,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [ ] ProductCardRestricted `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-restricted) — needs: ProductVariantList, TagsList, ProductCard, IconWithTooltip, Button · unblocks 1
 - [ ] ProductCardVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-vertical) — needs: ProductCard, ProductQuantityInput, ProductVariantList, TagsList, IconWithTooltip, Button, IconButton · unblocks 1
 - [ ] ProductDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/product-details) — needs: ProductVariant, ProductQuantityInput, Button, IconButton, AddToCartButton, AlertBox, CampaignBox, IconWithTooltip, ProductVariantList, LoadingBars · unblocks 1
-- [ ] ProductSearchResultItem `[org]` (Legacy: legacy/src/design-system/components/atoms/product-search-result-item) — needs: ProductSearch, IconButton, IconWithTooltip · unblocks 1
+- [x] ProductSearchResultItem `[org]` (Legacy: legacy/src/design-system/components/atoms/product-search-result-item) — Batch 22; built together with ProductSearch (the "needs: ProductSearch" was a **type-only** cycle — imports the `ProductSearchResult` model, no runtime dep); disclosure toggle for variants; no baseline (only rendered inside the ProductSearch dropdown, whose baseline is the closed bar)
 - [ ] Slider `[org]` (Legacy: legacy/src/design-system/components/atoms/slider) — needs: Form · unblocks 1
 - [ ] VerticalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/vertical-variants) — needs: ProductVariant, ProductVariantList, Carousel · unblocks 1
 - [ ] SocialMediaLinks `[mol]` (Legacy: legacy/src/design-system/components/molecules/social-media-links) — needs: SocialMediaLink

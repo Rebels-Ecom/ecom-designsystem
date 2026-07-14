@@ -121,7 +121,9 @@ function IconButton(props: IconButtonProps) {
     sizeClasses[size],
     surfaceClasses[surface],
     isTransparent && 'bg-transparent md:bg-transparent',
-    noBorder && 'border-transparent',
+    // The `white` surface adds `md:border-border-on-x` (a border from `md` up), so clearing the base
+    // border alone leaves a ring on desktop — neutralise the `md:` border too.
+    noBorder && 'border-transparent md:border-transparent',
     noPadding && 'p-0',
     round && 'rounded-full',
     disabled &&

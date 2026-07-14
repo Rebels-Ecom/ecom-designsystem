@@ -227,8 +227,21 @@ export type {
 export { AlertBox } from './components/molecules/AlertBox'
 export type { AlertBoxProps, AlertBoxColor } from './components/molecules/AlertBox'
 
+export { AlertMessage, defaultAlertMessageLabels } from './components/molecules/AlertMessage'
+export type {
+  AlertMessageProps,
+  AlertMessageType,
+  AlertMessageLabels,
+} from './components/molecules/AlertMessage'
+
 export { FormGroup } from './components/molecules/FormGroup'
 export type { FormGroupProps, FormGroupAlign } from './components/molecules/FormGroup'
+
+export { FaqHero, defaultFaqHeroLabels } from './components/molecules/FaqHero'
+export type { FaqHeroProps, FaqHeroLabels } from './components/molecules/FaqHero'
+
+export { LinkListItem, defaultLinkListItemLabels } from './components/molecules/LinkListItem'
+export type { LinkListItemProps, LinkListItemLabels } from './components/molecules/LinkListItem'
 
 export { AccountBox } from './components/molecules/AccountBox'
 export type { AccountBoxProps } from './components/molecules/AccountBox'
@@ -500,3 +513,23 @@ export type {
   DesktopNavigationProps,
   DesktopNavigationLabels,
 } from './components/organisms/DesktopNavigation'
+
+export { HorizontalVariant } from './components/organisms/HorizontalVariant'
+export type { HorizontalVariantProps } from './components/organisms/HorizontalVariant'
+
+export { ProductSearch, defaultProductSearchLabels } from './components/organisms/ProductSearch'
+export type {
+  ProductSearchProps,
+  ProductSearchResult,
+  ProductSearchVariant,
+  ProductSearchLabels,
+} from './components/organisms/ProductSearch'
+
+export {
+  ProductSearchResultItem,
+  defaultProductSearchResultItemLabels,
+} from './components/organisms/ProductSearchResultItem'
+export type {
+  ProductSearchResultItemProps,
+  ProductSearchResultItemLabels,
+} from './components/organisms/ProductSearchResultItem'

@@ -1049,4 +1049,55 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-templates-orderconfirmationpage--order-confirmation-page-template-story',
     reviewOnly: true,
   },
+  // ProductSearch: both legacy stories (`product-search-story` and `-loading`) were captured with
+  // `isOpen: false` + empty query, so each is just the CLOSED search bar — the dropdown/spinner never
+  // showed. The two Visual stories reproduce that closed bar exactly.
+  {
+    storyId: 'design-system-organisms-product-productsearch--visual',
+    legacyBaseline: 'design-system-molecules-productsearch--product-search-story',
+  },
+  {
+    storyId: 'design-system-organisms-product-productsearch--visual-loading',
+    legacyBaseline: 'design-system-molecules-productsearch--product-search-story-loading',
+  },
+  // AlertMessage (legacy atom → V2 molecule): one Visual story per severity. The banner background
+  // matches the legacy `--color-alert-*` tokens exactly; the only divergences are a leading severity
+  // glyph (legacy had an invisible spacer, added for 1.4.1) and, for `error`, dark ink over the legacy
+  // white (which failed AA) — both tiny fractions of the full-width bar, well under the 2% gate.
+  {
+    storyId: 'design-system-molecules-alertmessage--visual-info',
+    legacyBaseline: 'design-system-atoms-alertmessage--alert-message-story-info',
+  },
+  {
+    storyId: 'design-system-molecules-alertmessage--visual-warning',
+    legacyBaseline: 'design-system-atoms-alertmessage--alert-message-story-warning',
+  },
+  {
+    storyId: 'design-system-molecules-alertmessage--visual-error',
+    legacyBaseline: 'design-system-atoms-alertmessage--alert-message-story-error',
+  },
+  // LinkListItem: one Visual story per legacy story frame (5 × both viewports). Each reproduces the
+  // legacy content exactly. The only intentional divergences are a decorative chevron (legacy rendered
+  // a duplicate second link) and the title heading sized to the legacy `heading-xs` — both keep the
+  // frame pixel-faithful.
+  {
+    storyId: 'design-system-molecules-linklistitem--visual-order-processing',
+    legacyBaseline: 'design-system-molecules-linklistitem--link-list-item-story-order-processing',
+  },
+  {
+    storyId: 'design-system-molecules-linklistitem--visual-order-delivered',
+    legacyBaseline: 'design-system-molecules-linklistitem--link-list-item-story-order-delivered',
+  },
+  {
+    storyId: 'design-system-molecules-linklistitem--visual-purchase-list-item',
+    legacyBaseline: 'design-system-molecules-linklistitem--link-list-item-story-purchase-list-item',
+  },
+  {
+    storyId: 'design-system-molecules-linklistitem--visual-bonus-list-item',
+    legacyBaseline: 'design-system-molecules-linklistitem--link-list-item-story-bonus-list-item',
+  },
+  {
+    storyId: 'design-system-molecules-linklistitem--visual-invoice-list-item',
+    legacyBaseline: 'design-system-molecules-linklistitem--link-list-item-story-invoice-list-item',
+  },
 ]
