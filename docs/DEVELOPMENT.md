@@ -127,6 +127,26 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   (legacy `rgba(0,62,81,0.3)`) *is* an existing primitive, so it needs no new token — it's just
   `bg-blue-500/30`. Prefer `bg-<token>/<alpha>` over a bespoke rgba token; only mint a token when the
   base colour isn't already in the theme. `LoadingOverlay` is the reference.
+- **An overlay's backdrop/scrim must be a SIBLING of the dialog, never a wrapping ancestor.** The
+  natural instinct is to nest the dialog inside the backdrop (the backdrop doubles as a flex-centering
+  container). Don't: a semi-transparent dark backdrop ancestor makes axe stop crediting the dialog's own
+  opaque `bg-surface-default`, so it computes the dialog text as dark-on-dark (contrast ≈ 1.0 → the a11y
+  hard-gate fails); and if that backdrop is `aria-hidden` (to keep the scrim out of the a11y tree) it
+  removes the *entire nested dialog* from the accessibility tree — the dialog, its heading, and its close
+  button all disappear from AT and from `getByRole`. Render them as siblings in a fragment: the scrim is
+  `fixed inset-0 z-<layer>-backdrop`, the dialog is separately `fixed`-positioned at `z-<layer>` (one step
+  above). Layer tokens live in the `@layer utilities` z-scale in `index.css` (`z-drawer-backdrop`/`z-drawer`,
+  `z-modal-backdrop` 999 / `z-modal` 1000). `DrawerSidebar` and `Modal` are the references; this applies to
+  every future overlay (cart-sidebar, pop-ups, dynamic-filter).
+- **An overlay's entrance animates a TRANSFORM, not opacity.** The a11y gate runs axe in `afterEach`, which
+  can fire mid-entrance. An opacity fade makes the whole dialog surface semi-transparent for those frames,
+  so the dark scrim bleeds through and axe flags `color-contrast` **intermittently** (the failing overlay
+  varies run-to-run). The `reducedMotion: 'reduce'` browser context (see `vitest.config.ts`) settles the
+  first frame for components that gate their Framer entrance on `useReducedMotion()`, but that alone left
+  residual flake with opacity. Animate a `y`/scale transform instead — the surface stays fully opaque every
+  frame, so contrast is deterministic. Centre such a dialog with a transparent `pointer-events-none`
+  flex-layer (the dialog re-enables `pointer-events`), not a `-translate-1/2`, so the entrance transform
+  doesn't fight the centring and backdrop clicks still fall through. `Modal` is the reference.
 - **A runtime value that must be *responsive* → CSS-var + a media-query `@utility`.** Inline
   `style={{ … }}` handles a single runtime dimension, but it can't carry breakpoints. When a runtime
   prop needs a different value per breakpoint (e.g. `FlexItem`'s `flex={{sm,md,lg}}`), set the values

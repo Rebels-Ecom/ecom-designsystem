@@ -487,6 +487,9 @@
   .z-modal-backdrop {
     z-index: 999;
   }
+  .z-modal {
+    z-index: 1000;
+  }
 }
 
 /* Dark theme — overrides only the tokens that diverge (same names, new values). */

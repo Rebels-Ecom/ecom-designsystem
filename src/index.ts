@@ -341,6 +341,23 @@ export type { IntroBlockProps } from './components/molecules/IntroBlock'
 export { MessageBanner } from './components/molecules/MessageBanner'
 export type { MessageBannerProps, MessageBannerType } from './components/molecules/MessageBanner'
 
+export { MessagePopup, defaultMessagePopupLabels } from './components/molecules/MessagePopup'
+export type {
+  MessagePopupProps,
+  MessagePopupLabels,
+  MessagePopupPosition,
+  MessagePopupArrowPosition,
+} from './components/molecules/MessagePopup'
+
+export { Modal } from './components/molecules/Modal'
+export type { ModalProps, ModalLabels, ModalBackdrop } from './components/molecules/Modal'
+
+export { QuantityChanger, defaultQuantityChangerLabels } from './components/molecules/QuantityChanger'
+export type {
+  QuantityChangerProps,
+  QuantityChangerLabels,
+} from './components/molecules/QuantityChanger'
+
 export { OrderConfirmationDetails } from './components/molecules/OrderConfirmationDetails'
 export type {
   OrderConfirmationDetailsProps,
@@ -363,8 +380,20 @@ export type { RichTextProps } from './components/molecules/RichText'
 export { ScrollableList } from './components/molecules/ScrollableList'
 export type { ScrollableListProps } from './components/molecules/ScrollableList'
 
+export { SortableList, defaultSortableListLabels } from './components/molecules/SortableList'
+export type {
+  SortableListProps,
+  SortableListLabels,
+  SortableListSpacing,
+  SortableListActiveSorting,
+  SortableListSortingOption,
+} from './components/molecules/SortableList'
+
 export { SortableListItem } from './components/molecules/SortableListItem'
 export type { SortableListItemProps } from './components/molecules/SortableListItem'
+
+export { Table } from './components/molecules/Table'
+export type { TableProps, TableLabels, TableRow, TableCell, TableAction } from './components/molecules/Table'
 
 export { TagsDescription } from './components/molecules/TagsDescription'
 export type { TagsDescriptionProps, TagDescriptionEntry } from './components/molecules/TagsDescription'

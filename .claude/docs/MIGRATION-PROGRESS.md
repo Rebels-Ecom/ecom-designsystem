@@ -17,16 +17,67 @@
 
 - **Active Category**: organisms + molecules (Tier-2)
 - **Last Updated**: 2026-07-14
-- **Current Micro-Batch**: Batch 22 — Tier-2 molecules/organisms (complete;
-  **HorizontalVariant** `[org]`, **ProductSearch** `[org]`, **ProductSearchResultItem** `[org]`,
-  **AlertMessage** `[mol]`, **FaqHero** `[mol]`, **LinkListItem** `[mol]` — the next five unblocked
-  queue entries top-to-bottom **plus** ProductSearchResultItem, pulled forward from Tier-3 because its
-  "needs: ProductSearch" is a type-only cycle, so the pair had to land together). `pnpm build` green,
-  full `vitest --project=storybook` **457/457** (interaction + a11y), `pnpm build-storybook` green, full
-  `pnpm test:visual` **259 passed / 41 skipped** (was 239/13 — **+20 baselines**, all gated: ProductSearch
-  ×2, AlertMessage ×6, LinkListItem ×10). **HorizontalVariant, ProductSearchResultItem, FaqHero are
-  gallery-only** (no legacy baseline — see findings). The next batch continues Tier-2: **MessagePopup**,
-  **Modal**, **QuantityChanger**, **SortableList**, **Table**, then the rest of Tier-2.
+- **Current Micro-Batch**: Batch 23 — Tier-2 molecules (complete; **MessagePopup** `[mol]`,
+  **Modal** `[mol]`, **QuantityChanger** `[mol]`, **SortableList** `[mol]`, **Table** `[mol]` — the next
+  five unblocked queue entries top-to-bottom, all `needs: IconButton`/`Button`, both migrated).
+  `pnpm build` green, full `vitest --project=storybook` **484/484** (interaction + a11y, was 457),
+  `pnpm build-storybook` green, full `pnpm test:visual` **261 passed / 47 skipped / 0 failed** (was
+  259/41 — MessagePopup +2 **gated**; SortableList ×2 + Table ×3 **reviewOnly**, paired for sign-off).
+  **QuantityChanger is no-baseline** (no legacy story/snapshot). **Modal is current-only** (legacy frame
+  wraps the unmigrated CreateListForm). The next batch continues Tier-2: **Teaser**, **TopNavBar**,
+  **AccountBoxList**, then the rest of Tier-2.
+- **2026-07-14 — Batch 23 design-fix follow-ups (user review)**:
+  - **SortableList list heading now bold.** `text-h-s` carries only size/line-height; legacy `.listHeading`
+    used class `h4` which is `font-weight: bold`. Added `font-bold` (the `Heading` atom does this itself; the
+    plain styled div did not). Verified at mobile against the legacy frame.
+  - **Table mobile → legacy stacked card layout (was horizontal scroll).** Legacy rendered two subtrees
+    (`.mobile` stacked + `.desktop` columns); V2 now mirrors that: below `md` a stacked **"label: value"**
+    card per row (bold capitalised label, group hairline borders, actions centred), at `md`+ the semantic
+    `<table>`. `md:hidden` / `hidden md:table` toggle. Mobile now pixel-matches legacy (verified 375px).
+  - **Table desktop columns flow from the left (were spread full-width).** Auto table-layout distributed
+    slack across all columns; now the **last text column** gets `w-full` (mirrors legacy `.lastTextColumn
+    { flex: 1 }`) so text columns pack left at natural width and trailing action columns are pushed to the
+    right edge. Verified both the text-only (`table-story-two`) and iconed (`table-story`) frames at 1280px.
+  - **ArticleList full-width card is full-bleed on mobile.** The static-layout container applied
+    `px-4 md:px-8` to every case; the single full-width card's image must reach the screen edges on mobile
+    (legacy adds no mobile gutter — the card's own `p-4` insets the copy). Gated `px-4` on `total > 1`;
+    desktop keeps `md:px-8` (legacy full-width desktop has a 2rem gutter). Verified 375px full-bleed + 1280px
+    gutter.
+  - **Overlay entrances animate a TRANSFORM, not opacity — avoids the axe color-contrast flake.** An opacity
+    fade makes the dialog surface semi-transparent mid-entrance, so an axe scan (`afterEach`) sees the dark
+    scrim bleed through and flags color-contrast **intermittently** (the failing overlay varied run-to-run:
+    Modal, PopUp…). Even the `reducedMotion: 'reduce'` context (which should settle the first frame) left
+    residual flake. Switching Modal's entrance to a `y`-translate keeps the surface fully opaque every frame
+    → deterministic. Required restructuring to a transparent `pointer-events-none` flex-centre layer (so the
+    transform doesn't fight a translate-based centre, and backdrop clicks still fall through). Full
+    `vitest --project=storybook` **484/484 twice** after the change.
+- **2026-07-14 — Batch 23 findings & harness changes**:
+  - **Overlay backdrop must be a SIBLING of the dialog, never its parent.** Modal was first built with the
+    dialog nested inside a semi-transparent `aria-hidden` backdrop (the natural flex-centering structure).
+    That silently broke a11y two ways: (1) `aria-hidden` on an ancestor removed the whole dialog from the
+    accessibility tree, so `getByRole('dialog')` and the close button vanished; (2) with the dialog nested
+    in a 90%-opacity dark layer, axe stopped crediting the dialog's opaque `bg-surface-default` and computed
+    the text as dark-on-dark (contrast 1.01 → hard-gate fail). Fix mirrors **DrawerSidebar**: backdrop and
+    dialog are **siblings** in a fragment, the dialog is `fixed`-centered with a new **`z-modal` (1000)**
+    token above `z-modal-backdrop` (999). Lesson for every future overlay (drawer/popup/cart/cookie): the
+    scrim is a sibling, and it is not `aria-hidden` when it contains focusable UI.
+  - **`message-popup` is a callout, not a dialog — classify by behaviour, not the checklist row.** The
+    checklist files `message-popup` under *Overlay/dialog*, but the legacy component is a non-modal inline
+    bubble (no trap, no backdrop, `position: relative|absolute`). Built it as *Status/feedback* + *Interactive
+    control*: `role="status"` polite live region + a localisable close button — correct and axe-clean, where a
+    forced focus-trap dialog would have been wrong. (Same "union/override by behaviour" latitude the checklist
+    itself grants in §2.)
+  - **Semantic-`<table>` rewrite is a `reviewOnly` divergence.** Legacy Table was a `<div>` column grid; the
+    accessible rewrite (`<th scope>`, `aria-sort`, keyboard sort buttons, horizontal-scroll on mobile) is a
+    faithful reproduction of the same scene that can't pixel-match the div layout → mapped `reviewOnly` (both
+    frames paired in the gallery, gate skipped). Same class as the vector-vs-raster / font-rendering cases.
+  - **A font-metric wrap flip can push an otherwise-faithful frame over the 2% gate on ONE viewport only.**
+    SortableList desktop matched within gate, but mobile hit ~3% because at the ~171px column-1 width (inside
+    ContentWrapper) the V2 heading font renders "E-HANDELSFRÅGOR" narrow enough to stay on one line while
+    legacy wraps it to two — the height delta then cascades every row down. The `order={5}` size is
+    byte-identical to legacy `heading-xs`, so this is font-face metrics, not a sizing bug. Because a
+    desktop-only gate (`viewports:['desktop']`) would **orphan** the mobile frame (the review gallery honours
+    `viewports`), the whole entry is `reviewOnly` so BOTH viewports stay paired — measured, not eyeballed.
 - **2026-07-14 — Batch 22 findings & harness changes**:
   - **Shared-type "circular" pair built together (ProductSearch ↔ ProductSearchResultItem).** The queue
     flagged ProductSearch `needs: ProductSearchResultItem` and the item `needs: ProductSearch` — a
@@ -927,11 +978,11 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] AlertMessage `[mol]` (Legacy: legacy/src/design-system/components/atoms/alert-message) — Batch 22; contrast fix (error white→dark ink) + distinct severity glyph (legacy severity was colour-only, 1.4.1); 3 baselines mapped
 - [x] FaqHero `[mol]` (Legacy: legacy/src/design-system/components/molecules/faq-hero) — Batch 22; real `ariaLabel` field name (not placeholder-as-label); no baseline (gallery-only — never captured standalone)
 - [x] LinkListItem `[mol]` (Legacy: legacy/src/design-system/components/molecules/link-list-item) — Batch 22; one row link (decorative chevron, dropped legacy's duplicate 2nd link) + `IconButton type=link` download; 5 baselines mapped
-- [ ] MessagePopup `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-popup) — needs: IconButton
-- [ ] Modal `[mol]` (Legacy: legacy/src/design-system/components/molecules/modal) — needs: IconButton
-- [ ] QuantityChanger `[mol]` (Legacy: legacy/src/design-system/components/molecules/quantity-changer) — needs: IconButton
-- [ ] SortableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list) — needs: IconButton
-- [ ] Table `[mol]` (Legacy: legacy/src/design-system/components/molecules/table) — needs: Button, IconButton
+- [x] MessagePopup `[mol]` (Legacy: legacy/src/design-system/components/atoms/message-popup) — Batch 23; reclassified atom→molecule. Not a modal — a non-modal `role="status"` callout (blue bubble + downward tail + decorative leading icon + localisable close `IconButton`). 1 baseline mapped **gated** (legacy story was `isOpen:false` → the CLOSED/empty frame; reproduced faithfully, both viewports pass)
+- [x] Modal `[mol]` (Legacy: legacy/src/design-system/components/molecules/modal) — Batch 23; full accessible dialog rewrite (`role="dialog"` + `aria-modal`, required `ariaLabel`, focus-trap + move-in/return, `Escape` always closes, `dismissable` gates backdrop click, scroll-lock, reduced-motion). **Backdrop is a SIBLING of the dialog, not a parent** — a semi-transparent `aria-hidden` backdrop wrapping the dialog hides it from AT and fails contrast; new `z-modal` (1000) token. No baseline (legacy frame wraps the unmigrated CreateListForm → current-only, revisit when it lands)
+- [x] QuantityChanger `[mol]` (Legacy: legacy/src/design-system/components/molecules/quantity-changer) — Batch 23; labelled `role="group"` stepper (−/+ `IconButton`s + native number field with `aria-label`, spinner-hide, focus ring); bounds enforced by disabling at 0/`maxQuantity` (state not colour-only). No baseline (no legacy story/snapshot → no `['visual']` story)
+- [x] SortableList `[mol]` (Legacy: legacy/src/design-system/components/molecules/sortable-list) — Batch 23; composes migrated SortableListItem. Sort controls merged legacy's duplicate name-button+arrow into ONE `<button aria-pressed>` per option (bold+underline+chevron, never colour-only); `<ul>`/`<li>` + labelled sort row; `Loader` for loading. 1 baseline mapped **reviewOnly**: desktop matches within gate, but mobile ~3% (measured) from a font-metric wrap flip at the ~171px column ("E-HANDELSFRÅGOR" wraps in legacy, one line in V2; `order={5}` size is byte-identical) — both viewports stay paired for sign-off
+- [x] Table `[mol]` (Legacy: legacy/src/design-system/components/molecules/table) — Batch 23; reclassified atom→molecule + **div-grid → semantic `<table>`** (`<th scope>`, `aria-sort`, keyboard sort `<button>`s), action cells are named `IconButton`s, `role="status"` loading skeleton. **Desktop** columns pack left at natural width with the last text column absorbing slack (legacy `.lastTextColumn{flex:1}`) so actions push right; **mobile (< md)** gives way to the legacy **stacked "label: value" card** per row (matches the legacy mobile design pixel-close). 2 baselines mapped **reviewOnly** (semantic `<table>` still can't fully pixel-match the legacy `<div>` grid on desktop — lucide-vs-icomoon chevrons, cell borders; `table-story` desktop-only — its legacy mobile PNG was full-page 1436px)
 - [ ] Teaser `[mol]` (Legacy: legacy/src/design-system/components/molecules/teaser) — needs: LinkButton
 - [ ] TopNavBar `[mol]` (Legacy: legacy/src/design-system/components/molecules/top-nav-bar) — needs: UiDatePicker
 - [ ] AccountBoxList `[org]` (Legacy: legacy/src/design-system/components/organisms/account-box-list) — needs: AccountBox

@@ -1100,4 +1100,40 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-molecules-linklistitem--visual-invoice-list-item',
     legacyBaseline: 'design-system-molecules-linklistitem--link-list-item-story-invoice-list-item',
   },
+  // MessagePopup: the legacy `message-popup-story` was authored `isOpen: false`, so the baseline is
+  // the CLOSED (empty) state. The Visual story reproduces that closed frame — an empty-vs-empty diff
+  // that gates at both viewports (measured, not assumed).
+  {
+    storyId: 'design-system-molecules-messagepopup--visual',
+    legacyBaseline: 'design-system-atoms-messagepopup--message-popup-story',
+  },
+  // SortableList: reproduces the "Reklamation" list (three idle sort controls + two interactive rows
+  // with separating lines) inside the legacy 1254px wrapper. Desktop matches within the 2% gate, but
+  // MOBILE diverges ~3% (measured): at the ~171px column-1 width the V2 heading font renders
+  // "E-HANDELSFRÅGOR" narrow enough to stay on one line, whereas legacy wraps it to two — a font-metric
+  // wrap flip (the `order={5}` size is byte-identical to legacy `heading-xs`) that then cascades the
+  // rows downward. Faithful scene, locked font divergence → `reviewOnly` so BOTH viewports stay paired
+  // in the gallery for sign-off rather than orphaning mobile.
+  {
+    storyId: 'design-system-molecules-sortablelist--visual',
+    legacyBaseline: 'design-system-molecules-sortablelist--sortable-list-story',
+    reviewOnly: true,
+  },
+  // Table: the V2 rewrite is a semantic <table> (aria-sort, <th scope>) where legacy was a <div> grid.
+  // Desktop now packs columns left like legacy (last text column absorbs slack), and mobile renders the
+  // same stacked "label: value" cards as legacy — visually very close, but still a structural rewrite that
+  // can't be guaranteed within the 2% pixel gate (lucide-vs-icomoon sort chevrons, cell-border rendering),
+  // so both frames stay `reviewOnly` (paired in the gallery for human sign-off, gate skipped). `table-story`
+  // is desktop-only because its legacy mobile PNG was captured full-page (1436px).
+  {
+    storyId: 'design-system-molecules-table--visual',
+    legacyBaseline: 'design-system-atoms-table--table-story',
+    viewports: ['desktop'],
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-molecules-table--visual-two',
+    legacyBaseline: 'design-system-atoms-table--table-story-two',
+    reviewOnly: true,
+  },
 ]
