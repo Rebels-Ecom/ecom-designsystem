@@ -715,6 +715,17 @@ images on *failure*, so a green run leaves nothing to eyeball. `pnpm visual:revi
   **"Batch N only"** toggle. No per-entry annotation — the migration log is the single source, and the
   feature degrades to a flat list if that line is ever missing. Matching is by story id (`-<name>--`),
   so it works for both mapped and no-baseline `['visual']` stories.
+- **Regenerate just one batch instead of the whole library.** Capturing every `['visual']` frame at
+  both viewports grows with the library (300+ frames, minutes). When you only care about what you just
+  built, pass a batch filter: `pnpm visual:review --latest` (the highest-numbered batch) or
+  `pnpm visual:review --24` / `--batch=24` (a specific one). The gallery then contains only that batch —
+  seconds, not minutes. A tiny launcher (`scripts/visual-review-run.mjs`) turns the flag into a
+  `VISUAL_REVIEW_BATCH` env var (Playwright rejects unknown CLI options, so it can't be passed straight
+  through) and forwards any other args to `playwright test`. The spec resolves the batch's component
+  names from the checklist's `- [x] <Name> … Batch <N>` tags — precise per component and immune to the
+  header's forward-looking "next batch" prose — and skips every non-matching frame in both capture loops.
+  An unknown/unfilled batch prints a warning listing the resolvable batch numbers and produces an empty
+  gallery rather than silently falling back to everything. No flag → full gallery (unchanged default).
 - Reuses a running `pnpm storybook` on :6006 if present; otherwise builds and serves the static book.
   This is a manual review aid, never a gate — don't wire it into CI.
 

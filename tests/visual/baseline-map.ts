@@ -1195,4 +1195,11 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-organisms-deliveryform--visual',
     legacyBaseline: 'design-system-organisms-deliveryform--delivery-form-story',
   },
+  // SocialMediaLinks: the same three flush chips (Facebook, Instagram, Linkedin) as the legacy
+  // `SocialMediaStory`. Each chip is the already-baselined SocialMediaLink (blue glyph on the light
+  // icon chip); the row reproduces the legacy flush layout (no gap), so both viewports are gated.
+  {
+    storyId: 'design-system-molecules-socialmedialinks--visual',
+    legacyBaseline: 'design-system-molecules-socialmedialinks--social-media-story',
+  },
 ]

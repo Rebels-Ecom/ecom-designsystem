@@ -102,6 +102,49 @@ function isCurrentStory(storyId: string, names: Set<string>): boolean {
   return [...names].some((name) => storyId.includes(`-${name}--`))
 }
 
+/**
+ * Optional capture filter, set via `VISUAL_REVIEW_BATCH` (see `scripts/visual-review-run.mjs`):
+ * `latest` → the highest-numbered batch, or a specific number → that batch. Returns the batch's
+ * component names so the generator can skip every other frame — regenerating one batch is seconds,
+ * not minutes.
+ *
+ * Resolved from the checklist's `- [x] <Name> … Batch <N>` tags rather than the `Current Micro-Batch`
+ * bold-name heuristic {@link readCurrentBatch} uses, because that's precise per component and immune to
+ * forward-looking "next batch" prose in the header. Undefined → no filter (capture everything).
+ */
+function resolveBatchFilter(): CurrentBatch | undefined {
+  const raw = process.env.VISUAL_REVIEW_BATCH?.trim()
+  if (!raw) return undefined
+  try {
+    const md = readFileSync(resolve(ROOT, '.claude/docs/MIGRATION-PROGRESS.md'), 'utf8')
+    const byBatch = new Map<number, Set<string>>()
+    let maxBatch = 0
+    for (const line of md.split('\n')) {
+      const done = line.match(/^\s*-\s*\[x\]\s+([A-Za-z0-9]+)\b/)
+      const tag = line.match(/Batch\s+(\d+)/i)
+      if (!done || !tag) continue
+      const n = Number(tag[1])
+      const set = byBatch.get(n) ?? new Set<string>()
+      set.add(done[1].toLowerCase())
+      byBatch.set(n, set)
+      if (n > maxBatch) maxBatch = n
+    }
+    const target = raw.toLowerCase() === 'latest' ? maxBatch : Number(raw)
+    const names = Number.isFinite(target) ? byBatch.get(target) : undefined
+    if (!names || names.size === 0) {
+      console.warn(
+        `\n  ⚠ VISUAL_REVIEW_BATCH="${raw}" matched no completed components in MIGRATION-PROGRESS.md` +
+          ` (known batches: ${[...byBatch.keys()].sort((a, b) => a - b).join(', ') || 'none'}).` +
+          ` Producing an empty gallery.\n`,
+      )
+      return { label: `Batch ${raw}`, names: new Set() }
+    }
+    return { label: `Batch ${target}`, names }
+  } catch {
+    return undefined
+  }
+}
+
 interface Dims {
   w: number
   h: number
@@ -437,7 +480,11 @@ test('generate visual review gallery', async ({ browser, request }) => {
 
   const rows: Row[] = []
   const mappedIds = new Set(visualBaselines.map((b) => b.storyId))
-  const batch = readCurrentBatch()
+  // When a batch filter is active it drives BOTH the capture set and the gallery grouping/label;
+  // otherwise fall back to the auto-detected current batch and capture the whole library.
+  const filter = resolveBatchFilter()
+  const batch = filter ?? readCurrentBatch()
+  if (filter) console.log(`\n  Filtering to ${filter.label}: ${[...filter.names].join(', ') || '(none)'}\n`)
 
   // One context + page per viewport, reused across every capture (see captureCurrent).
   const pages = {} as Record<Viewport, Page>
@@ -460,6 +507,7 @@ test('generate visual review gallery', async ({ browser, request }) => {
 
   try {
     for (const { storyId, legacyBaseline, viewports, reviewOnly } of visualBaselines) {
+      if (filter && !isCurrentStory(storyId, filter.names)) continue
       const wanted = viewports ?? ALL_VIEWPORTS
       for (const viewport of ALL_VIEWPORTS) {
         const row: Row = { storyId, viewport, currentFile: '', note: 'mapped', reviewOnly }
@@ -493,6 +541,7 @@ test('generate visual review gallery', async ({ browser, request }) => {
     // — rendered current-only so nothing with a Visual story escapes review.
     const unmappedIds = await findUnmappedVisualIds(request, mappedIds)
     for (const storyId of unmappedIds) {
+      if (filter && !isCurrentStory(storyId, filter.names)) continue
       for (const viewport of ALL_VIEWPORTS) {
         const row: Row = { storyId, viewport, currentFile: '', note: 'unmapped' }
         try {

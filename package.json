@@ -28,7 +28,7 @@
     "build": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json && vite build",
     "build-storybook": "storybook build",
     "test:visual": "playwright test",
-    "visual:review": "playwright test --config scripts/visual-review.config.ts",
+    "visual:review": "node scripts/visual-review-run.mjs",
     "test-storybook": "vitest run --project=storybook",
     "preview": "vite preview"
   },

@@ -15,9 +15,45 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms + molecules (Tier-2)
-- **Last Updated**: 2026-07-14
-- **Current Micro-Batch**: Batch 24 — Tier-2 molecules + organisms (complete; **Teaser** `[mol]`,
+- **Active Category**: organisms + molecules (Tier-2 → Tier-3)
+- **Last Updated**: 2026-07-15
+- **Current Micro-Batch**: Batch 25 — finishing Tier-2 + the ProductVariant-family (complete;
+  **FaqGroup** `[org]`, **InvoiceList** `[org]` — the last two Tier-2 leaves — then **HorizontalVariants**
+  `[org]`, **VerticalVariants** `[org]`, **SocialMediaLinks** `[mol]` from Tier-3). `pnpm build` green (zero
+  TS), scoped `vitest --project=storybook` **20/20** (interaction + a11y), `pnpm build-storybook` green,
+  full `pnpm test:visual` **268 passed / 52 skipped / 0 failed** (was 266 — **SocialMediaLinks ×2** added,
+  gated + green). Four of the five are **no-baseline** (legacy shipped no story, or only rendered inside an
+  unmigrated parent) → gallery-only; only **SocialMediaLinks** maps a legacy frame. The ProductCard-family
+  Tier-3 leaves (`ProductCardRestricted`/`-Vertical`) stay **blocked** on the unmigrated `ProductCard`
+  cycle; the next buildable entries are the remaining Tier-3 leaves (**ProductDetails**, **Slider**,
+  **Footer**/**Header** groundwork, **LoginForm**, …).
+- **2026-07-15 — Batch 25 findings & harness changes**:
+  - **A named container + a child that self-names create a *duplicate* group — don't double-wrap.**
+    HorizontalVariants/VerticalVariants first wrapped their `Carousel` in a `<fieldset>`/`<legend>` for
+    the radio group, but the Carousel track already renders `role="group" aria-label={ariaLabel}`. Passing
+    the *same* name to both produced two groups with one name → `getByRole('group', { name })` threw
+    "found multiple elements" (and AT would double-announce). Fix: drop the fieldset — native radios group
+    via their shared `name`, and the Carousel's own `role="group"` supplies the name. Lesson: before adding
+    a grouping wrapper, check whether the composed child is *already* a named landmark/group.
+  - **`aria-label` on a generic `<span>` is an axe HARD fail (`aria-prohibited-attr`).** InvoiceList's
+    two-line date pill needs an accessible label ("Due date: 15 Mar, expired") distinct from its visible
+    "Mar / 15". A bare `aria-label` on the `<span>` is prohibited (generic role doesn't support naming);
+    adding `role="img"` makes the label valid *and* models the pill correctly (a graphic date badge whose
+    text is presentational). This also keeps the overdue state off colour-only (1.4.1) — the label says
+    "expired". Reusable rule: to name a non-interactive composite, give it a role that supports naming
+    (`img`/`group`/…), never `aria-label` on a raw span/div.
+  - **Locale-agnostic dates without baking month names.** Legacy `formatDateToDayMonthDMY` hard-coded
+    Swedish abbreviations (`Maj`, `Okt`). V2 parses the ISO `dueDate` and formats via
+    `Intl.DateTimeFormat(locale, …)` driven by a `locale` prop (default `en-US`) — day/month for the pill,
+    month+year for the group headings — so the same component ships to any locale. Undated paid invoices
+    fall into an overridable `labels.otherInvoices` bucket (deterministic — no `new Date()` "current
+    month" fallback that would flake tests/snapshots).
+  - **Legacy React-16 drawers → render-while-`open`, not translate-off-screen.** Both Variants pickers
+    (and legacy generally) kept the panel mounted and slid it out with a Framer `y:100%` transform — so a
+    "closed" panel's radios stayed in the a11y tree and tab order. V2 renders the panel only while `open`
+    (mount = presence), so closed = gone from the a11y tree; the decorative slide is dropped rather than
+    reduced-motion-gated. Same class as the TopNavBar/DeliveryInfoBar "off-screen but still announced"
+    findings.
   **TopNavBar** `[mol]`, **AccountBoxList** `[org]`, **CreateListForm** `[org]`, **DeliveryForm** `[org]` —
   the next five unblocked queue entries top-to-bottom). `pnpm build` green (zero TS), scoped
   `vitest --project=storybook` **17/17** (interaction + a11y), `pnpm build-storybook` green, full
@@ -869,8 +905,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 107 / 155
-- Remaining: 48
+- Completed: 122 / 155
+- Remaining: 33
 
 ## Components Checklist
 
@@ -1029,19 +1065,19 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] AccountBoxList `[org]` (Legacy: legacy/src/design-system/components/organisms/account-box-list) — Batch 24. **No baseline** — the legacy logo rendered at full intrinsic size (dead `--logotype-height-*` token) overlapping the heading; V2 constrains it → intentionally different (fixed) scene → gallery-only. Cards validated by AccountBox's mapped frames.
 - [x] CreateListForm `[org]` (Legacy: legacy/src/design-system/components/organisms/create-list-form) — Batch 24. **Gated + green.** Field spacing fixed (user review): the two `FormGroup`s stacked with 0 gap, so restored the legacy `input { margin-bottom }` rhythm with `md:space-y-7` between them → desktop submit y=489 vs legacy 490. Plain frame mapped **desktop-only** (legacy logo rendered unconstrained ~70px vs V2's normalised 32px `Logotype`; on the 375px canvas that shifts the stack >2% — same call as AccountBoxList's logo). `-loading` frame gated + green on both viewports (overlay covers the form). Title matched to legacy `.h3`=`h-m`; orange "read more" link → accessible blue+underline.
 - [x] DeliveryForm `[org]` (Legacy: legacy/src/design-system/components/organisms/delivery-form) — Batch 24. **Gated + green, both viewports.** Disclosure toggle (`aria-expanded`/`aria-controls`, `hidden` collapsed region); summary uses `role="group"` + `aria-labelledby` (legacy `<label htmlFor>`→`<div>` was invalid). Orange toggle → accessible blue+underline.
-- [ ] FaqGroup `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-group) — needs: FaqList
-- [ ] InvoiceList `[org]` (Legacy: legacy/src/design-system/components/molecules/invoice-list) — needs: LoadingOverlay, IconButton, Button
+- [x] FaqGroup `[org]` (Legacy: legacy/src/design-system/components/molecules/faq-group) — Batch 25; composes migrated FaqList. Rewritten as a named `<section aria-label={title}>` region + `<h3>` (`Heading`), an optional **decorative** category icon (`alt=""` by default — the visible title already names the group, so legacy's redundant `alt="Icon for {title}"` was dropped; consumer can pass `imgAlt`), and an optional `UiLink` "view more" (orange legacy link → accessible blue). Legacy's bare `<li>` (invalid standalone) + `<article>` wrapper → `<section>` + plain `<div>`. **No baseline** (legacy shipped no story/snapshot) → gallery-only. No built-in strings (all copy consumer-supplied) → no `labels`.
+- [x] InvoiceList `[org]` (Legacy: legacy/src/design-system/components/molecules/invoice-list) — Batch 25; reclassified molecule→organism. Full React 19 rewrite: dropped `framer-motion` (download-spinner swap) and the JS `mediaQueryHelper` (responsive Tailwind instead). Unpaid rows first (capped at 4, overflow behind an `aria-expanded`/`aria-controls` disclosure `<button>`), then paid rows grouped by month under `<h3>`s. **Date pill is `role="img"` + `aria-label`** — a bare `aria-label` on a `<span>` is an axe `aria-prohibited-attr` fail, and role=img keeps overdue state off colour-only (1.4.1). Per-row detail toggle is a native `<button>`+`Icon` (IconButton forwards no `aria-*`). Download = `IconButton` (link when `downloadUrl`, else button), swapped for a `LoadingOverlay` spinner while `downloadingId` matches, optionally wrapped in `ComponentWithTooltip`. Skeleton is a decorative `<div aria-hidden>` + a persistent polite `role="status"`. **All built-in strings (were Swedish/English) → overridable `labels` (English defaults); dates via a `locale` prop + `Intl` — no baked month names.** No baseline → gallery-only. **Styling-fidelity pass (user review):** overdue date pill matches legacy solid `#ce0b0b` + white (the `icon-critical` token, ~5.7:1 AA); row titles `font-semibold` (legacy 600, not bold); **paid** amounts drop their border on desktop (`lg:border-transparent`, legacy `.paidAmount`) while **unpaid** amounts keep the pill — the paid-vs-unpaid emphasis distinction. **Date pill + credit chip + skeleton were `bg-action-secondary`, which resolves to WHITE** (near-invisible on the page); corrected to `bg-grey-300` (legacy `--grey-300` = #e6ecee, the cool blue-grey confirmed against a production screenshot). Unpaid row relaid out as a 2-column flex (title + collapsible details + "expires" note on the left with **no column-gap**, amount/credit/download on the right) — the old `gap-2` column left a double gap around the *collapsed* `ExpandableWrapper`, pushing "Due in …" far below the title (user review). Split into dedicated **`Unpaid`** and **`Paid`** `['visual']` stories (plus the mixed `Visual`) so each type is reviewable in isolation.
 
 #### Tier 3 — unlocked after Tier 2
 
-- [ ] HorizontalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variants) — needs: ProductVariantList, HorizontalVariant, Carousel · unblocks 1
+- [x] HorizontalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variants) — Batch 25; reclassified molecule→organism. Dismissible variant picker = a horizontal `Carousel` of `HorizontalVariant` cards forming ONE native radio group. **Dropped the fieldset/legend**: the Carousel track is already `role="group"`, so a same-named fieldset produced a duplicate named group (`getByRole('group')` ambiguity) — the Carousel `ariaLabel` names the group; radios group via shared `name`. Non-modal dismiss (Escape + outside pointer + close `IconButton`), **rendered only while `open`** (legacy stayed mounted translated off-screen → stale a11y tree). Dropped the framer slide + the on-select reorder (moving radios on selection breaks keyboard focus order). No baseline → gallery-only.
 - [ ] ProductCardRestricted `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-restricted) — needs: ProductVariantList, TagsList, ProductCard, IconWithTooltip, Button · unblocks 1
 - [ ] ProductCardVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-vertical) — needs: ProductCard, ProductQuantityInput, ProductVariantList, TagsList, IconWithTooltip, Button, IconButton · unblocks 1
 - [ ] ProductDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/product-details) — needs: ProductVariant, ProductQuantityInput, Button, IconButton, AddToCartButton, AlertBox, CampaignBox, IconWithTooltip, ProductVariantList, LoadingBars · unblocks 1
 - [x] ProductSearchResultItem `[org]` (Legacy: legacy/src/design-system/components/atoms/product-search-result-item) — Batch 22; built together with ProductSearch (the "needs: ProductSearch" was a **type-only** cycle — imports the `ProductSearchResult` model, no runtime dep); disclosure toggle for variants; no baseline (only rendered inside the ProductSearch dropdown, whose baseline is the closed bar)
 - [ ] Slider `[org]` (Legacy: legacy/src/design-system/components/atoms/slider) — needs: Form · unblocks 1
-- [ ] VerticalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/vertical-variants) — needs: ProductVariant, ProductVariantList, Carousel · unblocks 1
-- [ ] SocialMediaLinks `[mol]` (Legacy: legacy/src/design-system/components/molecules/social-media-links) — needs: SocialMediaLink
+- [x] VerticalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/vertical-variants) — Batch 25; reclassified molecule→organism. Same shape as HorizontalVariants but a **vertical** `Carousel` (`direction="vertical"`, `trackClassName="max-h-96"`, `hidePagination`) of `ProductVariant` tiles — legacy's `vertical-variant` wrapper collapses into the migrated `ProductVariant` per ATOMIC-MAP. Same fieldset-drop / render-while-open / dismiss model as HorizontalVariants. No baseline → gallery-only. **Close button fix (user review):** moved from an `absolute top-2 right-2` overlay into a normal-flow header row — the overlay sat on top of the first variant's right-edge radio; same fix applied to HorizontalVariants.
+- [x] SocialMediaLinks `[mol]` (Legacy: legacy/src/design-system/components/molecules/social-media-links) — Batch 25; composes migrated SocialMediaLink. Semantic `<ul role="list">` with each link in its own `<li>` (legacy put anchors directly under `<ul>` — invalid), named via an overridable `label` (default "Social media"). Flush layout (no gap) reproduces the legacy frame. **1 baseline mapped, gated + green both viewports** (`social-media-story`).
 - [ ] Footer `[org]` (Legacy: legacy/src/design-system/components/organisms/footer) — needs: Newsletter, FooterTopBar, Logotype
 - [ ] Header `[org]` (Legacy: legacy/src/design-system/components/organisms/header) — needs: DesktopNavigation
 - [ ] HeroCarousel `[org]` (Legacy: legacy/src/design-system/components/organisms/hero-carousel) — needs: Hero, Carousel

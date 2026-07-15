@@ -449,6 +449,9 @@ export type { HeroProps, HeroAlignment, HeroTheme } from './components/molecules
 export { SocialMediaLink } from './components/molecules/SocialMediaLink'
 export type { SocialMediaLinkProps } from './components/molecules/SocialMediaLink'
 
+export { SocialMediaLinks } from './components/molecules/SocialMediaLinks'
+export type { SocialMediaLinksProps } from './components/molecules/SocialMediaLinks'
+
 export { Teaser } from './components/molecules/Teaser'
 export type {
   TeaserProps,
@@ -466,6 +469,18 @@ export type {
 /* ── Organisms ────────────────────────────────────────────────────────── */
 export { FaqList } from './components/organisms/FaqList'
 export type { FaqListProps, FaqItem } from './components/organisms/FaqList'
+
+export { FaqGroup } from './components/organisms/FaqGroup'
+export type { FaqGroupProps } from './components/organisms/FaqGroup'
+
+export { InvoiceList, defaultInvoiceListLabels } from './components/organisms/InvoiceList'
+export type {
+  InvoiceListProps,
+  InvoiceListLabels,
+  Invoice,
+  UnpaidInvoice,
+  PaidInvoice,
+} from './components/organisms/InvoiceList'
 
 export { Carousel, CarouselItem } from './components/organisms/Carousel'
 export type {
@@ -559,6 +574,15 @@ export type {
 
 export { HorizontalVariant } from './components/organisms/HorizontalVariant'
 export type { HorizontalVariantProps } from './components/organisms/HorizontalVariant'
+
+export { HorizontalVariants, defaultHorizontalVariantsLabels } from './components/organisms/HorizontalVariants'
+export type {
+  HorizontalVariantsProps,
+  HorizontalVariantsLabels,
+} from './components/organisms/HorizontalVariants'
+
+export { VerticalVariants, defaultVerticalVariantsLabels } from './components/organisms/VerticalVariants'
+export type { VerticalVariantsProps, VerticalVariantsLabels } from './components/organisms/VerticalVariants'
 
 export { ProductSearch, defaultProductSearchLabels } from './components/organisms/ProductSearch'
 export type {
