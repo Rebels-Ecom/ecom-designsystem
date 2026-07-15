@@ -18,7 +18,7 @@ export const DebouncedChange: Story = {
     itemNumberPerSalesUnit: 1,
     totalPrice: '10',
     debounceVal: 400,
-    debouncedEvent: () => alert('debounced'),
+    debouncedEvent: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

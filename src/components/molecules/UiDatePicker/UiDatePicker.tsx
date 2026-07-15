@@ -67,8 +67,9 @@ const dayPickerClassNames = {
   button_next:
     'flex size-8 cursor-pointer items-center justify-center rounded text-text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary disabled:cursor-default disabled:opacity-30 aria-disabled:cursor-default aria-disabled:opacity-30',
   chevron: 'size-5 fill-current',
-  month_grid: 'border-separate border-spacing-2',
-  weekday: 'w-12 pb-1 text-body-s font-normal text-text-subdued md:w-17',
+  // Tighter cell spacing on mobile so all seven columns fit a phone (they overflowed at the desktop gap).
+  month_grid: 'border-separate border-spacing-1 md:border-spacing-2',
+  weekday: 'w-10 pb-1 text-body-s font-normal text-text-subdued md:w-17',
   day: 'p-0 text-center align-middle',
 }
 
@@ -88,7 +89,7 @@ function DeliveryDayButton({ modifiers, className: _className, ...buttonProps }:
     <button
       {...buttonProps}
       className={cn(
-        'flex size-12 items-center justify-center rounded bg-tag-grey font-primary font-bold text-text-subdued md:size-17',
+        'flex size-10 items-center justify-center rounded bg-tag-grey font-primary font-bold text-text-subdued md:size-17',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
         (m.weekend || m.holiday) && 'bg-grey-500 text-text-blue/90',
         // Delivery day — white with an orange border; fills orange on hover (legacy `.deliveryDay:hover`).
@@ -201,7 +202,7 @@ function UiDatePicker({
           aria-label={header}
           id={dialogId}
           tabIndex={-1}
-          className="absolute left-0 z-menu-icon mt-1 rounded border border-border-orange bg-surface-default p-2 shadow-lg focus-visible:outline-none"
+          className="absolute left-1/2 z-menu-icon mt-1 -translate-x-1/2 rounded border border-border-orange bg-surface-default p-2 shadow-lg focus-visible:outline-none md:left-0 md:translate-x-0"
         >
           <p className="p-1 text-center font-primary text-text-default">{header}</p>
           <DayPicker

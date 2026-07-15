@@ -1202,4 +1202,34 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-molecules-socialmedialinks--visual',
     legacyBaseline: 'design-system-molecules-socialmedialinks--social-media-story',
   },
+  // Slider: the legacy `SliderStory` — a full-width 0–20 dual range with both thumbs at the extremes
+  // (whole track = teal active segment) and no fields. The legacy widget was `react-input-range`; V2 is
+  // two overlaid native `<input type="range">`. Thumb rendering differs slightly (native vs library divs)
+  // but the frame is a thin line at the top of the canvas, far under the 2% gate → gated both viewports.
+  {
+    storyId: 'design-system-organisms-slider--visual',
+    legacyBaseline: 'design-system-atoms-slider--slider-story',
+  },
+  // HeroCarousel: reproduces the legacy `HeroCarouselPistonheadStory` — the static Pistonhead hero (dark,
+  // centred, skull logo) as slide 1 of 3, arrows level with the three dots. REVIEW-ONLY: the background is
+  // a full-bleed brand SVG (migrated from legacy) and the overlaid text uses the brand font + accessible
+  // colours + the design-system heading size, so the frame diverges past the 2% gate (same call as the
+  // Hero `Visual*` frames it composes). The sibling `hero-carousel-story` baseline is NOT mapped — its
+  // first slide is a background **video** (non-deterministic frame), so there is no stable oracle.
+  {
+    storyId: 'design-system-organisms-herocarousel--visual',
+    legacyBaseline: 'design-system-organisms-herocarousel--hero-carousel-pistonhead-story',
+    reviewOnly: true,
+  },
+  // Header: reproduces the legacy `Standard_Header` composition (admin search, delivery banner, logo,
+  // action icons + delivery date picker, primary nav). REVIEW-ONLY: the shell composes ~8 brand
+  // sub-components across viewport-specific layouts (each already reviewed on its own), all using brand
+  // fonts/icons + accessible colours, so it can't pixel-match the legacy capture within 2% — but it is a
+  // faithful reproduction of the same scene, paired for human sign-off. (Legacy drove layout via a JS
+  // media-query hook; V2 uses responsive `display` utilities.)
+  {
+    storyId: 'design-system-organisms-header--visual',
+    legacyBaseline: 'design-system-organisms-header--standard-header',
+    reviewOnly: true,
+  },
 ]

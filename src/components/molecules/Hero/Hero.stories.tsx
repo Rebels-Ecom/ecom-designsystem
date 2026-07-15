@@ -49,6 +49,29 @@ export const Default: Story = {
     await expect(cta).toHaveAttribute('href', '#bestalla')
     await userEvent.tab()
     await expect(cta).toHaveFocus()
+
+    // Regression: the decorative scrim and the content overlay must be pointer-transparent so a
+    // background video's pause control (and the media) stays clickable — otherwise clicks are eaten by
+    // the absolutely-positioned overlay. Hit-test the top edge (no text/CTA there): it must resolve to
+    // the media, not the overlay. The CTA wrapper re-enables pointer events.
+    const section = cta.closest('section') as HTMLElement
+    const rect = section.getBoundingClientRect()
+    const topHit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + 4)
+    await expect(topHit?.closest('picture, img, video')).not.toBeNull()
+    await expect(getComputedStyle(cta.parentElement as HTMLElement).pointerEvents).toBe('auto')
+  },
+}
+
+/**
+ * The heading text can be aligned independently of the content-block placement — here the block is
+ * pushed to the right (`alignContent: 'right'`) but the title stays left-aligned (`headingAlign: 'left'`).
+ */
+export const RightBlockLeftHeading: Story = {
+  args: { alignContent: 'right', headingAlign: 'left' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const heading = canvas.getByRole('heading', { name: 'Wisby är tillbaka, nu bättre en någonsin' })
+    await expect(getComputedStyle(heading).textAlign).toBe('left')
   },
 }
 

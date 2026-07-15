@@ -17,7 +17,39 @@
 
 - **Active Category**: organisms + molecules (Tier-2 → Tier-3)
 - **Last Updated**: 2026-07-15
-- **Current Micro-Batch**: Batch 25 — finishing Tier-2 + the ProductVariant-family (complete;
+- **Current Micro-Batch**: Batch 26 — Tier-3 leaves (complete; **Slider** `[org]`, **ProductDetails**
+  `[org]`, **Footer** `[org]`, **Header** `[org]`, **HeroCarousel** `[org]` — the next five buildable
+  entries top-to-bottom, skipping the ProductCard-family (`ProductCardRestricted`/`-Vertical`) still
+  **blocked** on the unmigrated `ProductCard`). `pnpm build` green (zero TS), `pnpm build-storybook`
+  green, scoped `vitest --project=storybook` **25/25** across the five (Slider 5 · HeroCarousel 3 ·
+  Footer 5 · Header 3 · ProductDetails 9), full `pnpm test:visual` **270 passed / 56 skipped / 0 failed**
+  (was 268/52 — Slider ×2 **gated + green**; HeroCarousel + Header **reviewOnly**). **Three of the five are
+  no-baseline because the legacy snapshots are Storybook _error frames_** (Footer: `logo`-object rendered
+  as a child; ProductDetails ×4: `convertNumToStr(undefined)` `toFixed` crash) — gallery-only.
+  **Pre-existing, unrelated:** `pnpm test-storybook` has 1 failing test (`DebounceInput` `DebouncedChange`
+  — its story passes a plain fn where a `fn()` spy is asserted, commit `134076e6`); untouched by this
+  batch, flagged as a separate task. Next buildable Tier-3 leaves: **LoginForm**, **ProductToast**,
+  **ResetPasswordForm**, **UserProfileDropdown**.
+- **2026-07-15 — Batch 26 findings & harness changes**:
+  - **A "green" legacy PNG can be a Storybook _crash_ frame — always eyeball it before mapping.** Both
+    Footer snapshots and all four ProductDetails snapshots are the red Storybook error boundary (a React
+    render crash at capture: Footer rendered its `logo` *object* as a child; ProductDetails ran
+    `convertNumToStr(undefined)`). Same "blank/broken frame = no valid oracle" class as TopNavBar /
+    DeliveryInfoBar. Resolution: no map, gallery-only. The V2 rewrites fix the root cause (self-contained
+    `Logotype`; guarded price math).
+  - **`Carousel` gap must carry a unit — `gap="0"` silently breaks slide sizing.** The slide width is
+    `calc((100% − (perPage−1)·var(--cs-gap)) / perPage)`; a unitless `--cs-gap: 0` makes the subtraction
+    `100% − <unitless>` **invalid**, so `flex-basis` is dropped, slides collapse to content width (0), the
+    track never overflows and the arrows/dots never render. Pass **`gap="0px"`**. (Found building
+    HeroCarousel.) Recorded in docs/DEVELOPMENT.md.
+  - **Range inputs don't step via `userEvent` arrow keys in vitest-browser.** `userEvent.keyboard(
+    '{ArrowRight}')` on `<input type="range">` doesn't fire the native value step here — assert
+    keyboard *focusability* (`.focus()` + `toHaveFocus`) and drive value changes with
+    `fireEvent.change(input, { target: { value } })`, asserting the reported range + clamping. (Slider.)
+  - **A conditionally-rendered popover can't be an `aria-controls` target.** ProductDetails' packaging
+    button toggles a `ProductVariantList` rendered only while open; wiring `aria-controls` to its id
+    would dangle (axe fail) while closed. Use `aria-expanded` alone (a valid standalone state) and
+    render-while-open, as with the Batch-25 Variants pickers.
   **FaqGroup** `[org]`, **InvoiceList** `[org]` — the last two Tier-2 leaves — then **HorizontalVariants**
   `[org]`, **VerticalVariants** `[org]`, **SocialMediaLinks** `[mol]` from Tier-3). `pnpm build` green (zero
   TS), scoped `vitest --project=storybook` **20/20** (interaction + a11y), `pnpm build-storybook` green,
@@ -905,8 +937,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 122 / 155
-- Remaining: 33
+- Completed: 127 / 155
+- Remaining: 28
 
 ## Components Checklist
 
@@ -926,7 +958,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (101)
+### Completed (106)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -1030,7 +1062,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — reclassified molecule→organism; `<article>` with a `<h5>` name (becomes an `<a>` when `productUrl` set) + purple price line + grey meta + read-only `ProductQuantityInput`; optional remove `IconButton` named via `labels.remove`; `loading`→`role="status"` Loader; consolidated legacy conflicting label/name pairs. **Gallery-only** (legacy product image is a broken remote CDN thumbnail — non-deterministic), see batch notes
 - [x] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — reclassified molecule→organism; legacy hover Framer mega-menu → accessible disclosure-nav: labelled `<nav>`, plain `<a>` top-levels + category `<button aria-expanded/aria-controls>` (one panel open), `Escape` closes + focus return, outside-`pointerdown` close, `aria-current` active item; legacy active-orange (fails AA on white) → accessible blue text + blue underline + bold; reuses MobileNavigation's `NavItem`/`NavLink`/`NavCategory` (exported once). **Gallery-only** (only legacy baseline is the empty loading shimmer; real menu needs interaction), see batch notes
 
-### Build queue (69 pending, dependency-ordered)
+### Build queue (64 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -1073,14 +1105,14 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] HorizontalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/horizontal-variants) — Batch 25; reclassified molecule→organism. Dismissible variant picker = a horizontal `Carousel` of `HorizontalVariant` cards forming ONE native radio group. **Dropped the fieldset/legend**: the Carousel track is already `role="group"`, so a same-named fieldset produced a duplicate named group (`getByRole('group')` ambiguity) — the Carousel `ariaLabel` names the group; radios group via shared `name`. Non-modal dismiss (Escape + outside pointer + close `IconButton`), **rendered only while `open`** (legacy stayed mounted translated off-screen → stale a11y tree). Dropped the framer slide + the on-select reorder (moving radios on selection breaks keyboard focus order). No baseline → gallery-only.
 - [ ] ProductCardRestricted `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-restricted) — needs: ProductVariantList, TagsList, ProductCard, IconWithTooltip, Button · unblocks 1
 - [ ] ProductCardVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-vertical) — needs: ProductCard, ProductQuantityInput, ProductVariantList, TagsList, IconWithTooltip, Button, IconButton · unblocks 1
-- [ ] ProductDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/product-details) — needs: ProductVariant, ProductQuantityInput, Button, IconButton, AddToCartButton, AlertBox, CampaignBox, IconWithTooltip, ProductVariantList, LoadingBars · unblocks 1
+- [x] ProductDetails `[org]` (Legacy: legacy/src/design-system/components/organisms/product-details) — Batch 26; full React 19 rewrite composing the migrated molecules (Picture, Tag, LoadingBars, CampaignBox, AlertBox, AddToCartButton, Button, IconButton, IconWithTooltip, ProductVariantList). Legacy split into 7 sub-components (Icons/ProductInfo/ProductSpecs/CampaignsAlerts/Actions/MobileActions/VariantSelector) + a JS `mediaQueryHelper` + a scroll-observer-driven sticky mobile action bar + Framer transitions — all collapsed into one responsive component (the sticky mobile bar + Framer are **dropped** as non-essential). Rendered as an `<article aria-labelledby>`; add-to-cart is the morphing `AddToCartButton` (disabled — not hidden — when out-of-stock/unavailable so state reaches AT); the packaging button toggles a **render-while-open** `ProductVariantList` (no dangling `aria-controls`); seller-only/accessory markers use `IconWithTooltip` (meaning not colour-only). **All built-in strings → overridable `labels` (English defaults)**; price total via an injectable `formatPrice` (no baked locale). **No baseline — all four legacy `product-details` snapshots are Storybook error frames** (`convertNumToStr(undefined)` → "Cannot read properties of undefined (reading 'toFixed')"), so gallery-only. 9/9 scoped tests (interaction + a11y).
 - [x] ProductSearchResultItem `[org]` (Legacy: legacy/src/design-system/components/atoms/product-search-result-item) — Batch 22; built together with ProductSearch (the "needs: ProductSearch" was a **type-only** cycle — imports the `ProductSearchResult` model, no runtime dep); disclosure toggle for variants; no baseline (only rendered inside the ProductSearch dropdown, whose baseline is the closed bar)
-- [ ] Slider `[org]` (Legacy: legacy/src/design-system/components/atoms/slider) — needs: Form · unblocks 1
+- [x] Slider `[org]` (Legacy: legacy/src/design-system/components/atoms/slider) — Batch 26; reclassified atom→organism (composes the `InputText` molecule for the optional `withFields` inputs). Dual-thumb range rebuilt as **two overlaid native `<input type="range">`** (dropping the `react-input-range` dep), so each thumb gets `role="slider"` + `aria-valuemin/max/now` + arrow-key operation for free; each carries an overridable `aria-label` (`labels.minThumb`/`maxThumb`), thumbs stay strictly ordered unless `allowSameValues`, and the focused thumb shows a `focus-visible` ring. Thumbs are 16px (2.5.8 spacing exception — far apart across the track). Legacy floating value labels dropped (read values from the fields). **1 baseline mapped, GATED + green both viewports** (`design-system-atoms-slider--slider-story`). 5/5 scoped tests. **Test note:** `userEvent.keyboard('{ArrowRight}')` does **not** step a range input in the vitest-browser env — drive value changes with `fireEvent.change` and assert the reported range instead.
 - [x] VerticalVariants `[org]` (Legacy: legacy/src/design-system/components/molecules/vertical-variants) — Batch 25; reclassified molecule→organism. Same shape as HorizontalVariants but a **vertical** `Carousel` (`direction="vertical"`, `trackClassName="max-h-96"`, `hidePagination`) of `ProductVariant` tiles — legacy's `vertical-variant` wrapper collapses into the migrated `ProductVariant` per ATOMIC-MAP. Same fieldset-drop / render-while-open / dismiss model as HorizontalVariants. No baseline → gallery-only. **Close button fix (user review):** moved from an `absolute top-2 right-2` overlay into a normal-flow header row — the overlay sat on top of the first variant's right-edge radio; same fix applied to HorizontalVariants.
 - [x] SocialMediaLinks `[mol]` (Legacy: legacy/src/design-system/components/molecules/social-media-links) — Batch 25; composes migrated SocialMediaLink. Semantic `<ul role="list">` with each link in its own `<li>` (legacy put anchors directly under `<ul>` — invalid), named via an overridable `label` (default "Social media"). Flush layout (no gap) reproduces the legacy frame. **1 baseline mapped, gated + green both viewports** (`social-media-story`).
-- [ ] Footer `[org]` (Legacy: legacy/src/design-system/components/organisms/footer) — needs: Newsletter, FooterTopBar, Logotype
-- [ ] Header `[org]` (Legacy: legacy/src/design-system/components/organisms/header) — needs: DesktopNavigation
-- [ ] HeroCarousel `[org]` (Legacy: legacy/src/design-system/components/organisms/hero-carousel) — needs: Hero, Carousel
+- [x] Footer `[org]` (Legacy: legacy/src/design-system/components/organisms/footer) — Batch 26; composes migrated FooterTopBar + Logotype + Newsletter. One `<footer>` (contentinfo) wraps the quick-links bar, a body (self-contained `Logotype` home link, optional `Newsletter`, `<address>`, social children) and a blue bottom bar — so every region is inside the landmark; the link columns are a labelled `<nav>` of `<ul>`/`<li>` under real headings, links are real `<a>`/`linkComponent` with a non-colour-only hover. Replaced the legacy `logo`-**object** slot (which rendered a raw object → the reason **both legacy snapshots are Storybook error frames**: "Objects are not valid as a React child") with the `Logotype` component. **No baseline** (both frames are crashes) → gallery-only. 5/5 scoped tests.
+- [x] Header `[org]` (Legacy: legacy/src/design-system/components/organisms/header) — Batch 26; slot-based `<header>` (banner) shell. Replaced the legacy JS `mediaQueryHelper` (rendered one layout at a time; left the header blank when it resolved to nothing) with responsive `display` utilities — the inactive layout is `display:none` (out of the a11y tree; duplicated controls need `getAll*` in tests). No built-in strings (all slots consumer-supplied) → no `labels`. While `loading`, the mobile menu → `Loader` and the desktop nav → `DesktopNavigation` busy placeholder. **1 baseline mapped, `reviewOnly`** (`standard-header`): the Visual story composes ~8 brand sub-components across viewport-specific layouts (brand fonts/icons + accessible colours) — faithful scene, can't pixel-match within 2%. 3/3 scoped tests.
+- [x] HeroCarousel `[org]` (Legacy: legacy/src/design-system/components/organisms/hero-carousel) — Batch 26; thin wrapper — one `Hero` per slide in a single-per-page `Carousel` with `arrowsWithDots`. Legacy Splide `autoplay`/`loop` **dropped** (no auto-advance → nothing to pause (2.2.2) / no motion to suppress). Migrated the `Pistonhead_Hero.svg` + `pistonhead_logo.svg` assets so the Visual story reproduces `HeroCarouselPistonheadStory`; **1 baseline mapped, `reviewOnly`** (`hero-carousel-pistonhead-story`) — full-bleed brand SVG + brand-font text past the 2% gate. The sibling `hero-carousel-story` is **NOT mapped** — its first slide is a background **video** (non-deterministic). 3/3 scoped tests. **Reusable bug found:** passing `gap="0"` (unitless) to `Carousel` makes the slide-width `calc(100% − …·0)` invalid (CSS can't subtract a unitless `0` from a `%`), so `flex-basis` drops and slides collapse to 0 → no overflow → no arrows/dots. Use **`gap="0px"`**.
 - [ ] LoginForm `[org]` (Legacy: legacy/src/design-system/components/organisms/login-form) — needs: Button, Form, LinkButton, UiLink
 - [ ] ProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/product-toast) — needs: CartProduct, IconButton
 - [ ] ResetPasswordForm `[org]` (Legacy: legacy/src/design-system/components/organisms/reset-password-form) — needs: Logotype, Form

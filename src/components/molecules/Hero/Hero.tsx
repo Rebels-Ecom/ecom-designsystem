@@ -28,6 +28,8 @@ export interface HeroProps {
   preamble?: string
   /** Horizontal placement of the content column. @default 'left' */
   alignContent?: HeroAlignment
+  /** Text alignment for the heading, independent of the content-block placement. @default `alignContent` */
+  headingAlign?: HeroAlignment
   /** Colour scheme for the overlaid text; `dark` = light text, `light` = dark text. @default 'dark' */
   theme?: HeroTheme
   /** Primary call-to-action (rendered as an inline {@link LinkButton}). */
@@ -71,6 +73,7 @@ function Hero({
   headingLevel = 1,
   preamble,
   alignContent = 'left',
+  headingAlign,
   theme = 'dark',
   link,
   secondaryLink,
@@ -101,11 +104,16 @@ function Hero({
             image) easing to 30% on desktop (text is beside it). */}
         <div
           aria-hidden
-          className={cn('absolute inset-0 z-10', isDark ? 'bg-black/65' : 'bg-white/75 md:bg-white/30')}
+          className={cn(
+            'pointer-events-none absolute inset-0 z-10',
+            isDark ? 'bg-black/65' : 'bg-white/75 md:bg-white/30',
+          )}
         />
       </div>
 
-      <div className="absolute inset-0 z-20">
+      {/* Content overlay is pointer-transparent so a background `video`'s pause control (underneath)
+          stays clickable; only the interactive CTAs re-enable pointer events. */}
+      <div className="pointer-events-none absolute inset-0 z-20">
         <ContentWrapper className="flex h-full">
           <div
             className={cn(
@@ -123,7 +131,7 @@ function Hero({
                 {heading && (
                   <Heading
                     order={headingLevel}
-                    align={alignContent}
+                    align={headingAlign ?? alignContent}
                     color={isDark ? 'white' : undefined}
                     noMargin
                     className="text-2xl md:text-h-l-lg"
@@ -152,7 +160,7 @@ function Hero({
             )}
 
             {(link || secondaryLink) && (
-              <div className="mt-4 flex flex-col gap-4 md:mt-5 md:flex-row md:flex-wrap">
+              <div className="pointer-events-auto mt-4 flex flex-col gap-4 md:mt-5 md:flex-row md:flex-wrap">
                 {link && <LinkButton {...link} className={cn('w-auto', link.className)} />}
                 {secondaryLink && (
                   <LinkButton {...secondaryLink} className={cn('w-auto', secondaryLink.className)} />

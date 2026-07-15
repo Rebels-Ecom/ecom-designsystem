@@ -613,3 +613,26 @@ export type {
   DeliveryFormCustomerInfoItem,
   DeliveryFormCustomerSummary,
 } from './components/organisms/DeliveryForm'
+
+export { Slider, defaultSliderLabels } from './components/organisms/Slider'
+export type { SliderProps, SliderRange, SliderLabels } from './components/organisms/Slider'
+
+export { HeroCarousel } from './components/organisms/HeroCarousel'
+export type { HeroCarouselProps } from './components/organisms/HeroCarousel'
+
+export { Footer, defaultFooterLabels } from './components/organisms/Footer'
+export type { FooterProps, FooterLink, FooterLinkGroup, FooterLabels } from './components/organisms/Footer'
+
+export { Header } from './components/organisms/Header'
+export type { HeaderProps } from './components/organisms/Header'
+
+export { ProductDetails, defaultProductDetailsLabels } from './components/organisms/ProductDetails'
+export type {
+  ProductDetailsProps,
+  ProductDetailsInfo,
+  ProductDetailsSpec,
+  ProductDetailsVariant,
+  ProductDetailsAddToCartContext,
+  ProductDetailsTooltips,
+  ProductDetailsLabels,
+} from './components/organisms/ProductDetails'

@@ -571,6 +571,15 @@ So the rule is simply **keep the TSDoc good**:
   page; the doc-specific check (a broken MDX or missing docgen surfaces here).
 - `pnpm test:visual` → Playwright visual-regression against the **frozen** legacy
   baseline in `legacy-snapshots/` (see [Visual regression](#visual-regression)).
+- **Interaction-test gotcha — range inputs.** In the vitest-browser env,
+  `userEvent.keyboard('{ArrowRight}')` does **not** step an `<input type="range">`. Assert keyboard
+  *focusability* (`.focus()` + `toHaveFocus`) and drive value changes with
+  `fireEvent.change(input, { target: { value } })`, then assert the reported value/clamping.
+- **Composition gotcha — `Carousel` `gap`.** The responsive slide width is
+  `calc((100% − (perPage−1)·var(--cs-gap)) / perPage)`. A **unitless** `gap="0"` makes it
+  `100% − <unitless>`, which is invalid CSS → `flex-basis` is dropped, slides collapse to 0 width, the
+  track never overflows, and the arrows/dots never render. Always pass a unit: use **`gap="0px"`**, not
+  `gap="0"`.
 - React, React DOM and Framer Motion are **peerDependencies** and externalized
   by Vite — never bundled. `clsx` / `tailwind-merge` are regular deps (bundled).
 - **`'use client'` banner:** the whole library is client components (hooks throughout), so
