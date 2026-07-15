@@ -139,7 +139,9 @@ function TopNavBar({
       </li>
     ))
 
-  const listClasses = 'm-0 flex list-none items-center gap-4 p-0'
+  // Tighter gap on the mobile bar so the utility links fit the narrow viewport without clipping;
+  // the desktop bar (below) restores the roomier legacy 1rem spacing at lg.
+  const listClasses = 'm-0 flex list-none items-center gap-2 p-0 lg:gap-4'
 
   return (
     <nav

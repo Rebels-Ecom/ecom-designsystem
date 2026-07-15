@@ -99,4 +99,9 @@ export const Localized: Story = {
  */
 export const Visual: Story = {
   tags: ['visual'],
+  // Phone number dropped from the gallery frame — on the mobile bar it added a wide, low-value
+  // item; the `tel:` link variant stays covered by the GuestUser play test above.
+  args: {
+    leftLinks: [{ href: '/kontakta-oss', icon: 'icon-mail', children: 'Kontakta oss' }],
+  },
 }
