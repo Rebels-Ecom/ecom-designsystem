@@ -1,4 +1,4 @@
-import type { MouseEventHandler, Ref } from 'react'
+import type { AriaAttributes, MouseEventHandler, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 import { DefaultLink, type LinkComponentType } from '../../../lib/link'
 import { Icon, type IconName } from '../../atoms/Icon'
@@ -50,6 +50,29 @@ export interface IconButtonAsButtonProps extends IconButtonBaseProps {
   /** Render a real `<button type="button">`. @default 'button' */
   type?: 'button'
   onClick?: MouseEventHandler<HTMLButtonElement>
+  /**
+   * Element id — lets a controlled popup/panel reference this trigger (e.g. via `aria-labelledby` or
+   * `aria-activedescendant`) or a `<label htmlFor>` name it. Needed to use the button as a disclosure
+   * trigger that a region points back at.
+   */
+  id?: string
+  /**
+   * Disclosure state when the button toggles a popup/panel/menu/dialog (4.1.2): `true` while the
+   * controlled region is shown, `false` while hidden. Omit entirely for a plain action button.
+   */
+  'aria-expanded'?: AriaAttributes['aria-expanded']
+  /**
+   * Id of the region this button shows/hides. **Pair it with `aria-expanded`**: axe permits this to
+   * point at a not-yet-rendered region only while `aria-expanded="false"`; a dangling idref while
+   * expanded fails `aria-valid-attr-value`. So either drop it (pass `undefined`) while a
+   * conditionally-rendered region is closed, or keep it and let `aria-expanded="false"` carry the state.
+   */
+  'aria-controls'?: AriaAttributes['aria-controls']
+  /**
+   * Kind of popup the button opens — e.g. `"menu"`, `"dialog"`, `"listbox"` (4.1.2). Omit for a plain
+   * action button.
+   */
+  'aria-haspopup'?: AriaAttributes['aria-haspopup']
   /** Forwarded to the underlying `<button>`. */
   ref?: Ref<HTMLButtonElement>
 }
@@ -181,10 +204,14 @@ function IconButton(props: IconButtonProps) {
     <button
       ref={props.ref}
       type="button"
+      id={props.id}
       onClick={props.onClick}
       disabled={disabled}
       aria-label={label}
       aria-busy={busy || undefined}
+      aria-expanded={props['aria-expanded']}
+      aria-controls={props['aria-controls']}
+      aria-haspopup={props['aria-haspopup']}
       className={classes}
     >
       {content}

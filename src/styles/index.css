@@ -94,6 +94,10 @@
   --text-body--line-height: 1.25rem;
   --text-body-s: 0.875rem;
   --text-body-s--line-height: 1.125rem;
+  /* Extra-small body text for dense/compact components (e.g. the mini product card's detail/price
+     lines, legacy `.detail` = 0.75rem). */
+  --text-body-xs: 0.75rem;
+  --text-body-xs--line-height: 1rem;
 
   /* IntroBlock title — a bespoke display size (legacy `.title` overrode the h2 scale):
      2rem→2.875rem at `md`, with its own line-heights. Not on the heading token scale. */
@@ -116,6 +120,9 @@
   /* Small rectangular-tag label (Tag size="sm"); off the standard type scale. */
   --text-tag-sm: 0.625rem;
   --text-tag-sm--line-height: 1.25rem;
+  /* Extra-small tag label for dense components (e.g. the mini product card's pills, legacy 0.5rem). */
+  --text-tag-xs: 0.5rem;
+  --text-tag-xs--line-height: 1rem;
 
   /* Icon glyph sizes — small/medium/large map to the standard scale
      (text-base / text-xl / text-2xl); xlarge (1.75rem) and 2xl (3.5rem, the
@@ -187,10 +194,21 @@
    * add-to-cart). Decorative → gated behind `motion-reduce:animate-none` at the call site
    * (2.3.3†); the 1.5s cycle stays well under 2.3.1's 3-flashes/sec ceiling. */
   --animate-icon-pulse: icon-pulse 1.5s ease-in-out infinite;
+  /* Mini product-card variant panel: slides up from the bottom to cover the card, then settles at
+   * rest. No `to` frame, so if the animation never runs (reduced motion, throttled rAF) the panel is
+   * left at its natural `translateY(0)` — COVERING the card, never stuck off-screen. Decorative
+   * entrance → gated behind `motion-reduce:animate-none` at the call site (2.3.3†); 0.3s one-shot. */
+  --animate-slide-up: slide-up 0.3s ease-out;
 
   @keyframes grow {
     from {
       transform: scaleY(0);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
     }
   }
 

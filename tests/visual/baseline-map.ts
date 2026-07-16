@@ -1232,4 +1232,68 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-organisms-header--standard-header',
     reviewOnly: true,
   },
+  // LoginForm: reproduces the legacy `LoginFormStory` (title, email + password FormGroups, under-form
+  // links). DESKTOP-ONLY on both frames — the legacy mobile card forces `height: calc(100vh - 2rem)`
+  // (full-viewport card) which V2 does not replicate (content-height card, no arbitrary calc), leaving a
+  // ~14% (default) / ~41% (loading) white-vs-off-white band on the 375px canvas — structurally
+  // incomparable. Desktop card is content-height in legacy too, so it matches. Only desktop divergence:
+  // orange→blue+underline links (documented AA fix), small glyphs under the 2% gate.
+  {
+    storyId: 'design-system-organisms-loginform--visual',
+    legacyBaseline: 'design-system-organisms-loginform--login-form-story',
+    viewports: ['desktop'],
+  },
+  // Loading = disabled fields (legacy `Form` sets `disabled={loading}`, NO overlay/scrim), reproduced in
+  // V2 with the same disabled tokens (surface-disabled / border-disabled / text-subdued) → desktop matches.
+  {
+    storyId: 'design-system-organisms-loginform--visual-loading',
+    legacyBaseline: 'design-system-organisms-loginform--login-form-story-loading',
+    viewports: ['desktop'],
+  },
+  // UserProfileDropdown: the CLOSED trigger reproduces the legacy IconButton medium/white chip (bordered
+  // from md up, bare glyph on mobile); only the icon glyph swaps icomoon→Lucide User — a ~40px element on
+  // a near-empty canvas, far under the 2% gate → GATED both viewports.
+  {
+    storyId: 'design-system-organisms-userprofiledropdown--visual',
+    legacyBaseline: 'design-system-molecules-userprofiledropdown--user-profile-dropdown-story',
+  },
+  // The OPEN drawer is the same scene but carries locked intentional divergences that blow the 2% gate:
+  // V2's DrawerSidebar backdrop is a large-area `bg-blue-500/90` + blur (vs the legacy teal scrim over
+  // ~half the canvas), plus an a11y-required close (X) button the legacy panel lacked and accessible
+  // blue+underline links. Faithful reproduction of the open scene → REVIEW-ONLY (paired for sign-off).
+  {
+    storyId: 'design-system-organisms-userprofiledropdown--visual-open',
+    legacyBaseline: 'design-system-molecules-userprofiledropdown--user-profile-dropdown-story-open',
+    reviewOnly: true,
+  },
+  // ProductCardMiniVertical: the Visual story reproduces the legacy single-card frame (50%-width card
+  // in the light-grey flex wrapper), matched to legacy's compact typography (0.5rem tag pills, 0.75rem
+  // detail lines, one-line packaging/CTA), full-width add-to-cart + packaging. Measured (Batch 28):
+  // desktop ~3% / mobile ~4% — the remaining divergences (accessible blue title over the legacy orange
+  // link, dark-on-orange "S" over white-on-orange, brand secondary font on tags/price, icomoon→Lucide
+  // glyphs eye/layers/file-plus/heart, V2's beer-bottle fallback illustration vs the legacy grey
+  // placeholder) — faithful scene that can't clear the 2% gate → REVIEW-ONLY (both viewports paired).
+  {
+    storyId: 'design-system-organisms-productcardminivertical--visual',
+    legacyBaseline: 'design-system-molecules-productcardminivertical--product-card-mini-vertical',
+    reviewOnly: true,
+  },
+  // ProductDescription: the Visual story reproduces the legacy collapsed 3-button row (centred at md+,
+  // full-width-stacked below). All content is accessible secondary buttons on the cream page — only the
+  // icomoon→Lucide glyph swaps (info/download/play) and the brand font differ, a trivial fraction of the
+  // canvas → GATED both viewports.
+  {
+    storyId: 'design-system-organisms-productdescription--visual',
+    legacyBaseline: 'design-system-organisms-productdescription--product-description-story',
+  },
+  // NOTE: ProductToast has NO entry on purpose despite legacy snapshots existing. All four legacy
+  // `producttoast--product-toast-story[-with-recommended-products]-{desktop,mobile}` PNGs captured the
+  // CLOSED/empty canvas — the legacy story starts `useState(false)` and a 3s interval auto-closes it, so
+  // the toast was never on screen at capture (and `recommendedProducts` was a vestigial story arg the
+  // legacy component never consumed). The V2 `Visual`/`VisualWithRecommendedProducts` stories render the
+  // OPEN toast — a *different* scene — so per Step-7 rules they stay current-only (gallery review), not
+  // `reviewOnly`. Same closed-state-baseline class as DrawerSidebar. Behaviour is covered by play tests.
+  // NOTE: ResetPasswordForm has NO entry — no legacy snapshot exists at all (re-verified against the
+  // de-hyphenated `resetpassword` stem; the legacy dir ships no `.stories.tsx`). Its `['visual']` story is
+  // current-only in the review gallery.
 ]

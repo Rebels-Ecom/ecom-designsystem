@@ -15,8 +15,132 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms + molecules (Tier-2 → Tier-3)
+- **Active Category**: organisms (Tier-4 → Tier-5)
 - **Last Updated**: 2026-07-15
+- **Current Micro-Batch**: Batch 28 — Tier-4 leaves (complete; **ProductCardMiniVertical** `[org]`,
+  **RangeInput** `[org]`, **ProductDescription** `[org]` — the three unblocked Tier-4 entries
+  top-to-bottom; **ProductCardHorizontal** stays **blocked** on the unmigrated `ProductCard` cycle).
+  `pnpm build` green (zero TS), `pnpm build-storybook` green, scoped `vitest --project=storybook`
+  **13/13** across the three (ProductCardMiniVertical 5 · RangeInput 5 · ProductDescription 3), full
+  `pnpm test:visual` **276 passed / 62 skipped / 0 failed** (was 274/60 — **ProductDescription ×2 gated
+  + green**; **ProductCardMiniVertical ×2 reviewOnly**). **RangeInput = no baseline** (legacy shipped no
+  story/snapshot) → gallery-only. **Tier-4 leaves are now exhausted.** Next buildable = **DynamicFilter**
+  `[org]` (Tier-5) — its `needs: DrawerSidebar ✓ / RangeInput ✓ (this batch) / Button ✓` are all
+  migrated; the whole **ProductCard family** (`ProductCardHorizontal`/`-Restricted`/`-Vertical` →
+  `ProductCard` → its 7 dependents) stays **blocked** on the mutually-recursive `ProductCard` cycle
+  (scaffold the shells + wire cross-refs last, per the cycle note).
+- **2026-07-15 — Batch 28 findings & harness changes**:
+  - **A `Heading order` size override must neutralise the `md:` variant too.** `sizeByOrder[3]` is
+    `text-h-m md:text-h-m-lg`; an unprefixed `text-body-s` on the `Heading` className overrides the base
+    but NOT the `md:text-h-m-lg` (a different tailwind-merge variant key), so the title rendered large on
+    desktop only. Fix: pass **both** `text-body-s md:text-body-s`. (Found sizing ProductCardMiniVertical's
+    small `bodyS` title; measured desktop diff dropped 3%→<2% after the fix.) General rule: to force a
+    single size across breakpoints on a component whose size is responsive, override every active variant.
+  - **RangeInput is a thin wrapper over the migrated `Slider`, not a re-implementation.** The legacy
+    `rc-slider` stepped range maps to `Slider` by deriving `{min, max, step}` from the `steps` array
+    (step = smallest consecutive gap) and **snapping every reported value to the nearest step** — so the
+    fields, thumbs, two-way binding and all a11y (native `role="slider"` + `aria-valuemin/max/now`) come
+    from `Slider` for free and **real values, not indices, are announced/typed**. Assumes ascending
+    `steps`; documented the uniform-ish-step assumption. Dropped the legacy debounce (context-change-free
+    reporting, 3.2.2). No legacy story/snapshot → gallery-only.
+  - **ProductDescription's Framer accordion → plain `aria-expanded`/`aria-controls` disclosures over
+    named `role="region"` panels, each `hidden` while collapsed** (always in the DOM, so `aria-controls`
+    never dangles). A button with an `onClick` is a plain **action** (download/play) that fires + closes
+    panels and exposes **no** `aria-expanded`; a button with `content` and no `onClick` is the disclosure.
+    Open state is the filled **primary** surface (not colour-only — backed by `aria-expanded`). The
+    migrated `ProductDetails` collapsed its `ProductSpecs` sub-component into itself, so there is no
+    standalone specs renderer to reuse — panel `content` is a flexible `ReactNode` (consumer supplies the
+    spec `<dl>`), and the "needs: ProductDetails" was build-order only, not a runtime dep. Collapsed frame
+    is fully accessible + reproducible → **mapped GATED both viewports**.
+  - **ProductCardMiniVertical (molecule→organism) is a controlled/presentational rewrite.** Dropped the
+    legacy internal cart-quantity debounce + `variantsInCart` sync (app concerns) — quantity/selection are
+    controlled, callbacks bubble up. Icon-only markers are named `role="img"` graphics (seller-only eye,
+    accessory "S" as **dark-on-orange**, the IconButton-badge accessible pairing) — never colour-only
+    (1.4.1); title → accessible dark (legacy orange fails AA); packaging button is an `aria-expanded`
+    disclosure toggling a render-while-open `VerticalVariants`. Made the card **layout-agnostic** (`w-full`,
+    fills its grid cell) instead of the legacy hard-coded 50%/100% width — column layout is the consumer's
+    concern; the Visual story reproduces the legacy 50%-width frame via an inline-styled wrapper.
+  - **ProductCardMiniVertical display fixes (user review).** Two ways the first cut diverged from legacy:
+    (1) **the variant picker must be an absolute overlay covering the card, not an in-flow panel.** Legacy
+    `vertical-variants` is `position:absolute; inset:0` sliding up over the card; composing the migrated
+    `VerticalVariants` in normal flow appended it *below* the add-to-cart and (on a wide card) let its
+    tiles spread the full width. Fix: pass `className="absolute inset-0 z-20 overflow-y-auto rounded-lg
+    bg-white"` (the card is already `relative overflow-hidden`, so the overlay is clipped to it). (2)
+    **the add-to-cart is full-width in this card** — the migrated `AddToCartButton` defaults to
+    `max-w-45`, so it rendered as a small centred pill; override with `w-full max-w-none`. Also gave the
+    interactive stories an `inCardCell` (~20rem) decorator — a full-viewport-wide mini card is unrealistic
+    and was what made the (pre-overlay) variant tiles spread. Re-measured reviewOnly: desktop ~4% / mobile
+    ~6% (the full-width CTA now matches legacy but sits at a slightly different vertical position → the
+    small diff rise is expected; still a faithful scene past the gate). 5/5 scoped tests stay green.
+  - **ProductCardMiniVertical variant-picker rebuilt as a grid-safe slide-up overlay (user review,
+    follow-up — supersedes the earlier `min-h-112` attempt).** Composing `VerticalVariants` was the root
+    problem: its carousel caps at `max-h-96` and scrolls internally, so an `absolute inset-0` overlay
+    around it nested a second scroller (last variant unreachable), and growing the card (`min-h-112`) to
+    fit it **changed the card's height → broke a grid of cards** (the user's report). Dropped
+    `VerticalVariants` here and built a **self-contained slide-up panel** composing `ProductVariant`
+    directly: `absolute inset-0` (the card's own height is NEVER touched → grid-safe), a `flex flex-col`
+    where the close row is fixed and a `<fieldset>` (`flex-1 min-h-0 overflow-y-auto`, the radio group)
+    is the **single scroll container**. Each variant tile is **`h-2/5` (~40%, legacy's `fixedHeight:40%`)**
+    so ~2.5 show and the partial one signals more-to-scroll (verified: 3 tiles at 153px each in a 390px
+    viewport, ~39%, uniform, no clipping). **Slide-up uses a CSS `@keyframes slide-up` (`--animate-slide-up`)
+    with NO `to` frame** rather than Framer `initial={{y:'100%'}}` — the resting transform is the natural
+    `translateY(0)`, so if the animation never runs (reduced motion, throttled rAF) the panel is left
+    COVERING the card, never stuck off-screen (Framer's `initial` left it stuck at `y:100%`). `Escape` +
+    outside-`pointerdown` (document-level) dismiss. General lesson: a slide-in overlay's *resting* state
+    must be the visible one — animate via a `from`-only keyframe, never an `initial` off-screen state that
+    becomes the fallback; and never resize a grid cell to fit transient content — overlay it with `absolute
+    inset-0` and scroll inside.
+  - **ProductCardMiniVertical compact-typography fix (user review, follow-up).** On the ~176px mobile
+    card the content **wrapped** ("0 x Kolli (24 styck)" and the "33cl Engångsglas" packaging button
+    each broke onto two lines) and the **tag pills were too big** — because V2 used the standard
+    `text-body-s`/`text-body` (14–16px) where legacy's mini card is denser: `.detail` 0.75rem, `.price`
+    0.875rem, tags **0.5rem**. Two reusable causes: (1) **`Tag` `shape="pill"` ignored the `size` prop**
+    — it hard-coded `text-tag-rect md:text-tag-rect-lg` (0.75/1rem), so a `size="sm"` pill was NOT small.
+    **Fixed follow-up:** the pill branch now honors `size` (sm→`text-tag-sm`, md→`text-tag-rect`, lg
+    unchanged so existing pills don't shift), mirroring the rectangular branch; `PillSizes` story +
+    assertion added. The mini card keeps its `text-tag-xs` override since it needs a sub-`sm` 0.5rem.
+    (2) No sub-0.75rem body / sub-0.625rem tag token existed. Added
+    **`--text-body-xs` (0.75rem)** and **`--text-tag-xs` (0.5rem)** to `@theme` (both registered in
+    `cn.ts`'s font-size group so merges aren't lossy), then applied `text-body-xs` to the detail/quantity
+    lines, `text-body-s` to the total, `text-tag-xs` to the tags, and a compact `h-8 px-3 text-body-xs`
+    to the packaging button. Measured (browser): tags 8px, details 12px one-line, total 14px, packaging
+    one-line — matching legacy; the reviewOnly diff dropped desktop 4%→3%, mobile 6%→4%. The card width
+    itself was never wrong (176px = legacy's `calc(50% − 0.25rem)`); the "narrower/squeezed" report was
+    the oversized text wrapping. 5/5 scoped tests + `pnpm build` green.
+- **Current Micro-Batch**: Batch 27 — Tier-3 leaves (complete; **LoginForm** `[org]`, **ProductToast**
+  `[org]`, **ResetPasswordForm** `[org]`, **UserProfileDropdown** `[org]` — the four remaining buildable
+  Tier-3 leaves top-to-bottom; the ProductCard-family (`ProductCardRestricted`/`-Vertical`) stays
+  **blocked** on the unmigrated `ProductCard`). `pnpm build` green (zero TS), `pnpm build-storybook` green,
+  scoped `vitest --project=storybook` **21/21** across the four, full `pnpm test:visual` **274 passed /
+  60 skipped / 0 failed** (was 270/56 — LoginForm ×2 **gated desktop-only** + UserProfileDropdown
+  `--visual` ×2 **gated**; UserProfileDropdown `--visual-open` **reviewOnly**). **ProductToast** = no map
+  (all four legacy PNGs are the closed/empty toast — a *different* scene → current-only) and
+  **ResetPasswordForm** = no baseline (legacy shipped no story) → both gallery-only. **Tier-3 leaves are
+  now exhausted.** Next buildable = the three unblocked **Tier-4** entries: **ProductCardMiniVertical**
+  (VerticalVariants ✓ / IconButton ✓ / Button ✓ / AddToCartButton ✓), **RangeInput** (Form ✓ / Slider ✓),
+  **ProductDescription** (Button ✓ / ProductDetails ✓); **ProductCardHorizontal** stays **blocked** on
+  `ProductCard`.
+- **2026-07-15 — Batch 27 findings & harness changes**:
+  - **`IconButton` cannot be a disclosure/menu/dialog trigger — it doesn't spread rest props**, so
+    `aria-expanded`/`aria-controls`/`id` never reach its `<button>`. An icon-only trigger that needs
+    disclosure semantics must inline IconButton's class recipe on a native `<button>` (as
+    UserProfileDropdown does) or use `MenuButton`. Candidate enhancement filed: add an aria/`id`
+    passthrough to `IconButton`.
+  - **A legacy story that gates its component behind a trigger + an auto-close timer snapshots the
+    CLOSED/empty canvas** (the toast/drawer is never on screen at capture). Correct call: render the OPEN
+    component in the Visual story for gallery review and leave it **current-only + NOTE**, never
+    `reviewOnly` (which is for faithful reproductions of the *same* scene). Second occurrence
+    (DrawerSidebar was first); **ProductToast** is the new case.
+  - **Don't infer a prop API from vestigial legacy story args.** ProductToast's `recommendedProducts`/
+    `recommendedProductsTitle` and LoginForm's submit-label props were passed by the legacy *stories* but
+    **never rendered** by the legacy *components* — the real behaviour was `children`-after-divider (toast)
+    and buttons-only-from-`actions` (form). Faithful parity frames therefore render **fewer** elements than
+    the "correct" V2 component — which is why LoginForm's submit button is an **optional** prop the `Visual`
+    frames omit while Default/Loading exercise the real submit.
+  - **Legacy `height: calc(100vh - 2rem)` full-viewport cards → desktop-only baseline map.** LoginForm's
+    legacy mobile card fills the viewport height where V2 is content-height, so the mobile frame is
+    structurally incomparable (same full-page-capture class as InputFile/Textarea) — mapped desktop-only;
+    desktop matches because the legacy desktop card is content-height too.
 - **Current Micro-Batch**: Batch 26 — Tier-3 leaves (complete; **Slider** `[org]`, **ProductDetails**
   `[org]`, **Footer** `[org]`, **Header** `[org]`, **HeroCarousel** `[org]` — the next five buildable
   entries top-to-bottom, skipping the ProductCard-family (`ProductCardRestricted`/`-Vertical`) still
@@ -937,8 +1061,8 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 127 / 155
-- Remaining: 28
+- Completed: 131 / 155
+- Remaining: 24
 
 ## Components Checklist
 
@@ -958,7 +1082,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (106)
+### Completed (113)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -1062,7 +1186,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — reclassified molecule→organism; `<article>` with a `<h5>` name (becomes an `<a>` when `productUrl` set) + purple price line + grey meta + read-only `ProductQuantityInput`; optional remove `IconButton` named via `labels.remove`; `loading`→`role="status"` Loader; consolidated legacy conflicting label/name pairs. **Gallery-only** (legacy product image is a broken remote CDN thumbnail — non-deterministic), see batch notes
 - [x] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — reclassified molecule→organism; legacy hover Framer mega-menu → accessible disclosure-nav: labelled `<nav>`, plain `<a>` top-levels + category `<button aria-expanded/aria-controls>` (one panel open), `Escape` closes + focus return, outside-`pointerdown` close, `aria-current` active item; legacy active-orange (fails AA on white) → accessible blue text + blue underline + bold; reuses MobileNavigation's `NavItem`/`NavLink`/`NavCategory` (exported once). **Gallery-only** (only legacy baseline is the empty loading shimmer; real menu needs interaction), see batch notes
 
-### Build queue (64 pending, dependency-ordered)
+### Build queue (57 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -1113,17 +1237,17 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] Footer `[org]` (Legacy: legacy/src/design-system/components/organisms/footer) — Batch 26; composes migrated FooterTopBar + Logotype + Newsletter. One `<footer>` (contentinfo) wraps the quick-links bar, a body (self-contained `Logotype` home link, optional `Newsletter`, `<address>`, social children) and a blue bottom bar — so every region is inside the landmark; the link columns are a labelled `<nav>` of `<ul>`/`<li>` under real headings, links are real `<a>`/`linkComponent` with a non-colour-only hover. Replaced the legacy `logo`-**object** slot (which rendered a raw object → the reason **both legacy snapshots are Storybook error frames**: "Objects are not valid as a React child") with the `Logotype` component. **No baseline** (both frames are crashes) → gallery-only. 5/5 scoped tests.
 - [x] Header `[org]` (Legacy: legacy/src/design-system/components/organisms/header) — Batch 26; slot-based `<header>` (banner) shell. Replaced the legacy JS `mediaQueryHelper` (rendered one layout at a time; left the header blank when it resolved to nothing) with responsive `display` utilities — the inactive layout is `display:none` (out of the a11y tree; duplicated controls need `getAll*` in tests). No built-in strings (all slots consumer-supplied) → no `labels`. While `loading`, the mobile menu → `Loader` and the desktop nav → `DesktopNavigation` busy placeholder. **1 baseline mapped, `reviewOnly`** (`standard-header`): the Visual story composes ~8 brand sub-components across viewport-specific layouts (brand fonts/icons + accessible colours) — faithful scene, can't pixel-match within 2%. 3/3 scoped tests.
 - [x] HeroCarousel `[org]` (Legacy: legacy/src/design-system/components/organisms/hero-carousel) — Batch 26; thin wrapper — one `Hero` per slide in a single-per-page `Carousel` with `arrowsWithDots`. Legacy Splide `autoplay`/`loop` **dropped** (no auto-advance → nothing to pause (2.2.2) / no motion to suppress). Migrated the `Pistonhead_Hero.svg` + `pistonhead_logo.svg` assets so the Visual story reproduces `HeroCarouselPistonheadStory`; **1 baseline mapped, `reviewOnly`** (`hero-carousel-pistonhead-story`) — full-bleed brand SVG + brand-font text past the 2% gate. The sibling `hero-carousel-story` is **NOT mapped** — its first slide is a background **video** (non-deterministic). 3/3 scoped tests. **Reusable bug found:** passing `gap="0"` (unitless) to `Carousel` makes the slide-width `calc(100% − …·0)` invalid (CSS can't subtract a unitless `0` from a `%`), so `flex-basis` drops and slides collapse to 0 → no overflow → no arrows/dots. Use **`gap="0px"`**.
-- [ ] LoginForm `[org]` (Legacy: legacy/src/design-system/components/organisms/login-form) — needs: Button, Form, LinkButton, UiLink
-- [ ] ProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/product-toast) — needs: CartProduct, IconButton
-- [ ] ResetPasswordForm `[org]` (Legacy: legacy/src/design-system/components/organisms/reset-password-form) — needs: Logotype, Form
-- [ ] UserProfileDropdown `[org]` (Legacy: legacy/src/design-system/components/molecules/user-profile-dropdown) — needs: DrawerSidebar, IconButton, Button
+- [x] LoginForm `[org]` (Legacy: legacy/src/design-system/components/organisms/login-form) — Batch 27; composes `FormGroup`+`InputText`+`Button` directly (like CreateListForm), native `<form>` with `preventDefault` (credentials never hit a URL). Accessible-auth (3.3.8): `autoComplete` username/current-password, paste allowed, no CAPTCHA. Loading = disabled fields + form `aria-busy` + sr-only `role=status` + submit spinner (legacy `Form` disables fields, has **no** overlay/scrim — unlike CreateListForm). Orange links → accessible blue+underline; `errorMessage` retyped `ReactNode` (was legacy `any`+`dangerouslySetInnerHTML`). **`primarySubmitLabel` is optional** — the legacy `Visual`/loading frames rendered **no** button (the legacy `Form` only renders buttons from `actions`, which the stories never passed), so the parity stories omit it while Default/Loading/Localized supply + test the real submit. Only self-rendered string is `labels.loadingStatus`. **2 baselines mapped, GATED desktop-only** (`login-form-story`, `login-form-story-loading`): the legacy **mobile** card forces `height:calc(100vh-2rem)` (full-viewport) vs V2 content-height → ~14%/41% white-band mismatch; desktop card is content-height in legacy too → matches (loading = same disabled tokens, confirmed pixel-match, not reviewOnly). 6 stories.
+- [x] ProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/product-toast) — Batch 27; reclassified molecule→organism. Non-modal **`role=status` polite** "added to cart" confirmation (NOT `alert`; no focus move, no trap) composing migrated `CartProduct` + `IconButton`. Dismiss via a visible close button shown at **all** breakpoints (legacy hid it `display:none`@64em, leaving only click-outside), `Escape`, and outside-pointer press (document listeners wired only when `onClose` is supplied). Recommended slot = consumer-supplied `children` after a divider (+ optional `recommendedProductsTitle`) — legacy's `recommendedProducts` story args were **vestigial** (never consumed by the component), so no unmigrated card is imported. Slide-in gated on `useReducedMotion()`; auto-dismiss timing is the consumer's. **No baseline** — all four legacy PNGs (`product-toast-story[-with-recommended-products]-{desktop,mobile}`) captured the **CLOSED/empty** canvas (story `useState(false)` + a 3s auto-close interval → toast never on screen at capture), so the V2 open-toast Visual is a *different* scene → current-only + NOTE (same closed-state-baseline class as DrawerSidebar), **not** reviewOnly. Deterministic Visual via CartProduct's own local `defaultFallbackImage.svg`. 6 stories.
+- [x] ResetPasswordForm `[org]` (Legacy: legacy/src/design-system/components/organisms/reset-password-form) — Batch 27; a thin branded card composing `Logotype` + the migrated `Form` molecule, which already implements the confirm-password match gate (`aria-invalid` + `aria-describedby` mismatch `role=alert`, submit disabled while invalid) and the success `role=status` region — so the organism only adds the card + logo + reset-specific `labels`. Password fields `type=password` + `autoComplete=new-password`; purpose-shaped `onSubmit(password)` maps the Form's `Record<string,string>` submit down. `defaultResetPasswordFormLabels` kept module-private (mirrors `Form`'s `defaultFormLabels`); the `Labels` **type** is exported. **No baseline** — the legacy dir ships no `.stories.tsx`/snapshot (re-verified vs the de-hyphenated `resetpassword` stem) → gallery-only. 5 stories (Default/ErrorState/SuccessState/Localized/Visual).
+- [x] UserProfileDropdown `[org]` (Legacy: legacy/src/design-system/components/molecules/user-profile-dropdown) — Batch 27; reclassified molecule→organism. Icon-only **disclosure trigger** = a native `<button aria-haspopup="dialog" aria-expanded aria-controls aria-label>` (the `MenuButton` precedent) — **NOT `IconButton`**, which doesn't spread rest props so `aria-expanded`/`aria-controls`/`id` can't reach the element (inlined IconButton's medium/white class recipe for parity). Opens a composed `DrawerSidebar` that owns focus move-in / trap / `Escape`-close / **focus-return-to-trigger** / scroll-lock (not duplicated). Hybrid API: controlled `open`+`onOpenChange` OR uncontrolled `defaultOpen` (`const isOpen = open ?? uncontrolledOpen`) — lets the play-less `VisualOpen` render open purely from `args`. Menu links `text-text-blue`+underline (legacy was colour-only navy). `aria-controls`→unmounted content is axe-safe while `aria-expanded="false"`. **2 baselines mapped**: `--visual` (closed trigger) **GATED both viewports** (icomoon→Lucide User glyph swap on a near-empty canvas, far under gate); `--visual-open` **reviewOnly** — DrawerSidebar's large-area `bg-blue-500/90`+blur backdrop, an a11y-required close (X) the legacy panel lacked, and accessible links exceed 2%; drawer content is an authored stand-in for the unmigrated `UserInfoSummary`/`DropdownList`. 4 stories.
 
 #### Tier 4 — unlocked after Tier 3
 
 - [ ] ProductCardHorizontal `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-horizontal) — needs: ProductQuantityInput, TagsList, ProductCard, HorizontalVariants, IconWithTooltip, IconButton, Button, AlertBox · unblocks 1
-- [ ] ProductCardMiniVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini-vertical) — needs: VerticalVariants, IconButton, Button, AddToCartButton · unblocks 1
-- [ ] RangeInput `[org]` (Legacy: legacy/src/design-system/components/atoms/range-input) — needs: Form, Slider · unblocks 1
-- [ ] ProductDescription `[org]` (Legacy: legacy/src/design-system/components/organisms/product-description) — needs: Button, ProductDetails
+- [x] ProductCardMiniVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini-vertical) — Batch 28; reclassified molecule→organism. Controlled/presentational rewrite composing `Picture`+`Tag`+`Button`+`IconButton`+`AddToCartButton`+`VerticalVariants` — dropped the legacy internal cart-quantity debounce + `variantsInCart` sync (app concerns). `<article aria-label={productName}>`; name → accessible dark link (legacy orange fails AA); seller-only/accessory("S", dark-on-orange) markers are named `role="img"` graphics (not colour-only); packaging button is an `aria-expanded` disclosure toggling a render-while-open `VerticalVariants`; skeleton + polite `role="status"` while `loading`. **Layout-agnostic** (`w-full`, fills its grid cell — legacy hard-coded 50%/100%, now the consumer's concern). The **variant picker is an absolute overlay covering the card** (`absolute inset-0 z-20 bg-white`, legacy `position:absolute; inset:0`) — NOT an in-flow panel below the CTA — and the **add-to-cart is full-width** (`w-full max-w-none` over AddToCartButton's default `max-w-45`), both matching legacy (user-review fixes). All built-in strings → overridable `labels` (interpolated `quantitySummary` is a function); children take `addToCartLabels`/`variantsLabels`. **1 baseline mapped reviewOnly** (`product-card-mini-vertical`): measured desktop ~4% / mobile ~6% (accessible-colour fixes + brand secondary font + icomoon→Lucide glyphs + V2 fallback illustration vs legacy grey placeholder + minor CTA-bar vertical drift). 5/5 scoped tests. Interactive stories carry an `inCardCell` decorator (~20rem) so the mini card + overlay review at a realistic grid-cell width.
+- [x] RangeInput `[org]` (Legacy: legacy/src/design-system/components/atoms/range-input) — Batch 28; reclassified atom→organism. A **thin wrapper over the migrated `Slider`**: derives `{min, max, step}` from the `steps` array (step = smallest consecutive gap) and **snaps every reported value to the nearest step**, delegating the fields/thumbs/two-way-binding/a11y to `Slider` (so real values — not indices — are announced/typed, replacing the legacy `rc-slider` index domain). Adds the two end format labels; dropped the legacy debounce (3.2.2 context-change-free). Assumes ascending steps. **No baseline** (legacy shipped no story/snapshot) → gallery-only. 5/5 scoped tests.
+- [x] ProductDescription `[org]` (Legacy: legacy/src/design-system/components/organisms/product-description) — Batch 28; accordion composing `Button`. Legacy Framer `AnimatePresence` slide → plain `aria-expanded`/`aria-controls` disclosures over named `role="region"` panels, each `hidden` while collapsed (always in DOM → no dangling `aria-controls`); one open at a time. A button with `onClick` is a plain action (download/play, no `aria-expanded`); a button with `content` and no `onClick` is the disclosure. Open = filled primary surface (not colour-only, backed by `aria-expanded`). Panel `content` is a flexible `ReactNode` (the migrated `ProductDetails` collapsed its `ProductSpecs` into itself → no standalone renderer to reuse; "needs: ProductDetails" was build-order only). No built-in strings (all copy consumer-supplied). **1 baseline mapped GATED both viewports** (`product-description-story`): the collapsed 3-button row is fully accessible + reproducible (only glyph-swap/font deltas). 3/3 scoped tests.
 
 #### Tier 5 — unlocked after Tier 4
 

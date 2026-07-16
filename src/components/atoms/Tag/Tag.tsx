@@ -12,7 +12,10 @@ export interface TagProps {
   shape?: TagShape
   /** Colour token pairing (background + vetted text colour). @default 'green' */
   color?: TagColor
-  /** Size step — drives height and label size. @default 'lg' */
+  /**
+   * Size step — drives the label size (and, for the `rectangular` shape, the height). `pill` and
+   * `round` have no fixed height, so `size` sets only their label/diameter. @default 'lg'
+   */
   size?: TagSize
   /**
    * Hide the label visually (e.g. a colour-coded dot) while keeping it in the accessibility
@@ -49,12 +52,20 @@ const rectangularSize: Record<TagSize, string> = {
   lg: 'h-tag-rect-lg text-tag-rect md:text-tag-rect-lg',
 }
 
+// Pills have no fixed height (the label sizes them), so `size` only drives the label size here.
+// `lg` (the default) keeps the original 0.75rem→1rem responsive step so existing pills don't shift.
+const pillSize: Record<TagSize, string> = {
+  sm: 'text-tag-sm',
+  md: 'text-tag-rect',
+  lg: 'text-tag-rect md:text-tag-rect-lg',
+}
+
 function shapeSizeClasses(shape: TagShape, size: TagSize): string {
   if (shape === 'round') {
     return cn('rounded-full', size === 'lg' ? 'size-tag-round-lg' : 'size-tag-round-sm')
   }
   if (shape === 'pill') {
-    return 'rounded-full text-tag-rect md:text-tag-rect-lg'
+    return cn('rounded-full', pillSize[size])
   }
   return cn('min-w-tag-rect-min rounded-xs', rectangularSize[size])
 }

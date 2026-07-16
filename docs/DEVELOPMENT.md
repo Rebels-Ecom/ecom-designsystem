@@ -74,8 +74,9 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   keyframe animations live in `@theme` as `--animate-*` (+ their `@keyframes`),
   so they're used as `animate-<name>` utilities instead of arbitrary CSS —
   currently `animate-grow` (LoadingBar's bar grow-in), `animate-shimmer`
-  (the loading pulse), and `animate-icon-pulse` (IconButton's `busy` scale
-  throb). The decorative loading-skeleton look is a single
+  (the loading pulse), `animate-icon-pulse` (IconButton's `busy` scale
+  throb), and `animate-slide-up` (ProductCardMiniVertical's variant panel
+  sliding up to cover the card). The decorative loading-skeleton look is a single
   `@utility skeleton-shimmer` (the gradient + background-size the shimmer sweeps),
   reused by `Placeholder` and `Picture`'s loading state — don't hand-roll a new
   skeleton gradient per component, and don't inline it as `bg-[…]`. **Always
@@ -83,6 +84,17 @@ rules in `CLAUDE.md` / `.claude/docs/ATOMIC-MAP.md`, **not** the legacy folder.
   `prefers-reduced-motion` is honoured (WCAG 2.3.3†); Playwright's
   `animations: 'disabled'` freezes these at their end state, so a one-shot
   `forwards` grow captures at full height deterministically.
+- **A slide-in/overlay's resting state must be the *visible* one — animate it with
+  a `from`-only keyframe, not a JS `initial` off-screen state.** `animate-slide-up`
+  is `@keyframes slide-up { from { transform: translateY(100%) } }` with **no `to`**,
+  so the element's natural (rest) transform is `translateY(0)` = on-screen. If the
+  animation never runs — reduced motion, throttled rAF, `animations:'disabled'` — the
+  element is left *covering*, never stuck off-screen. This is why the mini-card variant
+  panel uses a CSS keyframe rather than Framer `initial={{y:'100%'}}`: with Framer, a
+  stalled animation leaves the element parked at `initial` (off-screen, unreachable).
+  Corollary: **never resize a grid cell to fit transient content** (e.g. an open
+  picker) — overlay it with `absolute inset-0` (the cell keeps its height, so a grid of
+  cards doesn't reflow) and scroll inside the overlay.
 - **Framer entrance/exit animations: gate on `useReducedMotion()`; the harness settles
   the frame by emulating reduced motion.** For a JS-driven Framer transition (e.g.
   DeliveryInfoBar's slide-down + fade), gate it on `useReducedMotion()` —
@@ -172,6 +184,16 @@ conflict group and **one is silently dropped** — e.g. `cn('text-h-m',
 `font-size` class group via `extendTailwindMerge`. **When you add a new `--text-*`
 token to `@theme`, add it to that list too**, or merges involving it will be
 lossy.
+
+**Overriding a component's size must cover every breakpoint variant it sets.**
+`tailwind-merge` keys conflict groups **per variant** — `text-body-s` (base) and
+`md:text-body-s` (the `md:` variant) are *different* keys. So passing only an
+unprefixed `text-body-s` to a component whose size is responsive (e.g.
+`Heading order={3}` → `text-h-m md:text-h-m-lg`) overrides the base size but
+leaves the `md:` size untouched, so it renders large from `md` up. To force one
+size across all widths, override every active variant:
+`className="text-body-s md:text-body-s"`. (Same rule for any responsive utility —
+colour, spacing, display — you mean to override.)
 
 ## React 19 conventions
 
@@ -466,6 +488,21 @@ Patterns established so far:
   So `Button` composes into any ARIA-injecting wrapper. When wrapping a design-system component in a
   prop-injecting wrapper (`cloneElement`, or a dialog/tooltip trigger), confirm the target forwards
   arbitrary attributes rather than assuming it behaves like a native element.
+- **`IconButton` is the standard icon-only disclosure/menu/dialog trigger — it forwards `id` +
+  `aria-expanded`/`aria-controls`/`aria-haspopup` explicitly.** Unlike `Button` (which rest-spreads all
+  `<button>` attributes), `IconButton` keeps a deliberately closed, icon-only API, so before it declared
+  these it silently dropped the disclosure ARIA — which is why early icon-only triggers
+  (`UserProfileDropdown`, and the `Search`/`ProductSearchResultItem` toggles) hand-rolled a raw
+  `<button>` and duplicated its `medium`/`white` class recipe (exactly the drift the DS exists to
+  prevent). It now declares the disclosure set as explicit, TSDoc'd **optional** props on the button
+  variant (typed via `React.AriaAttributes` members, not a blanket rest-spread — the icon-only contract
+  stays legible), so an icon-only trigger composes `IconButton` directly. Keep `aria-controls` paired
+  with `aria-expanded`: axe permits `aria-controls` to reference a not-yet-rendered region **only while
+  the trigger is collapsed** (`aria-expanded="false"`) — a dangling idref while `expanded` (or with no
+  `aria-expanded`) fails the axe `aria-valid-attr-value` hard gate. So either drop `aria-controls` while
+  the region is unmounted (the `IconButton` `DisclosureTrigger` story), **or** keep it unconditional and
+  rely on `aria-expanded="false"` while closed (what `UserProfileDropdown` does over its render-while-open
+  `DrawerSidebar`) — both pass.
 - **The canonical modal overlay (`DrawerSidebar`) — and why `role="dialog"` goes on a `<div>`, not
   `<aside>`.** A blocking overlay (the counterpart to the passive-notice rule above) implements the full
   trap: `role="dialog"` + `aria-modal` (while a backdrop is shown), a required `ariaLabel` (a drawer has

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { IconButton } from './IconButton'
@@ -85,6 +86,65 @@ export const Disabled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     await expect(canvas.getByRole('button', { name: 'Open store locator' })).toBeDisabled()
+  },
+}
+
+/**
+ * Disclosure trigger — the button opens/closes a menu. It carries `aria-haspopup`, a toggling
+ * `aria-expanded`, and an `id` an external label could reference; `aria-controls` points at the menu
+ * **only while it is mounted** (a dangling idref would fail the axe hard gate, so it's dropped while
+ * closed and `aria-expanded="false"` carries the state). The `play` proves each attribute reaches the
+ * DOM in both states — this is the pattern that replaces hand-rolled `<button>` disclosure triggers.
+ */
+export const DisclosureTrigger: Story = {
+  args: { icon: 'icon-user', label: 'Account menu', size: 'medium' },
+  render: ({ icon, label, size }) => {
+    const [open, setOpen] = useState(false)
+    const menuId = 'icon-button-account-menu'
+    return (
+      <div className="inline-flex flex-col gap-2">
+        <IconButton
+          type="button"
+          icon={icon}
+          label={label}
+          size={size}
+          id="account-menu-trigger"
+          aria-haspopup="menu"
+          aria-expanded={open}
+          aria-controls={open ? menuId : undefined}
+          onClick={() => setOpen((prev) => !prev)}
+        />
+        {open && (
+          <div id={menuId} role="menu" aria-label="Account">
+            <button type="button" role="menuitem" className="block px-3 py-2 text-left">
+              Profile
+            </button>
+            <button type="button" role="menuitem" className="block px-3 py-2 text-left">
+              Sign out
+            </button>
+          </div>
+        )}
+      </div>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const trigger = canvas.getByRole('button', { name: 'Account menu' })
+    // Closed: haspopup + id present, collapsed, and NO dangling aria-controls.
+    await expect(trigger).toHaveAttribute('id', 'account-menu-trigger')
+    await expect(trigger).toHaveAttribute('aria-haspopup', 'menu')
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    await expect(trigger).not.toHaveAttribute('aria-controls')
+    await expect(canvas.queryByRole('menu')).not.toBeInTheDocument()
+    // Open: expanded flips, aria-controls now points at the mounted menu.
+    await userEvent.click(trigger)
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    const menu = canvas.getByRole('menu', { name: 'Account' })
+    await expect(trigger).toHaveAttribute('aria-controls', menu.id)
+    // Close: collapses and the region unmounts, clearing the reference.
+    await userEvent.click(trigger)
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    await expect(canvas.queryByRole('menu')).not.toBeInTheDocument()
   },
 }
 

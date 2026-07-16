@@ -47,6 +47,24 @@ export const Shapes: Story = {
   ),
 }
 
+// Pills honour `size` (they did not before — every pill rendered at the `lg` label size). The `play`
+// asserts a `sm` pill's label is strictly smaller than an `lg` pill's, and axe scans each pairing.
+export const PillSizes: Story = {
+  args: { text: 'Pill' },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4">
+      <Tag text="Liten" shape="pill" color="green" size="sm" />
+      <Tag text="Mellan" shape="pill" color="blue" size="md" />
+      <Tag text="Stor" shape="pill" color="purple" size="lg" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const fontPx = (text: string) => parseFloat(getComputedStyle(canvas.getByText(text)).fontSize)
+    await expect(fontPx('Liten')).toBeLessThan(fontPx('Stor'))
+  },
+}
+
 // A colour-coded dot with no visible text still carries its label for assistive tech.
 export const NoTextIsLabelled: Story = {
   args: { text: 'Nyhet', shape: 'round', color: 'mint', size: 'sm', noText: true },

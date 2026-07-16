@@ -82,7 +82,7 @@ function ProductVariant({
         className,
       )}
     >
-      <div className="flex min-h-5 w-full items-center justify-end gap-2 pr-4 md:pr-0">
+      <div className="flex min-h-5 w-full shrink-0 items-center justify-end gap-2 pr-4 md:pr-0">
         {sellerOnly &&
           (sellerOnlyTooltipText ? (
             <IconWithTooltip content={sellerOnlyTooltipText} icon="icon-eye" />
@@ -100,12 +100,12 @@ function ProductVariant({
         />
       </div>
 
-      <div className="flex w-full items-start">
-        <div className="relative flex min-h-32 w-1/4 items-center justify-center">
+      <div className="flex w-full min-h-0 flex-1 items-center">
+        <div className="flex h-32 max-h-full w-1/4 items-center justify-center">
           <Picture
             {...image}
-            classNamePicture={cn('absolute inset-0 h-full w-full p-4', image.classNamePicture)}
-            classNameImg={cn('h-full w-full object-contain', image.classNameImg)}
+            classNamePicture={cn('h-full w-full', image.classNamePicture)}
+            classNameImg={cn('h-full w-full object-contain p-2', image.classNameImg)}
           />
         </div>
         <div className="w-3/5">
