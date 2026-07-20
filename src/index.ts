@@ -677,3 +677,15 @@ export type {
   ProductDescriptionProps,
   ProductDescriptionItem,
 } from './components/organisms/ProductDescription'
+
+export { DynamicFilter, defaultDynamicFilterLabels } from './components/organisms/DynamicFilter'
+export type {
+  DynamicFilterProps,
+  DynamicFilterLabels,
+  FilterGroup,
+  CheckboxFilterGroup,
+  RadioFilterGroup,
+  RangeFilterGroup,
+  FilterOptionItem,
+  FilterSelection,
+} from './components/organisms/DynamicFilter'

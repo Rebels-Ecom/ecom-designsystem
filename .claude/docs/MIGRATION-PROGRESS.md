@@ -15,9 +15,47 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms (Tier-4 → Tier-5)
-- **Last Updated**: 2026-07-15
-- **Current Micro-Batch**: Batch 28 — Tier-4 leaves (complete; **ProductCardMiniVertical** `[org]`,
+- **Active Category**: organisms (Tier-5 → the `ProductCard` cycle)
+- **Last Updated**: 2026-07-20
+- **Current Micro-Batch**: Batch 29 — **DynamicFilter** `[org]` (Tier-5, complete) — the sole genuinely
+  unblocked queue entry after Batch 28 exhausted the Tier-4 leaves (its `needs: DrawerSidebar ✓ /
+  RangeInput ✓ / Button ✓` all migrated). A one-component batch by necessity: **everything else remaining
+  is blocked on the mutually-recursive `ProductCard` cycle** (`ProductCardHorizontal`/`-Restricted`/
+  `-Vertical` → `ProductCard` → its 7 Tier-6/7 dependents). `pnpm build` green (zero TS),
+  `pnpm build-storybook` green, scoped `vitest --project=storybook` **6/6**, full `pnpm test-storybook`
+  **590 passed / 0 failed** (the Batch-26-noted `DebounceInput` failure is no longer present), full
+  `pnpm test:visual` **280 passed / 62 skipped / 0 failed** (was 276/62 — **DynamicFilter ×2 GATED both
+  viewports + green**). **Next batch = the `ProductCard` cycle**: scaffold the four shells
+  (`ProductCard` + `-Horizontal`/`-Restricted`/`-Vertical`) together and wire the cross-references last,
+  per the cycle note — then its Tier-6/7 dependents (`ProductCardMini`, `ProductBlock`, `ProductCardList`,
+  `ProductCarousel`, `MiniProductToast`) unblock, followed by the ⛔ story-only page templates.
+- **2026-07-20 — Batch 29 findings & harness changes**:
+  - **A nested `<button><Checkbox/></button>` option row is an axe `nested-interactive` fail — split it
+    into a native input + a real `<label htmlFor>`.** Legacy DynamicFilter wrapped a `Checkbox` atom in a
+    `<button onClick>` (the button owned the toggle; the checkbox was decorative). V2 renders the native
+    `Checkbox`/`RadioButton` and an external `<label htmlFor={id}>` as siblings inside a named
+    `role="group"`/`radiogroup` panel — the label toggles the control natively, no nesting. Same class as
+    the Batch-17 ProductVariant `<button>`-around-`<RadioButton>` fix. General rule: a "clickable row that
+    contains a form control" is a `<label>` + control, never a `<button>` wrapping the control.
+  - **A per-pixel `threshold` (0.2) absorbs a cream-vs-light-grey fill delta, so a "big" colour divergence
+    can still clear the ratio gate — measure, don't assume.** The migrated `Button surface="x"` fills grey
+    only at `md`+ (`md:bg-action-x`), so DynamicFilter's V2 **mobile** trigger is transparent where the
+    legacy mobile button is a full-width grey band (~48px × full width ≈ a big area). I expected that to
+    blow the 2% gate on mobile → provisionally mapped `reviewOnly`. But measuring showed pre-selected
+    **mobile at only 1.03%** (default mobile 0.67%): Playwright's per-pixel `threshold: 0.2` treats
+    cream (#faf9f6) vs light-grey (#ededed) as "same", so those band pixels never count — only the
+    font/glyph rendering differs. Re-mapped **GATED** (the skill's rule: a frame that *can* clear 2% must
+    be gated, not `reviewOnly`). Lesson: for a fill/colour divergence, run the diff before reaching for
+    `reviewOnly` — the per-pixel threshold may already absorb it. (Reinforces the standing
+    "measure both viewports" note.)
+  - **Responsive dual-layout without duplicated DOM.** Prior responsive organisms (Header/TopNavBar) render
+    BOTH layouts and `display:none` the inactive one (→ `getAll*` + `{hidden:true}` in tests). For
+    DynamicFilter's selected-filter chips I rendered the chip list **once** and drove the mobile
+    collapse purely with `display` classes on the single container (`hidden md:flex` + a `md:hidden`
+    disclosure toggle that flips the base to `flex`), so there's no duplicate remove-button in the a11y
+    tree and tests use plain `getByRole`. Works when the two layouts share identical content (only
+    visibility differs); the duplicate-subtree pattern is still needed when the layouts differ structurally.
+
   **RangeInput** `[org]`, **ProductDescription** `[org]` — the three unblocked Tier-4 entries
   top-to-bottom; **ProductCardHorizontal** stays **blocked** on the unmigrated `ProductCard` cycle).
   `pnpm build` green (zero TS), `pnpm build-storybook` green, scoped `vitest --project=storybook`
@@ -1186,7 +1224,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — reclassified molecule→organism; `<article>` with a `<h5>` name (becomes an `<a>` when `productUrl` set) + purple price line + grey meta + read-only `ProductQuantityInput`; optional remove `IconButton` named via `labels.remove`; `loading`→`role="status"` Loader; consolidated legacy conflicting label/name pairs. **Gallery-only** (legacy product image is a broken remote CDN thumbnail — non-deterministic), see batch notes
 - [x] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — reclassified molecule→organism; legacy hover Framer mega-menu → accessible disclosure-nav: labelled `<nav>`, plain `<a>` top-levels + category `<button aria-expanded/aria-controls>` (one panel open), `Escape` closes + focus return, outside-`pointerdown` close, `aria-current` active item; legacy active-orange (fails AA on white) → accessible blue text + blue underline + bold; reuses MobileNavigation's `NavItem`/`NavLink`/`NavCategory` (exported once). **Gallery-only** (only legacy baseline is the empty loading shimmer; real menu needs interaction), see batch notes
 
-### Build queue (57 pending, dependency-ordered)
+### Build queue (20 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -1252,7 +1290,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 #### Tier 5 — unlocked after Tier 4
 
 - [ ] ProductCard `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card) — needs: AlertBox, ProductCardHorizontal, ProductCardRestricted, ProductCardVertical · unblocks 7
-- [ ] DynamicFilter `[org]` (Legacy: legacy/src/design-system/components/molecules/dynamic-filter) — needs: DrawerSidebar, RangeInput, Button
+- [x] DynamicFilter `[org]` (Legacy: legacy/src/design-system/components/molecules/dynamic-filter) — Batch 29; faceted filter drawer composing the migrated `Button` + `DrawerSidebar` + `RangeInput` + `Checkbox`/`RadioButton` + `ExpandableWrapper`. Legacy nested `<button><Checkbox/></button>` option rows (an axe `nested-interactive` fail) → native inputs paired with real `<label htmlFor>` in a named `role="group"`/`radiogroup` panel; each filter group is an APG accordion header (`<h3>`+`<button aria-expanded/aria-controls>`) over an `ExpandableWrapper`; show-more is a nested disclosure. Legacy JS-media-query render-props (`Above`/`Below`) for the selected-filter chips → responsive `display` utilities (single-render, `md:`-toggled — no duplicated DOM). Chips are remove-`<button>`s whose `aria-label` names the filter they clear (2.5.3); range selection delegates the two `role="slider"` thumbs + fields to `RangeInput`. **All built-in Swedish copy → overridable `labels` (English defaults; interpolated ones are functions)**; the drawer's dialog/focus-trap/`Escape`/focus-return come from `DrawerSidebar`. **2 baselines mapped, GATED both viewports** (`--visual`, `--visual-pre-selected` — the closed filter bar + result list, Swedish labels reproduce the legacy frame): default desktop 0.16% / mobile 0.67%, pre-selected desktop 0.24% / mobile 1.03%, all under the 2% gate. 6/6 scoped tests. **Tier-5 now has only the blocked `ProductCard` cycle left.**
 
 #### Tier 6 — unlocked after Tier 5
 

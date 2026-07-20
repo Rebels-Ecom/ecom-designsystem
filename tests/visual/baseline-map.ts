@@ -1296,4 +1296,18 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // NOTE: ResetPasswordForm has NO entry — no legacy snapshot exists at all (re-verified against the
   // de-hyphenated `resetpassword` stem; the legacy dir ships no `.stories.tsx`). Its `['visual']` story is
   // current-only in the review gallery.
+  // DynamicFilter — the closed filter bar (trigger + chips + result list), reproduced faithfully with the
+  // Swedish labels the legacy stories captured. GATED both viewports (measured): default desktop 0.16% /
+  // mobile 0.67%, pre-selected desktop 0.24% / mobile 1.03% — all under the 2% gate. The migrated Button's
+  // `surface="x"` fills grey only at `md`+, so the V2 mobile trigger is transparent where the legacy mobile
+  // button is a grey band, but that cream-vs-light-grey delta falls under Playwright's per-pixel threshold
+  // (0.2), so it doesn't count — the residual diff is font/glyph rendering only.
+  {
+    storyId: 'design-system-organisms-dynamicfilter--visual',
+    legacyBaseline: 'design-system-molecules-dynamic-filter--dynamic-filter-default',
+  },
+  {
+    storyId: 'design-system-organisms-dynamicfilter--visual-pre-selected',
+    legacyBaseline: 'design-system-molecules-dynamic-filter--dynamic-filter-with-pre-selected',
+  },
 ]
