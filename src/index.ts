@@ -689,3 +689,27 @@ export type {
   FilterOptionItem,
   FilterSelection,
 } from './components/organisms/DynamicFilter'
+
+export { ProductCard, defaultProductCardLabels } from './components/organisms/ProductCard'
+export type {
+  ProductCardProps,
+  CardDisplayType,
+  ProductCardCampaign,
+  ProductCardChildProps,
+  ProductCardHorizontalExtras,
+  ProductCardImagePriority,
+  ProductCardLabels,
+  ProductCardProduct,
+  ProductCardTooltips,
+  ProductCardVariant,
+  ProductCardVerticalExtras,
+} from './components/organisms/ProductCard'
+
+export { ProductCardHorizontal } from './components/organisms/ProductCardHorizontal'
+export type { ProductCardHorizontalProps } from './components/organisms/ProductCardHorizontal'
+
+export { ProductCardVertical } from './components/organisms/ProductCardVertical'
+export type { ProductCardVerticalProps } from './components/organisms/ProductCardVertical'
+
+export { ProductCardRestricted } from './components/organisms/ProductCardRestricted'
+export type { ProductCardRestrictedProps } from './components/organisms/ProductCardRestricted'

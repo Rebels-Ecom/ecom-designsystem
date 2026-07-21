@@ -1,0 +1,2 @@
+export { ProductCardVertical } from './ProductCardVertical'
+export type { ProductCardVerticalProps } from './ProductCardVertical'

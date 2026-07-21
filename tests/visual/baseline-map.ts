@@ -1310,4 +1310,79 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-organisms-dynamicfilter--visual-pre-selected',
     legacyBaseline: 'design-system-molecules-dynamic-filter--dynamic-filter-with-pre-selected',
   },
+  // ProductCard family (Batch 30). Every frame faithfully reproduces its legacy scene but carries the
+  // standing product-card divergences — brand secondary font on names/ribbons, accessible ink over the
+  // legacy sub-AA orange/purple, icomoon→Lucide glyphs (eye/layers/heart/file-plus/x-circle/cart), and
+  // V2's local fallback illustration where the legacy CDN image was unavailable — so all are mapped
+  // REVIEW-ONLY (both viewports paired for sign-off, none can clear the 2% pixel gate). The V2 stories
+  // also fill in the translation labels the legacy story mappers left undefined (which printed
+  // "undefined:" in the price line), rendering clean, representative frames.
+  {
+    storyId: 'design-system-organisms-productcard--visual',
+    legacyBaseline: 'design-system-molecules-productcard--product-card-story',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcard--visual-horizontal',
+    legacyBaseline: 'design-system-molecules-productcard--product-card-story-horizontal',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcard--visual-loading',
+    legacyBaseline: 'design-system-molecules-productcard--product-card-story-loading',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcard--visual-no-variants',
+    legacyBaseline: 'design-system-molecules-productcard--product-card-story-no-variants',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardhorizontal--visual',
+    legacyBaseline: 'design-system-molecules-productcardhorizontal--product-card-horizontal',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardrestricted--visual',
+    legacyBaseline: 'design-system-molecules-productcardrestricted--product-card-restricted-story',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardrestricted--visual-no-variants',
+    legacyBaseline: 'design-system-molecules-productcardrestricted--product-card-restricted-story-no-variants',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardvertical--visual',
+    legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story',
+    reviewOnly: true,
+  },
+  // with-campaign / favorite-active are byte-identical twins of the plain / favorite legacy frames (the
+  // `campaign` story arg was vestigial; -favorite and -favorite-active passed identical args) — paired so
+  // no baseline is left without a Legacy|Current review pane.
+  {
+    storyId: 'design-system-organisms-productcardvertical--visual-with-campaign',
+    legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story-with-campaign',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardvertical--visual-no-variants',
+    legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story-no-variants',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardvertical--visual-favorite',
+    legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story-favorite',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardvertical--visual-favorite-active',
+    legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story-favorite-active',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardvertical--visual-add-to-purchase-list',
+    legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story-add-to-purchase-list',
+    reviewOnly: true,
+  },
 ]
