@@ -202,6 +202,15 @@ colour, spacing, display — you mean to override.)
 - Type `children` as `React.ReactNode`.
 - Lean on the React Compiler — no reflexive `useMemo` / `useCallback`.
 - `any` is forbidden; the build runs `tsc --noEmit` under `strict`.
+- **Never key a reset `useEffect` on an object/array *prop by reference* — key it on its content.** A
+  consumer that rebuilds an object/array on every render (very common — e.g. `productPicture()` returns a
+  fresh `sources` array inside a card that re-renders on state) would re-fire an effect whose deps include
+  that reference on *every* render. `Picture` hit exactly this: its "new image → show the skeleton again"
+  effect depended on the `sources` array, so each parent re-render reset `isLoading = true` **after** the
+  image had already loaded, leaving a fully-loaded image stuck at `opacity-0` (an invisible/"broken-looking"
+  image). Fix: derive a stable key from the content (`const sourcesKey = JSON.stringify(sources)`) and depend
+  on that. Symptom to watch for: a component that flickers to its loading/placeholder state or never leaves
+  it while a parent updates.
 - **Media queries use a native `useSyncExternalStore` hook, not `react-responsive`.** The
   `Breakpoints` atom exposes `useMediaQuery(query)` (subscribes to `window.matchMedia`, SSR-safe via a
   `false` server snapshot) and `useBreakpoint()` (the modern replacement for legacy `mediaQueryHelper`,
@@ -375,6 +384,35 @@ shape for any large, multi-layout component cluster:
   dispatcher's `handlePackageChange` needs the rich `ProductCardVariant`. The dispatcher exposes a single
   `onVariantSelect(variant)` that looks the id back up in its own rich list — the cards just forward the
   picker's callback (no per-card lookup).
+
+#### Dependents that compose the family (`ProductCardMini`, `ProductBlock`, `ProductCardList`, `ProductCarousel`, `MiniProductToast`)
+
+Five organisms build on the family. They establish a few reusable patterns:
+
+- **`ProductCardMini` reuses the family's product model via `Pick`.** Its `ProductCardMiniProduct` is a
+  `Pick<ProductCardProduct, …>` of just the fields it renders, so a full product (e.g. a cart line) passes
+  straight through with no adapter. `MiniProductToast` relies on this to forward its `cartProducts` down.
+- **A rich→compact card adapter (`ProductCarousel`).** The carousel shows the full `ProductCard` on
+  tablet/desktop and swaps to `ProductCardMiniVertical` on mobile (`useBreakpoint().isMobile`). Because the
+  two components have *diverged* prop shapes in V2 (unlike the legacy shared `IProductCard`), a pair of pure
+  functions `toMiniProduct()` / `toMiniProps()` map one `ProductCardProps` config down to the mini card's
+  API (building the image via `productPicture()`, mapping `favoriteProductsIds.includes(partNo)` → the
+  mini's boolean `isFavorite`, `linkComponent==='a'` → `undefined`, etc.). Keep such adapters as
+  side-effect-free top-level functions, not inline JSX, so they're readable and testable.
+- **Responsive card grids use CSS grid, never legacy `calc()` widths.** `ProductCardList` is
+  `grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4` on a `<ul role="list">` — the same
+  1→2→3→4 columns the legacy `calc(50%-0.75rem)` / `calc(33%…)` item widths produced, but with **no
+  arbitrary values** (which are forbidden). The vertical card is `w-full mx-auto`, so it fills each cell.
+- **`inert` is the correct tool for an off-screen slide-toast (React 19).** `MiniProductToast` stays mounted
+  and slides in/out via a Framer transform driven by `open` (mobile from the top, desktop from the right),
+  so the slide-out keeps its content. While closed, the content wrapper is `inert={!open}` — in a real
+  browser that removes the subtree from the tab order **and** the accessibility tree, so the off-screen cart
+  button can't be tabbed into and stale content isn't announced (the legacy toast left it focusable).
+  Opening drops `inert` and, because the panel is a polite `role="status"` region, the newly-shown product
+  is announced. Two caveats: **(1)** the slide collapses to instant under `useReducedMotion()` (2.3.3†) so a
+  throttled tab never leaves it stuck mid-transition; **(2)** Testing Library's role queries do **not** model
+  `inert`, so assert on the observable `[inert]` attribute (`canvasElement.querySelector('[inert]')`), not on
+  the button disappearing from `queryByRole`.
 
 ### The JS↔TS two-window rule (drop-in library compatibility)
 

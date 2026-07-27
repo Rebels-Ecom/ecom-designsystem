@@ -103,10 +103,17 @@ function Picture({
   const [isLoading, setIsLoading] = useState(true)
   const imgRef = useRef<HTMLImageElement | null>(null)
 
+  // Key the reset on the source *content*, not the `sources` array identity: consumers commonly build
+  // a fresh `sources` array on every render (e.g. `productPicture()` inside a card that re-renders on
+  // state), and depending on the array reference would re-fire this effect each render — resetting
+  // `isLoading` to `true` after the image had already settled and leaving a loaded image stuck at
+  // `opacity-0` (invisible). Serialising keeps the reset firing only when the image actually changes.
+  const sourcesKey = JSON.stringify(sources)
   useEffect(() => {
     setImageSources({ src: isValidUrl(src) ? src : '', sources })
     setIsLoading(true)
-  }, [src, sources])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src, sourcesKey])
 
   useEffect(() => {
     // Images already cached by the browser never fire `load`, so settle immediately.

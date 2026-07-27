@@ -17,6 +17,7 @@ const twMerge = extendTailwindMerge({
             'h-xl',
             'h-l',
             'h-m',
+            'h-ms',
             'h-s',
             'h-xs',
             'h-xl-lg',

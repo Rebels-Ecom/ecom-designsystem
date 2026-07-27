@@ -1385,4 +1385,26 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-molecules-productcardvertical--product-card-vertical-story-add-to-purchase-list',
     reviewOnly: true,
   },
+  // Batch 31 — Tier-6/7 ProductCard dependents.
+  // ProductBlock embeds a horizontal ProductCard (itself reviewOnly), so the block inherits the same
+  // brand-font / accessible-ink / icomoon→Lucide / local-fallback divergences and can't clear the 2%
+  // gate. Both viewports are faithful, reproducible scenes → reviewOnly. (Legacy id has the "procut" typo.)
+  {
+    storyId: 'design-system-organisms-productblock--visual',
+    legacyBaseline: 'design-system-organisms-productblock--procut-block-story',
+    reviewOnly: true,
+  },
+  // ProductCardList — a full-page grid of vertical ProductCards (each reviewOnly) captured much taller
+  // than the fixed viewport, so neither the pixel dimensions nor the per-card colours can match. Both
+  // Story (representative set) and Loka (nine identical) frames map reviewOnly, both viewports.
+  {
+    storyId: 'design-system-organisms-productcardlist--visual',
+    legacyBaseline: 'design-system-organisms-productcardlist--product-card-list-story',
+    reviewOnly: true,
+  },
+  {
+    storyId: 'design-system-organisms-productcardlist--visual-loka',
+    legacyBaseline: 'design-system-organisms-productcardlist--product-card-list-story-loka',
+    reviewOnly: true,
+  },
 ]

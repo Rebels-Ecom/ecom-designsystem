@@ -15,9 +15,95 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms (Tier-5/6 → the `ProductCard` cycle done + hardened; Tier-6/7 dependents unblocked)
-- **Last Updated**: 2026-07-23
-- **Current Micro-Batch**: Batch 30 — **the `ProductCard` cycle** (complete; **ProductCard** `[org]` +
+- **Active Category**: organisms (Tier-6/7 → the `ProductCard` **dependents** landed; **only the ⛔ blocked story-only page templates remain**)
+- **Last Updated**: 2026-07-27
+- **Current Micro-Batch**: Batch 31 — **the Tier-6/7 `ProductCard` dependents** (complete;
+  **ProductCardMini**, **ProductBlock**, **ProductCardList**, **ProductCarousel**, **MiniProductToast**
+  `[org]` — the five entries the `ProductCard` cycle unblocked, built top-to-bottom in one micro-batch;
+  all five reclassified/confirmed organisms). Each composes the already-migrated family + primitives:
+  **ProductCardMini** (presentational summary; `Picture` + `Heading`, product typed as a `Pick` of
+  `ProductCardProduct` so a full cart line passes straight through); **ProductBlock** (titled marketing
+  section — `ContentWrapper`/`MaxWidth`/`FlexContainer` + `Text`/`Heading` + stacked horizontal
+  `ProductCard`s forced `border`/`hideRemoveButton`; a **labelled `<section>` landmark only when
+  titled**); **ProductCardList** (responsive **CSS grid** `grid-cols-1 md:2 lg:3 xl:4` over the legacy
+  `calc()` item widths — no arbitrary values — on a `<ul role="list">`, framer opacity fade dropped);
+  **ProductCarousel** (a `Carousel` of full `ProductCard` on tablet/desktop, **swapping to
+  `ProductCardMiniVertical` on mobile** via a pure rich→compact adapter `toMiniProps`/`toMiniProduct`;
+  legacy Splide `autoplay` dropped 2.2.2, the broken legacy `onViewportEnter` (fired during render)
+  replaced with a correct `IntersectionObserver` impression hook); **MiniProductToast** (fixed slide
+  toast — top on mobile, right on desktop — `role="status"` polite showing the last cart line as a
+  `ProductCardMini` + a cart `IconButton` badge/`Loader`; **`inert` when closed**, so the off-screen
+  content leaves the tab order + a11y tree, fixing the legacy off-screen-focusable button; slide gated on
+  `useReducedMotion()`). `pnpm build` green (zero TS), `pnpm build-storybook` green, scoped
+  `vitest --project=storybook` **21/21** (ProductCardMini 4 · MiniProductToast 5 · ProductBlock 4 ·
+  ProductCardList 4 · ProductCarousel 4), full `pnpm test-storybook` **664 passed / 0 failed**
+  (was 643 — +21 stories, all axe- and play-verified), full `pnpm test:visual` **280 passed / 94 skipped /
+  0 failed** (was 280/88 — the **3 new reviewOnly baselines × 2 viewports = 6** correctly skipped by the
+  pixel gate, no regression). **3 baselines mapped reviewOnly** — **ProductBlock** (`procut-block-story`,
+  the legacy typo) inherits its embedded horizontal card's divergences; **ProductCardList** `--visual` +
+  `--visual-loka` are full-page grids of reviewOnly vertical cards captured taller than the viewport.
+  **ProductCarousel** (legacy baseline is **blank** — story passed `productCards: []`) and
+  **MiniProductToast** (legacy baseline captured the toast **closed** — same class as `ProductToast`) are
+  **not mapped → current-only** (their Visual stories render populated/open, a different scene);
+  **ProductCardMini** has **no standalone baseline** (only captured inside the closed toast) → gallery-only.
+  **The build queue is now down to the 11 ⛔ blocked story-only page templates** (`*Page`/`*Template`,
+  no `.tsx`; their real deps live in the stories files and several — Breadcrumbs, Hero, BrandDetails,
+  Newsletter, InfoSummaryBox, OrderConfirmationDetails, ScrollableList, OfferCardList, Teaser — are still
+  unmigrated). **Next: verify each template's real story deps, then scaffold the templates whose deps have
+  all landed.**
+- **2026-07-27 — Batch 31 findings & harness changes**:
+  - **Adapt a rich card config to a diverged compact-card API with pure functions, not inline JSX.**
+    Legacy `ProductCarousel` spread the same `IProductCard` into both `ProductCard` (desktop) and
+    `ProductCardMiniVertical` (mobile). In V2 the two have **diverged prop shapes**, so the carousel maps
+    one `ProductCardProps` down to the mini's API with top-level `toMiniProps()`/`toMiniProduct()` — image
+    via `productPicture()`, `favoriteProductsIds.includes(partNo)` → the mini's boolean `isFavorite`,
+    `linkComponent==='a'` → `undefined`, campaign `title?` → required `title`. Keep such adapters
+    side-effect-free and testable, out of the render tree.
+  - **`inert` is the right tool for an off-screen slide-toast (React 19).** A toast that stays mounted and
+    slides out (so the exit keeps its content) leaves focusable, announceable content off-screen — the
+    legacy MiniProductToast bug. Gating the content wrapper with `inert={!open}` removes the subtree from
+    the tab order **and** the a11y tree in a real browser, while the polite `role="status"` still announces
+    the product when it opens (inert drops). **Gotcha:** Testing Library's role queries don't model `inert`,
+    so assert on the observable `[inert]` attribute (`canvasElement.querySelector('[inert]')`), not on the
+    control vanishing from `queryByRole`. (Documented in `docs/DEVELOPMENT.md`.)
+  - **Responsive card grids: CSS grid over legacy `calc()` widths.** `ProductCardList`'s legacy
+    `calc(50%-0.75rem)` / `calc(33%…)` per-item widths are **arbitrary values (forbidden)**; the identical
+    1→2→3→4 column progression comes free from `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`
+    with `gap-4`. Same pattern the ProductCard templates' CategoryGrid already used; the vertical card is
+    `w-full mx-auto` so it fills each cell.
+  - **A landmark `<section>` only when it has a name.** `ProductBlock` renders `<section aria-label={title}>`
+    when titled (a jump-to region for AT) but a plain, **unlabelled** `<section>` (not a landmark) when it
+    has no title — so text-only blocks don't clutter the landmark map. `aria-label={title || undefined}`.
+  - **A compact card reuses the family model via `Pick`, not a fresh interface.** `ProductCardMiniProduct =
+    Pick<ProductCardProduct, …>` means a full product (a cart line) is structurally assignable with no
+    adapter — `MiniProductToast` forwards its `cartProducts` straight down.
+- **2026-07-27 — Batch 31 review fixes (user review follow-up)**: four issues raised while reviewing the
+  gallery, all fixed and re-verified in-browser at both viewports. (a) **ProductBlock title too small** —
+  the title had been snapped to `text-h-s` (1.375rem, the nearest existing token), reading small vs the
+  legacy 1.625rem. Added the missing scale step **`--text-h-ms: 1.625rem`** (registered in `cn.ts`'s
+  font-size group so merges aren't lossy) and applied `text-h-ms md:text-h-ms`; measured the title is now
+  `<h2>` 26px, blue, left-aligned. (The user also left-aligned the rich-text intro — preserved.) (b) **No
+  product component may show `undefined` / missing / broken values or images, even where legacy does** —
+  root-caused a real **`Picture` atom bug**: its "new image → show skeleton again" effect keyed on the
+  `sources` **array reference**, and consumers build a fresh `sources` each render (`productPicture()`
+  inside a card that re-renders on state), so every parent re-render reset `isLoading = true` **after** the
+  image had loaded, leaving a fully-loaded image stuck at `opacity-0` (blank/broken-looking). Fixed by
+  keying the reset on content (`const sourcesKey = JSON.stringify(sources)`) — a general fix benefiting
+  every image consumer. Also hardened `ProductCardMini` so a missing currency/unit/label never leaves a
+  dangling `/`, `:` or `undefined` (assemble from present parts, omit the line when empty), and pointed the
+  review stories at the bundled `beer-glass.jpg` so frames show a real photo, never a faint fallback.
+  (c) **`productcardlist--visual-loka` bad tags** — the junk was in the *legacy* baseline ("Le Tag", three
+  same-purple tags, "undefined" labels, broken "Placholder" image); the V2 reproduction now uses the El
+  Esteco Malbec fixture with **only unique-coloured tags** (Eko green / Fairtrade blue / Vegan purple),
+  full labels and a real image — a faithful-but-clean reproduction (still `reviewOnly`). (d) **ProductCarousel
+  mobile arrows** — set `arrowsWithDots={isMobile}` so the prev/next arrows sit **inline on the dot row**
+  on mobile (legacy bottom-arrow placement; measured `sameRow`), overlaying the track edges on larger
+  viewports; and added the legacy dot-hiding rule (`hidePagination` on mobile when peek padding is on and
+  `productCards.length > 14`). Gates re-run green: `pnpm build` 0 TS, full `pnpm test-storybook` **664/0**,
+  full `pnpm test:visual` **280 passed / 94 skipped / 0 failed** (unchanged — the `Picture` fix regressed
+  no baseline). The `Picture` effect-dependency gotcha is documented in `docs/DEVELOPMENT.md` (React 19
+  conventions).
+- **2026-07-23 — Batch 30 — the `ProductCard` cycle** (complete; **ProductCard** `[org]` +
   **ProductCardHorizontal** / **ProductCardVertical** / **ProductCardRestricted** `[org]`). The
   mutually-recursive family, scaffolded together and cross-wired last per the cycle note; the cycle was
   broken with a leaf `ProductCard/types.ts` seam the three children import **type-only**. **Per the
@@ -1270,7 +1356,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (113)
+### Completed (118)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -1374,7 +1460,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 - [x] CartProduct `[org]` (Legacy: legacy/src/design-system/components/molecules/cart-product) — reclassified molecule→organism; `<article>` with a `<h5>` name (becomes an `<a>` when `productUrl` set) + purple price line + grey meta + read-only `ProductQuantityInput`; optional remove `IconButton` named via `labels.remove`; `loading`→`role="status"` Loader; consolidated legacy conflicting label/name pairs. **Gallery-only** (legacy product image is a broken remote CDN thumbnail — non-deterministic), see batch notes
 - [x] DesktopNavigation `[org]` (Legacy: legacy/src/design-system/components/molecules/navigation/desktop-navigation) — reclassified molecule→organism; legacy hover Framer mega-menu → accessible disclosure-nav: labelled `<nav>`, plain `<a>` top-levels + category `<button aria-expanded/aria-controls>` (one panel open), `Escape` closes + focus return, outside-`pointerdown` close, `aria-current` active item; legacy active-orange (fails AA on white) → accessible blue text + blue underline + bold; reuses MobileNavigation's `NavItem`/`NavLink`/`NavCategory` (exported once). **Gallery-only** (only legacy baseline is the empty loading shimmer; real menu needs interaction), see batch notes
 
-### Build queue (16 pending, dependency-ordered)
+### Build queue (11 pending, dependency-ordered)
 
 #### Tier 0 — buildable now (deps already migrated) — **Tier-0 is exhausted: every remaining entry is a ⛔ BLOCKED story-only template.** Real leaves continue in Tier 1.
 
@@ -1444,12 +1530,12 @@ finished line into _Completed_ by hand (tiers rarely shift).
 
 #### Tier 6 — unlocked after Tier 5
 
-- [ ] ProductCardMini `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini) — needs: ProductCard · unblocks 1
-- [ ] ProductBlock `[org]` (Legacy: legacy/src/design-system/components/organisms/product-block) — needs: ProductCard
-- [ ] ProductCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/product-card-list) — needs: ProductCard
-- [ ] ProductCarousel `[org]` (Legacy: legacy/src/design-system/components/molecules/product-carousel) — needs: Carousel, ProductCardMiniVertical, ProductCard
+- [x] ProductCardMini `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini) — Batch 31; reclassified molecule→organism. Presentational compact summary — a thumbnail beside the name, packaging, a price line and an article-no/country line. Composes only `Picture` + `Heading`. **Product typed as `Pick<ProductCardProduct, …>`** so a full cart line passes straight through (used by `MiniProductToast`). Name is a real `Heading` at a caller-controlled level (default 3); thumbnail decorative `alt=''` (legacy hard-coded "Placholder" alt was a bug); empty meta lines omitted (no stray "undefined"/dangling separators). **No standalone baseline** (only captured inside the closed `miniproducttoast` frame) → gallery-only (current-only Visual). 4 scoped tests.
+- [x] ProductBlock `[org]` (Legacy: legacy/src/design-system/components/organisms/product-block) — Batch 31; titled marketing section composing `ContentWrapper`/`MaxWidth`/`FlexContainer` + `Text` (eyebrow) + `Heading` (title) + `richText` + stacked horizontal `ProductCard`s forced `border`/`hideRemoveButton`. **Labelled `<section aria-label={title}>` landmark only when titled** (a plain non-landmark `<section>` otherwise, so text-only blocks don't clutter the landmark map). Title's semantic level decoupled from its fixed visual size (`headingLevel` prop, size `text-h-s`). Legacy `mediaQueryHelper` → `useBreakpoint()` for the desktop `MaxWidth` no-margin/no-padding. **1 baseline mapped reviewOnly** (`procut-block-story`, the legacy typo): the embedded `ProductCardHorizontal` is itself reviewOnly, so the block can't clear the 2% gate. 4 scoped tests.
+- [x] ProductCardList `[org]` (Legacy: legacy/src/design-system/components/organisms/product-card-list) — Batch 31; responsive **CSS grid** (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4`) of `ProductCard`s on a `<ul role="list">` of `<li>`. Replaced the legacy per-item `calc(50%-0.75rem)`/`calc(33%…)` widths (**arbitrary values, forbidden**) with the identical column progression from grid; dropped the framer opacity fade (decorative, meaningless). A list-level `addToCart` overrides every card's uniformly. **2 baselines mapped reviewOnly** (`--visual`, `--visual-loka`): full-page grids of reviewOnly vertical cards captured taller than the fixed viewport. 4 scoped tests.
+- [x] ProductCarousel `[org]` (Legacy: legacy/src/design-system/components/molecules/product-carousel) — Batch 31; reclassified molecule→organism. A `Carousel` of full `ProductCard` on tablet/desktop, **swapping to `ProductCardMiniVertical` on mobile** (`useBreakpoint().isMobile`) via pure rich→compact adapters `toMiniProps`/`toMiniProduct` (the two card APIs diverged in V2). Responsive `perPage` (mobile/tablet/desktop) via `Carousel` `breakpoints`. Legacy Splide `autoplay` **dropped** (no auto-advance → nothing to pause 2.2.2 / no motion to suppress); the broken legacy `onViewportEnter` (fired during render) **replaced with a correct `IntersectionObserver` impression hook** (fires once at ≥50% visible). **Not mapped** — the legacy `product-carousel-story` baseline is **blank** (story passed `productCards: []`); the V2 Visual renders a populated carousel (different scene) → current-only. 4 scoped tests.
 
 #### Tier 7 — unlocked after Tier 6
 
-- [ ] MiniProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/mini-product-toast) — needs: ProductCardMini, IconButton
+- [x] MiniProductToast `[org]` (Legacy: legacy/src/design-system/components/molecules/mini-product-toast) — Batch 31; reclassified molecule→organism. Fixed slide toast (top on mobile, right on desktop) surfacing the **last** cart line as a `ProductCardMini` above a cart-shortcut `IconButton` (badge, name folds in the count) + a busy `Loader`. Non-modal polite `role="status"` (announces without stealing focus). **`inert` when closed** — the off-screen content leaves the tab order + a11y tree (fixing the legacy off-screen-focusable cart button), while the slide-out still keeps its content; slide gated on `useReducedMotion()`. **Not mapped** — the legacy `mini-product-toast-story` baseline captured the toast **closed** (empty cart → `open=false`); the V2 Visual renders it **open** (different scene, same closed-toast class as `ProductToast`) → current-only. 5 scoped tests.
 
