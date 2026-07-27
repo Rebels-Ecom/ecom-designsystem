@@ -15,8 +15,8 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms (Tier-5/6 → the `ProductCard` cycle done; Tier-6/7 dependents unblocked)
-- **Last Updated**: 2026-07-20
+- **Active Category**: organisms (Tier-5/6 → the `ProductCard` cycle done + hardened; Tier-6/7 dependents unblocked)
+- **Last Updated**: 2026-07-23
 - **Current Micro-Batch**: Batch 30 — **the `ProductCard` cycle** (complete; **ProductCard** `[org]` +
   **ProductCardHorizontal** / **ProductCardVertical** / **ProductCardRestricted** `[org]`). The
   mutually-recursive family, scaffolded together and cross-wired last per the cycle note; the cycle was
@@ -41,6 +41,112 @@
   [`PRODUCT-CARD-HARDENING.md`](./PRODUCT-CARD-HARDENING.md)** (per the user's request). **Next batch =
   the now-unblocked Tier-6/7 dependents** (`ProductCardMini`, `ProductBlock`, `ProductCardList`,
   `ProductCarousel`, `MiniProductToast`), then the ⛔ story-only page templates.
+- **2026-07-23 — ProductCard hardening pass (Option A, in-place)**: worked
+  [`PRODUCT-CARD-HARDENING.md`](./PRODUCT-CARD-HARDENING.md) end-to-end. **No new components — migration
+  counts unchanged (113 completed).** An internal-only refactor of the ProductCard family held to strict
+  runtime **and** DOM parity: 12 story DOM states were captured and diffed byte-for-byte before/after
+  each structural phase, and the 13 reviewOnly product-card baselines were left untouched. Landed:
+  (0) a **runtime contract lock** — `ProductCard.contract.stories.tsx` (a play-function story per audited
+  v1.6.6 call shape: horizontal cart line, vertical category card, controlled order-return, uncontrolled
+  add-to-cart, restricted, skeleton floor, raw order item, `linkComponent='a'`, `debounceQuantityVal=0`,
+  variant change, horizontal campaign) + a compile-time `ProductCard.type-contract.ts` fixture;
+  (1) centralised `productPicture()` and a single narrow→rich variant resolver (`onVariantSelect`),
+  deleting the per-child lookup dance; (2) a tested `useProductCardState` hook owning all
+  price/quantity/variant math — the legacy `quantity <= '0'` lexicographic check kept byte-for-byte and
+  documented; (3) shared shells `CardMarkers` / `CardImage` / `CardName` / `CardRibbon` / `CardActions`
+  + one `VariantPicker`, consumed by all three cards; (4) **Window-2 typing** — `quantity` optional
+  (the skeleton floor), a `ResolvedProductCardProduct` for the merged shape, `linkComponent` accepts the
+  `'a'` tag, `productArea` widened (`content-page`/`purchase-list`/any string), the v1-ignored props
+  (`onClickRemoveProduct`/`variantsInCart`/`disabledNoBorder`/`iconButton`/`isAddingToCart`) accepted +
+  `@deprecated`, `headingLevel` on the dispatcher, a dev-only campaign-contrast warning (fully stripped
+  from the lib build), `ProductCardProduct` exported as the app-factory anchor; (5) fixtures →
+  `productCardFixtures.ts` with deterministic local images (no CDN fetch). Gates: `pnpm build` (0 TS);
+  `pnpm test-storybook` **630 passed / 0 failed** (was 618 — +12 contract-lock stories); `pnpm
+  build-storybook` green; `pnpm test:visual` **280 passed / 88 skipped / 0 failed** (unchanged). See
+  `docs/DEVELOPMENT.md` for the internal architecture, the JS↔TS two-window rule, and the `@deprecated`
+  list.
+- **2026-07-23 — variant-picker overlay restored (review follow-up, deliberate behaviour change)**: while
+  reviewing the hardened output the user flagged that the variant picker no longer slid up over the card.
+  Batch 30 had regressed the legacy `vertical-variants` / `horizontal-variants` behaviour (a bottom-anchored
+  `position:absolute; inset:0` panel sliding `y:100%→0%` and covering the whole card) into an in-place
+  `ProductVariantList` swap (vertical/restricted) and a non-covering carousel (horizontal). Restored it in
+  the shared `VariantPicker`: an `absolute inset-0 z-20 bg-white` overlay using the `animate-slide-up`
+  keyframe (resting frame `translateY(0)` — covering) gated behind `motion-reduce:animate-none`, so it is
+  never stuck off-screen under reduced motion / a throttled tab; the card root clips while open. Companion
+  layout fixes on the content-height horizontal row card (the fixed-height vertical/restricted cards are
+  immune): (a) it gets `min-h-64` while the picker is open so the ~240px carousel never clips; (b)
+  **variant-switch height stability** — `handlePackageChange` copies per-variant `tags`/`activeCampaign`,
+  so switching to a variant lacking them used to collapse the markers row / drop the campaign `pt-10` and
+  resize the card. Now the markers row is always rendered (reserves `min-h-9` like the vertical card) and
+  the campaign state adds only the border+ribbon (no `pt-10` — the reserved markers band is the ribbon's
+  clearance), so toggling tags/campaign between a product's variants no longer changes the card height.
+  These are **behaviour changes vs Batch 30** (authorised during review), not parity refactors; closed-card
+  DOM for the mapped frames is unchanged (their fixtures carry a tag + no campaign) so the 13 reviewOnly
+  baselines still hold. Two further review fixes: (c) **product-level tags inherit** —
+  `handlePackageChange` now uses `selectedVariant.tags ?? product.tags`, so Eko/Vegan/Fairtrade persist
+  across variant switches instead of vanishing when a variant omits them (per-SKU
+  `outOfStock`/`sellerOnly`/`activeCampaign` stay variant-specific). **Note:** this changes the product
+  object emitted to `onVariantChange`/`addToCart` (tags now carry through) — a deliberate Window-1
+  deviation, flagged for the app team in case their variant data intentionally varies tags. (d) the
+  story fixtures point each variant thumbnail at the bundled placeholder SVG (was empty `src` → a
+  broken-image glyph in the picker; real app supplies image URLs). Gates re-run green: `pnpm build`
+  (0 TS), `pnpm test-storybook` 630/0, `pnpm test:visual` 280/88/0.
+- **2026-07-23 — ProductCard app-scenario Templates (verification harness)**: audited every ProductCard
+  rendering context in the consuming app (`spendrups-frontendapp`, read-only) and reproduced them as
+  integration stories in `ProductCard.templates.stories.tsx` (title `…/ProductCard/Templates`), each
+  driving the public `ProductCard` dispatcher with the app's exact props and product shapes
+  (`productCardFactory` / `productFromCartItemFactory`), wrapped in the same kind of grid/list.
+  Fixtures in `productCardTemplateFixtures.ts` (deterministic placeholder images, Swedish labels).
+  Covered: category grid, content-page block, restricted/anonymous grid, recommended row, mini-cart
+  line, checkout cart line (live debounced total), order-details line (`allowNegative`), order-return
+  (`maxQuantity` cap), purchase-list line, favourites list, returnable-container webform
+  (`linkComponent='a'`), + vertical/horizontal loading skeletons. Controlled screens (cart/checkout/
+  order/return/purchase-list) held in local state via a `ControlledLine` wrapper so the steppers are
+  live like the app. Stories are **untagged** → excluded from `test:visual` (no unpaired baselines).
+  **Finding (not fixed — needs a parity decision):** the cards never forward their `labels` to the
+  inner `ProductQuantityInput`, so its quantity/price readout (`Quantity` / `pcs` / `Price:` / `×`)
+  renders in English regardless of the card's locale — visible in the Swedish templates. Flagged for
+  the app team. Gates: `pnpm build` (0 TS), `pnpm test-storybook` **643 passed / 0 failed** (was 630 —
+  +13 template stories, all axe- and play-verified), `pnpm build-storybook` green, `pnpm test:visual`
+  280/88/0 (unchanged).
+- **2026-07-24 — ProductCard layout fixes surfaced by the templates (review follow-up)**: (a)
+  **variant-picker horizontal inset** — the grid picker overlay is `absolute inset-0` (edge to edge), so
+  its rows sat flush against the card border; gave the grid `ProductVariantList` `px-4` to match the
+  card's own `p-4`. (b) **vertical card bottom-padding spill** — the card is a fixed `h-product-card-v`
+  with `justify-between`, and the special-card `border-2` (campaign/limited/out-of-stock) consumes 4px of
+  the content box under `box-sizing: border-box`; a card whose content already filled the height then
+  spilled its add-to-cart row ~9px past the bottom padding. Fixed by making the **image area the flexible
+  element** — `h-2/5` → `min-h-0 flex-1` on the image (and its loading twin) — so the fixed chrome always
+  fits and the media absorbs the slack (`object-contain` keeps the bottle proportional). A `min-h` on the
+  card itself was rejected: the image's percentage height needs a *definite* parent, so `min-h` broke the
+  sizing (cards ballooned to ~600px). Measured: all six grid cards now 488px, overflow 0, spill 0. Gates:
+  `pnpm build` 0 TS, `pnpm test-storybook` 643/0, `pnpm test:visual` 280/88/0 (product-card baselines are
+  `reviewOnly` → unaffected).
+- **2026-07-27 — four more ProductCard fixes surfaced by the templates (review follow-up)**: (a)
+  **RestrictedGrid template overlap** — the restricted card is a fixed `w-75` (300px, faithful to legacy's
+  effective `--product-card-width-vertical`), but the listing-grid templates started at `grid-cols-2` on
+  mobile (163px cells) so adjacent fixed-width cards overlapped by ~120px. The app's real
+  `.product-listing__list` is **1 column on mobile**, going to 2 only ≥768px (≥~360px cells). Matched it:
+  `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4` on CategoryGrid / RestrictedGrid /
+  CategoryGridLoading. **Template-only fix; the DS card is untouched** (its fixed width is correct within
+  the app's real grid). (b) **horizontal campaign remove-button overlap** — the dark `icon-x-circle` sat
+  half-on the brand-coloured ribbon band. Restored the legacy `.specialCard .iconLink` (lift `top-5`→`top-2`
+  on any special card so the button centres in the band) + `.campaign .iconLink button { color:white }`
+  (glyph `text-white` on campaign cards, ≥4.5:1 on `#9a576f`) — both dropped in migration. (c) **horizontal
+  card grew when the variant picker opened** — `variantsOpen` floored the card to `min-h-64` (256px); the
+  picker's true intrinsic height is ~200px (close row + one carousel variant card), so `min-h-64`→`min-h-50`
+  (200px): every real horizontal card is already ≥200px (the `h-36` image forces it) so the floor never
+  grows them (218px stays 218px), while genuinely-short cards are still guarded from clipping. (d)
+  **focus-ring clipped on the quantity field & cart button** — the horizontal content column used
+  `overflow-hidden` (doubling as the flex `min-width:0` shrink trick), which cropped the edge-hugging
+  controls' `outline-offset-2` ring (2.4.7 / 2.4.11). Swapped to `min-w-0`: identical shrink/wrap behaviour
+  (TagsList wraps, the name wraps → nothing overflows), ring no longer clipped, card's own `p-4` gives 12px
+  clearance. Verified by in-browser geometry (grow=4px = the real ring → no clipping ancestor) at mobile and
+  desktop. Gates: `pnpm build` 0 TS, `pnpm test-storybook` 643/0, arbitrary-value scan clean. `pnpm
+  test:visual` full run showed 271/88/**9** — but the 9 are flaky **mobile** frames of components untouched
+  this session (`messagebanner`, `orderconfirmationdetails`, `iconbutton`, `formgroup`, `campaignbox`,
+  `iconlink`); re-running just those 11 mobile frames passed 11/0, so it's pre-existing mobile flake, not a
+  regression. The product-card frames stay `reviewOnly` (skipped) and green.
 - **2026-07-20 — Batch 30 findings & harness changes**:
   - **A cyclic component family breaks cleanly with a leaf `types.ts` seam.** `ProductCard` imports its
     three children (runtime); the children need the shared prop/product/variant types + default labels.

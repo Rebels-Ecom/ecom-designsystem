@@ -328,6 +328,92 @@ colour, spacing, display — you mean to override.)
   modules each re-exporting the same type name from `src/index.ts` is a duplicate-export build error —
   and even if it compiled, two structurally-identical-but-distinct `NavItem`s would confuse consumers.
 
+### The ProductCard family — internal architecture
+
+The `ProductCard` dispatcher and its three layout cards (`ProductCardHorizontal` / `ProductCardVertical` /
+`ProductCardRestricted`) share one implementation spine so a change lands once. This is the reference
+shape for any large, multi-layout component cluster:
+
+- **Leaf `types.ts` seam** breaks the mutually-recursive cycle: the dispatcher imports the children
+  (runtime); the children `import type` the shared prop/product/variant types from `ProductCard/types.ts`
+  (a leaf that imports only atom/molecule *types*), so the cycle is erased at compile time. Reuse this for
+  `ProductSearch`↔`ProductSearchResultItem` and any recursive cluster.
+- **All state math lives in `useProductCardState`** (`ProductCard/useProductCardState.ts`): the quantity
+  clamp, the dual controlled/uncontrolled quantity mode, the running-total math, and re-deriving the whole
+  product when a packaging variant is chosen. The dispatcher is a thin wrapper that wires the hook to a
+  layout. The repo has no plain-unit-test project, so the hook is covered by the `ProductCard.contract.stories.tsx`
+  play functions (see below).
+- **Shared shells**, all in `ProductCard/`, consumed by every card so their DOM/a11y is defined once:
+  `CardMarkers` (seller-only / accessory-pot / tags row), `CardImage` (thumbnail + decorative link wrapper),
+  `CardName` (heading + name link), `CardRibbon` (campaign / limited / out-of-stock banner),
+  `CardActions` (favourite + purchase-list icons), and one `VariantPicker`. `productPicture()` is the
+  single image-payload builder.
+- **`VariantPicker` is an absolute cover-overlay that slides up from the bottom** (restoring the legacy
+  `vertical-variants` / `horizontal-variants` behaviour; the Batch-30 migration had regressed it to an
+  in-place swap / non-covering carousel). The card root is `relative` and clips (`overflow-hidden`) while
+  open; the overlay is `absolute inset-0 z-20 bg-white` with the `animate-slide-up` keyframe (whose
+  resting frame is `translateY(0)` — covering) gated behind `motion-reduce:animate-none`, so a
+  reduced-motion or throttled/backgrounded tab shows it settled and covering, never stuck off-screen.
+  Inside it, `display='grid'` (vertical / restricted,
+  fixed-height cards) shows the `ProductVariantList` radio group; `display='row'` (horizontal) shows the
+  `HorizontalVariants` carousel. **The horizontal row card is content-height, so it gets `min-h-64` while
+  the picker is open** — otherwise a short card (e.g. after switching to a variant with no tag row) would
+  clip the carousel vertically. The inner list fills the overlay edge-to-edge and owns dismissal
+  (close button / `Escape` / outside pointer) + the radio-group semantics.
+- **Variant-switch height stability.** `handlePackageChange` copies per-variant decorations
+  (`tags` / `activeCampaign` / `sellerOnly` / …), so switching to a variant that lacks them would
+  otherwise resize the card and make browsing jarring. The vertical / restricted cards are fixed-height
+  (immune). The content-height **horizontal** card is stabilised: the markers row is **always rendered**
+  (reserving its `min-h-9` even when empty, like the vertical card), and the campaign/limited/out-of-stock
+  state adds only the coloured border + ribbon — **no `pt-10`** (the always-reserved markers band is the
+  ribbon's clearance). So toggling tags or a campaign between a product's variants no longer changes the
+  card's height. Additionally, **product-level `tags` inherit** — `handlePackageChange` uses
+  `selectedVariant.tags ?? product.tags`, so descriptors like Eko/Vegan/Fairtrade persist across variant
+  switches instead of vanishing when a variant omits them; genuinely per-SKU states
+  (`outOfStock`/`sellerOnly`/`activeCampaign`) stay variant-specific.
+- **One narrow→rich variant resolver.** The pickers speak the narrow `ProductVariantListItem`; the
+  dispatcher's `handlePackageChange` needs the rich `ProductCardVariant`. The dispatcher exposes a single
+  `onVariantSelect(variant)` that looks the id back up in its own rich list — the cards just forward the
+  picker's callback (no per-card lookup).
+
+### The JS↔TS two-window rule (drop-in library compatibility)
+
+The Spendrups app installs V2 **while still JavaScript**, then migrates JS→TS later. Every change to a
+component the app already consumes must respect **two compatibility windows**:
+
+1. **JS install** — enforced at **runtime only** (types are invisible to a JS consumer). The hard gate is
+   **behavioural parity** with the shipped version for every real call shape. A refactor here must be
+   runtime-invisible **or** runtime-parity-preserving; never require a prop/default the app doesn't already
+   pass, and never change observable behaviour. (This is why the ProductCard hardening kept the legacy
+   `quantity <= '0'` lexicographic check byte-for-byte — a "fix" to a numeric compare would be a behaviour
+   change.)
+2. **TS migration** — enforced by the **exported types**. They must accept **all real usage with no churn**;
+   cruft is **accept-and-`@deprecated`**, never removed. So the ProductCard dispatcher accepts the five
+   v1-ignored props (`onClickRemoveProduct`, `variantsInCart`, `disabledNoBorder`, `iconButton`,
+   `isAddingToCart`) — typed, `@deprecated`, and ignored at runtime (matching the old behaviour) — plus a
+   `'a'` string `linkComponent`, an optional `quantity` (the loading skeleton floor omits it), and a widened
+   `productArea`. `ProductCardProduct` is exported as the anchor the app's product factory annotates against.
+
+**Locking both windows:** a component the app depends on should carry a **runtime contract lock** — a
+`*.contract.stories.tsx` with a play function per audited call shape asserting the observable result
+(roles, accessible names, and the exact payload emitted to callbacks) — and a **compile-time type
+contract** — a `*.type-contract.ts` fixture of `… satisfies Props` for each real shape (never imported, so
+`tsc --noEmit` checks it but Vite never bundles it). Reserve `@ts-expect-error` for **permanently** invalid
+shapes; add not-yet-accepted shapes only once the type widens to accept them.
+
+**Templates (app-scenario integration stories).** The contract lock proves *call shapes*; a
+`*.templates.stories.tsx` proves the *screens*. For a component the app leans on heavily, audit every
+place the consumer renders it and reproduce each as one story that drives the **public** component with
+the consumer's real props, product shapes (annotate fixtures against the exported product type), and the
+same kind of grid/list wrapper — so the story looks and behaves like the screen it mirrors and exercises
+the whole family end-to-end (see `ProductCard/ProductCard.templates.stories.tsx`, one story per app
+screen: category/content/restricted grids, cart/checkout/order/return/purchase-list/favourites lines,
+webform, loading). Two rules: (1) hold controlled screens (anything the app keeps in redux / a cart
+machine) in local state via a small wrapper so steppers/toggles are actually live; (2) **leave them
+untagged** so `test:visual` — which pixel-diffs only `visual`-tagged frames against frozen legacy PNGs —
+skips them and no unpaired baseline is created. They still run under `test-storybook` (axe + play), which
+is where the end-to-end verification value is.
+
 ## Accessibility
 
 Generate a11y from scratch (don't copy legacy). `@storybook/addon-a11y` runs in

@@ -14,6 +14,30 @@ import type { ProductVariantListItem } from '../ProductVariantList'
 /** Which layout the dispatcher renders. */
 export type CardDisplayType = 'vertical' | 'horizontal'
 
+/**
+ * A link renderer accepted by the cards: an injected component (e.g. a router `Link`) **or** the
+ * intrinsic `'a'` tag — the two forms real consumers pass. When omitted the cards fall back to a
+ * semantic `<a>`.
+ */
+export type ProductCardLinkComponent = LinkComponentType | 'a'
+
+/**
+ * Product-area key mixed into the quantity field id. The common areas are enumerated for autocomplete,
+ * but any string is accepted (`string & {}`) so consumer-specific areas (e.g. `'content-page'`,
+ * `'purchase-list'`) compile without churn — the value only namespaces the field id, nothing branches
+ * on it.
+ */
+export type ProductCardArea =
+  | 'category'
+  | 'recommended'
+  | 'details'
+  | 'cart'
+  | 'inspiration'
+  | 'content-page'
+  | 'purchase-list'
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  | (string & {})
+
 /** Active-campaign ribbon descriptor (a runtime brand colour + its title). */
 export interface ProductCardCampaign {
   /** Ribbon text. */
@@ -83,8 +107,12 @@ export interface ProductCardProduct {
   salesUnit?: string
   /** Items per sales unit (drives the total-price math). */
   itemNumberPerSalesUnit: number
-  /** Controlled quantity as a string (so the field can be empty). */
-  quantity: string
+  /**
+   * Controlled quantity as a string (so the field can be empty). Optional: the app's loading
+   * "skeleton floor" omits it and the dispatcher resolves a value. The merged product the dispatcher
+   * hands to the cards ({@link ResolvedProductCardProduct}) always carries it. @default '1'
+   */
+  quantity?: string
   /** Pre-formatted total-price string; recomputed by the dispatcher as the quantity changes. */
   totalPrice?: string
   /** Selectable packaging variants; the picker button is disabled with fewer than two. */
@@ -126,6 +154,14 @@ export interface ProductCardProduct {
   /** Currently-selected variant id. */
   selectedVariantId?: string
 }
+
+/**
+ * The product the dispatcher merges internally and hands to the child cards: a {@link ProductCardProduct}
+ * with `quantity` guaranteed resolved to a string (the dispatcher always seeds/clamps it). The cards
+ * read `quantity` directly, so this keeps their logic — including the legacy `quantity <= '0'` check —
+ * free of `undefined` handling even though the public input allows omitting `quantity`.
+ */
+export type ResolvedProductCardProduct = ProductCardProduct & { quantity: string }
 
 /** Optional tooltip strings for the icon actions (consumer-supplied, already localisable). */
 export interface ProductCardTooltips {
@@ -207,8 +243,8 @@ export const defaultProductCardLabels: ProductCardLabels = {
 
 /** Props the dispatcher forwards to every card variant. */
 export interface ProductCardChildProps {
-  /** The merged, stateful product. */
-  product: ProductCardProduct
+  /** The merged, stateful product (quantity always resolved — see {@link ResolvedProductCardProduct}). */
+  product: ResolvedProductCardProduct
   /** Derived image payload (also present on `product.productImage`). */
   productImage: PictureProps
   /** Replace the body with a skeleton + polite status region. */
@@ -225,8 +261,8 @@ export interface ProductCardChildProps {
   addToCart: (product: ProductCardProduct) => void
   /** Visible add-to-cart label — also the control's accessible name (2.5.3). */
   addToCartBtnLabel: string
-  /** Component used to render the product links. Defaults to a semantic `<a>`. */
-  linkComponent?: LinkComponentType
+  /** Component (or the `'a'` tag) used to render the product links. Defaults to a semantic `<a>`. */
+  linkComponent?: ProductCardLinkComponent
   /** Extra classes for the card root. */
   className?: string
   /** Analytics hook fired when the product name/image link is activated. */
@@ -235,8 +271,12 @@ export interface ProductCardChildProps {
   variantsOpen: boolean
   /** Open the variant picker. */
   onVariantsButtonClick: () => void
-  /** Apply a chosen packaging variant. */
-  handlePackageChange: (variant: ProductCardVariant) => void
+  /**
+   * Apply the variant chosen in the picker. The pickers emit the narrow {@link ProductVariantListItem}
+   * shape; the dispatcher resolves it back to the full {@link ProductCardVariant} and rebuilds the
+   * product, so the card just forwards the picker's callback here.
+   */
+  onVariantSelect: (variant: ProductVariantListItem | undefined) => void
   /** Currently-selected variant id. */
   selectedVariantId?: string
   /** Close the variant picker. */
@@ -286,7 +326,7 @@ export interface ProductCardHorizontalExtras {
   /** Debounce (ms) for reporting quantity changes; when set, uses the debounced field. */
   debounceQuantityVal?: number
   /** Product-area key mixed into the quantity field id. */
-  productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration'
+  productArea?: ProductCardArea
   /** Show the packaging line. */
   showPackaging?: boolean
 }
@@ -304,5 +344,5 @@ export interface ProductCardVerticalExtras {
   /** Fires when the add-to-purchase-list icon is pressed (part number + total). */
   onSaveToPurchaseListClick?: (partNo: string, totalPrice: string) => void
   /** Product-area key mixed into the quantity field id. */
-  productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration'
+  productArea?: ProductCardArea
 }

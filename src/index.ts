@@ -694,15 +694,18 @@ export { ProductCard, defaultProductCardLabels } from './components/organisms/Pr
 export type {
   ProductCardProps,
   CardDisplayType,
+  ProductCardArea,
   ProductCardCampaign,
   ProductCardChildProps,
   ProductCardHorizontalExtras,
   ProductCardImagePriority,
   ProductCardLabels,
+  ProductCardLinkComponent,
   ProductCardProduct,
   ProductCardTooltips,
   ProductCardVariant,
   ProductCardVerticalExtras,
+  ResolvedProductCardProduct,
 } from './components/organisms/ProductCard'
 
 export { ProductCardHorizontal } from './components/organisms/ProductCardHorizontal'

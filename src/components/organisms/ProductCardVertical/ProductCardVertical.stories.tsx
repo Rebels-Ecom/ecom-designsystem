@@ -4,7 +4,7 @@ import { ProductCardVertical } from './ProductCardVertical'
 import {
   dummyProductNoVariants,
   dummyWineProduct,
-} from '../ProductCard/dummyProduct'
+} from '../ProductCard/productCardFixtures'
 
 const productImage = { id: 'pcv-image', src: '', sources: [] }
 
@@ -23,7 +23,7 @@ const meta = {
     addToCartBtnLabel: 'Lägg i varukorg',
     variantsOpen: false,
     onVariantsButtonClick: fn(),
-    handlePackageChange: fn(),
+    onVariantSelect: fn(),
     onCloseVariants: fn(),
     selectedVariantId: dummyWineProduct.partNo,
   },
@@ -33,7 +33,7 @@ const meta = {
         'product',
         'productImage',
         'addToCart',
-        'handlePackageChange',
+        'onVariantSelect',
         'onVariantsButtonClick',
         'onCloseVariants',
         'onChangeQuantity',

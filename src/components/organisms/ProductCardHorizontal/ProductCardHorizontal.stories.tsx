@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { ProductCardHorizontal } from './ProductCardHorizontal'
-import { dummyBeerProduct } from '../ProductCard/dummyProduct'
+import { dummyBeerProduct } from '../ProductCard/productCardFixtures'
 
 const productImage = { id: 'pch-image', src: '', sources: [] }
 
@@ -21,7 +21,7 @@ const meta = {
     showPackaging: true,
     variantsOpen: false,
     onVariantsButtonClick: fn(),
-    handlePackageChange: fn(),
+    onVariantSelect: fn(),
     onCloseVariants: fn(),
     onChangeQuantity: fn(),
     onClickRemoveProduct: fn(),
@@ -34,7 +34,7 @@ const meta = {
         'product',
         'productImage',
         'addToCart',
-        'handlePackageChange',
+        'onVariantSelect',
         'onVariantsButtonClick',
         'onCloseVariants',
         'onChangeQuantity',

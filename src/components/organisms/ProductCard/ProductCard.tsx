@@ -1,52 +1,43 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import type { Ref } from 'react'
-import type { LinkComponentType } from '../../../lib/link'
-import type { PictureProps } from '../../atoms/Picture'
 import type { AlertBoxProps } from '../../molecules/AlertBox'
+import type { HeadingOrder } from '../../atoms/Heading'
 import { ProductCardHorizontal } from '../ProductCardHorizontal'
 import { ProductCardRestricted } from '../ProductCardRestricted'
 import { ProductCardVertical } from '../ProductCardVertical'
+import { productPicture } from './productPicture'
+import { useProductCardState } from './useProductCardState'
 import type {
   CardDisplayType,
+  ProductCardArea,
   ProductCardChildProps,
   ProductCardImagePriority,
   ProductCardLabels,
+  ProductCardLinkComponent,
   ProductCardProduct,
   ProductCardTooltips,
-  ProductCardVariant,
 } from './types'
 
-/** Legacy `convertNumToStr`: fixed to two decimals with a comma decimal separator. */
-function convertNumToStr(value: number): string {
-  return value.toFixed(2).toString().replace('.', ',')
-}
-
 /**
- * Legacy `getProductPicture`: builds a `Picture` payload from the raw image URL. The image is
- * decorative (`alt=''`) — the product name carries the accessible identity (legacy hard-coded a
- * "Placholder" alt, a bug).
+ * Relative luminance of a `#rgb` / `#rrggbb` colour (WCAG 1.4.3), or `null` when unparseable. Used only
+ * by the dev-only campaign-contrast warning below.
  */
-function getProductPicture(
-  partNo: string,
-  primaryImageUrl: string,
-  imagePriority?: ProductCardImagePriority,
-): PictureProps {
-  const width = '120'
-  const src = primaryImageUrl ? `${primaryImageUrl}?w=${width}` : primaryImageUrl
-  return {
-    id: `product_${partNo}`,
-    src,
-    alt: '',
-    loading: imagePriority?.loading ?? 'lazy',
-    decoding: 'auto',
-    fetchPriority: imagePriority?.fetchPriority ?? 'low',
-    width,
-    height: '200',
-    sources: [
-      { srcset: src, media: '(max-width: 767px)' },
-      { srcset: src, media: '(min-width: 768px)' },
-    ],
-  }
+function relativeLuminance(hex: string): number | null {
+  const match = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex.trim())
+  if (!match) return null
+  const h =
+    match[1].length === 3
+      ? match[1]
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : match[1]
+  const channel = (value: number) =>
+    value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4)
+  const r = channel(parseInt(h.slice(0, 2), 16) / 255)
+  const g = channel(parseInt(h.slice(2, 4), 16) / 255)
+  const b = channel(parseInt(h.slice(4, 6), 16) / 255)
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
 export interface ProductCardProps {
@@ -122,19 +113,39 @@ export interface ProductCardProps {
   /** Debounce (ms) for reporting quantity changes (horizontal card); when set, uses the debounced field. */
   debounceQuantityVal?: number
   /** Product-area key mixed into the quantity field id. */
-  productArea?: 'category' | 'recommended' | 'details' | 'cart' | 'inspiration'
+  productArea?: ProductCardArea
   /** Analytics hook fired when the product name/image link is activated. */
   onClick?: () => void
-  /** Component used to render the product links. Defaults to a semantic `<a>`. */
-  linkComponent?: LinkComponentType
+  /** Component (or the intrinsic `'a'` tag) used to render the product links. Defaults to a semantic `<a>`. */
+  linkComponent?: ProductCardLinkComponent
   /** Overridable UI strings (English defaults) — see {@link ProductCardLabels}. */
   labels?: Partial<ProductCardLabels>
+  /**
+   * Heading level for the product name, forwarded to the rendered card so the name fits the surrounding
+   * document outline. @default 3
+   */
+  headingLevel?: HeadingOrder
   /** Image URL swapped in when the product image is missing or broken. */
   fallbackImageUrl?: string
   /** Extra classes, merged onto the card via `cn()`. */
   className?: string
   /** Forwarded to the rendered card's root element. */
   ref?: Ref<HTMLElement>
+
+  // --- Accepted-but-ignored (v1.6.6 parity) -------------------------------------------------------
+  // The app passes these; v1.6.6 ignored them at the dispatcher, so V2 accepts them (to keep the app's
+  // TS migration compiling) and likewise ignores them — behaviour is unchanged. They are `@deprecated`
+  // to guide the team to drop them.
+  /** @deprecated Ignored — the remove action is wired via {@link ProductCardProps.onRemoveProduct}. */
+  onClickRemoveProduct?: (id: string) => void
+  /** @deprecated Ignored — variant-in-cart state is not read by the card. */
+  variantsInCart?: unknown
+  /** @deprecated Ignored — borderless quantity styling is not exposed. */
+  disabledNoBorder?: boolean
+  /** @deprecated Ignored — the add-to-cart control style is fixed per layout. */
+  iconButton?: boolean
+  /** @deprecated Ignored — use {@link ProductCardProps.buttonLoading} for the busy state. */
+  isAddingToCart?: boolean
 }
 
 /**
@@ -190,6 +201,7 @@ function ProductCard({
   onVariantChange,
   allowNegative,
   labels,
+  headingLevel,
   fallbackImageUrl,
   ref,
 }: ProductCardProps) {
@@ -197,126 +209,52 @@ function ProductCard({
     throw new Error('cardDisplay must be assigned')
   }
 
-  const {
-    partNo,
-    primaryImageUrl,
-    pricePerUnit,
-    itemNumberPerSalesUnit,
-    quantity,
-    priceStr,
-    activeCampaign,
-    outOfStock,
-  } = product
-
-  function getQuantity(value: string): string {
-    const parsedQuantity = parseInt(value)
-    if (!value || isNaN(parsedQuantity)) return '1'
-    if (parsedQuantity < 0 && !allowNegative) return '0'
-    return value
-  }
-
-  function computeTotalPrice(): string {
-    const safePrice = pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0
-    const chosen = defaultQuantity ?? getQuantity(quantity)
-    const qty = chosen ? parseInt(chosen) : 0
-    return convertNumToStr(safePrice * itemNumberPerSalesUnit * qty)
-  }
-
-  const [variantsListOpen, setVariantsListOpen] = useState(false)
-  const [myProduct, setProduct] = useState<ProductCardProduct>({
-    ...product,
-    productImage: getProductPicture(partNo, primaryImageUrl, imagePriority),
-    quantity: getQuantity(quantity),
-    pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
-    totalPrice: computeTotalPrice(),
-    selectedVariantId: partNo,
-  })
-
+  // Dev-only: warn when a campaign ribbon's brand colour fails AA against the white ribbon text (1.4.3).
+  // Stripped from the production library build (`import.meta.env.DEV` → `false`), so it never runs for
+  // consumers and never changes behaviour.
   useEffect(() => {
-    setProduct((prevState) => ({
-      ...prevState,
-      quantity: getQuantity(quantity),
-      priceStr,
-      pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
-      totalPrice: computeTotalPrice(),
-      activeCampaign,
-      outOfStock,
-    }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quantity, priceStr, pricePerUnit, activeCampaign, outOfStock])
-
-  function handleOnChangeQuantity(productQuantity: number) {
-    if (maxQuantity && productQuantity > maxQuantity) {
-      return
+    if (!import.meta.env.DEV) return
+    const color = product.activeCampaign?.color
+    if (!color) return
+    const luminance = relativeLuminance(color)
+    if (luminance === null) return
+    const contrast = 1.05 / (luminance + 0.05)
+    if (contrast < 4.5) {
+      console.warn(
+        `[ProductCard] campaign ribbon colour "${color}" clears only ${contrast.toFixed(2)}:1 against white text — below the WCAG AA 4.5:1 minimum (1.4.3).`,
+      )
     }
-    const newProduct: ProductCardProduct = {
-      ...myProduct,
-      quantity: productQuantity.toString(),
-      totalPrice: convertNumToStr(
-        (myProduct.pricePerUnit ?? 0) * myProduct.itemNumberPerSalesUnit * productQuantity,
-      ),
-    }
-    if (onChangeQuantity) {
-      onChangeQuantity(newProduct)
-    } else {
-      setProduct(newProduct)
-    }
-  }
+  }, [product.activeCampaign?.color])
 
-  function handleVariantsButtonClick() {
-    setVariantsListOpen(true)
-    onVariantsButtonClick?.()
-  }
-
-  function handleCloseVariants() {
-    setVariantsListOpen(false)
-  }
+  // All price / quantity / variant state math lives in the hook so it has one home and is covered by
+  // the ProductCard contract stories; the dispatcher just wires it to the layout.
+  const {
+    product: myProduct,
+    variantsOpen,
+    handleChangeQuantity,
+    handleVariantsButtonClick,
+    handleCloseVariants,
+    handleVariantSelect,
+  } = useProductCardState({
+    product,
+    imagePriority,
+    defaultQuantity,
+    maxQuantity,
+    allowNegative,
+    onChangeQuantity,
+    onVariantChange,
+    onVariantsButtonClick,
+  })
 
   function handleRemoveProduct(id: string) {
     onRemoveProduct?.(id)
   }
 
-  function handlePackageChange(selectedVariant: ProductCardVariant) {
-    const q =
-      myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
-
-    setProduct((prevState) => {
-      const updatedProduct: ProductCardProduct = {
-        ...prevState,
-        partNo: selectedVariant.variantId,
-        productImage: selectedVariant.image ?? prevState.productImage,
-        packaging: selectedVariant.variantName,
-        price: selectedVariant.price,
-        priceStr: selectedVariant.priceStr,
-        pricePerUnit:
-          selectedVariant.pricePerUnit && isFinite(selectedVariant.pricePerUnit)
-            ? selectedVariant.pricePerUnit
-            : 0,
-        pricePerUnitString: selectedVariant.pricePerUnitString,
-        salesUnit: selectedVariant.salesUnit,
-        itemNumberPerSalesUnit:
-          selectedVariant.itemNumberPerSalesUnit ?? prevState.itemNumberPerSalesUnit,
-        totalPrice: convertNumToStr(
-          (selectedVariant.price ?? 0) * (selectedVariant.itemNumberPerSalesUnit ?? 0) * q,
-        ),
-        quantity: q.toString(),
-        selectedVariantId: selectedVariant.variantId,
-        sellerOnly: selectedVariant.sellerOnly,
-        activeCampaign: selectedVariant.activeCampaign,
-        productUrl: `/Product/${selectedVariant.variantId}`,
-        outOfStock: selectedVariant.outOfStock,
-        isAccessoryPotItem: selectedVariant.isAccessoryPotItem,
-        tags: selectedVariant.tags,
-      }
-      onVariantChange?.(updatedProduct)
-      return updatedProduct
-    })
-    setVariantsListOpen(false)
-  }
-
   const commonProps: ProductCardChildProps = {
     product: myProduct,
-    productImage: myProduct.productImage ?? getProductPicture(partNo, primaryImageUrl, imagePriority),
+    productImage:
+      myProduct.productImage ??
+      productPicture(product.partNo, product.primaryImageUrl, imagePriority),
     loading,
     buttonLoading,
     disabled,
@@ -327,9 +265,9 @@ function ProductCard({
     linkComponent,
     className,
     onClick,
-    variantsOpen: variantsListOpen,
+    variantsOpen,
     onVariantsButtonClick: handleVariantsButtonClick,
-    handlePackageChange,
+    onVariantSelect: handleVariantSelect,
     selectedVariantId: myProduct.selectedVariantId,
     onCloseVariants: handleCloseVariants,
     tooltips,
@@ -346,8 +284,9 @@ function ProductCard({
       <ProductCardHorizontal
         {...commonProps}
         ref={ref}
+        headingLevel={headingLevel}
         isRestrictedUser={isRestrictedUser}
-        onChangeQuantity={handleOnChangeQuantity}
+        onChangeQuantity={handleChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
         onClickRemoveProduct={handleRemoveProduct}
@@ -372,6 +311,7 @@ function ProductCard({
         <ProductCardRestricted
           {...commonProps}
           ref={ref}
+          headingLevel={headingLevel}
           fallbackImageUrl={fallbackImageUrl}
         />
       )
@@ -381,7 +321,8 @@ function ProductCard({
       <ProductCardVertical
         {...commonProps}
         ref={ref}
-        onChangeQuantity={handleOnChangeQuantity}
+        headingLevel={headingLevel}
+        onChangeQuantity={handleChangeQuantity}
         productQuantityDisabled={productQuantityDisabled}
         defaultQuantity={defaultQuantity}
         showAddToPurchaseListIcon={showAddToPurchaseListIcon}

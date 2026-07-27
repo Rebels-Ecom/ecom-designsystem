@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { ProductCard } from './ProductCard'
-import { dummyBeerProduct, dummyProductNoVariants, dummyWineProduct } from './dummyProduct'
+import { dummyBeerProduct, dummyProductNoVariants, dummyWineProduct } from './productCardFixtures'
 
 /**
  * `ProductCard` is the stateful dispatcher for the product-card family: it owns the active product

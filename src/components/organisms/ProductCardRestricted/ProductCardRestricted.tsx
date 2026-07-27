@@ -2,14 +2,14 @@ import type { Ref } from 'react'
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 import { cn } from '../../../lib/cn'
 import { DefaultLink } from '../../../lib/link'
-import { Heading, type HeadingOrder } from '../../atoms/Heading'
-import { Icon } from '../../atoms/Icon'
+import { type HeadingOrder } from '../../atoms/Heading'
 import { Picture } from '../../atoms/Picture'
 import { Placeholder } from '../../atoms/Placeholder'
 import { Button } from '../../molecules/Button'
-import { IconWithTooltip } from '../../molecules/IconWithTooltip'
-import { ProductVariantList } from '../ProductVariantList'
-import { TagsList } from '../../molecules/TagsList'
+import { CardImage } from '../ProductCard/CardImage'
+import { CardMarkers } from '../ProductCard/CardMarkers'
+import { CardName } from '../ProductCard/CardName'
+import { VariantPicker } from '../ProductCard/VariantPicker'
 import {
   defaultProductCardLabels,
   type ProductCardChildProps,
@@ -34,7 +34,8 @@ const cardClasses =
  * Restricted-user vertical product card (organism) — the trimmed vertical card shown to users who may
  * not see pricing or a quantity field: status markers, thumbnail, name, country, a packaging variant
  * picker and an add-to-cart button. Rendered by {@link ProductCard} when `isRestrictedUser` is set on
- * a vertical card.
+ * a vertical card. Composes the shared card shells ({@link CardMarkers}, {@link CardImage},
+ * {@link CardName}, {@link VariantPicker}).
  *
  * Accessibility: an `<article>` named by its product name (1.3.1); the name is a real `<a href>` when
  * `product.productUrl` is set (4.1.2). Seller-only / accessory-pot markers are named `role="img"`
@@ -51,7 +52,7 @@ function ProductCardRestricted({
   addToCartBtnLabel,
   linkComponent,
   variantsOpen,
-  handlePackageChange,
+  onVariantSelect,
   selectedVariantId,
   onVariantsButtonClick,
   className,
@@ -81,28 +82,6 @@ function ProductCardRestricted({
 
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
-  function handleSelectVariant(variantId: string | undefined) {
-    const variant = productVariantList?.find(
-      (item) => item.variantId === variantId,
-    )
-    if (variant) handlePackageChange(variant)
-  }
-
-  if (variantsOpen && selectedVariantId) {
-    return (
-      <ProductVariantList
-        ref={ref as Ref<HTMLDivElement>}
-        className={cn(cardClasses, className)}
-        variants={productVariantList ?? []}
-        selectedVariantId={selectedVariantId}
-        onVariantSelect={(variant) => handleSelectVariant(variant?.variantId)}
-        onClose={onCloseVariants}
-        sellerOnlyTooltipText={tooltips?.sellerOnly}
-        isRestrictedUser
-      />
-    )
-  }
-
   const thumbnail = (
     <Picture
       {...productImage}
@@ -113,49 +92,27 @@ function ProductCardRestricted({
     />
   )
 
-  const nameHeading = (
-    <Heading
-      order={headingLevel}
-      noMargin
-      align='center'
-      className='line-clamp-2 text-h-xs md:text-h-xs'
-    >
-      {productName}
-    </Heading>
-  )
-
   return (
     <article
       ref={ref}
       aria-label={productName}
       aria-busy={loading || undefined}
-      className={cn(cardClasses, className)}
+      className={cn(
+        cardClasses,
+        // Clip the slide-up variant overlay to the card box while it animates in.
+        variantsOpen && 'overflow-hidden',
+        className,
+      )}
     >
-      <div className='flex min-h-6 items-center gap-2'>
-        {sellerOnly &&
-          (tooltips?.sellerOnly ? (
-            <IconWithTooltip content={tooltips.sellerOnly} icon='icon-eye' />
-          ) : (
-            <Icon icon='icon-eye' size='large' label={t.sellerOnly} />
-          ))}
-        {isAccessoryPotItem &&
-          (tooltips?.accessoryPotItem ? (
-            <IconWithTooltip content={tooltips.accessoryPotItem} text='S' />
-          ) : (
-            <span
-              role='img'
-              aria-label={t.accessoryPotItem}
-              className='flex size-5 items-center justify-center rounded-full bg-tag-orange font-secondary text-body-s text-text-default'
-            >
-              S
-            </span>
-          ))}
-        {loading ? (
-          <Placeholder type='tags' noMargin />
-        ) : Array.isArray(tags) && tags.length ? (
-          <TagsList tags={tags} />
-        ) : null}
-      </div>
+      <CardMarkers
+        className='flex min-h-6 items-center gap-2'
+        sellerOnly={sellerOnly}
+        isAccessoryPotItem={isAccessoryPotItem}
+        tags={tags}
+        tooltips={tooltips}
+        labels={t}
+        loading={loading}
+      />
 
       {loading ? (
         <div className='flex h-2/5 items-center justify-center'>
@@ -163,19 +120,13 @@ function ProductCardRestricted({
         </div>
       ) : (
         <div className='relative flex h-2/5 items-center justify-center'>
-          {productUrl ? (
-            <Link
-              href={productUrl}
-              onClick={onClick}
-              aria-hidden
-              tabIndex={-1}
-              className='flex h-full w-full items-center justify-center'
-            >
-              {thumbnail}
-            </Link>
-          ) : (
-            thumbnail
-          )}
+          <CardImage
+            picture={thumbnail}
+            productUrl={productUrl}
+            onClick={onClick}
+            linkComponent={Link}
+            className='flex h-full w-full items-center justify-center'
+          />
         </div>
       )}
 
@@ -187,17 +138,15 @@ function ProductCardRestricted({
         </div>
       ) : (
         <div className='flex flex-col items-center gap-2'>
-          {productUrl ? (
-            <Link
-              href={productUrl}
-              onClick={onClick}
-              className='text-text-default no-underline hover:text-text-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary'
-            >
-              {nameHeading}
-            </Link>
-          ) : (
-            nameHeading
-          )}
+          <CardName
+            productName={productName}
+            productUrl={productUrl}
+            onClick={onClick}
+            linkComponent={Link}
+            headingLevel={headingLevel}
+            align='center'
+            className='line-clamp-2 text-h-xs md:text-h-xs'
+          />
           {country && (
             <p className='m-0 text-body-s text-text-decorative-grey'>{country}</p>
           )}
@@ -233,6 +182,17 @@ function ProductCardRestricted({
           </Button>
         </div>
       )}
+
+      <VariantPicker
+        display='grid'
+        open={variantsOpen}
+        variants={productVariantList ?? []}
+        selectedVariantId={selectedVariantId ?? ''}
+        onVariantSelect={onVariantSelect}
+        onClose={onCloseVariants}
+        sellerOnlyTooltipText={tooltips?.sellerOnly}
+        isRestrictedUser
+      />
     </article>
   )
 }

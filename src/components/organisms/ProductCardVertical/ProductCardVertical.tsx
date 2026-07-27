@@ -1,19 +1,19 @@
-import type { ChangeEvent, CSSProperties, Ref } from 'react'
+import type { ChangeEvent, Ref } from 'react'
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 import { cn } from '../../../lib/cn'
 import { DefaultLink } from '../../../lib/link'
-import { Heading, type HeadingOrder } from '../../atoms/Heading'
-import { Icon } from '../../atoms/Icon'
+import { type HeadingOrder } from '../../atoms/Heading'
 import { Picture } from '../../atoms/Picture'
 import { Placeholder } from '../../atoms/Placeholder'
 import { Button } from '../../molecules/Button'
 import { ButtonWithTooltip } from '../../molecules/ButtonWithTooltip'
-import { ComponentWithTooltip } from '../../atoms/ComponentWithTooltip'
-import { IconButton } from '../../molecules/IconButton'
-import { IconWithTooltip } from '../../molecules/IconWithTooltip'
 import { ProductQuantityInput } from '../../molecules/ProductQuantityInput'
-import { ProductVariantList } from '../ProductVariantList'
-import { TagsList } from '../../molecules/TagsList'
+import { CardActions } from '../ProductCard/CardActions'
+import { CardImage } from '../ProductCard/CardImage'
+import { CardMarkers } from '../ProductCard/CardMarkers'
+import { CardName } from '../ProductCard/CardName'
+import { CardRibbon, type RibbonDescriptor } from '../ProductCard/CardRibbon'
+import { VariantPicker } from '../ProductCard/VariantPicker'
 import {
   defaultProductCardLabels,
   type ProductCardChildProps,
@@ -40,16 +40,17 @@ const cardClasses =
 /**
  * Vertical product card (organism) — a status-marker row, thumbnail, name, pricing, a packaging
  * variant picker, a quantity field and an add-to-cart button. Rendered by {@link ProductCard} for a
- * standard (non-restricted) vertical layout. Composes {@link Picture}, {@link Tag}, {@link Button},
- * {@link IconButton}, {@link ProductQuantityInput} and {@link ProductVariantList}.
+ * standard (non-restricted) vertical layout. Composes the shared card shells ({@link CardMarkers},
+ * {@link CardImage}, {@link CardName}, {@link CardRibbon}, {@link CardActions}, {@link VariantPicker})
+ * plus {@link Button}, {@link ButtonWithTooltip} and {@link ProductQuantityInput}.
  *
  * Accessibility: the card is an `<article>` named by its product name (1.3.1) so assistive tech can
  * navigate card-by-card; the name becomes a real `<a href>` when `product.productUrl` is set (4.1.2,
  * visible focus ring 2.4.7). The seller-only / accessory-pot markers are named `role="img"` graphics —
  * never colour-only (1.4.1). The packaging button is a disclosure that opens a
  * {@link ProductVariantList} (a `<fieldset>` radio group) covering the card; `Escape` / an outside
- * pointer press dismiss it. While `loading`, the body is a decorative skeleton plus a polite
- * `role="status"` region. All built-in copy is localisable via `labels`.
+ * pointer press dismiss it. While `loading`, the body is a decorative skeleton. All built-in copy is
+ * localisable via `labels`.
  */
 function ProductCardVertical({
   product,
@@ -63,7 +64,7 @@ function ProductCardVertical({
   productQuantityDisabled,
   linkComponent,
   variantsOpen,
-  handlePackageChange,
+  onVariantSelect,
   selectedVariantId,
   onVariantsButtonClick,
   className,
@@ -120,25 +121,12 @@ function ProductCardVertical({
     onChangeQuantity?.(nextQuantity)
   }
 
-  function handleSelectVariant(variantId: string | undefined) {
-    const variant = productVariantList?.find(
-      (item) => item.variantId === variantId,
-    )
-    if (variant) handlePackageChange(variant)
-  }
-
   const isFavorite = Boolean(favoriteProductsIds?.includes(partNo))
 
   // Campaign takes precedence over limited/out-of-stock. Campaign ribbons carry a runtime brand colour
   // (consumer ensures ≥4.5:1 against white); limited/out-of-stock use an accessible grey — never the
   // legacy white-on-orange, which fails AA and would trip the axe hard gate.
-  const ribbon: {
-    text: string
-    className: string
-    style?: CSSProperties
-    borderStyle?: CSSProperties
-    borderClass?: string
-  } | null =
+  const ribbon: RibbonDescriptor | null =
     !loading && activeCampaign?.title
       ? {
           text: activeCampaign.title,
@@ -169,20 +157,6 @@ function ProductCardVertical({
 
   // When the picker is open the card is replaced by the variant list (legacy early-return), sized to
   // the same card box so the layout is unchanged.
-  if (variantsOpen && selectedVariantId) {
-    return (
-      <ProductVariantList
-        ref={ref as Ref<HTMLDivElement>}
-        className={cn(cardClasses, className)}
-        variants={productVariantList ?? []}
-        selectedVariantId={selectedVariantId}
-        onVariantSelect={(variant) => handleSelectVariant(variant?.variantId)}
-        onClose={onCloseVariants}
-        sellerOnlyTooltipText={tooltips?.sellerOnly}
-      />
-    )
-  }
-
   const thumbnail = (
     <Picture
       {...productImage}
@@ -191,17 +165,6 @@ function ProductCardVertical({
       classNameImg='mx-auto h-full w-full max-w-30 object-contain py-2'
       fallbackImageUrl={fallbackImageUrl}
     />
-  )
-
-  const nameHeading = (
-    <Heading
-      order={headingLevel}
-      noMargin
-      align='center'
-      className='line-clamp-2 text-h-xs md:text-h-xs'
-    >
-      {productName}
-    </Heading>
   )
 
   return (
@@ -213,66 +176,36 @@ function ProductCardVertical({
       className={cn(
         cardClasses,
         ribbon && cn('overflow-hidden rounded-lg border-2', ribbon.borderClass),
+        // Clip the slide-up variant overlay to the card box while it animates in.
+        variantsOpen && 'overflow-hidden',
         className,
       )}
     >
-      {ribbon && (
-        <span
-          style={ribbon.style}
-          className={cn(
-            'absolute top-0 right-0 z-10 max-w-32 truncate rounded-bl-lg px-2 py-2 text-center font-secondary text-body-s',
-            ribbon.className,
-          )}
-        >
-          {ribbon.text}
-        </span>
-      )}
+      <CardRibbon ribbon={ribbon} layout='vertical' />
 
-      <div className='flex min-h-6 items-center gap-2'>
-        {sellerOnly &&
-          (tooltips?.sellerOnly ? (
-            <IconWithTooltip content={tooltips.sellerOnly} icon='icon-eye' />
-          ) : (
-            <Icon icon='icon-eye' size='large' label={t.sellerOnly} />
-          ))}
-        {isAccessoryPotItem &&
-          (tooltips?.accessoryPotItem ? (
-            <IconWithTooltip content={tooltips.accessoryPotItem} text='S' />
-          ) : (
-            <span
-              role='img'
-              aria-label={t.accessoryPotItem}
-              className='flex size-5 items-center justify-center rounded-full bg-tag-orange font-secondary text-body-s text-text-default'
-            >
-              S
-            </span>
-          ))}
-        {loading ? (
-          <Placeholder type='tags' noMargin />
-        ) : Array.isArray(tags) && tags.length ? (
-          <TagsList tags={activeCampaign ? tags.slice(0, 3) : tags} />
-        ) : null}
-      </div>
+      <CardMarkers
+        className='flex min-h-6 items-center gap-2'
+        sellerOnly={sellerOnly}
+        isAccessoryPotItem={isAccessoryPotItem}
+        tags={activeCampaign ? tags?.slice(0, 3) : tags}
+        tooltips={tooltips}
+        labels={t}
+        loading={loading}
+      />
 
       {loading ? (
-        <div className='flex h-2/5 items-center justify-center'>
+        <div className='flex min-h-0 flex-1 items-center justify-center'>
           <Placeholder type='image' noMargin />
         </div>
       ) : (
-        <div className='relative flex h-2/5 items-center justify-center'>
-          {productUrl ? (
-            <Link
-              href={productUrl}
-              onClick={onClick}
-              aria-hidden
-              tabIndex={-1}
-              className='flex h-full w-full items-center justify-center'
-            >
-              {thumbnail}
-            </Link>
-          ) : (
-            thumbnail
-          )}
+        <div className='relative flex min-h-0 flex-1 items-center justify-center'>
+          <CardImage
+            picture={thumbnail}
+            productUrl={productUrl}
+            onClick={onClick}
+            linkComponent={Link}
+            className='flex h-full w-full items-center justify-center'
+          />
         </div>
       )}
 
@@ -285,17 +218,15 @@ function ProductCardVertical({
         </div>
       ) : (
         <div className='flex flex-col items-center gap-2'>
-          {productUrl ? (
-            <Link
-              href={productUrl}
-              onClick={onClick}
-              className='text-text-default no-underline hover:text-text-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary'
-            >
-              {nameHeading}
-            </Link>
-          ) : (
-            nameHeading
-          )}
+          <CardName
+            productName={productName}
+            productUrl={productUrl}
+            onClick={onClick}
+            linkComponent={Link}
+            headingLevel={headingLevel}
+            align='center'
+            className='line-clamp-2 text-h-xs md:text-h-xs'
+          />
           <p className='m-0 text-body-s text-text-decorative-grey'>{`${partNoLabel ?? ''} ${partNo} ${country ? `- ${country}` : ''}`.trim()}</p>
           {!hidePrice && (
             <p className='m-0 font-secondary text-body-s text-text-decorative-purple'>{`${priceLabel ?? ''}: ${priceStr ?? ''} ${currencyLabel ?? ''}/${unitLabel ? unitLabel.toLowerCase() : ''}`}</p>
@@ -349,54 +280,31 @@ function ProductCardVertical({
           >
             {addToCartBtnLabel}
           </Button>
-          {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-            <ComponentWithTooltip
-              content={tooltips?.addToPurchaseList}
-              element={
-                <IconButton
-                  type='button'
-                  icon='icon-file-plus'
-                  label={tooltips?.addToPurchaseList ?? t.addToPurchaseList}
-                  size='large'
-                  onClick={() =>
-                    onSaveToPurchaseListClick(partNo, totalPrice ?? '')
-                  }
-                  isTransparent
-                  noBorder
-                  noPadding
-                />
-              }
-            />
-          )}
-          {showFavoriteIcon && onFavoriteIconClick && (
-            <ComponentWithTooltip
-              content={
-                isFavorite ? tooltips?.removeFromFavorites : tooltips?.addToFavorites
-              }
-              element={
-                <IconButton
-                  type='button'
-                  icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
-                  label={
-                    isFavorite
-                      ? tooltips?.removeFromFavorites ?? t.removeFromFavorites
-                      : tooltips?.addToFavorites ?? t.addToFavorites
-                  }
-                  size='large'
-                  onClick={() =>
-                    onFavoriteIconClick(partNo, isFavorite, totalPrice ?? '')
-                  }
-                  isTransparent
-                  noBorder
-                  noPadding
-                  busy={isAddingToFavorites}
-                  className={cn(isFavorite && 'text-action-tertiary')}
-                />
-              }
-            />
-          )}
+          <CardActions
+            size='large'
+            partNo={partNo}
+            totalPrice={totalPrice}
+            tooltips={tooltips}
+            labels={t}
+            showAddToPurchaseListIcon={showAddToPurchaseListIcon}
+            onSaveToPurchaseListClick={onSaveToPurchaseListClick}
+            showFavoriteIcon={showFavoriteIcon}
+            onFavoriteIconClick={onFavoriteIconClick}
+            isFavorite={isFavorite}
+            isAddingToFavorites={isAddingToFavorites}
+          />
         </div>
       )}
+
+      <VariantPicker
+        display='grid'
+        open={variantsOpen}
+        variants={productVariantList ?? []}
+        selectedVariantId={selectedVariantId ?? ''}
+        onVariantSelect={onVariantSelect}
+        onClose={onCloseVariants}
+        sellerOnlyTooltipText={tooltips?.sellerOnly}
+      />
     </article>
   )
 }

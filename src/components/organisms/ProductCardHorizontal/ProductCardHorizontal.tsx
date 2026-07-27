@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import type { ChangeEvent, CSSProperties, Ref } from 'react'
+import type { ChangeEvent, Ref } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 import { cn } from '../../../lib/cn'
 import { DefaultLink } from '../../../lib/link'
 import { useBreakpoint } from '../../atoms/Breakpoints'
 import { DebounceInput } from '../../atoms/DebounceInput'
-import { Heading, type HeadingOrder } from '../../atoms/Heading'
-import { Icon } from '../../atoms/Icon'
+import { type HeadingOrder } from '../../atoms/Heading'
 import { Picture } from '../../atoms/Picture'
 import { Placeholder } from '../../atoms/Placeholder'
 import { AlertBox } from '../../molecules/AlertBox'
@@ -15,10 +14,13 @@ import { Button } from '../../molecules/Button'
 import { ButtonWithTooltip } from '../../molecules/ButtonWithTooltip'
 import { ComponentWithTooltip } from '../../atoms/ComponentWithTooltip'
 import { IconButton } from '../../molecules/IconButton'
-import { IconWithTooltip } from '../../molecules/IconWithTooltip'
 import { ProductQuantityInput } from '../../molecules/ProductQuantityInput'
-import { HorizontalVariants } from '../HorizontalVariants'
-import { TagsList } from '../../molecules/TagsList'
+import { CardActions } from '../ProductCard/CardActions'
+import { CardImage } from '../ProductCard/CardImage'
+import { CardMarkers } from '../ProductCard/CardMarkers'
+import { CardName } from '../ProductCard/CardName'
+import { CardRibbon, type RibbonDescriptor } from '../ProductCard/CardRibbon'
+import { VariantPicker } from '../ProductCard/VariantPicker'
 import {
   defaultProductCardLabels,
   type ProductCardChildProps,
@@ -88,7 +90,7 @@ function ProductCardHorizontal({
   variantsOpen,
   onCloseVariants,
   selectedVariantId,
-  handlePackageChange,
+  onVariantSelect,
   showPackaging = false,
   favoriteProductsIds,
   showFavoriteIcon,
@@ -145,13 +147,6 @@ function ProductCardHorizontal({
     onChangeQuantity?.(parseInt(value))
   }
 
-  function handleSelectVariant(variantId: string | undefined) {
-    const variant = productVariantList?.find(
-      (item) => item.variantId === variantId,
-    )
-    if (variant) handlePackageChange(variant)
-  }
-
   // Non-modal alert-box drawer (mobile): dismiss on Escape or an outside pointer press. Wired at the
   // document level, active only while open (mirrors the legacy `useOnClickOutside`).
   useEffect(() => {
@@ -175,7 +170,6 @@ function ProductCardHorizontal({
     }
   }, [alertBoxOpen])
 
-  const hasIconAndTags = Boolean(sellerOnly || isAccessoryPotItem || tags?.length)
   const isFavorite = Boolean(favoriteProductsIds?.includes(partNo))
   const isCampaignCard = Boolean(activeCampaign?.title)
   const isLimitedCard = Boolean(!activeCampaign && isLimitedProduct && limitedLabel)
@@ -184,14 +178,7 @@ function ProductCardHorizontal({
 
   // Campaign ribbons carry a runtime brand colour (consumer ensures ≥4.5:1 against white); limited /
   // out-of-stock use an accessible grey — never the legacy white-on-orange, which fails AA.
-  const ribbon: {
-    text: string
-    className: string
-    style?: CSSProperties
-    borderStyle?: CSSProperties
-    borderClass?: string
-    tooltip?: string
-  } | null =
+  const ribbon: RibbonDescriptor | null =
     !loading && !outOfStock && isCampaignCard && activeCampaign?.title
       ? {
           text: activeCampaign.title,
@@ -245,19 +232,6 @@ function ProductCardHorizontal({
     />
   )
 
-  const nameHeading = (
-    <Heading
-      order={headingLevel}
-      noMargin
-      className={cn(
-        'font-secondary text-h-xs md:text-h-xs',
-        !hasIconAndTags && !hideRemoveButton && !isSpecialCard && 'pr-9 md:pr-0',
-      )}
-    >
-      {productName}
-    </Heading>
-  )
-
   return (
     <article
       ref={ref}
@@ -267,42 +241,27 @@ function ProductCardHorizontal({
       className={cn(
         cardClasses,
         border && !isSpecialCard && 'rounded-lg border border-border-grey',
-        isSpecialCard && !loading && cn('rounded-lg border-2 pt-10', ribbon?.borderClass),
+        // Campaign/limited/out-of-stock: coloured border + ribbon. No extra top padding — the
+        // always-reserved markers row is the ribbon's clearance, so toggling a campaign between
+        // variants doesn't resize the card.
+        isSpecialCard && !loading && cn('rounded-lg border-2', ribbon?.borderClass),
+        // While the variant picker is open, floor the (content-height) row card to the picker's own
+        // intrinsic height (close row + one carousel variant card ≈ 200px) so a genuinely short card
+        // can't clip the carousel. It is deliberately the picker's *minimum*, not larger: every real
+        // horizontal card is already ≥200px (the h-36 image alone forces it), so the floor never grows
+        // them — opening the picker leaves the card height unchanged.
+        variantsOpen && 'min-h-50',
         className,
       )}
     >
-      {ribbon &&
-        (ribbon.tooltip ? (
-          <ComponentWithTooltip
-            content={ribbon.tooltip}
-            wrapperClassName={cn(
-              'absolute top-0 right-0 z-10 rounded-bl-lg font-secondary',
-              hideRemoveButton ? 'pr-4' : 'pr-12',
-            )}
-            element={
-              <span
-                style={ribbon.style}
-                className={cn('block rounded-bl-lg py-2 pl-4', ribbon.className)}
-              >
-                {ribbon.text}
-              </span>
-            }
-          />
-        ) : (
-          <span
-            style={ribbon.style}
-            className={cn(
-              'absolute top-0 right-0 z-10 rounded-bl-lg py-2 pl-4 font-secondary',
-              hideRemoveButton ? 'pr-4' : 'pr-12',
-              ribbon.className,
-            )}
-          >
-            {ribbon.text}
-          </span>
-        ))}
+      <CardRibbon ribbon={ribbon} layout='horizontal' hideRemoveButton={hideRemoveButton} />
 
       {!hideRemoveButton && onClickRemoveProduct && !loading && (
-        <div className='absolute top-5 right-4 z-10'>
+        // On a special card the remove button sits inside the ribbon band, so lift it (`top-2`) to
+        // centre it in the banner instead of the default `top-5`; on a campaign card the band is the
+        // brand colour, so the glyph is recoloured white for contrast (≥4.5:1) — restoring the legacy
+        // `.specialCard .iconLink` / `.campaign .iconLink button` rules dropped in the migration.
+        <div className={cn('absolute right-4 z-10', isSpecialCard ? 'top-2' : 'top-5')}>
           <IconButton
             type='button'
             icon='icon-x-circle'
@@ -312,6 +271,7 @@ function ProductCardHorizontal({
             noBorder
             noPadding
             size='large'
+            className={isCampaignCard ? 'text-white' : undefined}
           />
         </div>
       )}
@@ -330,60 +290,40 @@ function ProductCardHorizontal({
         </>
       ) : (
         <>
-          {productUrl ? (
-            <Link
-              href={productUrl}
+          <CardImage
+            picture={picture}
+            productUrl={productUrl}
+            onClick={onClick}
+            linkComponent={Link}
+            className='flex items-center justify-center self-center'
+            fallbackClassName='flex items-center justify-center self-center'
+          />
+
+          {/* `min-w-0` (not `overflow-hidden`) lets this flex-1 column shrink below its content so the
+              name/tags wrap — same shrink behaviour, but without an `overflow` clip that would crop the
+              `outline-offset` focus ring of the edge-hugging quantity field and cart button (2.4.7 /
+              2.4.11). Nothing here overflows horizontally anyway (TagsList wraps, the name wraps), and
+              the card's own `p-4` gives the rings 12px of clearance from the card edge. */}
+          <div className='flex flex-1 flex-col gap-1 min-w-0'>
+            {/* Always rendered (not gated on `hasIconAndTags`) so the row's height is reserved even
+                for a variant with no tags/markers — switching variants never resizes the card. */}
+            <CardMarkers
+              className='flex min-h-9 items-center gap-2'
+              sellerOnly={sellerOnly}
+              isAccessoryPotItem={isAccessoryPotItem}
+              tags={tags}
+              tooltips={tooltips}
+              labels={t}
+            />
+
+            <CardName
+              productName={productName}
+              productUrl={productUrl}
               onClick={onClick}
-              aria-hidden
-              tabIndex={-1}
-              className='flex items-center justify-center self-center'
-            >
-              {picture}
-            </Link>
-          ) : (
-            <div className='flex items-center justify-center self-center'>
-              {picture}
-            </div>
-          )}
-
-          <div className='flex flex-1 flex-col gap-1 overflow-hidden'>
-            {hasIconAndTags && (
-              <div className='flex min-h-9 items-center gap-2'>
-                {sellerOnly &&
-                  (tooltips?.sellerOnly ? (
-                    <IconWithTooltip content={tooltips.sellerOnly} icon='icon-eye' />
-                  ) : (
-                    <Icon icon='icon-eye' size='large' label={t.sellerOnly} />
-                  ))}
-                {isAccessoryPotItem &&
-                  (tooltips?.accessoryPotItem ? (
-                    <IconWithTooltip content={tooltips.accessoryPotItem} text='S' />
-                  ) : (
-                    <span
-                      role='img'
-                      aria-label={t.accessoryPotItem}
-                      className='flex size-5 items-center justify-center rounded-full bg-tag-orange font-secondary text-body-s text-text-default'
-                    >
-                      S
-                    </span>
-                  ))}
-                {Array.isArray(tags) && tags.length ? (
-                  <TagsList tags={tags} />
-                ) : null}
-              </div>
-            )}
-
-            {productUrl ? (
-              <Link
-                href={productUrl}
-                onClick={onClick}
-                className='text-text-default no-underline hover:text-text-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary'
-              >
-                {nameHeading}
-              </Link>
-            ) : (
-              nameHeading
-            )}
+              linkComponent={Link}
+              headingLevel={headingLevel}
+              className='font-secondary text-h-xs md:text-h-xs'
+            />
 
             <div className='flex flex-col gap-3 self-stretch md:flex-row md:justify-between md:gap-4'>
               <div>
@@ -396,6 +336,9 @@ function ProductCardHorizontal({
                 {(country !== '' || partNo !== '') && !isRestrictedUser && (
                   <p className='m-0 mb-2 cursor-text text-body-s select-text md:mb-4'>{`${partNo ? `${partNoLabel ?? ''} ${partNo}` : ''} ${country ? `- ${country}` : ''}`.trim()}</p>
                 )}
+                {/* Dual quantity field: a truthy `debounceQuantityVal` uses the self-debouncing
+                    field; `0` (the checkout escape hatch) is falsy, so the immediate
+                    `ProductQuantityInput` is used and the app runs its own debounce. */}
                 {!isRestrictedUser &&
                   (debounceQuantityVal ? (
                     <DebounceInput
@@ -453,54 +396,19 @@ function ProductCardHorizontal({
                         }
                       />
                     )}
-                    {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
-                      <ComponentWithTooltip
-                        content={tooltips?.addToPurchaseList}
-                        element={
-                          <IconButton
-                            type='button'
-                            icon='icon-file-plus'
-                            label={tooltips?.addToPurchaseList ?? t.addToPurchaseList}
-                            onClick={() =>
-                              onSaveToPurchaseListClick(partNo, totalPrice ?? '')
-                            }
-                            noBorder
-                            isTransparent
-                            size='medium'
-                            noPadding
-                          />
-                        }
-                      />
-                    )}
-                    {showFavoriteIcon && onFavoriteIconClick && (
-                      <ComponentWithTooltip
-                        content={
-                          isFavorite
-                            ? tooltips?.removeFromFavorites
-                            : tooltips?.addToFavorites
-                        }
-                        element={
-                          <IconButton
-                            type='button'
-                            icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
-                            label={
-                              isFavorite
-                                ? tooltips?.removeFromFavorites ?? t.removeFromFavorites
-                                : tooltips?.addToFavorites ?? t.addToFavorites
-                            }
-                            onClick={() =>
-                              onFavoriteIconClick(partNo, isFavorite, totalPrice ?? '')
-                            }
-                            noBorder
-                            isTransparent
-                            className={cn(isFavorite && 'text-action-tertiary')}
-                            size='medium'
-                            noPadding
-                            busy={isAddingToFavorites}
-                          />
-                        }
-                      />
-                    )}
+                    <CardActions
+                      size='medium'
+                      partNo={partNo}
+                      totalPrice={totalPrice}
+                      tooltips={tooltips}
+                      labels={t}
+                      showAddToPurchaseListIcon={showAddToPurchaseListIcon}
+                      onSaveToPurchaseListClick={onSaveToPurchaseListClick}
+                      showFavoriteIcon={showFavoriteIcon}
+                      onFavoriteIconClick={onFavoriteIconClick}
+                      isFavorite={isFavorite}
+                      isAddingToFavorites={isAddingToFavorites}
+                    />
                     {alertBox &&
                       (isMobile ? (
                         <Button
@@ -529,6 +437,9 @@ function ProductCardHorizontal({
                   </div>
                 )}
 
+                {/* `quantity <= '0'` is a legacy LEXICOGRAPHIC string comparison, kept byte-for-byte
+                    (e.g. '' and '0' disable; '10' does not). Do NOT "fix" it to a numeric compare —
+                    that would change v1.6.6 observable behaviour. */}
                 {!hideCartButton &&
                   (isRestrictedUser ? (
                     <Button
@@ -557,16 +468,15 @@ function ProductCardHorizontal({
         </>
       )}
 
-      {selectedVariantId && (
-        <HorizontalVariants
-          open={variantsOpen}
-          variants={productVariantList ?? []}
-          onVariantSelect={(variant) => handleSelectVariant(variant?.variantId)}
-          onClose={onCloseVariants}
-          selectedVariantId={selectedVariantId}
-          sellerOnlyTooltipText={tooltips?.sellerOnly}
-        />
-      )}
+      <VariantPicker
+        display='row'
+        open={variantsOpen}
+        variants={productVariantList ?? []}
+        onVariantSelect={onVariantSelect}
+        onClose={onCloseVariants}
+        selectedVariantId={selectedVariantId ?? ''}
+        sellerOnlyTooltipText={tooltips?.sellerOnly}
+      />
 
       {alertBox && isMobile && alertBoxOpen && (
         <motion.div
