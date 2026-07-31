@@ -134,6 +134,7 @@ function ProductCardHorizontal({
     isAccessoryPotItem,
     pricePerUnit,
     aLabel,
+    priceLabel,
     productVariantList,
     packaging,
   } = product
@@ -368,6 +369,15 @@ function ProductCardHorizontal({
                       maxQuantity={maxQuantity}
                       hidePrice={hidePrice}
                       allowNegative={allowNegative}
+                      // Forward the card's localised quantity/unit words so the readout isn't stuck in
+                      // English (the documented ProductQuantityInput label gap); currency comes from the
+                      // product. `price`/`times` keep their (language-neutral / defaultable) defaults.
+                      labels={{
+                        quantity: t.quantity,
+                        pieces: t.pieces,
+                        ...(currencyLabel ? { currency: currencyLabel } : {}),
+                        ...(priceLabel ? { price: `${priceLabel}:` } : {}),
+                      }}
                     />
                   ))}
               </div>
