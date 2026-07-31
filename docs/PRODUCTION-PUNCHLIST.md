@@ -70,14 +70,23 @@ Severity: **MED-HIGH** > **MED** > **LOW** > **INFO**.
 ## Packaging & process
 
 - [ ] 🔸 Add **ESLint + a `lint` script** (compounds: consistency across the remaining components).
-- [ ] Add a **consumer README** (also the npm / GH-Packages landing page).
-- [ ] Add a **CHANGELOG + release workflow**; add `prepublishOnly: "pnpm build"` — `dist/` is git-ignored
-      and `files: ["dist"]`, so a bare publish would ship an empty package. Wire a real publish token
-      (`${NODE_AUTH_TOKEN}`, not the literal `{NPM_TOKEN}` placeholder) and confirm the target registry
-      (currently GitHub Packages, not public npm).
+- [x] Add a **consumer README** — `README.md` added (install from GH Packages, peer deps, CSS import,
+      usage, dev + release instructions). Doubles as the GH-Packages landing page.
+- [x] Add a **CHANGELOG + release workflow**; guard the empty-package publish. **Done:**
+      `CHANGELOG.md` (Keep a Changelog + SemVer, seeded `2.0.0`); tag-driven
+      [release.yml](../.github/workflows/release.yml) (build + a11y/interaction gate → `pnpm publish`
+      to GitHub Packages → GitHub Release). The empty-package risk is closed by a **`prepack: "pnpm build"`**
+      script (verified: `pnpm pack` rebuilds `dist/` and the tarball ships JS+CJS+types+CSS+README+CHANGELOG).
+      The `{NPM_TOKEN}` placeholder is gone — auth is injected by `setup-node` (`registry-url` + `scope`)
+      from `secrets.GITHUB_TOKEN` via `NODE_AUTH_TOKEN`; nothing sensitive is committed. Registry confirmed
+      **GitHub Packages** (not public npm). Also added: `engines`, `packageManager`, object-form `repository`,
+      `homepage`/`bugs`/`keywords`, `publishConfig.access: restricted`, `exports["./package.json"]`.
 - [ ] Consider Rollup **`preserveModules`** for finer consumer tree-shaking (single-file bundle today).
-- [ ] Fix the pre-existing [storybook.yml](../.github/workflows/storybook.yml): it uses `npm ci` on a
-      **pnpm** repo and will likely fail when it next runs on a `main` push.
+- [x] Fix the pre-existing [storybook.yml](../.github/workflows/storybook.yml): it used `npm ci` on a
+      **pnpm** repo (would fail on the next `main` push). **Done:** migrated to `pnpm/action-setup` +
+      `setup-node` (pnpm cache) + `pnpm build-storybook`; bumped pinned action versions and added a
+      concurrency guard. (Adding `packageManager` to package.json also required dropping the explicit
+      `version:` input from `pnpm/action-setup` in all workflows — corepack now drives the pnpm version.)
 - [ ] **Restore CI production triggers** before merging to `main`: add back the `main` push trigger +
       `pull_request:` in [ci.yml](../.github/workflows/ci.yml) (exact snippet is in its `on:` TODO comment).
 - [ ] Stand up the **visual-regression V2 baseline** (post-migration): delete `legacy-snapshots/`, retire

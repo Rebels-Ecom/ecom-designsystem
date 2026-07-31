@@ -1,0 +1,92 @@
+name: Release
+
+# Publishes the library to GitHub Packages (npm.pkg.github.com — see publishConfig).
+#
+# HOW TO CUT A RELEASE
+#   1. Bump "version" in package.json (SemVer) and move the CHANGELOG "Unreleased" notes
+#      into a new dated section for that version.
+#   2. Commit, then tag and push:  git tag v2.0.1 && git push origin v2.0.1
+#   3. This workflow verifies the tag matches package.json, runs the full build + a11y/interaction
+#      gate, publishes the tarball, and opens a GitHub Release.
+#
+# The tarball is built by the package's `prepack` script, so `dist/` (git-ignored) is always
+# freshly compiled at publish time and can never ship empty.
+#
+# `workflow_dispatch` is a manual fallback that publishes the version currently in package.json.
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+# Never cancel an in-flight publish.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create the GitHub Release
+  packages: write # publish to GitHub Packages
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the release notes can diff against the previous tag
+
+      # No `version:` input — the pnpm version is read from package.json's `packageManager` field.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      # registry-url + scope makes setup-node write the GitHub Packages auth line (fed by
+      # NODE_AUTH_TOKEN) so nothing sensitive lives in the committed .npmrc.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: '@rebels-ecom'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Guard against a tag that doesn't match the version being published.
+      - name: Verify tag matches package.json version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          echo "package.json: $PKG_VERSION | tag: $TAG_VERSION"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${PKG_VERSION}. Bump the version and re-tag."
+            exit 1
+          fi
+
+      # Fail fast on any TS error before we spend time on the browser test suite.
+      - name: Build
+        run: pnpm build
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      # The same quality gate CI runs: play (interaction) + axe (a11y, error mode).
+      - name: Storybook tests (interaction + a11y)
+        run: pnpm test-storybook
+
+      # `prepack` rebuilds dist so the tarball is always fresh; --no-git-checks because a tag
+      # checkout is a detached HEAD. Auth comes from .npmrc's ${NODE_AUTH_TOKEN} reference.
+      - name: Publish to GitHub Packages
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${GITHUB_REF_NAME}" --verify-tag --generate-notes --title "${GITHUB_REF_NAME}"

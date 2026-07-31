@@ -758,6 +758,82 @@ So the rule is simply **keep the TSDoc good**:
   `url()`s, keeping the CSS lean (~23 kB) and the fonts cacheable. Consumers import
   `@rebels-ecom/ecom-designsystem/styles.css`.
 
+## Publishing & releases
+
+The library publishes to **GitHub Packages** (`npm.pkg.github.com`), **not** the public npm registry —
+verified from the consuming app's lockfile (`Spendrups-FrontendApp` resolves
+`@rebels-ecom/ecom-designsystem` from `https://npm.pkg.github.com/download/…`; both scope names 404 on
+public npm). GitHub Packages is an npm-protocol registry whose access is tied to the org/repo, which is
+what we want for a private, internal design system: no separate npm org, no public exposure, permissions
+inherited from GitHub. `publishConfig` in `package.json` pins the scope→registry mapping so a stray
+publish can't target the wrong place.
+
+- **The empty-package guard.** `dist/` is git-ignored and `package.json` sets `files: ["dist", …]`, so a
+  publish from a clean checkout would otherwise ship an **empty** tarball. A **`prepack: "pnpm build"`**
+  script prevents this: `pnpm publish` / `pnpm pack` run `prepack` first, so `dist/` is always freshly
+  compiled into the archive. Verify anytime with `pnpm pack --pack-destination /tmp` then
+  `tar -tzf /tmp/*.tgz` — the tarball must contain `dist/index.mjs`, `dist/index.cjs`, `dist/index.d.ts`,
+  `dist/ecom-designsystem.css`, plus `README.md` and `CHANGELOG.md`. (pnpm strips dev-only fields such as
+  `prepack` / `packageManager` from the *published* manifest — expected; the guard still runs at pack time.)
+
+### Cutting a release (recommended — automated)
+
+Releases are tag-driven via [`release.yml`](../.github/workflows/release.yml); you never handle a token.
+
+1. Bump `version` in `package.json` (SemVer).
+2. Move the `CHANGELOG.md` **Unreleased** notes into a new dated `[x.y.z]` section.
+3. Commit, then tag and push the tag:
+   ```bash
+   git commit -am "release: vX.Y.Z"
+   git tag vX.Y.Z && git push origin vX.Y.Z
+   ```
+
+The workflow verifies the tag matches `package.json` (a mismatched tag fails fast), runs the full build +
+a11y/interaction gate (`pnpm test-storybook`), `pnpm publish`es to GitHub Packages, then opens a GitHub
+Release with generated notes. Auth is the workflow's own `secrets.GITHUB_TOKEN` (needs `packages: write`,
+already granted) injected by `actions/setup-node` (`registry-url` + `scope`) — no PAT, nothing sensitive
+in the repo. This is the **only** path that runs the test gate before publishing, so a broken build can't
+ship — prefer it.
+
+### Manual publish (fallback / break-glass)
+
+Still possible, with one change from the old `npm run build && npm publish` habit: the committed `.npmrc`
+no longer carries an auth line (see below), so put your token in your **user-level** `~/.npmrc` — once —
+where it can never be committed:
+
+```bash
+echo "//npm.pkg.github.com/:_authToken=<GITHUB_PAT>" >> ~/.npmrc   # PAT needs write:packages
+```
+
+Then, after bumping the version, `pnpm publish` (add `--no-git-checks` if the tree is dirty or `HEAD` is
+detached). Two changes from the old command:
+
+- **Don't pre-build** — `prepack` builds automatically, so a bare `pnpm publish` always ships a fresh
+  `dist/`; `pnpm build &&` is now redundant.
+- **Use `pnpm`, not `npm`** — the repo pins pnpm via `packageManager`; `npm publish` can differ around
+  lifecycle scripts.
+- The manual path **skips the a11y/interaction gate** — run `pnpm test-storybook` yourself first, or just
+  use the automated path.
+
+### Why the repo `.npmrc` has no token line
+
+The committed `.npmrc` is only the scope→registry mapping — deliberately no `_authToken`. This repo's own
+dependencies all live on public npm, so `pnpm install` here never authenticates to GitHub Packages; the
+only operation that needs a token is *publishing*, and CI injects that via `setup-node`. Keeping the token
+out of the tracked file removes a real leak vector (the old `{NPM_TOKEN}` placeholder invited hand-editing
+a real token into a committed file) and stops the `Failed to replace env in config` warning that fired on
+every local install. **Consumers are the opposite case:** an app that *installs* the private package needs
+the auth line in *its* `.npmrc` (see [`README.md`](../README.md) → Installation, and the
+`Spendrups-FrontendApp` `.npmrc`). The token belongs where you **read** private packages, not where the
+library lives.
+
+> **CI note.** The general quality gate (build + a11y/interaction) is wired in
+> [`ci.yml`](../.github/workflows/ci.yml), scoped to `Upgrade/**` during the migration — restore the
+> `main` / `pull_request` triggers before merging, per its `on:` TODO. Adding `packageManager` to
+> `package.json` also means `pnpm/action-setup` must **not** pin a `version:` (corepack drives it) — all
+> three workflows follow this. Visual regression in CI is still pending — see
+> [CI (still to wire up)](#ci-still-to-wire-up).
+
 ## Visual regression
 
 `pnpm test:visual` (Playwright, `tests/visual/`) renders each migrated V2 component in Storybook

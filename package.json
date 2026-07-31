@@ -17,16 +17,20 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./styles.css": "./dist/ecom-designsystem.css"
+    "./styles.css": "./dist/ecom-designsystem.css",
+    "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
     "build": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json && vite build",
     "build-storybook": "storybook build",
+    "prepack": "pnpm build",
     "test:visual": "playwright test",
     "visual:review": "node scripts/visual-review-run.mjs",
     "test-storybook": "vitest run --project=storybook",
@@ -59,8 +63,31 @@
     "vite-plugin-dts": "^4.3.0",
     "vitest": "^4.1.9"
   },
-  "repository": "https://github.com/Rebels-Ecom/ecom-designsystem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rebels-Ecom/ecom-designsystem.git"
+  },
+  "homepage": "https://github.com/Rebels-Ecom/ecom-designsystem#readme",
+  "bugs": {
+    "url": "https://github.com/Rebels-Ecom/ecom-designsystem/issues"
+  },
+  "author": "Rebels-Ecom",
+  "keywords": [
+    "design-system",
+    "react",
+    "react-19",
+    "components",
+    "ui",
+    "tailwindcss",
+    "storybook",
+    "ecommerce"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.29.2",
   "publishConfig": {
+    "access": "restricted",
     "@rebels-ecom:registry": "https://npm.pkg.github.com"
   },
   "dependencies": {

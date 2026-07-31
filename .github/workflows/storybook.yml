@@ -1,29 +1,45 @@
 name: Storybook
+
+# Builds the Storybook docs site and deploys it to GitHub Pages (gh-pages branch) on push to main.
 on:
   push:
     branches:
-      - main # if any push happens on branch `main`, run this workflow. You could also add `paths` to detect changes in specific folder
-permissions:
-  contents: write
+      - main
 
+permissions:
+  contents: write # peaceiris/actions-gh-pages pushes the built site to the gh-pages branch
+
+# A newer push to main supersedes an in-flight docs deploy.
+concurrency:
+  group: storybook-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install and Build
-        run: |
-          npm ci
-          npm run build-storybook
+      # No `version:` input — the pnpm version is read from package.json's `packageManager` field.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook
+        run: pnpm build-storybook
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
           publish_branch: gh-pages
-        
-         
