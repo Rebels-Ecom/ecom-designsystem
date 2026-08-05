@@ -8,7 +8,7 @@ import { Text } from '../../atoms/Text'
 import { Button } from '../../molecules/Button'
 
 const meta = {
-  title: 'Design System/Organisms/Cart',
+  title: 'Design System/Deprecated/Cart',
   component: Cart,
 } satisfies Meta<typeof Cart>
 

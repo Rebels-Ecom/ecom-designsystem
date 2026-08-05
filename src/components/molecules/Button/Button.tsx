@@ -7,6 +7,17 @@ export type ButtonType = 'button' | 'submit'
 export type ButtonSurface = 'primary' | 'secondary' | 'tertiary' | 'x' | 'link'
 export type ButtonSize = 'large' | 'small' | 'x-small' | 'xx-small'
 export type ButtonWeight = 'normal' | 'bold'
+/**
+ * A decorative button icon: a bare {@link IconName}, or the legacy `{ icon }` object shape (v1.6.6
+ * passed `iconLeft={{ icon: 'icon-trash-2' }}`). Both are accepted so the app stays drop-in.
+ */
+export type ButtonIcon = IconName | { icon: IconName }
+
+/** Normalise a {@link ButtonIcon} (bare name or `{ icon }` object) to a plain {@link IconName}. */
+function resolveButtonIcon(icon?: ButtonIcon): IconName | undefined {
+  if (!icon) return undefined
+  return typeof icon === 'object' ? icon.icon : icon
+}
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'color'> {
   /** Visible label — this is the button's accessible name, so it must describe the action. */
@@ -17,10 +28,10 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   surface?: ButtonSurface
   /** Size preset (height + type scale + min-width). @default 'small' */
   size?: ButtonSize
-  /** Decorative icon before the label (rendered `aria-hidden`; the label carries the meaning). */
-  iconLeft?: IconName
-  /** Decorative icon after the label (rendered `aria-hidden`). */
-  iconRight?: IconName
+  /** Decorative icon before the label (rendered `aria-hidden`; the label carries the meaning). Accepts a bare icon name or the legacy `{ icon }` object. */
+  iconLeft?: ButtonIcon
+  /** Decorative icon after the label (rendered `aria-hidden`). Accepts a bare icon name or the legacy `{ icon }` object. */
+  iconRight?: ButtonIcon
   /** Stretch to the full width of the container. @default false */
   fullWidth?: boolean
   /** Fully rounded (pill) corners. @default false */
@@ -90,7 +101,9 @@ function Button({
   ref,
   ...rest
 }: ButtonProps) {
-  const hasIcon = Boolean(iconLeft || iconRight)
+  const leftIcon = resolveButtonIcon(iconLeft)
+  const rightIcon = resolveButtonIcon(iconRight)
+  const hasIcon = Boolean(leftIcon || rightIcon)
   const showLoader = loading && size !== 'xx-small'
 
   return (
@@ -124,9 +137,9 @@ function Button({
         </>
       ) : (
         <>
-          {iconLeft && <Icon icon={iconLeft} />}
+          {leftIcon && <Icon icon={leftIcon} />}
           {children}
-          {iconRight && <Icon icon={iconRight} />}
+          {rightIcon && <Icon icon={rightIcon} />}
         </>
       )}
     </button>

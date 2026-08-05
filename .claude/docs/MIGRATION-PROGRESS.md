@@ -15,8 +15,8 @@
 
 ## Current Batch Status
 
-- **Active Category**: organisms (Tier-6/7 → the `ProductCard` **dependents** landed; **only the ⛔ blocked story-only page templates remain**)
-- **Last Updated**: 2026-07-27
+- **Active Category**: organisms (Tier-6/7 → the `ProductCard` **dependents** landed; **only the 11 ⛔ blocked story-only page templates remain** — 144/155 done)
+- **Last Updated**: 2026-08-05 (drop-in parity hardening: `resolveLink` + legacy prop-shape shims + the ProductCardMiniVertical parity restore — see recent uncommitted work and the entry below)
 - **Current Micro-Batch**: Batch 31 — **the Tier-6/7 `ProductCard` dependents** (complete;
   **ProductCardMini**, **ProductBlock**, **ProductCardList**, **ProductCarousel**, **MiniProductToast**
   `[org]` — the five entries the `ProductCard` cycle unblocked, built top-to-bottom in one micro-batch;
@@ -326,7 +326,9 @@
     standalone specs renderer to reuse — panel `content` is a flexible `ReactNode` (consumer supplies the
     spec `<dl>`), and the "needs: ProductDetails" was build-order only, not a runtime dep. Collapsed frame
     is fully accessible + reproducible → **mapped GATED both viewports**.
-  - **ProductCardMiniVertical (molecule→organism) is a controlled/presentational rewrite.** Dropped the
+  - **⚠ SUPERSEDED (later restored to v1.6.6 parity — see the "ProductCardMiniVertical parity restore"
+    note below).** **ProductCardMiniVertical (molecule→organism) is a controlled/presentational rewrite.**
+    Dropped the
     legacy internal cart-quantity debounce + `variantsInCart` sync (app concerns) — quantity/selection are
     controlled, callbacks bubble up. Icon-only markers are named `role="img"` graphics (seller-only eye,
     accessory "S" as **dark-on-orange**, the IconButton-badge accessible pairing) — never colour-only
@@ -334,6 +336,16 @@
     disclosure toggling a render-while-open `VerticalVariants`. Made the card **layout-agnostic** (`w-full`,
     fills its grid cell) instead of the legacy hard-coded 50%/100% width — column layout is the consumer's
     concern; the Visual story reproduces the legacy 50%-width frame via an inline-styled wrapper.
+  - **ProductCardMiniVertical parity restore (2026-08-03, user review).** The Batch-27/28 controlled
+    rewrite above broke the "logic cannot change / drop-in" rule the rest of the `ProductCard` family
+    upholds: the app drives the mini with `variantsInCart` + a product-shaped `onChangeQuantity`, which the
+    controlled version didn't accept (in-cart quantity would render `0`). Restored the v1.6.6 behaviour —
+    the mini again owns the cart-quantity state machine (seeded/synced from `variantsInCart`, sv-SE
+    `calculateMiniTotalPrice`, 1000 ms debounced report of the merged product, Add bumps quantity for a
+    normal user / `addToCart()` no-arg for a restricted one, variant-change re-derivation), now consuming
+    the shared `ProductCardProduct` shape. `ProductCarousel`'s `toMiniProps` simplified accordingly, and
+    `ProductCardMiniVertical.contract.stories.tsx` locks the restored behaviour so it can't drift again.
+    The a11y shell, layout-agnostic width and grid-safe overlay picker from Batch 28 are kept (visual-only).
   - **ProductCardMiniVertical display fixes (user review).** Two ways the first cut diverged from legacy:
     (1) **the variant picker must be an absolute overlay covering the card, not an in-flow panel.** Legacy
     `vertical-variants` is `position:absolute; inset:0` sliding up over the card; composing the migrated
@@ -1335,8 +1347,13 @@
 ## Summary
 
 - Total Components: 155
-- Completed: 131 / 155
-- Remaining: 24
+- Completed: 144 / 155
+- Remaining: 11 (all ⛔ BLOCKED story-only page templates — see the Build queue)
+
+<!-- Counts are the ground truth from the checkboxes below: 144 `[x]` (101 in the Completed section +
+     43 finished items still checked off in their Build-queue tiers) and 11 `[ ]`. Re-verify with:
+     grep -cE '^\s*-\s*\[x\]' and '^\s*-\s*\[ \]' on this file. -->
+
 
 ## Components Checklist
 
@@ -1356,7 +1373,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 > `ProductSearchResultItem`. Tiering breaks these arbitrarily; when you reach that cluster, scaffold the
 > shells first and wire the cross-references last rather than expecting one clean topological pass.
 
-### Completed (118)
+### Completed (144 total — 101 listed here + 43 checked off in the Build-queue tiers below)
 
 - [x] CampaignBanner (Legacy: legacy/src/design-system/components/atoms/campaign-banner)
 - [x] ComponentWithTooltip (Legacy: legacy/src/design-system/components/atoms/component-with-tooltip)
@@ -1519,7 +1536,7 @@ finished line into _Completed_ by hand (tiers rarely shift).
 #### Tier 4 — unlocked after Tier 3
 
 - [x] ProductCardHorizontal `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-horizontal) — Batch 30; reclassified molecule→organism. Row card composing `Picture`+`TagsList`+`ProductQuantityInput`/`DebounceInput`+`IconButton`+`Button`+`AlertBox`+`HorizontalVariants`. `<article aria-label>`; every icon control (remove/open-variants/purchase-list/favourite/cart) carries an explicit `label` (+ optional tooltip via `ComponentWithTooltip`); the mobile alert-box affordance is a non-modal slide-up panel gated on `useReducedMotion()` with Escape/outside-pointer dismiss (mobile via `useBreakpoint().isMobile`, matching legacy `mediaQueryHelper`); desktop uses `ButtonWithTooltip`. Preserved the legacy `debounceQuantityVal` branch, the `quantity <= '0'` disabled check, and `getQuantityLabel` interpolation. **1 baseline mapped reviewOnly** (`product-card-horizontal`). 3/3 scoped tests.
-- [x] ProductCardMiniVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini-vertical) — Batch 28; reclassified molecule→organism. Controlled/presentational rewrite composing `Picture`+`Tag`+`Button`+`IconButton`+`AddToCartButton`+`VerticalVariants` — dropped the legacy internal cart-quantity debounce + `variantsInCart` sync (app concerns). `<article aria-label={productName}>`; name → accessible dark link (legacy orange fails AA); seller-only/accessory("S", dark-on-orange) markers are named `role="img"` graphics (not colour-only); packaging button is an `aria-expanded` disclosure toggling a render-while-open `VerticalVariants`; skeleton + polite `role="status"` while `loading`. **Layout-agnostic** (`w-full`, fills its grid cell — legacy hard-coded 50%/100%, now the consumer's concern). The **variant picker is an absolute overlay covering the card** (`absolute inset-0 z-20 bg-white`, legacy `position:absolute; inset:0`) — NOT an in-flow panel below the CTA — and the **add-to-cart is full-width** (`w-full max-w-none` over AddToCartButton's default `max-w-45`), both matching legacy (user-review fixes). All built-in strings → overridable `labels` (interpolated `quantitySummary` is a function); children take `addToCartLabels`/`variantsLabels`. **1 baseline mapped reviewOnly** (`product-card-mini-vertical`): measured desktop ~4% / mobile ~6% (accessible-colour fixes + brand secondary font + icomoon→Lucide glyphs + V2 fallback illustration vs legacy grey placeholder + minor CTA-bar vertical drift). 5/5 scoped tests. Interactive stories carry an `inCardCell` decorator (~20rem) so the mini card + overlay review at a realistic grid-cell width.
+- [x] ProductCardMiniVertical `[org]` (Legacy: legacy/src/design-system/components/molecules/product-card-mini-vertical) — Batch 28; reclassified molecule→organism. **[Later restored to v1.6.6 cart behaviour — the "controlled/presentational" description that follows is historical; see the "ProductCardMiniVertical parity restore" note.]** Controlled/presentational rewrite composing `Picture`+`Tag`+`Button`+`IconButton`+`AddToCartButton`+`VerticalVariants` — dropped the legacy internal cart-quantity debounce + `variantsInCart` sync (app concerns). `<article aria-label={productName}>`; name → accessible dark link (legacy orange fails AA); seller-only/accessory("S", dark-on-orange) markers are named `role="img"` graphics (not colour-only); packaging button is an `aria-expanded` disclosure toggling a render-while-open `VerticalVariants`; skeleton + polite `role="status"` while `loading`. **Layout-agnostic** (`w-full`, fills its grid cell — legacy hard-coded 50%/100%, now the consumer's concern). The **variant picker is an absolute overlay covering the card** (`absolute inset-0 z-20 bg-white`, legacy `position:absolute; inset:0`) — NOT an in-flow panel below the CTA — and the **add-to-cart is full-width** (`w-full max-w-none` over AddToCartButton's default `max-w-45`), both matching legacy (user-review fixes). All built-in strings → overridable `labels` (interpolated `quantitySummary` is a function); children take `addToCartLabels`/`variantsLabels`. **1 baseline mapped reviewOnly** (`product-card-mini-vertical`): measured desktop ~4% / mobile ~6% (accessible-colour fixes + brand secondary font + icomoon→Lucide glyphs + V2 fallback illustration vs legacy grey placeholder + minor CTA-bar vertical drift). 5/5 scoped tests. Interactive stories carry an `inCardCell` decorator (~20rem) so the mini card + overlay review at a realistic grid-cell width.
 - [x] RangeInput `[org]` (Legacy: legacy/src/design-system/components/atoms/range-input) — Batch 28; reclassified atom→organism. A **thin wrapper over the migrated `Slider`**: derives `{min, max, step}` from the `steps` array (step = smallest consecutive gap) and **snaps every reported value to the nearest step**, delegating the fields/thumbs/two-way-binding/a11y to `Slider` (so real values — not indices — are announced/typed, replacing the legacy `rc-slider` index domain). Adds the two end format labels; dropped the legacy debounce (3.2.2 context-change-free). Assumes ascending steps. **No baseline** (legacy shipped no story/snapshot) → gallery-only. 5/5 scoped tests.
 - [x] ProductDescription `[org]` (Legacy: legacy/src/design-system/components/organisms/product-description) — Batch 28; accordion composing `Button`. Legacy Framer `AnimatePresence` slide → plain `aria-expanded`/`aria-controls` disclosures over named `role="region"` panels, each `hidden` while collapsed (always in DOM → no dangling `aria-controls`); one open at a time. A button with `onClick` is a plain action (download/play, no `aria-expanded`); a button with `content` and no `onClick` is the disclosure. Open = filled primary surface (not colour-only, backed by `aria-expanded`). Panel `content` is a flexible `ReactNode` (the migrated `ProductDetails` collapsed its `ProductSpecs` into itself → no standalone renderer to reuse; "needs: ProductDetails" was build-order only). No built-in strings (all copy consumer-supplied). **1 baseline mapped GATED both viewports** (`product-description-story`): the collapsed 3-button row is fully accessible + reproducible (only glyph-swap/font deltas). 3/3 scoped tests.
 

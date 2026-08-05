@@ -64,6 +64,37 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * **Legacy drop-in shape (v1.6.6).** The app renders `<Footer {...} />` with `links` (not `linkGroups`),
+ * inner items using `children` (not `label`), a consumer `logo` element, `trackFooterLink`, and NO
+ * `footerTopBarLinks`. Locks that this renders without crashing — the `links`→`linkGroups` rename made
+ * `linkGroups` undefined → `.filter()` threw at render.
+ */
+export const LegacyLinksShape: Story = {
+  render: () => (
+    <Footer
+      links={[
+        { title: 'Kategorier', links: [{ children: 'Öl', href: '/ol' }, { children: 'Vin', href: '/vin' }] },
+        { title: 'Konto', links: [{ children: 'Mitt konto', href: '/konto' }] },
+      ]}
+      logo={<div data-testid="app-logo">APP LOGO</div>}
+      trackFooterLink={() => {}}
+      addressLabel="Besöksadress:"
+      address="Vårby Allé 39"
+      bottomBarText="© 2026 Spendrups"
+    >
+      {socials}
+    </Footer>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Renders (no crash) from the legacy `links`+`children` shape, with no top bar and the app's logo.
+    await expect(canvas.getByRole('link', { name: 'Öl' })).toBeInTheDocument()
+    await expect(canvas.getByRole('link', { name: 'Mitt konto' })).toBeInTheDocument()
+    await expect(canvas.getByTestId('app-logo')).toBeInTheDocument()
+  },
+}
+
 /** Canonical footer with quick-links bar, link columns, address, social links and newsletter. */
 export const Default: Story = {
   args: {

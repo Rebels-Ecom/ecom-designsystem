@@ -3,7 +3,7 @@ import type { ChangeEvent, Ref } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 import { cn } from '../../../lib/cn'
-import { DefaultLink } from '../../../lib/link'
+import { resolveLink } from '../../../lib/link'
 import { useBreakpoint } from '../../atoms/Breakpoints'
 import { DebounceInput } from '../../atoms/DebounceInput'
 import { type HeadingOrder } from '../../atoms/Heading'
@@ -104,7 +104,7 @@ function ProductCardHorizontal({
   ref,
 }: ProductCardHorizontalProps) {
   const t = { ...defaultProductCardLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const { isMobile } = useBreakpoint()
   const reduceMotion = useReducedMotion()
   const alertBoxRef = useRef<HTMLDivElement>(null)
@@ -140,12 +140,12 @@ function ProductCardHorizontal({
   } = product
 
   function handleOnChangeQuantity(event: ChangeEvent<HTMLInputElement>) {
-    const nextQuantity = parseInt(event.target.value) || 0
+    const nextQuantity = parseInt(event.target.value, 10) || 0
     onChangeQuantity?.(nextQuantity)
   }
 
   function handleOnDebounceChangeQuantity(value: string) {
-    onChangeQuantity?.(parseInt(value))
+    onChangeQuantity?.(parseInt(value, 10))
   }
 
   // Non-modal alert-box drawer (mobile): dismiss on Escape or an outside pointer press. Wired at the
@@ -382,7 +382,7 @@ function ProductCardHorizontal({
                   ))}
               </div>
 
-              <div className='flex w-full items-center gap-4 self-end md:w-auto md:justify-between'>
+              <div className='flex w-full items-center justify-end gap-4 self-end md:w-auto md:justify-between'>
                 {(Boolean(productVariantList?.length) ||
                   (showAddToPurchaseListIcon && onSaveToPurchaseListClick) ||
                   (showFavoriteIcon && onFavoriteIconClick)) && (

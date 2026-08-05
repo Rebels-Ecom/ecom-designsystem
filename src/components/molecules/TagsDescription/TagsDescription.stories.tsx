@@ -3,7 +3,7 @@ import { expect, within } from 'storybook/test'
 import { TagsDescription } from './TagsDescription'
 
 const meta = {
-  title: 'Design System/Molecules/TagsDescription',
+  title: 'Design System/Deprecated/TagsDescription',
   component: TagsDescription,
   parameters: { layout: 'padded' },
 } satisfies Meta<typeof TagsDescription>

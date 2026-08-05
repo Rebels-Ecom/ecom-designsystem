@@ -16,6 +16,20 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
+ * **Legacy drop-in shape (v1.6.6).** The app passes `name` (→ accessible name) and toggles `fullWidth`.
+ * Locks that `name` becomes the accessible name and `fullWidth={false}` sizes to content — V2 had
+ * dropped `name` and hard-coded `w-full`.
+ */
+export const LegacyNameAndFullWidth: Story = {
+  args: { children: 'FAQ', href: '/faq', name: 'Vanliga frågor', fullWidth: false },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const link = canvas.getByRole('link', { name: 'Vanliga frågor' })
+    await expect(link).not.toHaveClass('w-full')
+  },
+}
+
+/**
  * Canonical primary link-button. The `play` proves it is a real link (not a button): it exposes the
  * link role, carries its `href`, its visible text is the accessible name, and Tab reaches it (2.1.1).
  */

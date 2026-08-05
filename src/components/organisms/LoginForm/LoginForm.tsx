@@ -1,6 +1,6 @@
 import { useId, type ChangeEvent, type FormEvent, type ReactNode, type Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Heading, type HeadingOrder } from '../../atoms/Heading'
 import { Button } from '../../molecules/Button'
 import { FormGroup } from '../../molecules/FormGroup'
@@ -135,7 +135,7 @@ function LoginForm({
   ref,
 }: LoginFormProps) {
   const t = { ...defaultLoginFormLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const usernameId = useId()
   const passwordId = useId()
 

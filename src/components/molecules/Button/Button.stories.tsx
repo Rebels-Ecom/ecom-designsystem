@@ -24,6 +24,20 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
+ * **Legacy drop-in shape (v1.6.6).** The app passes `iconLeft`/`iconRight` as `{ icon }` objects
+ * (e.g. `iconLeft={{ icon: 'icon-shopping-cart' }}`). Locks that the object form still renders an icon
+ * — the retype to a bare `IconName` string had made `<Icon icon={{…}}/>` render nothing.
+ */
+export const LegacyIconObject: Story = {
+  args: { children: 'Lägg i varukorg', iconLeft: { icon: 'icon-shopping-cart' } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: 'Lägg i varukorg' })
+    await expect(button.querySelector('svg')).toBeInTheDocument()
+  },
+}
+
+/**
  * Canonical primary button. The `play` function drives real keyboard interaction: Tab moves focus
  * to the button, Enter activates it, and the click handler fires — proving native button semantics
  * and keyboard operability (2.1.1).

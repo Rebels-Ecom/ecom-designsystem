@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { mergeRefs } from '../../../lib/mergeRefs'
 import { Icon } from '../../atoms/Icon'
 import type { NavCategory, NavItem } from '../MobileNavigation'
@@ -70,7 +70,7 @@ function DesktopNavigation({
   ref,
 }: DesktopNavigationProps) {
   const t = { ...defaultDesktopNavigationLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const panelBaseId = useId()
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const navRef = useRef<HTMLElement>(null)

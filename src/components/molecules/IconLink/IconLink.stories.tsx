@@ -3,7 +3,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { IconLink } from './IconLink'
 
 const meta = {
-  title: 'Design System/Molecules/IconLink',
+  title: 'Design System/Deprecated/IconLink',
   component: IconLink,
   args: { icon: 'icon-plus', children: 'Show all your added products', href: '/products' },
 } satisfies Meta<typeof IconLink>

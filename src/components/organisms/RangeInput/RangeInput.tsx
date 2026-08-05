@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef } from 'react'
 import type { Ref } from 'react'
 import { cn } from '../../../lib/cn'
 import { Slider, type SliderLabels, type SliderRange } from '../Slider'
@@ -14,6 +15,12 @@ export interface RangeInputProps {
   defaultMaxVal?: number
   /** Reports the selected `{ min, max }` (snapped to `steps`) on change — never changes context (3.2.2). */
   onChange?: (range: SliderRange) => void
+  /**
+   * Debounce (ms) before `onChange` reports upward — the thumbs/fields still update live; only the report
+   * is deferred. `0` reports immediately. Restores the legacy `rc-slider` 1000ms debounce so a consumer
+   * that refetches on `onChange` fires once after the user settles, not per drag tick. @default 0
+   */
+  debounceMs?: number
   /** Suffix appended to the two end labels, e.g. "kr" → "0 kr" … "1000 kr". */
   formatLabel?: string
   /** Render numeric entry fields above the track, wired two-way to the thumbs. @default false */
@@ -49,6 +56,7 @@ function RangeInput({
   defaultMinVal,
   defaultMaxVal,
   onChange,
+  debounceMs = 0,
   formatLabel,
   withFields = false,
   minLabel,
@@ -62,6 +70,26 @@ function RangeInput({
   if (!steps || steps.length === 0) {
     throw new Error('RangeInput requires a non-empty `steps` array')
   }
+
+  // Report immediately, or debounced by `debounceMs` (legacy rc-slider behaviour) — the Slider still
+  // updates its thumbs/fields live; only the upward report is deferred and coalesced.
+  const onChangeRef = useRef(onChange)
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange])
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current) }, [])
+  const report = useCallback(
+    (range: SliderRange) => {
+      if (debounceMs > 0) {
+        if (timerRef.current) clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => onChangeRef.current?.(range), debounceMs)
+      } else {
+        onChangeRef.current?.(range)
+      }
+    },
+    [debounceMs],
+  )
 
   const min = steps[0]
   const max = steps[steps.length - 1]
@@ -91,7 +119,7 @@ function RangeInput({
         maxLabel={maxLabel}
         disabled={disabled}
         labels={labels}
-        onChange={(range) => onChange?.({ min: snap(range.min), max: snap(range.max) })}
+        onChange={(range) => report({ min: snap(range.min), max: snap(range.max) })}
       />
       <div className="mt-1 flex justify-between text-body-s text-text-subdued">
         <span>{`${min}${suffix}`}</span>

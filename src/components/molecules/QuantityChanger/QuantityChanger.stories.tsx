@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test'
 import { QuantityChanger } from './QuantityChanger'
 
 const meta = {
-  title: 'Design System/Molecules/QuantityChanger',
+  title: 'Design System/Deprecated/QuantityChanger',
   component: QuantityChanger,
   args: {
     id: 'quantity',

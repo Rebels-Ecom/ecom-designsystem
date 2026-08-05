@@ -35,7 +35,6 @@ export type ProductCardArea =
   | 'inspiration'
   | 'content-page'
   | 'purchase-list'
-  // eslint-disable-next-line @typescript-eslint/ban-types
   | (string & {})
 
 /** Active-campaign ribbon descriptor (a runtime brand colour + its title). */

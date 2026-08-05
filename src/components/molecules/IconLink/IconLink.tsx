@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Icon, type IconName } from '../../atoms/Icon'
 
 export type IconLinkTarget = '_blank' | '_self' | '_parent' | '_top'
@@ -47,7 +47,7 @@ function IconLink({
   className,
   ref,
 }: IconLinkProps) {
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
 
   return (
     <div className="my-8 flex flex-col items-center justify-center">

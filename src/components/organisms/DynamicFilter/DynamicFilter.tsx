@@ -105,6 +105,12 @@ export interface DynamicFilterProps {
   loading?: boolean
   /** Hide the numeric entry fields on range groups. @default false */
   hideSliderFields?: boolean
+  /**
+   * Debounce (ms) before a range change is reported through `onUpdate` — restores the legacy rc-slider
+   * behaviour so a consumer that refetches on filter change fires once after the user settles, not per
+   * drag tick. @default 1000
+   */
+  rangeDebounceMs?: number
   /** Hide the selected-filter chips shown outside the drawer. @default false */
   hideFilters?: boolean
   /** How many options to show before the "show more" disclosure. @default 6 */
@@ -154,6 +160,7 @@ function DynamicFilter({
   onUpdate,
   loading = false,
   hideSliderFields = false,
+  rangeDebounceMs = 1000,
   hideFilters = false,
   maxOptionsToShow = 6,
   result,
@@ -298,6 +305,7 @@ function DynamicFilter({
             withFields={!hideSliderFields}
             formatLabel={group.formatLabel || 'kr'}
             disabled={loading}
+            debounceMs={rangeDebounceMs}
             onChange={(range) => handleRangeChange(group.id, range)}
           />
         )

@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent, ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Icon } from '../../atoms/Icon'
 import { Button } from '../../molecules/Button'
 
@@ -90,7 +90,7 @@ function NavListItem({
   onNavigate: (href: string) => void
   level: number
 }) {
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const [open, setOpen] = useState(false)
   const regionId = useId()
 

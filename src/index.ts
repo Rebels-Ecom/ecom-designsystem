@@ -189,6 +189,8 @@ export type {
 } from './components/molecules/Form'
 
 export { UiLink } from './components/molecules/UiLink'
+// Legacy casing the app imports (`UILink`) — aliased so its existing imports resolve. Prefer `UiLink`.
+export { UiLink as UILink } from './components/molecules/UiLink'
 export type { UiLinkProps, UiLinkTarget, UiLinkSurface } from './components/molecules/UiLink'
 
 export { InputText } from './components/molecules/InputText'
@@ -238,6 +240,8 @@ export { FormGroup } from './components/molecules/FormGroup'
 export type { FormGroupProps, FormGroupAlign } from './components/molecules/FormGroup'
 
 export { FaqHero, defaultFaqHeroLabels } from './components/molecules/FaqHero'
+// Legacy casing the app imports (`FAQHero`) — aliased so its existing imports resolve. Prefer `FaqHero`.
+export { FaqHero as FAQHero } from './components/molecules/FaqHero'
 export type { FaqHeroProps, FaqHeroLabels } from './components/molecules/FaqHero'
 
 export { LinkListItem, defaultLinkListItemLabels } from './components/molecules/LinkListItem'
@@ -285,7 +289,11 @@ export { Logotype } from './components/molecules/Logotype'
 export type { LogotypeProps, LogotypeVariant } from './components/molecules/Logotype'
 
 export { InlineError } from './components/molecules/InlineError'
+// Legacy export name (v1.6.6 shipped `InlineErrorText`) — aliased so the app's existing named imports
+// remain drop-in. Prefer `InlineError`.
+export { InlineError as InlineErrorText } from './components/molecules/InlineError'
 export type { InlineErrorProps } from './components/molecules/InlineError'
+export type { InlineErrorProps as InlineErrorTextProps } from './components/molecules/InlineError'
 
 export { LoadingBars } from './components/molecules/LoadingBars'
 export type { LoadingBarsProps } from './components/molecules/LoadingBars'
@@ -468,9 +476,13 @@ export type {
 
 /* ── Organisms ────────────────────────────────────────────────────────── */
 export { FaqList } from './components/organisms/FaqList'
+// Legacy casing the app imports (`FAQList`) — aliased so its existing imports resolve. Prefer `FaqList`.
+export { FaqList as FAQList } from './components/organisms/FaqList'
 export type { FaqListProps, FaqItem } from './components/organisms/FaqList'
 
 export { FaqGroup } from './components/organisms/FaqGroup'
+// Legacy casing the app imports (`FAQGroup`) — aliased so its existing imports resolve. Prefer `FaqGroup`.
+export { FaqGroup as FAQGroup } from './components/organisms/FaqGroup'
 export type { FaqGroupProps } from './components/organisms/FaqGroup'
 
 export { InvoiceList, defaultInvoiceListLabels } from './components/organisms/InvoiceList'
@@ -664,9 +676,8 @@ export {
 } from './components/organisms/ProductCardMiniVertical'
 export type {
   ProductCardMiniVerticalProps,
-  ProductCardMiniVerticalProduct,
-  ProductCardMiniVerticalCampaign,
   ProductCardMiniVerticalLabels,
+  ProductCardMiniVariantInCart,
 } from './components/organisms/ProductCardMiniVertical'
 
 export { RangeInput } from './components/organisms/RangeInput'

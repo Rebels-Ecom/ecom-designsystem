@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import type { LinkRenderProps } from '../../../lib/link'
 import { UiLink } from './UiLink'
+
+/** A minimal stand-in for `react-router`'s `Link`: it navigates from `to`, not `href`. */
+const RouterLink = ({ to, children, ...rest }: LinkRenderProps & { to?: string }) => (
+  <a data-to={to} {...rest}>
+    {children}
+  </a>
+)
 
 const meta = {
   title: 'Design System/Molecules/UiLink',
@@ -16,6 +24,26 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+/**
+ * **Legacy drop-in — a `to`-based router link.** The app injects `react-router`'s `Link` unadapted; it
+ * navigates from `to`, not `href`. Locks that the DS passes `to` alongside `href` (via `resolveLink`), so
+ * the router link receives the destination — the reason the app upgrades without writing a link adapter.
+ */
+export const RouterLinkReceivesTo: Story = {
+  args: {
+    children: 'Till artikeln',
+    href: '/SE-sv/artikel',
+    isExternal: false,
+    linkComponent: RouterLink,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const link = canvas.getByRole('link', { name: 'Till artikeln' })
+    // The router link received the destination as `to` (what react-router navigates from).
+    await expect(link).toHaveAttribute('data-to', '/SE-sv/artikel')
+  },
+}
 
 /**
  * Default text link. The `play` function asserts it's exposed as a real link with the right

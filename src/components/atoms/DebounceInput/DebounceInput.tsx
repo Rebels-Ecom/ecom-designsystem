@@ -88,7 +88,7 @@ function DebounceInput({
   }
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    if (maxQuantity && Number(event.target.value) > maxQuantity) {
+    if (maxQuantity !== undefined && Number(event.target.value) > maxQuantity) {
       return
     }
     setValue(event.target.value)

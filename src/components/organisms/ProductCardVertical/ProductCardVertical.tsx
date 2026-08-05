@@ -1,7 +1,7 @@
 import type { ChangeEvent, Ref } from 'react'
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 import { cn } from '../../../lib/cn'
-import { DefaultLink } from '../../../lib/link'
+import { resolveLink } from '../../../lib/link'
 import { type HeadingOrder } from '../../atoms/Heading'
 import { Picture } from '../../atoms/Picture'
 import { Placeholder } from '../../atoms/Placeholder'
@@ -87,7 +87,7 @@ function ProductCardVertical({
   ref,
 }: ProductCardVerticalProps) {
   const t = { ...defaultProductCardLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const {
     activeCampaign,
     partNo,
@@ -117,7 +117,7 @@ function ProductCardVertical({
   const packageBtnDisabled = !productVariantList || productVariantList.length <= 1
 
   function handleOnChangeQuantity(event: ChangeEvent<HTMLInputElement>) {
-    const nextQuantity = parseInt(event.target.value) || 0
+    const nextQuantity = parseInt(event.target.value, 10) || 0
     onChangeQuantity?.(nextQuantity)
   }
 

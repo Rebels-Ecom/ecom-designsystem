@@ -39,9 +39,13 @@ export interface CheckoutPageProps {
   /** Products the "Lägg till produkt" search can find. */
   productCatalog: CartLine[]
   status: 'shopping' | 'submitting' | 'complete'
+  /** Hide all price copy (the app's `cartData.ShowPrices=false` permission). @default false */
+  hidePrices?: boolean
   onChangeQuantity: (partNo: string, quantity: number) => void
   onRemoveLine: (partNo: string) => void
   onToggleFavorite: (partNo: string) => void
+  /** Fires when a stock-shortage line's "change product" action is used. */
+  onReplaceLine: (partNo: string) => void
   onAcceptTerms: (accepted: boolean) => void
   onCustomOrderNoChange: (value: string) => void
   onSelectDeliveryDate: (dateIso: string) => void
@@ -91,9 +95,11 @@ function CheckoutPage({
   recommendations,
   productCatalog,
   status,
+  hidePrices = false,
   onChangeQuantity,
   onRemoveLine,
   onToggleFavorite,
+  onReplaceLine,
   onAcceptTerms,
   onCustomOrderNoChange,
   onSelectDeliveryDate,
@@ -142,22 +148,26 @@ function CheckoutPage({
               <Heading order={3} margin={[0.5, 0]}>
                 Varukorg
               </Heading>
-              <Heading order={3} margin={[0.5, 0]}>
-                {formatKr(totals.total)}
-              </Heading>
+              {!hidePrices && (
+                <Heading order={3} margin={[0.5, 0]}>
+                  {formatKr(totals.total)}
+                </Heading>
+              )}
             </FlexContainer>
 
-            {/* Översikt */}
-            <OrderConfirmationDetails
-              label="Översikt"
-              withBorder
-              padding="sm"
-              detailItems={[
-                { label: 'Pris', value: `${formatPrice(totals.pris)} kr` },
-                { label: 'Pant', value: `${formatPrice(totals.pant)} kr` },
-                { label: 'Moms', value: `${formatPrice(totals.moms)} kr` },
-              ]}
-            />
+            {/* Översikt — suppressed entirely when prices are hidden (ShowPrices=false). */}
+            {!hidePrices && (
+              <OrderConfirmationDetails
+                label="Översikt"
+                withBorder
+                padding="sm"
+                detailItems={[
+                  { label: 'Pris', value: `${formatPrice(totals.pris)} kr` },
+                  { label: 'Pant', value: `${formatPrice(totals.pant)} kr` },
+                  { label: 'Moms', value: `${formatPrice(totals.moms)} kr` },
+                ]}
+              />
+            )}
 
             {/* Terms + place order */}
             <BoxWrapper backgroundColor="light" withStrongBorder noMargin padding={1} hasMaxWidth={false}>
@@ -198,7 +208,8 @@ function CheckoutPage({
                     cardDisplay="horizontal"
                     showPackaging
                     product={toProductCardProduct(line)}
-                    loading={false}
+                    loading={line.loading ?? false}
+                    hidePrice={hidePrices}
                     headingLevel={3}
                     hideCartButton
                     debounceQuantityVal={0}
@@ -212,6 +223,16 @@ function CheckoutPage({
                     addToCartBtnLabel="Lägg i varukorg"
                     onChangeQuantity={(p) => onChangeQuantity(line.partNo, Number(p.quantity))}
                     onRemoveProduct={onRemoveLine}
+                    alertBox={
+                      line.stockShortage !== undefined
+                        ? {
+                            title: `Endast ${line.stockShortage} kvar i lager`,
+                            buttonText: 'Byt produkt',
+                            color: 'warning',
+                            onClick: () => onReplaceLine(line.partNo),
+                          }
+                        : undefined
+                    }
                     linkComponent={linkComponent}
                     fallbackImageUrl={beerGlass}
                     labels={productCardLineLabels}
@@ -310,6 +331,7 @@ function CheckoutPage({
                     showPackaging
                     product={toProductCardProduct(rec)}
                     loading={false}
+                    hidePrice={hidePrices}
                     headingLevel={4}
                     hideRemoveButton
                     showAddToPurchaseListIcon

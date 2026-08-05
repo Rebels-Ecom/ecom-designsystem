@@ -71,7 +71,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-atoms-debounce-input--debounce-input-story',
   },
   {
-    storyId: 'design-system-atoms-inputfile--visual',
+    storyId: 'design-system-deprecated-inputfile--visual',
     legacyBaseline: 'design-system-atoms-inputs-inputfile--input-file-story',
     // The legacy mobile PNG is 420px wide at a 375px viewport: the legacy component hid
     // its file input with `position: absolute`, whose ~240px static-position box overflowed
@@ -92,7 +92,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
     legacyBaseline: 'design-system-atoms-loadingbar--loading-bar-story-beska',
   },
   {
-    storyId: 'design-system-atoms-menubutton--visual',
+    storyId: 'design-system-deprecated-menubutton--visual',
     legacyBaseline: 'design-system-atoms-menubutton--menu-button-story',
   },
   {
@@ -373,7 +373,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
   },
   // InputFile disabled — desktop-only, like the base frame (legacy mobile PNG structurally incomparable).
   {
-    storyId: 'design-system-atoms-inputfile--visual-disabled',
+    storyId: 'design-system-deprecated-inputfile--visual-disabled',
     legacyBaseline: 'design-system-atoms-inputs-inputfile--input-file-story-disabled',
     viewports: ['desktop'],
   },
@@ -690,11 +690,11 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // IconLink: the centred underlined label above a circular icon badge (two frames differ by label).
   // Label is accessible blue vs legacy orange (documented divergence), a small centred glyph under the gate.
   {
-    storyId: 'design-system-molecules-iconlink--visual',
+    storyId: 'design-system-deprecated-iconlink--visual',
     legacyBaseline: 'design-system-atoms-iconlink--icon-link-story-show-all-products',
   },
   {
-    storyId: 'design-system-molecules-iconlink--visual-recommended',
+    storyId: 'design-system-deprecated-iconlink--visual-recommended',
     legacyBaseline: 'design-system-atoms-iconlink--icon-link-story-show-recommended-products',
   },
   // Newsletter: the empty email field joined to the orange "Nyhetsbrev" button, capped at max-w-80
@@ -746,21 +746,21 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // CookieBar: full-width bottom banner (info icon + message/link + accept button), fixed to the
   // viewport. Reclassified atom → molecule; the legacy title kept the hyphenated `cookie-bar` id.
   {
-    storyId: 'design-system-molecules-cookiebar--visual',
+    storyId: 'design-system-deprecated-cookiebar--visual',
     legacyBaseline: 'design-system-atoms-cookie-bar--cookie-bar-story',
   },
   // MultiSelect: the CLOSED filter trigger (name + icon) for each of the three legacy option sets.
   // The open checkbox popup is behaviour-only (covered by play tests).
   {
-    storyId: 'design-system-molecules-multiselect--visual-land',
+    storyId: 'design-system-deprecated-multiselect--visual-land',
     legacyBaseline: 'design-system-atoms-multiselect--multi-select-story-land',
   },
   {
-    storyId: 'design-system-molecules-multiselect--visual-producer',
+    storyId: 'design-system-deprecated-multiselect--visual-producer',
     legacyBaseline: 'design-system-atoms-multiselect--multi-select-story-producer',
   },
   {
-    storyId: 'design-system-molecules-multiselect--visual-packaging',
+    storyId: 'design-system-deprecated-multiselect--visual-packaging',
     legacyBaseline: 'design-system-atoms-multiselect--multi-select-story-packaging',
   },
   // OrderItem: the five captured legacy frames — one inline card (clickable order no.) and four link
@@ -796,7 +796,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // Search: the CLOSED search bar (icon submit button + input, empty query → no dropdown). The
   // results list is behaviour-only. Search-glyph colour diverges white → accessible black-on-orange.
   {
-    storyId: 'design-system-molecules-search--visual',
+    storyId: 'design-system-deprecated-search--visual',
     legacyBaseline: 'design-system-atoms-search--search-story',
   },
   // SelectList: the CLOSED trigger ("Sortera" + chevron-down). The open radio group is behaviour-only.
@@ -959,7 +959,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // 404'd → browser broken-image placeholder) while V2 shows a deterministic local fallback, so the
   // image region diverges — paired so the layout can be compared side-by-side, not gated.
   {
-    storyId: 'design-system-organisms-cartproduct--visual',
+    storyId: 'design-system-deprecated-cartproduct--visual',
     legacyBaseline: 'design-system-molecules-cartproduct--cart-product-story-beer',
     reviewOnly: true,
   },
@@ -1104,7 +1104,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // the CLOSED (empty) state. The Visual story reproduces that closed frame — an empty-vs-empty diff
   // that gates at both viewports (measured, not assumed).
   {
-    storyId: 'design-system-molecules-messagepopup--visual',
+    storyId: 'design-system-deprecated-messagepopup--visual',
     legacyBaseline: 'design-system-atoms-messagepopup--message-popup-story',
   },
   // SortableList: reproduces the "Reklamation" list (three idle sort controls + two interactive rows
@@ -1178,28 +1178,28 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // ~6%) — the standard narrow-canvas vertical-rhythm amplification (cf. AccountBox / BrandDetails /
   // CampaignMessage). The only other divergence is the orange "read more" link → accessible blue+underline.
   {
-    storyId: 'design-system-organisms-createlistform--visual',
+    storyId: 'design-system-deprecated-createlistform--visual',
     legacyBaseline: 'design-system-organisms-createlistform--create-list-form-story',
     viewports: ['desktop'],
   },
   // The `-loading` frame stays GATED on BOTH viewports and passes — the blocking overlay covers the whole
   // form (logo included), so the scrim + spinner is what's diffed and it matches the legacy `fixed` scrim.
   {
-    storyId: 'design-system-organisms-createlistform--visual-loading',
+    storyId: 'design-system-deprecated-createlistform--visual-loading',
     legacyBaseline: 'design-system-organisms-createlistform--create-list-form-story-loading',
   },
   // DeliveryForm: the collapsed summary (bold label + summary box) with the toggle. Viewport-sized
   // frames → gated. Only divergence is the orange "Expandera" toggle → accessible blue+underline
   // (documented AA fix), a tiny top-right element well under the 2% gate.
   {
-    storyId: 'design-system-organisms-deliveryform--visual',
+    storyId: 'design-system-deprecated-deliveryform--visual',
     legacyBaseline: 'design-system-organisms-deliveryform--delivery-form-story',
   },
   // SocialMediaLinks: the same three flush chips (Facebook, Instagram, Linkedin) as the legacy
   // `SocialMediaStory`. Each chip is the already-baselined SocialMediaLink (blue glyph on the light
   // icon chip); the row reproduces the legacy flush layout (no gap), so both viewports are gated.
   {
-    storyId: 'design-system-molecules-socialmedialinks--visual',
+    storyId: 'design-system-deprecated-socialmedialinks--visual',
     legacyBaseline: 'design-system-molecules-socialmedialinks--social-media-story',
   },
   // Slider: the legacy `SliderStory` — a full-width 0–20 dual range with both thumbs at the extremes
@@ -1254,7 +1254,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // from md up, bare glyph on mobile); only the icon glyph swaps icomoon→Lucide User — a ~40px element on
   // a near-empty canvas, far under the 2% gate → GATED both viewports.
   {
-    storyId: 'design-system-organisms-userprofiledropdown--visual',
+    storyId: 'design-system-deprecated-userprofiledropdown--visual',
     legacyBaseline: 'design-system-molecules-userprofiledropdown--user-profile-dropdown-story',
   },
   // The OPEN drawer is the same scene but carries locked intentional divergences that blow the 2% gate:
@@ -1262,7 +1262,7 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // ~half the canvas), plus an a11y-required close (X) button the legacy panel lacked and accessible
   // blue+underline links. Faithful reproduction of the open scene → REVIEW-ONLY (paired for sign-off).
   {
-    storyId: 'design-system-organisms-userprofiledropdown--visual-open',
+    storyId: 'design-system-deprecated-userprofiledropdown--visual-open',
     legacyBaseline: 'design-system-molecules-userprofiledropdown--user-profile-dropdown-story-open',
     reviewOnly: true,
   },
@@ -1398,12 +1398,12 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // than the fixed viewport, so neither the pixel dimensions nor the per-card colours can match. Both
   // Story (representative set) and Loka (nine identical) frames map reviewOnly, both viewports.
   {
-    storyId: 'design-system-organisms-productcardlist--visual',
+    storyId: 'design-system-deprecated-productcardlist--visual',
     legacyBaseline: 'design-system-organisms-productcardlist--product-card-list-story',
     reviewOnly: true,
   },
   {
-    storyId: 'design-system-organisms-productcardlist--visual-loka',
+    storyId: 'design-system-deprecated-productcardlist--visual-loka',
     legacyBaseline: 'design-system-organisms-productcardlist--product-card-list-story-loka',
     reviewOnly: true,
   },

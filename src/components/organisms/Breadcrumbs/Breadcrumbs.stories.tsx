@@ -11,6 +11,27 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
+ * **Legacy drop-in shape (v1.6.6).** The app builds crumbs with `children` (not `label`) and an
+ * `active` flag. Locks that the trail still renders its text — the `children`→`label` rename had left
+ * every crumb blank.
+ */
+export const LegacyChildrenCrumbs: Story = {
+  args: {
+    breadcrumbs: [
+      { children: 'Start', href: '/' },
+      { children: 'Artikel', href: '/artikel' },
+      { children: 'Aktuell sida', active: true },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('link', { name: 'Start' })).toBeInTheDocument()
+    await expect(canvas.getByRole('link', { name: 'Artikel' })).toBeInTheDocument()
+    await expect(canvas.getByText('Aktuell sida')).toBeInTheDocument()
+  },
+}
+
+/**
  * Canonical trail. The play test proves the landmark is named, the intermediate crumbs are links,
  * and the last crumb is the current page (`aria-current="page"`, not a link).
  */

@@ -3,7 +3,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { RichText } from './RichText'
 
 const meta = {
-  title: 'Design System/Molecules/RichText',
+  title: 'Design System/Deprecated/RichText',
   component: RichText,
 } satisfies Meta<typeof RichText>
 

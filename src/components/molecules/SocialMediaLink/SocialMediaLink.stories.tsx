@@ -16,6 +16,20 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * **Legacy drop-in shape (v1.6.6).** The app supplies the accessible name via `title` (not `label`).
+ * Locks that it still names the icon-only link — V2 required `label`, so the app's links lost their name.
+ */
+export const LegacyTitleProp: Story = {
+  render: () => (
+    <SocialMediaLink icon="icon-instagram" title="Instagram" href="https://instagram.com/spendrups" />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('link', { name: 'Instagram' })).toBeInTheDocument()
+  },
+}
+
 /** Canonical: an icon-only link whose accessible name is `label`. */
 export const Default: Story = {
   play: async ({ canvasElement }) => {

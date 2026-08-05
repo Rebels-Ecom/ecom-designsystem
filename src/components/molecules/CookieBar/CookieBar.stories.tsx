@@ -3,7 +3,7 @@ import { expect, fn, userEvent, within } from 'storybook/test'
 import { CookieBar } from './CookieBar'
 
 const meta = {
-  title: 'Design System/Molecules/CookieBar',
+  title: 'Design System/Deprecated/CookieBar',
   component: CookieBar,
   args: {
     buttonLabel: 'Jag förstår',

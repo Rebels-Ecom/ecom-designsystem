@@ -4,7 +4,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { Search, type SearchResult } from './Search'
 
 const meta = {
-  title: 'Design System/Molecules/Search',
+  title: 'Design System/Deprecated/Search',
   component: Search,
 } satisfies Meta<typeof Search>
 

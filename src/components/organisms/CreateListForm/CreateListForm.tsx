@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Heading, type HeadingOrder } from '../../atoms/Heading'
 import { Textarea } from '../../atoms/Textarea'
 import { Button } from '../../molecules/Button'
@@ -96,7 +96,7 @@ function CreateListForm({
   className,
   ref,
 }: CreateListFormProps) {
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
 
   return (
     <form

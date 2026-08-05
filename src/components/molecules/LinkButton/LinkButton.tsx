@@ -1,6 +1,6 @@
 import type { MouseEventHandler, ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 
 export type LinkButtonSurface = 'primary' | 'secondary' | 'tertiary'
 export type LinkButtonSize = 'x-small' | 'small' | 'large'
@@ -40,6 +40,17 @@ export interface LinkButtonProps {
   opacity?: boolean
   /** Overrides the accessible name; omit to use the visible text. */
   ariaLabel?: string
+  /**
+   * @deprecated Legacy alias for {@link ariaLabel} (v1.6.6 mapped `name` → `aria-label`). Accepted so
+   * the app's existing `name` prop stays drop-in; prefer `ariaLabel`.
+   */
+  name?: string
+  /**
+   * Stretch to the full width of the container. Defaults to `true` to preserve the current rendering;
+   * pass `false` to size to content (legacy `fullWidth`).
+   * @default true
+   */
+  fullWidth?: boolean
   onClick?: MouseEventHandler<HTMLAnchorElement>
   /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
@@ -90,11 +101,13 @@ function LinkButton({
   noBorder,
   opacity,
   ariaLabel,
+  name,
+  fullWidth = true,
   onClick,
   className,
   ref,
 }: LinkButtonProps) {
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
 
   return (
     <Link
@@ -105,11 +118,12 @@ function LinkButton({
       rel={isExternal ? 'noopener noreferrer' : undefined}
       title={title}
       onClick={disabled ? undefined : onClick}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? name}
       aria-disabled={disabled || undefined}
       tabIndex={disabled ? -1 : undefined}
       className={cn(
-        'flex w-full cursor-pointer items-center justify-center rounded border border-transparent font-primary no-underline',
+        'flex cursor-pointer items-center justify-center rounded border border-transparent font-primary no-underline',
+        fullWidth && 'w-full',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
         sizeClasses[size],
         surfaceClasses[surface],

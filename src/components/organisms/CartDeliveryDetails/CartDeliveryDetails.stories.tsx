@@ -6,7 +6,7 @@ import { Text } from '../../atoms/Text'
 import { Button } from '../../molecules/Button'
 
 const meta = {
-  title: 'Design System/Organisms/CartDeliveryDetails',
+  title: 'Design System/Deprecated/CartDeliveryDetails',
   component: CartDeliveryDetails,
 } satisfies Meta<typeof CartDeliveryDetails>
 

@@ -3,7 +3,7 @@ import { expect, fn, userEvent, within } from 'storybook/test'
 import { InputFile } from './InputFile'
 
 const meta = {
-  title: 'Design System/Atoms/InputFile',
+  title: 'Design System/Deprecated/InputFile',
   component: InputFile,
 } satisfies Meta<typeof InputFile>
 

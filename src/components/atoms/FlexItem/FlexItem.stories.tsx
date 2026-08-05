@@ -3,7 +3,7 @@ import { expect, within } from 'storybook/test'
 import { FlexItem } from './FlexItem'
 
 const meta = {
-  title: 'Design System/Atoms/FlexItem',
+  title: 'Design System/Deprecated/FlexItem',
   component: FlexItem,
   args: { children: <span>Item</span> },
 } satisfies Meta<typeof FlexItem>

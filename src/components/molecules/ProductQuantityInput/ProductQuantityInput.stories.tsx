@@ -57,6 +57,31 @@ export const Disabled: Story = {
   },
 }
 
+/**
+ * Regression guard for the falsy-zero `maxQuantity` bug: `maxQuantity={0}` must block *every* increase
+ * (e.g. an out-of-stock line), not be treated as "no cap". Typing is rejected and the value stays at 0.
+ */
+export const MaxQuantityZero: Story = {
+  args: { quantity: '0', maxQuantity: 0 },
+  render: (args) => {
+    const [quantity, setQuantity] = useState(args.quantity)
+    return (
+      <ProductQuantityInput
+        {...args}
+        quantity={quantity}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => setQuantity(event.target.value)}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = canvas.getByRole('spinbutton', { name: 'Quantity' })
+    await userEvent.type(input, '5')
+    // With the cap at 0, the change is rejected and the field never leaves 0.
+    await expect(input).toHaveValue(0)
+  },
+}
+
 /** Price hidden — only the unit detail row shows. */
 export const HiddenPrice: Story = {
   args: { hidePrice: true },

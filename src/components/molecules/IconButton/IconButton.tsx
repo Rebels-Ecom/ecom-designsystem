@@ -1,6 +1,6 @@
 import type { AriaAttributes, MouseEventHandler, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Icon, type IconName } from '../../atoms/Icon'
 
 export type IconButtonSize = 'x-small' | 'small' | 'medium' | 'large'
@@ -182,7 +182,7 @@ function IconButton(props: IconButtonProps) {
   )
 
   if (props.type === 'link') {
-    const Link = props.linkComponent ?? DefaultLink
+    const Link = resolveLink(props.linkComponent)
     return (
       <Link
         ref={props.ref}

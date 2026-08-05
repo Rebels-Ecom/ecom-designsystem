@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, Ref } from 'react';
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg';
 import { cn } from '../../../lib/cn';
-import { DefaultLink, type LinkComponentType } from '../../../lib/link';
+import { resolveLink, type LinkComponentType } from '../../../lib/link';
 import { Heading, type HeadingOrder } from '../../atoms/Heading';
 import { Icon } from '../../atoms/Icon';
-import { Picture, type PictureProps } from '../../atoms/Picture';
+import { Picture } from '../../atoms/Picture';
 import { Placeholder } from '../../atoms/Placeholder';
-import { Tag, type TagProps } from '../../atoms/Tag';
+import { Tag } from '../../atoms/Tag';
 import {
   AddToCartButton,
   type AddToCartButtonLabels,
@@ -15,65 +15,68 @@ import {
 import { Button } from '../../molecules/Button';
 import { IconButton } from '../../molecules/IconButton';
 import { ProductVariant } from '../../molecules/ProductVariant';
-import type { ProductVariantListItem } from '../ProductVariantList';
+import { productPicture } from '../ProductCard/productPicture';
+import type {
+  ProductCardArea,
+  ProductCardImagePriority,
+  ProductCardProduct,
+  ProductCardTooltips,
+  ProductCardVariant,
+} from '../ProductCard/types';
 import {
   defaultVerticalVariantsLabels,
   type VerticalVariantsLabels,
 } from '../VerticalVariants';
 
-export interface ProductCardMiniVerticalCampaign {
-  /** Ribbon text. */
-  title: string;
-  /**
-   * Ribbon background colour (a runtime brand colour). Ensure it clears ≥4.5:1 against the white
-   * ribbon text (1.4.3); when omitted the ribbon uses the accessible primary fill.
-   */
-  color?: string;
+/**
+ * Legacy `calculateTotalPrice` (mini card) — `unitPrice × unitNumber × quantity`, clamped
+ * (price ≥ 0, unitNumber ≥ 1, quantity ≥ 0) and formatted with the **sv-SE** locale (comma decimal,
+ * space thousands separator). Kept byte-for-byte from `legacy/src/helpers/format-helper.ts` — the mini
+ * card formats totals differently from the rest of the family (which uses `convertNumToStr`), and that
+ * difference is part of its v1.6.6 behaviour.
+ */
+export function calculateMiniTotalPrice(
+  unitPrice: number | undefined,
+  quantity: number,
+  unitNumber: number | undefined,
+): string {
+  const safeUnitPrice = Number.isFinite(unitPrice) ? Math.max(0, unitPrice as number) : 0;
+  const safeUnitNumber = Number.isFinite(unitNumber) ? Math.max(1, unitNumber as number) : 1;
+  const safeQuantity = Number.isFinite(quantity) ? Math.max(0, quantity) : 0;
+  const rawTotal = safeUnitPrice * safeUnitNumber * safeQuantity;
+  return rawTotal.toLocaleString('sv-SE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 }
 
-export interface ProductCardMiniVerticalProduct {
-  /** Article number of the selected variant — keys the card and the quantity field. */
-  partNo: string;
-  /** Product display name — the card heading (and its accessible name via `aria-labelledby`). */
-  productName: string;
-  /** Product page URL — turns the name and image into links when set. */
-  productUrl?: string;
-  /** Product thumbnail (forwarded to `Picture`); decorative — the name carries identity. */
-  image?: PictureProps;
-  /** Packaging label shown on the variant-picker button (e.g. "33cl Engångsglas"). */
-  packaging?: string;
-  /** Pre-formatted list (per-unit) price string, e.g. "10". */
-  priceStr?: string;
-  /** Label preceding the list price (e.g. "List price"). */
-  priceLabel?: string;
-  /** Currency suffix on the price lines (e.g. "kr"). */
-  currencyLabel?: string;
-  /** Unit suffix on the list-price line (e.g. "st"). */
-  unitLabel?: string;
-  /** Pre-formatted total price string, e.g. "548,26". */
-  totalPrice?: string;
-  /** Sales-unit label on the quantity-summary line (e.g. "Kolli"). */
-  salesUnit?: string;
-  /** Items per sales unit on the quantity-summary line. */
-  itemNumberPerSalesUnit?: number;
-  /** Selectable packaging variants; the picker button is disabled with fewer than two. */
-  variants?: ProductVariantListItem[];
-  /** Decorative status tags (e.g. "Eko", "Nyhet"). */
-  tags?: TagProps[];
-  /** Show the seller-only marker (an eye glyph). @default false */
-  sellerOnly?: boolean;
-  /** Show the accessory-pot marker (an "S" badge). @default false */
-  isAccessoryPotItem?: boolean;
-  /** Active campaign ribbon — takes precedence over `isLimitedProduct`/`outOfStock`. */
-  activeCampaign?: ProductCardMiniVerticalCampaign;
-  /** Mark the product as limited (shows `limitedLabel` in the ribbon). @default false */
-  isLimitedProduct?: boolean;
-  /** Ribbon text for a limited product. */
-  limitedLabel?: string;
-  /** Mark the product out of stock (shows `outOfStockLabel` in the ribbon). @default false */
-  outOfStock?: boolean;
-  /** Ribbon text shown when out of stock. */
-  outOfStockLabel?: string;
+/**
+ * Trailing debounce for a payload-carrying callback — the V2 equivalent of the legacy
+ * `useDebounceWithPayload` (lodash `debounce`, cancel-on-unmount). Keeps a live callback ref so the
+ * latest closure runs, and cancels a pending call on unmount so a late quantity update can't fire after
+ * the card is gone.
+ */
+function useDebouncedCallback<T>(callback: (payload: T) => void, delay: number) {
+  const callbackRef = useRef(callback);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  return useCallback(
+    (payload: T) => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => callbackRef.current(payload), delay);
+    },
+    [delay],
+  );
 }
 
 export interface ProductCardMiniVerticalLabels {
@@ -112,31 +115,46 @@ export const defaultProductCardMiniVerticalLabels: ProductCardMiniVerticalLabels
       `${quantity} x ${salesUnit} (${itemNumberPerSalesUnit} pcs)`,
   };
 
+/** A single `{ variantId, quantity }` entry — the in-cart quantity per packaging variant. */
+export interface ProductCardMiniVariantInCart {
+  variantId: string;
+  quantity: number;
+}
+
 export interface ProductCardMiniVerticalProps {
-  /** The product to render. */
-  product: ProductCardMiniVerticalProduct;
+  /** The product to render (the shared family shape — the mini reads the same fields as `ProductCard`). */
+  product: ProductCardProduct;
+  /**
+   * In-cart quantity per packaging variant. Seeds the stepper for the selected variant and re-syncs it
+   * when the cart changes (legacy `variantsInCart`). @default []
+   */
+  variantsInCart?: ProductCardMiniVariantInCart[];
   /** Visible add-to-cart label — also the button's accessible name (2.5.3), so it is required. */
-  addToCartLabel: string;
+  addToCartBtnLabel: string;
+  /**
+   * Add-to-cart handler. For a **restricted** user it is called with no arguments (login-and-buy);
+   * otherwise the card bumps the quantity to ≥1 and reports the change through `onChangeQuantity`
+   * (matching the legacy mini card — Add does not itself call `addToCart` for a normal user).
+   */
+  addToCart: () => void;
+  /**
+   * Fires (debounced 1000 ms) with the merged product whenever the quantity changes — via the stepper
+   * or the Add button. The app drives the cart from this (its own optimistic update + request).
+   */
+  onChangeQuantity?: (product: ProductCardProduct) => void;
+  /** Fires when a packaging variant is applied, with the newly-merged product. */
+  onVariantChange?: (product: ProductCardProduct) => void;
+  /** Fires when the variant picker is opened (analytics / lazy-load hook). */
+  onVariantsButtonClick?: () => void;
+  /** Fires when the variant picker is closed. */
+  onCloseVariants?: () => void;
   /**
    * Heading level for the product name — set it so the name fits the surrounding document outline,
    * keeping heading levels monotonic. @default 3
    */
   headingLevel?: HeadingOrder;
-  /** Controlled in-cart quantity for the add-to-cart stepper. @default 0 */
-  quantity?: number;
   /** Upper bound for the quantity stepper. */
   maxQuantity?: number;
-  /** Selected variant id (controlled) — drive it from `onVariantSelect`. @default `product.partNo` */
-  selectedVariantId?: string;
-  /** Fires when the add-to-cart button is pressed. */
-  onAddToCart?: () => void;
-  /** Fires when the quantity changes via the stepper. */
-  onChangeQuantity?: (quantity: number) => void;
-  /** Fires when a packaging variant is chosen (the picked variant + the full list). */
-  onVariantSelect?: (
-    variant: ProductVariantListItem | undefined,
-    variants: ProductVariantListItem[],
-  ) => void;
   /** Fires when the product name/image link is activated (analytics hook). */
   onProductClick?: () => void;
   /** Hide the add-to-cart control entirely. @default false */
@@ -152,18 +170,26 @@ export interface ProductCardMiniVerticalProps {
   loading?: boolean;
   /** Disable the add-to-cart control. @default false */
   disabled?: boolean;
+  /** Show the add-to-cart control in a busy state. @default false */
+  buttonLoading?: boolean;
   /** Show the favourite toggle (suppressed for `isRestrictedUser`). @default false */
   showFavoriteIcon?: boolean;
-  /** Whether the product is currently a favourite (drives the icon + label). @default false */
-  isFavorite?: boolean;
+  /** Ids of the user's favourite products — drives the favourite toggle state. */
+  favoriteProductsIds?: string[];
+  /** Fires when the favourite toggle is activated (part number, current state, total). */
+  onFavoriteIconClick?: (partNo: string, isFavorite: boolean, totalPrice: string) => void;
   /** Pulse the favourite icon to signal a pending request. @default false */
   isAddingToFavorites?: boolean;
-  /** Fires when the favourite toggle is activated. */
-  onFavoriteClick?: () => void;
   /** Show the add-to-purchase-list button (suppressed for `isRestrictedUser`). @default false */
   showAddToPurchaseListIcon?: boolean;
-  /** Fires when the add-to-purchase-list button is activated. */
-  onAddToPurchaseList?: () => void;
+  /** Fires when the add-to-purchase-list button is activated (part number + total). */
+  onSaveToPurchaseListClick?: (partNo: string, totalPrice: string) => void;
+  /** Product-area key mixed into the quantity field id. */
+  productArea?: ProductCardArea;
+  /** Native `<img>` priority hints forwarded to the derived `Picture`. */
+  imagePriority?: ProductCardImagePriority;
+  /** Optional tooltip strings for the icon actions and markers. */
+  tooltips?: ProductCardTooltips;
   /**
    * Component used to render the product links. Defaults to a semantic `<a>`; pass a client-side
    * router link (adapted to accept `href`) to keep navigation on the SPA.
@@ -186,49 +212,64 @@ export interface ProductCardMiniVerticalProps {
 const cardClasses =
   'relative flex h-full w-full flex-col overflow-hidden rounded-lg bg-white px-2 pt-4 pb-3 shadow-lg';
 
+/** The merged, stateful product the mini card owns internally (quantity resolved as a number). */
+type MiniCardState = Omit<ProductCardProduct, 'quantity'> & {
+  quantity: number;
+  inputQuantity: number;
+  totalPrice: string;
+  selectedVariantId: string;
+};
+
 /**
  * Compact vertical product card (organism) — a thumbnail, status markers, name, pricing, a packaging
  * variant picker and an add-to-cart stepper. Composes {@link Picture}, {@link Tag}, {@link Button},
  * {@link IconButton}, {@link AddToCartButton} and {@link ProductVariant}.
  *
- * Accessibility: the card is an `<article>` named by its product-name `Heading` via `aria-labelledby`
- * (1.3.1) so assistive tech can navigate card-by-card. The name becomes a real `<a href>` when
- * `product.productUrl` is set (4.1.2, visible focus ring 2.4.7). The seller-only / accessory-pot
- * markers are named `role="img"` graphics — never colour-only (1.4.1). The packaging button is a
- * disclosure trigger exposing `aria-expanded`; it slides up a render-while-open variant panel (a
- * `<fieldset>`/`<legend>` radio group of {@link ProductVariant} tiles) that COVERS the card via
- * `absolute inset-0` — the card's own height is never changed, so it stays grid-safe, and the panel
- * scrolls internally when the variants exceed the card height. `Escape` and an outside pointer press
- * dismiss it. While `loading`, the body is a decorative skeleton plus a
- * polite `role="status"` region that announces progress (4.1.3). All built-in copy is localisable via
- * `labels` (interpolated text is a function, never a baked template); the composed children take
- * `addToCartLabels` / `variantsLabels`.
+ * **Behaviour mirrors the legacy `product-card-mini-vertical` (v1.6.6) exactly.** It owns an internal
+ * cart-quantity state machine: the stepper quantity is seeded from `variantsInCart` for the selected
+ * variant and re-syncs when the cart changes; each quantity change (stepper or the Add button) recomputes
+ * the total via the sv-SE {@link calculateMiniTotalPrice} and reports the merged product to
+ * `onChangeQuantity` **debounced 1000 ms** (the app runs the optimistic cart update). The Add button
+ * bumps the quantity to ≥1 through that same path for a normal user, and calls `addToCart()` with no
+ * arguments for a restricted user. Choosing a packaging variant re-derives the product from that variant
+ * (price, packaging, image, campaign, stock …) and fires `onVariantChange`.
  *
- * Note: unlike the legacy card this component is layout-agnostic (`w-full`, filling its grid/flex
- * cell) rather than hard-coding a 50%/100% width — column layout is the consumer's concern.
+ * Accessibility: the card is an `<article>` named by its product-name `Heading` (1.3.1). The name becomes
+ * a real `<a href>` when `product.productUrl` is set (4.1.2, focus ring 2.4.7). The seller-only /
+ * accessory-pot markers are named `role="img"` graphics — never colour-only (1.4.1). The packaging button
+ * is a disclosure exposing `aria-expanded`; it slides up a render-while-open variant panel that COVERS
+ * the card via `absolute inset-0` (grid-safe — the card's own height never changes), dismissed by
+ * `Escape` or an outside pointer press. While `loading`, the body is a decorative skeleton plus a polite
+ * `role="status"` region (4.1.3). All built-in copy is localisable via `labels`.
  */
 function ProductCardMiniVertical({
   product,
-  addToCartLabel,
-  headingLevel = 3,
-  quantity = 0,
-  maxQuantity,
-  selectedVariantId,
-  onAddToCart,
+  variantsInCart = [],
+  addToCartBtnLabel,
+  addToCart,
   onChangeQuantity,
-  onVariantSelect,
+  onVariantChange,
+  onVariantsButtonClick,
+  onCloseVariants,
+  headingLevel = 3,
+  // `maxQuantity` is intentionally NOT destructured/used — accepted for API parity but never enforced,
+  // matching the legacy mini card (which took the prop as a TODO and never applied it).
   onProductClick,
   hideCartButton = false,
   hidePrice = false,
   isRestrictedUser = false,
   loading = false,
   disabled = false,
+  buttonLoading = false,
   showFavoriteIcon = false,
-  isFavorite = false,
+  favoriteProductsIds,
+  onFavoriteIconClick,
   isAddingToFavorites = false,
-  onFavoriteClick,
   showAddToPurchaseListIcon = false,
-  onAddToPurchaseList,
+  onSaveToPurchaseListClick,
+  productArea,
+  imagePriority,
+  tooltips,
   linkComponent,
   fallbackImageUrl = defaultFallbackImage,
   labels,
@@ -238,23 +279,159 @@ function ProductCardMiniVertical({
   ref,
 }: ProductCardMiniVerticalProps) {
   const t = { ...defaultProductCardMiniVerticalLabels, ...labels };
-  const Link = linkComponent ?? DefaultLink;
+  const Link = resolveLink(linkComponent);
   const [variantsOpen, setVariantsOpen] = useState(false);
   const variantsRef = useRef<HTMLDivElement>(null);
+
+  const initialVariantId =
+    product.productVariantList?.find((v) => v.variantId === product.partNo)?.variantId ??
+    product.partNo;
+
+  const [cardState, setCardState] = useState<MiniCardState>(() => {
+    const initialQuantity =
+      variantsInCart.find((item) => item.variantId === initialVariantId)?.quantity ?? 0;
+    return {
+      ...product,
+      productImage: productPicture(product.partNo, product.primaryImageUrl, imagePriority),
+      quantity: initialQuantity,
+      inputQuantity: initialQuantity,
+      totalPrice: calculateMiniTotalPrice(
+        product.pricePerUnit,
+        initialQuantity === 0 ? 1 : initialQuantity,
+        product.itemNumberPerSalesUnit,
+      ),
+      selectedVariantId: initialVariantId,
+    };
+  });
+
+  // The debounced report always carries the CURRENT merged product (not a stale snapshot), so the app
+  // receives the right variant/price alongside the new quantity.
+  const cardStateRef = useRef(cardState);
+  useEffect(() => {
+    cardStateRef.current = cardState;
+  }, [cardState]);
+
+  const debouncedReport = useDebouncedCallback<{ id: string; q: number }>(({ id, q }) => {
+    onChangeQuantity?.({ ...cardStateRef.current, partNo: id, quantity: String(q) });
+  }, 1000);
+
+  // Re-sync the stepper from the cart when THIS variant's cart quantity actually changes (legacy: guard
+  // on the selected variant's quantity so unrelated cart updates don't reset the field).
+  const prevVariantsInCart = useRef(variantsInCart);
+  useEffect(() => {
+    const current = variantsInCart.find((i) => i.variantId === cardState.selectedVariantId);
+    const previous = prevVariantsInCart.current.find(
+      (i) => i.variantId === cardState.selectedVariantId,
+    );
+    if (current?.quantity !== previous?.quantity) {
+      const newQuantity = current?.quantity ?? 0;
+      setCardState((prev) => {
+        if (prev.quantity === newQuantity) return prev;
+        return {
+          ...prev,
+          quantity: newQuantity,
+          inputQuantity: newQuantity,
+          totalPrice: calculateMiniTotalPrice(
+            prev.pricePerUnit,
+            newQuantity === 0 ? 1 : newQuantity,
+            prev.itemNumberPerSalesUnit,
+          ),
+        };
+      });
+    }
+    prevVariantsInCart.current = variantsInCart;
+  }, [variantsInCart, cardState.selectedVariantId]);
+
+  const handleQuantityChange = useCallback(
+    (newQuantity: number) => {
+      setCardState((prev) => ({
+        ...prev,
+        quantity: newQuantity,
+        inputQuantity: newQuantity,
+        totalPrice: calculateMiniTotalPrice(
+          prev.pricePerUnit,
+          newQuantity === 0 ? 1 : newQuantity,
+          prev.itemNumberPerSalesUnit,
+        ),
+      }));
+      debouncedReport({ id: cardState.partNo, q: newQuantity });
+    },
+    [debouncedReport, cardState.partNo],
+  );
+
+  const handleAddToCart = useCallback(() => {
+    if (isRestrictedUser) {
+      addToCart();
+      return;
+    }
+    const newQuantity = cardState.quantity === 0 ? 1 : cardState.quantity;
+    setCardState((prev) => ({ ...prev, quantity: newQuantity, inputQuantity: newQuantity }));
+    debouncedReport({ id: cardState.partNo, q: newQuantity });
+  }, [isRestrictedUser, addToCart, cardState.quantity, cardState.partNo, debouncedReport]);
+
+  const handleVariantChange = useCallback(
+    (variant: ProductCardVariant) => {
+      const newQuantity =
+        prevVariantsInCart.current.find((i) => i.variantId === variant.variantId)?.quantity ?? 0;
+      setCardState((prev) => {
+        const merged: MiniCardState = {
+          ...prev,
+          partNo: variant.variantId,
+          selectedVariantId: variant.variantId,
+          quantity: newQuantity,
+          inputQuantity: newQuantity,
+          totalPrice: calculateMiniTotalPrice(
+            variant.pricePerUnit,
+            newQuantity === 0 ? 1 : newQuantity,
+            variant.itemNumberPerSalesUnit,
+          ),
+          productImage: variant.image ?? prev.productImage,
+          packaging: variant.variantName,
+          price: variant.price,
+          priceStr: variant.priceStr,
+          pricePerUnit:
+            variant.pricePerUnit && isFinite(variant.pricePerUnit) ? variant.pricePerUnit : 0,
+          pricePerUnitString: variant.pricePerUnitString,
+          salesUnit: variant.salesUnit,
+          itemNumberPerSalesUnit:
+            variant.itemNumberPerSalesUnit ?? prev.itemNumberPerSalesUnit,
+          sellerOnly: variant.sellerOnly,
+          activeCampaign: variant.activeCampaign,
+          productUrl: `/Product/${variant.variantId}`,
+          outOfStock: variant.outOfStock,
+          isAccessoryPotItem: variant.isAccessoryPotItem,
+          tags: variant.tags ?? prev.tags,
+        };
+        // The public callback speaks the shared product shape (string quantity); the internal state
+        // keeps quantity numeric.
+        onVariantChange?.({ ...merged, quantity: String(merged.quantity) });
+        return merged;
+      });
+      setVariantsOpen(false);
+    },
+    [onVariantChange],
+  );
+
+  function handleVariantsButtonClick() {
+    setVariantsOpen(true);
+    onVariantsButtonClick?.();
+  }
+
+  function handleCloseVariants() {
+    setVariantsOpen(false);
+    onCloseVariants?.();
+  }
 
   // The variant panel is non-modal: dismiss it on Escape or an outside pointer press. Wired at the
   // document level so it works wherever focus sits; only active while the panel is open.
   useEffect(() => {
     if (!variantsOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setVariantsOpen(false);
+      if (event.key === 'Escape') handleCloseVariants();
     };
     const onPointerDown = (event: PointerEvent) => {
-      if (
-        variantsRef.current &&
-        !variantsRef.current.contains(event.target as Node)
-      ) {
-        setVariantsOpen(false);
+      if (variantsRef.current && !variantsRef.current.contains(event.target as Node)) {
+        handleCloseVariants();
       }
     };
     document.addEventListener('keydown', onKeyDown);
@@ -263,6 +440,7 @@ function ProductCardMiniVertical({
       document.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variantsOpen]);
 
   if (loading) {
@@ -291,7 +469,7 @@ function ProductCardMiniVertical({
     partNo,
     productName,
     productUrl,
-    image,
+    productImage,
     packaging,
     priceStr,
     priceLabel,
@@ -300,7 +478,7 @@ function ProductCardMiniVertical({
     totalPrice,
     salesUnit,
     itemNumberPerSalesUnit,
-    variants = [],
+    quantity,
     tags = [],
     sellerOnly = false,
     isAccessoryPotItem = false,
@@ -309,45 +487,42 @@ function ProductCardMiniVertical({
     limitedLabel,
     outOfStock = false,
     outOfStockLabel,
-  } = product;
+  } = cardState;
 
+  const variants = product.productVariantList ?? [];
   const showPrice = !hidePrice && !isRestrictedUser;
   const packagingDisabled = variants.length <= 1;
   const vLabels = { ...defaultVerticalVariantsLabels, ...variantsLabels };
+  const isFavorite = Boolean(favoriteProductsIds?.includes(partNo));
 
-  const ribbon: {
-    text: string;
-    className?: string;
-    style?: CSSProperties;
-  } | null = activeCampaign?.title
-    ? {
-        text: activeCampaign.title,
-        className: activeCampaign.color
-          ? 'text-white'
-          : 'bg-action-primary text-text-on-primary',
-        style: activeCampaign.color
-          ? { backgroundColor: activeCampaign.color }
-          : undefined,
-      }
-    : !activeCampaign && isLimitedProduct && limitedLabel
-      ? { text: limitedLabel, className: 'bg-tag-grey text-text-default' }
-      : !activeCampaign && outOfStock && outOfStockLabel
-        ? { text: outOfStockLabel, className: 'bg-tag-grey text-text-default' }
-        : null;
+  // Campaign wins over limited, which wins over out-of-stock (legacy precedence).
+  const ribbon: { text: string; className?: string; style?: CSSProperties } | null =
+    activeCampaign?.title
+      ? {
+          text: activeCampaign.title,
+          className: activeCampaign.color
+            ? 'text-white'
+            : 'bg-action-primary text-text-on-primary',
+          style: activeCampaign.color ? { backgroundColor: activeCampaign.color } : undefined,
+        }
+      : !activeCampaign && isLimitedProduct && limitedLabel
+        ? { text: limitedLabel, className: 'bg-tag-grey text-text-default' }
+        : !activeCampaign && outOfStock && outOfStockLabel
+          ? { text: outOfStockLabel, className: 'bg-tag-grey text-text-default' }
+          : null;
 
   const listPriceLine =
     showPrice && priceStr
       ? `${priceLabel ? `${priceLabel}: ` : ''}${priceStr} ${currencyLabel ?? ''}/${unitLabel?.toLowerCase() ?? ''}`
       : null;
 
-  const pictureAlt = image?.alt ?? '';
   const thumbnail = (
     <div className='flex h-32 items-center justify-center'>
       <Picture
         id={`product-card-mini-${partNo}`}
-        sources={image?.sources ?? []}
-        src={image?.src ?? ''}
-        alt={pictureAlt}
+        sources={productImage?.sources ?? []}
+        src={productImage?.src ?? ''}
+        alt={productImage?.alt ?? ''}
         fallbackImageUrl={fallbackImageUrl}
         classNamePicture='flex h-full w-full items-center justify-center'
         classNameImg='max-h-full max-w-full object-contain'
@@ -397,7 +572,7 @@ function ProductCardMiniVertical({
               S
             </span>
           )}
-          {tags.map((tag) => (
+          {(activeCampaign ? tags.slice(0, 3) : tags).map((tag) => (
             <Tag
               key={tag.text}
               {...tag}
@@ -461,27 +636,29 @@ function ProductCardMiniVertical({
           {!isRestrictedUser &&
             (showAddToPurchaseListIcon || showFavoriteIcon) && (
               <div className='flex items-center gap-2'>
-                {showAddToPurchaseListIcon && onAddToPurchaseList && (
+                {showAddToPurchaseListIcon && onSaveToPurchaseListClick && (
                   <IconButton
                     type='button'
                     icon='icon-file-plus'
-                    label={t.addToPurchaseList}
+                    label={tooltips?.addToPurchaseList ?? t.addToPurchaseList}
                     size='large'
-                    onClick={onAddToPurchaseList}
+                    onClick={() => onSaveToPurchaseListClick(partNo, totalPrice)}
                     isTransparent
                     noBorder
                     noPadding
                   />
                 )}
-                {showFavoriteIcon && onFavoriteClick && (
+                {showFavoriteIcon && onFavoriteIconClick && (
                   <IconButton
                     type='button'
                     icon={isFavorite ? 'icon-heart1' : 'icon-heart-o'}
                     label={
-                      isFavorite ? t.removeFromFavorites : t.addToFavorites
+                      isFavorite
+                        ? tooltips?.removeFromFavorites ?? t.removeFromFavorites
+                        : tooltips?.addToFavorites ?? t.addToFavorites
                     }
                     size='large'
-                    onClick={onFavoriteClick}
+                    onClick={() => onFavoriteIconClick(partNo, isFavorite, totalPrice)}
                     busy={isAddingToFavorites}
                     isTransparent
                     noBorder
@@ -503,7 +680,7 @@ function ProductCardMiniVertical({
         iconRight={packagingDisabled ? undefined : 'icon-layers'}
         disabled={packagingDisabled}
         aria-expanded={variantsOpen}
-        onClick={() => setVariantsOpen(true)}
+        onClick={handleVariantsButtonClick}
         className='mt-2 h-8 px-3 text-body-xs'
       >
         {packaging || t.selectPackaging}
@@ -511,13 +688,14 @@ function ProductCardMiniVertical({
 
       {!hideCartButton && (
         <AddToCartButton
-          id={partNo}
-          buttonLabel={addToCartLabel}
-          quantity={quantity}
-          maxQuantity={maxQuantity}
-          onAdd={() => onAddToCart?.()}
-          onChange={(value) => onChangeQuantity?.(value)}
-          disabled={disabled}
+          id={`${partNo}-${productArea ?? 'category'}`}
+          buttonLabel={addToCartBtnLabel}
+          quantity={cardState.inputQuantity}
+          // `maxQuantity` is accepted for API parity but NOT enforced — the legacy mini card took the prop
+          // (a TODO) and never forwarded it to the stepper, so v1.6.6 imposed no upper bound here.
+          onAdd={handleAddToCart}
+          onChange={handleQuantityChange}
+          disabled={buttonLoading || loading || disabled}
           labels={addToCartLabels}
           className='w-full max-w-none'
         />
@@ -538,15 +716,12 @@ function ProductCardMiniVertical({
               icon='icon-x'
               label={vLabels.close}
               size='large'
-              onClick={() => setVariantsOpen(false)}
+              onClick={handleCloseVariants}
               isTransparent
               noBorder
               noPadding
             />
           </div>
-          {/* Flex-col scroll container with a definite height (`flex-1`), so each variant tile can be
-              sized as a fraction of the visible area. Each is `h-2/5` (≈40%, legacy's `fixedHeight`),
-              so ~2.5 variants show and the partial one makes it obvious the list scrolls for more. */}
           <fieldset className='m-0 flex min-h-0 flex-1 list-none flex-col gap-2 overflow-y-auto border-0 p-0 px-2 pb-2'>
             <legend className='sr-only'>{vLabels.legend}</legend>
             {variants.map((variant) => (
@@ -558,16 +733,12 @@ function ProductCardMiniVertical({
                   {...variant}
                   image={{
                     ...variant.image,
-                    fallbackImageUrl:
-                      variant.image?.fallbackImageUrl ?? fallbackImageUrl,
+                    fallbackImageUrl: variant.image?.fallbackImageUrl ?? fallbackImageUrl,
                   }}
-                  checked={variant.variantId === (selectedVariantId ?? partNo)}
+                  checked={variant.variantId === cardState.selectedVariantId}
                   onSelect={(variantId) => {
-                    onVariantSelect?.(
-                      variants.find((item) => item.variantId === variantId),
-                      variants,
-                    );
-                    setVariantsOpen(false);
+                    const chosen = variants.find((item) => item.variantId === variantId);
+                    if (chosen) handleVariantChange(chosen);
                   }}
                   isRestrictedUser={isRestrictedUser}
                   partNoLabel={vLabels.partNo}

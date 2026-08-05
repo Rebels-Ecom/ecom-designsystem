@@ -10,6 +10,19 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * **Legacy drop-in shape (v1.6.6).** The app supplies the field `name` via `other={{ name }}`. Locks
+ * that it reaches the `<textarea>` — V2 had no `other`, dropping the submitted field name.
+ */
+export const LegacyOther: Story = {
+  args: { id: 'legacy-msg', ariaLabel: 'Meddelande', other: { name: 'message-field' } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const ta = canvas.getByRole('textbox', { name: 'Meddelande' })
+    await expect(ta).toHaveAttribute('name', 'message-field')
+  },
+}
+
 export const WithLabel: Story = {
   args: { id: 'message' },
   render: (args) => (

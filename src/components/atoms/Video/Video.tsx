@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Ref } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type Ref } from 'react'
 import { cn } from '../../../lib/cn'
 import { mergeRefs } from '../../../lib/mergeRefs'
 
@@ -52,8 +52,27 @@ const opacityClasses: Record<VideoOpacity, string> = {
   dark: 'bg-black/40',
 }
 
-function prefersReducedMotion(): boolean {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+
+// Reduced-motion preference read through `useSyncExternalStore` so it is safe under SSR/hydration
+// (2.3.3). Reading `matchMedia` in a render/`useState` initializer would give the server one value and
+// the client another → a hydration mismatch. The subscribe/getSnapshot pair also keeps the video in
+// sync if the user flips the OS setting at runtime.
+function subscribeReducedMotion(callback: () => void): () => void {
+  if (typeof window === 'undefined' || !window.matchMedia) return () => {}
+  const mql = window.matchMedia(REDUCED_MOTION_QUERY)
+  mql.addEventListener('change', callback)
+  return () => mql.removeEventListener('change', callback)
+}
+
+function getReducedMotionSnapshot(): boolean {
+  return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia(REDUCED_MOTION_QUERY).matches
+}
+
+// The server can't know the user's motion preference, so hydration must start from a stable value and
+// the client reconciles immediately after. React uses this only for the SSR/first-hydration render.
+function getReducedMotionServerSnapshot(): boolean {
+  return false
 }
 
 // Set the muted *property* the instant the node attaches (before effects run). React doesn't reliably
@@ -104,9 +123,16 @@ function Video({
   ref,
 }: VideoProps) {
   const [source, setSource] = useState(videoUrl)
-  // Respect reduced motion from the first paint (2.3.3), so the native `autoPlay` attribute is
-  // never set for those users rather than briefly playing and then pausing.
-  const [playing, setPlaying] = useState(() => autoPlay && !prefersReducedMotion())
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  )
+  // `null` = follow the motion-aware default; the pause/play control sets an explicit override.
+  // On a pure client render (no SSR) this resolves to the correct value on the first paint, so
+  // reduced-motion users never see autoplay start; under SSR the client reconciles right after hydration.
+  const [playOverride, setPlayOverride] = useState<boolean | null>(null)
+  const playing = playOverride ?? (autoPlay && !reducedMotion)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
@@ -160,7 +186,7 @@ function Video({
 
       <button
         type="button"
-        onClick={() => setPlaying((current) => !current)}
+        onClick={() => setPlayOverride(!playing)}
         aria-label={playing ? pauseLabel : playLabel}
         className={cn(
           'absolute right-2 bottom-2 z-20 inline-flex size-11 items-center justify-center rounded-full bg-black/50 text-text-white',

@@ -1,7 +1,7 @@
 import type { Decorator, Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import beerGlass from '../../../assets/product-images/beer-glass.jpg'
-import type { ProductVariantListItem } from '../ProductVariantList'
+import type { ProductCardProduct, ProductCardVariant } from '../ProductCard/types'
 import { ProductCardMiniVertical } from './ProductCardMiniVertical'
 
 // The mini card is a compact, ~2-up grid tile — present it at a realistic cell width so its layout
@@ -12,56 +12,77 @@ const inCardCell: Decorator = (Story) => (
   </div>
 )
 
-// A real (bundled, deterministic) product photo for the variant thumbnails.
 const image = { id: 'mini-thumb', src: beerGlass, sources: [], alt: '' }
-
 const productName = 'Wisby Pils 5,0 EKO'
-// The last variant deliberately has no image, so the picker exercises the fallback placeholder (the
-// mini card forwards its `fallbackImageUrl` to the variants) alongside the two real product photos.
-const variants: ProductVariantListItem[] = [
-  { productName, variantName: '33cl Engångsglas', variantId: '1105101', priceStr: '10,00', image },
-  { productName, variantName: '50cl Returglas', variantId: '1105102', priceStr: '12,40', image },
+
+// Rich variants (the mini re-derives price/packaging/image from the selected one, like the family).
+const variants: ProductCardVariant[] = [
+  {
+    productName,
+    variantName: '33cl Engångsglas',
+    variantId: '1105101',
+    priceStr: '10,00',
+    price: 10,
+    pricePerUnit: 10,
+    pricePerUnitString: '10,00',
+    salesUnit: 'Kolli',
+    itemNumberPerSalesUnit: 24,
+    image,
+  },
   {
     productName,
     variantName: '50cl Burk',
     variantId: '1105103',
     priceStr: '11,20',
+    price: 11.2,
+    pricePerUnit: 11.2,
+    pricePerUnitString: '11,20',
+    salesUnit: 'Kolli',
+    itemNumberPerSalesUnit: 20,
     image: { id: 'mini-thumb-fallback', src: '', sources: [], alt: '' },
   },
 ]
+
+const product: ProductCardProduct = {
+  partNo: '1105101',
+  productName,
+  productUrl: '/product/1105101',
+  primaryImageUrl: '',
+  packaging: '33cl Engångsglas',
+  priceLabel: 'Listpris',
+  priceStr: '10',
+  price: 10,
+  pricePerUnit: 10,
+  pricePerUnitString: '10',
+  currencyLabel: 'kr',
+  unitLabel: 'st',
+  salesUnit: 'Kolli',
+  itemNumberPerSalesUnit: 24,
+  productVariantList: variants,
+  tags: [
+    { text: 'Eko', color: 'green' },
+    { text: 'Nyhet', color: 'black' },
+  ],
+  sellerOnly: true,
+  isAccessoryPotItem: true,
+  partNoLabel: 'Art.nr.',
+  aLabel: 'à',
+}
 
 const meta = {
   title: 'Design System/Organisms/ProductCardMiniVertical',
   component: ProductCardMiniVertical,
   parameters: {
-    controls: { exclude: ['onAddToCart', 'onChangeQuantity', 'onVariantSelect', 'onProductClick'] },
+    controls: { exclude: ['addToCart', 'onChangeQuantity', 'onVariantChange', 'onProductClick'] },
   },
   args: {
-    product: {
-      partNo: '1105101',
-      productName,
-      productUrl: '/product/1105101',
-      packaging: '33cl Engångsglas',
-      priceLabel: 'Listpris',
-      priceStr: '10',
-      currencyLabel: 'kr',
-      unitLabel: 'st',
-      totalPrice: '548,26',
-      salesUnit: 'Kolli',
-      itemNumberPerSalesUnit: 24,
-      variants,
-      tags: [
-        { text: 'Eko', color: 'green' },
-        { text: 'Nyhet', color: 'black' },
-      ],
-      sellerOnly: true,
-      isAccessoryPotItem: true,
-    },
-    addToCartLabel: 'Add to cart',
-    quantity: 0,
-    onAddToCart: fn(),
+    product,
+    variantsInCart: [],
+    addToCartBtnLabel: 'Add to cart',
+    addToCart: fn(),
     onChangeQuantity: fn(),
-    onVariantSelect: fn(),
+    onVariantChange: fn(),
+    fallbackImageUrl: beerGlass,
   },
 } satisfies Meta<typeof ProductCardMiniVertical>
 
@@ -69,23 +90,18 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
- * Canonical card. The `play` proves the product name is a focusable link, the add-to-cart button
- * activates its handler, and the packaging button is a disclosure that opens the variant picker
- * (`aria-expanded` flips true) and is dismissed with `Escape`.
+ * Canonical card. The `play` proves the product name is a focusable link, the packaging button is a
+ * disclosure that opens the variant picker (dismissed with the close button), and pressing Add promotes
+ * the control to the quantity stepper seeded at 1 (the legacy "Add bumps the quantity" behaviour).
  */
 export const Default: Story = {
   decorators: [inCardCell],
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
 
-    // Product name is a real, focusable link.
     const nameLink = canvas.getByRole('link', { name: productName })
     await userEvent.tab()
     await expect(nameLink).toHaveFocus()
-
-    // Add-to-cart activates its handler.
-    await userEvent.click(canvas.getByRole('button', { name: 'Add to cart' }))
-    await expect(args.onAddToCart).toHaveBeenCalled()
 
     // Packaging button is a disclosure trigger.
     const packaging = canvas.getByRole('button', { name: '33cl Engångsglas' })
@@ -93,10 +109,12 @@ export const Default: Story = {
     await userEvent.click(packaging)
     await expect(packaging).toHaveAttribute('aria-expanded', 'true')
     await expect(canvas.getByRole('group', { name: 'Choose a variant' })).toBeInTheDocument()
-
-    // The picker's own close button dismisses the disclosure.
     await userEvent.click(canvas.getByRole('button', { name: 'Close' }))
     await expect(packaging).toHaveAttribute('aria-expanded', 'false')
+
+    // Add promotes the control to a stepper seeded at 1.
+    await userEvent.click(canvas.getByRole('button', { name: 'Add to cart' }))
+    await expect(canvas.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue(1)
   },
 }
 
@@ -108,46 +126,47 @@ export const WithIconActions: Story = {
   decorators: [inCardCell],
   args: {
     showFavoriteIcon: true,
-    isFavorite: true,
-    onFavoriteClick: fn(),
+    favoriteProductsIds: ['1105101'],
+    onFavoriteIconClick: fn(),
     showAddToPurchaseListIcon: true,
-    onAddToPurchaseList: fn(),
+    onSaveToPurchaseListClick: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
 
     const purchaseList = canvas.getByRole('button', { name: 'Add to purchase list' })
     await userEvent.click(purchaseList)
-    await expect(args.onAddToPurchaseList).toHaveBeenCalled()
+    await expect(args.onSaveToPurchaseListClick).toHaveBeenCalledWith('1105101', expect.anything())
 
-    // isFavorite → the toggle names the "remove" action.
+    // In favouriteProductsIds → the toggle names the "remove" action.
     const favorite = canvas.getByRole('button', { name: 'Remove from favourites' })
     await userEvent.click(favorite)
-    await expect(args.onFavoriteClick).toHaveBeenCalled()
+    await expect(args.onFavoriteIconClick).toHaveBeenCalledWith('1105101', true, expect.anything())
   },
 }
 
 /**
  * Restricted user — pricing is hidden, and so are the favourite / add-to-purchase-list icons (those
- * account actions aren't available), even though `showFavoriteIcon` / `showAddToPurchaseListIcon` are set.
+ * account actions aren't available). Add-to-cart routes to `addToCart()` (login-and-buy), with no args.
  */
 export const RestrictedUser: Story = {
   decorators: [inCardCell],
   args: {
     isRestrictedUser: true,
     showFavoriteIcon: true,
-    onFavoriteClick: fn(),
+    favoriteProductsIds: ['1105101'],
+    onFavoriteIconClick: fn(),
     showAddToPurchaseListIcon: true,
-    onAddToPurchaseList: fn(),
+    onSaveToPurchaseListClick: fn(),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
     await expect(canvas.queryByRole('button', { name: 'Add to purchase list' })).toBeNull()
     await expect(canvas.queryByRole('button', { name: 'Add to favourites' })).toBeNull()
-    // Pricing is suppressed too.
     await expect(canvas.queryByText('Listpris: 10 kr/st')).toBeNull()
-    // The product is still navigable and orderable.
-    await expect(canvas.getByRole('button', { name: 'Add to cart' })).toBeInTheDocument()
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Add to cart' }))
+    await expect(args.addToCart).toHaveBeenCalledWith()
   },
 }
 
@@ -167,7 +186,7 @@ export const Localized: Story = {
   decorators: [inCardCell],
   args: {
     showAddToPurchaseListIcon: true,
-    onAddToPurchaseList: fn(),
+    onSaveToPurchaseListClick: fn(),
     labels: {
       addToPurchaseList: 'Lägg till i inköpslista',
       selectPackaging: 'Välj förpackning',
@@ -184,8 +203,7 @@ export const Localized: Story = {
 /*
  * Visual parity — reproduces the legacy `product-card-mini-vertical` frame: a single card at ~50%
  * width inside the legacy light-grey flex wrapper, with the seller-only + accessory markers, Eko/Nyhet
- * tags, packaging picker and add-to-cart. Colours diverge for accessibility (dark title over the legacy
- * orange link; dark-on-orange "S" badge over the legacy white-on-orange) and the brand secondary font
+ * tags, packaging picker and add-to-cart. Colours diverge for accessibility and the brand secondary font
  * renders the tags/price, so this is mapped review-only. The Swedish quantity label is reproduced for
  * fidelity. No `play` — the captured frame must not mutate.
  */
@@ -198,9 +216,10 @@ export const Visual: Story = {
         `${quantity} x ${salesUnit} (${itemNumberPerSalesUnit} styck)`,
     },
     showFavoriteIcon: true,
-    onFavoriteClick: fn(),
+    favoriteProductsIds: [],
+    onFavoriteIconClick: fn(),
     showAddToPurchaseListIcon: true,
-    onAddToPurchaseList: fn(),
+    onSaveToPurchaseListClick: fn(),
   },
   render: (renderArgs) => (
     <div

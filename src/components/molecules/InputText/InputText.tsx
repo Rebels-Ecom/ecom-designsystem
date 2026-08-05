@@ -29,6 +29,16 @@ export interface InputTextProps {
   required?: boolean
   /** `autocomplete` token so browsers/AT can identify the input purpose (1.3.5). */
   autoComplete?: string
+  /**
+   * @deprecated Legacy lowercase alias for {@link autoComplete}. Accepted so the app's existing
+   * `autocomplete` prop stays drop-in; prefer `autoComplete`.
+   */
+  autocomplete?: string
+  /**
+   * @deprecated Legacy escape hatch — extra attributes spread onto the `<input>` (v1.6.6 passed the
+   * form-field `name` via `other={{ name }}`). Accepted so those call sites stay drop-in.
+   */
+  other?: Record<string, unknown>
   /** Native `min` attribute (for `type="number"`). */
   min?: string
   /** Decorative icon overlaid at the trailing edge (rendered `aria-hidden`; never the sole meaning). */
@@ -83,6 +93,8 @@ function InputText({
   isErroneous,
   required,
   autoComplete,
+  autocomplete,
+  other,
   min,
   iconRight,
   fullWidth,
@@ -104,17 +116,18 @@ function InputText({
   return (
     <div className={cn('relative', fullWidth && 'w-full', wrapperClassName)}>
       <input
+        {...other}
         ref={ref}
         id={id}
         type={type}
-        name={name}
+        name={name ?? (other?.name as string | undefined)}
         value={value}
         defaultValue={defaultValue}
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readOnly}
         required={required}
-        autoComplete={autoComplete}
+        autoComplete={autoComplete ?? autocomplete}
         min={min}
         aria-label={ariaLabel}
         aria-invalid={isErroneous || undefined}

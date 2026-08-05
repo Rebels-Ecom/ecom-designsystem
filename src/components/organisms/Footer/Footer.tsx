@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { ContentWrapper } from '../../atoms/ContentWrapper'
 import { Heading } from '../../atoms/Heading'
 import { Logotype } from '../../molecules/Logotype'
@@ -10,7 +10,12 @@ import type { LinkButtonTarget } from '../../molecules/LinkButton'
 
 export interface FooterLink {
   /** Visible label — also the link's accessible name. */
-  label: string
+  label?: string
+  /**
+   * @deprecated Legacy alias for {@link label} (v1.6.6 link items used `children`). Accepted so the
+   * app's existing footer data stays drop-in; prefer `label`.
+   */
+  children?: ReactNode
   /** Destination URL. */
   href: string
   /** External link — renders a plain `<a>` with `rel="noopener noreferrer"` instead of `linkComponent`. */
@@ -40,9 +45,22 @@ export const defaultFooterLabels: FooterLabels = {
 
 export interface FooterProps {
   /** Quick-access links shown in the dark top bar (login / register / contact, or plain links). */
-  footerTopBarLinks: FooterTopBarLink[]
+  footerTopBarLinks?: FooterTopBarLink[]
   /** Columns of navigation links shown in the footer body. */
-  linkGroups: FooterLinkGroup[]
+  linkGroups?: FooterLinkGroup[]
+  /**
+   * @deprecated Legacy alias for {@link linkGroups} (v1.6.6 called it `links`). Accepted so the app's
+   * existing call site stays drop-in; prefer `linkGroups`.
+   */
+  links?: FooterLinkGroup[]
+  /**
+   * @deprecated Legacy logo slot — a consumer-supplied logo element. When provided it is rendered in
+   * place of the built-in {@link Logotype} (drop-in for the app's `<SpendrupsLogo>`); otherwise the
+   * brand logo links home.
+   */
+  logo?: ReactNode
+  /** Fires when a footer navigation link is activated (analytics hook — legacy `trackFooterLink`). */
+  trackFooterLink?: (link: FooterLink) => void
   /** Small label preceding the address (e.g. "Visiting address:"). */
   addressLabel: string
   /** The postal/visiting address. */
@@ -74,17 +92,33 @@ export interface FooterProps {
 const linkClasses =
   'text-body text-text-default no-underline hover:text-action-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary'
 
-function FooterLinkItem({ link, linkComponent: Link }: { link: FooterLink; linkComponent: LinkComponentType }) {
+function FooterLinkItem({
+  link,
+  linkComponent: Link,
+  onTrack,
+}: {
+  link: FooterLink
+  linkComponent: LinkComponentType
+  onTrack?: (link: FooterLink) => void
+}) {
+  // Accept the legacy `children` alias for the visible/accessible text.
+  const text = link.label ?? link.children
   if (link.isExternal) {
     return (
-      <a href={link.href} target={link.target ?? '_blank'} rel="noopener noreferrer" className={linkClasses}>
-        {link.label}
+      <a
+        href={link.href}
+        target={link.target ?? '_blank'}
+        rel="noopener noreferrer"
+        className={linkClasses}
+        onClick={() => onTrack?.(link)}
+      >
+        {text}
       </a>
     )
   }
   return (
-    <Link href={link.href} target={link.target} className={linkClasses}>
-      {link.label}
+    <Link href={link.href} target={link.target} className={linkClasses} onClick={() => onTrack?.(link)}>
+      {text}
     </Link>
   )
 }
@@ -106,6 +140,9 @@ function FooterLinkItem({ link, linkComponent: Link }: { link: FooterLink; linkC
 function Footer({
   footerTopBarLinks,
   linkGroups,
+  links,
+  logo,
+  trackFooterLink,
   addressLabel,
   address,
   bottomBarText,
@@ -121,24 +158,33 @@ function Footer({
   ref,
 }: FooterProps) {
   const t = { ...defaultFooterLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
-  const groups = linkGroups.filter((group) => Array.isArray(group.links) && group.links.length > 0)
+  const Link = resolveLink(linkComponent)
+  // Accept the legacy `links` prop as an alias for `linkGroups`, and tolerate its absence (v1.6.6 never
+  // crashed when a group list was missing).
+  const groups = (linkGroups ?? links ?? []).filter(
+    (group) => Array.isArray(group.links) && group.links.length > 0,
+  )
+  const topBarLinks = footerTopBarLinks ?? []
 
   return (
     <footer ref={ref} className={cn('w-full', className)}>
-      <FooterTopBar links={footerTopBarLinks} linkComponent={linkComponent} />
+      {topBarLinks.length > 0 && <FooterTopBar links={topBarLinks} linkComponent={linkComponent} />}
 
       <div className="w-full bg-background-footer text-text-default">
         <ContentWrapper>
           <div className="flex flex-col gap-8 py-8 lg:flex-row lg:gap-12 lg:py-16">
             <div className="w-full lg:w-1/3">
-              <a
-                href={logoHref}
-                aria-label={t.home}
-                className="inline-block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"
-              >
-                <Logotype variant="horizontal" className="h-8 w-auto md:h-10" />
-              </a>
+              {/* A consumer-supplied `logo` element (legacy slot) renders as-is; otherwise the brand
+                  logo links home. */}
+              {logo ?? (
+                <a
+                  href={logoHref}
+                  aria-label={t.home}
+                  className="inline-block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"
+                >
+                  <Logotype variant="horizontal" className="h-8 w-auto md:h-10" />
+                </a>
+              )}
 
               {showNewsletter && (
                 <Newsletter
@@ -173,7 +219,7 @@ function Footer({
                       >
                         {group.links.map((link, linkIndex) => (
                           <li key={`${link.href}-${linkIndex}`}>
-                            <FooterLinkItem link={link} linkComponent={Link} />
+                            <FooterLinkItem link={link} linkComponent={Link} onTrack={trackFooterLink} />
                           </li>
                         ))}
                       </ul>

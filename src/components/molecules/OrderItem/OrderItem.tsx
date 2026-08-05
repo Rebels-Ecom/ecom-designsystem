@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import { cn } from '../../../lib/cn';
-import { DefaultLink, type LinkComponentType } from '../../../lib/link';
+import { resolveLink, type LinkComponentType } from '../../../lib/link';
 import { Button } from '../Button';
 import { UiLink } from '../UiLink';
 import { Icon, type IconName } from '../../atoms/Icon';
@@ -127,7 +127,7 @@ function OrderItem({
   ref,
 }: OrderItemProps) {
   const t = { ...defaultOrderItemLabels, ...labels };
-  const Link = linkComponent ?? DefaultLink;
+  const Link = resolveLink(linkComponent);
   const isLinkMode = Boolean(linkUrl) && !readOnly;
 
   const rootClass = cn(

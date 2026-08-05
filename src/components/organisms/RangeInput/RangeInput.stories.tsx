@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, fireEvent, fn, userEvent, within } from 'storybook/test'
+import { expect, fireEvent, fn, userEvent, waitFor, within } from 'storybook/test'
 import { RangeInput } from './RangeInput'
 
 const meta = {
@@ -44,6 +44,26 @@ export const Default: Story = {
     // Moving the lower thumb reports a range snapped to the nearest step.
     fireEvent.change(minThumb, { target: { value: '240' } })
     await expect(args.onChange).toHaveBeenCalledWith({ min: 250, max: 500 })
+  },
+}
+
+/**
+ * **Legacy drop-in — debounced reporting.** With `debounceMs` set (as `DynamicFilter` passes 1000ms), the
+ * thumb moves live but `onChange` reports only after the user settles. Locks the restored rc-slider
+ * debounce so a consumer that refetches on change fires once, not per drag tick.
+ */
+export const DebouncedReporting: Story = {
+  args: { defaultMinVal: 100, defaultMaxVal: 500, debounceMs: 1000 },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement)
+    const minThumb = canvas.getByRole('slider', { name: 'Minimum value' })
+    fireEvent.change(minThumb, { target: { value: '240' } })
+    // Debounced — nothing reported synchronously…
+    await expect(args.onChange).not.toHaveBeenCalled()
+    // …then a single snapped report once the debounce settles.
+    await waitFor(() => expect(args.onChange).toHaveBeenCalledWith({ min: 250, max: 500 }), {
+      timeout: 2000,
+    })
   },
 }
 

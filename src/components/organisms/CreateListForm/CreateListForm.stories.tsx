@@ -4,7 +4,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { CreateListForm } from './CreateListForm'
 
 const meta = {
-  title: 'Design System/Organisms/CreateListForm',
+  title: 'Design System/Deprecated/CreateListForm',
   component: CreateListForm,
   parameters: { layout: 'fullscreen' },
   args: {

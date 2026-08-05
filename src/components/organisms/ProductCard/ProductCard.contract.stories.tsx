@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import type { LinkComponentType } from '../../../lib/link';
 import { ProductCard } from './ProductCard';
+import type { ProductCardProps } from './ProductCard';
 import type { ProductCardProduct } from './types';
 import {
   dummyBeerProduct,
@@ -410,5 +412,330 @@ export const DebounceBypass: Story = {
     await expect(args.onChangeQuantity).toHaveBeenLastCalledWith(
       expect.objectContaining({ quantity: '4' }),
     );
+  },
+};
+
+// ===================================================================================================
+// Parent-driven prop re-sync (the controlled path the app relies on but nothing else exercises).
+//
+// Every other contract story asserts the *initial* render or a *user interaction* (which flows through
+// the card's own handlers). These lock the OTHER direction: the parent hands the card new props after
+// mount and the card must re-sync exactly as legacy v1.6.6 did. That behaviour lives in the
+// `useProductCardState` effect (deps: quantity, priceStr, pricePerUnit, activeCampaign, outOfStock) and
+// mirrors the legacy `product-card.tsx:163-177` effect byte-for-byte — including the "clobber" quirk.
+//
+// The harness IS the parent: it owns `product` in state and exposes labelled test-only buttons that
+// mutate a single prop, modelling the real app pushing a server update (campaign/stock/discount) or an
+// externally-reset quantity down into an already-mounted card.
+// ===================================================================================================
+
+function ParentControlledCard({
+  initialProduct,
+  ...cardProps
+}: { initialProduct: ProductCardProduct } & Omit<ProductCardProps, 'product'>) {
+  const [product, setProduct] = useState<ProductCardProduct>(initialProduct);
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+        <button type="button" onClick={() => setProduct((p) => ({ ...p, quantity: '5' }))}>
+          harness: set quantity 5
+        </button>
+        <button type="button" onClick={() => setProduct((p) => ({ ...p, quantity: '-3' }))}>
+          harness: set quantity -3
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            setProduct((p) => ({ ...p, pricePerUnit: 20, priceStr: '20', pricePerUnitString: '20' }))
+          }
+        >
+          harness: set price 20
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            setProduct((p) => ({ ...p, activeCampaign: { title: 'Kampanj', color: '#9a576f' } }))
+          }
+        >
+          harness: add campaign
+        </button>
+        <button type="button" onClick={() => setProduct((p) => ({ ...p, outOfStock: true }))}>
+          harness: set out of stock
+        </button>
+      </div>
+      <ProductCard {...cardProps} product={product} />
+    </div>
+  );
+}
+
+/**
+ * Parent pushes a new `quantity` prop into a mounted card → the field and the live price readout
+ * re-sync (models an externally-reset quantity, e.g. a stock clamp or a cart merge feeding qty back).
+ */
+export const ParentDrivenQuantityResync: Story = {
+  // `render` drives everything; these args only satisfy the required-prop types (meta covers the rest).
+  args: { cardDisplay: 'horizontal', product: dummyBeerProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="horizontal"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Add"
+      productArea="cart"
+      initialProduct={dummyBeerProduct}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const field = canvas.getByRole('spinbutton', { name: 'Quantity' });
+    await expect(field).toHaveValue(1);
+    await expect(canvas.getByText('Pris: 1,00 kr')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: set quantity 5' }));
+
+    // The card re-syncs from the parent's new quantity prop: field + recomputed total (1 × 1 × 5).
+    await expect(field).toHaveValue(5);
+    await expect(canvas.getByText('Pris: 5,00 kr')).toBeInTheDocument();
+  },
+};
+
+/**
+ * Parent pushes a new `pricePerUnit`/`priceStr` (a discount or price-code recompute, real-app scenario
+ * 19) → the total recomputes from the new price with the quantity unchanged (20 × 1 × 1).
+ */
+export const ParentDrivenPriceResync: Story = {
+  args: { cardDisplay: 'horizontal', product: dummyBeerProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="horizontal"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Add"
+      productArea="cart"
+      initialProduct={dummyBeerProduct}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Pris: 1,00 kr')).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: set price 20' }));
+    await expect(canvas.getByText('Pris: 20,00 kr')).toBeInTheDocument();
+  },
+};
+
+/**
+ * Parent pushes an `activeCampaign` into a mounted card (the app's `UPDATE_CAMPAIGN_DATA` after an add,
+ * real-app scenario 11) → the campaign ribbon appears without any user interaction.
+ */
+export const ParentDrivenCampaignResync: Story = {
+  args: { cardDisplay: 'horizontal', product: dummyBeerProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="horizontal"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Add"
+      productArea="cart"
+      onRemoveProduct={fn()}
+      initialProduct={dummyBeerProduct}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByText('Kampanj')).toBeNull();
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: add campaign' }));
+    await expect(canvas.getByText('Kampanj')).toBeInTheDocument();
+  },
+};
+
+/**
+ * Parent flips `outOfStock` on a mounted card (server stock update, real-app scenario 12) → the
+ * out-of-stock ribbon appears. The label is a static translation string present from mount (the effect
+ * re-syncs `outOfStock` but not `outOfStockLabel`, mirroring legacy), so it is seeded on the product.
+ */
+export const ParentDrivenStockResync: Story = {
+  args: { cardDisplay: 'horizontal', product: dummyBeerProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="horizontal"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Add"
+      productArea="cart"
+      onRemoveProduct={fn()}
+      initialProduct={{ ...dummyBeerProduct, outOfStockLabel: 'Slut i lager' }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByText('Slut i lager')).toBeNull();
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: set out of stock' }));
+    await expect(canvas.getByText('Slut i lager')).toBeInTheDocument();
+  },
+};
+
+/**
+ * `allowNegative` (order-history credit lines, real-app scenario 16): a negative quantity can only ever
+ * arrive from the parent (the field blocks the `-` key), so this is inherently a parent-driven case.
+ * With `allowNegative` the card preserves the parent's `-3`; the companion story proves the default clamp.
+ */
+export const AllowNegativeFromParent: Story = {
+  args: { cardDisplay: 'horizontal', product: dummyBeerProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="horizontal"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Add"
+      productArea="details"
+      allowNegative
+      onChangeQuantity={fn()}
+      initialProduct={dummyBeerProduct}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const field = canvas.getByRole('spinbutton', { name: 'Quantity' });
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: set quantity -3' }));
+    // allowNegative → the parent's negative quantity survives (not clamped to 0).
+    await expect(field).toHaveValue(-3);
+  },
+};
+
+/** Without `allowNegative`, a negative quantity from the parent clamps to `0` (legacy `getQuantity`). */
+export const ClampsNegativeFromParent: Story = {
+  args: { cardDisplay: 'horizontal', product: dummyBeerProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="horizontal"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Add"
+      productArea="details"
+      onChangeQuantity={fn()}
+      initialProduct={dummyBeerProduct}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const field = canvas.getByRole('spinbutton', { name: 'Quantity' });
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: set quantity -3' }));
+    await expect(field).toHaveValue(0);
+  },
+};
+
+/**
+ * **The legacy "clobber" quirk lock.** After a variant switch, `partNo`/`packaging`/`itemNumberPerSalesUnit`
+ * etc. hold the variant's values, but a later parent re-render (any effect dep changing) overwrites
+ * `activeCampaign`/`priceStr`/`pricePerUnit`/`outOfStock` back to the ORIGINAL base product — a mixed
+ * base/variant state (legacy `product-card.tsx:163-177`; V2 `useProductCardState.ts:104`). Here: the base
+ * carries a campaign, the chosen variant does not; selecting it hides the ribbon, but a parent quantity
+ * bump makes the base campaign clobber back while the variant packaging survives. Locking this prevents a
+ * future refactor from silently "fixing" the quirk and diverging from v1.6.6.
+ */
+const clobberCampaign = { title: 'Startkampanj', color: '#9a576f' };
+const clobberProduct: ProductCardProduct = {
+  partNo: 'CLB-1',
+  productName: 'Clobber Test Product',
+  productUrl: '/Product/CLB-1',
+  primaryImageUrl: '',
+  country: 'Sweden',
+  packaging: 'Startpaket',
+  price: 10,
+  priceStr: '10',
+  pricePerUnit: 10,
+  pricePerUnitString: '10',
+  salesUnit: 'st',
+  itemNumberPerSalesUnit: 1,
+  quantity: '1',
+  totalPrice: '10,00',
+  activeCampaign: clobberCampaign,
+  tags: [],
+  productVariantList: [
+    {
+      productName: 'Clobber Test Product',
+      variantName: 'Startpaket',
+      variantId: 'CLB-1',
+      priceStr: '10',
+      price: 10,
+      pricePerUnit: 10,
+      pricePerUnitString: '10',
+      salesUnit: 'st',
+      itemNumberPerSalesUnit: 1,
+      activeCampaign: clobberCampaign,
+      image: { id: 'clb-1', src: '', sources: [] },
+    },
+    {
+      productName: 'Clobber Test Product',
+      variantName: 'Kampanjfri variant',
+      variantId: 'CLB-2',
+      priceStr: '20',
+      price: 20,
+      pricePerUnit: 20,
+      pricePerUnitString: '20',
+      salesUnit: 'st',
+      itemNumberPerSalesUnit: 1,
+      activeCampaign: null,
+      image: { id: 'clb-2', src: '', sources: [] },
+    },
+  ],
+  partNoLabel: 'Art.nr.',
+  unitLabel: 'st',
+  currencyLabel: 'kr',
+  priceLabel: 'Pris',
+  aLabel: 'à',
+};
+
+export const VariantResyncClobber: Story = {
+  args: { cardDisplay: 'vertical', product: clobberProduct },
+  render: () => (
+    <ParentControlledCard
+      cardDisplay="vertical"
+      loading={false}
+      addToCart={() => {}}
+      addToCartBtnLabel="Lägg i varukorg"
+      onVariantChange={fn()}
+      productArea="category"
+      initialProduct={clobberProduct}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Base product carries the campaign ribbon.
+    await expect(canvas.getByText('Startkampanj')).toBeInTheDocument();
+
+    // Switch to the campaign-free variant → its (null) campaign wins, ribbon disappears.
+    await userEvent.click(canvas.getByRole('button', { name: 'Startpaket' }));
+    await userEvent.click(await canvas.findByRole('radio', { name: 'Kampanjfri variant' }));
+    await expect(canvas.queryByText('Startkampanj')).toBeNull();
+    await expect(canvas.getByRole('button', { name: 'Kampanjfri variant' })).toBeInTheDocument();
+
+    // Parent bumps quantity → the effect re-syncs and CLOBBERS activeCampaign back to the base value,
+    // even though the selected variant has none — while the variant's packaging label survives.
+    await userEvent.click(canvas.getByRole('button', { name: 'harness: set quantity 5' }));
+    await expect(canvas.getByText('Startkampanj')).toBeInTheDocument();
+    await expect(canvas.getByRole('button', { name: 'Kampanjfri variant' })).toBeInTheDocument();
+  },
+};
+
+/**
+ * Invalid assortment (order-history reorder, real-app scenario 17): `hideCartButton` +
+ * `productQuantityDisabled` → no add-to-cart control and the quantity is read-only text, not a field.
+ */
+export const InvalidAssortment: Story = {
+  args: {
+    cardDisplay: 'horizontal',
+    product: dummyBeerProduct,
+    addToCartBtnLabel: 'Add',
+    hideCartButton: true,
+    productQuantityDisabled: true,
+    onChangeQuantity: fn(),
+    productArea: 'details',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByRole('button', { name: 'Add' })).toBeNull();
+    await expect(canvas.queryByRole('spinbutton')).toBeNull();
   },
 };

@@ -18,6 +18,7 @@ const emptyCart: CartState = {
   deliveryDate: '2026-07-31',
   customOrderNo: '',
   status: 'shopping',
+  showPrices: true,
 }
 
 function Harness() {

@@ -29,6 +29,16 @@ export interface CartLine {
   isAccessoryPotItem?: boolean
   /** Currently a favourite (filled heart). */
   isFavorite?: boolean
+  /** Active campaign ribbon (title + optional brand colour). Mirrors the app's `getCampaignDetails`. */
+  activeCampaign?: { title: string; color?: string }
+  /** Out of stock — shows the ribbon (and, in the real cart, drives the stock alert). */
+  outOfStock?: boolean
+  /** Ribbon text when out of stock. @default 'Slut i lager' */
+  outOfStockLabel?: string
+  /** Stock shortage — only this many confirmed in stock; drives the "change product" alert. */
+  stockShortage?: number
+  /** Per-line loading skeleton (e.g. while the line is being replaced). */
+  loading?: boolean
 }
 
 export interface CartState {
@@ -37,6 +47,8 @@ export interface CartState {
   deliveryDate: string
   customOrderNo: string
   status: 'shopping' | 'submitting' | 'complete'
+  /** Price visibility (the app's `cartData.ShowPrices` permission). @default true */
+  showPrices: boolean
 }
 
 export type CartAction =
@@ -45,6 +57,7 @@ export type CartAction =
   | { type: 'REMOVE_FROM_CART'; partNo: string }
   | { type: 'CLEAR_CART' }
   | { type: 'TOGGLE_FAVORITE'; partNo: string }
+  | { type: 'REPLACE_LINE'; partNo: string; replacement: CartLine }
   | { type: 'ACCEPT_TERMS'; accepted: boolean }
   | { type: 'SET_DELIVERY_DATE'; date: string }
   | { type: 'ADD_CUSTOM_ORDER_NUMBER'; value: string }
@@ -83,6 +96,13 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
         lines: state.lines.map((l) =>
           l.partNo === action.partNo ? { ...l, isFavorite: !l.isFavorite } : l,
         ),
+      }
+    case 'REPLACE_LINE':
+      // The "change product" flow: swap the shortage/out-of-stock line for its replacement in place,
+      // clearing the stock flags (mirrors the app removing the old line and adding the replacement).
+      return {
+        ...state,
+        lines: state.lines.map((l) => (l.partNo === action.partNo ? action.replacement : l)),
       }
     case 'ACCEPT_TERMS':
       return { ...state, termsAccepted: action.accepted }
@@ -162,6 +182,10 @@ export function toProductCardProduct(line: CartLine): ProductCardProduct {
     totalPrice: formatPrice(lineTotal(line)),
     productVariantList: [],
     isAccessoryPotItem: line.isAccessoryPotItem,
+    activeCampaign: line.activeCampaign,
+    campaignTitle: line.activeCampaign?.title,
+    outOfStock: line.outOfStock,
+    outOfStockLabel: line.outOfStock ? (line.outOfStockLabel ?? 'Slut i lager') : undefined,
     partNoLabel: 'Art.nr.',
     unitLabel: line.salesUnit,
     currencyLabel: 'kr',
@@ -215,4 +239,5 @@ export const initialCartState: CartState = {
   deliveryDate: '2026-07-31',
   customOrderNo: '',
   status: 'shopping',
+  showPrices: true,
 }

@@ -35,6 +35,11 @@ export interface BoxWrapperProps {
    * supersedes the default responsive padding.
    */
   padding?: number[] | number
+  /**
+   * Inline styles merged onto the box (consumer styles win over the derived padding). Accepted so the
+   * app's existing `style` (e.g. `position: sticky`) stays drop-in — v1.6.6 forwarded it.
+   */
+  style?: CSSProperties
   /** Extra classes, merged with the component's own via `cn()`. */
   className?: string
   /** Forwarded to the underlying `<div>`. */
@@ -91,16 +96,21 @@ function BoxWrapper({
   noMargin = false,
   backgroundColor,
   padding,
+  style: styleProp,
   className,
   ref,
 }: BoxWrapperProps) {
   const paddingValue = toPadding(padding)
-  const style: CSSProperties | undefined = paddingValue ? { padding: paddingValue } : undefined
+  // Merge the derived padding with any consumer `style` (consumer wins) — drop-in for v1.6.6.
+  const boxStyle: CSSProperties | undefined =
+    paddingValue || styleProp
+      ? { ...(paddingValue ? { padding: paddingValue } : {}), ...styleProp }
+      : undefined
 
   return (
     <div
       ref={ref}
-      style={style}
+      style={boxStyle}
       className={cn(
         'relative flex w-full flex-col p-4 lg:px-15 lg:pt-4',
         onlyButton ? 'lg:pb-4' : 'lg:pb-10',

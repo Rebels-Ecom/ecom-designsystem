@@ -78,7 +78,7 @@ export function useProductCardState({
   } = product
 
   function getQuantity(value: string | undefined): string {
-    const parsedQuantity = parseInt(value ?? '')
+    const parsedQuantity = parseInt(value ?? '', 10)
     if (!value || isNaN(parsedQuantity)) return '1'
     if (parsedQuantity < 0 && !allowNegative) return '0'
     return value
@@ -87,7 +87,7 @@ export function useProductCardState({
   function computeTotalPrice(): string {
     const safePrice = pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0
     const chosen = defaultQuantity ?? getQuantity(quantity)
-    const qty = chosen ? parseInt(chosen) : 0
+    const qty = chosen ? parseInt(chosen, 10) : 0
     return convertNumToStr(safePrice * itemNumberPerSalesUnit * qty)
   }
 
@@ -115,7 +115,7 @@ export function useProductCardState({
   }, [quantity, priceStr, pricePerUnit, activeCampaign, outOfStock])
 
   function handleChangeQuantity(productQuantity: number) {
-    if (maxQuantity && productQuantity > maxQuantity) {
+    if (maxQuantity !== undefined && productQuantity > maxQuantity) {
       return
     }
     const newProduct: ResolvedProductCardProduct = {
@@ -143,7 +143,7 @@ export function useProductCardState({
 
   function handlePackageChange(selectedVariant: ProductCardVariant) {
     const q =
-      myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity) : 1
+      myProduct.partNo === selectedVariant.variantId ? parseInt(myProduct.quantity, 10) : 1
 
     setProduct((prevState) => {
       const updatedProduct: ResolvedProductCardProduct = {

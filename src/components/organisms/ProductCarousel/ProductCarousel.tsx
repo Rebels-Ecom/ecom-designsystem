@@ -5,11 +5,9 @@ import { Carousel } from '../Carousel'
 import { CarouselItem } from '../Carousel/CarouselItem'
 import {
   ProductCardMiniVertical,
-  type ProductCardMiniVerticalProduct,
   type ProductCardMiniVerticalProps,
 } from '../ProductCardMiniVertical'
 import { ProductCard } from '../ProductCard'
-import { productPicture } from '../ProductCard/productPicture'
 import type {
   ProductCardArea,
   ProductCardImagePriority,
@@ -38,8 +36,12 @@ export interface ProductCarouselProps {
   productArea?: ProductCardArea
   /** Called with the active slide index whenever navigation changes it (arrow, dot, key, swipe). */
   onNavigation?: (index: number) => void
-  /** Fires once per card when it first scrolls ≥50% into view (analytics / impression tracking). */
-  onViewportEnter?: (product: ProductCardProduct, index: number) => void
+  /**
+   * Fires once per card when it first scrolls ≥50% into view (analytics / impression tracking). May be a
+   * flat handler, or the legacy **curried** form `(product, index) => () => track(...)` — the returned
+   * function is invoked on entry (v1.6.6 handed that return to framer-motion's viewport hook). Both work.
+   */
+  onViewportEnter?: (product: ProductCardProduct, index: number) => void | (() => void)
   /** Accessible name for the carousel region (4.1.2). @default 'Products' */
   ariaLabel?: string
   /** Extra classes, merged onto the carousel region via `cn()`. */
@@ -54,67 +56,44 @@ function priorityForIndex(index: number): ProductCardImagePriority {
   return { loading: eager ? 'eager' : 'lazy', fetchPriority: eager ? 'high' : 'low' }
 }
 
-/** Adapt a rich {@link ProductCardProps} config down to the compact {@link ProductCardMiniVertical} shape. */
-function toMiniProduct(
-  product: ProductCardProduct,
-  imagePriority: ProductCardImagePriority,
-): ProductCardMiniVerticalProduct {
-  return {
-    partNo: product.partNo,
-    productName: product.productName,
-    productUrl: product.productUrl,
-    image: productPicture(product.partNo, product.primaryImageUrl, imagePriority),
-    packaging: product.packaging,
-    priceStr: product.priceStr,
-    priceLabel: product.priceLabel,
-    currencyLabel: product.currencyLabel,
-    unitLabel: product.unitLabel,
-    totalPrice: product.totalPrice,
-    salesUnit: product.salesUnit,
-    itemNumberPerSalesUnit: product.itemNumberPerSalesUnit,
-    variants: product.productVariantList,
-    tags: product.tags,
-    sellerOnly: product.sellerOnly,
-    isAccessoryPotItem: product.isAccessoryPotItem,
-    activeCampaign: product.activeCampaign
-      ? { title: product.activeCampaign.title ?? '', color: product.activeCampaign.color }
-      : undefined,
-    isLimitedProduct: product.isLimitedProduct,
-    limitedLabel: product.limitedLabel,
-    outOfStock: product.outOfStock,
-    outOfStockLabel: product.outOfStockLabel,
-  }
-}
-
-/** Map a card config + the carousel's add-to-cart to the {@link ProductCardMiniVertical} props (mobile). */
+/**
+ * Map a card config + the carousel's add-to-cart to the {@link ProductCardMiniVertical} props (mobile).
+ * The mini now consumes the shared {@link ProductCardProduct} shape directly, so this is a thin wiring of
+ * the carousel's callbacks: `addToCart` (restricted no-arg / normal bump) and the debounced
+ * `onChangeQuantity` both route to the carousel's add-to-cart with this card's index.
+ */
 function toMiniProps(
   card: ProductCardProps,
   index: number,
   addToCart: ProductCarouselProps['addToCart'],
   imagePriority: ProductCardImagePriority,
 ): ProductCardMiniVerticalProps {
-  const partNo = card.product.partNo
-  const isFavorite = card.favoriteProductsIds?.includes(partNo) ?? false
-  const total = card.product.totalPrice ?? ''
   return {
-    product: toMiniProduct(card.product, imagePriority),
-    addToCartLabel: card.addToCartBtnLabel,
+    product: card.product,
+    addToCartBtnLabel: card.addToCartBtnLabel,
+    addToCart: () => addToCart(card.product, index),
+    onChangeQuantity: (product) => addToCart(product, index),
+    onVariantChange: card.onVariantChange,
+    onVariantsButtonClick: card.onVariantsButtonClick,
     loading: card.loading,
     disabled: card.disabled,
+    buttonLoading: card.buttonLoading,
     hidePrice: card.hidePrice,
     isRestrictedUser: card.isRestrictedUser,
     headingLevel: card.headingLevel,
+    maxQuantity: card.maxQuantity,
+    productArea: card.productArea,
+    imagePriority,
     linkComponent: card.linkComponent === 'a' ? undefined : card.linkComponent,
     fallbackImageUrl: card.fallbackImageUrl,
-    onAddToCart: () => addToCart(card.product, index),
-    onChangeQuantity: () => addToCart(card.product, index),
     onProductClick: card.onClick,
+    tooltips: card.tooltips,
     showFavoriteIcon: card.showFavoriteIcon,
-    isFavorite,
+    favoriteProductsIds: card.favoriteProductsIds,
     isAddingToFavorites: card.isAddingToFavorites,
-    onFavoriteClick: () => card.onFavoriteIconClick?.(partNo, isFavorite, total),
+    onFavoriteIconClick: card.onFavoriteIconClick,
     showAddToPurchaseListIcon: card.showAddToPurchaseListIcon,
-    onAddToPurchaseList: () => card.onSaveToPurchaseListClick?.(partNo, total),
+    onSaveToPurchaseListClick: card.onSaveToPurchaseListClick,
   }
 }
 
@@ -210,7 +189,16 @@ function ProductCarousel({
         return (
           <CarouselItem key={`${card.product.partNo}-${index}`}>
             <SlideImpression
-              onEnter={onViewportEnter ? () => onViewportEnter(card.product, index) : undefined}
+              onEnter={
+                onViewportEnter
+                  ? () => {
+                      // Support the legacy curried form: `(product, index) => () => track(...)` returns
+                      // the tracker, which fires on entry. A flat handler returns void → nothing extra.
+                      const tracker = onViewportEnter(card.product, index)
+                      if (typeof tracker === 'function') tracker()
+                    }
+                  : undefined
+              }
             >
               {isMobile ? (
                 <ProductCardMiniVertical {...toMiniProps(card, index, addToCart, imagePriority)} />

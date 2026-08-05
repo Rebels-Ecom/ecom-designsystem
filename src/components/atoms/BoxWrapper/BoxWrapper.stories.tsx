@@ -21,6 +21,18 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
+ * **Legacy drop-in shape (v1.6.6).** The app passes an inline `style` (e.g. `position: sticky` on the
+ * order summary). Locks that it is forwarded — V2 had ignored `style`, dropping the sticky positioning.
+ */
+export const LegacyStyleProp: Story = {
+  args: { style: { position: 'sticky', top: '1rem' }, children: <p className="text-body">Sticky box</p> },
+  play: async ({ canvasElement }) => {
+    const box = canvasElement.querySelector('div')
+    await expect(box).toHaveStyle({ position: 'sticky' })
+  },
+}
+
+/**
  * Default bordered box stacking two blocks of content. The `play` function confirms the box stays
  * presentational — it exposes no landmark/role of its own, so any structure comes from the
  * children (1.3.1).

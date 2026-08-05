@@ -47,6 +47,19 @@ const deliveryDates = [new Date('2026-07-31'), new Date('2026-08-01'), new Date(
 /** Products the "Lägg till produkt" search can add. */
 const catalog: CartLine[] = recommendations
 
+/** In-stock alternative swapped in by the stock-shortage "Byt produkt" flow. */
+const replacementLine: CartLine = {
+  partNo: '9990001',
+  productName: 'Sofiero Original',
+  packaging: '33cl Engångsglas',
+  primaryImageUrl: '',
+  pricePerUnit: 8.5,
+  itemNumberPerSalesUnit: 20,
+  salesUnit: 'st',
+  quantity: 1,
+  pant: 20,
+}
+
 function CheckoutHarness({ initial = initialCartState }: { initial?: CartState }) {
   const [state, dispatch] = useReducer(cartReducer, initial)
   const totals = selectCartTotals(state)
@@ -67,9 +80,11 @@ function CheckoutHarness({ initial = initialCartState }: { initial?: CartState }
         recommendations={recommendations}
         productCatalog={catalog}
         status={state.status}
+        hidePrices={!state.showPrices}
         onChangeQuantity={(partNo, quantity) => dispatch({ type: 'UPDATE_CART', partNo, quantity })}
         onRemoveLine={(partNo) => dispatch({ type: 'REMOVE_FROM_CART', partNo })}
         onToggleFavorite={(partNo) => dispatch({ type: 'TOGGLE_FAVORITE', partNo })}
+        onReplaceLine={(partNo) => dispatch({ type: 'REPLACE_LINE', partNo, replacement: replacementLine })}
         onAcceptTerms={(accepted) => dispatch({ type: 'ACCEPT_TERMS', accepted })}
         onCustomOrderNoChange={(value) => dispatch({ type: 'ADD_CUSTOM_ORDER_NUMBER', value })}
         onSelectDeliveryDate={(date) => dispatch({ type: 'SET_DELIVERY_DATE', date })}
@@ -96,9 +111,11 @@ const meta = {
     recommendations,
     productCatalog: catalog,
     status: 'shopping',
+    hidePrices: false,
     onChangeQuantity: () => {},
     onRemoveLine: () => {},
     onToggleFavorite: () => {},
+    onReplaceLine: () => {},
     onAcceptTerms: () => {},
     onCustomOrderNoChange: () => {},
     onSelectDeliveryDate: () => {},
@@ -170,5 +187,122 @@ export const EmptyCart: Story = {
     const canvas = within(canvasElement)
     await expect(canvas.getByText('Tillagda produkter: 0')).toBeInTheDocument()
     await expect(canvas.getByRole('button', { name: 'Lägg beställning' })).toBeDisabled()
+  },
+}
+
+// --- Dynamic scenario coverage (the checkout-family scenarios the real app drives these cards through) --
+
+/** Patch one line by part number, leaving the others untouched. */
+const patchLine = (partNo: string, patch: Partial<CartLine>): CartLine[] =>
+  initialCartState.lines.map((l) => (l.partNo === partNo ? { ...l, ...patch } : l))
+
+/**
+ * A line carrying an active campaign (real-app scenario 11) renders the campaign ribbon on its card,
+ * driven by data on the cart line — no interaction needed.
+ */
+export const CampaignLine: Story = {
+  render: () => (
+    <CheckoutHarness
+      initial={{
+        ...initialCartState,
+        lines: patchLine('1105101', { activeCampaign: { title: 'Kampanj', color: '#9a576f' } }),
+      }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const line = canvas.getByRole('article', { name: 'Norrlands Guld Export' })
+    await expect(within(line).getByText('Kampanj')).toBeInTheDocument()
+  },
+}
+
+/** An out-of-stock line (real-app scenario 12) shows the out-of-stock ribbon. */
+export const OutOfStockLine: Story = {
+  render: () => (
+    <CheckoutHarness
+      initial={{ ...initialCartState, lines: patchLine('2078801', { outOfStock: true }) }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const line = canvas.getByRole('article', { name: 'Loka Naturell' })
+    await expect(within(line).getByText('Slut i lager')).toBeInTheDocument()
+  },
+}
+
+/**
+ * Stock shortage with a replacement offer (real-app scenario 13): the line shows a "change product"
+ * affordance; using it swaps the shortage line for its in-stock replacement.
+ */
+export const StockShortageReplace: Story = {
+  render: () => (
+    <CheckoutHarness
+      initial={{ ...initialCartState, lines: patchLine('2078801', { stockShortage: 2 }) }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const line = canvas.getByRole('article', { name: 'Loka Naturell' })
+    await userEvent.click(within(line).getByRole('button', { name: 'Byt produkt' }))
+
+    // The shortage line is replaced in place by the in-stock alternative.
+    await expect(canvas.queryByRole('article', { name: 'Loka Naturell' })).toBeNull()
+    await expect(canvas.getByRole('article', { name: 'Sofiero Original' })).toBeInTheDocument()
+  },
+}
+
+/** A per-line loading skeleton (real-app scenario 21 — e.g. while a line is being replaced). */
+export const LoadingLine: Story = {
+  render: () => (
+    <CheckoutHarness
+      initial={{ ...initialCartState, lines: patchLine('1105101', { loading: true }) }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const line = canvas.getByRole('article', { name: 'Norrlands Guld Export' })
+    await expect(line).toHaveAttribute('aria-busy', 'true')
+    // Skeleton — no editable quantity field on the loading line.
+    await expect(within(line).queryByRole('spinbutton')).toBeNull()
+  },
+}
+
+/**
+ * Prices hidden (real-app scenario 18 — the `ShowPrices=false` permission): the card price lines and the
+ * Översikt summary are both suppressed; the cart is still usable.
+ */
+export const HidePrices: Story = {
+  render: () => <CheckoutHarness initial={{ ...initialCartState, showPrices: false }} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.queryByText('Översikt')).toBeNull()
+    await expect(canvas.queryAllByText(/Pris:/)).toHaveLength(0)
+    // The lines still render and the cart still works.
+    await expect(canvas.getByRole('article', { name: 'Blue Moon Glas' })).toBeInTheDocument()
+  },
+}
+
+/** Toggling a line's favourite flips the heart (accessible name) and updates cart state live. */
+export const ToggleFavorite: Story = {
+  render: () => <CheckoutHarness />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const line = canvas.getByRole('article', { name: 'Norrlands Guld Export' })
+    // Not yet a favourite → the toggle offers to add.
+    await userEvent.click(within(line).getByRole('button', { name: 'Spara som favorit' }))
+    // Now a favourite → the toggle offers to remove (state round-tripped through the reducer).
+    await expect(within(line).getByRole('button', { name: 'Ta bort favorit' })).toBeInTheDocument()
+  },
+}
+
+/** Editing a line quantity to 0 removes the line (real-app scenario 4). */
+export const QuantityToZeroRemoves: Story = {
+  render: () => <CheckoutHarness />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const line = canvas.getByRole('article', { name: 'Loka Naturell' })
+    fireEvent.change(within(line).getByRole('spinbutton'), { target: { value: '0' } })
+    await expect(canvas.queryByRole('article', { name: 'Loka Naturell' })).toBeNull()
+    await expect(canvas.getByText('Tillagda produkter: 2')).toBeInTheDocument()
   },
 }

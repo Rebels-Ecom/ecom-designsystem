@@ -7,8 +7,13 @@ import { LinkButton, type LinkButtonTarget } from '../LinkButton'
 export interface SocialMediaLinkProps {
   /** Platform glyph (e.g. `icon-facebook`). Always decorative — the name comes from `label`. */
   icon: IconName
-  /** Accessible name describing the destination (e.g. "Facebook"). Required — the link is icon-only. */
-  label: string
+  /** Accessible name describing the destination (e.g. "Facebook") — the link is icon-only, so provide it via `label` or the legacy `title`. */
+  label?: string
+  /**
+   * @deprecated Legacy alias for {@link label} (v1.6.6 used `title` as the accessible name). Accepted
+   * so the app's existing `title` prop stays drop-in; prefer `label`.
+   */
+  title?: string
   /** Destination URL. */
   href: string
   /** Anchor target. @default '_blank' */
@@ -39,6 +44,7 @@ export interface SocialMediaLinkProps {
 function SocialMediaLink({
   icon,
   label,
+  title,
   href,
   target = '_blank',
   isExternal = true,
@@ -46,6 +52,8 @@ function SocialMediaLink({
   className,
   ref,
 }: SocialMediaLinkProps) {
+  // Accept the legacy `title` prop as the accessible name when `label` is absent.
+  const name = label ?? title
   return (
     <LinkButton
       ref={ref}
@@ -57,8 +65,8 @@ function SocialMediaLink({
       target={target}
       isExternal={isExternal}
       linkComponent={linkComponent}
-      title={label}
-      ariaLabel={label}
+      title={name}
+      ariaLabel={name}
       className={cn('rounded-full bg-icon-bg-blue text-text-blue', className)}
     >
       <Icon icon={icon} />

@@ -14,7 +14,7 @@ const message = (
 )
 
 const meta = {
-  title: 'Design System/Molecules/MessagePopup',
+  title: 'Design System/Deprecated/MessagePopup',
   component: MessagePopup,
   args: {
     children: message,

@@ -47,6 +47,7 @@
   --color-blue-400: #336574; /* hover tints */
   --color-orange-500: #f08a00;
   --color-orange-600: #da7e00;
+  --color-orange-700: #b35a00; /* darkest step — ~4.8:1 on white, the only AA-safe orange for text */
   --color-orange-accent: #de9034;
   --color-orange-muted: #c79a48;
   --color-grey-200: #f7f9fa;
@@ -269,6 +270,7 @@
   --color-text-subdued: var(--color-grey-800);
   --color-text-blue: var(--color-blue-500);
   --color-text-orange: var(--color-orange-accent);
+  --color-text-orange-strong: var(--color-orange-700); /* AA-compliant orange for essential labels (1.4.3) */
   --color-text-critical: var(--color-red-critical);
   --color-text-input: var(--color-blue-500);
   --color-text-decorative-grey: #4e4e5c;

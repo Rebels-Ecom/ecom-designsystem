@@ -40,6 +40,25 @@ export const Default: Story = {
 }
 
 /**
+ * **Legacy drop-in shape (v1.6.6).** The app renders `<OfferCardList list={...} />` — the old prop name,
+ * no `ariaLabel`, and offer items without an `id`. Locks that this still renders (renamed `list`→`offers`
+ * broke it: `offers` was undefined → the null guard fired → the whole carousel disappeared).
+ */
+export const LegacyListProp: Story = {
+  args: {
+    list: [
+      { icon: 'icon-refresh-cw', heading: '24/7 Support', richText: lorem },
+      { icon: 'icon-mail', heading: 'Säkra leveranser', richText: lorem },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('group', { name: 'Offers' })).toBeInTheDocument()
+    await expect(canvas.getAllByRole('heading')).toHaveLength(2)
+  },
+}
+
+/**
  * The carousel's own control names are overridable (English defaults) — this library ships to
  * consumers of any locale. Here the previous/next arrows are localised to Swedish.
  */

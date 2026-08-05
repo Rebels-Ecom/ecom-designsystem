@@ -30,10 +30,9 @@ export interface ClickableListItemProps
 const colorClasses: Record<ClickableListItemColor, string> = {
   default: 'text-text-default',
   blue: 'text-text-blue',
-  // NOTE: `orange` (orange-600) is ~3:1 on white and fails AA for normal-weight text (1.4.3).
-  // Kept for design parity but flagged for design review — don't use it for essential labels,
-  // and it is intentionally never rendered in an axe-scanned story.
-  orange: 'text-orange-600',
+  // `orange` now maps to the AA-safe `--color-text-orange-strong` (~4.8:1 on white) rather than the
+  // sub-AA orange-600 (~3:1) it used before, so it's usable for essential labels (1.4.3).
+  orange: 'text-text-orange-strong',
 }
 
 const alignClasses: Record<ClickableListItemAlign, string> = {

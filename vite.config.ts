@@ -54,7 +54,7 @@ function externalizeFonts(): Plugin {
         const cssPath = join(outDir, file)
         const emitted = new Set<string>()
         const css = readFileSync(cssPath, 'utf8').replace(
-          /data:font\/woff2;base64,([A-Za-z0-9+\/=]+)/g,
+          /data:font\/woff2;base64,([A-Za-z0-9+/=]+)/g,
           (match: string, b64: string): string => {
             const font = byBase64.get(b64)
             if (!font) {

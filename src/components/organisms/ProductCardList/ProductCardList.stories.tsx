@@ -35,7 +35,7 @@ const grid = (n: number): ProductCardProps[] =>
   Array.from({ length: n }, (_, i) => verticalCard(products[i % products.length]))
 
 const meta = {
-  title: 'Design System/Organisms/ProductCardList',
+  title: 'Design System/Deprecated/ProductCardList',
   component: ProductCardList,
   args: {
     productCards: grid(3),

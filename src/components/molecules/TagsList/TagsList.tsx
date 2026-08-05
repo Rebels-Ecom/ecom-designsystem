@@ -22,7 +22,9 @@ function TagsList({ tags, className, ref }: TagsListProps) {
   if (!tags?.length) return null
 
   return (
-    <ul ref={ref} className={cn('my-2 flex list-none flex-wrap gap-1 p-0', className)}>
+    // `role="list"` is restated because Safari + VoiceOver drop the implicit list role once
+    // `list-style: none` is applied (1.3.1) — without it the tag collection isn't announced as a list.
+    <ul ref={ref} role="list" className={cn('my-2 flex list-none flex-wrap gap-1 p-0', className)}>
       {tags.map((tag, index) => (
         <li key={index} className="flex">
           <Tag {...tag} />

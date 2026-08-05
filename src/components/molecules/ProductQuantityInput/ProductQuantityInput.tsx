@@ -91,7 +91,7 @@ function ProductQuantityInput({
   }, [quantity])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (maxQuantity && Number(event.target.value) > maxQuantity) return
+    if (maxQuantity !== undefined && Number(event.target.value) > maxQuantity) return
     if (event.target.value !== '') onChange?.(event)
     setVal(event.target.value)
   }

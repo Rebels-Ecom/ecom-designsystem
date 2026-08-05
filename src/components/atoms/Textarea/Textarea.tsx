@@ -28,6 +28,16 @@ export interface TextareaProps {
   maxLength?: number
   /** `autocomplete` token so browsers/AT can identify the input purpose (1.3.5). */
   autoComplete?: string
+  /**
+   * @deprecated Legacy lowercase alias for {@link autoComplete}. Accepted so the app's existing prop
+   * stays drop-in; prefer `autoComplete`.
+   */
+  autocomplete?: string
+  /**
+   * @deprecated Legacy escape hatch — extra attributes spread onto the `<textarea>` (v1.6.6 passed the
+   * form-field `name` via `other={{ name }}`). Accepted so those call sites stay drop-in.
+   */
+  other?: Record<string, unknown>
   /** Change handler receiving the native textarea event. */
   onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void
   /** Blur handler receiving the native textarea event. */
@@ -63,6 +73,8 @@ function Textarea({
   required,
   maxLength,
   autoComplete,
+  autocomplete,
+  other,
   onChange,
   onBlur,
   ariaLabel,
@@ -72,9 +84,10 @@ function Textarea({
 }: TextareaProps) {
   return (
     <textarea
+      {...other}
       ref={ref}
       id={id}
-      name={name}
+      name={name ?? (other?.name as string | undefined)}
       value={value}
       defaultValue={defaultValue}
       placeholder={placeholder}
@@ -84,7 +97,7 @@ function Textarea({
       readOnly={readOnly}
       required={required}
       maxLength={maxLength}
-      autoComplete={autoComplete}
+      autoComplete={autoComplete ?? autocomplete}
       aria-invalid={isErroneous || undefined}
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}

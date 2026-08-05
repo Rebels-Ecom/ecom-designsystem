@@ -11,6 +11,21 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * **Legacy drop-in shape (v1.6.6).** The app supplies the form-field `name` via `other={{ name }}` and
+ * the lowercase `autocomplete`. Locks that both reach the `<input>` — V2 had no `other` and renamed the
+ * prop to `autoComplete`, so both were silently dropped.
+ */
+export const LegacyOtherAndAutocomplete: Story = {
+  args: { id: 'legacy-email', ariaLabel: 'E-post', other: { name: 'user-email' }, autocomplete: 'email' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = canvas.getByRole('textbox', { name: 'E-post' })
+    await expect(input).toHaveAttribute('name', 'user-email')
+    await expect(input).toHaveAttribute('autocomplete', 'email')
+  },
+}
+
 /** Canonical usage: an external `<label htmlFor>` supplies the accessible name. */
 export const WithLabel: Story = {
   args: { id: 'email', type: 'email', autoComplete: 'email' },

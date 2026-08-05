@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import {
   Picture,
   type PictureFetchPriority,
@@ -119,7 +119,7 @@ function ArticleCard({
     />
   )
 
-  const ImageLink = link?.linkComponent ?? DefaultLink
+  const ImageLink = resolveLink(link?.linkComponent)
   const hasText = Boolean(heading || excerpt || richText || link)
 
   return (
@@ -151,7 +151,7 @@ function ArticleCard({
             picture
           )}
           {!!tags?.length && (
-            <ul className="pointer-events-none absolute left-4 top-4 flex flex-wrap gap-1">
+            <ul role="list" className="pointer-events-none absolute left-4 top-4 flex list-none flex-wrap gap-1 p-0">
               {tags.map((tag, i) => (
                 <li key={`${tag.text}-${i}`}>
                   <Tag {...tag} />

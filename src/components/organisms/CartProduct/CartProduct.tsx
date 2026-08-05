@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Heading, type HeadingOrder } from '../../atoms/Heading'
 import { type IconName } from '../../atoms/Icon'
 import { Loader } from '../../atoms/Loader'
@@ -118,7 +118,7 @@ function CartProduct({
   ref,
 }: CartProductProps) {
   const t = { ...defaultCartProductLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const {
     partNo,
     productName,

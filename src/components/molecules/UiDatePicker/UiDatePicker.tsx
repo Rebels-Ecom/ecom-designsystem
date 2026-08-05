@@ -171,7 +171,6 @@ function UiDatePicker({
       document.removeEventListener('touchstart', onPointerDown)
       document.removeEventListener('keydown', onKeyDown)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   return (

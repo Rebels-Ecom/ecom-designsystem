@@ -10,11 +10,10 @@ import { ProductVariant, type ProductVariantProps } from '../../molecules/Produc
  * selection state (`checked`/`onChange`/`onSelect`) and injects the shared localised labels
  * (`partNoLabel`/`currencyLabel`/`unitLabel`) + the restricted-user flag, so those are omitted here.
  */
-export interface ProductVariantListItem
-  extends Pick<
-    ProductVariantProps,
-    'productName' | 'variantName' | 'variantId' | 'priceStr' | 'image' | 'sellerOnly' | 'sellerOnlyLabel'
-  > {}
+export type ProductVariantListItem = Pick<
+  ProductVariantProps,
+  'productName' | 'variantName' | 'variantId' | 'priceStr' | 'image' | 'sellerOnly' | 'sellerOnlyLabel'
+>
 
 export interface ProductVariantListLabels {
   /** Accessible name for the close button. @default 'Close' */

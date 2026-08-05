@@ -45,6 +45,27 @@ const articlesData: ArticleListArticle[] = [
 ]
 
 /**
+ * **Legacy drop-in shape (v1.6.6).** The app feeds Sitecore RichText **HTML** into `text`. Locks that
+ * the excerpt is stripped to plain text (no literal `<p>`/`<strong>` markup) before truncation — the
+ * "escaped, not raw HTML" rewrite had shown the tags verbatim.
+ */
+export const LegacyHtmlText: Story = {
+  args: {
+    articles: [
+      makeArticle(1, {
+        text: '<p>Rå <strong>HTML</strong>-text från Sitecore</p>',
+        maxChar: 200,
+      }),
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Rå HTML-text från Sitecore')).toBeInTheDocument()
+    await expect(canvas.queryByText(/<p>|<strong>/)).toBeNull()
+  },
+}
+
+/**
  * Canonical usage: five articles in a swipe carousel. The play test proves every article renders as
  * an `<article>` and that the carousel exposes a labelled region (named by the `title`).
  */

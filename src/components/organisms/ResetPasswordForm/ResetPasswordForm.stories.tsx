@@ -42,6 +42,47 @@ export const Default: Story = {
 }
 
 /**
+ * **Legacy drop-in — data-driven mode (v1.6.6).** The app renders the reset flow by passing `fields`,
+ * `actions`, `links`, a `logo` element, `formTitle`/`formSubtitle` and `onSubmit(data)` (an ordered
+ * `[{ value }]` array). Locks that shape — a mid-migration rewrite hardcoded a 2-field password form and
+ * ignored all of it, so the app's per-mode reset form (here: request-a-link) never rendered.
+ */
+export const DataDrivenLegacyShape: Story = {
+  args: {
+    onSubmit: fn(),
+    logo: <span data-testid="app-logo">LOGO</span>,
+    formTitle: 'Återställ ditt lösenord',
+    formSubtitle: 'Ange din e-postadress.',
+    fields: [
+      {
+        fieldType: 'input',
+        name: 'email',
+        label: 'E-post',
+        originalValue: '',
+        type: 'email',
+        error: 'Ogiltig e-postadress',
+        required: true,
+        pattern: 'email',
+        size: 'full',
+      },
+    ],
+    actions: [{ type: 'submit', surface: 'primary', size: 'small', children: 'Skicka' }],
+    links: [{ name: 'Bli kund', href: '/bli-kund' }],
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement)
+    // The app's logo element + link render, and the field is the app's — not a hardcoded password form.
+    await expect(canvas.getByTestId('app-logo')).toBeInTheDocument()
+    await expect(canvas.getByRole('link', { name: 'Bli kund' })).toBeInTheDocument()
+
+    await userEvent.type(canvas.getByLabelText('E-post'), 'kund@example.com')
+    await userEvent.click(canvas.getByRole('button', { name: 'Skicka' }))
+    // Reported as the legacy ordered array: data[0].value is the first field.
+    await expect(args.onSubmit).toHaveBeenCalledWith([{ value: 'kund@example.com' }])
+  },
+}
+
+/**
  * Error state: a form-level failure (e.g. an expired reset link) is announced via `role="alert"`,
  * scanned by axe alongside the empty fields.
  */

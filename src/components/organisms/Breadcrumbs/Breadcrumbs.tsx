@@ -1,4 +1,4 @@
-import type { Ref } from 'react'
+import type { ReactNode, Ref } from 'react'
 import type { LinkComponentType } from '../../../lib/link'
 import { ContentWrapper } from '../../atoms/ContentWrapper'
 import { Icon } from '../../atoms/Icon'
@@ -6,9 +6,19 @@ import { UiLink } from '../../molecules/UiLink'
 
 export interface BreadcrumbItem {
   /** Visible crumb text — also the link's accessible name (2.4.4). */
-  label: string
+  label?: string
+  /**
+   * @deprecated Legacy alias for {@link label} (v1.6.6 crumbs used `children`). Accepted so the app's
+   * existing breadcrumb data stays drop-in; prefer `label`.
+   */
+  children?: ReactNode
   /** Destination for this crumb. The last crumb is always the current page and is never linked. */
   href?: string
+  /**
+   * @deprecated Legacy current-page flag — ignored. The trail's last entry is the current page; a crumb
+   * without an `href` also renders as plain text. Accepted so the app's crumb shape stays drop-in.
+   */
+  active?: boolean
 }
 
 export interface BreadcrumbsLabels {
@@ -56,15 +66,17 @@ function Breadcrumbs({ breadcrumbs, linkComponent, labels, className, ref }: Bre
         <ol className="flex flex-wrap items-center gap-2 p-0 text-text-default">
           {breadcrumbs.map((crumb, index) => {
             const isCurrent = index === lastIndex
+            // Accept the legacy `children` alias for the visible/accessible crumb text.
+            const text = crumb.label ?? crumb.children
             return (
-              <li key={crumb.href ?? crumb.label} className="flex items-center gap-1">
+              <li key={crumb.href ?? index} className="flex items-center gap-1">
                 {isCurrent || !crumb.href ? (
                   <span aria-current={isCurrent ? 'page' : undefined} className="text-body">
-                    {crumb.label}
+                    {text}
                   </span>
                 ) : (
                   <UiLink href={crumb.href} linkComponent={linkComponent} onSurface="transparent">
-                    {crumb.label}
+                    {text}
                   </UiLink>
                 )}
                 {!isCurrent && <Icon icon="icon-chevron-right" size="small" />}

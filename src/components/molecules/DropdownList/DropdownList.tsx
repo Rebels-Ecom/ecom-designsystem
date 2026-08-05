@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { DefaultLink, resolveLink, type LinkComponentType } from '../../../lib/link'
 
 export type DropdownListTarget = '_blank' | '_self' | '_parent' | '_top'
 
@@ -41,7 +41,7 @@ export interface DropdownListProps {
  * (2.4.4), and each row is a ≥44px target (2.5.5†). Labels render uppercase.
  */
 function DropdownList({ links, linkComponent, className, ref }: DropdownListProps) {
-  const InternalLink = linkComponent ?? DefaultLink
+  const InternalLink = resolveLink(linkComponent)
 
   return (
     <ul ref={ref} role="list" className={cn('m-0 flex list-none flex-col items-center p-0 md:w-full', className)}>

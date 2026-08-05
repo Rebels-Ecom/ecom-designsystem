@@ -4,7 +4,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { MenuButton } from './MenuButton'
 
 const meta = {
-  title: 'Design System/Atoms/MenuButton',
+  title: 'Design System/Deprecated/MenuButton',
   component: MenuButton,
 } satisfies Meta<typeof MenuButton>
 

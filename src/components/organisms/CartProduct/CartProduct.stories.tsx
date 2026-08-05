@@ -19,7 +19,7 @@ const beer: CartProductItem = {
 }
 
 const meta = {
-  title: 'Design System/Organisms/CartProduct',
+  title: 'Design System/Deprecated/CartProduct',
   component: CartProduct,
   parameters: { layout: 'fullscreen' },
   args: {

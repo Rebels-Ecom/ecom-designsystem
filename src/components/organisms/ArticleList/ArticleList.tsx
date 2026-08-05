@@ -63,6 +63,19 @@ function cardLayout(
 }
 
 /**
+ * Legacy `extractContent`: the app feeds Sitecore RichText **HTML** into each article's `text`, so strip
+ * the tags to plain text (entities decoded) before it is rendered/truncated — reproducing v1.6.6's
+ * `formatText`, which otherwise shows literal `<p>…</p>` markup in the excerpt. SSR-safe: no DOM → a
+ * tag-stripping regex fallback.
+ */
+function stripHtml(value: string): string {
+  if (typeof document === 'undefined') return value.replace(/<[^>]*>/g, '')
+  const el = document.createElement('div')
+  el.innerHTML = value
+  return el.textContent ?? ''
+}
+
+/**
  * Article/blog teaser list (organism) composing {@link ArticleCard}. Presentational: it adds no
  * landmark (the consuming page owns `<main>`), only an optional `<h2>` section title that outranks
  * each card's `<h3>` so the heading outline stays valid (1.3.1). Cards size themselves via the
@@ -86,7 +99,11 @@ function ArticleList({
 
   if (!Array.isArray(articles) || articles.length === 0) return null
 
-  const total = articles.length
+  // Normalise HTML excerpts to plain text (legacy parity — see stripHtml).
+  const items = articles.map((article) =>
+    typeof article.text === 'string' ? { ...article, text: stripHtml(article.text) } : article,
+  )
+  const total = items.length
   const regionName = title ?? t.carouselRegion
 
   return (
@@ -105,7 +122,7 @@ function ArticleList({
           }}
           labels={carouselLabels}
         >
-          {articles.map((article, index) => {
+          {items.map((article, index) => {
             const { id, ...content } = article
             return (
               <CarouselItem key={id}>
@@ -123,7 +140,7 @@ function ArticleList({
             total > 1 && 'px-4',
           )}
         >
-          {articles.map((article, index) => {
+          {items.map((article, index) => {
             const { id, ...content } = article
             return <ArticleCard key={id} {...content} {...cardLayout(total, index, grid)} />
           })}

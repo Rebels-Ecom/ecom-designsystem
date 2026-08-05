@@ -135,54 +135,55 @@ function Picture({
   const showingFallback = !isValidPicture() && Boolean(fallbackImageUrl)
 
   return (
-    <>
-      <picture id={id} className={cn('relative block', classNamePicture)}>
-        {imageSources.sources.map((source, i) => (
-          <source
-            key={`${id}_source_${i}`}
-            srcSet={source.srcset || fallbackImageUrl}
-            type={source.type}
-            media={source.media}
-            sizes={source.sizes}
-          />
-        ))}
-        <img
-          ref={mergeRefs<HTMLImageElement>(imgRef, ref)}
-          src={imageSources.src || fallbackImageUrl}
-          alt={alt}
-          // A decorative image (empty `alt`) is presentational; a global ARIA attribute like
-          // `aria-busy` on it triggers axe's presentation-role-conflict, so only expose the
-          // loading state on images that are actually in the accessibility tree.
-          aria-busy={alt ? isLoading : undefined}
-          width={width}
-          height={height}
-          loading={loading}
-          decoding={decoding}
-          fetchPriority={fetchPriority}
-          onError={handleBrokenImage}
-          onLoad={() => setIsLoading(false)}
-          className={cn(
-            'block h-auto max-w-full transition-opacity duration-300',
-            isLoading ? 'opacity-0' : 'opacity-100',
-            showingFallback && 'object-contain p-4',
-            classNameImg,
-          )}
+    // The scrim lives *inside* the `relative` `<picture>` (a sibling of the `<img>`, like the skeleton)
+    // so `inset-0` aligns it to the image box. As an outside sibling it anchored to the consumer's
+    // nearest positioned ancestor instead and drifted whenever the picture didn't fill that box.
+    <picture id={id} className={cn('relative block', classNamePicture)}>
+      {imageSources.sources.map((source, i) => (
+        <source
+          key={`${id}_source_${i}`}
+          srcSet={source.srcset || fallbackImageUrl}
+          type={source.type}
+          media={source.media}
+          sizes={source.sizes}
         />
-        {isLoading && (
-          <div
-            aria-hidden="true"
-            style={{ width, height }}
-            className="skeleton-shimmer animate-shimmer absolute inset-0 overflow-hidden bg-surface-subdued motion-reduce:animate-none"
-          />
+      ))}
+      <img
+        ref={mergeRefs<HTMLImageElement>(imgRef, ref)}
+        src={imageSources.src || fallbackImageUrl}
+        alt={alt}
+        // A decorative image (empty `alt`) is presentational; a global ARIA attribute like
+        // `aria-busy` on it triggers axe's presentation-role-conflict, so only expose the
+        // loading state on images that are actually in the accessibility tree.
+        aria-busy={alt ? isLoading : undefined}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding={decoding}
+        fetchPriority={fetchPriority}
+        onError={handleBrokenImage}
+        onLoad={() => setIsLoading(false)}
+        className={cn(
+          'block h-auto max-w-full transition-opacity duration-300',
+          isLoading ? 'opacity-0' : 'opacity-100',
+          showingFallback && 'object-contain p-4',
+          classNameImg,
         )}
-      </picture>
+      />
+      {isLoading && (
+        <div
+          aria-hidden="true"
+          style={{ width, height }}
+          className="skeleton-shimmer animate-shimmer absolute inset-0 overflow-hidden bg-surface-subdued motion-reduce:animate-none"
+        />
+      )}
       {pictureWithOpacity && (
         <div
           aria-hidden="true"
-          className={cn('absolute inset-0 z-10 h-full w-full', opacityClasses[pictureWithOpacity])}
+          className={cn('absolute inset-0 z-10', opacityClasses[pictureWithOpacity])}
         />
       )}
-    </>
+    </picture>
   )
 }
 

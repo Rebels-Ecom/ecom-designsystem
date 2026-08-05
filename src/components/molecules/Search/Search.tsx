@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import type { ChangeEvent, FormEvent, KeyboardEvent, ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
 import { mergeRefs } from '../../../lib/mergeRefs'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { InputText } from '../InputText'
 import { Icon } from '../../atoms/Icon'
 
@@ -104,7 +104,7 @@ function Search({
   ref,
 }: SearchProps) {
   const t = { ...defaultSearchLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const formRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 

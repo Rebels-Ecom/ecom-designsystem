@@ -452,6 +452,66 @@ untagged** so `test:visual` — which pixel-diffs only `visual`-tagged frames ag
 skips them and no unpaired baseline is created. They still run under `test-storybook` (axe + play), which
 is where the end-to-end verification value is.
 
+**Verifying the parent → card direction (prop-driven re-sync).** A `play` that only *clicks and types*
+exercises the card's own handlers — it never proves the card reacts correctly when the **parent hands it
+new props after mount**. For a stateful, parent-driven component that is a real gap, because the app
+constantly pushes updates down (a server campaign/stock update, a discount/price-code recompute, an
+externally-reset quantity). Lock that direction with a small **parent-harness story**: a wrapper that
+owns `product` in state and exposes test-only buttons which mutate **one prop**, then a `play` that clicks
+a button and asserts the card re-rendered correctly. For `ProductCard` this lives in
+`ProductCard.contract.stories.tsx` (`ParentDriven*Resync`, `AllowNegativeFromParent`,
+`VariantResyncClobber`) and pins the `useProductCardState` sync effect — including the legacy **clobber
+quirk** (after a variant switch, a later parent re-render overwrites `activeCampaign`/`priceStr`/
+`pricePerUnit`/`outOfStock` back to the *base* product while `partNo`/`packaging`/`itemNumberPerSalesUnit`
+keep the variant's). Locking a known quirk is deliberate: it stops a future refactor from silently
+"fixing" it and diverging from v1.6.6.
+
+**A component the app consumes must keep legacy behaviour — even a "cleaner" redesign is a regression if
+it breaks the drop-in.** `ProductCardMiniVertical` is a cautionary case. A mid-migration batch rebuilt it
+as a controlled/presentational card — `quantity` became a controlled prop, the internal `variantsInCart`
+→ quantity sync, the 1000 ms debounce and the "Add bumps the quantity" behaviour were dropped as "app
+concerns", and the total moved from the internal sv-SE `calculateTotalPrice` to a consumer-supplied string.
+It read as a tidy API, but the app still drives the mini with `variantsInCart` + a product-shaped
+`onChangeQuantity`, so the redesign silently broke that call site (in-cart quantity would render `0`) — a
+parity regression, not a decision. It has since been **restored to v1.6.6 behaviour**: the mini owns the
+cart-quantity state machine again (seeded/synced from `variantsInCart`, debounced report of the merged
+product, restricted-only `addToCart()`), consuming the shared `ProductCardProduct` shape like the rest of
+the family, and `ProductCardMiniVertical.contract.stories.tsx` locks that behaviour. Rule: the "logic
+cannot change" guarantee covers **every** app-consumed card, not just `ProductCard`; if a component drifts
+from it, restore parity rather than document the drift — and add a contract lock so it can't drift again.
+
+**Drop-in parity is a whole-library property — audit it against the app, not against the stories.** The
+`ProductCard` hardening made *that family* a faithful drop-in, but a sweep of every component the app
+imports from the package found ~15 others that had been rewritten with cleaner-but-divergent APIs and so
+were **not** drop-ins on a V2 upgrade: renamed props (`OfferCardList` `list`→`offers`, `Footer`
+`links`→`linkGroups`, `Breadcrumbs`/`Footer` item `children`→`label`), a renamed export (`InlineErrorText`
+→`InlineError`), a retyped prop (`Button` `iconLeft` object→string), dropped passthroughs (`BoxWrapper`
+`style`, `InputText`/`Textarea` `other`, `LinkButton` `fullWidth`/`name`, `SocialMediaLink` `title`), and a
+dropped transform (`ArticleList` HTML→plaintext). Several **crashed or rendered nothing** in the app while
+every Storybook story stayed green — because the stories exercise the *new* API, never the app's call
+shape. Two standing rules from that:
+1. **Fix divergences with additive back-compat shims.** Keep the new API and **re-accept the legacy
+   shape** (an alias prop marked `@deprecated`, an object|string union, a spread escape hatch, an aliased
+   export) so the app upgrades unchanged and consumers are still guided to the clean API. Never a breaking
+   rename on an app-consumed component.
+2. **Lock each with a `Legacy…` story that drives the *app's* call shape** (the old prop names/shapes),
+   not the V2 one — a green canonical story is not evidence of drop-in parity. This is the only thing that
+   would have caught these; treat "renders in Storybook" and "is a drop-in for the app" as different claims.
+
+The cross-cutting `linkComponent` contract (V2 renders `<Link href>`, legacy/react-router navigate from
+`to`) was fixed **once, centrally**: `resolveLink(linkComponent)` in `src/lib/link.tsx` wraps an injected
+link so it receives **both `href` and `to`** (react-router reads `to`; href-based links ignore it), cached
+per link identity so the wrapper is stable across renders. Every consumer resolves its link through it
+(`resolveLink(linkComponent)` in place of `linkComponent ?? DefaultLink`), so the app's unadapted
+`react-router` `Link` navigates with zero app changes. The intrinsic `'a'` / built-in `DefaultLink` render
+a plain anchor (no `to`). This is the pattern for any future `href`-vs-`to` link interop.
+
+**All of the above shims ship with the "logic cannot change" rule fully applied library-wide** — including
+the four behavior restorations beyond simple prop aliases: `ProductCardMiniVertical` (cart state machine),
+`ProductCarousel` (curried `onViewportEnter` tracker invoked), `DynamicFilter`/`RangeInput` (1000ms range
+debounce, opt-in via `debounceMs`), and `ResetPasswordForm` (data-driven `fields`/`actions`/`links` mode
+alongside the built-in form). The app upgrades to V2 as a true drop-in.
+
 ## Accessibility
 
 Generate a11y from scratch (don't copy legacy). `@storybook/addon-a11y` runs in

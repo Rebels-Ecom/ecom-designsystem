@@ -47,7 +47,7 @@ export const Default: Story = {
   },
 }
 
-/** Horizontal (row) card with a quantity field and cart / favourite / remove actions. */
+/** Horizontal (row) card with a quantity field and cart / favourite / purchase-list / remove actions. */
 export const Horizontal: Story = {
   args: {
     cardDisplay: 'horizontal',
@@ -55,11 +55,21 @@ export const Horizontal: Story = {
     addToCartBtnLabel: 'Add to cart',
     showPackaging: true,
     onRemoveProduct: fn(),
+    showFavoriteIcon: true,
+    showAddToPurchaseListIcon: true,
+    onFavoriteIconClick: fn(),
+    onSaveToPurchaseListClick: fn(),
+    // Seed this product as an existing favourite so the toggle renders in its active (filled) state.
+    favoriteProductsIds: [dummyBeerProduct.partNo],
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement)
     await userEvent.click(canvas.getByRole('button', { name: 'Remove product' }))
     await expect(args.onRemoveProduct).toHaveBeenCalledWith('1125111')
+
+    // The favourite toggle is present and reflects the seeded favourite state.
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove from favourites' }))
+    await expect(args.onFavoriteIconClick).toHaveBeenCalledWith('1125111', true, expect.anything())
   },
 }
 

@@ -4,7 +4,7 @@ import { UserProfileDropdown, type UserProfileMenuItem } from './UserProfileDrop
 import { Text } from '../../atoms/Text'
 
 const meta = {
-  title: 'Design System/Organisms/UserProfileDropdown',
+  title: 'Design System/Deprecated/UserProfileDropdown',
   component: UserProfileDropdown,
 } satisfies Meta<typeof UserProfileDropdown>
 

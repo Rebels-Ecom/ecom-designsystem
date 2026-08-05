@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Icon, type IconName } from '../../atoms/Icon'
 import { ContentWrapper } from '../../atoms/ContentWrapper'
 import { UiDatePicker, type UiDatePickerProps } from '../UiDatePicker'
@@ -95,7 +95,7 @@ function TopNavBar({
   ref,
 }: TopNavBarProps) {
   const t = { ...defaultTopNavBarLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
 
   if (leftLinks.length === 0 && rightLinks.length === 0 && !userName) return null
 

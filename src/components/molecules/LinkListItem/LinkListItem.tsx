@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { cn } from '../../../lib/cn'
-import { DefaultLink, type LinkComponentType } from '../../../lib/link'
+import { resolveLink, type LinkComponentType } from '../../../lib/link'
 import { Icon } from '../../atoms/Icon'
 import { Heading, type HeadingOrder } from '../../atoms/Heading'
 import { Placeholder } from '../../atoms/Placeholder'
@@ -102,7 +102,7 @@ function LinkListItem({
   ref,
 }: LinkListItemProps) {
   const t = { ...defaultLinkListItemLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const hasTagRow = Boolean(date1 || date2 || onDownloadClick || downloadLinkUrl)
 
   return (

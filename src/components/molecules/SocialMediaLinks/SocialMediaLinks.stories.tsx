@@ -9,7 +9,7 @@ const links: SocialMediaLinksProps['links'] = [
 ]
 
 const meta = {
-  title: 'Design System/Molecules/SocialMediaLinks',
+  title: 'Design System/Deprecated/SocialMediaLinks',
   component: SocialMediaLinks,
   parameters: { layout: 'fullscreen' },
   args: { links },

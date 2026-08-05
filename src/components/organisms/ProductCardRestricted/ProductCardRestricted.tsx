@@ -1,7 +1,7 @@
 import type { Ref } from 'react'
 import defaultFallbackImage from '../../../assets/placeholders/defaultFallbackImage.svg'
 import { cn } from '../../../lib/cn'
-import { DefaultLink } from '../../../lib/link'
+import { resolveLink } from '../../../lib/link'
 import { type HeadingOrder } from '../../atoms/Heading'
 import { Picture } from '../../atoms/Picture'
 import { Placeholder } from '../../atoms/Placeholder'
@@ -67,7 +67,7 @@ function ProductCardRestricted({
   ref,
 }: ProductCardRestrictedProps) {
   const t = { ...defaultProductCardLabels, ...labels }
-  const Link = linkComponent ?? DefaultLink
+  const Link = resolveLink(linkComponent)
   const {
     productName,
     productUrl,

@@ -3,7 +3,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { DeliveryForm } from './DeliveryForm'
 
 const meta = {
-  title: 'Design System/Organisms/DeliveryForm',
+  title: 'Design System/Deprecated/DeliveryForm',
   component: DeliveryForm,
   parameters: { layout: 'fullscreen' },
   args: {

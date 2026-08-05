@@ -1,5 +1,5 @@
 import type { Decorator, Meta, StoryObj } from '@storybook/react-vite'
-import { expect, fn, within } from 'storybook/test'
+import { expect, fn, waitFor, within } from 'storybook/test'
 import beerGlass from '../../../assets/product-images/beer-glass.jpg'
 import {
   dummyBeerProduct,
@@ -53,6 +53,23 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+const curriedTrackSpy = fn()
+
+/**
+ * **Legacy drop-in — curried impression tracking.** The app passes `onViewportEnter` as a curried factory
+ * `(product, index) => () => track(...)`; v1.6.6 handed the returned tracker to framer-motion's viewport
+ * hook, which fired it on entry. Locks that the returned function is invoked when the first slide is in
+ * view — a mid-migration rewrite discarded it, silently killing recommendation-impression analytics.
+ */
+export const CurriedViewportTracking: Story = {
+  args: {
+    onViewportEnter: (product, index) => () => curriedTrackSpy(product.partNo, index),
+  },
+  play: async () => {
+    await waitFor(() => expect(curriedTrackSpy).toHaveBeenCalled(), { timeout: 3000 })
+  },
+}
 
 /**
  * Canonical carousel. The `play` proves the carousel is a named region and that every product renders

@@ -127,7 +127,7 @@ export const loadingCard = {
 
 /** Dynamic layout — `cardDisplay` is computed at the call site, so the interface must stay flat. */
 export const dynamicDisplay = {
-  cardDisplay: (true ? 'vertical' : 'horizontal') as 'vertical' | 'horizontal',
+  cardDisplay: 'vertical' as 'vertical' | 'horizontal',
   product: productFull,
   loading: false,
   addToCartBtnLabel: 'Lägg i varukorg',

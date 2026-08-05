@@ -4,7 +4,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { MultiSelect, type MultiSelectOption, type MultiSelectProps } from './MultiSelect'
 
 const meta = {
-  title: 'Design System/Molecules/MultiSelect',
+  title: 'Design System/Deprecated/MultiSelect',
   component: MultiSelect,
 } satisfies Meta<typeof MultiSelect>
 

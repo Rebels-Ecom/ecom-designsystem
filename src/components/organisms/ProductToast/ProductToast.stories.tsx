@@ -27,7 +27,7 @@ const cider: CartProductItem = {
 }
 
 const meta = {
-  title: 'Design System/Organisms/ProductToast',
+  title: 'Design System/Deprecated/ProductToast',
   component: ProductToast,
   args: {
     product: beer,
