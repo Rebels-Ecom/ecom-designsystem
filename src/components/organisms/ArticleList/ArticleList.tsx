@@ -113,7 +113,7 @@ function ArticleList({
       {swipe ? (
         <Carousel
           ariaLabel={regionName}
-          offsetArrows
+          arrowsWithDots
           peek="2rem"
           breakpoints={{
             sm: { perPage: 1 },

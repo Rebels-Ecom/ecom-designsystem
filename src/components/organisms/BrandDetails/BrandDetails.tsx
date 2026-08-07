@@ -89,7 +89,7 @@ function BrandDetails({
 
       {tags && tags.length > 0 && <TagsList tags={tags} />}
 
-      <Heading order={3} margin={[0, 0, 0.5]}>
+      <Heading order={3} margin={[0, 0, 1]}>
         {title}
       </Heading>
 

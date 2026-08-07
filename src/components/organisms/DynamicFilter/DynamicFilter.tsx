@@ -385,7 +385,9 @@ function DynamicFilter({
               onClick={() => handleRemoveFilter(option, Boolean(rangeGroup))}
               aria-label={t.removeFilter(chipName)}
               className={cn(
-                'flex items-center justify-center gap-1 rounded-full bg-border-grey py-1 pr-2 pl-3 font-secondary text-body-s text-text-default',
+                // md:h-9 lifts the chips to the Filtrera button's height so the desktop filter bar reads
+                // as one aligned row (mobile chips keep their compact py-1 height).
+                'flex items-center justify-center gap-1 rounded-full bg-border-grey py-1 pr-2 pl-3 font-secondary text-body-s text-text-default md:h-9',
                 'hover:bg-border-on-secondary-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
                 option.disabled && 'bg-grey-400 text-text-subdued',
               )}
@@ -420,7 +422,9 @@ function DynamicFilter({
           iconRight="icon-plus"
           onClick={() => setOpen(true)}
           disabled={loading}
-          className="h-12 w-full justify-center md:h-9 md:w-auto"
+          // surface="x" only paints its fill from md up; on mobile these read as a filled grey filter
+          // bar (matching legacy), so add the neutral fill below md and let md:bg-action-x take over.
+          className="h-12 w-full justify-center max-md:bg-surface-select md:h-9 md:w-auto"
         >
           {t.filterButton}
         </Button>
@@ -435,7 +439,7 @@ function DynamicFilter({
               onClick={() => setShowSelectedMobile((value) => !value)}
               aria-expanded={showSelectedMobile}
               aria-controls={chipsId}
-              className="h-12 w-full justify-center md:hidden"
+              className="h-12 w-full justify-center bg-surface-select md:hidden"
             >
               {t.selectedFilters(selectedCount)}
             </Button>

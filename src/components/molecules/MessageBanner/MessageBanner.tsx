@@ -48,7 +48,10 @@ function MessageBanner({ children, type, color, className, ref }: MessageBannerP
         className,
       )}
     >
-      {type && <Icon icon={iconByType[type]} />}
+      {/* items-center centres the icon's 1em box on the text line box, but the line-box centre sits
+          ~1px below the text's optical (cap) centre (descender space with no descenders in play), so the
+          glyph reads low; a 1px upward nudge re-centres it on the text. */}
+      {type && <Icon icon={iconByType[type]} className="relative -top-px" />}
       <span>{children}</span>
     </div>
   )

@@ -178,6 +178,9 @@ function UiDatePicker({
       <Button
         ref={mergeRefs<HTMLButtonElement>(triggerRef, ref)}
         surface="x"
+        // surface="x" only paints its white fill from md up; the trigger reads as a white bar on mobile
+        // too (matching legacy), so apply the fill at the base (the md:border stays desktop-only).
+        className="bg-action-x"
         size="x-small"
         fullWidth
         iconRight="icon-calendar"

@@ -491,11 +491,14 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // ── Batch 12 (molecules — Tier-0 leaves) ──
   // PurchaseList: the two-row list under a "Delete" button in a ContentWrapper. The legacy orange
   // "updated" badge used white text (~2.3:1, fails AA); V2 keeps the orange fill with dark text — a
-  // tiny date pill, well under the 2% gate. (Legacy story passed linkComponent="p"; V2 uses a real
-  // <a>, visually identical text.)
+  // tiny date pill. (Legacy story passed linkComponent="p"; V2 uses a real <a>, visually identical
+  // text.) reviewOnly: the story is now functional — the Delete button starts disabled (nothing
+  // selected) and is full-width on mobile (`w-full md:w-auto`), so the resting frame diverges from the
+  // legacy enabled, content-width button on both viewports (an intentional, locked divergence).
   {
     storyId: 'design-system-molecules-purchaselist--visual',
     legacyBaseline: 'design-system-atoms-purchaselist--purchase-list-story',
+    reviewOnly: true,
   },
   // SortableListItem: both row frames, reproduced with the migrated Heading/Text/GroupWrapper children
   // in the 1800px wrapper. V2 replaces the legacy `<button>`-wrapping-a-heading (invalid: a button may
@@ -662,22 +665,24 @@ export const visualBaselines: readonly VisualBaseline[] = [
     storyId: 'design-system-molecules-formgroup--visual-textarea-right-label',
     legacyBaseline: 'design-system-molecules-formgroup-textarea--form-group-textarea-story-right-label-text',
   },
-  // AccountBox: the account card with/without a contact person. Button font divergence under the gate.
+  // AccountBox: the account card with/without a contact person. reviewOnly (desktop): the info lines now
+  // use intentionally tighter, grouped spacing (header/contact/address in `gap-2` groups) instead of the
+  // legacy loose 1em paragraph margins, so the frame no longer pixel-matches legacy's looser rhythm.
   {
     storyId: 'design-system-molecules-accountbox--visual',
     legacyBaseline: 'design-system-molecules-accountbox--account-box-story',
     viewports: ['desktop'],
+    reviewOnly: true,
   },
   {
     storyId: 'design-system-molecules-accountbox--visual-no-contact',
     legacyBaseline: 'design-system-molecules-accountbox--account-box-story-2',
     viewports: ['desktop'],
+    reviewOnly: true,
   },
-  // Note: both AccountBox frames are mapped DESKTOP-ONLY. The card content matches, but legacy's
-  // looser paragraph line-spacing accumulates a ~12px vertical drift down the 5 info lines; on the
-  // narrow mobile canvas the card fills most of the width, so that sub-pixel-per-line drift tips the
-  // frame just over the 2% gate (desktop, where the 360px card is a small fraction of 1280px, stays
-  // under). Same vertical-rhythm call as GroupWrapper / UnorderedList / AlertBox.
+  // Note: both AccountBox frames are paired DESKTOP-ONLY (legacy's mobile card fills the narrow canvas,
+  // where the looser line-spacing tipped the frame over the 2% gate). The V2 lines are now deliberately
+  // tighter than legacy (see above), so the desktop frames are reviewOnly rather than gated.
   // CampaignBox: the collapsed purple bar, with the select button and limited (button-less) variants.
   {
     storyId: 'design-system-molecules-campaignbox--visual',
@@ -841,10 +846,14 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // offset, and on the narrow 375px mobile canvas that vertical ghosting is ~5% of the frame (> gate);
   // desktop dilutes it across 1280px and matches. Same amplification call as GroupWrapper / UnorderedList
   // / AccountBox / OrderItem mina-ordrar-2. Mobile layout is still covered by the play tests.
+  // reviewOnly: the title now carries more bottom spacing (Heading margin 0.5rem → 1rem) than the legacy
+  // frame — an intentional design change that shifts the description/link down, so the desktop frame no
+  // longer pixel-matches; still paired (desktop only) for human review.
   {
     storyId: 'design-system-organisms-branddetails--visual',
     legacyBaseline: 'design-system-organisms-brand-details--brand-details-story',
     viewports: ['desktop'],
+    reviewOnly: true,
   },
   // Breadcrumbs: a top-of-page crumb row. The `with-background`/`without-background` legacy frames both
   // render the same "Start > Öl" trail (the legacy image/title props were dead code), so one V2 `Visual`
@@ -1236,12 +1245,15 @@ export const visualBaselines: readonly VisualBaseline[] = [
   // links). DESKTOP-ONLY on both frames — the legacy mobile card forces `height: calc(100vh - 2rem)`
   // (full-viewport card) which V2 does not replicate (content-height card, no arbitrary calc), leaving a
   // ~14% (default) / ~41% (loading) white-vs-off-white band on the 375px canvas — structurally
-  // incomparable. Desktop card is content-height in legacy too, so it matches. Only desktop divergence:
-  // orange→blue+underline links (documented AA fix), small glyphs under the 2% gate.
+  // incomparable. Desktop card is content-height in legacy too, so it matches. reviewOnly: the frame now
+  // renders the real <Logotype/> brand mark where the legacy story showed a "Logo goes here" placeholder
+  // — an intentional divergence in the logo area (plus the documented orange→blue+underline AA link fix)
+  // that the pixel gate can't clear; still paired (desktop only) for human review.
   {
     storyId: 'design-system-organisms-loginform--visual',
     legacyBaseline: 'design-system-organisms-loginform--login-form-story',
     viewports: ['desktop'],
+    reviewOnly: true,
   },
   // Loading = disabled fields (legacy `Form` sets `disabled={loading}`, NO overlay/scrim), reproduced in
   // V2 with the same disabled tokens (surface-disabled / border-disabled / text-subdued) → desktop matches.

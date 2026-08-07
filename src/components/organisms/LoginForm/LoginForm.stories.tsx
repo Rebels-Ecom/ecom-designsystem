@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { LoginForm } from './LoginForm'
+import { Logotype } from '../../molecules/Logotype'
 
 const meta = {
   title: 'Design System/Organisms/LoginForm',
@@ -128,7 +129,7 @@ export const Localized: Story = {
 export const Visual: Story = {
   tags: ['visual'],
   args: {
-    logo: <span>Logo goes here</span>,
+    logo: <Logotype />,
     title: 'Logga in',
     description: 'Fyll i dina uppgifter här nedanför',
     usernameLabel: 'Mailadress',

@@ -64,19 +64,35 @@ export interface ArticleCardProps {
 }
 
 /**
- * Image box shape per card. Most shapes use a Tailwind v4 bare-fraction aspect ratio; `fullWidth` is a
- * fixed-height wide banner instead — a very wide aspect box gets overridden by the tall intrinsic image
- * when the card is a flex item, so a definite height is what actually clips it via `object-cover`.
+ * Outer image "slot" — a positioned box at the TALLEST aspect for the row. In the small/large
+ * alternation (not `equalHeights`/`fullWidth`) it's `md:aspect-3/4`; the image inside is absolutely
+ * bottom-anchored, so a shorter `small` image lines its bottom edge up with the taller `large` one
+ * (the legacy `.ratioWrapper`). It stays a plain block (no flex) so the cards keep equal `flex-1`
+ * width — a flex slot with `aspect-ratio` blows the taller card wider. Matches the image for
+ * `equalHeights`/`fullWidth`, where there's nothing to align.
  */
-function imageAspect({
+function imageSlot({
+  fullWidth,
+  equalHeights,
+}: Pick<ArticleCardProps, 'fullWidth' | 'equalHeights'>): string {
+  if (fullWidth) return 'relative h-64 overflow-hidden'
+  if (equalHeights) return 'relative aspect-5/6'
+  return 'relative aspect-5/6 md:aspect-3/4'
+}
+
+/**
+ * Inner image box — absolutely bottom-anchored inside the slot at the card's own aspect. `small` stays
+ * `5/6` (sitting at the bottom of the taller slot); `large` matches the slot (`md:aspect-3/4`);
+ * `fullWidth` fills its fixed-height slot.
+ */
+function imageBox({
   fullWidth,
   equalHeights,
   type,
 }: Pick<ArticleCardProps, 'fullWidth' | 'equalHeights' | 'type'>): string {
-  if (fullWidth) return 'h-64 overflow-hidden'
-  if (equalHeights) return 'aspect-5/6'
-  if (type === 'large') return 'aspect-5/6 md:aspect-3/4'
-  return 'aspect-5/6'
+  if (fullWidth) return 'absolute inset-0'
+  if (!equalHeights && type === 'large') return 'absolute inset-x-0 bottom-0 aspect-5/6 md:aspect-3/4'
+  return 'absolute inset-x-0 bottom-0 aspect-5/6'
 }
 
 /**
@@ -127,45 +143,50 @@ function ArticleCard({
       ref={ref}
       className={cn(
         'flex flex-col',
-        fullWidth ? 'w-full' : 'flex-1',
+        // min-w-0 lets the `flex-1` cards share width evenly — without it a long, unbreakable word in
+        // one card's excerpt sets a large min-content and stops that card shrinking, so it balloons
+        // wider than its siblings at narrow (tablet) widths.
+        fullWidth ? 'w-full' : 'flex-1 min-w-0',
         equalHeights && 'h-full',
         asCarouselItem && 'max-w-full',
         className,
       )}
     >
       {image && (
-        <div className={cn('relative', imageAspect({ fullWidth, equalHeights, type }))}>
-          {link ? (
-            <ImageLink
-              href={link.href}
-              target={link.target ?? '_self'}
-              rel={link.isExternal ? 'noopener noreferrer' : undefined}
-              tabIndex={-1}
-              aria-label={heading ? `Läs mer om ${heading}` : 'Läs mer'}
-              onClick={onClick}
-              className="block h-full w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"
-            >
-              {picture}
-            </ImageLink>
-          ) : (
-            picture
-          )}
-          {!!tags?.length && (
-            <ul role="list" className="pointer-events-none absolute left-4 top-4 flex list-none flex-wrap gap-1 p-0">
-              {tags.map((tag, i) => (
-                <li key={`${tag.text}-${i}`}>
-                  <Tag {...tag} />
-                </li>
-              ))}
-            </ul>
-          )}
+        <div className={cn(imageSlot({ fullWidth, equalHeights }))}>
+          <div className={cn(imageBox({ fullWidth, equalHeights, type }))}>
+            {link ? (
+              <ImageLink
+                href={link.href}
+                target={link.target ?? '_self'}
+                rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                tabIndex={-1}
+                aria-label={heading ? `Läs mer om ${heading}` : 'Läs mer'}
+                onClick={onClick}
+                className="block h-full w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary"
+              >
+                {picture}
+              </ImageLink>
+            ) : (
+              picture
+            )}
+            {!!tags?.length && (
+              <ul role="list" className="pointer-events-none absolute left-4 top-4 flex list-none flex-wrap gap-1 p-0">
+                {tags.map((tag, i) => (
+                  <li key={`${tag.text}-${i}`}>
+                    <Tag {...tag} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       )}
 
       {hasText && (
         <div className={cn('flex flex-1 flex-col p-4 pt-6', fullWidth && 'items-center text-center')}>
           {heading && <h3 className="mb-5 text-h-xs font-bold md:text-h-s">{heading}</h3>}
-          {excerpt && <p className="mb-6 text-body text-text-default">{excerpt}</p>}
+          {excerpt && <p className="mb-6 text-body break-words text-text-default">{excerpt}</p>}
           {richText}
           {link && (
             <UiLink

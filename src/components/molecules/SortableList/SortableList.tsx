@@ -137,7 +137,7 @@ function SortableList({
               {listHeading}
             </div>
           )}
-          <ul aria-label={t.sortOptions} className="sortable-item-cols m-0 grid list-none items-center gap-4 p-0 lg:gap-2 lg:p-2">
+          <ul aria-label={t.sortOptions} className="sortable-item-cols m-0 grid list-none items-center gap-4 p-0 pt-3 lg:gap-2 lg:p-2 lg:pt-2">
             {sortingOptions
               .filter((option) => !option.hidden)
               .map((option) => (

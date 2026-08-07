@@ -288,6 +288,9 @@
   --color-surface-default: var(--color-white);
   --color-surface-subdued: #f7f7f7;
   --color-surface-disabled: #f7f7f7;
+  /* Collapsed mobile trigger bar for select/filter dropdowns (DynamicFilter, MultiSelect) — a neutral
+   * grey a shade stronger than surface-subdued, matching the legacy #EFEFEF bar. */
+  --color-surface-select: #efefef;
   /* Loading-overlay light scrim (ported from legacy loading-overlay rgba(245,246,248,…));
    * consumed with an opacity modifier, e.g. `bg-surface-overlay/95`. The dark scrim reuses
    * `blue-500/30` (= legacy rgba(0,62,81,0.3)), so it needs no dedicated token. */

@@ -20,8 +20,9 @@ export interface HeroCarouselProps {
 
 /**
  * Full-bleed hero rotator (organism) — one {@link Hero} per slide inside a single-per-page
- * {@link Carousel}, with the arrows sitting inline on the pagination row (`arrowsWithDots`) as in the
- * legacy layout.
+ * {@link Carousel}. The `lightArrows` treatment is responsive as in the legacy layout: below 90rem the
+ * arrows sit inline on the pagination row as plain chevrons; at ≥90rem they lift onto the image edges,
+ * vertically centred, with the translucent rounded background.
  *
  * Accessibility: inherits the Carousel's labelled `<section aria-roledescription="carousel">` with real
  * `<button>` arrows + pagination dots (keyboard-operable, visible focus ring, ≥24px targets) as the
@@ -45,7 +46,6 @@ function HeroCarousel({
       gap="0px"
       breakpoints={{ sm: { perPage: 1 }, md: { perPage: 1 }, lg: { perPage: 1 } }}
       lightArrows
-      arrowsWithDots
       onNavigation={onSlideChange}
       onSlideChange={onSlideChange}
       labels={labels}

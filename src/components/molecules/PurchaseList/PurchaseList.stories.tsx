@@ -59,17 +59,58 @@ export const Default: Story = {
   },
 }
 
-/** Visual parity — reproduces the legacy `purchase-list-story` frame (Delete button + list). */
+/**
+ * Functional Delete frame (also the visual-review pairing). Local state drives row selection; the
+ * Delete button stays disabled until at least one row is selected and removes the selected rows when
+ * clicked. Full-width on mobile (`w-full md:w-auto`).
+ */
 export const Visual: Story = {
   args: { items, selectedItems: [], onSelectChange: () => {} },
   tags: ['visual'],
   parameters: { layout: 'fullscreen' },
-  render: (args) => (
-    <ContentWrapper>
-      <Button surface="primary" iconRight="icon-trash">
-        Delete
-      </Button>
-      <PurchaseList {...args} />
-    </ContentWrapper>
-  ),
+  render: (args) => {
+    const [listItems, setListItems] = useState<PurchaseListItem[]>(args.items)
+    const [selected, setSelected] = useState<PurchaseListItem[]>([])
+    const handleSelectChange = (item: PurchaseListItem) =>
+      setSelected((prev) =>
+        prev.find((i) => i.id === item.id)
+          ? prev.filter((i) => i.id !== item.id)
+          : [...prev, item],
+      )
+    const handleDelete = () => {
+      setListItems((prev) => prev.filter((item) => !selected.some((s) => s.id === item.id)))
+      setSelected([])
+    }
+    return (
+      <ContentWrapper>
+        <Button
+          surface="primary"
+          iconRight="icon-trash"
+          className="w-full md:w-auto"
+          disabled={selected.length === 0}
+          onClick={handleDelete}
+        >
+          Delete
+        </Button>
+        <PurchaseList
+          {...args}
+          items={listItems}
+          selectedItems={selected}
+          onSelectChange={handleSelectChange}
+        />
+      </ContentWrapper>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const deleteButton = canvas.getByRole('button', { name: 'Delete' })
+    // Disabled until a row is selected …
+    await expect(deleteButton).toBeDisabled()
+    const checkbox = canvas.getByRole('checkbox', { name: 'Item 2' })
+    await userEvent.click(checkbox)
+    await expect(deleteButton).toBeEnabled()
+    // … and disabled again once the selection is cleared (leaves the frame in its resting state).
+    await userEvent.click(checkbox)
+    await expect(deleteButton).toBeDisabled()
+  },
 }

@@ -61,18 +61,25 @@ function AccountBox({
     <div
       ref={ref}
       className={cn(
-        'flex w-full flex-1 flex-col items-start justify-between gap-2.5 rounded border border-border-grey bg-background p-5 text-body text-text-default lg:w-90',
+        'flex w-full flex-1 flex-col items-start justify-between gap-4 rounded border border-border-grey bg-background p-5 text-body text-text-default lg:w-90',
         className,
       )}
     >
-      {/* Plain block container so the paragraphs' 1em margins collapse like the legacy card. */}
-      <div>
-        <p className="m-0 font-bold">{companyName}</p>
-        <p className="m-0">{accountNumber}</p>
-        {contactPerson && <p className="my-4">{contactPerson}</p>}
-        {addressLabel && <p className="mt-4 mb-0 font-bold uppercase">{addressLabel}</p>}
-        {addressTitle && <p className="m-0">{addressTitle}</p>}
-        {addressLine && <p className={cn(addressTitle ? 'mt-0' : 'my-4')}>{addressLine}</p>}
+      {/* Tight logical groups (header / contact / address) with one even, compact rhythm between them —
+          replaces the legacy loose 1em paragraph margins that left the lines too far apart. */}
+      <div className="flex flex-col gap-2">
+        <div>
+          <p className="m-0 font-bold">{companyName}</p>
+          <p className="m-0">{accountNumber}</p>
+        </div>
+        {contactPerson && <p className="m-0">{contactPerson}</p>}
+        {(addressLabel || addressTitle || addressLine) && (
+          <div>
+            {addressLabel && <p className="m-0 font-bold uppercase">{addressLabel}</p>}
+            {addressTitle && <p className="m-0">{addressTitle}</p>}
+            {addressLine && <p className="m-0">{addressLine}</p>}
+          </div>
+        )}
       </div>
       <Button {...chooseAccountBtn} type="button" surface="primary" onClick={onClickChooseAccount} />
     </div>

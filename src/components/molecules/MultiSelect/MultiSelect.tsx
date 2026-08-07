@@ -120,7 +120,9 @@ function MultiSelect({
         aria-expanded={open}
         aria-controls={popupId}
         onClick={() => setOpen((prev) => !prev)}
-        className="max-md:w-full"
+        // surface="x" only paints its fill from md up; on mobile the trigger reads as a filled grey
+        // select bar (matching legacy), so add the neutral fill below md (md:bg-action-x takes over).
+        className="max-md:w-full max-md:bg-surface-select"
       >
         {getTriggerLabel()}
       </Button>

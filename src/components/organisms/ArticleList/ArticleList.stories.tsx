@@ -86,8 +86,9 @@ export const Default: Story = {
 }
 
 /**
- * Static grid (no `swipe`): three cards laid out in a wrapping flex row (no carousel region). The
- * play test proves there is no carousel group and all three articles render.
+ * Static grid (no `swipe`): three cards in the small/large/small alternation, laid out in a wrapping
+ * flex row (no carousel region), their images sharing a bottom edge. The play test proves there is no
+ * carousel group and all three articles render.
  */
 export const ThreeCards: Story = {
   args: {
@@ -129,7 +130,8 @@ export const VisualDefault: Story = {
   },
 }
 
-/** Legacy `Three_Cards` frame: three static cards (small/large/small). */
+/** Legacy `Three_Cards` frame: three static cards in the small/large/small alternation — the middle
+ *  image is taller, the outer two shorter, and all three share a bottom edge (bottom-aligned). */
 export const VisualThreeCards: Story = {
   tags: ['visual'],
   parameters: { layout: 'fullscreen' },

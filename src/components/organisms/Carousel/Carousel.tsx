@@ -77,7 +77,12 @@ export interface CarouselProps {
   hidePagination?: boolean
   /** Render one pagination dot per slide instead of one per page. @default false */
   dotPerItem?: boolean
-  /** Lighter, translucent rounded arrows for use over imagery. @default false */
+  /**
+   * Responsive "hero" arrow treatment for arrows placed over imagery. Below 90rem the arrows sit
+   * inline on the pagination row as plain (transparent) chevrons; at ≥90rem they lift onto the track,
+   * vertically centred at the edges, with a translucent rounded background — matching the legacy hero
+   * layout. @default false
+   */
   lightArrows?: boolean
   /** Anchor the arrows to the trailing edge instead of centring them on the cross axis. @default false */
   arrowsBottom?: boolean
@@ -171,7 +176,7 @@ function Carousel({
   const trackRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef(0)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [config, setConfig] = useState({ maxIndex: 0, pageCount: 1, visible: 1, perMove: 1, hideArrows: false })
+  const [config, setConfig] = useState({ maxIndex: 0, pageCount: 1, visible: 1, perMove: 1, hideArrows: false, wide: false })
 
   const childCount = Children.count(children)
   const bpKey = JSON.stringify(breakpoints ?? {})
@@ -204,14 +209,20 @@ function Carousel({
       const maxIndex = Math.max(0, count - visible)
       const pageCount = Math.max(1, Math.ceil(count / visible))
       const responsive = resolveResponsive(breakpoints)
-      setConfig({ maxIndex, pageCount, visible, ...responsive })
+      // The hero-arrow layout flips at 90rem (see `lightArrows`): inline plain chevrons below, edge
+      // arrows over the track above. Read here so the flip tracks resize like the rest of `config`.
+      const wide =
+        typeof window !== 'undefined' &&
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(min-width: 90rem)').matches
+      setConfig({ maxIndex, pageCount, visible, ...responsive, wide })
       setActiveIndex((prev) => Math.min(prev, maxIndex))
     }
 
     recompute()
     const observer = new ResizeObserver(recompute)
     observer.observe(el)
-    const queries = ['(min-width: 48rem)', '(min-width: 64rem)'].map((q) => window.matchMedia(q))
+    const queries = ['(min-width: 48rem)', '(min-width: 64rem)', '(min-width: 90rem)'].map((q) => window.matchMedia(q))
     queries.forEach((mql) => mql.addEventListener('change', recompute))
     return () => {
       observer.disconnect()
@@ -308,25 +319,31 @@ function Carousel({
     'z-menu-icon flex size-11 shrink-0 items-center justify-center text-text-default',
     'transition-opacity disabled:pointer-events-none disabled:opacity-0',
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary',
-    lightArrows && 'rounded-full bg-grey-300/75',
+    // The 44px button stays the (comfortable) pointer target; the translucent hero disc is a smaller
+    // inner element (see renderArrow), so the fill hugs the chevron instead of ballooning to 44px.
+    lightArrows && 'rounded-full',
   )
+  // Once the hero arrows lift over the track (≥90rem) the chevron sits inside a translucent disc; on
+  // the inline row below that they read as plain chevrons.
+  const heroDisc = lightArrows && config.wide
   const prevPlacement = horizontal
     ? cn(
-        offsetArrows ? 'left-0' : 'left-2 md:left-4',
+        lightArrows ? 'left-16' : offsetArrows ? 'left-0' : 'left-2 md:left-4',
         arrowsBottom ? 'bottom-0' : 'top-1/2 -translate-y-1/2',
       )
     : cn('left-1/2 -translate-x-1/2', offsetArrows ? 'top-0' : 'top-2')
   const nextPlacement = horizontal
     ? cn(
-        offsetArrows ? 'right-0' : 'right-2 md:right-4',
+        lightArrows ? 'right-16' : offsetArrows ? 'right-0' : 'right-2 md:right-4',
         arrowsBottom ? 'bottom-0' : 'top-1/2 -translate-y-1/2',
       )
     : cn('left-1/2 -translate-x-1/2', offsetArrows ? 'bottom-0' : 'bottom-2')
 
-  // With `arrowsWithDots`, the arrows join the pagination row (in flow, vertically centred with the
-  // dots) rather than overlaying the track; a disabled arrow keeps its space (opacity-0) so the dots
-  // stay centred, matching the legacy bottom-arrow layout.
-  const inlineArrows = arrowsWithDots && showArrows
+  // Arrows join the pagination row (in flow, vertically centred with the dots) rather than overlaying
+  // the track when `arrowsWithDots` is set, or — for the responsive hero treatment — while `lightArrows`
+  // is below the 90rem flip. A disabled arrow keeps its space (opacity-0) so the dots stay centred,
+  // matching the legacy bottom-arrow layout.
+  const inlineArrows = (arrowsWithDots || (lightArrows && !config.wide)) && showArrows
 
   const renderArrow = (dir: 'prev' | 'next', placement?: string) => {
     const isPrev = dir === 'prev'
@@ -338,18 +355,20 @@ function Carousel({
         onClick={() => navigateTo(activeIndex + (isPrev ? -config.perMove : config.perMove))}
         className={cn(arrowBase, placement)}
       >
-        <Icon
-          icon={
-            horizontal
-              ? isPrev
-                ? 'icon-chevron-left'
-                : 'icon-chevron-right'
-              : isPrev
-                ? 'icon-chevron-up'
-                : 'icon-chevron-down'
-          }
-          size="large"
-        />
+        <span className={cn(heroDisc && 'flex size-9 items-center justify-center rounded-full bg-grey-300/75')}>
+          <Icon
+            icon={
+              horizontal
+                ? isPrev
+                  ? 'icon-chevron-left'
+                  : 'icon-chevron-right'
+                : isPrev
+                  ? 'icon-chevron-up'
+                  : 'icon-chevron-down'
+            }
+            size="large"
+          />
+        </span>
       </button>
     )
   }
@@ -357,7 +376,8 @@ function Carousel({
   // gap-0 makes the 24px dot targets (2.5.8) adjacent — the tightest the dots can read while every dot
   // stays a ≥24px pointer target. Legacy packed the dots ~15px apart, but WCAG 2.5.8 requires targets
   // to sit ≥24px apart (even undersized ones, via the 24px-circle test), so this is the accessible
-  // floor: matched legacy dot *size* (8px), can't match its sub-target *density*.
+  // floor: we can't match legacy's sub-target *density*. To narrow the perceived gap without dropping
+  // below the 24px floor, the visible glyph is enlarged (size-3 / 12px) inside the fixed 24px target.
   const dotButtons = showDots
     ? Array.from({ length: dotCount }, (_, index) => (
         <button
@@ -370,7 +390,7 @@ function Carousel({
         >
           <span
             className={cn(
-              'size-2 rounded-full bg-action-primary transition-opacity',
+              'size-3 rounded-full bg-action-primary transition-opacity',
               index === activeDot ? 'opacity-100' : 'opacity-50',
             )}
           />

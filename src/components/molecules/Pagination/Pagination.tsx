@@ -53,7 +53,7 @@ export interface PaginationProps {
 const btnBase =
   'cursor-pointer border-none bg-transparent p-0 font-primary text-action-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action-primary disabled:cursor-default disabled:text-border-grey'
 const pageBtn = 'text-xl md:w-8 md:text-base'
-const stepBtn = 'flex-1 p-3 text-2xl md:p-0 md:text-xl'
+const stepBtn = 'flex-1 p-3 text-2xl md:flex-none md:p-0 md:text-xl'
 
 /**
  * Page navigation (molecule). Renders a `<nav aria-label>` landmark of real `<button>`s: a
@@ -92,7 +92,7 @@ function Pagination({
 
   return (
     <nav ref={ref} aria-label={t.nav} className={cn('relative flex flex-col items-center md:flex-row', className)}>
-      <div className="flex w-full flex-1 justify-center md:mx-auto md:max-w-80">
+      <div className="flex w-full flex-1 justify-center md:mx-auto md:max-w-80 md:gap-6">
         <button
           type="button"
           aria-label={t.previous}
