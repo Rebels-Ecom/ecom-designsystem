@@ -154,16 +154,18 @@ function CartProduct({
     <article
       ref={ref}
       className={cn(
-        'relative flex min-h-46 w-full items-center gap-4 pr-4 md:min-h-42 md:pr-0',
+        'relative flex min-h-28 w-full items-center gap-4 pr-4 md:pr-0',
         whiteBackground && 'bg-white',
         className,
       )}
     >
       {loading ? (
-        <Loader visible position="relative" text={t.loading} className="min-h-42" />
+        <Loader visible position="relative" text={t.loading} className="min-h-28" />
       ) : (
         <>
-          <div className="flex w-20 shrink-0 items-center self-stretch md:w-24">
+          {/* Definite, square-ish image box. Without a bounded height the fallback bottle's tall
+              intrinsic size leaks through `object-contain h-full`, blowing the row up. */}
+          <div className="flex size-20 shrink-0 items-center md:size-24">
             <Picture
               id={`cart-product-${partNo}`}
               sources={image?.sources ?? []}

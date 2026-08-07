@@ -230,7 +230,9 @@ function ComponentWithTooltip({
           id={tooltipId}
           style={{ transform: tooltipTransform }}
           className={cn(
-            'absolute z-menu-icon flex max-w-64 rounded px-2 py-1.5 text-body-s whitespace-normal',
+            // w-max sizes the tip to its content (up to max-w-64) instead of shrink-fitting to the
+            // narrow positioned wrapper, which otherwise wrapped the text one word per line.
+            'absolute z-menu-icon flex w-max max-w-64 rounded px-2 py-1.5 text-body-s whitespace-normal',
             colorClasses[color],
             sideClasses[resolvedSide],
             alignAnchor[resolvedSide][align],

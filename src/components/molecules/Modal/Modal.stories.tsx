@@ -5,7 +5,8 @@ import { Modal } from './Modal'
 
 const content = (
   <div className="flex flex-col items-start gap-4 px-4">
-    <h2 className="text-h-m text-text-default">Create shopping list</h2>
+    {/* pr-10 reserves the top-right close-button column so the wide heading wraps clear of it. */}
+    <h2 className="text-h-m text-text-default pr-10">Create shopping list</h2>
     <p className="text-text-default">Give your list a name and start adding products to it.</p>
     <button
       type="button"

@@ -8,9 +8,12 @@ const items = [
   { question: 'How do I change my account details?', answer: <p>Open your profile and edit your details.</p> },
 ]
 
-// Self-contained decorative icon so the stories carry no external asset dependency.
+// The app feeds `imgSrc` from Sitecore's `item.Icon` — a media-library URL to an image (typically an
+// SVG), rendered by FaqGroup as `<img src>`. We simulate that here with an inline SVG data URI (an
+// `<img>`-served SVG, exactly like a Sitecore media SVG would be) — a branded "ordering & delivery"
+// delivery-truck category icon rather than a placeholder glyph. Self-contained: no external asset.
 const icon =
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="%23003E51"/><text x="30" y="40" font-size="34" fill="white" text-anchor="middle" font-family="sans-serif">?</text></svg>'
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="%23003E51"/><g fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="17" y="21" width="16" height="12" rx="1"/><path d="M33 25h6l4 3v5H33z"/><circle cx="24" cy="36" r="2.8"/><circle cx="39" cy="36" r="2.8"/></g></svg>'
 
 const meta = {
   title: 'Design System/Organisms/FaqGroup',

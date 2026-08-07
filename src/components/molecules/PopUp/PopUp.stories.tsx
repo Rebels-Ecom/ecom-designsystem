@@ -17,9 +17,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const confirmContent = (onClose: () => void) => (
-  <GroupWrapper direction="column">
+  <GroupWrapper direction="column" align="center">
     <Heading order={4}>Vill du spara dina ändringar?</Heading>
-    <GroupWrapper>
+    {/* align (cross-axis) centres the stacked buttons on mobile; position (main-axis) centres the
+        button row on desktop — both are needed since the group is column→row across the breakpoint. */}
+    <GroupWrapper align="center" position="center">
       <Button type="button" surface="primary" onClick={onClose}>
         Spara
       </Button>

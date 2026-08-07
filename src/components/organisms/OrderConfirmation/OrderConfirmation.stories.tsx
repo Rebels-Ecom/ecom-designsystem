@@ -54,7 +54,12 @@ export const confirmationContent = (
     <Heading order={3}>Grattis</Heading>
     <Text>Din order är nu registrerad och kommer att förberedas för packning.</Text>
     <MessageBanner type="success">Ditt ordernr: 12345678</MessageBanner>
-    <Text>Vi har skickat din orderbekräftelse till jon.jonsson@beerfest.com</Text>
+    {/* `block` (not the Text default `flex`) so the sentence flows as normal inline text and the bold
+        email keeps its surrounding spaces and wraps as one word. */}
+    <Text className="block">
+      Vi har skickat din orderbekräftelse till{' '}
+      <span className="font-bold">jon.jonsson@beerfest.com</span>
+    </Text>
     <OrderConfirmationDetails
       label="Leveransuppgifter"
       detailItems={[
