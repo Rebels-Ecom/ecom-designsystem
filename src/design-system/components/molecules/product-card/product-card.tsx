@@ -136,6 +136,7 @@ function ProductCard({
     itemNumberPerSalesUnit,
     quantity,
     priceStr,
+    pricePerUnitString,
     activeCampaign,
     outOfStock,
   } = product
@@ -166,6 +167,7 @@ function ProductCard({
       quantity: getQuantity(quantity),
       priceStr: priceStr,
       pricePerUnit: pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0,
+      pricePerUnitString: pricePerUnitString,
       totalPrice: convertNumToStr(
         (pricePerUnit && isFinite(pricePerUnit) ? pricePerUnit : 0) *
           itemNumberPerSalesUnit *
@@ -174,7 +176,7 @@ function ProductCard({
       activeCampaign: activeCampaign,
       outOfStock: outOfStock,
     }))
-  }, [quantity, priceStr, pricePerUnit, activeCampaign, outOfStock])
+  }, [quantity, priceStr, pricePerUnit, pricePerUnitString, activeCampaign, outOfStock])
 
   function handleOnChangeQuantity(productQuantity: number) {
     if (maxQuantity && productQuantity > maxQuantity) {
