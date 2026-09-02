@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '../../atoms'
 import styles from './select-list.module.css'
 import cx from 'classnames'
-import { useOnClickOutside } from '../../../hooks'
+import { usePortal } from '../../../hooks'
 
 type TSelectItem = {
   name: string
@@ -22,6 +22,15 @@ interface ISelectList {
   round?: boolean
 }
 
+interface IPopupPosition {
+  top: number
+  left: number
+  minWidth: number
+}
+
+const POPUP_GAP = 4
+const VIEWPORT_MARGIN = 8
+
 const SelectList = ({
   options,
   preSelected,
@@ -34,10 +43,13 @@ const SelectList = ({
   round,
 }: ISelectList) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const popupRef = useRef<HTMLUListElement>(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [position, setPosition] = useState<'left' | 'right'>('left')
   const [selected, setSelected] = useState<TSelectItem | undefined>(preSelected)
-  const selectListRef = useRef<HTMLDivElement>(null)
+  const [position, setPosition] = useState<IPopupPosition | null>(null)
+  const [portalNode, setPortalNode] = useState<HTMLElement | null>(null)
+
   const handleClick = () => {
     onClickButton?.()
     setIsOpen(!isOpen)
@@ -53,32 +65,72 @@ const SelectList = ({
     }
   }
 
-  function handleResize() {
-    let right = window.innerWidth - (buttonRef?.current?.getBoundingClientRect()?.right ?? 0)
-    if (right <= 32) {
-      setPosition('right')
-    } else {
-      if (position !== 'left') {
-        setPosition('left')
-      }
-    }
-  }
-
   useEffect(() => {
     setSelected(preSelected)
   }, [preSelected])
 
   useEffect(() => {
-    handleResize()
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
+    setPortalNode(document.getElementById('portal'))
   }, [])
 
-  useOnClickOutside({ ref: selectListRef, onClose: () => setIsOpen(false) })
+  const Portal = usePortal(portalNode)
+
+  // Portaled to `#portal` (same target `Modal` uses), so the popup renders above a `Modal` panel
+  // (or any other `overflow`-clipping ancestor) instead of being cut off by it. Position is computed
+  // from the trigger's viewport rect, so this works the same whether there's a modal or not.
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setPosition(null)
+      return
+    }
+
+    function updatePosition() {
+      const trigger = buttonRef.current
+      if (!trigger) return
+      const triggerRect = trigger.getBoundingClientRect()
+      const popupRect = popupRef.current?.getBoundingClientRect()
+      const popupHeight = popupRect?.height ?? 0
+      const popupWidth = popupRect?.width ?? triggerRect.width
+      const spaceBelow = window.innerHeight - triggerRect.bottom
+      const spaceAbove = triggerRect.top
+      const openUp = spaceBelow < popupHeight + POPUP_GAP && spaceAbove > spaceBelow
+      const maxLeft = window.innerWidth - popupWidth - VIEWPORT_MARGIN
+      setPosition({
+        top: openUp ? triggerRect.top - popupHeight - POPUP_GAP : triggerRect.bottom + POPUP_GAP,
+        left: Math.min(Math.max(triggerRect.left, VIEWPORT_MARGIN), Math.max(maxLeft, VIEWPORT_MARGIN)),
+        minWidth: triggerRect.width,
+      })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [isOpen])
+
+  // Hand-rolled instead of `useOnClickOutside`: that hook only tracks one ref, but the popup now
+  // lives outside `wrapperRef` (portaled), so it also needs to be treated as "inside".
+  useEffect(() => {
+    if (!isOpen) return
+    function handlePointerDown(event: MouseEvent | TouchEvent) {
+      const target = event.target as Node
+      if (wrapperRef.current?.contains(target)) return
+      if (popupRef.current?.contains(target)) return
+      setIsOpen(false)
+    }
+    document.addEventListener('mousedown', handlePointerDown)
+    document.addEventListener('touchstart', handlePointerDown)
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+      document.removeEventListener('touchstart', handlePointerDown)
+    }
+  }, [isOpen])
 
   return (
-    <div ref={selectListRef} className={styles.selectListWrapper}>
+    <div ref={wrapperRef} className={styles.selectListWrapper}>
       <Button
         ref={buttonRef}
         type="button"
@@ -91,27 +143,37 @@ const SelectList = ({
       >
         {selected?.name ?? placeholder}
       </Button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.ul className={cx(styles.selectList, styles[position])}>
-            {options?.map((option, i) => {
-              return (
-                <motion.li key={`${option.name}-${i}`} className={styles.selectItem}>
-                  <button
-                    type="button"
-                    className={styles.selectItemButton}
-                    onClick={() => handleClickItem(option)}
-                    disabled={disabled}
-                  >
-                    <input type="radio" checked={option.name === selected?.name} className={styles.radio} readOnly />
-                    <span className={styles.label}>{option.name}</span>
-                  </button>
-                </motion.li>
-              )
-            })}
-          </motion.ul>
-        )}
-      </AnimatePresence>
+      <Portal>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.ul
+              ref={popupRef}
+              className={styles.selectList}
+              style={
+                position
+                  ? { top: position.top, left: position.left, minWidth: position.minWidth }
+                  : { visibility: 'hidden' }
+              }
+            >
+              {options?.map((option, i) => {
+                return (
+                  <motion.li key={`${option.name}-${i}`} className={styles.selectItem}>
+                    <button
+                      type="button"
+                      className={styles.selectItemButton}
+                      onClick={() => handleClickItem(option)}
+                      disabled={disabled}
+                    >
+                      <input type="radio" checked={option.name === selected?.name} className={styles.radio} readOnly />
+                      <span className={styles.label}>{option.name}</span>
+                    </button>
+                  </motion.li>
+                )
+              })}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+      </Portal>
     </div>
   )
 }
