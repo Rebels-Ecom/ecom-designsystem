@@ -45,7 +45,7 @@
   position: fixed;
   display: inline-block;
   background-color: var(--cta-x-default);
-  border: 1px solid var(--border-grey);
+  border: 1px solid var(--border-on-secondary);
   border-radius: 0.25rem;
   list-style: none;
   padding: 0;
