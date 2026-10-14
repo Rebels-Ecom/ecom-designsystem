@@ -9,9 +9,11 @@ export interface IArticleList {
   title?: string
   swipe?: boolean
   grid?: boolean
+  /** Force every card to render as "small", instead of the default small-large-small pattern used for 3 items. */
+  allSmall?: boolean
 }
 
-const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
+const ArticleList = ({ articles, title, swipe, grid, allSmall }: IArticleList) => {
   if (!Array.isArray(articles) || !articles.length) {
     return null
   }
@@ -45,7 +47,10 @@ const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
     return formattedText
   }
 
-  const useSmallCards = articles.length === 2 || articles.length > 3
+  const useSmallCards = allSmall || articles.length === 2 || articles.length > 3
+  // 4+ articles wrap into rows of up to four; a partially filled last row should align left.
+  // Fewer than four articles form a single row that stays centered.
+  const articlesClassName = [styles.articles, articles.length > 3 && styles.leftAligned].filter(Boolean).join(' ')
 
   const articlesToRender = articles.map((article, i) => {
     const textToDisplay = formatText(article.text, article.maxChar)
@@ -56,7 +61,7 @@ const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
         text={textToDisplay}
         type={useSmallCards ? 'small' : i % 2 === 0 ? 'small' : 'large'}
         equalHeights={useSmallCards}
-        fullWidth={articles.length === 1}
+        fullWidth={articles.length === 1 && !allSmall}
       />
     )
   })
@@ -75,7 +80,7 @@ const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
           text={textToDisplay}
           type={useSmallCards ? 'small' : i % 2 === 0 ? 'small' : 'large'}
           equalHeights={useSmallCards}
-          fullWidth={articles.length === 1}
+          fullWidth={articles.length === 1 && !allSmall}
           asCarouselItem
         />
       </CarouselItem>
@@ -95,7 +100,7 @@ const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
                 </Carousel>
               ) : (
                 <ContentWrapper>
-                  <div className={styles.articles}>{articlesToRender}</div>
+                  <div className={articlesClassName}>{articlesToRender}</div>
                 </ContentWrapper>
               )}
             </>
@@ -123,7 +128,7 @@ const ArticleList = ({ articles, title, swipe, grid }: IArticleList) => {
                   {carouselArticlesToRender}
                 </Carousel>
               ) : (
-                <div className={styles.articles}>{grid ? gridArticlesToRender : articlesToRender}</div>
+                <div className={articlesClassName}>{grid ? gridArticlesToRender : articlesToRender}</div>
               )}
             </ContentWrapper>
           )

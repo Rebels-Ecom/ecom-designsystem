@@ -153,6 +153,15 @@ export const Three_Cards = {
   } as Pick<IArticleList, 'articles'>
 }
 
+export const Three_Cards_All_Small = {
+  ...ArticleListStoryTemplate,
+  args: {
+    title: 'Three Cards (all small)',
+    articles: articlesData.slice(0, 3),
+    allSmall: true,
+  } as Pick<IArticleList, 'articles' | 'allSmall'>
+}
+
 export const Full_Width = {
   ...ArticleListStoryTemplate,
   args: {
